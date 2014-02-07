@@ -80,7 +80,7 @@ public class PortletPreferencesLocalServiceTest {
 				_PREFERENCE_NAME, _PREFERENCE_VALUES_SINGLE);
 
 		PortletPreferences portletPreferences =
-			PortletPreferencesTestUtil.addPortletPreferencesOwnedByLayout(
+			PortletPreferencesTestUtil.addLayoutPortletPreferences(
 				_layout, _portlet, preferencesAsXml);
 
 		PortletPreferencesImpl portletPreferencesImpl =
@@ -103,7 +103,7 @@ public class PortletPreferencesLocalServiceTest {
 		_portlet.setDefaultPreferences(preferencesAsXML);
 
 		PortletPreferences portletPreferences =
-			PortletPreferencesTestUtil.addPortletPreferencesOwnedByLayout
+			PortletPreferencesTestUtil.addLayoutPortletPreferences
 				(_layout, _portlet);
 
 		PortletPreferencesImpl portletPreferencesImpl =
@@ -124,7 +124,7 @@ public class PortletPreferencesLocalServiceTest {
 		assertNullLayoutPreferences(_layout, _portlet);
 
 		PortletPreferences portletPreferences =
-			PortletPreferencesTestUtil.addPortletPreferencesOwnedByLayout(
+			PortletPreferencesTestUtil.addLayoutPortletPreferences(
 				_layout, _portlet, preferencesAsXML);
 
 		PortletPreferencesImpl portletPreferencesImpl =
@@ -141,7 +141,7 @@ public class PortletPreferencesLocalServiceTest {
 		assertNullLayoutPreferences(_layout, _portlet);
 
 		PortletPreferences portletPreferences =
-			PortletPreferencesTestUtil.addPortletPreferencesOwnedByLayout(
+			PortletPreferencesTestUtil.addLayoutPortletPreferences(
 				_layout, _portlet);
 
 		PortletPreferencesImpl portletPreferencesImpl =
@@ -187,11 +187,11 @@ public class PortletPreferencesLocalServiceTest {
 		Portlet portlet2 = getTestPortlets(1)[0];
 
 		PortletPreferences portletPreferences1 =
-			PortletPreferencesTestUtil.addPortletPreferencesOwnedByLayout(
+			PortletPreferencesTestUtil.addLayoutPortletPreferences(
 				_layout, _portlet);
 
 		PortletPreferences portletPreferences2 =
-			PortletPreferencesTestUtil.addPortletPreferencesOwnedByLayout(
+			PortletPreferencesTestUtil.addLayoutPortletPreferences(
 				_layout, portlet2);
 
 		PortletPreferencesLocalServiceUtil.deletePortletPreferencesByPlid(
@@ -229,11 +229,11 @@ public class PortletPreferencesLocalServiceTest {
 		Portlet group2Portlet = getTestPortlets(1)[0];
 
 		PortletPreferences portletPreferencesGroup1 =
-			PortletPreferencesTestUtil.addPortletPreferencesOwnedByGroup(
+			PortletPreferencesTestUtil.addGroupPortletPreferences(
 				_layout, _portlet);
 
 		PortletPreferences portletPreferencesGroup2 =
-			PortletPreferencesTestUtil.addPortletPreferencesOwnedByGroup(
+			PortletPreferencesTestUtil.addGroupPortletPreferences(
 				layout2, group2Portlet);
 
 		PortletPreferencesLocalServiceUtil.deletePortletPreferences(
@@ -268,11 +268,11 @@ public class PortletPreferencesLocalServiceTest {
 		Portlet portlet2 = getTestPortlets(1)[0];
 
 		PortletPreferences portletPreferences1 =
-			PortletPreferencesTestUtil.addPortletPreferencesOwnedByLayout
+			PortletPreferencesTestUtil.addLayoutPortletPreferences
 				(_layout, _portlet);
 
 		PortletPreferences portletPreferences2 =
-			PortletPreferencesTestUtil.addPortletPreferencesOwnedByLayout(
+			PortletPreferencesTestUtil.addLayoutPortletPreferences(
 				_layout, portlet2);
 
 		PortletPreferencesLocalServiceUtil.deletePortletPreferences(
@@ -303,7 +303,7 @@ public class PortletPreferencesLocalServiceTest {
 	@Test
 	public void testDeleteByPortletPreferencesId() throws Exception {
 		PortletPreferences portletPreferences =
-			PortletPreferencesTestUtil.addPortletPreferencesOwnedByLayout(
+			PortletPreferencesTestUtil.addLayoutPortletPreferences(
 				_layout, _portlet);
 
 		PortletPreferencesLocalServiceUtil.deletePortletPreferences(
@@ -328,7 +328,7 @@ public class PortletPreferencesLocalServiceTest {
 			PortletPreferencesTestUtil.getPreferencesAsXMLString(
 				_PREFERENCE_NAME, _PREFERENCE_VALUES_SINGLE);
 
-		PortletPreferencesTestUtil.addPortletPreferencesOwnedByLayout(
+		PortletPreferencesTestUtil.addLayoutPortletPreferences(
 			_layout, _portlet, preferencesAsXML);
 
 		PortletPreferencesLocalServiceUtil.deletePortletPreferences(
@@ -360,7 +360,7 @@ public class PortletPreferencesLocalServiceTest {
 			PortletPreferencesTestUtil.getPreferencesAsXMLString(
 				_PREFERENCE_NAME, _PREFERENCE_VALUES_SINGLE);
 
-		PortletPreferencesTestUtil.addPortletPreferencesOwnedByLayout(
+		PortletPreferencesTestUtil.addLayoutPortletPreferences(
 			_layout, _portlet, preferencesAsXML);
 
 		javax.portlet.PortletPreferences portletPreferences =
@@ -382,7 +382,7 @@ public class PortletPreferencesLocalServiceTest {
 			PortletPreferencesTestUtil.getPreferencesAsXMLString(
 				_PREFERENCE_NAME, _PREFERENCE_VALUES_SINGLE);
 
-		PortletPreferencesTestUtil.addPortletPreferencesOwnedByLayout(
+		PortletPreferencesTestUtil.addLayoutPortletPreferences(
 			_layout, _portlet, preferencesAsXML);
 
 		PortletPreferencesIds portletPreferencesIds =
@@ -407,7 +407,7 @@ public class PortletPreferencesLocalServiceTest {
 
 		int initialCount = initialPortletPreferences.size();
 
-		PortletPreferencesTestUtil.addPortletPreferencesOwnedByLayout(
+		PortletPreferencesTestUtil.addLayoutPortletPreferences(
 			_layout, _portlet);
 
 		List<PortletPreferences> currentPortletsPreferences =
@@ -423,10 +423,10 @@ public class PortletPreferencesLocalServiceTest {
 	public void testGetByCompanyGroupOwnerIdAndPortlet() throws Exception {
 		Layout layout2 = LayoutTestUtil.addLayout(GroupTestUtil.addGroup());
 
-		PortletPreferencesTestUtil.addPortletPreferencesOwnedByLayout(
+		PortletPreferencesTestUtil.addLayoutPortletPreferences(
 			_layout, _portlet);
 
-		PortletPreferencesTestUtil.addPortletPreferencesOwnedByLayout(
+		PortletPreferencesTestUtil.addLayoutPortletPreferences(
 			layout2, _portlet);
 
 		List<PortletPreferences> portletPreferences =
@@ -463,10 +463,10 @@ public class PortletPreferencesLocalServiceTest {
 		Layout layout2 = LayoutTestUtil.addLayout(_group);
 
 		PortletPreferences portalPreferencesLayout =
-			PortletPreferencesTestUtil.addPortletPreferencesOwnedByLayout(
+			PortletPreferencesTestUtil.addLayoutPortletPreferences(
 				_layout, _portlet);
 
-		PortletPreferencesTestUtil.addPortletPreferencesOwnedByLayout(
+		PortletPreferencesTestUtil.addLayoutPortletPreferences(
 			layout2, _portlet);
 
 		List<PortletPreferences> listPortletPreferences =
@@ -513,13 +513,13 @@ public class PortletPreferencesLocalServiceTest {
 
 		Portlet[] portletsGroup2 = getTestPortlets(2);
 
-		PortletPreferencesTestUtil.addPortletPreferencesOwnedByGroup(
+		PortletPreferencesTestUtil.addGroupPortletPreferences(
 			_layout, _portlet);
 
-		PortletPreferencesTestUtil.addPortletPreferencesOwnedByGroup(
+		PortletPreferencesTestUtil.addGroupPortletPreferences(
 			layout2, portletsGroup2[0]);
 
-		PortletPreferencesTestUtil.addPortletPreferencesOwnedByGroup(
+		PortletPreferencesTestUtil.addGroupPortletPreferences(
 			layout2, portletsGroup2[1]);
 
 		List<PortletPreferences> portletPreferencesList =
@@ -547,13 +547,13 @@ public class PortletPreferencesLocalServiceTest {
 
 		Portlet[] portlets = getTestPortlets(2);
 
-		PortletPreferencesTestUtil.addPortletPreferencesOwnedByLayout(
+		PortletPreferencesTestUtil.addLayoutPortletPreferences(
 			_layout, _portlet);
 
-		PortletPreferencesTestUtil.addPortletPreferencesOwnedByLayout(
+		PortletPreferencesTestUtil.addLayoutPortletPreferences(
 			layout2, portlets[0]);
 
-		PortletPreferencesTestUtil.addPortletPreferencesOwnedByLayout(
+		PortletPreferencesTestUtil.addLayoutPortletPreferences(
 			layout2, portlets[1]);
 
 		List<PortletPreferences> listPortletPreferences =
@@ -570,10 +570,10 @@ public class PortletPreferencesLocalServiceTest {
 	public void testGetByPortletAndLayout() throws Exception {
 		Layout layout2 = LayoutTestUtil.addLayout(_group);
 
-		PortletPreferencesTestUtil.addPortletPreferencesOwnedByLayout(
+		PortletPreferencesTestUtil.addLayoutPortletPreferences(
 			_layout, _portlet);
 
-		PortletPreferencesTestUtil.addPortletPreferencesOwnedByLayout(
+		PortletPreferencesTestUtil.addLayoutPortletPreferences(
 			layout2, _portlet);
 
 		List<PortletPreferences> listPortletPreferences =
@@ -601,10 +601,10 @@ public class PortletPreferencesLocalServiceTest {
 
 		Layout layout2 = LayoutTestUtil.addLayout(group2);
 
-		PortletPreferencesTestUtil.addPortletPreferencesOwnedByLayout(
+		PortletPreferencesTestUtil.addLayoutPortletPreferences(
 			_layout, _portlet);
 
-		PortletPreferencesTestUtil.addPortletPreferencesOwnedByGroup(
+		PortletPreferencesTestUtil.addGroupPortletPreferences(
 			layout2, _portlet);
 
 		List<PortletPreferences> listPortletPreferences =
@@ -647,13 +647,13 @@ public class PortletPreferencesLocalServiceTest {
 
 		Portlet[] portletsGroup2 = getTestPortlets(2);
 
-		PortletPreferencesTestUtil.addPortletPreferencesOwnedByGroup(
+		PortletPreferencesTestUtil.addGroupPortletPreferences(
 			_layout, _portlet);
 
-		PortletPreferencesTestUtil.addPortletPreferencesOwnedByGroup(
+		PortletPreferencesTestUtil.addGroupPortletPreferences(
 			layout2, portletsGroup2[0]);
 
-		PortletPreferencesTestUtil.addPortletPreferencesOwnedByGroup(
+		PortletPreferencesTestUtil.addGroupPortletPreferences(
 			layout2, portletsGroup2[1]);
 
 		PortletPreferences portletPreferences =
@@ -721,7 +721,7 @@ public class PortletPreferencesLocalServiceTest {
 			PortletPreferencesTestUtil.getPreferencesAsXMLString(
 				_PREFERENCE_NAME, _PREFERENCE_VALUES_SINGLE);
 
-		PortletPreferencesTestUtil.addPortletPreferencesOwnedByLayout(
+		PortletPreferencesTestUtil.addLayoutPortletPreferences(
 			_layout, _portlet, preferencesAsXML);
 
 		PortletPreferencesIds portletPreferencesIds =
@@ -753,7 +753,7 @@ public class PortletPreferencesLocalServiceTest {
 					" and PLID: " + _layout.getPlid() +
 						" ) should be 0", 0, initialCount);
 
-		PortletPreferencesTestUtil.addPortletPreferencesOwnedByGroup(
+		PortletPreferencesTestUtil.addGroupPortletPreferences(
 			_layout, _portlet);
 
 		long currentCount =
@@ -784,7 +784,7 @@ public class PortletPreferencesLocalServiceTest {
 						" ) should be 0",
 			0, initialCount);
 
-		PortletPreferencesTestUtil.addPortletPreferencesOwnedByGroup(
+		PortletPreferencesTestUtil.addGroupPortletPreferences(
 			_layout, _portlet);
 
 		long currentCount =
@@ -848,7 +848,7 @@ public class PortletPreferencesLocalServiceTest {
 				_group.getGroupId() + " ) should be 0",
 			0, initialCount);
 
-		PortletPreferencesTestUtil.addPortletPreferencesOwnedByGroup(
+		PortletPreferencesTestUtil.addGroupPortletPreferences(
 			_layout, _portlet);
 
 		long currentCount =
@@ -884,10 +884,10 @@ public class PortletPreferencesLocalServiceTest {
 				_group.getGroupId() + " ) should be 0",
 			0, initialCount);
 
-		PortletPreferencesTestUtil.addPortletPreferencesOwnedByGroup(
+		PortletPreferencesTestUtil.addGroupPortletPreferences(
 			_layout, _portlet);
 
-		PortletPreferencesTestUtil.addPortletPreferencesOwnedByGroup(
+		PortletPreferencesTestUtil.addGroupPortletPreferences(
 			layout2, portletGroup2);
 
 		long currentCount =
@@ -910,13 +910,13 @@ public class PortletPreferencesLocalServiceTest {
 			PortletPreferencesLocalServiceUtil.getPortletPreferencesCount(
 				PortletKeys.PREFS_OWNER_TYPE_LAYOUT, _portlet.getPortletId());
 
-		PortletPreferencesTestUtil.addPortletPreferencesOwnedByLayout(
+		PortletPreferencesTestUtil.addLayoutPortletPreferences(
 			_layout, _portlet);
 
-		PortletPreferencesTestUtil.addPortletPreferencesOwnedByLayout(
+		PortletPreferencesTestUtil.addLayoutPortletPreferences(
 			layout2, _portlet);
 
-		PortletPreferencesTestUtil.addPortletPreferencesOwnedByGroup(
+		PortletPreferencesTestUtil.addGroupPortletPreferences(
 			_layout, _portlet);
 
 		long currentCount =
@@ -937,10 +937,10 @@ public class PortletPreferencesLocalServiceTest {
 
 		Layout layout2 = LayoutTestUtil.addLayout(group2);
 
-		PortletPreferencesTestUtil.addPortletPreferencesOwnedByLayout(
+		PortletPreferencesTestUtil.addLayoutPortletPreferences(
 			_layout, _portlet);
 
-		PortletPreferencesTestUtil.addPortletPreferencesOwnedByGroup(
+		PortletPreferencesTestUtil.addGroupPortletPreferences(
 			layout2, _portlet);
 
 		long currentCountTypeLayout =
@@ -1039,7 +1039,7 @@ public class PortletPreferencesLocalServiceTest {
 				_PREFERENCE_NAME, _PREFERENCE_VALUES_SINGLE);
 
 		PortletPreferences portletPreferences =
-			PortletPreferencesTestUtil.addPortletPreferencesOwnedByLayout(
+			PortletPreferencesTestUtil.addLayoutPortletPreferences(
 				_layout, _portlet, preferencesAsXML);
 
 		javax.portlet.PortletPreferences initialPortletPreferences =
@@ -1072,7 +1072,7 @@ public class PortletPreferencesLocalServiceTest {
 			PortletPreferencesTestUtil.getPreferencesAsXMLString(
 				_PREFERENCE_NAME, _PREFERENCE_VALUES_SINGLE);
 
-		PortletPreferencesTestUtil.addPortletPreferencesOwnedByLayout(
+		PortletPreferencesTestUtil.addLayoutPortletPreferences(
 			_layout, _portlet, preferencesAsXML);
 
 		String multiplePreferencesAsXML =
@@ -1105,7 +1105,7 @@ public class PortletPreferencesLocalServiceTest {
 			PortletPreferencesTestUtil.getPreferencesAsXMLString(
 				_PREFERENCE_NAME, _PREFERENCE_VALUES_SINGLE);
 
-		PortletPreferencesTestUtil.addPortletPreferencesOwnedByLayout(
+		PortletPreferencesTestUtil.addLayoutPortletPreferences(
 			_layout, _portlet, preferencesAsXML);
 
 		String multiplePreferencesAsXML =
