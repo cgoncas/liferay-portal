@@ -792,6 +792,9 @@ public class SeleniumBuilderFileUtil {
 			else if (elementName.equals("property")) {
 				validatePropertyElement(fileName, element);
 			}
+			else if (elementName.equals("take-screenshot")) {
+				validateSimpleElement(fileName, element, new String[0]);
+			}
 			else if (elementName.equals("var")) {
 				validateVarElement(fileName, element);
 			}
@@ -1305,7 +1308,7 @@ public class SeleniumBuilderFileUtil {
 					fileName, element,
 					new String[] {
 						"description", "echo", "execute", "fail", "for", "if",
-						"var", "while",
+						"take-screenshot", "var", "while",
 					},
 					new String[] {"action", "macro"}, new String[] {"var"},
 					new String[] {
@@ -1618,7 +1621,7 @@ public class SeleniumBuilderFileUtil {
 					fileName, element,
 					new String[] {
 						"description", "echo", "execute", "fail", "for", "if",
-						"property", "var", "while"
+						"property", "take-screenshot", "var", "while"
 					},
 					new String[] {"action", "macro", "test-case"},
 					new String[] {"var"},
@@ -1647,8 +1650,8 @@ public class SeleniumBuilderFileUtil {
 				validateBlockElement(
 					fileName, element,
 					new String[] {
-						"description", "echo", "execute", "fail", "if", "var",
-						"while"
+						"description", "echo", "execute", "fail", "if",
+						"take-screenshot", "var", "while"
 					},
 					new String[] {"action", "macro", "test-case"},
 					new String[] {"var"},
@@ -1811,10 +1814,11 @@ public class SeleniumBuilderFileUtil {
 		});
 	private static List<String> _componentNames = ListUtil.fromArray(
 		new String[] {
-			"marketplace", "portal-administration", "portal-apis",
-			"portal-application-standards", "portal-authentication",
-			"portal-business-productivity", "portal-calendar",
-			"portal-collaboration", "portal-configuration", "portal-deployment",
+			"marketplace", "marketplace-known-issues", "portal-administration",
+			"portal-apis", "portal-application-standards",
+			"portal-authentication", "portal-business-productivity",
+			"portal-calendar", "portal-collaboration", "portal-configuration",
+			"portal-deployment", "portal-known-issues",
 			"portal-document-management", "portal-frameworks",
 			"portal-infrastructure", "portal-integrations", "portal-legacy",
 			"portal-opensocial", "portal-operations", "portal-permissions",
@@ -1825,8 +1829,9 @@ public class SeleniumBuilderFileUtil {
 			"portal-user-interface", "portal-util-misc", "portal-wcm",
 			"portal-web-forms-and-data-lists", "portal-workflow",
 			"social-office-administration", "social-office-dashboard",
-			"social-office-environment", "social-office-profile",
-			"social-office-site", "social-office-user-bar"
+			"social-office-environment", "social-office-known-issues",
+			"social-office-profile", "social-office-site",
+			"social-office-user-bar"
 		});
 	private static List<String> _methodNames = ListUtil.fromArray(
 		new String[] {
@@ -1838,7 +1843,8 @@ public class SeleniumBuilderFileUtil {
 			"and", "case", "command", "condition", "contains", "default",
 			"definition", "description", "echo", "else", "elseif", "equals",
 			"execute", "fail", "for", "if", "isset", "not", "or", "property",
-			"set-up", "td", "tear-down", "then", "tr", "while", "var"
+			"set-up", "take-screenshot", "td", "tear-down", "then", "tr",
+			"while", "var"
 		});
 
 	private String _baseDir;

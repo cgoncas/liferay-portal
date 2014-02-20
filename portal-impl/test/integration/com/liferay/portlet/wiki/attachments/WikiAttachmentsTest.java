@@ -19,7 +19,6 @@ import com.liferay.portal.kernel.repository.model.FileEntry;
 import com.liferay.portal.kernel.test.ExecutionTestListeners;
 import com.liferay.portal.kernel.transaction.Transactional;
 import com.liferay.portal.model.Group;
-import com.liferay.portal.service.GroupLocalServiceUtil;
 import com.liferay.portal.service.ServiceTestUtil;
 import com.liferay.portal.test.LiferayIntegrationJUnitTestRunner;
 import com.liferay.portal.test.MainServletExecutionTestListener;
@@ -53,6 +52,7 @@ import org.junit.runner.RunWith;
 		TransactionalExecutionTestListener.class
 	})
 @RunWith(LiferayIntegrationJUnitTestRunner.class)
+@Transactional
 public class WikiAttachmentsTest {
 
 	@Before
@@ -64,13 +64,11 @@ public class WikiAttachmentsTest {
 
 	@After
 	public void tearDown() {
-		_group = null;
 		_node = null;
 		_page = null;
 	}
 
 	@Test
-	@Transactional
 	public void testDeleteAttachmentsWhenDeletingWikiNode() throws Exception {
 		int initialFileEntriesCount =
 			DLFileEntryLocalServiceUtil.getFileEntriesCount();
@@ -89,7 +87,6 @@ public class WikiAttachmentsTest {
 	}
 
 	@Test
-	@Transactional
 	public void testDeleteAttachmentsWhenDeletingWikiPage() throws Exception {
 		int initialFileEntriesCount =
 			DLFileEntryLocalServiceUtil.getFileEntriesCount();
@@ -109,7 +106,6 @@ public class WikiAttachmentsTest {
 	}
 
 	@Test
-	@Transactional
 	public void testFoldersCountWhenAddingAttachmentsToSameWikiPage()
 		throws Exception {
 
@@ -129,7 +125,6 @@ public class WikiAttachmentsTest {
 	}
 
 	@Test
-	@Transactional
 	public void testFoldersCountWhenAddingWikiNode() throws Exception {
 		int initialFoldersCount = DLFolderLocalServiceUtil.getDLFoldersCount();
 
@@ -140,7 +135,6 @@ public class WikiAttachmentsTest {
 	}
 
 	@Test
-	@Transactional
 	public void testFoldersCountWhenAddingWikiPage() throws Exception {
 		int initialFoldersCount = DLFolderLocalServiceUtil.getDLFoldersCount();
 
@@ -151,7 +145,6 @@ public class WikiAttachmentsTest {
 	}
 
 	@Test
-	@Transactional
 	public void testFoldersCountWhenAddingWikiPageAttachment()
 		throws Exception {
 
@@ -165,7 +158,6 @@ public class WikiAttachmentsTest {
 	}
 
 	@Test
-	@Transactional
 	public void testFoldersCountWhenAddingWikiPageAttachments()
 		throws Exception {
 
@@ -208,7 +200,6 @@ public class WikiAttachmentsTest {
 	}
 
 	@Test
-	@Transactional
 	public void testFoldersCountWhenDeletingWikiNodeWithAttachments()
 		throws Exception {
 
@@ -228,7 +219,6 @@ public class WikiAttachmentsTest {
 	}
 
 	@Test
-	@Transactional
 	public void testFoldersCountWhenDeletingWikiNodeWithoutAttachments()
 		throws Exception {
 
@@ -246,7 +236,6 @@ public class WikiAttachmentsTest {
 	}
 
 	@Test
-	@Transactional
 	public void testFoldersCountWhenDeletingWikiPageWithAttachments()
 		throws Exception {
 
@@ -267,7 +256,6 @@ public class WikiAttachmentsTest {
 	}
 
 	@Test
-	@Transactional
 	public void testFoldersCountWhenDeletingWikiPageWithoutAttachments()
 		throws Exception {
 
@@ -290,8 +278,6 @@ public class WikiAttachmentsTest {
 		addWikiPage();
 
 		_trashWikiAttachments(false);
-
-		GroupLocalServiceUtil.deleteGroup(_group);
 	}
 
 	@Test
@@ -299,8 +285,6 @@ public class WikiAttachmentsTest {
 		addWikiPage();
 
 		_trashWikiAttachments(true);
-
-		GroupLocalServiceUtil.deleteGroup(_group);
 	}
 
 	protected void addWikiNode() throws Exception {

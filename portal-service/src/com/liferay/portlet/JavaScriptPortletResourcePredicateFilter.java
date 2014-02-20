@@ -12,30 +12,26 @@
  * details.
  */
 
-package com.liferay.portal.kernel.increment;
+package com.liferay.portlet;
 
-import com.liferay.portal.kernel.lar.ExportImportThreadLocal;
-import com.liferay.portal.kernel.util.AutoResetThreadLocal;
+import com.liferay.portal.kernel.util.PredicateFilter;
+import com.liferay.portal.theme.ThemeDisplay;
 
 /**
- * @author Daniel Kocsis
+ * @author Carlos Sierra Andrés
  */
-public class BufferedIncrementThreadLocal {
+public class JavaScriptPortletResourcePredicateFilter
+	implements PredicateFilter<String> {
 
-	public static boolean isEnabled() {
-		if (ExportImportThreadLocal.isImportInProcess()) {
-			return false;
-		}
-
-		return _enabled.get();
+	public JavaScriptPortletResourcePredicateFilter(ThemeDisplay themeDisplay) {
+		_themeDisplay = themeDisplay;
 	}
 
-	public static void setEnabled(boolean enabled) {
-		_enabled.set(enabled);
+	@Override
+	public boolean filter(String resource) {
+		return !_themeDisplay.isIncludedJs(resource);
 	}
 
-	private static ThreadLocal<Boolean> _enabled =
-		new AutoResetThreadLocal<Boolean>(
-			BufferedIncrementThreadLocal.class + "._enabled", true);
+	private ThemeDisplay _themeDisplay;
 
 }

@@ -14,9 +14,6 @@
 
 package com.liferay.portal.tools.sourceformatter;
 
-import com.liferay.portal.kernel.util.StringPool;
-import com.liferay.portal.kernel.util.StringUtil;
-
 import java.io.File;
 
 import java.util.List;
@@ -46,16 +43,7 @@ public class TLDSourceProcessor extends BaseSourceProcessor {
 
 		String newContent = trimContent(content, false);
 
-		if (isAutoFix() && (newContent != null) &&
-			!content.equals(newContent)) {
-
-			fileUtil.write(file, newContent);
-
-			fileName = StringUtil.replace(
-				fileName, StringPool.BACK_SLASH, StringPool.SLASH);
-
-			sourceFormatterHelper.printError(fileName, file);
-		}
+		compareAndAutoFixContent(file, fileName, content, newContent);
 
 		return newContent;
 	}

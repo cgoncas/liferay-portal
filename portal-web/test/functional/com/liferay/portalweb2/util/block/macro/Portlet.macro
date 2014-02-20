@@ -95,6 +95,8 @@
 	</command>
 
 	<command name="addPGCmd">
+		<description message="Add a ${portletName} portlet." />
+
 		<if>
 			<equals arg1="${portletName}" arg2="Where are the Liferay members?" />
 			<then>
@@ -171,8 +173,6 @@
 	</command>
 
 	<command name="gotoPortletOptions">
-		<execute action="BasePortlet#assertClick" locator-key1="OPTIONS_ICON" value1="Options" />
-
 		<if>
 			<isset var="portletName" />
 			<then>
