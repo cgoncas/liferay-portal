@@ -975,7 +975,8 @@ public class PortletPreferencesLocalServiceTest {
 				_portlet.getPortletId());
 
 		javax.portlet.PortletPreferences jxPortletPreferences =
-			mockPortletPreferencesLocalServiceImpl.getStrictPreferences(portletPreferencesIds);
+			mockPortletPreferencesLocalServiceImpl.getStrictPreferences(
+				portletPreferencesIds);
 
 		assertStrictPortletPreferences(jxPortletPreferences);
 	}
