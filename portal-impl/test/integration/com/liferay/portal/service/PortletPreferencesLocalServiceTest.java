@@ -1004,21 +1004,21 @@ public class PortletPreferencesLocalServiceTest {
 
 	@Test
 	public void testUpdatePreferences() throws Exception {
-		String portletPreferencesXML =
+		String singleValuePortletPreferencesXML =
 			PortletPreferencesTestUtil.getPortletPreferencesXML(
 				_NAME, _SINGLE_VALUE);
 
 		PortletPreferencesTestUtil.addLayoutPortletPreferences(
-			_layout, _portlet, portletPreferencesXML);
+			_layout, _portlet, singleValuePortletPreferencesXML);
 
-		String multiplePreferencesAsXML =
+		String multipleValuesPortletPreferencesAsXML =
 			PortletPreferencesTestUtil.getPortletPreferencesXML(
 				_NAME, _MULTIPLE_VALUES);
 
 		PortletPreferencesLocalServiceUtil.updatePreferences(
 			PortletKeys.PREFS_OWNER_ID_DEFAULT,
 			PortletKeys.PREFS_OWNER_TYPE_LAYOUT, _layout.getPlid(),
-			_portlet.getPortletId(), multiplePreferencesAsXML);
+			_portlet.getPortletId(), multipleValuesPortletPreferencesAsXML);
 
 		javax.portlet.PortletPreferences jxPortletPreferences =
 			PortletPreferencesLocalServiceUtil.getPreferences(
