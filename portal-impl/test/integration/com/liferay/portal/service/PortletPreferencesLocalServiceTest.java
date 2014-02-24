@@ -947,14 +947,14 @@ public class PortletPreferencesLocalServiceTest {
 		MockStrictPortletPreferencesLocalServiceImpl mockService =
 			getMockStrictPortletPreferencesService(true);
 
-		javax.portlet.PortletPreferences portletPreferences =
+		javax.portlet.PortletPreferences jxPortletPreferences =
 			mockService.getStrictPreferences(
 				TestPropsValues.getCompanyId(),
 				PortletKeys.PREFS_OWNER_ID_DEFAULT,
 				PortletKeys.PREFS_OWNER_TYPE_LAYOUT, _layout.getPlid(),
 				_portlet.getPortletId());
 
-		assertStrictPortletPreferences(portletPreferences);
+		assertStrictPortletPreferences(jxPortletPreferences);
 	}
 
 	@Test
@@ -988,14 +988,14 @@ public class PortletPreferencesLocalServiceTest {
 			PortletPreferencesTestUtil.getPortletPreferencesXML(
 				_NAME, _SINGLE_VALUE);
 
-		javax.portlet.PortletPreferences portletPreferences =
+		javax.portlet.PortletPreferences jxPortletPreferences =
 			mockService.getStrictPreferences(
 				TestPropsValues.getCompanyId(),
 				PortletKeys.PREFS_OWNER_ID_DEFAULT,
 				PortletKeys.PREFS_OWNER_TYPE_LAYOUT, _layout.getPlid(),
 				_portlet.getPortletId(), portletPreferencesXML);
 
-		assertStrictPortletPreferences(portletPreferences);
+		assertStrictPortletPreferences(jxPortletPreferences);
 	}
 
 	@Test
@@ -1118,13 +1118,13 @@ public class PortletPreferencesLocalServiceTest {
 	}
 
 	protected void assertStrictPortletPreferences(
-		javax.portlet.PortletPreferences portletPreferences) {
+		javax.portlet.PortletPreferences jxPortletPreferences) {
 
-		StrictPortletPreferencesImpl strictPortletPreferences =
-			(StrictPortletPreferencesImpl)portletPreferences;
+		StrictPortletPreferencesImpl strictPortletPreferencesImpl =
+			(StrictPortletPreferencesImpl)jxPortletPreferences;
 
 		Map<String, String[]> strictPortletPreferencesMap =
-			strictPortletPreferences.getMap();
+			strictPortletPreferencesImpl.getMap();
 
 		Assert.assertTrue(strictPortletPreferencesMap.isEmpty());
 	}
