@@ -880,12 +880,12 @@ public class PortletPreferencesLocalServiceTest {
 	public void testGetPreferencesByOwnerAndPlidAndPortletIdNotAutoAdded()
 		throws Exception {
 
-		String portletPreferencesXMLSingle =
+		String portletPreferencesXML =
 			PortletPreferencesTestUtil.getPortletPreferencesXML(
 				_NAME, _SINGLE_VALUE);
 
 		PortletPreferencesTestUtil.addLayoutPortletPreferences(
-			_layout, _portlet, portletPreferencesXMLSingle);
+			_layout, _portlet, portletPreferencesXML);
 
 		String portletPreferencesXMLMultiple =
 			PortletPreferencesTestUtil.getPortletPreferencesXML(
