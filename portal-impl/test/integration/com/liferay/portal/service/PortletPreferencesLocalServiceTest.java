@@ -753,11 +753,10 @@ public class PortletPreferencesLocalServiceTest {
 		PortletPreferencesTestUtil.addGroupPortletPreferences(
 			_layout, _portlet);
 
-		long actualCount =
+		Assert.assertEquals(
+			initialCount + 2,
 			PortletPreferencesLocalServiceUtil.getPortletPreferencesCount(
-				PortletKeys.PREFS_OWNER_TYPE_LAYOUT, _portlet.getPortletId());
-
-		Assert.assertEquals(initialCount + 2, actualCount);
+				PortletKeys.PREFS_OWNER_TYPE_LAYOUT, _portlet.getPortletId()));
 	}
 
 	@Test
