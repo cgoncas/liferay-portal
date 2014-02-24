@@ -1192,7 +1192,7 @@ public class PortletPreferencesLocalServiceTest {
 		extends PortletPreferencesLocalServiceImpl {
 
 		public MockStrictPortletPreferencesLocalServiceImpl(boolean strict) {
-			this.strict = strict;
+			_strict = strict;
 		}
 
 		@Override
@@ -1202,7 +1202,7 @@ public class PortletPreferencesLocalServiceTest {
 			throws SystemException {
 
 			return getPreferences(
-				companyId, ownerId, ownerType, plid, portletId, null, strict);
+				companyId, ownerId, ownerType, plid, portletId, null, _strict);
 		}
 
 		protected javax.portlet.PortletPreferences getStrictPreferences(
@@ -1212,10 +1212,10 @@ public class PortletPreferencesLocalServiceTest {
 
 			return getPreferences(
 				companyId, ownerId, ownerType, plid, portletId,
-				defaultPreferences, strict);
+				defaultPreferences, _strict);
 		}
 
-		private boolean strict;
+		private boolean _strict;
 
 	}
 
