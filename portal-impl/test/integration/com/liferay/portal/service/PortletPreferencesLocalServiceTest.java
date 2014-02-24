@@ -1136,9 +1136,6 @@ public class PortletPreferencesLocalServiceTest {
 			mockPortletPreferencesLocalServiceImpl =
 				new MockPortletPreferencesLocalServiceImpl(strict);
 
-		mockPortletPreferencesLocalServiceImpl.setPortletPreferencesPersistence(
-			(PortletPreferencesPersistence)PortalBeanLocatorUtil.locate(
-				PortletPreferencesPersistence.class.getName()));
 		mockPortletPreferencesLocalServiceImpl.setPortletLocalService(
 			(PortletLocalService)PortalBeanLocatorUtil.locate(
 				PortletLocalService.class.getName()));
@@ -1146,6 +1143,9 @@ public class PortletPreferencesLocalServiceTest {
 			setPortletPreferencesLocalService(
 				(PortletPreferencesLocalService)PortalBeanLocatorUtil.locate(
 					PortletPreferencesLocalService.class.getName()));
+		mockPortletPreferencesLocalServiceImpl.setPortletPreferencesPersistence(
+			(PortletPreferencesPersistence)PortalBeanLocatorUtil.locate(
+				PortletPreferencesPersistence.class.getName()));
 
 		return mockPortletPreferencesLocalServiceImpl;
 	}
