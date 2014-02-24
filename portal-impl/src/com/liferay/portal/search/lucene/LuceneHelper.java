@@ -103,6 +103,8 @@ public interface LuceneHelper {
 
 	public IndexAccessor getIndexAccessor(long companyId);
 
+	public IndexSearcher getIndexSearcher(long companyId) throws IOException;
+
 	public long getLastGeneration(long companyId);
 
 	public InputStream getLoadIndexesInputStreamFromCluster(
@@ -110,8 +112,6 @@ public interface LuceneHelper {
 		throws SystemException;
 
 	public Set<String> getQueryTerms(Query query);
-
-	public IndexSearcher getIndexSearcher(long companyId) throws IOException;
 
 	/**
 	 * @deprecated As of 7.0.0, replaced by {@link #getIndexSearcher(long)}
