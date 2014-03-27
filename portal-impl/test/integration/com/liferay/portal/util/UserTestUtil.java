@@ -28,7 +28,9 @@ import com.liferay.portal.service.ServiceTestUtil;
 import com.liferay.portal.service.UserGroupRoleLocalServiceUtil;
 import com.liferay.portal.service.UserLocalServiceUtil;
 
+import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.List;
 import java.util.Locale;
 
 /**
@@ -160,12 +162,16 @@ public class UserTestUtil {
 		long[] userGroupIds = null;
 		boolean sendMail = false;
 
-		return UserLocalServiceUtil.addUser(
+		user = UserLocalServiceUtil.addUser(
 			userId, companyId, autoPassword, password1, password2,
 			autoScreenName, screenName, emailAddress, facebookId, openId,
 			locale, firstName, middleName, lastName, prefixId, suffixId, male,
 			birthdayMonth, birthdayDay, birthdayYear, jobTitle, groupIds,
 			organizationIds, roleIds, userGroupIds, sendMail, serviceContext);
+
+		_testUsers.add(user);
+
+		return user;
 	}
 
 	public static User addUser(
@@ -208,5 +214,13 @@ public class UserTestUtil {
 			return addUser(screenName, false, new long[] {groupId});
 		}
 	}
+
+	public static void deleteTestUsers() throws Exception {
+		for (User user : _testUsers) {
+			UserLocalServiceUtil.deleteUser(user);
+		}
+	}
+
+	private static List<User> _testUsers = new ArrayList<User>();
 
 }

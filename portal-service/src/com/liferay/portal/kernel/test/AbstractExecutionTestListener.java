@@ -36,4 +36,7 @@ public abstract class AbstractExecutionTestListener
 	public void runBeforeTest(TestContext testContext) {
 	}
 
+	protected void deleteTestUsers() throws Exception {
+	}
+
 }
