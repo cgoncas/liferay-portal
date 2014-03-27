@@ -21,6 +21,7 @@ import com.liferay.portal.kernel.test.TestContext;
 import com.liferay.portal.search.lucene.LuceneHelperUtil;
 import com.liferay.portal.service.ServiceTestUtil;
 import com.liferay.portal.util.TestPropsValues;
+import com.liferay.portal.util.UserTestUtil;
 
 /**
  * @author Miguel Pastor
@@ -33,6 +34,8 @@ public class EnvironmentExecutionTestListener
 		ServiceTestUtil.destroyServices();
 
 		try {
+			deleteTestUsers();
+
 			LuceneHelperUtil.delete(TestPropsValues.getCompanyId());
 		}
 		catch (Exception e) {
@@ -44,6 +47,11 @@ public class EnvironmentExecutionTestListener
 	public void runBeforeClass(TestContext testContext) {
 		ServiceTestUtil.initServices();
 		ServiceTestUtil.initPermissions();
+	}
+
+	@Override
+	protected void deleteTestUsers() throws Exception {
+		UserTestUtil.deleteTestUsers();
 	}
 
 	private static Log _log = LogFactoryUtil.getLog(
