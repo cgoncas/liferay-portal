@@ -29,6 +29,7 @@ import com.liferay.portal.service.UserGroupRoleLocalServiceUtil;
 import com.liferay.portal.service.UserLocalServiceUtil;
 
 import java.util.Calendar;
+import java.util.List;
 import java.util.Locale;
 
 /**
@@ -206,6 +207,18 @@ public class UserTestUtil {
 		else {
 			return addUser(screenName, false, new long[] {groupId});
 		}
+	}
+
+	public static void deleteTestUsers(List<User> testUsers) throws Exception {
+		if (testUsers == null) {
+			return;
+		}
+
+		for (User testUser : testUsers) {
+			UserLocalServiceUtil.deleteUser(testUser);
+		}
+
+		testUsers.clear();
 	}
 
 }
