@@ -75,19 +75,19 @@ public class CompanyLocalServiceTest {
 
 	@Before
 	public void setUp() {
+		_companyId = CompanyThreadLocal.getCompanyId();
+
+		CompanyThreadLocal.setCompanyId(PortalInstances.getDefaultCompanyId());
+
 		File file = new File("portal-web/docroot");
 
 		_mockServletContext = new MockServletContext(
 			"file:" + file.getAbsolutePath(), new FileSystemResourceLoader());
-
-		_threadLocalCompanyId = CompanyThreadLocal.getCompanyId();
-
-		CompanyThreadLocal.setCompanyId(PortalInstances.getDefaultCompanyId());
 	}
 
 	@After
 	public void tearDown() {
-		CompanyThreadLocal.setCompanyId(_threadLocalCompanyId);
+		CompanyThreadLocal.setCompanyId(_companyId);
 	}
 
 	@Test
@@ -465,6 +465,6 @@ public class CompanyLocalServiceTest {
 	}
 
 	private MockServletContext _mockServletContext;
-	private long _threadLocalCompanyId;
+	private long _companyId;
 
 }
