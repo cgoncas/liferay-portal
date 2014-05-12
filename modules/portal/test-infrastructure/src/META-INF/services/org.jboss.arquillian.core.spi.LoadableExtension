@@ -1,0 +1,2 @@
+com.liferay.arquillian.LiferayContainerExtension
+com.liferay.arquillian.LiferayPersistenceExtension
