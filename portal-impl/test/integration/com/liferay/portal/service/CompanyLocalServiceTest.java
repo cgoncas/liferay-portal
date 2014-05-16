@@ -466,5 +466,6 @@ public class CompanyLocalServiceTest {
 
 	private long _companyId;
 	private MockServletContext _mockServletContext;
+	private long _companyId;
 
 }
