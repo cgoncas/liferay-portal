@@ -154,7 +154,8 @@ public class ServletPathsTest {
 
 		servletContext = _prepareServletContext(servletContext);
 
-		ServletPaths servletPaths = new ServletPaths(servletContext, "test");
+		ServletPaths servletPaths = new ServletPaths(
+			servletContext, "test-lib-folder");
 
 		Assert.assertNull(servletPaths.getContent());
 

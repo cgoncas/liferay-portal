@@ -51,6 +51,10 @@
 		<fileset dir="${project.dir}/lib/portal" includes="*.jar" />
 	</path>
 
+	<path id="lib-test.classpath">
+		<fileset dir="${project.dir}/lib/test" includes="*.jar" />
+	</path>
+
 	<path id="project.classpath">
 		<pathelement path="${classpath}" />
 		<path refid="lib.classpath" />
@@ -62,7 +66,8 @@
 		<pathelement path="${test.additional.classpath}" />
 		<fileset dir="${project.dir}/lib/development" includes="*.jar" excludes="jalopy.jar,jetty*.jar,tomcat*.jar" />
 		<fileset dir="${project.dir}/lib/global" includes="*.jar" />
-		<fileset dir="${project.dir}/lib/portal" includes="*.jar" excludes="ant.jar" />
+		<fileset dir="${project.dir}/lib/portal" includes="*.jar" excludes="ant.jar, groovy*.jar" />
+		<fileset dir="${project.dir}/lib/test" includes="*.jar" />
 	</path>
 
 	<path id="web.classpath">
@@ -84,6 +89,8 @@
 	<taskdef classname="com.liferay.ant.bnd.BaselineJarTask" classpathref="lib.classpath" name="baseline-jar" />
 	<taskdef classname="com.tonicsystems.jarjar.JarJarTask" classpath="${project.dir}/lib/development/jarjar.jar" name="jarjar" />
 	<taskdef classname="com.oopsconsultancy.xmltask.ant.XmlTask" classpath="${project.dir}/lib/development/xmltask.jar" name="xmltask" />
+
+	<taskdef classname="org.codehaus.groovy.ant.Groovyc" classpathref="lib-test.classpath" name="groovyc" />
 
 	<property location="${project.dir}" name="project.location.absolute.native" />
 
@@ -1094,6 +1101,13 @@ rerun your task.
 					nowarn="${javac.nowarn}"
 					srcdir="test/${test.type}"
 				/>
+
+				<groovyc
+					srcdir="test/${test.type}"
+					destdir="test-classes/${test.type}"
+					listfiles="true"
+					classpathref="test.classpath" />
+
 			</then>
 		</if>
 	</target>
@@ -1729,4 +1743,5 @@ rerun your task.
 			<param name="test.type" value="unit" />
 		</antcall>
 	</target>
+
 </project>
