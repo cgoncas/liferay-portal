@@ -23,9 +23,8 @@ import com.liferay.portal.kernel.process.ProcessConfig.Builder;
 import com.liferay.portal.kernel.process.ProcessException;
 import com.liferay.portal.kernel.process.ProcessExecutor;
 import com.liferay.portal.kernel.scheduler.SchedulerEngineHelperUtil;
-import com.liferay.portal.kernel.test.ExecutionTestListeners;
 import com.liferay.portal.kernel.util.StringUtil;
-import com.liferay.portal.test.listeners.MainServletExecutionTestListener;
+import com.liferay.portal.service.ServiceTestUtil;
 import com.liferay.portal.test.runners.LiferayIntegrationJUnitTestRunner;
 import com.liferay.portal.util.InitUtil;
 import com.liferay.portal.util.PropsUtil;
@@ -46,12 +45,14 @@ import org.junit.runner.RunWith;
 /**
  * @author Shuyang Zhou
  */
-@ExecutionTestListeners(listeners = {MainServletExecutionTestListener.class})
 @RunWith(LiferayIntegrationJUnitTestRunner.class)
 public class CounterLocalServiceTest {
 
 	@BeforeClass
 	public static void setUpClass() throws Exception {
+
+		ServiceTestUtil.initServices();
+
 		_COUNTER_NAME = StringUtil.randomString();
 
 		CounterLocalServiceUtil.reset(_COUNTER_NAME);
@@ -134,8 +135,6 @@ public class CounterLocalServiceTest {
 			System.setProperty("external-properties", "portal-test.properties");
 
 			PropsUtil.set(PropsValues.COUNTER_INCREMENT + _COUNTER_NAME, "1");
-
-			InitUtil.initWithSpringAndModuleFramework();
 
 			List<Long> ids = new ArrayList<Long>();
 
