@@ -26,7 +26,8 @@ import com.liferay.portal.model.RoleConstants;
 import com.liferay.portal.model.Team;
 import com.liferay.portal.model.User;
 import com.liferay.portal.test.listeners.MainServletExecutionTestListener;
-import com.liferay.portal.test.listeners.ResetDatabaseExecutionTestListener;
+import com.liferay.portal.test.rules.ResetDataBasePerClassTestRule;
+import com.liferay.portal.test.rules.ResetDataBasePerMethodTestRule;
 import com.liferay.portal.test.runners.LiferayIntegrationJUnitTestRunner;
 import com.liferay.portal.util.comparator.RoleRoleIdComparator;
 import com.liferay.portal.util.test.GroupTestUtil;
@@ -41,6 +42,8 @@ import java.util.List;
 import java.util.Map;
 
 import org.junit.BeforeClass;
+import org.junit.ClassRule;
+import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
@@ -51,11 +54,14 @@ import org.testng.Assert;
  */
 @ExecutionTestListeners(
 	listeners = {
-		MainServletExecutionTestListener.class,
-		ResetDatabaseExecutionTestListener.class
+		MainServletExecutionTestListener.class
 	})
 @RunWith(LiferayIntegrationJUnitTestRunner.class)
 public class RoleLocalServiceTest {
+
+	@ClassRule
+	public static ResetDataBasePerClassTestRule resetDataBasePerClassTestRule =
+		new ResetDataBasePerClassTestRule();
 
 	@BeforeClass
 	public static void setUpClass() {
@@ -184,6 +190,10 @@ public class RoleLocalServiceTest {
 
 		testGetTeamRoleMap(teamRoleMap, team, true);
 	}
+
+	@Rule
+	public ResetDataBasePerMethodTestRule resetDataBasePerMethodTestRule =
+		new ResetDataBasePerMethodTestRule();
 
 	protected Object[] getOrganizationAndTeam() throws Exception {
 		User user = TestPropsValues.getUser();
