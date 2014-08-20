@@ -178,7 +178,7 @@ public class FacetSearchTest {
 	}
 
 	@Test
-	public void testSearchUserSummaryFields() throws Exception {
+	public void testSearchUser() throws Exception {
 		SearchContext searchContext = createSearchContext();
 
 		searchContext.setAttribute("entryClassName", User.class.getName());
