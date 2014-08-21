@@ -29,6 +29,7 @@ import com.liferay.portal.kernel.util.FileUtil;
 import com.liferay.portal.kernel.util.PropsKeys;
 import com.liferay.portal.kernel.util.SystemProperties;
 import com.liferay.portal.log.Log4JLoggerTestUtil;
+import com.liferay.portal.search.SearchEngineInitializer;
 import com.liferay.portal.test.jdbc.ResetDatabaseUtil;
 import com.liferay.portal.upgrade.util.Table;
 import com.liferay.portal.util.PortalInstances;
@@ -76,7 +77,7 @@ public class ResetDatabaseExecutionTestListener
 		try {
 			if (ResetDatabaseUtil.initialize()) {
 				backupDLStores(true);
-				backupSearchIndices(true);
+				//backupSearchIndices(true);
 			}
 			else {
 				restoreDLStores(true);
@@ -96,7 +97,7 @@ public class ResetDatabaseExecutionTestListener
 		ResetDatabaseUtil.startRecording();
 
 		backupDLStores(false);
-		backupSearchIndices(false);
+		//backupSearchIndices(false);
 	}
 
 	protected void backupDLStores(boolean initialize) {
@@ -243,27 +244,10 @@ public class ResetDatabaseExecutionTestListener
 		}
 
 		for (Map.Entry<Long, String> entry : backupFileNames.entrySet()) {
-			String backupFileName = entry.getValue();
+			SearchEngineInitializer searchEngineInitializer =
+				new SearchEngineInitializer(entry.getKey());
 
-			try {
-				SearchEngineUtil.restore(entry.getKey(), backupFileName);
-			}
-			catch (Exception e) {
-				throw new RuntimeException(e);
-			}
-			finally {
-				if (!initialize) {
-					try {
-						SearchEngineUtil.removeBackup(
-							entry.getKey(), backupFileName);
-					}
-					catch (SearchException e) {
-						if (_log.isInfoEnabled()) {
-							_log.info("Unable to remove backup", e);
-						}
-					}
-				}
-			}
+			searchEngineInitializer.reindex();
 		}
 
 		if (!initialize) {
