@@ -117,6 +117,8 @@ public class SynchronousDestinationExecutionTestListener
 				DestinationNames.DOCUMENT_LIBRARY_SYNC_EVENT_PROCESSOR);
 			replaceDestination(DestinationNames.MAIL);
 			replaceDestination(DestinationNames.SUBSCRIPTION_SENDER);
+			replaceDestination(DestinationNames.SEARCH_READER);
+			replaceDestination(DestinationNames.SEARCH_WRITER);
 		}
 
 		public void replaceDestination(String destinationName) {
@@ -124,6 +126,8 @@ public class SynchronousDestinationExecutionTestListener
 
 			Destination destination = messageBus.getDestination(
 				destinationName);
+
+			System.out.println("DEStINATION " + destination);
 
 			if (destination instanceof BaseAsyncDestination) {
 				_asyncServiceDestinations.add(destination);
