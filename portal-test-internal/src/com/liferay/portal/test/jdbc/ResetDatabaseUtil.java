@@ -52,91 +52,7 @@ import net.sf.jsqlparser.util.TablesNamesFinder;
  */
 public class ResetDatabaseUtil {
 
-	public static synchronized boolean initialize() {
-		if (_initialized) {
-			reloadDatabase();
-
-			return false;
-		}
-
-		dumpDatabase();
-
-		_initialized = true;
-
-		return true;
-	}
-
-	public static void processSQL(Connection connection, String sql)
-		throws Exception {
-
-		if (!_recording) {
-			return;
-		}
-
-		List<String> tableNames = _getModifiedTableNames(sql);
-
-		if (tableNames == null) {
-			return;
-		}
-
-		for (String tableName : tableNames) {
-			tableName = StringUtil.toLowerCase(tableName);
-
-			Table table = _cachedTables.get(tableName);
-
-			if (table == null) {
-				_log.error(
-					"Unable to get table " + tableName + " from cache " +
-						_cachedTables.keySet());
-
-				continue;
-			}
-
-			if (_modifiedTables.putIfAbsent(tableName, table) ==
-					null) {
-
-				table.generateTempFile(connection);
-			}
-		}
-	}
-
-	public static void resetModifiedTables() {
-		_recording = false;
-
-		Connection connection = null;
-
-		try {
-			connection = DataAccess.getUpgradeOptimizedConnection();
-
-			for (Table table : _modifiedTables.values()) {
-				DB db = DBFactoryUtil.getDB();
-
-				db.runSQL(connection, table.getDeleteSQL());
-
-				table.populateTable();
-
-				String tempFileName = table.getTempFileName();
-
-				if (tempFileName != null) {
-					FileUtil.delete(tempFileName);
-				}
-			}
-		}
-		catch (Exception e) {
-			throw new RuntimeException(e);
-		}
-		finally {
-			DataAccess.cleanUp(connection);
-
-			_modifiedTables.clear();
-		}
-	}
-
-	public static void startRecording() {
-		_recording = true;
-	}
-
-	protected static void dumpDatabase() {
+	public static void dumpDatabase() {
 		Connection connection = null;
 		ResultSet tableResultSet = null;
 
@@ -197,7 +113,41 @@ public class ResetDatabaseUtil {
 		}
 	}
 
-	protected static void reloadDatabase() {
+	public static void processSQL(Connection connection, String sql)
+		throws Exception {
+
+		if (!_recording) {
+			return;
+		}
+
+		List<String> tableNames = _getModifiedTableNames(sql);
+
+		if (tableNames == null) {
+			return;
+		}
+
+		for (String tableName : tableNames) {
+			tableName = StringUtil.toLowerCase(tableName);
+
+			Table table = _cachedTables.get(tableName);
+
+			if (table == null) {
+				_log.error(
+					"Unable to get table " + tableName + " from cache " +
+						_cachedTables.keySet());
+
+				continue;
+			}
+
+			if (_modifiedTables.putIfAbsent(tableName, table) ==
+					null) {
+
+				table.generateTempFile(connection);
+			}
+		}
+	}
+
+	public static void reloadDatabase() {
 		Connection connection = null;
 
 		try {
@@ -217,6 +167,42 @@ public class ResetDatabaseUtil {
 		finally {
 			DataAccess.cleanUp(connection);
 		}
+	}
+
+	public static void resetModifiedTables() {
+		_recording = false;
+
+		Connection connection = null;
+
+		try {
+			connection = DataAccess.getUpgradeOptimizedConnection();
+
+			for (Table table : _modifiedTables.values()) {
+				DB db = DBFactoryUtil.getDB();
+
+				db.runSQL(connection, table.getDeleteSQL());
+
+				table.populateTable();
+
+				String tempFileName = table.getTempFileName();
+
+				if (tempFileName != null) {
+					FileUtil.delete(tempFileName);
+				}
+			}
+		}
+		catch (Exception e) {
+			throw new RuntimeException(e);
+		}
+		finally {
+			DataAccess.cleanUp(connection);
+
+			_modifiedTables.clear();
+		}
+	}
+
+	public static void startRecording() {
+		_recording = true;
 	}
 
 	private static List<String> _getModifiedTableNames(String sql) {
@@ -272,7 +258,6 @@ public class ResetDatabaseUtil {
 
 	private static ConcurrentMap<String, Table> _cachedTables =
 		new ConcurrentHashMap<String, Table>();
-	private static boolean _initialized;
 	private static JSqlParser _jSqlParser = new CCJSqlParserManager();
 	private static ConcurrentMap<String, Table> _modifiedTables =
 		new ConcurrentHashMap<String, Table>();
