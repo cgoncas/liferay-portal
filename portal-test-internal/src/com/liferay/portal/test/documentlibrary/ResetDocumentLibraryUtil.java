@@ -84,18 +84,14 @@ public class ResetDocumentLibraryUtil {
 			_dlStore = null;
 		}
 
-		FileUtil.deltree(PropsValues.DL_STORE_FILE_SYSTEM_ROOT_DIR);
+		moveDLStore(
+			dlStores.getDLFileSystemStoreDirName(),
+			PropsValues.DL_STORE_FILE_SYSTEM_ROOT_DIR);
 
-		FileUtil.move(
-			new File(dlStores.getDLFileSystemStoreDirName()),
-			new File(PropsValues.DL_STORE_FILE_SYSTEM_ROOT_DIR));
-
-		FileUtil.deltree(
+		moveDLStore(
+			dlStores.getDLJCRStoreDirName(),
 			PropsUtil.get(PropsKeys.JCR_JACKRABBIT_REPOSITORY_ROOT));
 
-		FileUtil.move(
-			new File(dlStores.getDLJCRStoreDirName()),
-			new File(PropsUtil.get(PropsKeys.JCR_JACKRABBIT_REPOSITORY_ROOT)));
 	}
 
 	protected void copyDLSStore(
@@ -117,6 +113,15 @@ public class ResetDocumentLibraryUtil {
 		catch (IOException ioe) {
 			throw new RuntimeException(ioe);
 		}
+	}
+
+	public void moveDLStore(
+		String originalDLStoreDirName, String targetDLStoreDirName) {
+
+		FileUtil.deltree(targetDLStoreDirName);
+
+		FileUtil.move(
+			new File(originalDLStoreDirName), new File(targetDLStoreDirName));
 	}
 
 	public class DLStores {
