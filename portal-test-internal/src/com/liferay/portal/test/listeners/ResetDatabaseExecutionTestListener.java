@@ -61,14 +61,19 @@ public class ResetDatabaseExecutionTestListener
 			Table.class.getName(), Level.WARN);
 
 		try {
-			if (ResetDatabaseUtil.initialize()) {
+			if (!_initialized) {
+				ResetDatabaseUtil.dumpDatabase();
+
 				_initDLStores = _resetDocumentLibraryUtil.backupDLStores(
 					"init", true);
 
 				_initializedIndexNames = _resetIndicesUtil.backupSearchIndices(
 					"init", true);
+
+				_initialized = true;
 			}
 			else {
+				ResetDatabaseUtil.reloadDatabase();
 				_resetDocumentLibraryUtil.restoreDLStores(_initDLStores);
 				_resetIndicesUtil.restoreSearchIndices(_initializedIndexNames);
 			}
@@ -90,6 +95,7 @@ public class ResetDatabaseExecutionTestListener
 	}
 
 	private static ResetDocumentLibraryUtil.DLStores _initDLStores;
+	private static boolean _initialized;
 	private static Map<Long, String> _initializedIndexNames =
 		new HashMap<Long, String>();
 	private static ResetDocumentLibraryUtil _resetDocumentLibraryUtil =
