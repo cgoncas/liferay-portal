@@ -34,10 +34,10 @@ public class ResetIndicesUtil {
 		return new ResetIndicesUtil();
 	}
 
-	public  Map<Long, String> backupSearchIndices(
+	public Map<Long, String> backupSearchIndices(
 		String description, boolean deleteFileShutdownHook ) {
 
-		Map<Long, String> backupFileNames = new HashMap<Long, String>() ;
+		Map<Long, String> backupFileNames = new HashMap<Long, String>();
 
 		for (long companyId : PortalInstances.getCompanyIds()) {
 			String backupName =
@@ -67,6 +67,7 @@ public class ResetIndicesUtil {
 
 	public void restoreSearchIndices(
 		Map<Long, String> backupFileNames, boolean removeBackup) {
+
 		for (Map.Entry<Long, String> entry : backupFileNames.entrySet()) {
 			String backupFileName = entry.getValue();
 
