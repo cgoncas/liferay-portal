@@ -29,6 +29,7 @@ import com.liferay.portal.kernel.util.FileUtil;
 import com.liferay.portal.kernel.util.PropsKeys;
 import com.liferay.portal.kernel.util.SystemProperties;
 import com.liferay.portal.log.Log4JLoggerTestUtil;
+import com.liferay.portal.test.file.DeleteFileShutdownHook;
 import com.liferay.portal.test.jdbc.ResetDatabaseUtil;
 import com.liferay.portal.upgrade.util.Table;
 import com.liferay.portal.util.PortalInstances;
@@ -283,41 +284,5 @@ public class ResetDatabaseExecutionTestListener
 	private String _dlJCRStoreDirName;
 	private Map<Long, String> _indexNames = new HashMap<Long, String>();
 	private Level _level;
-
-	private class DeleteFileShutdownHook extends Thread {
-
-		public DeleteFileShutdownHook(String fileName) {
-			_fileName = fileName;
-		}
-
-		@Override
-		public void run() {
-			File file = new File(_fileName);
-
-			Queue<File> queue = new LinkedList<File>();
-
-			queue.offer(file);
-
-			while ((file = queue.poll()) != null) {
-				if (file.isFile()) {
-					file.delete();
-				}
-				else if (file.isDirectory()) {
-					File[] files = file.listFiles();
-
-					if (files.length == 0) {
-						file.delete();
-					}
-					else {
-						queue.addAll(Arrays.asList(files));
-						queue.add(file);
-					}
-				}
-			}
-		}
-
-		private String _fileName;
-
-	}
 
 }
