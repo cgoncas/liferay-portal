@@ -56,34 +56,6 @@ public class ResetDatabaseExecutionTestListener
 	}
 
 	@Override
-	public void runBeforeClass(TestContext testContext) {
-		_level = Log4JLoggerTestUtil.setLoggerLevel(
-			Table.class.getName(), Level.WARN);
-
-		try {
-			if (!_initialized) {
-				ResetDatabaseUtil.dumpDatabase();
-
-				_initializedDLStores = _resetDocumentLibraryUtil.backupDLStores(
-					"init", true);
-
-				_initializedIndexNames = _resetIndicesUtil.backupSearchIndices(
-					"init", true);
-
-				_initialized = true;
-			}
-			else {
-				ResetDatabaseUtil.reloadDatabase();
-				_resetDocumentLibraryUtil.restoreDLStores(_initializedDLStores);
-				_resetIndicesUtil.restoreSearchIndices(_initializedIndexNames);
-			}
-		}
-		finally {
-			Log4JLoggerTestUtil.setLoggerLevel(Table.class.getName(), _level);
-		}
-	}
-
-	@Override
 	public void runBeforeTest(TestContext testContext) {
 		_level = Log4JLoggerTestUtil.setLoggerLevel(
 			Table.class.getName(), Level.WARN);
@@ -94,10 +66,6 @@ public class ResetDatabaseExecutionTestListener
 		_indexNames = _resetIndicesUtil.backupSearchIndices("class", false);
 	}
 
-	private static ResetDocumentLibraryUtil.DLStores _initializedDLStores;
-	private static boolean _initialized;
-	private static Map<Long, String> _initializedIndexNames =
-		new HashMap<Long, String>();
 	private static ResetDocumentLibraryUtil _resetDocumentLibraryUtil =
 		ResetDocumentLibraryUtil.getInstance();
 	private static ResetIndicesUtil _resetIndicesUtil =
