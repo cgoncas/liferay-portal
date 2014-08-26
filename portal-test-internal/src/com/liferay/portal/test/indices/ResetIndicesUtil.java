@@ -34,26 +34,20 @@ public class ResetIndicesUtil {
 		return new ResetIndicesUtil();
 	}
 
-	public void backupSearchIndices(boolean initialize) {
+	public  Map<Long, String> backupSearchIndices(
+		String description, boolean deleteFileShutdownHook ) {
+
+		Map<Long, String> backupFileNames = new HashMap<Long, String>() ;
+
 		for (long companyId : PortalInstances.getCompanyIds()) {
-			String backupName = null;
-
-			if (initialize) {
-				backupName =
-					"temp-init-search-" + companyId + "-" +
+			String backupName =
+					"temp-" + description + "-search-" + companyId + "-" +
 						System.currentTimeMillis();
-			}
-			else {
-				backupName =
-					"temp-search-" + companyId + "-" +
-						System.currentTimeMillis();
-			}
-
 			try {
 				String backupFileName = SearchEngineUtil.backup(
 					companyId, SearchEngineUtil.SYSTEM_ENGINE_ID, backupName);
 
-				if (initialize) {
+				if (deleteFileShutdownHook) {
 					Runtime runtime = Runtime.getRuntime();
 
 					runtime.addShutdownHook(
@@ -64,23 +58,15 @@ public class ResetIndicesUtil {
 				throw new RuntimeException(e);
 			}
 			finally {
-				if (initialize) {
-					_initializedIndexNames.put(companyId, backupName);
-				}
-				else {
-					_indexNames.put(companyId, backupName);
-				}
+				backupFileNames.put(companyId, backupName);
 			}
 		}
+
+		return backupFileNames;
 	}
 
-	public void restoreSearchIndices(boolean initialize) {
-		Map<Long, String> backupFileNames = _indexNames;
-
-		if (initialize) {
-			backupFileNames = _initializedIndexNames;
-		}
-
+	public void restoreSearchIndices(
+		Map<Long, String> backupFileNames, boolean removeBackup) {
 		for (Map.Entry<Long, String> entry : backupFileNames.entrySet()) {
 			String backupFileName = entry.getValue();
 
@@ -91,7 +77,7 @@ public class ResetIndicesUtil {
 				throw new RuntimeException(e);
 			}
 			finally {
-				if (!initialize) {
+				if (removeBackup) {
 					try {
 						SearchEngineUtil.removeBackup(
 							entry.getKey(), backupFileName);
@@ -105,16 +91,11 @@ public class ResetIndicesUtil {
 			}
 		}
 
-		if (!initialize) {
+		if (removeBackup) {
 			backupFileNames.clear();
 		}
 	}
 
 	private static Log _log = LogFactoryUtil.getLog(ResetIndicesUtil.class);
-
-	private static Map<Long, String> _initializedIndexNames =
-		new HashMap<Long, String>();
-
-	private Map<Long, String> _indexNames = new HashMap<Long, String>();
 
 }
