@@ -41,7 +41,6 @@ import com.liferay.portal.servlet.filters.cache.CacheUtil;
 import com.liferay.portal.test.Sync;
 import com.liferay.portal.test.SynchronousDestinationExecutionTestListener;
 import com.liferay.portal.test.listeners.MainServletExecutionTestListener;
-import com.liferay.portal.test.rules.ResetDataBasePerClassTestRule;
 import com.liferay.portal.test.rules.ResetDataBasePerMethodTestRule;
 import com.liferay.portal.test.runners.LiferayIntegrationJUnitTestRunner;
 import com.liferay.portal.util.PortletKeys;
@@ -64,7 +63,6 @@ import java.util.Map;
 import javax.portlet.PortletPreferences;
 
 import org.junit.Assert;
-import org.junit.ClassRule;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -82,10 +80,6 @@ import org.junit.runner.RunWith;
 @Sync
 public class LayoutSetPrototypePropagationTest
 	extends BasePrototypePropagationTestCase {
-
-	@ClassRule
-	public static ResetDataBasePerClassTestRule resetDataBasePerClassTestRule =
-		new ResetDataBasePerClassTestRule();
 
 	@Test
 	public void testAddChildLayoutWithLinkDisabled() throws Exception {

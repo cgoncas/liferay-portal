@@ -18,14 +18,12 @@ import com.liferay.portal.kernel.test.ExecutionTestListeners;
 import com.liferay.portal.model.LayoutSet;
 import com.liferay.portal.service.VirtualHostLocalServiceUtil;
 import com.liferay.portal.test.listeners.MainServletExecutionTestListener;
-import com.liferay.portal.test.rules.ResetDataBasePerClassTestRule;
 import com.liferay.portal.test.rules.ResetDataBasePerMethodTestRule;
 import com.liferay.portal.test.runners.LiferayIntegrationJUnitTestRunner;
 import com.liferay.portal.theme.ThemeDisplay;
 
 import java.net.URL;
 
-import org.junit.ClassRule;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -39,10 +37,6 @@ import org.junit.runner.RunWith;
 	})
 @RunWith(LiferayIntegrationJUnitTestRunner.class)
 public class PortalImplLayoutFullURLTest extends PortalImplBaseURLTestCase {
-
-	@ClassRule
-	public static ResetDataBasePerClassTestRule resetDataBasePerClassTestRule =
-		new ResetDataBasePerClassTestRule();
 
 	@Test
 	public void testFromCompanyVirtualHost() throws Exception {

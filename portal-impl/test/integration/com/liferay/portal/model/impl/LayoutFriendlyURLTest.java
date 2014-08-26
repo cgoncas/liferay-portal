@@ -25,7 +25,6 @@ import com.liferay.portal.model.LayoutConstants;
 import com.liferay.portal.service.LayoutLocalServiceUtil;
 import com.liferay.portal.service.ServiceContext;
 import com.liferay.portal.test.listeners.MainServletExecutionTestListener;
-import com.liferay.portal.test.rules.ResetDataBasePerClassTestRule;
 import com.liferay.portal.test.rules.ResetDataBasePerMethodTestRule;
 import com.liferay.portal.test.runners.LiferayIntegrationJUnitTestRunner;
 import com.liferay.portal.util.test.GroupTestUtil;
@@ -39,7 +38,6 @@ import java.util.Locale;
 import java.util.Map;
 
 import org.junit.Assert;
-import org.junit.ClassRule;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -53,10 +51,6 @@ import org.junit.runner.RunWith;
 	})
 @RunWith(LiferayIntegrationJUnitTestRunner.class)
 public class LayoutFriendlyURLTest {
-
-	@ClassRule
-	public static ResetDataBasePerClassTestRule resetDataBasePerClassTestRule =
-		new ResetDataBasePerClassTestRule();
 
 	@Test
 	public void testDifferentFriendlyURLDifferentLocaleDifferentGroup()
