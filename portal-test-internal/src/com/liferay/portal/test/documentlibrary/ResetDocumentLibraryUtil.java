@@ -38,41 +38,44 @@ public class ResetDocumentLibraryUtil {
 		DLStores dlStores = null;
 ;
 		if (initialize) {
-			_initializedDLStore = new DLStores();
+			_initializedDLStore = backupDLStores("init", true);
 
 			dlStores = _initializedDLStore;
-
-			dlStores.setDLFileSystemStoreDirName(
-				SystemProperties.get(SystemProperties.TMP_DIR) +
-					"/temp-init-dl-file-system-" + System.currentTimeMillis());
-
-			dlStores.setDLJCRStoreDirName(
-				SystemProperties.get(SystemProperties.TMP_DIR) +
-					"/temp-init-dl-jcr-" + System.currentTimeMillis());
 		}
 		else {
-			_dlStore = new DLStores();
+			_dlStore = backupDLStores("one-class", false);
 
 			dlStores = _dlStore;
-
-			dlStores.setDLFileSystemStoreDirName(
-				SystemProperties.get(SystemProperties.TMP_DIR) +
-					"/temp-dl-file-system-" + System.currentTimeMillis());
-
-			dlStores.setDLJCRStoreDirName(
-				SystemProperties.get(SystemProperties.TMP_DIR) +
-					"/temp-dl-jcr-" + System.currentTimeMillis());
 		}
+
+		return dlStores;
+	}
+
+	protected DLStores backupDLStores(
+		String description, boolean deleteFileShutdownHook) {
+
+		DLStores backupDlStores= new DLStores();
+
+		backupDlStores.setDLFileSystemStoreDirName(
+			SystemProperties.get(SystemProperties.TMP_DIR) +
+				"/temp-"+ description +"-dl-file-system-" +
+				System.currentTimeMillis());
+
+		backupDlStores.setDLJCRStoreDirName(
+			SystemProperties.get(SystemProperties.TMP_DIR) +
+				"/temp-"+ description +"-dl-jcr-" + System.currentTimeMillis());
 
 		copyDLSStore(
 			PropsValues.DL_STORE_FILE_SYSTEM_ROOT_DIR,
-			dlStores.getDLFileSystemStoreDirName(), initialize);
+			backupDlStores.getDLFileSystemStoreDirName(),
+			deleteFileShutdownHook);
 
 		copyDLSStore(
 			PropsUtil.get(PropsKeys.JCR_JACKRABBIT_REPOSITORY_ROOT),
-			dlStores.getDLJCRStoreDirName(), initialize);
+			backupDlStores.getDLJCRStoreDirName(),
+			deleteFileShutdownHook);
 
-		return dlStores;
+		return backupDlStores;
 	}
 
 	public void restoreDLStores(boolean initialize) {
