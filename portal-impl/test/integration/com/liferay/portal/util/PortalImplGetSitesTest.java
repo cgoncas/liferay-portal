@@ -26,7 +26,7 @@ import com.liferay.portal.model.User;
 import com.liferay.portal.service.CompanyLocalServiceUtil;
 import com.liferay.portal.service.GroupServiceUtil;
 import com.liferay.portal.test.listeners.MainServletExecutionTestListener;
-import com.liferay.portal.test.listeners.ResetDatabaseExecutionTestListener;
+import com.liferay.portal.test.rules.ResetDataBasePerMethodTestRule;
 import com.liferay.portal.test.runners.LiferayIntegrationJUnitTestRunner;
 import com.liferay.portal.util.test.GroupTestUtil;
 import com.liferay.portal.util.test.LayoutTestUtil;
@@ -38,6 +38,7 @@ import java.util.Set;
 
 import org.junit.Assert;
 import org.junit.Before;
+import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
@@ -46,8 +47,7 @@ import org.junit.runner.RunWith;
  */
 @ExecutionTestListeners(
 	listeners = {
-		MainServletExecutionTestListener.class,
-		ResetDatabaseExecutionTestListener.class
+		MainServletExecutionTestListener.class
 	})
 @RunWith(LiferayIntegrationJUnitTestRunner.class)
 public class PortalImplGetSitesTest {
@@ -126,6 +126,10 @@ public class PortalImplGetSitesTest {
 
 		Assert.assertFalse(set.size() < groupIds.length);
 	}
+
+	@Rule
+	public ResetDataBasePerMethodTestRule resetDataBasePerMethodTestRule =
+		new ResetDataBasePerMethodTestRule();
 
 	protected long[] getSharedContentSiteGroupIds() throws Exception {
 		return PortalUtil.getSharedContentSiteGroupIds(

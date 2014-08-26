@@ -26,6 +26,8 @@ import java.lang.reflect.Method;
 import java.util.Collections;
 import java.util.List;
 
+import com.liferay.portal.test.rules.ResetDataBasePerClassTestRule;
+import org.junit.ClassRule;
 import org.junit.rules.TestRule;
 import org.junit.runner.Description;
 import org.junit.runner.notification.RunNotifier;
@@ -125,6 +127,7 @@ public class LiferayIntegrationJUnitTestRunner
 		List<TestRule> testRules = super.classRules();
 
 		testRules.add(_testRule);
+		testRules.add(new ResetDataBasePerClassTestRule());
 
 		return testRules;
 	}

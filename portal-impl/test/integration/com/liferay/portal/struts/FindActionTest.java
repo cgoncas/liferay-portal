@@ -24,7 +24,7 @@ import com.liferay.portal.model.impl.VirtualLayout;
 import com.liferay.portal.security.permission.PermissionChecker;
 import com.liferay.portal.security.permission.PermissionCheckerFactoryUtil;
 import com.liferay.portal.test.listeners.MainServletExecutionTestListener;
-import com.liferay.portal.test.listeners.ResetDatabaseExecutionTestListener;
+import com.liferay.portal.test.rules.ResetDataBasePerMethodTestRule;
 import com.liferay.portal.test.runners.LiferayIntegrationJUnitTestRunner;
 import com.liferay.portal.theme.ThemeDisplay;
 import com.liferay.portal.util.PortletKeys;
@@ -41,6 +41,7 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 
 import org.junit.Assert;
+import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
@@ -53,8 +54,7 @@ import org.springframework.mock.web.MockHttpServletRequest;
  */
 @ExecutionTestListeners(
 	listeners = {
-		MainServletExecutionTestListener.class,
-		ResetDatabaseExecutionTestListener.class
+		MainServletExecutionTestListener.class
 	})
 @RunWith(LiferayIntegrationJUnitTestRunner.class)
 public class FindActionTest {
@@ -116,6 +116,10 @@ public class FindActionTest {
 
 		Assert.assertNull(layout);
 	}
+
+	@Rule
+	public ResetDataBasePerMethodTestRule resetDataBasePerMethodTestRule =
+		new ResetDataBasePerMethodTestRule();
 
 	protected void addLayouts(
 			boolean portletExists, boolean blogEntryWithDifferentGroup)

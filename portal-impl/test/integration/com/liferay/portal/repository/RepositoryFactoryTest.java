@@ -25,7 +25,7 @@ import com.liferay.portal.security.permission.PermissionChecker;
 import com.liferay.portal.security.permission.PermissionThreadLocal;
 import com.liferay.portal.test.DeleteAfterTestRun;
 import com.liferay.portal.test.listeners.MainServletExecutionTestListener;
-import com.liferay.portal.test.listeners.ResetDatabaseExecutionTestListener;
+import com.liferay.portal.test.rules.ResetDataBasePerMethodTestRule;
 import com.liferay.portal.test.runners.LiferayIntegrationJUnitTestRunner;
 import com.liferay.portal.util.test.GroupTestUtil;
 import com.liferay.portal.util.test.RandomTestUtil;
@@ -35,6 +35,7 @@ import com.liferay.portlet.documentlibrary.model.DLFolder;
 import com.liferay.portlet.documentlibrary.util.test.DLTestUtil;
 
 import org.junit.Before;
+import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
@@ -43,8 +44,7 @@ import org.junit.runner.RunWith;
  */
 @ExecutionTestListeners(
 	listeners = {
-		MainServletExecutionTestListener.class,
-		ResetDatabaseExecutionTestListener.class
+		MainServletExecutionTestListener.class
 	})
 @RunWith(LiferayIntegrationJUnitTestRunner.class)
 @Transactional
@@ -149,6 +149,10 @@ public class RepositoryFactoryTest {
 
 		RepositoryFactoryUtil.create(repositoryId);
 	}
+
+	@Rule
+	public ResetDataBasePerMethodTestRule resetDataBasePerMethodTestRule =
+		new ResetDataBasePerMethodTestRule();
 
 	@DeleteAfterTestRun
 	private Group _group;

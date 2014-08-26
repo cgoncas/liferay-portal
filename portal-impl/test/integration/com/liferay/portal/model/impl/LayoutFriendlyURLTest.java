@@ -25,7 +25,7 @@ import com.liferay.portal.model.LayoutConstants;
 import com.liferay.portal.service.LayoutLocalServiceUtil;
 import com.liferay.portal.service.ServiceContext;
 import com.liferay.portal.test.listeners.MainServletExecutionTestListener;
-import com.liferay.portal.test.listeners.ResetDatabaseExecutionTestListener;
+import com.liferay.portal.test.rules.ResetDataBasePerMethodTestRule;
 import com.liferay.portal.test.runners.LiferayIntegrationJUnitTestRunner;
 import com.liferay.portal.util.test.GroupTestUtil;
 import com.liferay.portal.util.test.RandomTestUtil;
@@ -38,6 +38,7 @@ import java.util.Locale;
 import java.util.Map;
 
 import org.junit.Assert;
+import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
@@ -46,8 +47,7 @@ import org.junit.runner.RunWith;
  */
 @ExecutionTestListeners(
 	listeners = {
-		MainServletExecutionTestListener.class,
-		ResetDatabaseExecutionTestListener.class
+		MainServletExecutionTestListener.class
 	})
 @RunWith(LiferayIntegrationJUnitTestRunner.class)
 public class LayoutFriendlyURLTest {
@@ -548,6 +548,10 @@ public class LayoutFriendlyURLTest {
 			Assert.fail();
 		}
 	}
+
+	@Rule
+	public ResetDataBasePerMethodTestRule resetDataBasePerMethodTestRule =
+		new ResetDataBasePerMethodTestRule();
 
 	protected void addLayout(
 			long groupId, boolean privateLayout,

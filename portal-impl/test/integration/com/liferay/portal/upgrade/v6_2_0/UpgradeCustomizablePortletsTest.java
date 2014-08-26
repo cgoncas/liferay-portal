@@ -24,7 +24,7 @@ import com.liferay.portal.model.PortletPreferences;
 import com.liferay.portal.service.GroupLocalServiceUtil;
 import com.liferay.portal.service.PortletPreferencesLocalServiceUtil;
 import com.liferay.portal.test.listeners.MainServletExecutionTestListener;
-import com.liferay.portal.test.listeners.ResetDatabaseExecutionTestListener;
+import com.liferay.portal.test.rules.ResetDataBasePerMethodTestRule;
 import com.liferay.portal.test.runners.LiferayIntegrationJUnitTestRunner;
 import com.liferay.portal.util.PortletKeys;
 import com.liferay.portal.util.test.GroupTestUtil;
@@ -44,6 +44,7 @@ import java.util.List;
 import jodd.util.ArraysUtil;
 
 import org.junit.Assert;
+import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
@@ -52,8 +53,7 @@ import org.junit.runner.RunWith;
  */
 @ExecutionTestListeners(
 	listeners = {
-		MainServletExecutionTestListener.class,
-		ResetDatabaseExecutionTestListener.class
+		MainServletExecutionTestListener.class
 	})
 @RunWith(LiferayIntegrationJUnitTestRunner.class)
 public class UpgradeCustomizablePortletsTest
@@ -193,6 +193,10 @@ public class UpgradeCustomizablePortletsTest
 		GroupLocalServiceUtil.deleteGroup(layout1.getGroup());
 		GroupLocalServiceUtil.deleteGroup(layout2.getGroup());
 	}
+
+	@Rule
+	public ResetDataBasePerMethodTestRule resetDataBasePerMethodTestRule =
+		new ResetDataBasePerMethodTestRule();
 
 	protected void addPortletPreferences(Layout layout, String portletId)
 		throws Exception {
