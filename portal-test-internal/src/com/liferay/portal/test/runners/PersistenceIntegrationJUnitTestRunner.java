@@ -14,8 +14,11 @@
 
 package com.liferay.portal.test.runners;
 
+import java.util.ArrayList;
 import java.util.List;
 
+import com.liferay.portal.test.rules.ResetEnvironmentBeforeClassTestRule;
+import org.junit.rules.TestRule;
 import org.junit.runners.model.InitializationError;
 
 /**
@@ -28,6 +31,21 @@ public class PersistenceIntegrationJUnitTestRunner
 		throws InitializationError {
 
 		super(clazz);
+	}
+
+	@Override
+	protected List<TestRule> classRules() {
+		List<TestRule> testRules = super.classRules();
+
+		List<TestRule> persistenceTestRules = new ArrayList<TestRule>();
+
+		for (TestRule testRule : testRules) {
+			if (!(testRule instanceof ResetEnvironmentBeforeClassTestRule)) {
+				persistenceTestRules.add(testRule);
+			}
+		}
+
+		return persistenceTestRules;
 	}
 
 	@Override
