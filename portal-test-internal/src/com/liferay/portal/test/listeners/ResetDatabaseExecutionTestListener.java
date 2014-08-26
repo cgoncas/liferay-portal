@@ -37,7 +37,7 @@ public class ResetDatabaseExecutionTestListener
 
 	@Override
 	public void runAfterTest(TestContext testContext) {
-		_resetDocumentLibraryUtil.restoreDLStores(false);
+		_resetDocumentLibraryUtil.restoreDLStores(_dlStores);
 		_resetIndicesUtil.restoreSearchIndices(false);
 
 		ResetDatabaseUtil.resetModifiedTables();
@@ -58,11 +58,13 @@ public class ResetDatabaseExecutionTestListener
 
 		try {
 			if (ResetDatabaseUtil.initialize()) {
-				_resetDocumentLibraryUtil.backupDLStores(true);
+				_initDLStores =
+					_resetDocumentLibraryUtil.backupDLStores("init", true);
+
 				_resetIndicesUtil.backupSearchIndices(true);
 			}
 			else {
-				_resetDocumentLibraryUtil.restoreDLStores(true);
+				_resetDocumentLibraryUtil.restoreDLStores(_initDLStores);
 				_resetIndicesUtil.restoreSearchIndices(true);
 			}
 		}
@@ -78,7 +80,7 @@ public class ResetDatabaseExecutionTestListener
 
 		ResetDatabaseUtil.startRecording();
 
-		_resetDocumentLibraryUtil.backupDLStores(false);
+		_dlStores = _resetDocumentLibraryUtil.backupDLStores("class", false);
 		_resetIndicesUtil.backupSearchIndices(false);
 	}
 
@@ -86,6 +88,9 @@ public class ResetDatabaseExecutionTestListener
 		ResetDocumentLibraryUtil.getInstance();
 	private static ResetIndicesUtil _resetIndicesUtil =
 		ResetIndicesUtil.getInstance();
+
+	private static ResetDocumentLibraryUtil.DLStores _initDLStores;
+	private ResetDocumentLibraryUtil.DLStores _dlStores;
 
 	private Level _level;
 
