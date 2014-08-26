@@ -65,9 +65,24 @@ public class ResetIndicesUtil {
 		return backupFileNames;
 	}
 
-	public void restoreSearchIndices(
-		Map<Long, String> backupFileNames, boolean removeBackup) {
+	public void clearSearchIndices(Map<Long, String> backupFileNames) {
+		for (Map.Entry<Long, String> entry : backupFileNames.entrySet()) {
+			String backupFileName = entry.getValue();
 
+			try {
+				SearchEngineUtil.removeBackup(entry.getKey(), backupFileName);
+			}
+			catch (SearchException e) {
+				if (_log.isInfoEnabled()) {
+					_log.info("Unable to remove backup", e);
+				}
+			}
+		}
+
+		backupFileNames.clear();
+	}
+
+	public void restoreSearchIndices(Map<Long, String> backupFileNames) {
 		for (Map.Entry<Long, String> entry : backupFileNames.entrySet()) {
 			String backupFileName = entry.getValue();
 
@@ -77,23 +92,6 @@ public class ResetIndicesUtil {
 			catch (Exception e) {
 				throw new RuntimeException(e);
 			}
-			finally {
-				if (removeBackup) {
-					try {
-						SearchEngineUtil.removeBackup(
-							entry.getKey(), backupFileName);
-					}
-					catch (SearchException e) {
-						if (_log.isInfoEnabled()) {
-							_log.info("Unable to remove backup", e);
-						}
-					}
-				}
-			}
-		}
-
-		if (removeBackup) {
-			backupFileNames.clear();
 		}
 	}
 

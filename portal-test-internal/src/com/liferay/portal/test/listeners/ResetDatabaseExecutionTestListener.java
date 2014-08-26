@@ -41,7 +41,8 @@ public class ResetDatabaseExecutionTestListener
 	@Override
 	public void runAfterTest(TestContext testContext) {
 		_resetDocumentLibraryUtil.restoreDLStores(_dlStores);
-		_resetIndicesUtil.restoreSearchIndices(_indexNames, true);
+		_resetIndicesUtil.restoreSearchIndices(_indexNames);
+		_resetIndicesUtil.clearSearchIndices(_indexNames);
 
 		ResetDatabaseUtil.resetModifiedTables();
 
@@ -69,8 +70,7 @@ public class ResetDatabaseExecutionTestListener
 			}
 			else {
 				_resetDocumentLibraryUtil.restoreDLStores(_initDLStores);
-				_resetIndicesUtil.restoreSearchIndices(
-					_initializedIndexNames, false);
+				_resetIndicesUtil.restoreSearchIndices(_initializedIndexNames);
 			}
 		}
 		finally {
