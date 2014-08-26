@@ -43,11 +43,6 @@ public class ResetDocumentLibraryUtil {
 					"/temp-init-dl-file-system-" + System.currentTimeMillis();
 
 			_initializedDLFileSystemStoreDirName = dlFileSystemStoreDirName;
-
-			Runtime runtime = Runtime.getRuntime();
-
-			runtime.addShutdownHook(
-				new DeleteFileShutdownHook(dlFileSystemStoreDirName));
 		}
 		else {
 			dlFileSystemStoreDirName =
@@ -57,14 +52,9 @@ public class ResetDocumentLibraryUtil {
 			_dlFileSystemStoreDirName = dlFileSystemStoreDirName;
 		}
 
-		try {
-			FileUtil.copyDirectory(
-				new File(PropsValues.DL_STORE_FILE_SYSTEM_ROOT_DIR),
-				new File(dlFileSystemStoreDirName));
-		}
-		catch (IOException ioe) {
-			throw new RuntimeException(ioe);
-		}
+		copyDLSStore(
+			PropsValues.DL_STORE_FILE_SYSTEM_ROOT_DIR, dlFileSystemStoreDirName,
+			initialize);
 
 		String dlJCRStoreDirName = null;
 
@@ -74,11 +64,6 @@ public class ResetDocumentLibraryUtil {
 					"/temp-init-dl-jcr-" + System.currentTimeMillis();
 
 			_initializedDLJCRStoreDirName = dlJCRStoreDirName;
-
-			Runtime runtime = Runtime.getRuntime();
-
-			runtime.addShutdownHook(
-				new DeleteFileShutdownHook(dlJCRStoreDirName));
 		}
 		else {
 			dlJCRStoreDirName =
@@ -88,15 +73,10 @@ public class ResetDocumentLibraryUtil {
 			_dlJCRStoreDirName = dlJCRStoreDirName;
 		}
 
-		try {
-			FileUtil.copyDirectory(
-				new File(
-					PropsUtil.get(PropsKeys.JCR_JACKRABBIT_REPOSITORY_ROOT)),
-				new File(dlJCRStoreDirName));
-		}
-		catch (IOException ioe) {
-			throw new RuntimeException(ioe);
-		}
+		copyDLSStore(
+			PropsUtil.get(PropsKeys.JCR_JACKRABBIT_REPOSITORY_ROOT),
+			dlJCRStoreDirName, initialize);
+
 	}
 
 	public void restoreDLStores(boolean initialize) {
@@ -128,6 +108,27 @@ public class ResetDocumentLibraryUtil {
 		FileUtil.move(
 			new File(dlJCRStoreDirName),
 			new File(PropsUtil.get(PropsKeys.JCR_JACKRABBIT_REPOSITORY_ROOT)));
+	}
+
+	protected void copyDLSStore(
+		String originalDLStoreDirName, String targetDLStoreDirName,
+		boolean deleteFileShutdownHook) {
+
+		if (deleteFileShutdownHook) {
+			Runtime runtime = Runtime.getRuntime();
+
+			runtime.addShutdownHook(
+				new DeleteFileShutdownHook(targetDLStoreDirName));
+		}
+
+		try {
+			FileUtil.copyDirectory(
+				new File(originalDLStoreDirName),
+				new File(targetDLStoreDirName));
+		}
+		catch (IOException ioe) {
+			throw new RuntimeException(ioe);
+		}
 	}
 
 	private static String _initializedDLFileSystemStoreDirName;
