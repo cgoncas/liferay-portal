@@ -34,79 +34,67 @@ public class ResetDocumentLibraryUtil {
 		return new ResetDocumentLibraryUtil();
 	}
 
-	public void backupDLStores(boolean initialize) {
-		String dlFileSystemStoreDirName = null;
-
+	public DLStores backupDLStores(boolean initialize) {
+		DLStores dlStores = null;
+;
 		if (initialize) {
-			dlFileSystemStoreDirName =
-				SystemProperties.get(SystemProperties.TMP_DIR) +
-					"/temp-init-dl-file-system-" + System.currentTimeMillis();
+			_initializedDLStore = new DLStores();
 
-			_initializedDLFileSystemStoreDirName = dlFileSystemStoreDirName;
+			dlStores = _initializedDLStore;
+
+			dlStores.setDLFileSystemStoreDirName(
+				SystemProperties.get(SystemProperties.TMP_DIR) +
+					"/temp-init-dl-file-system-" + System.currentTimeMillis());
+
+			dlStores.setDLJCRStoreDirName(
+				SystemProperties.get(SystemProperties.TMP_DIR) +
+					"/temp-init-dl-jcr-" + System.currentTimeMillis());
 		}
 		else {
-			dlFileSystemStoreDirName =
-				SystemProperties.get(SystemProperties.TMP_DIR) +
-					"/temp-dl-file-system-" + System.currentTimeMillis();
+			_dlStore = new DLStores();
 
-			_dlFileSystemStoreDirName = dlFileSystemStoreDirName;
+			dlStores = _dlStore;
+
+			dlStores.setDLFileSystemStoreDirName(
+				SystemProperties.get(SystemProperties.TMP_DIR) +
+					"/temp-dl-file-system-" + System.currentTimeMillis());
+
+			dlStores.setDLJCRStoreDirName(
+				SystemProperties.get(SystemProperties.TMP_DIR) +
+					"/temp-dl-jcr-" + System.currentTimeMillis());
 		}
 
 		copyDLSStore(
-			PropsValues.DL_STORE_FILE_SYSTEM_ROOT_DIR, dlFileSystemStoreDirName,
-			initialize);
-
-		String dlJCRStoreDirName = null;
-
-		if (initialize) {
-			dlJCRStoreDirName =
-				SystemProperties.get(SystemProperties.TMP_DIR) +
-					"/temp-init-dl-jcr-" + System.currentTimeMillis();
-
-			_initializedDLJCRStoreDirName = dlJCRStoreDirName;
-		}
-		else {
-			dlJCRStoreDirName =
-				SystemProperties.get(SystemProperties.TMP_DIR) +
-					"/temp-dl-jcr-" + System.currentTimeMillis();
-
-			_dlJCRStoreDirName = dlJCRStoreDirName;
-		}
+			PropsValues.DL_STORE_FILE_SYSTEM_ROOT_DIR,
+			dlStores.getDLFileSystemStoreDirName(), initialize);
 
 		copyDLSStore(
 			PropsUtil.get(PropsKeys.JCR_JACKRABBIT_REPOSITORY_ROOT),
-			dlJCRStoreDirName, initialize);
+			dlStores.getDLJCRStoreDirName(), initialize);
 
+		return dlStores;
 	}
 
 	public void restoreDLStores(boolean initialize) {
-		FileUtil.deltree(PropsValues.DL_STORE_FILE_SYSTEM_ROOT_DIR);
-
-		String dlFileSystemStoreDirName = _initializedDLFileSystemStoreDirName;
+		DLStores dlStores = _initializedDLStore;
 
 		if (!initialize) {
-			dlFileSystemStoreDirName = _dlFileSystemStoreDirName;
+			dlStores = _dlStore;
 
-			_dlFileSystemStoreDirName = null;
+			_dlStore = null;
 		}
 
+		FileUtil.deltree(PropsValues.DL_STORE_FILE_SYSTEM_ROOT_DIR);
+
 		FileUtil.move(
-			new File(dlFileSystemStoreDirName),
+			new File(dlStores.getDLFileSystemStoreDirName()),
 			new File(PropsValues.DL_STORE_FILE_SYSTEM_ROOT_DIR));
 
 		FileUtil.deltree(
 			PropsUtil.get(PropsKeys.JCR_JACKRABBIT_REPOSITORY_ROOT));
 
-		String dlJCRStoreDirName = _initializedDLJCRStoreDirName;
-
-		if (!initialize) {
-			dlJCRStoreDirName = _dlJCRStoreDirName;
-
-			_dlJCRStoreDirName = null;
-		}
-
 		FileUtil.move(
-			new File(dlJCRStoreDirName),
+			new File(dlStores.getDLJCRStoreDirName()),
 			new File(PropsUtil.get(PropsKeys.JCR_JACKRABBIT_REPOSITORY_ROOT)));
 	}
 
@@ -131,10 +119,31 @@ public class ResetDocumentLibraryUtil {
 		}
 	}
 
-	private static String _initializedDLFileSystemStoreDirName;
-	private static String _initializedDLJCRStoreDirName;
+	public class DLStores {
 
-	private String _dlFileSystemStoreDirName;
-	private String _dlJCRStoreDirName;
+		private String dLFileSystemStoreDirName;
+
+		private String dLJCRStoreDirName;
+
+		public String getDLFileSystemStoreDirName() {
+			return dLFileSystemStoreDirName;
+		}
+
+		public void setDLFileSystemStoreDirName(String dLFileSystemStoreDirName) {
+			this.dLFileSystemStoreDirName = dLFileSystemStoreDirName;
+		}
+
+		public String getDLJCRStoreDirName() {
+			return dLJCRStoreDirName;
+		}
+
+		public void setDLJCRStoreDirName(String dLJCRStoreDirName) {
+			this.dLJCRStoreDirName = dLJCRStoreDirName;
+		}
+	}
+
+	private static DLStores _initializedDLStore;
+
+	private DLStores _dlStore;
 
 }
