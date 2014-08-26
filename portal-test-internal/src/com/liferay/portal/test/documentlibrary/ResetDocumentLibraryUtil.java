@@ -34,24 +34,7 @@ public class ResetDocumentLibraryUtil {
 		return new ResetDocumentLibraryUtil();
 	}
 
-	public DLStores backupDLStores(boolean initialize) {
-		DLStores dlStores = null;
-;
-		if (initialize) {
-			_initializedDLStore = backupDLStores("init", true);
-
-			dlStores = _initializedDLStore;
-		}
-		else {
-			_dlStore = backupDLStores("one-class", false);
-
-			dlStores = _dlStore;
-		}
-
-		return dlStores;
-	}
-
-	protected DLStores backupDLStores(
+	public DLStores backupDLStores(
 		String description, boolean deleteFileShutdownHook) {
 
 		DLStores backupDlStores= new DLStores();
@@ -78,15 +61,7 @@ public class ResetDocumentLibraryUtil {
 		return backupDlStores;
 	}
 
-	public void restoreDLStores(boolean initialize) {
-		DLStores dlStores = _initializedDLStore;
-
-		if (!initialize) {
-			dlStores = _dlStore;
-
-			_dlStore = null;
-		}
-
+	public void restoreDLStores(DLStores dlStores) {
 		moveDLStore(
 			dlStores.getDLFileSystemStoreDirName(),
 			PropsValues.DL_STORE_FILE_SYSTEM_ROOT_DIR);
@@ -149,9 +124,5 @@ public class ResetDocumentLibraryUtil {
 			this.dLJCRStoreDirName = dLJCRStoreDirName;
 		}
 	}
-
-	private static DLStores _initializedDLStore;
-
-	private DLStores _dlStore;
 
 }
