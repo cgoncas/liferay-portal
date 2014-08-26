@@ -37,7 +37,7 @@ public class ResetDocumentLibraryUtil {
 	public DLStores backupDLStores(
 		String description, boolean deleteFileShutdownHook) {
 
-		DLStores backupDlStores= new DLStores();
+		DLStores backupDlStores = new DLStores();
 
 		backupDlStores.setDLFileSystemStoreDirName(
 			SystemProperties.get(SystemProperties.TMP_DIR) +
@@ -55,10 +55,18 @@ public class ResetDocumentLibraryUtil {
 
 		copyDLSStore(
 			PropsUtil.get(PropsKeys.JCR_JACKRABBIT_REPOSITORY_ROOT),
-			backupDlStores.getDLJCRStoreDirName(),
-			deleteFileShutdownHook);
+			backupDlStores.getDLJCRStoreDirName(), deleteFileShutdownHook);
 
 		return backupDlStores;
+	}
+
+	public void moveDLStore(
+		String originalDLStoreDirName, String targetDLStoreDirName) {
+
+		FileUtil.deltree(targetDLStoreDirName);
+
+		FileUtil.move(
+			new File(originalDLStoreDirName), new File(targetDLStoreDirName));
 	}
 
 	public void restoreDLStores(DLStores dlStores) {
@@ -69,6 +77,29 @@ public class ResetDocumentLibraryUtil {
 		moveDLStore(
 			dlStores.getDLJCRStoreDirName(),
 			PropsUtil.get(PropsKeys.JCR_JACKRABBIT_REPOSITORY_ROOT));
+	}
+
+	public class DLStores {
+
+		public void setDLJCRStoreDirName(String dLJCRStoreDirName) {
+			this.dLJCRStoreDirName = dLJCRStoreDirName;
+		} private String dLJCRStoreDirName;
+
+		public String getDLFileSystemStoreDirName() {
+			return dLFileSystemStoreDirName;
+		}
+
+		public String getDLJCRStoreDirName() {
+			return dLJCRStoreDirName;
+		}
+
+		public void setDLFileSystemStoreDirName(
+			String dLFileSystemStoreDirName) {
+
+			this.dLFileSystemStoreDirName = dLFileSystemStoreDirName;
+		}
+
+		private String dLFileSystemStoreDirName;
 
 	}
 
@@ -90,38 +121,6 @@ public class ResetDocumentLibraryUtil {
 		}
 		catch (IOException ioe) {
 			throw new RuntimeException(ioe);
-		}
-	}
-
-	public void moveDLStore(
-		String originalDLStoreDirName, String targetDLStoreDirName) {
-
-		FileUtil.deltree(targetDLStoreDirName);
-
-		FileUtil.move(
-			new File(originalDLStoreDirName), new File(targetDLStoreDirName));
-	}
-
-	public class DLStores {
-
-		private String dLFileSystemStoreDirName;
-
-		private String dLJCRStoreDirName;
-
-		public String getDLFileSystemStoreDirName() {
-			return dLFileSystemStoreDirName;
-		}
-
-		public void setDLFileSystemStoreDirName(String dLFileSystemStoreDirName) {
-			this.dLFileSystemStoreDirName = dLFileSystemStoreDirName;
-		}
-
-		public String getDLJCRStoreDirName() {
-			return dLJCRStoreDirName;
-		}
-
-		public void setDLJCRStoreDirName(String dLJCRStoreDirName) {
-			this.dLJCRStoreDirName = dLJCRStoreDirName;
 		}
 	}
 

@@ -27,10 +27,10 @@ import com.liferay.portal.test.indices.ResetIndicesUtil;
 import com.liferay.portal.test.jdbc.ResetDatabaseUtil;
 import com.liferay.portal.upgrade.util.Table;
 
-import org.apache.log4j.Level;
-
 import java.util.HashMap;
 import java.util.Map;
+
+import org.apache.log4j.Level;
 
 /**
  * @author Shuyang Zhou
@@ -61,11 +61,11 @@ public class ResetDatabaseExecutionTestListener
 
 		try {
 			if (ResetDatabaseUtil.initialize()) {
-				_initDLStores =
-					_resetDocumentLibraryUtil.backupDLStores("init", true);
+				_initDLStores = _resetDocumentLibraryUtil.backupDLStores(
+					"init", true);
 
-				_initializedIndexNames =
-					_resetIndicesUtil.backupSearchIndices("init", true);
+				_initializedIndexNames = _resetIndicesUtil.backupSearchIndices(
+					"init", true);
 			}
 			else {
 				_resetDocumentLibraryUtil.restoreDLStores(_initDLStores);
@@ -89,21 +89,16 @@ public class ResetDatabaseExecutionTestListener
 		_indexNames = _resetIndicesUtil.backupSearchIndices("class", false);
 	}
 
+	private static ResetDocumentLibraryUtil.DLStores _initDLStores;
+	private static Map<Long, String> _initializedIndexNames =
+		new HashMap<Long, String>();
 	private static ResetDocumentLibraryUtil _resetDocumentLibraryUtil =
 		ResetDocumentLibraryUtil.getInstance();
 	private static ResetIndicesUtil _resetIndicesUtil =
 		ResetIndicesUtil.getInstance();
 
-	private static ResetDocumentLibraryUtil.DLStores _initDLStores;
 	private ResetDocumentLibraryUtil.DLStores _dlStores;
-
-	private static Map<Long, String> _initializedIndexNames =
-		new HashMap<Long, String>();
-
 	private Map<Long, String> _indexNames = new HashMap<Long, String>();
-
-
-
 	private Level _level;
 
 }
