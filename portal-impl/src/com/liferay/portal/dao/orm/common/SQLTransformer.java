@@ -67,7 +67,6 @@ public class SQLTransformer {
 		_vendorFirebird = false;
 		_vendorHypersonic = false;
 		_vendorInformix = false;
-		_vendorIngres = false;
 		_vendorInterbase = false;
 		_vendorMySQL = false;
 		_vendorOracle = false;
@@ -95,9 +94,6 @@ public class SQLTransformer {
 		}
 		else if (dbType.equals(DB.TYPE_INFORMIX)) {
 			_vendorInformix = true;
-		}
-		else if (dbType.equals(DB.TYPE_INGRES)) {
-			_vendorIngres = true;
 		}
 		else if (dbType.equals(DB.TYPE_INTERBASE)) {
 			_vendorInterbase = true;
@@ -165,7 +161,7 @@ public class SQLTransformer {
 		if (_vendorDerby) {
 			return matcher.replaceAll("MOD($1 / $2, 2) != 0");
 		}
-		else if (_vendorInformix || _vendorIngres) {
+		else if (_vendorInformix) {
 			return matcher.replaceAll("BIT_AND($1, $2)");
 		}
 		else if (_vendorFirebird || _vendorInterbase) {
@@ -449,7 +445,6 @@ public class SQLTransformer {
 	private boolean _vendorFirebird;
 	private boolean _vendorHypersonic;
 	private boolean _vendorInformix;
-	private boolean _vendorIngres;
 	private boolean _vendorInterbase;
 	private boolean _vendorMySQL;
 	private boolean _vendorOracle;

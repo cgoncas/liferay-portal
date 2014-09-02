@@ -29,7 +29,6 @@ import org.hibernate.dialect.Dialect;
 import org.hibernate.dialect.FirebirdDialect;
 import org.hibernate.dialect.HSQLDialect;
 import org.hibernate.dialect.InformixDialect;
-import org.hibernate.dialect.IngresDialect;
 import org.hibernate.dialect.InterbaseDialect;
 import org.hibernate.dialect.JDataStoreDialect;
 import org.hibernate.dialect.MySQLDialect;
@@ -96,9 +95,6 @@ public class DBFactoryImpl implements DBFactory {
 		else if (dialect instanceof InformixDialect) {
 			db = InformixDB.getInstance();
 		}
-		else if (dialect instanceof IngresDialect) {
-			db = IngresDB.getInstance();
-		}
 		else if (dialect instanceof InterbaseDialect) {
 			if (dialect instanceof FirebirdDialect) {
 				db = FirebirdDB.getInstance();
@@ -156,9 +152,6 @@ public class DBFactoryImpl implements DBFactory {
 		}
 		else if (type.equals(DB.TYPE_INFORMIX)) {
 			db = InformixDB.getInstance();
-		}
-		else if (type.equals(DB.TYPE_INGRES)) {
-			db = IngresDB.getInstance();
 		}
 		else if (type.equals(DB.TYPE_INTERBASE)) {
 			db = InterBaseDB.getInstance();
