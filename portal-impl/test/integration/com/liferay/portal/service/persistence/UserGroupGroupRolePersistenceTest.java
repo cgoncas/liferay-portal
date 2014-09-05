@@ -24,6 +24,8 @@ import com.liferay.portal.kernel.dao.orm.ProjectionFactoryUtil;
 import com.liferay.portal.kernel.dao.orm.RestrictionsFactoryUtil;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
+import com.liferay.portal.kernel.transaction.Propagation;
+import com.liferay.portal.kernel.transaction.Transactional;
 import com.liferay.portal.kernel.util.IntegerWrapper;
 import com.liferay.portal.model.UserGroupGroupRole;
 import com.liferay.portal.service.UserGroupGroupRoleLocalServiceUtil;
@@ -51,6 +53,7 @@ import java.util.Set;
 */
 @DatabaseBuilder
 @RunWith(Arquillian.class)
+@Transactional(propagation = Propagation.REQUIRED)
 public class UserGroupGroupRolePersistenceTest {
 	@After
 	public void tearDown() throws Exception {

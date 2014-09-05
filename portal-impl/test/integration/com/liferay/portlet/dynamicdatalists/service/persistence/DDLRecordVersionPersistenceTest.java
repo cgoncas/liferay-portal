@@ -23,6 +23,8 @@ import com.liferay.portal.kernel.dao.orm.QueryUtil;
 import com.liferay.portal.kernel.dao.orm.RestrictionsFactoryUtil;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
+import com.liferay.portal.kernel.transaction.Propagation;
+import com.liferay.portal.kernel.transaction.Transactional;
 import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.kernel.util.OrderByComparatorFactoryUtil;
 import com.liferay.portal.kernel.util.StringPool;
@@ -57,6 +59,7 @@ import java.util.Set;
 */
 @DatabaseBuilder
 @RunWith(Arquillian.class)
+@Transactional(propagation = Propagation.REQUIRED)
 public class DDLRecordVersionPersistenceTest {
 	@After
 	public void tearDown() throws Exception {
