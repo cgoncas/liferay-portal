@@ -44,7 +44,8 @@ public class BackupAndRestoreIndexesTest {
 					System.currentTimeMillis();
 
 			SearchEngineUtil.backup(
-				companyId, SearchEngineUtil.SYSTEM_ENGINE_ID, backupName);
+				companyId, SearchEngineUtil.SYSTEM_ENGINE_ID,
+				backupName.toLowerCase());
 
 			backupNames.put(companyId, backupName);
 		}
