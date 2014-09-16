@@ -135,6 +135,8 @@ public class SubscriptionSenderTest extends PowerMockito {
 		subscriptionSender.setGroupId(100);
 		subscriptionSender.setMailId("test-mail-id");
 
+		subscriptionSender.setMailId("test-mail-id");
+
 		subscriptionSender.initialize();
 
 		String portalURL = String.valueOf(
@@ -168,6 +170,8 @@ public class SubscriptionSenderTest extends PowerMockito {
 		serviceContext.setScopeGroupId(100l);
 
 		subscriptionSender.setServiceContext(serviceContext);
+
+		subscriptionSender.setMailId("test-mail-id");
 
 		subscriptionSender.initialize();
 
