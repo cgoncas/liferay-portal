@@ -20,7 +20,7 @@ package com.liferay.osgi.util.test.services;
 public class TrackedTwo implements InterfaceTwo {
 
 	@Override
-	public void noop() {
+	public void noop2() {
 	}
 
 }
