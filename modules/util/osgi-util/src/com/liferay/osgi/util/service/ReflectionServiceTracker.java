@@ -14,8 +14,6 @@
 
 package com.liferay.osgi.util.service;
 
-import com.liferay.osgi.util.exception.UnavailableServiceException;
-
 import java.io.Closeable;
 
 import java.lang.reflect.InvocationHandler;
@@ -258,7 +256,8 @@ public class ReflectionServiceTracker implements Closeable {
 					Object object, Method method, Object[] parameters)
 				throws Throwable {
 
-				throw new UnavailableServiceException();
+				throw new UnavailableServiceException(
+					method.getDeclaringClass());
 			}
 
 		};
