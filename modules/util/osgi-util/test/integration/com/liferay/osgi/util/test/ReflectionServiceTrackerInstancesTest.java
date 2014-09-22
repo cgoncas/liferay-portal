@@ -59,7 +59,9 @@ public class ReflectionServiceTrackerInstancesTest {
 	}
 
 	@Test
-	public void testReflectionServiceTracker() throws IOException {
+	public void whenRegisteringServicesTheyShouldBeInjectedInTheInstance()
+		throws IOException {
+
 		TestInstance testInstance = new TestInstance();
 
 		ReflectionServiceTracker reflectionServiceTracker =
@@ -83,7 +85,7 @@ public class ReflectionServiceTrackerInstancesTest {
 	}
 
 	@Test
-	public void testReflectionServiceTrackerInitialConditions() {
+	public void whenThereAreNoRegisteredServicesShouldInjectNull() {
 		TestInstance testInstance = new TestInstance();
 
 		ReflectionServiceTracker reflectionServiceTracker =
@@ -96,7 +98,7 @@ public class ReflectionServiceTrackerInstancesTest {
 	}
 
 	@Test
-	public void testReflectionServiceTrackerUnregistration() {
+	public void whenUnregisteringServicesShouldInjectNull() {
 		TestInstance testInstance = new TestInstance();
 
 		ReflectionServiceTracker reflectionServiceTracker =
@@ -110,9 +112,6 @@ public class ReflectionServiceTrackerInstancesTest {
 		ServiceRegistration<TrackedTwo> sr2 = registerService(
 			TrackedTwo.class, trackedTwo, 0);
 
-		Assert.assertEquals(trackedOne, testInstance.getTrackedOne());
-		Assert.assertEquals(trackedTwo, testInstance.getTrackedTwo());
-
 		sr1.unregister();
 		sr2.unregister();
 
@@ -123,7 +122,9 @@ public class ReflectionServiceTrackerInstancesTest {
 	}
 
 	@Test
-	public void testReflectionServiceTrackerWithServiceRanking() {
+	public void
+	whenMoreThanOneServiceExistsShouldInjectTheOneWithHigherServiceRanking() {
+
 		TestInstance testInstance = new TestInstance();
 
 		ReflectionServiceTracker reflectionServiceTracker =
@@ -150,9 +151,30 @@ public class ReflectionServiceTrackerInstancesTest {
 
 		sr1.unregister();
 		sr2.unregister();
+	}
 
-		Assert.assertEquals(trackedOne2, testInstance.getTrackedOne());
-		Assert.assertEquals(trackedTwo2, testInstance.getTrackedTwo());
+	public void
+	whenDeregisteringServiceShouldInjectTheNextWithHigherServiceRanking() {
+		TestInstance testInstance = new TestInstance();
+
+		ReflectionServiceTracker reflectionServiceTracker =
+			new ReflectionServiceTracker(testInstance);
+
+		TrackedOne trackedOne = new TrackedOne();
+		ServiceRegistration<TrackedOne> sr1 = registerService(
+			TrackedOne.class, trackedOne, 2);
+
+		TrackedTwo trackedTwo = new TrackedTwo();
+		ServiceRegistration<TrackedTwo> sr2 = registerService(
+			TrackedTwo.class, trackedTwo, 2);
+
+		TrackedOne trackedOne2 = new TrackedOne();
+		ServiceRegistration<TrackedOne> sr3 = registerService(
+			TrackedOne.class, trackedOne2, 1);
+
+		TrackedTwo trackedTwo2 = new TrackedTwo();
+		ServiceRegistration<TrackedTwo> sr4 = registerService(
+			TrackedTwo.class, trackedTwo2, 1);
 
 		sr3.unregister();
 		sr4.unregister();
