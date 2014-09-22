@@ -14,7 +14,7 @@
 
 package com.liferay.osgi.util.test.instances;
 
-import com.liferay.osgi.util.service.annotations.Reference;
+import com.liferay.osgi.util.service.Reference;
 import com.liferay.osgi.util.test.services.InterfaceOne;
 import com.liferay.osgi.util.test.services.InterfaceTwo;
 

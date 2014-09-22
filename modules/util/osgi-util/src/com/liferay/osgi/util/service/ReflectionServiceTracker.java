@@ -15,7 +15,6 @@
 package com.liferay.osgi.util.service;
 
 import com.liferay.osgi.util.exception.UnavailableServiceException;
-import com.liferay.osgi.util.service.annotations.Reference;
 
 import java.io.Closeable;
 

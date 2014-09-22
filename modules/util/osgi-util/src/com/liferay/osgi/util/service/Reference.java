@@ -12,7 +12,7 @@
  * details.
  */
 
-package com.liferay.osgi.util.service.annotations;
+package com.liferay.osgi.util.service;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
