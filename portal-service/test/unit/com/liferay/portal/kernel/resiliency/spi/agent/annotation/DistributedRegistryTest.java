@@ -313,6 +313,7 @@ public class DistributedRegistryTest {
 
 		@Distributed
 		public static final String name14 = "name14";
+
 	}
 
 	private static class ParentClass implements ParentInterface {
@@ -329,6 +330,10 @@ public class DistributedRegistryTest {
 
 		@Distributed
 		public static String name9 = "name9";
+
+		@Distributed
+		public static String name15 = "name15";
+
 	}
 
 	private interface ParentInterface {
