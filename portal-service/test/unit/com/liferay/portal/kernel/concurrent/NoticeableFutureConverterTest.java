@@ -104,7 +104,8 @@ public class NoticeableFutureConverterTest {
 		final Exception exception = new Exception();
 
 		NoticeableFuture<Object> noticeableFutureConverter =
-			new NoticeableFutureConverter(_defaultNoticeableFuture) {
+			new NoticeableFutureConverter<Object, Object>(
+				_defaultNoticeableFuture) {
 
 				@Override
 				protected Object convert(Object v) throws Exception {

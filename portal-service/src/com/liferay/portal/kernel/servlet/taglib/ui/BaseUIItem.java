@@ -19,10 +19,12 @@ package com.liferay.portal.kernel.servlet.taglib.ui;
  */
 public abstract class BaseUIItem implements UIItem {
 
+	@Override
 	public String getKey() {
 		return _key;
 	}
 
+	@Override
 	public void setKey(String key) {
 		_key = key;
 	}

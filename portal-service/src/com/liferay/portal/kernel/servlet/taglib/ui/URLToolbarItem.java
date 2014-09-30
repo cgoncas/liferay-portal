@@ -19,18 +19,22 @@ package com.liferay.portal.kernel.servlet.taglib.ui;
  */
 public class URLToolbarItem extends ToolbarItem implements URLUIItem {
 
+	@Override
 	public String getTarget() {
 		return _target;
 	}
 
+	@Override
 	public String getURL() {
 		return _url;
 	}
 
+	@Override
 	public void setTarget(String target) {
 		_target = target;
 	}
 
+	@Override
 	public void setURL(String url) {
 		_url = url;
 	}

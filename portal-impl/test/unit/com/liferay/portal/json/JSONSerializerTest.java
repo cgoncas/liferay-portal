@@ -69,6 +69,8 @@ public class JSONSerializerTest {
 
 		json = json.replace(StringPool.SPACE, StringPool.BLANK);
 
+		System.out.println(json);
+
 		Assert.assertTrue(json.contains("\"docs\":null"));
 		Assert.assertFalse(json.contains("\"query\""));
 		Assert.assertTrue(json.contains("\"queryTerms\":null"));

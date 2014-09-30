@@ -20,10 +20,12 @@ package com.liferay.portal.kernel.servlet.taglib.ui;
 public class JavascriptToolbarItem
 	extends ToolbarItem implements JavascriptUIItem {
 
+	@Override
 	public String getOnClick() {
 		return _onClick;
 	}
 
+	@Override
 	public void setOnClick(String onClick) {
 		_onClick = onClick;
 	}

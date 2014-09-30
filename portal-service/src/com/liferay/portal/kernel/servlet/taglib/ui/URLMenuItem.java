@@ -23,10 +23,12 @@ public class URLMenuItem extends MenuItem implements URLUIItem {
 		return _method;
 	}
 
+	@Override
 	public String getTarget() {
 		return _target;
 	}
 
+	@Override
 	public String getURL() {
 		return _url;
 	}
@@ -39,10 +41,12 @@ public class URLMenuItem extends MenuItem implements URLUIItem {
 		_method = method;
 	}
 
+	@Override
 	public void setTarget(String target) {
 		_target = target;
 	}
 
+	@Override
 	public void setURL(String url) {
 		_url = url;
 	}

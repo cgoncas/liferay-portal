@@ -23,6 +23,7 @@ public class JavascriptMenuItem extends MenuItem implements JavascriptUIItem {
 		return _javascript;
 	}
 
+	@Override
 	public String getOnClick() {
 		return _onClick;
 	}
@@ -31,6 +32,7 @@ public class JavascriptMenuItem extends MenuItem implements JavascriptUIItem {
 		_javascript = javascript;
 	}
 
+	@Override
 	public void setOnClick(String onClick) {
 		_onClick = onClick;
 	}

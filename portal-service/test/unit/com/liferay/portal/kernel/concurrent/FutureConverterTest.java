@@ -106,7 +106,7 @@ public class FutureConverterTest {
 		final Exception exception = new Exception();
 
 		Future<Object> future =
-			new FutureConverter(_futureTask) {
+			new FutureConverter<Object, Object>(_futureTask) {
 
 				@Override
 				protected Object convert(Object v) throws Exception {
@@ -138,7 +138,7 @@ public class FutureConverterTest {
 	public void testCovertResult() throws Exception {
 		Object result = new Object();
 
-		FutureTask futureTask = new FutureTask<Object>(
+		FutureTask<Object>futureTask = new FutureTask<Object>(
 			new Runnable() {
 
 				@Override
@@ -160,7 +160,7 @@ public class FutureConverterTest {
 	public void testExecutionException() throws Exception {
 		final Exception exception = new Exception();
 
-		FutureTask futureTask = new FutureTask<Object>(
+		FutureTask<Object> futureTask = new FutureTask<Object>(
 			new Callable<Object>() {
 
 				@Override

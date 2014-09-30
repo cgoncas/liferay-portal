@@ -19,18 +19,22 @@ package com.liferay.portal.kernel.servlet.taglib.ui;
  */
 public abstract class MenuItem extends BaseUIItem implements UIActionItem {
 
+	@Override
 	public String getIcon() {
 		return _icon;
 	}
 
+	@Override
 	public String getLabel() {
 		return _label;
 	}
 
+	@Override
 	public void setIcon(String icon) {
 		_icon = icon;
 	}
 
+	@Override
 	public void setLabel(String label) {
 		_label = label;
 	}

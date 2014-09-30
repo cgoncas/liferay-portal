@@ -124,9 +124,7 @@ public class VerifyDocumentLibrary extends VerifyProcess {
 			new ActionableDynamicQuery.PerformActionMethod() {
 
 				@Override
-				public void performAction(Object object)
-					throws PortalException {
-
+				public void performAction(Object object) {
 					DLFileEntryMetadata dlFileEntryMetadata =
 						(DLFileEntryMetadata)object;
 
