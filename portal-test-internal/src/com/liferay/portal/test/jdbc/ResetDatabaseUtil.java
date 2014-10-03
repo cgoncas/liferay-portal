@@ -106,6 +106,7 @@ public class ResetDatabaseUtil {
 			}
 		}
 		catch (Exception e) {
+			_log.error("Error " + e.getMessage());
 			throw new RuntimeException(e);
 		}
 		finally {
