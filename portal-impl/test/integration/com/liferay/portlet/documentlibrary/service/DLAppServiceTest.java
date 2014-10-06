@@ -44,6 +44,7 @@ import com.liferay.portal.test.DeleteAfterTestRun;
 import com.liferay.portal.test.Sync;
 import com.liferay.portal.test.SynchronousDestinationExecutionTestListener;
 import com.liferay.portal.test.listeners.MainServletExecutionTestListener;
+import com.liferay.portal.test.listeners.ResetDatabaseExecutionTestListener;
 import com.liferay.portal.test.log.ExpectedLog;
 import com.liferay.portal.test.log.ExpectedLogs;
 import com.liferay.portal.test.log.ExpectedType;
@@ -82,6 +83,7 @@ public class DLAppServiceTest extends BaseDLAppTestCase {
 	@ExecutionTestListeners(
 		listeners = {
 			MainServletExecutionTestListener.class,
+			ResetDatabaseExecutionTestListener.class,
 			SynchronousDestinationExecutionTestListener.class
 		})
 	@RunWith(LiferayIntegrationJUnitTestRunner.class)
