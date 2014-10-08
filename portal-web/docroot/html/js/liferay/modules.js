@@ -357,12 +357,6 @@
 							'plugin'
 						]
 					},
-					'liferay-google-maps': {
-						path: 'google_maps.js',
-						requires: [
-							'aui-base'
-						]
-					},
 					'liferay-history': {
 						path: 'history.js',
 						requires: [
@@ -545,6 +539,25 @@
 							'aui-io-request',
 							'aui-modal',
 							'aui-tabview'
+						]
+					},
+					'liferay-map-base': {
+						path: 'map_base.js',
+						requires: [
+							'aui-base'
+						]
+					},
+					'liferay-map-google': {
+						path: 'map_google.js',
+						requires: [
+							'liferay-map-base'
+						]
+					},
+					'liferay-map-openstreet': {
+						path: 'map_openstreet.js',
+						requires: [
+							'jsonp',
+							'liferay-map-base'
 						]
 					},
 					'liferay-menu': {

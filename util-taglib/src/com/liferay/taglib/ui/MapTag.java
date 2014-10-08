@@ -23,8 +23,12 @@ import javax.servlet.http.HttpServletRequest;
  */
 public class MapTag extends IncludeTag {
 
-	public void setGeoCode(boolean geocode) {
-		_geocode = geocode;
+	public void setPoints(String points) {
+		_points = points;
+	}
+
+	public void setGeolocation(boolean geolocation) {
+		_geolocation = geolocation;
 	}
 
 	public void setLatitude(String latitude) {
@@ -39,48 +43,41 @@ public class MapTag extends IncludeTag {
 		_name = name;
 	}
 
-	public void setPoints(String points) {
-		_points = points;
-	}
-
 	public void setProvider(String provider) {
 		_provider = provider;
 	}
 
 	@Override
 	protected void cleanUp() {
-		_geocode = false;
+		_points = null;
+		_geolocation = false;
 		_latitude = null;
 		_longitude = null;
 		_name =  null;
-		_page = null;
-		_points = null;
-		_provider = "gmaps";
+		_provider = "Google";
 	}
 
 	@Override
 	protected String getPage() {
-		return _page;
+		return _PAGE;
 	}
 
 	@Override
 	protected void setAttributes(HttpServletRequest request) {
-		_page = "/html/js/maps/" + _provider + ".jsp";
-
-		request.setAttribute("liferay-ui:input-editor:geocode", _geocode);
-		request.setAttribute("liferay-ui:input-editor:latitude", _latitude);
-		request.setAttribute("liferay-ui:input-editor:longitude", _longitude);
-		request.setAttribute("liferay-ui:input-editor:name", _name);
-		request.setAttribute("liferay-ui:input-editor:points", _points);
-		request.setAttribute("liferay-ui:input-editor:provider", _provider);
+		request.setAttribute("liferay-ui:map:points", _points);
+		request.setAttribute("liferay-ui:map:geolocation", _geolocation);
+		request.setAttribute("liferay-ui:map:latitude", _latitude);
+		request.setAttribute("liferay-ui:map:longitude", _longitude);
+		request.setAttribute("liferay-ui:map:name", _name);
+		request.setAttribute("liferay-ui:map:provider", _provider);
 	}
 
-	private boolean _geocode = false;
+	private String _points;
+	private boolean _geolocation = false;
 	private String _latitude;
 	private String _longitude;
 	private String _name;
-	private String _page;
-	private String _points;
-	private String _provider = "gmaps";
+	private String _provider = "Google";
 
+	private static final String _PAGE = "/html/taglib/ui/map/page.jsp";
 }
