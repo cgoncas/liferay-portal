@@ -1,4 +1,4 @@
-.lfr-google-maps {
+.lfr-map-google, .lfr-map-bing, .lfr-map-openstreet {
 	border: 1px solid #CCC;
 	min-height: 400px;
 	width: 100%;
