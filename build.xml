@@ -1198,6 +1198,8 @@ print AdminControl.invoke(appManager, 'startApplication', 'liferay-portal')
 			ant -f modules/build.xml compile
 
 			ant -f modules/sdk/ant-arquillian/build.xml clean compile
+
+			ant -f portal-service/build.xml test-class -Dtest.class=StringUtilTest
 		</execute>
 	</target>
 
