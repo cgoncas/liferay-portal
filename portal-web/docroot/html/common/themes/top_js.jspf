@@ -198,6 +198,9 @@
 				getPortalURL: function() {
 					return '<%= themeDisplay.getPortalURL() %>';
 				},
+				getProtocol: function() {
+					return "<%= themeDisplay.getProtocol() %>";
+				},
 				getPortletSetupShowBordersDefault: function() {
 					return <%= GetterUtil.getString(themeDisplay.getThemeSetting("portlet-setup-show-borders-default"), StringUtil.valueOf(PropsValues.THEME_PORTLET_DECORATE_DEFAULT)) %>;
 				},
