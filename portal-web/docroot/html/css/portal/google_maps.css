@@ -1,0 +1,18 @@
+.lfr-map-google, .lfr-map-bing, .lfr-map-openstreet {
+	border: 1px solid #CCC;
+	min-height: 400px;
+	width: 100%;
+
+	.home-button {
+		margin: 5px;
+	}
+
+	.search-controls {
+		font-size: 15px;
+		margin-top: 5px;
+
+		.search-input {
+			width: 100%;
+		}
+	}
+}

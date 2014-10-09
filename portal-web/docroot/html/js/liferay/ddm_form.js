@@ -732,37 +732,30 @@ AUI.add(
 					initializer: function() {
 						var instance = this;
 
-						var container = instance.get('container');
+						var map = Liferay.component(instance.getInputName());
 
-						container.one('.geolocate-button').on('click', instance.getGeolocation, instance);
+						map.on('positionChange', instance.onPositionChange, instance);
 					},
 
-					getGeolocation: function() {
+					onPositionChange: function(event) {
 						var instance = this;
 
 						var inputName = instance.getInputName();
 
-						var coordinatesNode = A.one('#' + inputName + 'Coordinates');
-						var coordinatesContainerNode = A.one('#' + inputName + 'CoordinatesContainer');
+						var location = event.newVal.location;
 
-						coordinatesContainerNode.show();
-
-						coordinatesNode.html(Liferay.Language.get('loading'));
-
-						Liferay.Util.getGeolocation(
-							function(latitude, longitude) {
-								instance.setValue(
-									AJSON.stringify(
-										{
-											latitude: latitude,
-											longitude: longitude
-										}
-									)
-								);
-
-								coordinatesNode.html([latitude, longitude].join(', '));
-							}
+						instance.setValue(
+							AJSON.stringify(
+								{
+									latitude: location.lat,
+									longitude: location.lng
+								}
+							)
 						);
+
+						var locationNode = A.one('#' + inputName + 'Location');
+
+						locationNode.html(event.newVal.address);
 					}
 				}
 			}
