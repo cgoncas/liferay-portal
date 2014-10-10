@@ -58,11 +58,17 @@ public abstract class BaseSubscriptionLocalizedContentTestCase
 	}
 
 	@Test
-	public void testSubscriptionLocalizedContent() throws Exception {
-		localizedContents.put(LocaleUtil.GERMANY, GERMAN_BODY);
-		localizedContents.put(LocaleUtil.SPAIN, SPANISH_BODY);
+	public void testSubscriptionLocalizedContentWhenAddingBaseModel()
+		throws Exception {
 
-		setAddBaseModelSubscriptionBodyPreferences();
+		Map<Locale, String> previousLocalizedContents = new HashMap<>();
+
+		previousLocalizedContents.putAll(localizedContents);
+
+		localizedContents.put(LocaleUtil.GERMANY, GERMAN_BODY);
+
+		setBaseModelSubscriptionBodyPreferences(
+			getSubscriptionAddedBodyPreferenceName());
 
 		addSubscriptionContainerModel(PARENT_CONTAINER_MODEL_ID_DEFAULT);
 
@@ -75,13 +81,37 @@ public abstract class BaseSubscriptionLocalizedContentTestCase
 
 		Assert.assertEquals(1, messages.size());
 
+		localizedContents = previousLocalizedContents;
+	}
+
+
+	@Test
+	public void testSubscriptionLocalizedContentWhenUpdatingBaseModel()
+		throws Exception {
+
+		Map<Locale, String> previousLocalizedContents = new HashMap<>();
+
+		previousLocalizedContents.putAll(localizedContents);
+
+		localizedContents.put(LocaleUtil.SPAIN, SPANISH_BODY);
+
+		setBaseModelSubscriptionBodyPreferences(
+			getSubscriptionUpdatedBodyPreferenceName());
+
 		LocaleThreadLocal.setDefaultLocale(LocaleUtil.SPAIN);
 
-		addBaseModel(PARENT_CONTAINER_MODEL_ID_DEFAULT);
+		long baseModelId = addBaseModel(PARENT_CONTAINER_MODEL_ID_DEFAULT);
 
-		messages = MailServiceTestUtil.getMailMessages("Body", SPANISH_BODY);
+		addSubscriptionContainerModel(PARENT_CONTAINER_MODEL_ID_DEFAULT);
+
+		updateBaseModel(baseModelId);
+
+		List<MailMessage>  messages = MailServiceTestUtil.getMailMessages(
+			"Body", SPANISH_BODY);
 
 		Assert.assertEquals(1, messages.size());
+
+		localizedContents = previousLocalizedContents;
 	}
 
 	protected abstract void addSubscriptionContainerModel(long containerModelId)
@@ -93,10 +123,14 @@ public abstract class BaseSubscriptionLocalizedContentTestCase
 		return StringPool.BLANK;
 	}
 
-	protected abstract String getSubscriptionBodyPreferenceName()
+	protected abstract String getSubscriptionAddedBodyPreferenceName()
 		throws Exception;
 
-	protected void setAddBaseModelSubscriptionBodyPreferences()
+	protected abstract String getSubscriptionUpdatedBodyPreferenceName()
+		throws Exception;
+
+	protected void setBaseModelSubscriptionBodyPreferences(
+			String bodyPreferenceName)
 		throws Exception {
 
 		Settings settings = SettingsFactoryUtil.getGroupServiceSettings(
@@ -112,8 +146,7 @@ public abstract class BaseSubscriptionLocalizedContentTestCase
 
 			String subscriptionBodyPreferencesKey =
 				LocalizationUtil.getPreferencesKey(
-					getSubscriptionBodyPreferenceName(),
-					LocaleUtil.toLanguageId(locale));
+					bodyPreferenceName, LocaleUtil.toLanguageId(locale));
 
 			String content = localizedContent.getValue();
 
