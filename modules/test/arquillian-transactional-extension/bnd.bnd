@@ -1,0 +1,5 @@
+Bundle-Name: Liferay Transactional Arquillian Extension
+Bundle-SymbolicName: com.liferay.arquillian.transactional.extension
+Bundle-Version: 1.0.0
+Export-Package: com.liferay.arquillian.transactional.extension
+Include-Resource: classes
