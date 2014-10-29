@@ -24,7 +24,8 @@ import java.util.List;
 /**
  * @author Cristina González
  */
-public class SpringDescriptorBasabaseBuilderImpl implements SpringDescriptor {
+public class InitializeDatabaseSpringDescriptorImpl
+	implements SpringDescriptor {
 
 	@Override
 	public List<String> getConfigLocations() {
