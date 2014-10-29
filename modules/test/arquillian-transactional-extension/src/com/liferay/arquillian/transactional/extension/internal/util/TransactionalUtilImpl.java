@@ -58,11 +58,13 @@ public class TransactionalUtilImpl implements TransactionalUtil {
 
 			TransactionInvokerUtil.invoke(
 				builder.build(), new Callable<Object>() {
+
 					@Override
 					public Object call() throws Exception {
 						eventContext.proceed();
 						return null;
 					}
+
 				}
 			);
 		}

@@ -1140,12 +1140,12 @@ Please set the environment variable ANT_OPTS to the recommended value of
 			<if>
 				<equals arg1="@{persistence.suite}" arg2="true" />
 				<then>
-			<ivy:resolve log="download-only">
-				<dependency name="arquillian-junit-container" org="org.jboss.arquillian.junit" rev="1.1.2.Final" />
-				<dependency name="com.liferay.arquillian.persistence.extension" org="com.liferay" rev="1.0.0-SNAPSHOT" />
-				<dependency name="com.liferay.arquillian.transactional.extension" org="com.liferay" rev="1.0.0-SNAPSHOT" />
-				<exclude org="junit" />
-			</ivy:resolve>
+					<ivy:resolve log="download-only">
+						<dependency name="arquillian-junit-container" org="org.jboss.arquillian.junit" rev="1.1.2.Final" />
+						<dependency name="com.liferay.arquillian.persistence.extension" org="com.liferay" rev="1.0.0-SNAPSHOT" />
+						<dependency name="com.liferay.arquillian.transactional.extension" org="com.liferay" rev="1.0.0-SNAPSHOT" />
+						<exclude org="junit" />
+					</ivy:resolve>
 				</then>
 				<else>
 					<ivy:resolve log="download-only">
@@ -1700,12 +1700,9 @@ rerun your task.
 		/>
 
 		<if>
-			<contains string="${test.class.name}" substring="PersistenceTest"/>
+			<contains string="${test.class.name}" substring="PersistenceTest" />
 			<then>
-				<setup-test-classpath 
-					persistence.suite="true"
-					test.type="${test.type}"
-				/>
+				<setup-test-classpath persistence.suite="true"/>
 			</then>
 			<else>
 				<setup-test-classpath
