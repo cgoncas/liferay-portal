@@ -29,20 +29,20 @@ import org.jboss.arquillian.test.spi.event.suite.Test;
  */
 public class TransactionalObserver {
 
-	public void after(@Observes EventContext<After> eventContext)
+	public void afterTest(@Observes EventContext<After> eventContext)
 		throws Throwable {
 
 		TransactionalUtil transactionalUtil = _transactionalUtilInstance.get();
 
-		transactionalUtil.callAsTransactional(eventContext);
+		transactionalUtil.transactionalCall(eventContext);
 	}
 
-	public void before(@Observes EventContext<Before> eventContext)
+	public void beforeTest(@Observes EventContext<Before> eventContext)
 		throws Throwable {
 
 		TransactionalUtil transactionalUtil = _transactionalUtilInstance.get();
 
-		transactionalUtil.callAsTransactional(eventContext);
+		transactionalUtil.transactionalCall(eventContext);
 	}
 
 	public void test(@Observes EventContext<Test> eventContext)
@@ -50,7 +50,7 @@ public class TransactionalObserver {
 
 		TransactionalUtil transactionalUtil = _transactionalUtilInstance.get();
 
-		transactionalUtil.callAsTransactional(eventContext);
+		transactionalUtil.transactionalCall(eventContext);
 	}
 
 	@Inject

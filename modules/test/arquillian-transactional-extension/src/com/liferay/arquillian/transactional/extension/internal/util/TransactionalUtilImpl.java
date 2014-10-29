@@ -34,16 +34,16 @@ import org.jboss.arquillian.test.spi.event.suite.TestEvent;
  */
 public class TransactionalUtilImpl implements TransactionalUtil {
 
-	public void callAsTransactional(EventContext eventContext)
+	public void transactionalCall(EventContext eventContext)
 		throws Throwable {
 
 		Transactional transactionalAnnotation = getAnnotation(
 			eventContext.getEvent());
 
-		callAsTransactional(transactionalAnnotation, eventContext);
+		transactionalCall(transactionalAnnotation, eventContext);
 	}
 
-	protected void callAsTransactional(
+	protected void transactionalCall(
 			Transactional transactionalAnnotation,
 			final EventContext eventContext)
 		throws Throwable {
