@@ -37,7 +37,7 @@ public class TransactionalObserver {
 		transactionalUtil.callAsTransactional(eventContext);
 	}
 
-	public void before(@Observes final EventContext<Before> eventContext)
+	public void before(@Observes EventContext<Before> eventContext)
 		throws Throwable {
 
 		TransactionalUtil transactionalUtil = _transactionalUtilInstance.get();
@@ -45,7 +45,7 @@ public class TransactionalObserver {
 		transactionalUtil.callAsTransactional(eventContext);
 	}
 
-	public void test(@Observes final EventContext<Test> eventContext)
+	public void test(@Observes EventContext<Test> eventContext)
 		throws Throwable {
 
 		TransactionalUtil transactionalUtil = _transactionalUtilInstance.get();
