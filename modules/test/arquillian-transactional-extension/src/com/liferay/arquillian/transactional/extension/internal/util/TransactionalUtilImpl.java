@@ -19,58 +19,24 @@ import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.transaction.TransactionAttribute;
 import com.liferay.portal.kernel.transaction.TransactionInvokerUtil;
 import com.liferay.portal.kernel.transaction.Transactional;
-
-import java.lang.reflect.Method;
-
-import java.util.concurrent.Callable;
-
 import org.jboss.arquillian.core.spi.EventContext;
 import org.jboss.arquillian.test.spi.TestClass;
 import org.jboss.arquillian.test.spi.event.suite.ClassEvent;
 import org.jboss.arquillian.test.spi.event.suite.TestEvent;
+
+import java.lang.reflect.Method;
+import java.util.concurrent.Callable;
 
 /**
  * @author Cristina González
  */
 public class TransactionalUtilImpl implements TransactionalUtil {
 
-	public void transactionalCall(EventContext eventContext)
-		throws Throwable {
-
+	public void transactionalCall(EventContext eventContext) throws Throwable {
 		Transactional transactionalAnnotation = getAnnotation(
 			eventContext.getEvent());
 
 		transactionalCall(transactionalAnnotation, eventContext);
-	}
-
-	protected void transactionalCall(
-			Transactional transactionalAnnotation,
-			final EventContext eventContext)
-		throws Throwable {
-
-		if (transactionalAnnotation != null) {
-			TransactionAttribute.Builder builder =
-				new TransactionAttribute.Builder();
-
-			builder.setPropagation(transactionalAnnotation.propagation());
-			builder.setRollbackForClasses(
-				PortalException.class, SystemException.class);
-
-			TransactionInvokerUtil.invoke(
-				builder.build(), new Callable<Object>() {
-
-					@Override
-					public Object call() throws Exception {
-						eventContext.proceed();
-						return null;
-					}
-
-				}
-			);
-		}
-		else {
-			eventContext.proceed();
-		}
 	}
 
 	protected Transactional getAnnotation(ClassEvent testEvent) {
@@ -106,6 +72,36 @@ public class TransactionalUtilImpl implements TransactionalUtil {
 		}
 
 		return transactionalAnnotation;
+	}
+
+	protected void transactionalCall(
+			Transactional transactionalAnnotation,
+			final EventContext eventContext)
+		throws Throwable {
+
+		if (transactionalAnnotation != null) {
+			TransactionAttribute.Builder builder =
+				new TransactionAttribute.Builder();
+
+			builder.setPropagation(transactionalAnnotation.propagation());
+			builder.setRollbackForClasses(
+				PortalException.class, SystemException.class);
+
+			TransactionInvokerUtil.invoke(
+				builder.build(), new Callable<Object>() {
+
+					@Override
+					public Object call() throws Exception {
+						eventContext.proceed();
+						return null;
+					}
+
+				}
+			);
+		}
+		else {
+			eventContext.proceed();
+		}
 	}
 
 }

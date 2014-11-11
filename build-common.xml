@@ -1320,7 +1320,7 @@ rerun your task.
 					</fileset>
 
 					<resourcecount property="test.with.security.count">
-						<fileset refid="test.with.security.fileset"/>
+						<fileset refid="test.with.security.fileset" />
 					</resourcecount>
 
 					<fileset
@@ -1339,7 +1339,7 @@ rerun your task.
 					</fileset>
 
 					<resourcecount property="test.with.persistence.count">
-						<fileset refid="test.with.persistence.fileset"/>
+						<fileset refid="test.with.persistence.fileset" />
 					</resourcecount>
 
 					<fileset
@@ -1359,7 +1359,7 @@ rerun your task.
 					</fileset>
 
 					<resourcecount property="test.without.security.or.persistence.count">
-						<fileset refid="test.without.security.or.persistence.fileset"/>
+						<fileset refid="test.without.security.or.persistence.fileset" />
 					</resourcecount>
 
 					<if>
@@ -1702,7 +1702,7 @@ rerun your task.
 		<if>
 			<contains string="${test.class.name}" substring="PersistenceTest" />
 			<then>
-				<setup-test-classpath persistence.suite="true"/>
+				<setup-test-classpath persistence.suite="true" />
 			</then>
 			<else>
 				<setup-test-classpath
