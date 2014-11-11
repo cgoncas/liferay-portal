@@ -714,11 +714,9 @@ public class UserServiceTest {
 
 			_group = GroupTestUtil.addGroup("Parent group");
 
-			for (int i = 0; i < 7; i++) {
+			for (int i = 0; i <= 7; i++) {
 				_user = UserTestUtil.addUser("parent" + i, _group.getGroupId());
 			}
-
-			_user = UserTestUtil.addUser("parent7", _group.getGroupId());
 
 			Group group = GroupTestUtil.addGroup(
 				_group.getGroupId(), "Child group");
@@ -752,7 +750,7 @@ public class UserServiceTest {
 
 			int usersCount = UserLocalServiceUtil.searchCount(
 				TestPropsValues.getCompanyId(), null, null, null, null, null,
-				WorkflowConstants.STATUS_APPROVED, params, MATCH_ALL);
+				WorkflowConstants.STATUS_APPROVED, params, true);
 
 			Assert.assertEquals(9, usersCount);
 		}
@@ -781,7 +779,7 @@ public class UserServiceTest {
 
 			int usersCount = UserLocalServiceUtil.searchCount(
 				TestPropsValues.getCompanyId(), null, null, null, null, null,
-				WorkflowConstants.STATUS_APPROVED, params, MATCH_ALL);
+				WorkflowConstants.STATUS_APPROVED, params, true);
 
 			Assert.assertEquals(10, usersCount);
 		}
@@ -806,7 +804,7 @@ public class UserServiceTest {
 		public void shouldCountUsers() throws Exception {
 			int count = UserLocalServiceUtil.searchCount(
 				TestPropsValues.getCompanyId(), null, null, null, null, null,
-				WorkflowConstants.STATUS_APPROVED, null, MATCH_ALL);
+				WorkflowConstants.STATUS_APPROVED, null, true);
 
 			Assert.assertEquals(13, count);
 		}
@@ -817,7 +815,7 @@ public class UserServiceTest {
 
 			List<User> users = UserLocalServiceUtil.search(
 				TestPropsValues.getCompanyId(), null, null, null, null, null,
-				WorkflowConstants.STATUS_APPROVED, null, MATCH_ALL,
+				WorkflowConstants.STATUS_APPROVED, null, true,
 				QueryUtil.ALL_POS, QueryUtil.ALL_POS, sort);
 
 			Assert.assertNotNull(users);
@@ -830,7 +828,7 @@ public class UserServiceTest {
 
 			Hits users = UserLocalServiceUtil.search(
 				TestPropsValues.getCompanyId(), null, null, null, null, null,
-				WorkflowConstants.STATUS_APPROVED, null, MATCH_ALL,
+				WorkflowConstants.STATUS_APPROVED, null, true,
 				QueryUtil.ALL_POS, QueryUtil.ALL_POS, sort);
 
 			Assert.assertNotNull(users);
@@ -860,7 +858,7 @@ public class UserServiceTest {
 
 			List<User> users = UserLocalServiceUtil.search(
 				TestPropsValues.getCompanyId(), null, null, null, null, null,
-				WorkflowConstants.STATUS_APPROVED, params, MATCH_ALL,
+				WorkflowConstants.STATUS_APPROVED, params, true,
 				QueryUtil.ALL_POS, QueryUtil.ALL_POS, sort);
 
 			Assert.assertNotNull(users);
@@ -896,7 +894,7 @@ public class UserServiceTest {
 
 			List<User> users = UserLocalServiceUtil.search(
 				TestPropsValues.getCompanyId(), null, null, null, null, null,
-				WorkflowConstants.STATUS_APPROVED, params, MATCH_ALL,
+				WorkflowConstants.STATUS_APPROVED, params, true,
 				QueryUtil.ALL_POS, QueryUtil.ALL_POS, sort);
 
 			Assert.assertNotNull(users);
@@ -916,7 +914,7 @@ public class UserServiceTest {
 
 			List<User> users = UserLocalServiceUtil.search(
 				TestPropsValues.getCompanyId(), null, null, null, null, null,
-				WorkflowConstants.STATUS_APPROVED, params, MATCH_ALL,
+				WorkflowConstants.STATUS_APPROVED, params, true,
 				QueryUtil.ALL_POS, QueryUtil.ALL_POS, sort);
 
 			Assert.assertNotNull(users);
@@ -997,7 +995,7 @@ public class UserServiceTest {
 			List<User> users = UserLocalServiceUtil.search(
 				TestPropsValues.getCompanyId(), null, null, null,
 				_user.getScreenName(), _user.getEmailAddress(),
-				WorkflowConstants.STATUS_APPROVED, params, MATCH_ALL,
+				WorkflowConstants.STATUS_APPROVED, params, true,
 				QueryUtil.ALL_POS, QueryUtil.ALL_POS, sort);
 
 			Assert.assertNotNull(users);
@@ -1013,7 +1011,7 @@ public class UserServiceTest {
 			List<User> users = UserLocalServiceUtil.search(
 				TestPropsValues.getCompanyId(), null, null, null,
 				_user.getScreenName(), null, WorkflowConstants.STATUS_APPROVED,
-				null, MATCH_ALL, QueryUtil.ALL_POS, QueryUtil.ALL_POS, sort);
+				null, true, QueryUtil.ALL_POS, QueryUtil.ALL_POS, sort);
 
 			Assert.assertNotNull(users);
 			Assert.assertFalse(users.isEmpty());
@@ -1029,7 +1027,7 @@ public class UserServiceTest {
 			Hits users = UserLocalServiceUtil.search(
 				TestPropsValues.getCompanyId(), null, null, null,
 				_user.getScreenName(), null, WorkflowConstants.STATUS_APPROVED,
-				null, MATCH_ALL, QueryUtil.ALL_POS, QueryUtil.ALL_POS, sort);
+				null, true, QueryUtil.ALL_POS, QueryUtil.ALL_POS, sort);
 
 			Assert.assertNotNull(users);
 			Assert.assertNotEquals(users.getLength(), 0);
@@ -1041,10 +1039,9 @@ public class UserServiceTest {
 			Assert.assertEquals(_user.getUserId(), userId);
 		}
 
-		private static Boolean MATCH_ALL = Boolean.TRUE;
-
 		private Group _group;
 		private User _user;
+
 	}
 
 	private static void _unsetGroupUsers(

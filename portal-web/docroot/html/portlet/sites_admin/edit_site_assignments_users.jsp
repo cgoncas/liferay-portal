@@ -81,7 +81,7 @@ searchContainer.setEmptyResultsMessage(emptyResultsMessage);
 		userParams.put("inherit", Boolean.TRUE);
 		userParams.put("usersGroups", new Long(group.getGroupId()));
 	}
-	if (group.isLimitedToParentSiteMembers() && !tabs1.equals("summary") && !tabs2.equals("current") ) {
+	else if (group.isLimitedToParentSiteMembers()) {
 		userParams.put("inherit", Boolean.TRUE);
 		userParams.put("usersGroups", new Long(group.getParentGroupId()));
 	}
