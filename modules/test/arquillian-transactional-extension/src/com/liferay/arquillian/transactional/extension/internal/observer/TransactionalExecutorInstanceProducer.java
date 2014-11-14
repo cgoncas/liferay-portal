@@ -14,8 +14,8 @@
 
 package com.liferay.arquillian.transactional.extension.internal.observer;
 
-import com.liferay.arquillian.transactional.extension.internal.util.TransactionalUtil;
-import com.liferay.arquillian.transactional.extension.internal.util.TransactionalUtilImpl;
+import com.liferay.arquillian.transactional.extension.internal.util.TransactionalExecutor;
+import com.liferay.arquillian.transactional.extension.internal.util.TransactionalExecutorImpl;
 
 import org.jboss.arquillian.config.descriptor.api.ArquillianDescriptor;
 import org.jboss.arquillian.core.api.InstanceProducer;
@@ -26,14 +26,16 @@ import org.jboss.arquillian.core.api.annotation.Observes;
 /**
  * @author Cristina González
  */
-public class TransactionUtilProducer {
+public class TransactionalExecutorInstanceProducer {
 
-	public void createTransactionalUtil(@Observes ArquillianDescriptor event) {
-		_producer.set(new TransactionalUtilImpl());
+	public void createTransactionalUtil
+		(@Observes ArquillianDescriptor arquillianDescriptor) {
+
+		_instanceProducer.set(new TransactionalExecutorImpl());
 	}
 
 	@ApplicationScoped
 	@Inject
-	private InstanceProducer<TransactionalUtil> _producer;
+	private InstanceProducer<TransactionalExecutor> _instanceProducer;
 
 }

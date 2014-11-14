@@ -19,8 +19,8 @@ import org.jboss.arquillian.core.spi.EventContext;
 /**
  * @author Cristina González
  */
-public interface TransactionalUtil {
+public interface TransactionalExecutor {
 
-	public void transactionalCall(EventContext eventContext) throws Throwable;
+	public void execute(EventContext eventContext) throws Throwable;
 
 }

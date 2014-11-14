@@ -14,7 +14,7 @@
 
 package com.liferay.arquillian.transactional.extension.internal.observer;
 
-import com.liferay.arquillian.transactional.extension.internal.util.TransactionalUtil;
+import com.liferay.arquillian.transactional.extension.internal.util.TransactionalExecutor;
 
 import org.jboss.arquillian.core.api.Instance;
 import org.jboss.arquillian.core.api.annotation.Inject;
@@ -32,28 +32,28 @@ public class TransactionalObserver {
 	public void afterTest(@Observes EventContext<After> eventContext)
 		throws Throwable {
 
-		TransactionalUtil transactionalUtil = _transactionalUtilInstance.get();
+		TransactionalExecutor transactionalExecutor = _instance.get();
 
-		transactionalUtil.transactionalCall(eventContext);
+		transactionalExecutor.execute(eventContext);
 	}
 
 	public void beforeTest(@Observes EventContext<Before> eventContext)
 		throws Throwable {
 
-		TransactionalUtil transactionalUtil = _transactionalUtilInstance.get();
+		TransactionalExecutor transactionalExecutor = _instance.get();
 
-		transactionalUtil.transactionalCall(eventContext);
+		transactionalExecutor.execute(eventContext);
 	}
 
 	public void test(@Observes EventContext<Test> eventContext)
 		throws Throwable {
 
-		TransactionalUtil transactionalUtil = _transactionalUtilInstance.get();
+		TransactionalExecutor transactionalExecutor = _instance.get();
 
-		transactionalUtil.transactionalCall(eventContext);
+		transactionalExecutor.execute(eventContext);
 	}
 
 	@Inject
-	private Instance<TransactionalUtil> _transactionalUtilInstance;
+	private Instance<TransactionalExecutor> _instance;
 
 }

@@ -14,7 +14,7 @@
 
 package com.liferay.arquillian.transactional.extension;
 
-import com.liferay.arquillian.transactional.extension.internal.observer.TransactionUtilProducer;
+import com.liferay.arquillian.transactional.extension.internal.observer.TransactionalExecutorInstanceProducer;
 import com.liferay.arquillian.transactional.extension.internal.observer.TransactionalObserver;
 
 import org.jboss.arquillian.core.spi.LoadableExtension;
@@ -28,7 +28,7 @@ public class TransactionalTestScenarioExtension implements LoadableExtension {
 	public void register(ExtensionBuilder builder) {
 		builder.observer(TransactionalObserver.class);
 
-		builder.observer(TransactionUtilProducer.class);
+		builder.observer(TransactionalExecutorInstanceProducer.class);
 	}
 
 }
