@@ -41,7 +41,7 @@ public class InitializeDatabaseObserver {
 				DBUpgrader.upgrade();
 			}
 			catch (Exception e) {
-				_log.error(e, e);
+				throw new RuntimeException(e);
 			}
 
 			TemplateManagerUtil.init();
