@@ -15,7 +15,7 @@
 package com.liferay.arquillian.persistence.extension.internal.observer;
 
 import com.liferay.arquillian.extension.internal.event.LiferayContextCreatedEvent;
-import com.liferay.arquillian.persistence.extension.internal.annotation.InitializeDatabase;
+import com.liferay.arquillian.persistence.extension.internal.annotation.PersistenceTest;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.template.TemplateException;
@@ -36,7 +36,7 @@ public class InitializeDatabaseObserver {
 
 		TestClass testClass = liferayContextCreatedEvent.getTestClass();
 
-		if (testClass.getAnnotation(InitializeDatabase.class) != null) {
+		if (testClass.getAnnotation(PersistenceTest.class) != null) {
 			try {
 				DBUpgrader.upgrade();
 			}

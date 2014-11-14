@@ -26,7 +26,7 @@ import ${packagePath}.model.${entity.name};
 import ${packagePath}.model.impl.${entity.name}ModelImpl;
 import ${packagePath}.service.${entity.name}LocalServiceUtil;
 
-import com.liferay.arquillian.persistence.extension.internal.annotation.InitializeDatabase;
+import com.liferay.arquillian.persistence.extension.internal.annotation.PersistenceTest
 
 import ${beanLocatorUtil};
 import com.liferay.portal.kernel.dao.jdbc.OutputBlob;
@@ -81,7 +81,7 @@ import org.junit.Test;
 * @generated
 */
 <#if !osgiModule>
-@InitializeDatabase
+@PersistenceTest
 </#if>
 @RunWith(Arquillian.class)
 @Transactional(propagation = Propagation.REQUIRED)
