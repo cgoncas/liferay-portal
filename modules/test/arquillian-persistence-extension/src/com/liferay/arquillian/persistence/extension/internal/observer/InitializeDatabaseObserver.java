@@ -31,10 +31,10 @@ import org.jboss.arquillian.test.spi.TestClass;
 public class InitializeDatabaseObserver {
 
 	public void afterLiferayContexCreated(
-			@Observes LiferayContextCreatedEvent liferayContextCreated)
+			@Observes LiferayContextCreatedEvent liferayContextCreatedEvent)
 		throws TemplateException {
 
-		TestClass testClass = liferayContextCreated.getTestClass();
+		TestClass testClass = liferayContextCreatedEvent.getTestClass();
 
 		if (testClass.getAnnotation(InitializeDatabase.class) != null) {
 			try {
