@@ -12,31 +12,23 @@
  * details.
  */
 
-package com.liferay.portal.test.runners;
+package com.liferay.arquillian.transactional.extension;
 
-import java.util.List;
+import com.liferay.arquillian.transactional.extension.internal.observer.TransactionalExecutorInstanceProducer;
+import com.liferay.arquillian.transactional.extension.internal.observer.TransactionalObserver;
 
-import org.junit.runners.model.InitializationError;
+import org.jboss.arquillian.core.spi.LoadableExtension;
 
 /**
- * @author Raymond Augé
+ * @author Cristina González Castellano
  */
-public class PersistenceIntegrationJUnitTestRunner
-	extends LiferayIntegrationJUnitTestRunner {
-
-	public PersistenceIntegrationJUnitTestRunner(Class<?> clazz)
-		throws InitializationError {
-
-		super(clazz);
-	}
+public class TransactionalTestScenarioExtension implements LoadableExtension {
 
 	@Override
-	protected List<String> processConfigLocations(
-		List<String> configLocations) {
+	public void register(ExtensionBuilder builder) {
+		builder.observer(TransactionalObserver.class);
 
-		configLocations.remove("META-INF/model-listener-spring.xml");
-
-		return configLocations;
+		builder.observer(TransactionalExecutorInstanceProducer.class);
 	}
 
 }
