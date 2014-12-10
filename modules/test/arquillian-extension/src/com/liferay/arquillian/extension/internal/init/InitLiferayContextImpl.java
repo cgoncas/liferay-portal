@@ -12,10 +12,11 @@
  * details.
  */
 
-package com.liferay.arquillian.extension.internal.observer;
+package com.liferay.arquillian.extension.internal.init;
 
 import com.liferay.arquillian.extension.internal.descriptor.SpringDescriptor;
 import com.liferay.arquillian.extension.internal.event.LiferayContextCreatedEvent;
+import com.liferay.portal.test.jdbc.ResetDatabaseUtilDataSource;
 import com.liferay.portal.util.InitUtil;
 
 import java.util.ArrayList;
@@ -31,10 +32,12 @@ import org.jboss.arquillian.test.spi.event.suite.BeforeClass;
 /**
  * @author Cristina González
  */
-public class InitializeLiferayTestEnvironment {
+public class InitLiferayContextImpl implements InitLiferayContext {
 
-	public void beforeClass(@Observes BeforeClass beforeClass) {
+	public void init() {
 		System.setProperty("catalina.base", ".");
+
+		ResetDatabaseUtilDataSource.initialize();
 
 		List<String> configLocations = getConfigLocations();
 
@@ -43,14 +46,12 @@ public class InitializeLiferayTestEnvironment {
 		if (System.getProperty("external-properties") == null) {
 			System.setProperty("external-properties", "portal-test.properties");
 		}
-
-		_event.fire(new LiferayContextCreatedEvent(beforeClass.getTestClass()));
 	}
 
 	protected List<String> getConfigLocations() {
 		List<String> configLocations = new ArrayList<String>();
 
-		ServiceLoader serviceLoader = _instance.get();
+		ServiceLoader serviceLoader = _serviceLoaderInstance.get();
 
 		List<SpringDescriptor> springDescriptors =
 			(List<SpringDescriptor>)serviceLoader.all(SpringDescriptor.class);
@@ -63,9 +64,6 @@ public class InitializeLiferayTestEnvironment {
 	}
 
 	@Inject
-	private Event<LiferayContextCreatedEvent> _event;
-
-	@Inject
-	private Instance<ServiceLoader> _instance;
+	private Instance<ServiceLoader> _serviceLoaderInstance;
 
 }
