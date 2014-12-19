@@ -69,8 +69,6 @@ public class WebArchiveBuilder {
 	private static Project _getProject() {
 		Project project = new Project();
 
-		project.addBuildListener(new Log4jListener());
-
 		File buildFile = new File("build.xml");
 
 		project.setUserProperty("ant.file", buildFile.getAbsolutePath());
