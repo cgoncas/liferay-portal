@@ -17,10 +17,11 @@ package com.liferay.ant.arquillian;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.InputStreamReader;
+
 import org.apache.log4j.Logger;
 import org.apache.tools.ant.Project;
 import org.apache.tools.ant.ProjectHelper;
-import org.apache.tools.ant.listener.Log4jListener;
+
 import org.jboss.shrinkwrap.api.ShrinkWrap;
 import org.jboss.shrinkwrap.api.spec.WebArchive;
 
