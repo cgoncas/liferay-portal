@@ -1053,11 +1053,11 @@ body.yui3-skin-sam .yui3-widget-mask {
 
 	&.ace_dark {
 		.lfr-source-editor-code {
-			background-color: #35353D;
+			background-color: #47474F;
 			color: #FFF;
 
 			.ace_gutter {
-				background: #393B44;
+				background: #54555E;
 				color: #FFF;
 
 				.ace_gutter-active-line {
@@ -1067,11 +1067,15 @@ body.yui3-skin-sam .yui3-widget-mask {
 
 			.ace_content {
 				.ace_active-line {
-					background-color: #00283E;
+					background-color: #11394E;
 				}
 
 				.ace_cursor {
 					color: #FFF;
+				}
+
+				.ace_tag {
+					color: #4D91FF;
 				}
 			}
 		}
@@ -1221,9 +1225,25 @@ $prefixes: ("-webkit-", "-moz-", "-o-", "");
 	@include box-shadow(none);
 }
 
-.ie .alloy-editor-container {
-	.alloy-editor, .lfr-source-editor {
-		@include backface-visibility(visible);
+.alloy-editor-container {
+	.alloy-editor {
+		@include backface-visibility(hidden);
+	}
+
+	.lfr-source-editor {
+		@include backface-visibility(hidden);
+		@include transform(rotateY(180deg));
+	}
+
+	&.show-source {
+		.wrapper {
+			@include transform(rotateY(180deg));
+		}
+	}
+
+	.wrapper {
+		@include transform-style(preserve-3d);
+		@include transition-duration(0.6s);
 	}
 }
 

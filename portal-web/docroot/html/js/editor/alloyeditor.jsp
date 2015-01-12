@@ -404,9 +404,11 @@ if (alloyEditorMode.equals("text")) {
 
 		var editorContainer = A.one('#<%= name %>Container');
 		var editorSwitch = A.one('#<%= name %>Switch');
+		var editorSwitchContainer = editorSwitch.ancestor();
 
 		var toggleEditorModeUI = function() {
 			editorContainer.toggleClass(CSS_SHOW_SOURCE);
+			editorSwitchContainer.toggleClass(CSS_SHOW_SOURCE);
 
 			editorSwitch.setHTML(editorContainer.hasClass(CSS_SHOW_SOURCE) ? 'abc' : '&lt;/&gt;');
 		};

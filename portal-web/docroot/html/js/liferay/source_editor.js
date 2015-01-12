@@ -1,6 +1,8 @@
 AUI.add(
 	'liferay-source-editor',
 	function(A) {
+		var ace;
+
 		var Lang = A.Lang;
 
 		var CSS_ACTIVE_CELL = 'ace_gutter-active-cell';
