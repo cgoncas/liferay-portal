@@ -124,7 +124,7 @@ if (alloyEditorMode.equals("text")) {
 <c:choose>
 	<c:when test="<%= showSource %>">
 		<div class="alloy-editor-switch">
-			<button class="btn btn-default" id="<%= name %>Switch" type="button">
+			<button class="btn btn-default btn-xs" id="<%= name %>Switch" type="button">
 				&lt;&#47;&gt;
 			</button>
 		</div>
