@@ -15,16 +15,22 @@
 package com.liferay.arquillian.extension.internal.event;
 
 import com.liferay.arquillian.extension.internal.init.InitLiferayContext;
+import com.liferay.portal.kernel.test.BaseTestRule;
+
+import java.lang.reflect.Method;
 
 import org.jboss.arquillian.core.api.Instance;
 import org.jboss.arquillian.core.api.annotation.Inject;
 import org.jboss.arquillian.core.api.annotation.Observes;
 import org.jboss.arquillian.core.spi.EventContext;
+import org.jboss.arquillian.test.spi.TestClass;
 import org.jboss.arquillian.test.spi.event.suite.After;
 import org.jboss.arquillian.test.spi.event.suite.AfterClass;
 import org.jboss.arquillian.test.spi.event.suite.Before;
 import org.jboss.arquillian.test.spi.event.suite.BeforeClass;
 import org.jboss.arquillian.test.spi.event.suite.Test;
+
+import org.junit.runner.Description;
 
 /**
  * @author Cristina González
@@ -33,6 +39,21 @@ public class LiferayEventTestRunnerAdaptor {
 
 	public void after(@Observes EventContext<After> eventContext)
 		throws Throwable {
+
+		BaseTestRule<?, ?> baseTestRule = _baseTestRuleInstance.get();
+
+		After afterEvent = eventContext.getEvent();
+
+		baseTestRule.setInstance(afterEvent.getTestInstance());
+
+		TestClass testClass = afterEvent.getTestClass();
+
+		Method testMethod = afterEvent.getTestMethod();
+
+		baseTestRule.afterMethod(
+			Description.createTestDescription(
+				testClass.getJavaClass(), testMethod.getName()),
+			null);
 	}
 
 	public void afterClass(@Observes EventContext<AfterClass> eventContext)
@@ -55,6 +76,9 @@ public class LiferayEventTestRunnerAdaptor {
 	public void test(@Observes EventContext<Test> eventContext)
 		throws Throwable {
 	}
+
+	@Inject
+	private Instance<BaseTestRule<?, ?>> _baseTestRuleInstance;
 
 	@Inject
 	private Instance<InitLiferayContext> _initLiferayContextInstance;

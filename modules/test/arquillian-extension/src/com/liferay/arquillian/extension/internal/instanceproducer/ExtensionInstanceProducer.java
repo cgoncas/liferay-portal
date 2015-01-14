@@ -16,6 +16,8 @@ package com.liferay.arquillian.extension.internal.instanceproducer;
 
 import com.liferay.arquillian.extension.internal.init.InitLiferayContext;
 import com.liferay.arquillian.extension.internal.init.InitLiferayContextImpl;
+import com.liferay.portal.kernel.test.BaseTestRule;
+import com.liferay.portal.test.rule.DeleteAfterTestRunTestRule;
 
 import org.jboss.arquillian.config.descriptor.api.ArquillianDescriptor;
 import org.jboss.arquillian.core.api.Injector;
@@ -33,6 +35,8 @@ public class ExtensionInstanceProducer {
 	public void createInstanceProducer(
 		@Observes ArquillianDescriptor arquillianDescriptor) {
 
+		_baseTestRuleInstanceProducer.set(new DeleteAfterTestRunTestRule());
+
 		InitLiferayContext initLiferayContext = new InitLiferayContextImpl();
 
 		_initLiferayContextInstanceProducer.set(initLiferayContext);
@@ -41,6 +45,10 @@ public class ExtensionInstanceProducer {
 
 		injector.inject(initLiferayContext);
 	}
+
+	@ApplicationScoped
+	@Inject
+	private InstanceProducer<BaseTestRule<?, ?>> _baseTestRuleInstanceProducer;
 
 	@ApplicationScoped
 	@Inject
