@@ -47,18 +47,13 @@ public class SynchronousDestinationTestRule
 	public static final SynchronousDestinationTestRule INSTANCE =
 		new SynchronousDestinationTestRule();
 
-	protected SynchronousDestinationTestRule() {
-	}
-
 	@Override
-	protected void afterMethod(
-		Description description, SyncHandler syncHandler) {
-
+	public void afterMethod(Description description, SyncHandler syncHandler) {
 		syncHandler.restorePreviousSync();
 	}
 
 	@Override
-	protected SyncHandler beforeMethod(Description description) {
+	public SyncHandler beforeMethod(Description description) {
 		Sync sync = description.getAnnotation(Sync.class);
 
 		if (sync == null) {
@@ -75,6 +70,9 @@ public class SynchronousDestinationTestRule
 		syncHandler.enableSync();
 
 		return syncHandler;
+	}
+
+	protected SynchronousDestinationTestRule() {
 	}
 
 	protected static class SyncHandler {

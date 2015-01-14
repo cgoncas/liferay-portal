@@ -30,25 +30,21 @@ public class SynchronousMailTestRule extends SynchronousDestinationTestRule {
 		new SynchronousMailTestRule();
 
 	@Override
-	protected void afterClass(
-		Description description, SyncHandler syncHandler) {
-
+	public void afterClass(Description description, SyncHandler syncHandler) {
 		syncHandler.restorePreviousSync();
 
 		MailServiceTestUtil.stop();
 	}
 
 	@Override
-	protected void afterMethod(
-		Description description, SyncHandler syncHandler) {
-
+	public void afterMethod(Description description, SyncHandler syncHandler) {
 		super.afterMethod(description, syncHandler);
 
 		MailServiceTestUtil.clearMessages();
 	}
 
 	@Override
-	protected SyncHandler beforeClass(Description description) {
+	public SyncHandler beforeClass(Description description) {
 		MailServiceTestUtil.start();
 
 		SyncHandler syncHandler = new SyncHandler();

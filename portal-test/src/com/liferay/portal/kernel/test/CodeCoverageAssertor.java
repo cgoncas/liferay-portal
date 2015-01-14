@@ -50,11 +50,8 @@ public class CodeCoverageAssertor extends BaseTestRule<String, Object> {
 		_includeInnerClasses = includeInnerClasses;
 	}
 
-	public void appendAssertClasses(List<Class<?>> assertClasses) {
-	}
-
 	@Override
-	protected void afterClass(Description description, String className)
+	public void afterClass(Description description, String className)
 		throws Exception {
 
 		List<Class<?>> assertClasses = new ArrayList<>();
@@ -74,8 +71,11 @@ public class CodeCoverageAssertor extends BaseTestRule<String, Object> {
 			assertClasses.toArray(new Class<?>[assertClasses.size()]));
 	}
 
+	public void appendAssertClasses(List<Class<?>> assertClasses) {
+	}
+
 	@Override
-	protected String beforeClass(Description description) throws Exception {
+	public String beforeClass(Description description) throws Exception {
 		String className = description.getClassName();
 
 		if (className.endsWith("Test")) {

@@ -57,7 +57,7 @@ public class LiferayIntegrationTestRule extends AggregateTestRule {
 		new BaseTestRule<Object, Object>() {
 
 			@Override
-			protected void afterClass(Description description, Object object) {
+			public void afterClass(Description description, Object object) {
 				CentralizedThreadLocal.clearShortLivedThreadLocals();
 			}
 
@@ -67,7 +67,7 @@ public class LiferayIntegrationTestRule extends AggregateTestRule {
 		new BaseTestRule<Object, Object>() {
 
 			@Override
-			protected Object beforeClass(Description description) {
+			public Object beforeClass(Description description) {
 				UniqueStringRandomizerBumper.reset();
 
 				return null;
