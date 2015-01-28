@@ -12,43 +12,38 @@
  * details.
  */
 
-package com.liferay.arquillian.extension.persistence.internal.observer;
+package com.liferay.arquillian.extension.persistence.internal.instanceproducer;
 
 import com.liferay.portal.test.util.InitPersistenceTest;
 
+import org.jboss.arquillian.config.descriptor.api.ArquillianDescriptor;
 import org.jboss.arquillian.core.api.Instance;
+import org.jboss.arquillian.core.api.InstanceProducer;
+import org.jboss.arquillian.core.api.annotation.ApplicationScoped;
 import org.jboss.arquillian.core.api.annotation.Inject;
 import org.jboss.arquillian.core.api.annotation.Observes;
-import org.jboss.arquillian.core.spi.EventContext;
-import org.jboss.arquillian.test.spi.event.suite.After;
-import org.jboss.arquillian.test.spi.event.suite.Before;
+import org.jboss.arquillian.core.spi.ServiceLoader;
 
 /**
  * @author Cristina González
  */
-public class PersistenceTestObserver {
+public class ExtensionInstanceProducer {
 
-	public void afterTest(@Observes EventContext<After> eventContext)
-		throws Throwable {
+	public void createInstanceProducer(
+		@Observes ArquillianDescriptor arquillianDescriptor) {
 
-		InitPersistenceTest initPersistenceTest =
-			_initPersistenceTestInstance.get();
+		ServiceLoader serviceLoader = _serviceLoaderInstance.get();
 
-		initPersistenceTest.release(modelListeners);
+		_initPersistenceTestInstanceProducer.set(
+			serviceLoader.onlyOne(InitPersistenceTest.class));
 	}
 
-	public void beforeTest(@Observes EventContext<Before> eventContext)
-		throws Throwable {
-
-		InitPersistenceTest initPersistenceTest =
-			_initPersistenceTestInstance.get();
-
-		modelListeners = initPersistenceTest.init();
-	}
+	@ApplicationScoped
+	@Inject
+	private InstanceProducer<InitPersistenceTest>
+		_initPersistenceTestInstanceProducer;
 
 	@Inject
-	private Instance<InitPersistenceTest> _initPersistenceTestInstance;
-
-	private Object modelListeners;
+	private Instance<ServiceLoader> _serviceLoaderInstance;
 
 }
