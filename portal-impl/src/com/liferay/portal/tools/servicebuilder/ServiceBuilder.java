@@ -2584,6 +2584,16 @@ public class ServiceBuilder {
 	private void _createPersistenceTest(Entity entity) throws Exception {
 		Map<String, Object> context = _getContext();
 
+		File ejbFile = new File(
+			_testOutputPath + "/service/persistence/" + entity.getName() +
+				"PersistenceTest.java");
+
+		if (ejbFile.exists()) {
+			System.out.println("Removing test file " + ejbFile);
+
+			ejbFile.delete();
+		}
+
 		context.put("entity", entity);
 
 		// Content
@@ -2592,21 +2602,11 @@ public class ServiceBuilder {
 
 		// Write file
 
-		File ejbFile = new File(
+		ejbFile = new File(
 			_testOutputPath + "/service/persistence/test/" + entity.getName() +
 				"PersistenceTest.java");
 
 		writeFile(ejbFile, content, _author);
-
-		ejbFile = new File(
-			_testOutputPath + "/service/persistence/" + entity.getName() +
-				"PersistenceTest.java");
-
-		if (ejbFile.exists()) {
-			System.out.println("Relocating " + ejbFile);
-
-			ejbFile.delete();
-		}
 	}
 
 	private void _createPersistenceUtil(Entity entity) throws Exception {
