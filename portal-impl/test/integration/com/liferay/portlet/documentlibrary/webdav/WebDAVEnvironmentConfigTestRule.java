@@ -33,14 +33,14 @@ public class WebDAVEnvironmentConfigTestRule extends MainServletTestRule {
 		new WebDAVEnvironmentConfigTestRule();
 
 	@Override
-	protected void afterClass(Description description, Object object) {
+	public void afterClass(Description description, Object object) {
 		_baseWebDAVTestCase.service(Method.DELETE, "", null, null);
 
 		super.afterClass(description, object);
 	}
 
 	@Override
-	protected Object beforeClass(Description description) {
+	public Object beforeClass(Description description) {
 		Object object = super.beforeClass(description);
 
 		Tuple tuple = _baseWebDAVTestCase.service(Method.MKCOL, "", null, null);
