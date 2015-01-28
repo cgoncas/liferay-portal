@@ -16,7 +16,20 @@ package com.liferay.arquillian.extension;
 
 import com.liferay.arquillian.extension.internal.descriptor.SpringDescriptor;
 import com.liferay.arquillian.extension.internal.descriptor.SpringDescriptorImpl;
-import com.liferay.arquillian.extension.internal.observer.InitializeLiferayTestEnvironment;
+import com.liferay.arquillian.extension.internal.event.LiferayEventTestRunnerAdaptor;
+import com.liferay.arquillian.extension.internal.instanceproducer.ExtensionInstanceProducer;
+<<<<<<< HEAD
+import com.liferay.portal.test.util.ClearThreadLocalExecutor;
+import com.liferay.portal.test.util.ClearThreadLocalExecutorImpl;
+=======
+import com.liferay.arquillian.extension.internal.log.LogAssertionExecuterInArquillian;
+import com.liferay.arquillian.extension.internal.log.LogAssertionObserver;
+import com.liferay.portal.test.log.LogAssertionExecuter;
+>>>>>>> 83f17ca... LPS-50675 Execute Assert.fail when a error log messages is found inside a BeforeClass, Before, After, AfterClass or Test method (The same as LogAssertionTestRule)
+import com.liferay.portal.test.util.DeleteAfterTestRunExecutor;
+import com.liferay.portal.test.util.DeleteAfterTestRunExecutorImpl;
+import com.liferay.portal.test.util.InitTestLiferayContextExecutor;
+import com.liferay.portal.test.util.InitTestLiferayContextExecutorImpl;
 
 import org.jboss.arquillian.core.spi.LoadableExtension;
 
@@ -27,8 +40,21 @@ public class LiferayTestScenarioExtension implements LoadableExtension {
 
 	@Override
 	public void register(ExtensionBuilder extensionBuilder) {
-		extensionBuilder.observer(InitializeLiferayTestEnvironment.class);
+		extensionBuilder.observer(ExtensionInstanceProducer.class);
+		extensionBuilder.observer(LiferayEventTestRunnerAdaptor.class);
+		extensionBuilder.observer(LogAssertionObserver.class);
 
+		extensionBuilder.service(
+			ClearThreadLocalExecutor.class,
+			ClearThreadLocalExecutorImpl.class);
+		extensionBuilder.service(
+			DeleteAfterTestRunExecutor.class,
+			DeleteAfterTestRunExecutorImpl.class);
+		extensionBuilder.service(
+			InitTestLiferayContextExecutor.class,
+			InitTestLiferayContextExecutorImpl.class);
+		extensionBuilder.service(
+			LogAssertionExecuter.class, LogAssertionExecuterInArquillian.class);
 		extensionBuilder.service(
 			SpringDescriptor.class, SpringDescriptorImpl.class);
 	}

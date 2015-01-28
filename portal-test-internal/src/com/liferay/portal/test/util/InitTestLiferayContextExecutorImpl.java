@@ -12,11 +12,11 @@
  * details.
  */
 
-package com.liferay.arquillian.extension.persistence.internal.descriptor;
+package com.liferay.portal.test.util;
 
-import com.liferay.arquillian.extension.internal.descriptor.SpringDescriptor;
 import com.liferay.portal.kernel.util.ListUtil;
 import com.liferay.portal.kernel.util.PropsKeys;
+import com.liferay.portal.util.InitUtil;
 import com.liferay.portal.util.PropsUtil;
 
 import java.util.List;
@@ -24,16 +24,21 @@ import java.util.List;
 /**
  * @author Cristina González
  */
-public class PersistenceTestSpringDescriptorImpl implements SpringDescriptor {
+public class InitTestLiferayContextExecutorImpl
+	implements InitTestLiferayContextExecutor {
 
 	@Override
-	public List<String> getConfigLocations() {
+	public void init() {
+		System.setProperty("catalina.base", ".");
+
 		List<String> configLocations = ListUtil.fromArray(
 			PropsUtil.getArray(PropsKeys.SPRING_CONFIGS));
 
-		configLocations.remove("META-INF/model-listener-spring.xml");
+		InitUtil.initWithSpring(configLocations, true);
 
-		return configLocations;
+		if (System.getProperty("external-properties") == null) {
+			System.setProperty("external-properties", "portal-test.properties");
+		}
 	}
 
 }
