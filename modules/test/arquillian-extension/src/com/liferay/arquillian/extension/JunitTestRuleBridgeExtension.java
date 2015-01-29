@@ -12,22 +12,20 @@
  * details.
  */
 
-package com.liferay.arquillian.extension.internal.descriptor;
+package com.liferay.arquillian.extension;
 
-import com.liferay.portal.kernel.util.ListUtil;
-import com.liferay.portal.kernel.util.PropsKeys;
-import com.liferay.portal.util.PropsUtil;
+import com.liferay.arquillian.extension.internal.observer.JunitTestRuleBridgeObserver;
 
-import java.util.List;
+import org.jboss.arquillian.core.spi.LoadableExtension;
 
 /**
- * @author Cristina González
+ * @author Shuyang Zhou
  */
-public class SpringDescriptorImpl implements SpringDescriptor {
+public class JunitTestRuleBridgeExtension implements LoadableExtension {
 
 	@Override
-	public List<String> getConfigLocations() {
-		return ListUtil.fromArray(PropsUtil.getArray(PropsKeys.SPRING_CONFIGS));
+	public void register(ExtensionBuilder extensionBuilder) {
+		extensionBuilder.observer(JunitTestRuleBridgeObserver.class);
 	}
 
 }

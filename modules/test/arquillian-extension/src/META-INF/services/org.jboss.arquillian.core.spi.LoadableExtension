@@ -1,1 +1,1 @@
-com.liferay.arquillian.extension.LiferayTestScenarioExtension
+com.liferay.arquillian.extension.JunitTestRuleBridgeExtension

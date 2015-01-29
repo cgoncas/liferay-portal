@@ -12,15 +12,24 @@
  * details.
  */
 
-package com.liferay.arquillian.extension.internal.descriptor;
+package com.liferay.arquillian.junit;
 
 import java.util.List;
 
-/**
- * @author Cristina González
- */
-public interface SpringDescriptor {
+import org.junit.rules.TestRule;
+import org.junit.runners.model.Statement;
 
-	public List<String> getConfigLocations();
+/**
+ * @author Shuyang Zhou
+ */
+public interface JUnitHelper {
+
+	public List<TestRule> getClassTestRules();
+
+	public List<TestRule> getMethodTestRules(Object target);
+
+	public Statement wrapAfters(Statement statement, Object target);
+
+	public Statement wrapBefores(Statement statement, Object target);
 
 }
