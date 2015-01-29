@@ -35,9 +35,7 @@ public class BaseTestRule<C, M> implements TestRule {
 	}
 
 	@Override
-	public final Statement apply(
-		Statement statement, final Description description) {
-
+	public Statement apply(Statement statement, final Description description) {
 		return new StatementWrapper(statement) {
 
 			@Override

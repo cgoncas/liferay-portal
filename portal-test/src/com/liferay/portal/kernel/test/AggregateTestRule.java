@@ -14,9 +14,11 @@
 
 package com.liferay.portal.kernel.test;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Comparator;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import org.junit.rules.TestRule;
@@ -26,7 +28,7 @@ import org.junit.runners.model.Statement;
 /**
  * @author Shuyang Zhou
  */
-public class AggregateTestRule implements TestRule {
+public class AggregateTestRule extends BaseTestRule<List<Object>, Object> {
 
 	public AggregateTestRule(boolean sort, TestRule... testRules) {
 		if (testRules == null) {
@@ -50,12 +52,42 @@ public class AggregateTestRule implements TestRule {
 	}
 
 	@Override
+	public void afterClass(Description description, List<Object> objects)
+		throws Throwable {
+
+		for (int i = _testRules.length - 1; i >= 0; i--) {
+			if (_testRules[i] instanceof BaseTestRule) {
+				BaseTestRule<Object, ?> baseTestRule =
+					(BaseTestRule<Object, ?>)_testRules[i];
+
+				baseTestRule.afterClass(description, objects.get(i));
+			}
+		}
+	}
+
+	@Override
 	public Statement apply(Statement statement, Description description) {
 		for (int i = _testRules.length - 1; i >= 0; i--) {
 			statement = _testRules[i].apply(statement, description);
 		}
 
 		return statement;
+	}
+
+	@Override
+	public List<Object> beforeClass(Description description) throws Throwable {
+		List<Object> objects = new ArrayList<>();
+
+		for (int i = 0; i < _testRules.length; i++) {
+			if (_testRules[i] instanceof BaseTestRule) {
+				BaseTestRule<Object, ?> baseTestRule =
+					(BaseTestRule<Object, ?>)_testRules[i];
+
+				objects.add(baseTestRule.beforeClass(description));
+			}
+		}
+
+		return objects;
 	}
 
 	private static final String[] _ORDERED_RULE_CLASS_NAMES = new String[] {
