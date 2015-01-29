@@ -14,6 +14,7 @@
 
 package com.liferay.portal.service;
 
+import com.liferay.arquillian.junit.Arquillian;
 import com.liferay.portal.AccountNameException;
 import com.liferay.portal.CompanyMxException;
 import com.liferay.portal.CompanyVirtualHostException;
@@ -72,6 +73,7 @@ import org.junit.Before;
 import org.junit.ClassRule;
 import org.junit.Rule;
 import org.junit.Test;
+import org.junit.runner.RunWith;
 
 import org.springframework.core.io.FileSystemResourceLoader;
 import org.springframework.mock.web.MockServletContext;
@@ -80,6 +82,7 @@ import org.springframework.mock.web.MockServletContext;
  * @author Mika Koivisto
  * @author Dale Shan
  */
+@RunWith(Arquillian.class)
 @Sync
 public class CompanyLocalServiceTest {
 
