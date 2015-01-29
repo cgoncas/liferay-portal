@@ -74,7 +74,7 @@ public class PACLTestRule extends BaseTestRule<HotDeployEvent, Object> {
 		"com/liferay/portal/security/pacl/test/dependencies";
 
 	@Override
-	protected void afterClass(
+	public void afterClass(
 		Description description, HotDeployEvent hotDeployEvent) {
 
 		HotDeployUtil.fireUndeployEvent(hotDeployEvent);
@@ -99,7 +99,7 @@ public class PACLTestRule extends BaseTestRule<HotDeployEvent, Object> {
 	}
 
 	@Override
-	protected HotDeployEvent beforeClass(Description description)
+	public HotDeployEvent beforeClass(Description description)
 		throws ReflectiveOperationException {
 
 		_testClass = _loadTestClass(description.getTestClass());

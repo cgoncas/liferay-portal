@@ -35,7 +35,7 @@ public class PersistenceTestRule extends BaseTestRule<Object, Object> {
 		new PersistenceTestRule();
 
 	@Override
-	protected void afterMethod(Description description, Object modelListeners) {
+	public void afterMethod(Description description, Object modelListeners) {
 		Object instance = ReflectionTestUtil.getFieldValue(
 			ModelListenerRegistrationUtil.class, "_instance");
 
@@ -46,7 +46,7 @@ public class PersistenceTestRule extends BaseTestRule<Object, Object> {
 	}
 
 	@Override
-	protected Object beforeMethod(Description description) {
+	public Object beforeMethod(Description description) {
 		initialize();
 
 		Object instance = ReflectionTestUtil.getFieldValue(

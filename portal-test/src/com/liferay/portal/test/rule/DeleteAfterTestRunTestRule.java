@@ -53,25 +53,8 @@ import org.junit.runner.Description;
  */
 public class DeleteAfterTestRunTestRule extends BaseTestRule<Object, Object> {
 
-	protected void addField(
-		Map<Class<?>, FieldBag> deleteAfterTestRunFieldBags, Class<?> clazz,
-		Field field) {
-
-		FieldBag fieldBag = deleteAfterTestRunFieldBags.get(clazz);
-
-		if (fieldBag == null) {
-			fieldBag = new FieldBag(clazz);
-
-			deleteAfterTestRunFieldBags.put(clazz, fieldBag);
-		}
-
-		field.setAccessible(true);
-
-		fieldBag.addField(field);
-	}
-
 	@Override
-	protected void afterMethod(Description description, Object object) {
+	public void afterMethod(Description description, Object object) {
 		Class<?> testClass = description.getTestClass();
 
 		Map<Class<?>, FieldBag> deleteAfterTestRunFieldBags = new HashMap<>();
@@ -186,6 +169,28 @@ public class DeleteAfterTestRunTestRule extends BaseTestRule<Object, Object> {
 		}
 	}
 
+	@Override
+	public void setInstance(Object instance) {
+		_instance = instance;
+	}
+
+	protected void addField(
+		Map<Class<?>, FieldBag> deleteAfterTestRunFieldBags, Class<?> clazz,
+		Field field) {
+
+		FieldBag fieldBag = deleteAfterTestRunFieldBags.get(clazz);
+
+		if (fieldBag == null) {
+			fieldBag = new FieldBag(clazz);
+
+			deleteAfterTestRunFieldBags.put(clazz, fieldBag);
+		}
+
+		field.setAccessible(true);
+
+		fieldBag.addField(field);
+	}
+
 	protected Class<? extends PersistedModel> getCollectionType(
 		Collection<?> collection) {
 
@@ -269,11 +274,6 @@ public class DeleteAfterTestRunTestRule extends BaseTestRule<Object, Object> {
 		catch (Exception e) {
 			_log.error("Unable to delete", e);
 		}
-	}
-
-	@Override
-	protected void setInstance(Object instance) {
-		_instance = instance;
 	}
 
 	protected static class FieldBag {

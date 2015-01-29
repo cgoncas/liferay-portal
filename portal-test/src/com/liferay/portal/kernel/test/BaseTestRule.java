@@ -28,6 +28,12 @@ import org.junit.runners.model.Statement;
  */
 public class BaseTestRule<C, M> implements TestRule {
 
+	public void afterClass(Description description, C c) throws Throwable {
+	}
+
+	public void afterMethod(Description description, M m) throws Throwable {
+	}
+
 	@Override
 	public final Statement apply(
 		Statement statement, final Description description) {
@@ -66,6 +72,17 @@ public class BaseTestRule<C, M> implements TestRule {
 		};
 	}
 
+	public C beforeClass(Description description) throws Throwable {
+		return null;
+	}
+
+	public M beforeMethod(Description description) throws Throwable {
+		return null;
+	}
+
+	public void setInstance(Object instance) {
+	}
+
 	public static abstract class StatementWrapper extends Statement {
 
 		public StatementWrapper(Statement statement) {
@@ -78,20 +95,6 @@ public class BaseTestRule<C, M> implements TestRule {
 
 		protected final Statement statement;
 
-	}
-
-	protected void afterClass(Description description, C c) throws Throwable {
-	}
-
-	protected void afterMethod(Description description, M m) throws Throwable {
-	}
-
-	protected C beforeClass(Description description) throws Throwable {
-		return null;
-	}
-
-	protected M beforeMethod(Description description) throws Throwable {
-		return null;
 	}
 
 	protected Object inspectTarget(Statement statement) {
@@ -124,9 +127,6 @@ public class BaseTestRule<C, M> implements TestRule {
 		throws Throwable {
 
 		statement.evaluate();
-	}
-
-	protected void setInstance(Object instance) {
 	}
 
 }
