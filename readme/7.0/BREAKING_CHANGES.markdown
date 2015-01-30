@@ -546,7 +546,7 @@ system. Duplication can cause `ClassCastException`s.
 
 #### What changed?
 
-The implementation class `com.liferay.portal.convert.ConvertProcess` was renamed 
+The implementation class `com.liferay.portal.convert.ConvertProcess` was renamed
 `com.liferay.portal.convert.BaseConvertProcess`. An interface named
 `com.liferay.portal.convert.ConvertProcess` was created for it.
 
@@ -573,7 +573,7 @@ should see your convert process in the configuration UI.
 #### Why was this change made?
 
 This change was made as a part of the ongoing strategy to modularize Liferay
-Portal by means of an OSGi container. 
+Portal by means of an OSGi container.
 
 ---------------------------------------
 
@@ -745,5 +745,66 @@ and it should have the annotation
 
 This change was made as a part of the ongoing strategy to modularize Liferay
 Portal.
+
+---------------------------------------
+
+### Remove Support for *Flat* Thread View in Comments
+- **Date:** 2014-Dec-30
+- **JIRA Ticket:** LPS-51876
+
+#### What changed?
+
+Comments will always be displayed using the former *Combination* thread view and
+the number of levels displayed in the tree will be limited.
+
+#### Who is affected?
+
+This affects installations with portal.property discussion.thread.view=flat
+which was the default value.
+
+#### How should I update my code?
+
+There is no need to update anything since the portal.property has been removed
+and the value 'combintation' is hardcoded now in the code.
+
+#### Why was this change made?
+
+Comments flat view was implemented in order to solve performance issues with
+pagination with comments when using a tree view.
+Now we have implemented a nicer solution for pagination that doesn't impact
+performance and that allows to display the comments in a hierarchical view
+making easier to see the replies history.
+
+---------------------------------------
+
+### UserLocalService throws the new UserScreenNameException.MustNotBeReserved instead of ReservedUserScreenNameException
+- **Date:** 2015-Jan-29
+- **JIRA Ticket:** LPS-53113
+
+#### What changed?
+
+Previous to Liferay 7, several methods of UserLocalService could throw a
+ReservedUserScreenNameException when a User is set an screen name which is not
+allowed. From Liferay 7 forward that exception has been deprecated and replaced
+with UserScreenNameException.MustNotBeReserved
+
+#### Who is affected?
+
+Developers who have written code that catch ReservedUserScreenNameException
+
+#### How should I update my code?
+
+Replace ReservedUserScreenNameException with 
+UserScreenNameException.MustNotBeReserved
+
+#### Why was this change made?
+
+A new pattern has been defined for exceptions that provides higher expresivity
+in their names and also more information regarding why the exception was thrown.
+
+The new exception (UserScreenNameException.MustNotBeReserved) has all the 
+necessary information about the reason why the exception was thrown and its 
+context. In particular it contains the userId, the problematic screenName and
+the list of reservedScreenNames.
 
 ---------------------------------------

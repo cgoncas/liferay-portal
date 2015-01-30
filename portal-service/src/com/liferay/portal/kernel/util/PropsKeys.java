@@ -623,8 +623,6 @@ public interface PropsKeys {
 
 	public static final String DISCUSSION_SUBSCRIBE_BY_DEFAULT = "discussion.subscribe.by.default";
 
-	public static final String DISCUSSION_THREAD_VIEW = "discussion.thread.view";
-
 	public static final String DL_ACTIONS_VISIBLE = "dl.actions.visible";
 
 	public static final String DL_CHAR_BLACKLIST = "dl.char.blacklist";
@@ -924,24 +922,6 @@ public interface PropsKeys {
 	public static final String FLAGS_GUEST_USERS_ENABLED = "flags.guest.users.enabled";
 
 	public static final String FLAGS_REASONS = "flags.reasons";
-
-	public static final String FREEMARKER_ENGINE_CACHE_ENABLED = "freemarker.engine.cache.enabled";
-
-	public static final String FREEMARKER_ENGINE_LOCALIZED_LOOKUP = "freemarker.engine.localized.lookup";
-
-	public static final String FREEMARKER_ENGINE_MACRO_LIBRARY = "freemarker.engine.macro.library";
-
-	public static final String FREEMARKER_ENGINE_RESOURCE_MODIFICATION_CHECK_INTERVAL = "freemarker.engine.resource.modification.check.interval";
-
-	public static final String FREEMARKER_ENGINE_RESTRICTED_CLASSES = "freemarker.engine.restricted.classes";
-
-	public static final String FREEMARKER_ENGINE_RESTRICTED_PACKAGES = "freemarker.engine.restricted.packages";
-
-	public static final String FREEMARKER_ENGINE_RESTRICTED_VARIABLES = "freemarker.engine.restricted.variables";
-
-	public static final String FREEMARKER_ENGINE_TEMPLATE_EXCEPTION_HANDLER = "freemarker.engine.template.exception.handler";
-
-	public static final String FREEMARKER_ENGINE_TEMPLATE_PARSERS = "freemarker.engine.template.parsers";
 
 	public static final String GLOBAL_SHUTDOWN_EVENTS = "global.shutdown.events";
 
@@ -1973,17 +1953,25 @@ public interface PropsKeys {
 
 	public static final String PASSWORDS_ENCRYPTION_ALGORITHM_LEGACY = "passwords.encryption.algorithm.legacy";
 
-	public static final String PASSWORDS_PASSWORDPOLICYTOOLKIT_CHARSET_LOWERCASE = "passwords.passwordpolicytoolkit.charset.lowercase";
-
-	public static final String PASSWORDS_PASSWORDPOLICYTOOLKIT_CHARSET_NUMBERS = "passwords.passwordpolicytoolkit.charset.numbers";
-
-	public static final String PASSWORDS_PASSWORDPOLICYTOOLKIT_CHARSET_SYMBOLS = "passwords.passwordpolicytoolkit.charset.symbols";
-
-	public static final String PASSWORDS_PASSWORDPOLICYTOOLKIT_CHARSET_UPPERCASE = "passwords.passwordpolicytoolkit.charset.uppercase";
-
 	public static final String PASSWORDS_PASSWORDPOLICYTOOLKIT_GENERATOR = "passwords.passwordpolicytoolkit.generator";
 
+	public static final String PASSWORDS_PASSWORDPOLICYTOOLKIT_GENERATOR_CHARSET_LOWERCASE = "passwords.passwordpolicytoolkit.generator.charset.lowercase";
+
+	public static final String PASSWORDS_PASSWORDPOLICYTOOLKIT_GENERATOR_CHARSET_NUMBERS = "passwords.passwordpolicytoolkit.generator.charset.numbers";
+
+	public static final String PASSWORDS_PASSWORDPOLICYTOOLKIT_GENERATOR_CHARSET_SYMBOLS = "passwords.passwordpolicytoolkit.generator.charset.symbols";
+
+	public static final String PASSWORDS_PASSWORDPOLICYTOOLKIT_GENERATOR_CHARSET_UPPERCASE = "passwords.passwordpolicytoolkit.generator.charset.uppercase";
+
 	public static final String PASSWORDS_PASSWORDPOLICYTOOLKIT_STATIC = "passwords.passwordpolicytoolkit.static";
+
+	public static final String PASSWORDS_PASSWORDPOLICYTOOLKIT_VALIDATOR_CHARSET_LOWERCASE = "passwords.passwordpolicytoolkit.validator.charset.lowercase";
+
+	public static final String PASSWORDS_PASSWORDPOLICYTOOLKIT_VALIDATOR_CHARSET_NUMBERS = "passwords.passwordpolicytoolkit.validator.charset.numbers";
+
+	public static final String PASSWORDS_PASSWORDPOLICYTOOLKIT_VALIDATOR_CHARSET_SYMBOLS = "passwords.passwordpolicytoolkit.validator.charset.symbols";
+
+	public static final String PASSWORDS_PASSWORDPOLICYTOOLKIT_VALIDATOR_CHARSET_UPPERCASE = "passwords.passwordpolicytoolkit.validator.charset.uppercase";
 
 	public static final String PASSWORDS_REGEXPTOOLKIT_CHARSET = "passwords.regexptoolkit.charset";
 
@@ -2537,6 +2525,8 @@ public interface PropsKeys {
 
 	public static final String STAGING_LOCK_ENABLED = "staging.lock.enabled";
 
+	public static final String STAGING_PUBLISH_BUTTON_EXPORT_IMPORT_CONFIGURATION_DISPLAY_COUNT = "staging.publish.button.export.import.configuration.display.count";
+
 	public static final String STAGING_REMOTE_TRANSFER_BUFFER_SIZE = "staging.remote.transfer.buffer.size";
 
 	public static final String STRIP_CSS_SASS_ENABLED = "strip.css.sass.enabled";
@@ -2646,6 +2636,10 @@ public interface PropsKeys {
 	public static final String USER_GROUPS_SEARCH_WITH_INDEX = "user.groups.search.with.index";
 
 	public static final String USER_NOTIFICATION_EVENT_CONFIRMATION_ENABLED = "user.notification.event.confirmation.enabled";
+
+	public static final String USER_PERSONAL_SPACE_LAYOUT_FRIENDLY_URL = "user.personal.space.layout.friendly.url";
+
+	public static final String USER_PERSONAL_SPACE_LAYOUT_NAME = "user.personal.space.layout.name";
 
 	public static final String USERS_ADMIN_ORGANIZATION_COLUMN_LIMIT = "users.admin.organization.column.limit";
 

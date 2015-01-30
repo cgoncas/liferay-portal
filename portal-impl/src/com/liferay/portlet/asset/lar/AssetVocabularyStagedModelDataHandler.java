@@ -20,6 +20,7 @@ import com.liferay.portal.kernel.lar.BaseStagedModelDataHandler;
 import com.liferay.portal.kernel.lar.ExportImportPathUtil;
 import com.liferay.portal.kernel.lar.PortletDataContext;
 import com.liferay.portal.kernel.lar.StagedModelModifiedDateComparator;
+import com.liferay.portal.kernel.spring.osgi.OSGiBeanProperties;
 import com.liferay.portal.kernel.util.ListUtil;
 import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.kernel.util.StringUtil;
@@ -41,6 +42,7 @@ import java.util.Map;
  * @author Gergely Mathe
  * @author Mate Thurzo
  */
+@OSGiBeanProperties
 public class AssetVocabularyStagedModelDataHandler
 	extends BaseStagedModelDataHandler<AssetVocabulary> {
 
@@ -121,6 +123,10 @@ public class AssetVocabularyStagedModelDataHandler
 		vocabularyElement.addAttribute("path", vocabularyPath);
 
 		vocabulary.setUserUuid(vocabulary.getUserUuid());
+
+		portletDataContext.addReferenceElement(
+			vocabulary, vocabularyElement, vocabulary,
+			PortletDataContext.REFERENCE_TYPE_DEPENDENCY, false);
 
 		portletDataContext.addPermissions(
 			AssetVocabulary.class, vocabulary.getVocabularyId());
