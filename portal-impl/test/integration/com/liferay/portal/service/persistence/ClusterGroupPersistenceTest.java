@@ -14,6 +14,8 @@
 
 package com.liferay.portal.service.persistence;
 
+import com.liferay.arquillian.junit.Arquillian;
+
 import com.liferay.portal.NoSuchClusterGroupException;
 import com.liferay.portal.kernel.dao.orm.ActionableDynamicQuery;
 import com.liferay.portal.kernel.dao.orm.DynamicQuery;
@@ -38,6 +40,8 @@ import org.junit.Assert;
 import org.junit.Rule;
 import org.junit.Test;
 
+import org.junit.runner.RunWith;
+
 import java.io.Serializable;
 
 import java.util.ArrayList;
@@ -50,6 +54,7 @@ import java.util.Set;
 /**
  * @generated
  */
+@RunWith(Arquillian.class)
 public class ClusterGroupPersistenceTest {
 	@Rule
 	public final AggregateTestRule aggregateTestRule = new AggregateTestRule(new LiferayIntegrationTestRule(),

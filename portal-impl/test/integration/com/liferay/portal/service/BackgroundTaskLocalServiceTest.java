@@ -14,6 +14,7 @@
 
 package com.liferay.portal.service;
 
+import com.liferay.arquillian.junit.Arquillian;
 import com.liferay.portal.kernel.backgroundtask.BackgroundTaskConstants;
 import com.liferay.portal.kernel.messaging.Destination;
 import com.liferay.portal.kernel.messaging.DestinationNames;
@@ -52,10 +53,12 @@ import org.junit.Before;
 import org.junit.ClassRule;
 import org.junit.Rule;
 import org.junit.Test;
+import org.junit.runner.RunWith;
 
 /**
  * @author Cristina González
  */
+@RunWith(Arquillian.class)
 public class BackgroundTaskLocalServiceTest {
 
 	@ClassRule

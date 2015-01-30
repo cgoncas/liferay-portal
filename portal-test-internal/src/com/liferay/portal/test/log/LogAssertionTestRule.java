@@ -51,6 +51,36 @@ public class LogAssertionTestRule
 		}
 	}
 
+	@Override
+	public void afterClass(
+		Description description, CaptureAppender captureAppender) {
+
+		ExpectedLogs expectedLogs = description.getAnnotation(
+			ExpectedLogs.class);
+
+		endAssert(expectedLogs, captureAppender);
+	}
+
+	@Override
+	public void afterMethod(
+		Description description, CaptureAppender captureAppender) {
+
+		afterClass(description, captureAppender);
+	}
+
+	@Override
+	public CaptureAppender beforeClass(Description description) {
+		ExpectedLogs expectedLogs = description.getAnnotation(
+			ExpectedLogs.class);
+
+		return startAssert(expectedLogs);
+	}
+
+	@Override
+	public CaptureAppender beforeMethod(Description description) {
+		return beforeClass(description);
+	}
+
 	protected static void endAssert(
 		ExpectedLogs expectedLogs, CaptureAppender captureAppender) {
 
@@ -151,36 +181,6 @@ public class LogAssertionTestRule
 		installLog4jAppender();
 
 		return captureAppender;
-	}
-
-	@Override
-	protected void afterClass(
-		Description description, CaptureAppender captureAppender) {
-
-		ExpectedLogs expectedLogs = description.getAnnotation(
-			ExpectedLogs.class);
-
-		endAssert(expectedLogs, captureAppender);
-	}
-
-	@Override
-	protected void afterMethod(
-		Description description, CaptureAppender captureAppender) {
-
-		afterClass(description, captureAppender);
-	}
-
-	@Override
-	protected CaptureAppender beforeClass(Description description) {
-		ExpectedLogs expectedLogs = description.getAnnotation(
-			ExpectedLogs.class);
-
-		return startAssert(expectedLogs);
-	}
-
-	@Override
-	protected CaptureAppender beforeMethod(Description description) {
-		return beforeClass(description);
 	}
 
 	private LogAssertionTestRule() {

@@ -16,6 +16,7 @@ package com.liferay.portal.test;
 
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
+import com.liferay.portal.kernel.test.BaseTestRule;
 import com.liferay.portal.kernel.test.BaseTestRule.StatementWrapper;
 import com.liferay.portal.kernel.transaction.Propagation;
 import com.liferay.portal.kernel.transaction.TransactionAttribute;
@@ -24,14 +25,13 @@ import com.liferay.portal.kernel.util.ReflectionUtil;
 
 import java.util.concurrent.Callable;
 
-import org.junit.rules.TestRule;
 import org.junit.runner.Description;
 import org.junit.runners.model.Statement;
 
 /**
  * @author Shuyang Zhou
  */
-public class TransactionalTestRule implements TestRule {
+public class TransactionalTestRule extends BaseTestRule<Object, Object> {
 
 	public static final TransactionalTestRule INSTANCE =
 		new TransactionalTestRule();

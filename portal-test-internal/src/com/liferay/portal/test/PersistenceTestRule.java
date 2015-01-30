@@ -15,7 +15,6 @@
 package com.liferay.portal.test;
 
 import com.liferay.portal.kernel.cache.CacheRegistryUtil;
-import com.liferay.portal.kernel.template.TemplateManagerUtil;
 import com.liferay.portal.kernel.test.BaseTestRule;
 import com.liferay.portal.kernel.test.ReflectionTestUtil;
 import com.liferay.portal.model.ModelListener;
@@ -36,7 +35,7 @@ public class PersistenceTestRule extends BaseTestRule<Object, Object> {
 		new PersistenceTestRule();
 
 	@Override
-	protected void afterMethod(Description description, Object modelListeners) {
+	public void afterMethod(Description description, Object modelListeners) {
 		Object instance = ReflectionTestUtil.getFieldValue(
 			ModelListenerRegistrationUtil.class, "_instance");
 
@@ -47,7 +46,7 @@ public class PersistenceTestRule extends BaseTestRule<Object, Object> {
 	}
 
 	@Override
-	protected Object beforeMethod(Description description) {
+	public Object beforeMethod(Description description) {
 		initialize();
 
 		Object instance = ReflectionTestUtil.getFieldValue(
@@ -72,8 +71,6 @@ public class PersistenceTestRule extends BaseTestRule<Object, Object> {
 
 		try {
 			DBUpgrader.upgrade();
-
-			TemplateManagerUtil.init();
 		}
 		catch (Throwable t) {
 			throw new ExceptionInInitializerError(t);

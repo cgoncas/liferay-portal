@@ -27,6 +27,7 @@ import ${packagePath}.model.impl.${entity.name}ModelImpl;
 import ${packagePath}.service.${entity.name}LocalServiceUtil;
 
 import ${beanLocatorUtil};
+import com.liferay.arquillian.junit.Arquillian;
 import com.liferay.portal.kernel.dao.jdbc.OutputBlob;
 import com.liferay.portal.kernel.dao.orm.ActionableDynamicQuery;
 import com.liferay.portal.kernel.dao.orm.DynamicQuery;
@@ -66,8 +67,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import org.jboss.arquillian.junit.Arquillian;
-
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
@@ -78,9 +77,7 @@ import org.junit.runner.RunWith;
 /**
  * @generated
  */
-<#if osgiModule>
-	@RunWith(Arquillian.class)
-</#if>
+@RunWith(Arquillian.class)
 public class ${entity.name}PersistenceTest {
 
 	@Rule

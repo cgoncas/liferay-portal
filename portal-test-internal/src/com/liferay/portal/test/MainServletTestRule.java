@@ -42,11 +42,8 @@ public class MainServletTestRule extends BaseTestRule<Object, Object> {
 	public static final MainServletTestRule INSTANCE =
 		new MainServletTestRule();
 
-	protected MainServletTestRule() {
-	}
-
 	@Override
-	protected void afterClass(Description description, Object object) {
+	public void afterClass(Description description, Object object) {
 		ServiceTestUtil.destroyServices();
 
 		try {
@@ -58,7 +55,7 @@ public class MainServletTestRule extends BaseTestRule<Object, Object> {
 	}
 
 	@Override
-	protected Object beforeClass(Description description) {
+	public Object beforeClass(Description description) {
 		ServiceTestUtil.initServices();
 
 		ServiceTestUtil.initPermissions();
@@ -85,6 +82,9 @@ public class MainServletTestRule extends BaseTestRule<Object, Object> {
 		}
 
 		return null;
+	}
+
+	protected MainServletTestRule() {
 	}
 
 	private static final Log _log = LogFactoryUtil.getLog(

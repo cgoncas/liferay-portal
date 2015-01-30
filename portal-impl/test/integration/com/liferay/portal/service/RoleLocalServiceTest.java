@@ -14,6 +14,7 @@
 
 package com.liferay.portal.service;
 
+import com.liferay.arquillian.junit.Arquillian;
 import com.liferay.portal.NoSuchGroupException;
 import com.liferay.portal.kernel.search.IndexerRegistryUtil;
 import com.liferay.portal.kernel.test.AggregateTestRule;
@@ -45,10 +46,12 @@ import org.junit.BeforeClass;
 import org.junit.ClassRule;
 import org.junit.Rule;
 import org.junit.Test;
+import org.junit.runner.RunWith;
 
 /**
  * @author László Csontos
  */
+@RunWith(Arquillian.class)
 public class RoleLocalServiceTest {
 
 	@ClassRule
