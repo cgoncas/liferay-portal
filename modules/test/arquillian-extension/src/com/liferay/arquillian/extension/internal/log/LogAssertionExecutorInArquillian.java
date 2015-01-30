@@ -26,7 +26,7 @@ import org.jboss.arquillian.core.api.annotation.Inject;
 /**
  * @author Cristina González
  */
-public class LogAssertionExecuterInArquillian extends LogAssertionExecutorImpl {
+public class LogAssertionExecutorInArquillian extends LogAssertionExecutorImpl {
 
 	@Override
 	protected AppenderSkeleton getLog4jAppender() {

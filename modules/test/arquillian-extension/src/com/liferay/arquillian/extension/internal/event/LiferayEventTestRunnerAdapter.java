@@ -32,7 +32,7 @@ import org.jboss.arquillian.test.spi.event.suite.Test;
 /**
  * @author Cristina González
  */
-public class LiferayEventTestRunnerAdaptor {
+public class LiferayEventTestRunnerAdapter {
 
 	public void after(@Observes EventContext<After> eventContext)
 		throws Throwable {
