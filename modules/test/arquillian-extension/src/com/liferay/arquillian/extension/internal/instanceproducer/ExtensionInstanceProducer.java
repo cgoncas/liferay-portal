@@ -60,25 +60,25 @@ public class ExtensionInstanceProducer {
 		LogAssertionAppenderArquillian logAssertionAppenderArquillian =
 			new LogAssertionAppenderArquillian();
 
+		injector.inject(logAssertionAppenderArquillian);
+
 		_logAssertionAppenderArquillianInstanceProducer.set(
 			logAssertionAppenderArquillian);
 
 		LogAssertionExecutor logAssertionExecutor =
 			new LogAssertionExecutorInArquillian();
 
+		injector.inject(logAssertionExecutor);
+
 		_logAssertionExecutorInstanceProducer.set(logAssertionExecutor);
 
 		LogAssertionHandlerArquillian logAssertionHandlerArquillian =
 			new LogAssertionHandlerArquillian();
 
+		injector.inject(logAssertionHandlerArquillian);
+
 		_logAssertionHandlerArquillianInstanceProducer.set(
 			logAssertionHandlerArquillian);
-
-		injector.inject(logAssertionExecutor);
-
-		injector.inject(logAssertionAppenderArquillian);
-
-		injector.inject(logAssertionHandlerArquillian);
 
 		_uniqueStringRandomizerBumperExecutorInstanceProducer.set(
 			serviceLoader.onlyOne(UniqueStringRandomizerBumperExecutor.class));
