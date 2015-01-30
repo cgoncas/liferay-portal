@@ -29,7 +29,7 @@ public class DeleteAfterTestRunTestRule extends BaseTestRule<Object, Object> {
 	protected void afterMethod(Description description, Object object) {
 		Class<?> testClass = description.getTestClass();
 
-		_deleteAfterTestRunExecuter.deleteFieldsAfterTest(_instance, testClass);
+		_deleteAfterTestRunExecutor.deleteFieldsAfterTest(_instance, testClass);
 	}
 
 	@Override
@@ -38,7 +38,7 @@ public class DeleteAfterTestRunTestRule extends BaseTestRule<Object, Object> {
 	}
 
 	private static final DeleteAfterTestRunExecutor
-		_deleteAfterTestRunExecuter = new DeleteAfterTestRunExecutorImpl();
+		_deleteAfterTestRunExecutor = new DeleteAfterTestRunExecutorImpl();
 
 	private Object _instance;
 
