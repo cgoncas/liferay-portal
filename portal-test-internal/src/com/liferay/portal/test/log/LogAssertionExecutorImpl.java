@@ -32,7 +32,7 @@ import org.junit.Assert;
 /**
  * @author Cristina González
  */
-public class LogAssertionExecuterImpl implements LogAssertionExecutor {
+public class LogAssertionExecutorImpl implements LogAssertionExecutor {
 
 	@Override
 	public void caughtFailure(Thread currentThread, Error error) {
@@ -46,6 +46,7 @@ public class LogAssertionExecuterImpl implements LogAssertionExecutor {
 		}
 	}
 
+	@Override
 	public void endAssert(
 		ExpectedLogs expectedLogs, CaptureAppender captureAppender) {
 
@@ -87,6 +88,7 @@ public class LogAssertionExecuterImpl implements LogAssertionExecutor {
 		}
 	}
 
+	@Override
 	public CaptureAppender startAssert(ExpectedLogs expectedLogs) {
 		_thread = Thread.currentThread();
 

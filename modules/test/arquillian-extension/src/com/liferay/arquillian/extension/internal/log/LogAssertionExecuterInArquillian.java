@@ -14,7 +14,7 @@
 
 package com.liferay.arquillian.extension.internal.log;
 
-import com.liferay.portal.test.log.LogAssertionExecuterImpl;
+import com.liferay.portal.test.log.LogAssertionExecutorImpl;
 
 import java.util.logging.Handler;
 
@@ -26,7 +26,7 @@ import org.jboss.arquillian.core.api.annotation.Inject;
 /**
  * @author Cristina González
  */
-public class LogAssertionExecuterInArquillian extends LogAssertionExecuterImpl {
+public class LogAssertionExecuterInArquillian extends LogAssertionExecutorImpl {
 
 	@Override
 	protected AppenderSkeleton getLog4jAppender() {

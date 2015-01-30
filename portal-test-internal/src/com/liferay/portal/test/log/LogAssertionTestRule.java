@@ -62,6 +62,6 @@ public class LogAssertionTestRule
 	}
 
 	private static final LogAssertionExecutor _logAssertionExecutor =
-		new LogAssertionExecuterImpl();
+		new LogAssertionExecutorImpl();
 
 }
