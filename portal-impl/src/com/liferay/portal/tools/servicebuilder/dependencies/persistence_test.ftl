@@ -22,6 +22,8 @@ package ${packagePath}.service.persistence.test;
 	import ${packagePath}.${noSuchEntity}Exception;
 </#if>
 
+import com.liferay.arquillian.container.enricher.Inject;
+
 import ${packagePath}.model.${entity.name};
 import ${packagePath}.model.impl.${entity.name}ModelImpl;
 import ${packagePath}.service.${entity.name}LocalServiceUtil;
@@ -1227,8 +1229,13 @@ public class ${entity.name}PersistenceTest {
 		}
 	</#if>
 
-	private List<${entity.name}> _${entity.varNames} = new ArrayList<${entity.name}>();
-	private ${entity.name}Persistence _persistence;
+	private List<${entity.name}> _${entity.varNames} = new ArrayList<${entity.name}>() ;
+
 	private ClassLoader _dynamicQueryClassLoader;
 
+	<#if osgiModule>
+		@Inject private ${entity.name}Persistence _persistence;
+	<#else>
+		private ${entity.name}Persistence _persistence = ${entity.name}Util.getPersistence();
+	</#if>
 }
