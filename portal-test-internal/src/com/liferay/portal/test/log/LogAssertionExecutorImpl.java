@@ -37,7 +37,7 @@ public class LogAssertionExecutorImpl implements LogAssertionExecutor {
 	@Override
 	public void caughtFailure(Thread currentThread, Error error) {
 		if (currentThread != _thread) {
-			_concurrentFailures.put(currentThread, error);
+			_concurrentErrors.put(currentThread, error);
 
 			_thread.interrupt();
 		}
@@ -71,7 +71,7 @@ public class LogAssertionExecutorImpl implements LogAssertionExecutor {
 
 		try {
 			for (Map.Entry<Thread, Error> entry :
-					_concurrentFailures.entrySet()) {
+					_concurrentErrors.entrySet()) {
 
 				Thread thread = entry.getKey();
 				Error error = entry.getValue();
@@ -84,7 +84,7 @@ public class LogAssertionExecutorImpl implements LogAssertionExecutor {
 			}
 		}
 		finally {
-			_concurrentFailures.clear();
+			_concurrentErrors.clear();
 		}
 	}
 
@@ -158,7 +158,7 @@ public class LogAssertionExecutorImpl implements LogAssertionExecutor {
 		return false;
 	}
 
-	private static final Map<Thread, Error> _concurrentFailures =
+	private static final Map<Thread, Error> _concurrentErrors =
 		new ConcurrentHashMap<>();
 	private static volatile Thread _thread;
 
