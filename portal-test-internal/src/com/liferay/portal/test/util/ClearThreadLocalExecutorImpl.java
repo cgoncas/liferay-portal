@@ -21,6 +21,7 @@ import com.liferay.portal.kernel.util.CentralizedThreadLocal;
  */
 public class ClearThreadLocalExecutorImpl implements ClearThreadLocalExecutor {
 
+	@Override
 	public void clearThreadLocal() {
 		CentralizedThreadLocal.clearShortLivedThreadLocals();
 	}

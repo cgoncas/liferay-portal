@@ -51,6 +51,7 @@ import java.util.Set;
 public class DeleteAfterTestRunExecutorImpl
 	implements DeleteAfterTestRunExecutor {
 
+	@Override
 	public void deleteFieldsAfterTest(Object instance,  Class<?> testClass) {
 		Map<Class<?>, FieldBag> deleteAfterTestRunFieldBags = new HashMap<>();
 
