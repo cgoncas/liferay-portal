@@ -14,11 +14,12 @@
 
 package com.liferay.polls.service.persistence.test;
 
+import com.liferay.arquillian.container.enricher.Inject;
+
 import com.liferay.polls.exception.NoSuchVoteException;
 import com.liferay.polls.model.PollsVote;
 import com.liferay.polls.service.PollsVoteLocalServiceUtil;
 import com.liferay.polls.service.persistence.PollsVotePersistence;
-import com.liferay.polls.service.persistence.PollsVoteUtil;
 
 import com.liferay.portal.kernel.dao.orm.ActionableDynamicQuery;
 import com.liferay.portal.kernel.dao.orm.DynamicQuery;
@@ -27,17 +28,15 @@ import com.liferay.portal.kernel.dao.orm.ProjectionFactoryUtil;
 import com.liferay.portal.kernel.dao.orm.QueryUtil;
 import com.liferay.portal.kernel.dao.orm.RestrictionsFactoryUtil;
 import com.liferay.portal.kernel.test.ReflectionTestUtil;
-import com.liferay.portal.kernel.test.rule.AggregateTestRule;
-import com.liferay.portal.kernel.test.rule.TransactionalTestRule;
 import com.liferay.portal.kernel.test.util.RandomTestUtil;
 import com.liferay.portal.kernel.transaction.Propagation;
+import com.liferay.portal.kernel.transaction.Transactional;
 import com.liferay.portal.kernel.util.IntegerWrapper;
 import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.kernel.util.OrderByComparatorFactoryUtil;
 import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.kernel.util.Time;
 import com.liferay.portal.kernel.util.Validator;
-import com.liferay.portal.test.rule.PersistenceTestRule;
 import com.liferay.portal.util.PropsValues;
 
 import org.jboss.arquillian.junit.Arquillian;
@@ -45,7 +44,6 @@ import org.jboss.arquillian.junit.Arquillian;
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
-import org.junit.Rule;
 import org.junit.Test;
 
 import org.junit.runner.RunWith;
@@ -63,15 +61,10 @@ import java.util.Set;
  * @generated
  */
 @RunWith(Arquillian.class)
+@Transactional(propagation = Propagation.REQUIRED)
 public class PollsVotePersistenceTest {
-	@Rule
-	public final AggregateTestRule aggregateTestRule = new AggregateTestRule(PersistenceTestRule.INSTANCE,
-			new TransactionalTestRule(Propagation.REQUIRED));
-
 	@Before
 	public void setUp() {
-		_persistence = PollsVoteUtil.getPersistence();
-
 		Class<?> clazz = _persistence.getClass();
 
 		_dynamicQueryClassLoader = clazz.getClassLoader();
@@ -544,6 +537,7 @@ public class PollsVotePersistenceTest {
 	}
 
 	private List<PollsVote> _pollsVotes = new ArrayList<PollsVote>();
-	private PollsVotePersistence _persistence;
 	private ClassLoader _dynamicQueryClassLoader;
+	@Inject
+	private PollsVotePersistence _persistence;
 }
