@@ -57,16 +57,16 @@ public class ExtensionInstanceProducer {
 
 		injector.inject(initTestLiferayContextExecutor);
 
-		LogAssertionExecutor logAssertionExecutor =
-			new LogAssertionExecutorInArquillian();
-
-		_logAssertionExecutorInstanceProducer.set(logAssertionExecutor);
-
 		LogAssertionAppenderArquillian logAssertionAppenderArquillian =
 			new LogAssertionAppenderArquillian();
 
 		_logAssertionAppenderArquillianInstanceProducer.set(
 			logAssertionAppenderArquillian);
+
+		LogAssertionExecutor logAssertionExecutor =
+			new LogAssertionExecutorInArquillian();
+
+		_logAssertionExecutorInstanceProducer.set(logAssertionExecutor);
 
 		LogAssertionHandlerArquillian logAssertionHandlerArquillian =
 			new LogAssertionHandlerArquillian();
