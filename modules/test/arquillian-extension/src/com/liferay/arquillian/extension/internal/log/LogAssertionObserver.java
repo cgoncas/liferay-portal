@@ -32,8 +32,8 @@ public class LogAssertionObserver {
 			_logAssertionExecuterInstance.get();
 
 		failOnLogMessageError.caughtFailure(
-				logMessageError.getLogThread(),
-				logMessageError.getAssertionError());
+			logMessageError.getLogThread(),
+			logMessageError.getAssertionError());
 	}
 
 	@Inject
