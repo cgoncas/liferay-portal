@@ -56,7 +56,7 @@ public class LogAssertionAppender extends AppenderSkeleton {
 				loggingEvent.getThrowableInformation();
 
 			LogAssertionExecutor logAssertionExecuter =
-				LogAssertionExecuterUtil.getInstance();
+				LogAssertionExecutorUtil.getInstance();
 
 			logAssertionExecuter.caughtFailure(
 				Thread.currentThread(),

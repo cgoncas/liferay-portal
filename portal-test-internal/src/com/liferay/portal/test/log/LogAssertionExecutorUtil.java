@@ -17,7 +17,7 @@ package com.liferay.portal.test.log;
 /**
  * @author Cristina González
  */
-public class LogAssertionExecuterUtil {
+public class LogAssertionExecutorUtil {
 
 	public static LogAssertionExecutor getInstance() {
 		return _logAssertionExecuter;
