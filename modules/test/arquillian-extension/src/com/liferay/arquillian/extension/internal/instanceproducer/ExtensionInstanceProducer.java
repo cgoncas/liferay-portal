@@ -17,7 +17,7 @@ package com.liferay.arquillian.extension.internal.instanceproducer;
 import com.liferay.arquillian.extension.internal.log.LogAssertionAppenderArquillian;
 import com.liferay.arquillian.extension.internal.log.LogAssertionExecuterInArquillian;
 import com.liferay.arquillian.extension.internal.log.LogAssertionHandlerArquillian;
-import com.liferay.portal.test.log.LogAssertionExecuter;
+import com.liferay.portal.test.log.LogAssertionExecutor;
 import com.liferay.portal.test.util.ClearThreadLocalExecutor;
 import com.liferay.portal.test.util.DeleteAfterTestRunExecutor;
 import com.liferay.portal.test.util.InitTestLiferayContextExecutor;
@@ -57,7 +57,7 @@ public class ExtensionInstanceProducer {
 
 		injector.inject(initTestLiferayContextExecutor);
 
-		LogAssertionExecuter logAssertionExecuter =
+		LogAssertionExecutor logAssertionExecuter =
 			new LogAssertionExecuterInArquillian();
 
 		_logAssertionExecuterInstanceProducer.set(logAssertionExecuter);
@@ -109,7 +109,7 @@ public class ExtensionInstanceProducer {
 
 	@ApplicationScoped
 	@Inject
-	private InstanceProducer<LogAssertionExecuter>
+	private InstanceProducer<LogAssertionExecutor>
 		_logAssertionExecuterInstanceProducer;
 
 	@ApplicationScoped

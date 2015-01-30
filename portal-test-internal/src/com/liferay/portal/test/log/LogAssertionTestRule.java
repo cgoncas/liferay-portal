@@ -35,7 +35,7 @@ public class LogAssertionTestRule
 		ExpectedLogs expectedLogs = description.getAnnotation(
 			ExpectedLogs.class);
 
-		_logAssertionExecuter.endAssert(expectedLogs, captureAppender);
+		_logAssertionExecutor.endAssert(expectedLogs, captureAppender);
 	}
 
 	@Override
@@ -50,7 +50,7 @@ public class LogAssertionTestRule
 		ExpectedLogs expectedLogs = description.getAnnotation(
 			ExpectedLogs.class);
 
-		return _logAssertionExecuter.startAssert(expectedLogs);
+		return _logAssertionExecutor.startAssert(expectedLogs);
 	}
 
 	@Override
@@ -61,7 +61,7 @@ public class LogAssertionTestRule
 	private LogAssertionTestRule() {
 	}
 
-	private static final LogAssertionExecuter _logAssertionExecuter =
+	private static final LogAssertionExecutor _logAssertionExecutor =
 		new LogAssertionExecuterImpl();
 
 }

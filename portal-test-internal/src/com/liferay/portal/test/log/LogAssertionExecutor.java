@@ -19,7 +19,7 @@ import com.liferay.portal.log.CaptureAppender;
 /**
  * @author Cristina González
  */
-public interface LogAssertionExecuter {
+public interface LogAssertionExecutor {
 
 	public void caughtFailure(Thread thread, Error error);
 

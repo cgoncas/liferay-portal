@@ -19,11 +19,11 @@ package com.liferay.portal.test.log;
  */
 public class LogAssertionExecuterUtil {
 
-	public static LogAssertionExecuter getInstance() {
+	public static LogAssertionExecutor getInstance() {
 		return _logAssertionExecuter;
 	}
 
-	private static final LogAssertionExecuter _logAssertionExecuter =
+	private static final LogAssertionExecutor _logAssertionExecuter =
 		new LogAssertionExecuterImpl();
 
 }

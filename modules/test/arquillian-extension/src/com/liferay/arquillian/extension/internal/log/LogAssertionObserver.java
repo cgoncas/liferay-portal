@@ -14,7 +14,7 @@
 
 package com.liferay.arquillian.extension.internal.log;
 
-import com.liferay.portal.test.log.LogAssertionExecuter;
+import com.liferay.portal.test.log.LogAssertionExecutor;
 
 import org.jboss.arquillian.core.api.Instance;
 import org.jboss.arquillian.core.api.annotation.Inject;
@@ -28,7 +28,7 @@ public class LogAssertionObserver {
 	public void logMessageError(@Observes LogMessageError logMessageError)
 		throws Throwable {
 
-		LogAssertionExecuter failOnLogMessageError =
+		LogAssertionExecutor failOnLogMessageError =
 			_logAssertionExecuterInstance.get();
 
 		failOnLogMessageError.caughtFailure(
@@ -37,6 +37,6 @@ public class LogAssertionObserver {
 	}
 
 	@Inject
-	private Instance<LogAssertionExecuter> _logAssertionExecuterInstance;
+	private Instance<LogAssertionExecutor> _logAssertionExecuterInstance;
 
 }
