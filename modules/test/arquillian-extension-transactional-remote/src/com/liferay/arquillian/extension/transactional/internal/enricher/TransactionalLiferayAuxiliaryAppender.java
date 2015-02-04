@@ -17,8 +17,6 @@ package com.liferay.arquillian.extension.transactional.internal.enricher;
 import com.liferay.arquillian.extension.transactional.internal.container.TransactionalRemoteExtension;
 import com.liferay.arquillian.extension.transactional.internal.observer.TransactionalExecutorInstanceProducer;
 import com.liferay.arquillian.extension.transactional.internal.observer.TransactionalObserver;
-import com.liferay.arquillian.extension.transactional.internal.util.TransactionalExecutor;
-import com.liferay.arquillian.extension.transactional.internal.util.TransactionalExecutorImpl;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.util.jar.Manifest;
@@ -73,8 +71,6 @@ public class TransactionalLiferayAuxiliaryAppender
 			RemoteLoadableExtension.class, TransactionalRemoteExtension.class);
 
 		archive.addClass(TransactionalRemoteExtension.class);
-		archive.addClass(TransactionalExecutor.class);
-		archive.addClass(TransactionalExecutorImpl.class);
 
 		archive.addPackages(true,
 			TransactionalRemoteExtension.class.getPackage(),

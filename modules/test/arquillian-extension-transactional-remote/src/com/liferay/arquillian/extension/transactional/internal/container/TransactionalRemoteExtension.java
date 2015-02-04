@@ -15,8 +15,8 @@
 package com.liferay.arquillian.extension.transactional.internal.container;
 
 import com.liferay.arquillian.extension.transactional.internal.observer.TransactionalExecutorInstanceProducer;
-import com.liferay.arquillian.extension.transactional.internal.observer.TransactionalObserver;
 
+import com.liferay.arquillian.extension.transactional.internal.observer.TransactionalObserver;
 import org.jboss.arquillian.container.test.spi.RemoteLoadableExtension;
 
 /**
