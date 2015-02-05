@@ -29,8 +29,8 @@ public class DeleteAfterTestRunRemoteExtension
 
 	@Override
 	public void register(ExtensionBuilder extensionBuilder) {
-		extensionBuilder.observer(ExtensionInstanceProducer.class);
 		extensionBuilder.observer(DeleteAfterTestRunObserver.class);
+		extensionBuilder.observer(ExtensionInstanceProducer.class);
 
 		extensionBuilder.service(
 			DeleteAfterTestRunExecutor.class,

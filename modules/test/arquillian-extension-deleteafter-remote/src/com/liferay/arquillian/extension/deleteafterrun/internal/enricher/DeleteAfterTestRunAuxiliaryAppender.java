@@ -76,10 +76,10 @@ public class DeleteAfterTestRunAuxiliaryAppender
 			RemoteLoadableExtension.class,
 			DeleteAfterTestRunRemoteExtension.class);
 
-		archive.addClass(DeleteAfterTestRunRemoteExtension.class);
 		archive.addClass(DeleteAfterTestRunExecutor.class);
 		archive.addClass(DeleteAfterTestRunExecutorImpl.class);
 		archive.addClass(DeleteAfterTestRunObserver.class);
+		archive.addClass(DeleteAfterTestRunRemoteExtension.class);
 		archive.addClass(ExtensionInstanceProducer.class);
 
 		return archive;

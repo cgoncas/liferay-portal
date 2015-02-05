@@ -12,8 +12,6 @@
 			<fileset dir="${module.framework.base.dir}/test" erroronmissingdir="false" includes="portal-test*.jar" />
 		</path>
 
-		<compile
-			module.dir="${basedir}"
-		/>
+		<compile module.dir="${basedir}" />
 	</target>
 </project>
