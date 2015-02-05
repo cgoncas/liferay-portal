@@ -23,6 +23,5 @@
 		<dependency conf="test->default" name="arquillian-container-liferay" org="org.arquillian.liferay" rev="1.0.0.Final-SNAPSHOT" />
 		<dependency conf="test->default" name="arquillian-deployment-generator-bnd" org="org.arquillian.liferay" rev="1.0.0.Final-SNAPSHOT" />
 		<dependency conf="test->default" name="com.liferay.arquillian.extension.remote.transactional" org="com.liferay" rev="latest.integration" transitive="true" />
-		<dependency conf="test->default" name="org.osgi.enterprise" org="org.osgi" rev="5.0.0" />
 	</dependencies>
 </ivy-module>
