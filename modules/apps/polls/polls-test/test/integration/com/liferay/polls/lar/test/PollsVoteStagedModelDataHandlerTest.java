@@ -32,16 +32,18 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.arquillian.liferay.deploymentscenario.annotations.BndFile;
+
 import org.jboss.arquillian.junit.Arquillian;
 
 import org.junit.Assert;
-import org.junit.Rule;
 import org.junit.runner.RunWith;
 
 /**
  * @author Shinn Lok
  * @author Mate Thurzo
  */
+@BndFile("bnd-test.bnd")
 @RunWith(Arquillian.class)
 @Transactional(propagation = Propagation.REQUIRED)
 public class PollsVoteStagedModelDataHandlerTest

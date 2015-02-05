@@ -22,6 +22,8 @@ import com.liferay.polls.util.test.PollsTestUtil;
 import com.liferay.portal.kernel.lar.PortletDataHandler;
 import com.liferay.portal.lar.test.BasePortletDataHandlerTestCase;
 
+import org.arquillian.liferay.deploymentscenario.annotations.BndFile;
+
 import org.jboss.arquillian.junit.Arquillian;
 
 import org.junit.runner.RunWith;
@@ -29,6 +31,7 @@ import org.junit.runner.RunWith;
 /**
  * @author Zsolt Berentey
  */
+@BndFile("bnd-test.bnd")
 @RunWith(Arquillian.class)
 public class PollsPortletDataHandlerTest
 	extends BasePortletDataHandlerTestCase {

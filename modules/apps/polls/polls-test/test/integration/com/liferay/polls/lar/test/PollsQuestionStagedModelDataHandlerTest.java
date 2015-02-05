@@ -24,6 +24,8 @@ import com.liferay.portal.model.StagedModel;
 import java.util.List;
 import java.util.Map;
 
+import org.arquillian.liferay.deploymentscenario.annotations.BndFile;
+
 import org.jboss.arquillian.junit.Arquillian;
 
 import org.junit.runner.RunWith;
@@ -31,6 +33,7 @@ import org.junit.runner.RunWith;
 /**
  * @author Shinn Lok
  */
+@BndFile("bnd-test.bnd")
 @RunWith(Arquillian.class)
 public class PollsQuestionStagedModelDataHandlerTest
 	extends BaseStagedModelDataHandlerTestCase {
