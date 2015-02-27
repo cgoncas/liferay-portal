@@ -321,8 +321,6 @@ public abstract class BaseSpellCheckIndexWriter
 		}
 	}
 
-	private static final String _PORTLET_SEPARATOR = "_PORTLET_";
-
 	private static final String[] _SUPPORTED_LOCALES = StringUtil.split(
 		PropsUtil.get(PropsKeys.INDEX_SEARCH_SPELL_CHECKER_SUPPORTED_LOCALES));
 

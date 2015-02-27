@@ -18,7 +18,6 @@ import com.liferay.portal.kernel.cluster.ClusterEvent;
 import com.liferay.portal.kernel.cluster.ClusterEventListener;
 import com.liferay.portal.kernel.cluster.ClusterExecutor;
 import com.liferay.portal.kernel.cluster.ClusterExecutorUtil;
-import com.liferay.portal.kernel.cluster.ClusterMessageType;
 import com.liferay.portal.kernel.cluster.ClusterNode;
 import com.liferay.portal.kernel.cluster.ClusterNodeResponse;
 import com.liferay.portal.kernel.cluster.ClusterRequest;
@@ -784,14 +783,6 @@ public class LuceneHelperImplTest {
 				new FutureClusterResponses(clusterNodeIds);
 
 			for (ClusterNode clusterNode : _clusterNodes.values()) {
-				ClusterNodeResponse clusterNodeResponse =
-					new ClusterNodeResponse();
-
-				clusterNodeResponse.setClusterMessageType(
-					ClusterMessageType.EXECUTE);
-				clusterNodeResponse.setMulticast(clusterRequest.isMulticast());
-				clusterNodeResponse.setUuid(clusterRequest.getUuid());
-
 				try {
 					clusterNode.setPortalInetSocketAddress(
 						new InetSocketAddress(_portalInetAddress, _port));
@@ -801,18 +792,17 @@ public class LuceneHelperImplTest {
 				catch (IllegalArgumentException iae) {
 				}
 
-				clusterNodeResponse.setClusterNode(clusterNode);
-
 				try {
-					clusterNodeResponse.setResult(
-						_invoke(clusterRequest.getMethodHandler()));
+					futureClusterResponses.addClusterNodeResponse(
+						ClusterNodeResponse.createResultClusterNodeResponse(
+							clusterNode, clusterRequest.getUuid(),
+							_invoke(clusterRequest.getMethodHandler())));
 				}
 				catch (Exception e) {
-					clusterNodeResponse.setException(e);
+					futureClusterResponses.addClusterNodeResponse(
+						ClusterNodeResponse.createExceptionClusterNodeResponse(
+							clusterNode, clusterRequest.getUuid(), e));
 				}
-
-				futureClusterResponses.addClusterNodeResponse(
-					clusterNodeResponse);
 			}
 
 			return futureClusterResponses;

@@ -45,8 +45,6 @@ import com.liferay.portal.util.PortalUtil;
 import com.liferay.portal.util.PropsUtil;
 import com.liferay.portal.util.PropsValues;
 
-import java.io.Serializable;
-
 import java.net.InetAddress;
 import java.net.InetSocketAddress;
 import java.net.UnknownHostException;
@@ -138,7 +136,13 @@ public class ClusterExecutorImpl
 		}
 
 		if (addresses.remove(_localAddress)) {
-			runLocalMethod(clusterRequest, futureClusterResponses);
+			ClusterNodeResponse clusterNodeResponse = executeClusterRequest(
+				clusterRequest);
+
+			if (!clusterRequest.isFireAndForget()) {
+				futureClusterResponses.addClusterNodeResponse(
+					clusterNodeResponse);
+			}
 		}
 
 		if (clusterRequest.isMulticast()) {
@@ -265,7 +269,7 @@ public class ClusterExecutorImpl
 	}
 
 	@Override
-	public void portalLocalInetSockAddressConfigured(
+	public void portalLocalInetSocketAddressConfigured(
 		InetSocketAddress inetSocketAddress, boolean secure) {
 
 		if (!isEnabled() || (_localClusterNode.getPortalProtocol() != null)) {
@@ -320,38 +324,33 @@ public class ClusterExecutorImpl
 		_clusterEventListeners.addAllAbsent(clusterEventListeners);
 	}
 
+	protected ClusterNodeResponse executeClusterRequest(
+		ClusterRequest clusterRequest) {
+
+		MethodHandler methodHandler = clusterRequest.getMethodHandler();
+
+		if (methodHandler == null) {
+			return ClusterNodeResponse.createExceptionClusterNodeResponse(
+				_localClusterNode, clusterRequest.getUuid(),
+				new ClusterException(
+					"Payload is not of type " + MethodHandler.class.getName()));
+		}
+
+		try {
+			return ClusterNodeResponse.createResultClusterNodeResponse(
+				_localClusterNode, clusterRequest.getUuid(),
+				methodHandler.invoke());
+		}
+		catch (Exception e) {
+			return ClusterNodeResponse.createExceptionClusterNodeResponse(
+				_localClusterNode, clusterRequest.getUuid(), e);
+		}
+	}
+
 	protected void fireClusterEvent(ClusterEvent clusterEvent) {
 		for (ClusterEventListener listener : _clusterEventListeners) {
 			listener.processClusterEvent(clusterEvent);
 		}
-	}
-
-	protected ClusterNodeResponse generateClusterNodeResponse(
-		ClusterRequest clusterRequest, Object returnValue,
-		Exception exception) {
-
-		ClusterNodeResponse clusterNodeResponse = new ClusterNodeResponse();
-
-		clusterNodeResponse.setClusterNode(getLocalClusterNode());
-		clusterNodeResponse.setClusterMessageType(
-			clusterRequest.getClusterMessageType());
-		clusterNodeResponse.setMulticast(clusterRequest.isMulticast());
-		clusterNodeResponse.setUuid(clusterRequest.getUuid());
-
-		if (exception != null) {
-			clusterNodeResponse.setException(exception);
-		}
-		else {
-			if (returnValue instanceof Serializable) {
-				clusterNodeResponse.setResult(returnValue);
-			}
-			else if (returnValue != null) {
-				clusterNodeResponse.setException(
-					new ClusterException("Return value is not serializable"));
-			}
-		}
-
-		return clusterNodeResponse;
 	}
 
 	protected JChannel getControlChannel() {
@@ -501,37 +500,6 @@ public class ClusterExecutorImpl
 		}
 
 		return addresses;
-	}
-
-	protected void runLocalMethod(
-		ClusterRequest clusterRequest,
-		FutureClusterResponses futureClusterResponses) {
-
-		MethodHandler methodHandler = clusterRequest.getMethodHandler();
-
-		Object returnValue = null;
-		Exception exception = null;
-
-		if (methodHandler == null) {
-			exception = new ClusterException(
-				"Payload is not of type " + MethodHandler.class.getName());
-		}
-		else {
-			try {
-				returnValue = methodHandler.invoke();
-			}
-			catch (Exception e) {
-				exception = e;
-			}
-		}
-
-		if (!clusterRequest.isFireAndForget()) {
-			ClusterNodeResponse clusterNodeResponse =
-				generateClusterNodeResponse(
-					clusterRequest, returnValue, exception);
-
-			futureClusterResponses.addClusterNodeResponse(clusterNodeResponse);
-		}
 	}
 
 	protected void sendNotifyRequest() {

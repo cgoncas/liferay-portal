@@ -178,10 +178,11 @@ public class PoshiRunnerGetterUtil {
 				String methodName = method.getName();
 
 				if (methodName.equals(commandName)) {
-					Class[] parameterTypes = method.getParameterTypes();
+					Class<?>[] parameterTypes = method.getParameterTypes();
 
 					if (parameterTypes.length > 1 ) {
-						Object returnObject = method.invoke(null, integers);
+						Object returnObject = method.invoke(
+							null, (Object[])integers);
 
 						return returnObject.toString();
 					}
@@ -195,7 +196,7 @@ public class PoshiRunnerGetterUtil {
 			}
 		}
 		else {
-			List<Class> parameterClasses = new ArrayList<>();
+			List<Class<?>> parameterClasses = new ArrayList<>();
 
 			if (parameters != null) {
 				for (int i = 0; i < parameters.length; i++) {
@@ -205,7 +206,7 @@ public class PoshiRunnerGetterUtil {
 				}
 			}
 
-			Class clazz = null;
+			Class<?> clazz = null;
 			Object object = null;
 
 			if (className.equals("selenium")) {
@@ -223,7 +224,7 @@ public class PoshiRunnerGetterUtil {
 				commandName,
 				parameterClasses.toArray(new Class[parameterClasses.size()]));
 
-			Object returnObject = method.invoke(object, parameters);
+			Object returnObject = method.invoke(object, (Object[])parameters);
 
 			return returnObject.toString();
 		}

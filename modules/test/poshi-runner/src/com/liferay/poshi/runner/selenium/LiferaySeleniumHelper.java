@@ -58,12 +58,20 @@ import org.dom4j.Document;
 import org.dom4j.Element;
 import org.dom4j.io.SAXReader;
 
+import org.sikuli.api.DesktopScreenRegion;
+import org.sikuli.api.ImageTarget;
+import org.sikuli.api.ScreenRegion;
 import org.sikuli.api.robot.Mouse;
 import org.sikuli.api.robot.desktop.DesktopMouse;
+import org.sikuli.api.visual.Canvas;
+import org.sikuli.api.visual.CanvasBuilder.ElementAdder;
+import org.sikuli.api.visual.CanvasBuilder.ElementAreaSetter;
+import org.sikuli.api.visual.DesktopCanvas;
 
 /**
  * @author Brian Wing Shun Chan
  */
+@SuppressWarnings("deprecation")
 public class LiferaySeleniumHelper {
 
 	public static void addToJavaScriptExceptions(Exception exception) {
@@ -582,6 +590,17 @@ public class LiferaySeleniumHelper {
 
 	public static String getEmailSubject(String index) throws Exception {
 		return EmailCommands.getEmailSubject(GetterUtil.getInteger(index));
+	}
+
+	public static ImageTarget getImageTarget(
+			LiferaySelenium liferaySelenium, String image)
+		throws Exception {
+
+		File file = new File(
+			getPortalRootDirName() + liferaySelenium.getSikuliImagesDirName() +
+				image);
+
+		return new ImageTarget(file);
 	}
 
 	public static String getNumberDecrement(String value) {
@@ -1122,21 +1141,53 @@ public class LiferaySeleniumHelper {
 			LiferaySelenium liferaySelenium, String image)
 		throws Exception {
 
-		throw new UnsupportedOperationException();
+		ScreenRegion screenRegion = new DesktopScreenRegion();
+
+		ImageTarget imageTarget = getImageTarget(liferaySelenium, image);
+
+		if (screenRegion.wait(imageTarget, 5000) != null) {
+			throw new Exception("Element is present");
+		}
 	}
 
 	public static void sikuliAssertElementPresent(
 			LiferaySelenium liferaySelenium, String image)
 		throws Exception {
 
-		throw new UnsupportedOperationException();
+		ScreenRegion screenRegion = new DesktopScreenRegion();
+
+		ImageTarget imageTarget = getImageTarget(liferaySelenium, image);
+
+		screenRegion = screenRegion.wait(imageTarget, 5000);
+
+		if (screenRegion == null) {
+			throw new Exception("Element is not present");
+		}
+
+		Canvas canvas = new DesktopCanvas();
+
+		ElementAdder elementAdder = canvas.add();
+
+		ElementAreaSetter elementAreaSetter = elementAdder.box();
+
+		elementAreaSetter.around(screenRegion);
+
+		canvas.display(2);
 	}
 
 	public static void sikuliClick(
 			LiferaySelenium liferaySelenium, String image)
 		throws Exception {
 
-		throw new UnsupportedOperationException();
+		ScreenRegion screenRegion = new DesktopScreenRegion();
+
+		ImageTarget imageTarget = getImageTarget(liferaySelenium, image);
+
+		screenRegion = screenRegion.find(imageTarget);
+
+		Mouse mouse = new DesktopMouse();
+
+		mouse.click(screenRegion.getCenter());
 	}
 
 	public static void sikuliDragAndDrop(
@@ -1170,7 +1221,15 @@ public class LiferaySeleniumHelper {
 			LiferaySelenium liferaySelenium, String image)
 		throws Exception {
 
-		throw new UnsupportedOperationException();
+		ScreenRegion screenRegion = new DesktopScreenRegion();
+
+		ImageTarget imageTarget = getImageTarget(liferaySelenium, image);
+
+		screenRegion = screenRegion.find(imageTarget);
+
+		Mouse mouse = new DesktopMouse();
+
+		mouse.move(screenRegion.getCenter());
 	}
 
 	public static void sikuliRightMouseDown(LiferaySelenium liferaySelenium)

@@ -17,7 +17,6 @@ package com.liferay.portal.cluster;
 import com.liferay.portal.kernel.cluster.ClusterEventListener;
 import com.liferay.portal.kernel.cluster.ClusterExecutor;
 import com.liferay.portal.kernel.cluster.ClusterMasterTokenTransitionListener;
-import com.liferay.portal.kernel.cluster.ClusterMessageType;
 import com.liferay.portal.kernel.cluster.ClusterNode;
 import com.liferay.portal.kernel.cluster.ClusterNodeResponse;
 import com.liferay.portal.kernel.cluster.ClusterRequest;
@@ -650,28 +649,17 @@ public class ClusterMasterExecutorImplTest {
 				new FutureClusterResponses(clusterNodeIds);
 
 			for (String clusterNodeId : clusterNodeIds) {
-				ClusterNodeResponse clusterNodeResponse =
-					new ClusterNodeResponse();
-
-				clusterNodeResponse.setClusterMessageType(
-					ClusterMessageType.EXECUTE);
-				clusterNodeResponse.setMulticast(clusterRequest.isMulticast());
-				clusterNodeResponse.setUuid(clusterRequest.getUuid());
-				clusterNodeResponse.setClusterNode(
-					_clusterNodes.get(clusterNodeId));
+				MethodHandler methodHandler = clusterRequest.getMethodHandler();
 
 				try {
-					MethodHandler methodHandler =
-						clusterRequest.getMethodHandler();
-
-					clusterNodeResponse.setResult(methodHandler.invoke());
+					futureClusterResponses.addClusterNodeResponse(
+						ClusterNodeResponse.createResultClusterNodeResponse(
+							_clusterNodes.get(clusterNodeId),
+							clusterRequest.getUuid(), methodHandler.invoke()));
 				}
 				catch (Exception e) {
 					throw new RuntimeException(e);
 				}
-
-				futureClusterResponses.addClusterNodeResponse(
-					clusterNodeResponse);
 			}
 
 			return futureClusterResponses;

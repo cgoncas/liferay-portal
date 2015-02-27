@@ -14,7 +14,7 @@
  */
 --%>
 
-<%@ include file="/html/portlet/search/init.jsp" %>
+<%@ include file="/html/portlet/workflow_instances/init.jsp" %>
 
 <%
 long assetEntryId = ParamUtil.getLong(request, "assetEntryId");

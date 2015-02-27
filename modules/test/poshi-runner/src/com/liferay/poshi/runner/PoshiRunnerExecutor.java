@@ -210,6 +210,8 @@ public class PoshiRunnerExecutor {
 				locator = PoshiRunnerContext.getPathLocator(
 					pathClassName + "#" + locatorKey);
 
+				locator = PoshiRunnerVariablesUtil.replaceExecuteVars(locator);
+
 				PoshiRunnerVariablesUtil.putIntoExecuteMap(
 					"locator" + (i + 1), locator);
 			}
@@ -345,11 +347,15 @@ public class PoshiRunnerExecutor {
 							locator);
 
 					String locatorKey =
-						PoshiRunnerGetterUtil.
-							getCommandNameFromClassCommandName(locator);
+						PoshiRunnerVariablesUtil.replaceCommandVars(
+							PoshiRunnerGetterUtil.
+								getCommandNameFromClassCommandName(locator));
 
 					locator = PoshiRunnerContext.getPathLocator(
 						pathClassName + "#" + locatorKey);
+
+					locator = PoshiRunnerVariablesUtil.replaceExecuteVars(
+						locator);
 				}
 
 				PoshiRunnerVariablesUtil.putIntoExecuteMap(
@@ -461,7 +467,7 @@ public class PoshiRunnerExecutor {
 		throws Exception {
 
 		List<String> arguments = new ArrayList<>();
-		List<Class> parameterClasses = new ArrayList<>();
+		List<Class<?>> parameterClasses = new ArrayList<>();
 
 		String selenium = executeElement.attributeValue("selenium");
 
@@ -497,6 +503,10 @@ public class PoshiRunnerExecutor {
 				else if (i == 1) {
 					argument = PoshiRunnerVariablesUtil.getValueFromCommandMap(
 						"value1");
+
+					if (selenium.equals("clickAt")) {
+						argument = "";
+					}
 				}
 				else if (i == 2) {
 					argument = PoshiRunnerVariablesUtil.getValueFromCommandMap(
@@ -511,14 +521,15 @@ public class PoshiRunnerExecutor {
 
 		LiferaySelenium liferaySelenium = SeleniumUtil.getSelenium();
 
-		Class clazz = liferaySelenium.getClass();
+		Class<?> clazz = liferaySelenium.getClass();
 
 		Method method = clazz.getMethod(
 			selenium,
 			parameterClasses.toArray(new Class[parameterClasses.size()]));
 
 		_returnObject = method.invoke(
-			liferaySelenium, arguments.toArray(new String[arguments.size()]));
+			liferaySelenium,
+			(Object[])arguments.toArray(new String[arguments.size()]));
 	}
 
 	public static void runVarElement(Element element) throws Exception {
