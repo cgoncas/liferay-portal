@@ -12,7 +12,7 @@
  * details.
  */
 
-package com.liferay.wiki.social;
+package com.liferay.wiki.social.test;
 
 import com.liferay.portal.kernel.repository.model.FileEntry;
 import com.liferay.portal.kernel.test.rule.AggregateTestRule;

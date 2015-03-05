@@ -12,7 +12,7 @@
  * details.
  */
 
-package com.liferay.wiki.lar;
+package com.liferay.wiki.lar.test;
 
 import com.liferay.portal.kernel.repository.model.FileEntry;
 import com.liferay.portal.kernel.repository.model.Folder;

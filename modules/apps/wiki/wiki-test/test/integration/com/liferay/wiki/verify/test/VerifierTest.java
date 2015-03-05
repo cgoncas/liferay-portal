@@ -12,7 +12,7 @@
  * details.
  */
 
-package com.liferay.wiki.verify;
+package com.liferay.wiki.verify.test;
 
 import com.liferay.portal.kernel.test.rule.AggregateTestRule;
 import com.liferay.portal.test.rule.LiferayIntegrationTestRule;

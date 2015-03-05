@@ -12,7 +12,7 @@
  * details.
  */
 
-package com.liferay.wiki.service;
+package com.liferay.wiki.service.test;
 
 import com.liferay.portal.kernel.repository.model.FileEntry;
 import com.liferay.portal.kernel.test.AssertUtils;
