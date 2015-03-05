@@ -12,17 +12,20 @@
  * details.
  */
 
-package com.liferay.wiki.subscription;
+package com.liferay.wiki.subscription.test;
 
 import com.liferay.portal.kernel.test.rule.AggregateTestRule;
 import com.liferay.portal.kernel.test.rule.Sync;
 import com.liferay.portal.kernel.test.rule.SynchronousMailTestRule;
+import com.liferay.portal.kernel.test.util.RoleTestUtil;
+import com.liferay.portal.model.ResourceConstants;
+import com.liferay.portal.model.RoleConstants;
+import com.liferay.portal.security.permission.ActionKeys;
 import com.liferay.portal.test.rule.LiferayIntegrationTestRule;
 import com.liferay.portal.test.rule.MainServletTestRule;
-import com.liferay.portlet.subscriptions.test.BaseSubscriptionContainerModelTestCase;
+import com.liferay.portlet.subscriptions.test.BaseSubscriptionBaseModelTestCase;
 import com.liferay.wiki.model.WikiNode;
 import com.liferay.wiki.model.WikiPage;
-import com.liferay.wiki.service.WikiNodeLocalServiceUtil;
 import com.liferay.wiki.service.WikiPageLocalServiceUtil;
 import com.liferay.wiki.util.test.WikiTestUtil;
 
@@ -36,8 +39,8 @@ import org.junit.Test;
  * @author Roberto Díaz
  */
 @Sync
-public class WikiSubscriptionContainerModelTest
-	extends BaseSubscriptionContainerModelTestCase {
+public class WikiSubscriptionBaseModelTest
+	extends BaseSubscriptionBaseModelTestCase {
 
 	@ClassRule
 	@Rule
@@ -49,25 +52,7 @@ public class WikiSubscriptionContainerModelTest
 	@Ignore
 	@Override
 	@Test
-	public void testSubscriptionContainerModelWhenAddingBaseModelInRootContainerModel() {
-	}
-
-	@Ignore
-	@Override
-	@Test
-	public void testSubscriptionContainerModelWhenAddingBaseModelInSubcontainerModel() {
-	}
-
-	@Ignore
-	@Override
-	@Test
-	public void testSubscriptionContainerModelWhenUpdatingBaseModelInRootContainerModel() {
-	}
-
-	@Ignore
-	@Override
-	@Test
-	public void testSubscriptionContainerModelWhenUpdatingBaseModelInSubcontainerModel() {
+	public void testSubscriptionBaseModelWhenInRootContainerModel() {
 	}
 
 	@Override
@@ -80,17 +65,32 @@ public class WikiSubscriptionContainerModelTest
 
 	@Override
 	protected long addContainerModel(long containerModelId) throws Exception {
-		WikiNode node = WikiTestUtil.addNode(group.getGroupId());
+		_node = WikiTestUtil.addNode(group.getGroupId());
 
-		return node.getNodeId();
+		return _node.getNodeId();
 	}
 
 	@Override
-	protected void addSubscriptionContainerModel(long containerModelId)
+	protected void addSubscriptionBaseModel(long baseModelId) throws Exception {
+		WikiPage page = WikiPageLocalServiceUtil.getPage(baseModelId);
+
+		WikiPageLocalServiceUtil.subscribePage(
+			user.getUserId(), page.getNodeId(), page.getTitle());
+	}
+
+	@Override
+	protected void removeContainerModelResourceViewPermission()
 		throws Exception {
 
-		WikiNodeLocalServiceUtil.subscribeNode(
-			user.getUserId(), containerModelId);
+		RoleTestUtil.removeResourcePermission(
+			RoleConstants.GUEST, WikiNode.class.getName(),
+			ResourceConstants.SCOPE_INDIVIDUAL,
+			String.valueOf(_node.getNodeId()), ActionKeys.VIEW);
+
+		RoleTestUtil.removeResourcePermission(
+			RoleConstants.SITE_MEMBER, WikiNode.class.getName(),
+			ResourceConstants.SCOPE_INDIVIDUAL,
+			String.valueOf(_node.getNodeId()), ActionKeys.VIEW);
 	}
 
 	@Override
@@ -99,5 +99,7 @@ public class WikiSubscriptionContainerModelTest
 
 		WikiTestUtil.updatePage(page);
 	}
+
+	private WikiNode _node;
 
 }

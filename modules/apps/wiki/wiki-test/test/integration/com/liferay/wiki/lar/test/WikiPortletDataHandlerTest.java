@@ -24,6 +24,7 @@ import com.liferay.portal.service.ServiceContext;
 import com.liferay.portal.test.rule.LiferayIntegrationTestRule;
 import com.liferay.portal.test.rule.MainServletTestRule;
 import com.liferay.wiki.constants.WikiPortletKeys;
+import com.liferay.wiki.lar.WikiPortletDataHandler;
 import com.liferay.wiki.model.WikiNode;
 import com.liferay.wiki.util.test.WikiTestUtil;
 
