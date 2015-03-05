@@ -6,4 +6,15 @@
 	<property name="osgi.ide.dependencies" value="antlr3-runtime.jar" />
 
 	<import file="../../../../tools/sdk/build-common-osgi-plugin.xml" />
+
+	<target name="compile">
+		<path id="plugin.classpath">
+			<path refid="plugin-lib.classpath" />
+			<fileset dir="${module.framework.base.dir}/test" erroronmissingdir="false" includes="portal-test*.jar" />
+		</path>
+
+		<compile
+				module.dir="${basedir}"
+				/>
+	</target>
 </project>
