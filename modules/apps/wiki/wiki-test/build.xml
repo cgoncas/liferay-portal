@@ -17,4 +17,15 @@
 				module.dir="${basedir}"
 				/>
 	</target>
+
+	<target name="deploy">
+		<path id="plugin.classpath">
+			<path refid="plugin-lib.classpath" />
+			<fileset dir="${module.framework.base.dir}/test" erroronmissingdir="false" includes="portal-test*.jar" />
+		</path>
+
+		<deploy
+				module.dir="${basedir}"
+				/>
+	</target>
 </project>
