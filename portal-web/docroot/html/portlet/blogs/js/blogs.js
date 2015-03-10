@@ -3,9 +3,9 @@ AUI.add(
 	function(A) {
 		var Lang = A.Lang;
 
-		var STR_BLANK = '';
+		var STR_BLANK = ''
 
-		var STR_CHANGE = 'change';
+		var STR_CHANGE = 'change'
 
 		var STR_CLICK = 'click';
 
@@ -38,9 +38,9 @@ AUI.add(
 					strings: {
 						validator: Lang.isObject,
 						value: {
-							confirmDiscardImages: Liferay.Language.get('uploads-are-in-progress-confirmation'),
 							savedAtMessage: Liferay.Language.get('entry-saved-at-x'),
 							savedDraftAtMessage: Liferay.Language.get('draft-saved-at-x'),
+							confirmDiscardImages: Liferay.Language.get('uploads-are-in-progress-confirmation'),
 							saveDraftError: Liferay.Language.get('could-not-save-draft-to-the-server'),
 							saveDraftMessage: Liferay.Language.get('saving-draft')
 						}
