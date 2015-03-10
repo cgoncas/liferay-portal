@@ -12,77 +12,55 @@
  * details.
  */
 
-package com.liferay.wiki.subscription;
+package com.liferay.wiki.subscription.test;
 
+import com.liferay.arquillian.extension.junit.bridge.junit.Arquillian;
 import com.liferay.portal.kernel.test.rule.AggregateTestRule;
 import com.liferay.portal.kernel.test.rule.Sync;
 import com.liferay.portal.kernel.test.rule.SynchronousMailTestRule;
 import com.liferay.portal.test.rule.LiferayIntegrationTestRule;
-import com.liferay.portal.test.rule.MainServletTestRule;
-import com.liferay.portlet.subscriptions.test.BaseSubscriptionContainerModelTestCase;
+import com.liferay.portlet.subscriptions.test.BaseSubscriptionLocalizedContentTestCase;
+import com.liferay.wiki.constants.WikiConstants;
+import com.liferay.wiki.constants.WikiPortletKeys;
 import com.liferay.wiki.model.WikiNode;
 import com.liferay.wiki.model.WikiPage;
 import com.liferay.wiki.service.WikiNodeLocalServiceUtil;
 import com.liferay.wiki.service.WikiPageLocalServiceUtil;
 import com.liferay.wiki.util.test.WikiTestUtil;
 
+import org.junit.Before;
 import org.junit.ClassRule;
-import org.junit.Ignore;
 import org.junit.Rule;
-import org.junit.Test;
+import org.junit.runner.RunWith;
 
 /**
- * @author Sergio González
  * @author Roberto Díaz
  */
+@RunWith(Arquillian.class)
 @Sync
-public class WikiSubscriptionContainerModelTest
-	extends BaseSubscriptionContainerModelTestCase {
+public class WikiSubscriptionLocalizedContentTest
+	extends BaseSubscriptionLocalizedContentTestCase {
 
 	@ClassRule
 	@Rule
 	public static final AggregateTestRule aggregateTestRule =
 		new AggregateTestRule(
-			new LiferayIntegrationTestRule(), MainServletTestRule.INSTANCE,
-			SynchronousMailTestRule.INSTANCE);
+			new LiferayIntegrationTestRule(), SynchronousMailTestRule.INSTANCE);
 
-	@Ignore
+	@Before
 	@Override
-	@Test
-	public void testSubscriptionContainerModelWhenAddingBaseModelInRootContainerModel() {
-	}
+	public void setUp() throws Exception {
+		super.setUp();
 
-	@Ignore
-	@Override
-	@Test
-	public void testSubscriptionContainerModelWhenAddingBaseModelInSubcontainerModel() {
-	}
-
-	@Ignore
-	@Override
-	@Test
-	public void testSubscriptionContainerModelWhenUpdatingBaseModelInRootContainerModel() {
-	}
-
-	@Ignore
-	@Override
-	@Test
-	public void testSubscriptionContainerModelWhenUpdatingBaseModelInSubcontainerModel() {
+		_node = WikiTestUtil.addNode(group.getGroupId());
 	}
 
 	@Override
 	protected long addBaseModel(long containerModelId) throws Exception {
 		WikiPage page = WikiTestUtil.addPage(
-			group.getGroupId(), containerModelId, true);
+			group.getGroupId(), _node.getNodeId(), true);
 
 		return page.getResourcePrimKey();
-	}
-
-	@Override
-	protected long addContainerModel(long containerModelId) throws Exception {
-		WikiNode node = WikiTestUtil.addNode(group.getGroupId());
-
-		return node.getNodeId();
 	}
 
 	@Override
@@ -90,14 +68,36 @@ public class WikiSubscriptionContainerModelTest
 		throws Exception {
 
 		WikiNodeLocalServiceUtil.subscribeNode(
-			user.getUserId(), containerModelId);
+			user.getUserId(), _node.getNodeId());
+	}
+
+	@Override
+	protected String getPortletId() {
+		return WikiPortletKeys.WIKI;
+	}
+
+	@Override
+	protected String getServiceName() {
+		return WikiConstants.SERVICE_NAME;
+	}
+
+	@Override
+	protected String getSubscriptionAddedBodyPreferenceName() {
+		return "emailPageAddedBody";
+	}
+
+	@Override
+	protected String getSubscriptionUpdatedBodyPreferenceName() {
+		return "emailPageUpdatedBody";
 	}
 
 	@Override
 	protected void updateBaseModel(long baseModelId) throws Exception {
-		WikiPage page = WikiPageLocalServiceUtil.getPage(baseModelId, true);
+		WikiPage page = WikiPageLocalServiceUtil.getPage(baseModelId);
 
 		WikiTestUtil.updatePage(page);
 	}
+
+	private WikiNode _node;
 
 }
