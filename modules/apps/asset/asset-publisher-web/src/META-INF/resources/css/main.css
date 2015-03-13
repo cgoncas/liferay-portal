@@ -35,6 +35,8 @@
 			overflow-x: auto;
 		}
 
+		&.test{}
+
 		&.no-title .asset-user-actions{
 			padding-bottom: 2em;
 		}

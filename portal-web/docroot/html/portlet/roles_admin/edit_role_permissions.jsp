@@ -138,7 +138,7 @@ portletURL.setParameter("roleId", String.valueOf(role.getRoleId()));
 			var id = selectedGroupIds[i];
 			var name = selectedGroupNames[i];
 
-			groupsHTML += '<span class="lfr-token"><span class="lfr-token-text">' + name + '</span><a class="icon icon-remove lfr-token-close" href="javascript:<portlet:namespace />removeGroup(' + i + ', \'' + target + '\' );"></a></span>';
+			groupsHTML += '<span class="lfr-token"><span class="lfr-token-text">' + name + '</span><a class="icon icon-remove lfr-token-close" href="javascript:<portlet:namespace />removeGroup(' + i + ', \'' + target + '\' ); "></a></span>';
 		}
 
 		if (groupsHTML == '') {
