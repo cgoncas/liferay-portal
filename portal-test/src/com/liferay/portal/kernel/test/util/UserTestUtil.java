@@ -20,7 +20,6 @@ import com.liferay.portal.kernel.util.LocaleUtil;
 import com.liferay.portal.kernel.util.PropsKeys;
 import com.liferay.portal.kernel.util.PropsUtil;
 import com.liferay.portal.kernel.util.StringPool;
-import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.model.Company;
 import com.liferay.portal.model.Group;
 import com.liferay.portal.model.Organization;
@@ -269,15 +268,20 @@ public class UserTestUtil {
 			lastName, groupIds);
 	}
 
-	public static User addUser(String screenName, long groupId)
+	public static User addUserAutoScreenName(long groupId) throws Exception {
+		return addUser(null, true, new long[] {groupId});
+	}
+
+	public static User addUserCustomScreenName(String screenName, long groupId)
 		throws Exception {
 
-		if (Validator.isNull(screenName)) {
-			return addUser(null, true, new long[] {groupId});
-		}
-		else {
-			return addUser(screenName, false, new long[] {groupId});
-		}
+		return addUser(screenName, false, new long[] {groupId});
+	}
+
+	public static User addUserRandomScreenName(long groupId) throws Exception {
+		return addUserCustomScreenName(
+			RandomTestUtil.randomString(NumericStringRandomizerBumper.INSTANCE),
+			groupId);
 	}
 
 	public static User getAdminUser(long companyId) throws PortalException {
