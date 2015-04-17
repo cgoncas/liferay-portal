@@ -14,9 +14,7 @@
 
 package com.liferay.portal.security.membershippolicy;
 
-import com.liferay.portal.kernel.test.randomizerbumpers.NumericStringRandomizerBumper;
 import com.liferay.portal.kernel.test.rule.AggregateTestRule;
-import com.liferay.portal.kernel.test.util.RandomTestUtil;
 import com.liferay.portal.kernel.test.util.UserTestUtil;
 import com.liferay.portal.model.Group;
 import com.liferay.portal.model.Role;
@@ -29,14 +27,11 @@ import com.liferay.portal.test.rule.MainServletTestRule;
 import com.liferay.portlet.sites.search.UserGroupRoleRoleChecker;
 import com.liferay.portlet.sites.search.UserGroupRoleUserChecker;
 import com.liferay.portlet.sitesadmin.search.SiteMembershipChecker;
-
 import javax.portlet.RenderResponse;
-
 import org.junit.Assert;
 import org.junit.ClassRule;
 import org.junit.Rule;
 import org.junit.Test;
-
 import org.powermock.api.mockito.PowerMockito;
 
 /**
@@ -168,9 +163,7 @@ public class SiteMembershipPolicyRowCheckerTest
 		SiteMembershipChecker siteMembershipChecker = new SiteMembershipChecker(
 			renderResponse, forbiddenGroup);
 
-		User user = UserTestUtil.addUser(
-			RandomTestUtil.randomString(NumericStringRandomizerBumper.INSTANCE),
-			forbiddenGroupId);
+		User user = UserTestUtil.addUserRandomScreenName(forbiddenGroupId);
 
 		Assert.assertFalse(siteMembershipChecker.isDisabled(user));
 	}
@@ -209,9 +202,7 @@ public class SiteMembershipPolicyRowCheckerTest
 		SiteMembershipChecker siteMembershipChecker = new SiteMembershipChecker(
 			renderResponse, requiredGroup);
 
-		User user = UserTestUtil.addUser(
-			RandomTestUtil.randomString(NumericStringRandomizerBumper.INSTANCE),
-			requiredGroupId);
+		User user = UserTestUtil.addUserRandomScreenName(requiredGroupId);
 
 		Assert.assertTrue(siteMembershipChecker.isDisabled(user));
 	}
