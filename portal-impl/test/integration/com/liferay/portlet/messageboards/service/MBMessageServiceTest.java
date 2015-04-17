@@ -14,6 +14,7 @@
 
 package com.liferay.portlet.messageboards.service;
 
+import com.liferay.portal.kernel.test.randomizerbumpers.NumericStringRandomizerBumper;
 import com.liferay.portal.kernel.test.rule.AggregateTestRule;
 import com.liferay.portal.kernel.test.rule.DeleteAfterTestRun;
 import com.liferay.portal.kernel.test.util.GroupTestUtil;
@@ -83,7 +84,9 @@ public class MBMessageServiceTest {
 
 		for (int i = 0; i < ServiceTestUtil.THREAD_COUNT; i++) {
 			UserTestUtil.addUser(
-				RandomTestUtil.randomString(), _group.getGroupId());
+				RandomTestUtil.randomString(
+					NumericStringRandomizerBumper.INSTANCE),
+					_group.getGroupId());
 		}
 
 		ServiceContext serviceContext =

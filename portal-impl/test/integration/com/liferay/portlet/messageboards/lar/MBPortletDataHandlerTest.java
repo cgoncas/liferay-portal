@@ -16,6 +16,7 @@ package com.liferay.portlet.messageboards.lar;
 
 import com.liferay.portal.kernel.lar.ManifestSummary;
 import com.liferay.portal.kernel.lar.PortletDataHandler;
+import com.liferay.portal.kernel.test.randomizerbumpers.NumericStringRandomizerBumper;
 import com.liferay.portal.kernel.test.rule.AggregateTestRule;
 import com.liferay.portal.kernel.test.util.GroupTestUtil;
 import com.liferay.portal.kernel.test.util.RandomTestUtil;
@@ -128,7 +129,8 @@ public class MBPortletDataHandlerTest extends BasePortletDataHandlerTestCase {
 			TestPropsValues.getUserId(), message.getThread(), serviceContext);
 
 		User user = UserTestUtil.addUser(
-			RandomTestUtil.randomString(), TestPropsValues.getGroupId());
+			RandomTestUtil.randomString(NumericStringRandomizerBumper.INSTANCE),
+			TestPropsValues.getGroupId());
 
 		MBBanLocalServiceUtil.addBan(
 			TestPropsValues.getUserId(), user.getUserId(), serviceContext);

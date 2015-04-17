@@ -19,6 +19,7 @@ import com.liferay.portal.kernel.search.Hits;
 import com.liferay.portal.kernel.search.Indexer;
 import com.liferay.portal.kernel.search.IndexerRegistryUtil;
 import com.liferay.portal.kernel.search.SearchContext;
+import com.liferay.portal.kernel.test.randomizerbumpers.NumericStringRandomizerBumper;
 import com.liferay.portal.kernel.test.rule.AggregateTestRule;
 import com.liferay.portal.kernel.test.rule.DeleteAfterTestRun;
 import com.liferay.portal.kernel.test.rule.Sync;
@@ -79,7 +80,8 @@ public class BlogsEntryStatusTransitionTest {
 		group = GroupTestUtil.addGroup();
 
 		user = UserTestUtil.addUser(
-			RandomTestUtil.randomString(), group.getGroupId());
+			RandomTestUtil.randomString(NumericStringRandomizerBumper.INSTANCE),
+			group.getGroupId());
 
 		ServiceContext serviceContext =
 			ServiceContextTestUtil.getServiceContext(

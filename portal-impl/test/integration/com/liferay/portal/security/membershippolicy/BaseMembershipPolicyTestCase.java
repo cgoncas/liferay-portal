@@ -14,6 +14,7 @@
 
 package com.liferay.portal.security.membershippolicy;
 
+import com.liferay.portal.kernel.test.randomizerbumpers.NumericStringRandomizerBumper;
 import com.liferay.portal.kernel.test.rule.DeleteAfterTestRun;
 import com.liferay.portal.kernel.test.util.GroupTestUtil;
 import com.liferay.portal.kernel.test.util.RandomTestUtil;
@@ -84,12 +85,14 @@ public abstract class BaseMembershipPolicyTestCase {
 
 	protected long[] addUsers() throws Exception {
 		User user1 = UserTestUtil.addUser(
-			RandomTestUtil.randomString(), group.getGroupId());
+			RandomTestUtil.randomString(NumericStringRandomizerBumper.INSTANCE),
+			group.getGroupId());
 
 		_userIds[0] = user1.getUserId();
 
 		User user2 = UserTestUtil.addUser(
-			RandomTestUtil.randomString(), group.getGroupId());
+			RandomTestUtil.randomString(NumericStringRandomizerBumper.INSTANCE),
+			group.getGroupId());
 
 		_userIds[1] = user2.getUserId();
 

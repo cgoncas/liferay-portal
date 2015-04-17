@@ -14,6 +14,7 @@
 
 package com.liferay.portlet.messageboards.lar;
 
+import com.liferay.portal.kernel.test.randomizerbumpers.NumericStringRandomizerBumper;
 import com.liferay.portal.kernel.test.rule.AggregateTestRule;
 import com.liferay.portal.kernel.test.rule.TransactionalTestRule;
 import com.liferay.portal.kernel.test.util.RandomTestUtil;
@@ -61,7 +62,8 @@ public class MBBanStagedModelDataHandlerTest
 				group.getGroupId(), TestPropsValues.getUserId());
 
 		User user = UserTestUtil.addUser(
-			RandomTestUtil.randomString(), TestPropsValues.getGroupId());
+			RandomTestUtil.randomString(NumericStringRandomizerBumper.INSTANCE),
+			TestPropsValues.getGroupId());
 
 		return MBBanLocalServiceUtil.addBan(
 			TestPropsValues.getUserId(), user.getUserId(), serviceContext);

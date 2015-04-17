@@ -15,6 +15,7 @@
 package com.liferay.portal.kernel.test.util;
 
 import com.liferay.portal.kernel.exception.PortalException;
+import com.liferay.portal.kernel.test.randomizerbumpers.NumericStringRandomizerBumper;
 import com.liferay.portal.kernel.util.LocaleUtil;
 import com.liferay.portal.kernel.util.PropsKeys;
 import com.liferay.portal.kernel.util.PropsUtil;
@@ -73,7 +74,8 @@ public class UserTestUtil {
 		throws Exception {
 
 		User groupUser = addUser(
-			RandomTestUtil.randomString(), group.getGroupId());
+			RandomTestUtil.randomString(NumericStringRandomizerBumper.INSTANCE),
+			group.getGroupId());
 
 		Role role = RoleLocalServiceUtil.getRole(
 			TestPropsValues.getCompanyId(), roleName);
@@ -112,7 +114,8 @@ public class UserTestUtil {
 		throws Exception {
 
 		User organizationUser = addUser(
-			RandomTestUtil.randomString(), organization.getGroupId());
+			RandomTestUtil.randomString(NumericStringRandomizerBumper.INSTANCE),
+			organization.getGroupId());
 
 		long[] userIds = {organizationUser.getUserId()};
 
@@ -130,7 +133,8 @@ public class UserTestUtil {
 
 	public static User addUser() throws Exception {
 		return addUser(
-			RandomTestUtil.randomString(), TestPropsValues.getGroupId());
+			RandomTestUtil.randomString(NumericStringRandomizerBumper.INSTANCE),
+			TestPropsValues.getGroupId());
 	}
 
 	public static User addUser(boolean secure) throws Exception {
@@ -188,9 +192,9 @@ public class UserTestUtil {
 
 	public static User addUser(long groupId, Locale locale) throws Exception {
 		return addUser(
-			RandomTestUtil.randomString(), false, locale,
-			RandomTestUtil.randomString(), RandomTestUtil.randomString(),
-			new long[] {groupId});
+			RandomTestUtil.randomString(NumericStringRandomizerBumper.INSTANCE),
+			false, locale, RandomTestUtil.randomString(),
+			RandomTestUtil.randomString(), new long[] {groupId});
 	}
 
 	public static User addUser(

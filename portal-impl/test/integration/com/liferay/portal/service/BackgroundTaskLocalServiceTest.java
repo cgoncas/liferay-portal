@@ -22,6 +22,7 @@ import com.liferay.portal.kernel.messaging.MessageBusUtil;
 import com.liferay.portal.kernel.messaging.SynchronousDestination;
 import com.liferay.portal.kernel.repository.model.FileEntry;
 import com.liferay.portal.kernel.test.AssertUtils;
+import com.liferay.portal.kernel.test.randomizerbumpers.NumericStringRandomizerBumper;
 import com.liferay.portal.kernel.test.rule.AggregateTestRule;
 import com.liferay.portal.kernel.test.rule.DeleteAfterTestRun;
 import com.liferay.portal.kernel.test.util.GroupTestUtil;
@@ -69,7 +70,8 @@ public class BackgroundTaskLocalServiceTest {
 		_group = GroupTestUtil.addGroup();
 
 		_user = UserTestUtil.addUser(
-			RandomTestUtil.randomString(), _group.getGroupId());
+			RandomTestUtil.randomString(NumericStringRandomizerBumper.INSTANCE),
+			_group.getGroupId());
 
 		MessageBus messageBus = MessageBusUtil.getMessageBus();
 

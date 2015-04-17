@@ -15,6 +15,7 @@
 package com.liferay.portal.model.impl;
 
 import com.liferay.portal.kernel.test.ReflectionTestUtil;
+import com.liferay.portal.kernel.test.randomizerbumpers.NumericStringRandomizerBumper;
 import com.liferay.portal.kernel.test.rule.AggregateTestRule;
 import com.liferay.portal.kernel.test.rule.DeleteAfterTestRun;
 import com.liferay.portal.kernel.test.util.GroupTestUtil;
@@ -163,7 +164,8 @@ public class LayoutTypePortletTest {
 		Layout layout = _layoutTypePortlet.getLayout();
 
 		_user = UserTestUtil.addUser(
-			RandomTestUtil.randomString(), layout.getGroupId());
+			RandomTestUtil.randomString(NumericStringRandomizerBumper.INSTANCE),
+			layout.getGroupId());
 
 		String portletId = PortletKeys.TEST;
 
@@ -190,7 +192,8 @@ public class LayoutTypePortletTest {
 		Layout layout = _layoutTypePortlet.getLayout();
 
 		_user = UserTestUtil.addUser(
-			RandomTestUtil.randomString(), layout.getGroupId());
+			RandomTestUtil.randomString(NumericStringRandomizerBumper.INSTANCE),
+			layout.getGroupId());
 
 		String portletId = PortletKeys.TEST;
 
@@ -222,7 +225,8 @@ public class LayoutTypePortletTest {
 		Layout layout = _layoutTypePortlet.getLayout();
 
 		_user = UserTestUtil.addUser(
-			RandomTestUtil.randomString(), layout.getGroupId());
+			RandomTestUtil.randomString(NumericStringRandomizerBumper.INSTANCE),
+			layout.getGroupId());
 
 		String portletId = RandomTestUtil.randomString();
 
@@ -237,7 +241,8 @@ public class LayoutTypePortletTest {
 		Layout layout = _layoutTypePortlet.getLayout();
 
 		_user = UserTestUtil.addUser(
-			RandomTestUtil.randomString(), layout.getGroupId());
+			RandomTestUtil.randomString(NumericStringRandomizerBumper.INSTANCE),
+			layout.getGroupId());
 
 		String portletId = PortletKeys.TEST;
 
@@ -252,7 +257,8 @@ public class LayoutTypePortletTest {
 		Layout layout = _layoutTypePortlet.getLayout();
 
 		_user = UserTestUtil.addUser(
-			RandomTestUtil.randomString(), layout.getGroupId());
+			RandomTestUtil.randomString(NumericStringRandomizerBumper.INSTANCE),
+			layout.getGroupId());
 
 		final String portletId = _layoutTypePortlet.addPortletId(
 			_user.getUserId(), PortletKeys.TEST);

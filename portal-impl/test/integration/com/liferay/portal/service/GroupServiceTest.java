@@ -18,6 +18,7 @@ import com.liferay.portal.GroupParentException;
 import com.liferay.portal.LocaleException;
 import com.liferay.portal.kernel.dao.orm.QueryUtil;
 import com.liferay.portal.kernel.language.LanguageUtil;
+import com.liferay.portal.kernel.test.randomizerbumpers.NumericStringRandomizerBumper;
 import com.liferay.portal.kernel.test.rule.AggregateTestRule;
 import com.liferay.portal.kernel.test.rule.DeleteAfterTestRun;
 import com.liferay.portal.kernel.test.rule.Sync;
@@ -200,7 +201,8 @@ public class GroupServiceTest {
 			AssetTagLocalServiceUtil.getGroupTagsCount(group.getGroupId()));
 
 		User user = UserTestUtil.addUser(
-			RandomTestUtil.randomString(), group.getGroupId());
+			RandomTestUtil.randomString(NumericStringRandomizerBumper.INSTANCE),
+			group.getGroupId());
 
 		BlogsEntry blogsEntry = BlogsEntryLocalServiceUtil.addEntry(
 			user.getUserId(), RandomTestUtil.randomString(),
