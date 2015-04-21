@@ -88,9 +88,6 @@ public class AssertFailJUnitRule extends AbstractJUnitRule {
 		return data;
 	}
 
-	/**
-	 * Tells if the expression is an assert.fail statement
-	 */
 	private boolean isAssertFailStatement(
 		ASTStatementExpression astStatementExpression) {
 
