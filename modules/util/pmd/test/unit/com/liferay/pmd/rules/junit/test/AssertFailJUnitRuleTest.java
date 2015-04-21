@@ -26,6 +26,6 @@ public class AssertFailJUnitRuleTest extends SimpleAggregatorTst {
 		addRule(_RULESET, "AssertFailJUnitRule");
 	}
 
-	private static final String _RULESET = "java-junit-liferay";
+	private static final String _RULESET = "java-liferay-junit";
 
 }
