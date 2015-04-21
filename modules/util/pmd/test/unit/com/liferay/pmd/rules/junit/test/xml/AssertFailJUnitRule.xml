@@ -1,4 +1,5 @@
-<?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0"?>
+
 <test-data>
 	<test-code>
 		<description><![CDATA[
@@ -20,12 +21,12 @@ public class ClassTest {
 				return 1;
 			}
 		}) {
-			//SOME CODE
+			// ...
 
 			Assert.fail();
 		}
 	    catch (Exception e) {
-			//SOME CODE
+			// ...
 	    }
 	}
 }
@@ -46,15 +47,15 @@ public class ClassTest {
 	@Test
 	public void test1() {
 		try {
-			//SOME CODE
+			// ...
 
 			Assert.fail();
 		}
 	    catch (Exception e) {
-			//SOME CODE
+			// ...
 	    }
 	    finally {
-	    	//SOME CODE
+	    	// ...
 	    }
 	}
 }
@@ -75,15 +76,15 @@ public class ClassTest {
 	@Test
 	public void test1() {
 		try(int a = 2) {
-			//SOME CODE
+			// ...
 
 			Assert.fail();
 		}
 	    catch (Exception e) {
-			//SOME CODE
+			// ...
 	    }
 	    finally {
-	    	//SOME CODE
+	    	// ...
 	    }
 	}
 }
@@ -152,7 +153,7 @@ public class ClassTest {
 	@Test
 	public void test1() {
 		try {
-			//SOME CODE
+			// ...
 			Assert.fail();
 		}
 	    catch (Exception e) {
@@ -196,7 +197,7 @@ public class ClassTest {
 	@Test
 	public void test1() {
 		try {
-			//SOME CODE
+			// ...
 			Assert.fail();
 		}
 	    catch (Exception e) {
@@ -220,7 +221,7 @@ public class ClassTest {
 	@Test
 	public void test1() {
 		try {
-			//SOME CODE
+			// ...
 		}
 	    catch (Exception e) {
 	    	{
@@ -244,7 +245,7 @@ import org.junit.Assert;
 public class ClassTest {
 	public void test1() {
 		try {
-			//SOME CODE
+			// ...
 		}
 	    catch (Exception e) {
 		    Assert.fail();
@@ -268,7 +269,7 @@ public class ClassTest {
 	@Test
 	public void test1() {
 		try {
-			//SOME CODE
+			// ...
 		}
 	    catch (Exception e) {
 	    	System.out.println("ERROR " + e.getMessage());
@@ -293,7 +294,7 @@ public class ClassTest {
 	@Test
 	public void test1() {
 		try {
-			//SOME CODE
+			// ...
 		}
 	    catch (Exception e) {
 		    Assert.fail();
