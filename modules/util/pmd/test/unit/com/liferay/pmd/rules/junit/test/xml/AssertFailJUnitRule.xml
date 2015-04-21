@@ -14,7 +14,7 @@ import org.junit.Test;
 
 public class ClassTest {
 	@Test
-	public void test1() {
+	public void test() {
 		try(Object object = new Object() {
 			@Override
 			public int hashCOde() {
@@ -45,7 +45,7 @@ import org.junit.Test;
 
 public class ClassTest {
 	@Test
-	public void test1() {
+	public void test() {
 		try {
 			// ...
 
@@ -74,7 +74,7 @@ import org.junit.Test;
 
 public class ClassTest {
 	@Test
-	public void test1() {
+	public void test() {
 		try(int a = 2) {
 			// ...
 
@@ -103,7 +103,7 @@ import org.junit.Test;
 
 public class ClassTest {
 	@Test
-	public void test1() {
+	public void test() {
 		try {
 		}
 	    catch (Exception e) {
@@ -126,7 +126,7 @@ import org.junit.Test;
 
 public class ClassTest {
 	@Test
-	public void test1() {
+	public void test() {
 		try {
 			System.out.println("SOME CODE");
 
@@ -151,7 +151,7 @@ import org.junit.Test;
 
 public class ClassTest {
 	@Test
-	public void test1() {
+	public void test() {
 		try {
 			// ...
 			Assert.fail();
@@ -176,7 +176,7 @@ import org.junit.Test;
 
 public class ClassTest {
 	@Test
-	public void test1() {
+	public void test() {
 		Assert.fail();
 	}
 }
@@ -195,7 +195,7 @@ import org.junit.Test;
 
 public class ClassTest {
 	@Test
-	public void test1() {
+	public void test() {
 		try {
 			// ...
 			Assert.fail();
@@ -207,10 +207,7 @@ public class ClassTest {
 			]]></code>
 	</test-code>
 	<test-code>
-		<description><![CDATA[
-Should fail when there are an Assert.fail inside a block inside a Catch block
-assertEquals bad
-	 ]]></description>
+		<description><![CDATA[Fail when there is call to Assert#fail inside a catch block.]]></description>
 		<expected-problems>1</expected-problems>
 		<code><![CDATA[
 
@@ -219,7 +216,7 @@ import org.junit.Test;
 
 public class ClassTest {
 	@Test
-	public void test1() {
+	public void test() {
 		try {
 			// ...
 		}
@@ -233,19 +230,19 @@ public class ClassTest {
 			]]></code>
 	</test-code>
 	<test-code>
-		<description><![CDATA[
-Should fail when there are an Assert.fail inside a Catch block
-assertEquals bad
-	 ]]></description>
+		<description><![CDATA[Fail when there is call to Assert#fail inside a catch block.]]></description>
 		<expected-problems>0</expected-problems>
 		<code><![CDATA[
 
 import org.junit.Assert;
 
 public class ClassTest {
-	public void test1() {
+
+	public void test() {
 		try {
+
 			// ...
+
 		}
 	    catch (Exception e) {
 		    Assert.fail();
@@ -255,10 +252,7 @@ public class ClassTest {
 			]]></code>
 	</test-code>
 	<test-code>
-		<description><![CDATA[
-Should fail when there are an Assert.fail inside a Catch block (even if there are other statements around the Assert.fail)
-assertEquals bad
-	 ]]></description>
+		<description><![CDATA[Fail when there is call to Assert#fail inside a catch block even if there are statements around Assert#fail.]]></description>
 		<expected-problems>1</expected-problems>
 		<code><![CDATA[
 
@@ -266,24 +260,25 @@ import org.junit.Assert;
 import org.junit.Test;
 
 public class ClassTest {
+
 	@Test
-	public void test1() {
+	public void test() {
 		try {
+
 			// ...
+
 		}
 	    catch (Exception e) {
-	    	System.out.println("ERROR " + e.getMessage());
-	    	Assert.fail();
+	    	System.out.println(e.getMessage());
+
+			Assert.fail();
 	    }
 	}
 }
 			]]></code>
 	</test-code>
 	<test-code>
-		<description><![CDATA[
-Should fail when there are an Assert.fail inside a Catch block
-assertEquals bad
-	 ]]></description>
+		<description><![CDATA[Fail when there is call to Assert#fail inside a catch block.]]></description>
 		<expected-problems>1</expected-problems>
 		<code><![CDATA[
 
@@ -291,10 +286,13 @@ import org.junit.Assert;
 import org.junit.Test;
 
 public class ClassTest {
+
 	@Test
-	public void test1() {
+	public void test() {
 		try {
+
 			// ...
+
 		}
 	    catch (Exception e) {
 		    Assert.fail();
