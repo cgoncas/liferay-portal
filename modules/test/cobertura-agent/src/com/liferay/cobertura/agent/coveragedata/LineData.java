@@ -38,11 +38,11 @@ public class LineData
 	public LineData(
 		int lineNumber, String methodName, String methodDescriptor) {
 
-		this.hits = 0;
-		this.jumps = null;
-		this.lineNumber = lineNumber;
-		this.methodName = methodName;
-		this.methodDescriptor = methodDescriptor;
+		_hits = 0;
+		_jumps = null;
+		_lineNumber = lineNumber;
+		_methodName = methodName;
+		_methodDescriptor = methodDescriptor;
 		initLock();
 	}
 
@@ -51,7 +51,7 @@ public class LineData
 			return Integer.MAX_VALUE;
 		}
 
-		return this.lineNumber - ((LineData)o).lineNumber;
+		return _lineNumber - ((LineData)o)._lineNumber;
 	}
 
 	public boolean equals(Object obj) {
@@ -59,7 +59,7 @@ public class LineData
 			return true;
 		}
 
-		if ((obj == null) || !obj.getClass().equals(this.getClass())) {
+		if ((obj == null) || !obj.getClass().equals(getClass())) {
 			return false;
 		}
 
@@ -67,20 +67,20 @@ public class LineData
 		getBothLocks(lineData);
 
 		try {
-			return (this.hits == lineData.hits) &&
-					((this.jumps == lineData.jumps) ||
-					((this.jumps != null) &&
-					(this.jumps.equals(lineData.jumps)))) &&
-					((this.switches == lineData.switches) ||
-					((this.switches != null) &&
-					(this.switches.equals(lineData.switches)))) &&
-					(this.lineNumber == lineData.lineNumber) &&
-					(this.methodDescriptor.equals(lineData.methodDescriptor)) &&
-					(this.methodName.equals(lineData.methodName));
+			return (_hits == lineData._hits) &&
+					((_jumps == lineData._jumps) ||
+					((_jumps != null) &&
+					(_jumps.equals(lineData._jumps)))) &&
+					((_switches == lineData._switches) ||
+					((_switches != null) &&
+					(_switches.equals(lineData._switches)))) &&
+					(_lineNumber == lineData._lineNumber) &&
+					(_methodDescriptor.equals(lineData._methodDescriptor)) &&
+					(_methodName.equals(lineData._methodName));
 		}
 		finally {
-			lock.unlock();
-			lineData.lock.unlock();
+			_lock.unlock();
+			lineData._lock.unlock();
 		}
 	}
 
@@ -89,14 +89,14 @@ public class LineData
 			return 1d;
 		}
 
-		lock.lock();
+		_lock.lock();
 
 		try {
 			return ((double)getNumberOfCoveredBranches()) /
 				getNumberOfValidBranches();
 		}
 		finally {
-			lock.unlock();
+			_lock.unlock();
 		}
 	}
 
@@ -107,7 +107,7 @@ public class LineData
 			ret.append(StringUtil.getPercentValue(1.0));
 		}
 		else {
-			lock.lock();
+			_lock.lock();
 
 			try {
 				ret.append(StringUtil.getPercentValue(getBranchCoverageRate()));
@@ -117,7 +117,7 @@ public class LineData
 					append(getNumberOfValidBranches()).append(")");
 			}
 			finally {
-				lock.unlock();
+				_lock.unlock();
 			}
 		}
 
@@ -145,54 +145,54 @@ public class LineData
 	public Object getConditionData(int index) {
 		Object branchData = null;
 
-		lock.lock();
+		_lock.lock();
 
 		try {
-			int jumpsSize = (jumps == null) ? 0 : jumps.size();
-			int switchesSize = (switches == null) ? 0 :switches.size();
+			int jumpsSize = (_jumps == null) ? 0 : _jumps.size();
+			int switchesSize = (_switches == null) ? 0 : _switches.size();
 
 			if (index < jumpsSize) {
-				branchData = jumps.get(index);
+				branchData = _jumps.get(index);
 			}
 			else if (index < (jumpsSize + switchesSize)) {
-				branchData = switches.get(index - jumpsSize);
+				branchData = _switches.get(index - jumpsSize);
 			}
 
 			return branchData;
 		}
 		finally {
-			lock.unlock();
+			_lock.unlock();
 		}
 	}
 
 	public int getConditionSize() {
-		lock.lock();
+		_lock.lock();
 
 		try {
 			int jumpsSize = 0;
 
 			int switchsSize = 0;
 
-			if (jumps != null)jumpsSize = jumps.size();
+			if (_jumps != null)jumpsSize = _jumps.size();
 
-			if (switches != null)switchsSize = switches.size();
+			if (_switches != null)switchsSize = _switches.size();
 
 			return jumpsSize + switchsSize;
 		}
 		finally {
-			lock.unlock();
+			_lock.unlock();
 		}
 	}
 
 	public long getHits() {
-		lock.lock();
+		_lock.lock();
 
 		try {
-			return hits;
+			return _hits;
 		}
 
 		finally {
-			lock.unlock();
+			_lock.unlock();
 		}
 	}
 
@@ -201,47 +201,47 @@ public class LineData
 	}
 
 	public int getLineNumber() {
-		return lineNumber;
+		return _lineNumber;
 	}
 
 	public String getMethodDescriptor() {
-		lock.lock();
+		_lock.lock();
 
 		try {
-			return methodDescriptor;
+			return _methodDescriptor;
 		}
 		finally {
-			lock.unlock();
+			_lock.unlock();
 		}
 	}
 
 	public String getMethodName() {
-		lock.lock();
+		_lock.lock();
 
 		try {
-			return methodName;
+			return _methodName;
 		}
 		finally {
-			lock.unlock();
+			_lock.unlock();
 		}
 	}
 
 	public int getNumberOfCoveredBranches() {
 		int ret = 0;
-		lock.lock();
+		_lock.lock();
 
 		try {
-			if (jumps != null) {
-				for (int i = jumps.size() - 1; i >= 0; i--) {
+			if (_jumps != null) {
+				for (int i = _jumps.size() - 1; i >= 0; i--) {
 					ret +=
-						((JumpData)jumps.get(i)).getNumberOfCoveredBranches();
+						((JumpData) _jumps.get(i)).getNumberOfCoveredBranches();
 				}
 			}
 
-			if (switches != null) {
-				for (int i = switches.size() - 1; i >= 0; i--) {
+			if (_switches != null) {
+				for (int i = _switches.size() - 1; i >= 0; i--) {
 					ret +=
-						((SwitchData)switches.get(i)).
+						((SwitchData) _switches.get(i)).
 							getNumberOfCoveredBranches();
 				}
 			}
@@ -249,7 +249,7 @@ public class LineData
 			return ret;
 		}
 		finally {
-			lock.unlock();
+			_lock.unlock();
 		}
 	}
 
@@ -260,26 +260,26 @@ public class LineData
 	public int getNumberOfValidBranches() {
 		int ret = 0;
 
-		lock.lock();
+		_lock.lock();
 
 		try {
-			if (jumps != null) {
-				for (int i = jumps.size() - 1; i >= 0; i--) {
-					ret += ((JumpData)jumps.get(i)).getNumberOfValidBranches();
+			if (_jumps != null) {
+				for (int i = _jumps.size() - 1; i >= 0; i--) {
+					ret += ((JumpData) _jumps.get(i)).getNumberOfValidBranches();
 				}
 			}
 
-			if (switches != null) {
-				for (int i = switches.size() - 1; i >= 0; i--)
+			if (_switches != null) {
+				for (int i = _switches.size() - 1; i >= 0; i--)
 					ret +=
-						((SwitchData)switches.get(i)).
+						((SwitchData) _switches.get(i)).
 							getNumberOfValidBranches();
 			}
 
 			return ret;
 		}
 		finally {
-			lock.unlock();
+			_lock.unlock();
 		}
 	}
 
@@ -288,29 +288,29 @@ public class LineData
 	}
 
 	public boolean hasBranch() {
-		lock.lock();
+		_lock.lock();
 
 		try {
-			return (jumps != null) || (switches != null);
+			return (_jumps != null) || (_switches != null);
 		}
 		finally {
-			lock.unlock();
+			_lock.unlock();
 		}
 	}
 
 	public int hashCode() {
-		return this.lineNumber;
+		return _lineNumber;
 	}
 
 	public boolean isCovered() {
-		lock.lock();
+		_lock.lock();
 
 		try {
 			return (getHits() > 0) && ((getNumberOfValidBranches() == 0) ||
 			 ((1.0 - getBranchCoverageRate()) < 0.0001));
 		}
 		finally {
-			lock.unlock();
+			_lock.unlock();
 		}
 	}
 
@@ -319,73 +319,73 @@ public class LineData
 		getBothLocks(lineData);
 
 		try {
-			this.hits += lineData.hits;
+			_hits += lineData._hits;
 
-			if (lineData.jumps != null) {
-				if (this.jumps == null) {
-					this.jumps = lineData.jumps;
+			if (lineData._jumps != null) {
+				if (_jumps == null) {
+					_jumps = lineData._jumps;
 				}
 				else {
 					for (int i = Math.min(
-						this.jumps.size(), lineData.jumps.size()) - 1; i >= 0;
+						_jumps.size(), lineData._jumps.size()) - 1; i >= 0;
 						i--) {
 
-						((JumpData)this.jumps.get(i)).merge(
-							(JumpData)lineData.jumps.get(i));
+						((JumpData)_jumps.get(i)).merge(
+							(JumpData)lineData._jumps.get(i));
 					}
 
 					for (int i = Math.min(
-						this.jumps.size(), lineData.jumps.size());
-						i < lineData.jumps.size(); i++) {
+						_jumps.size(), lineData._jumps.size());
+						i < lineData._jumps.size(); i++) {
 
-						this.jumps.add(lineData.jumps.get(i));
+						_jumps.add(lineData._jumps.get(i));
 					}
 				}
 			}
 
-			if (lineData.switches != null) {
-				if (this.switches == null) {
-					this.switches = lineData.switches;
+			if (lineData._switches != null) {
+				if (_switches == null) {
+					_switches = lineData._switches;
 				}
 				else {
 					for (int i = Math.min(
-						this.switches.size(), lineData.switches.size()) - 1;
+						_switches.size(), lineData._switches.size()) - 1;
 						i >= 0; i--) {
 
-						((SwitchData)this.switches.get(i)).merge(
-							(SwitchData)lineData.switches.get(i));
+						((SwitchData)_switches.get(i)).merge(
+							(SwitchData)lineData._switches.get(i));
 					}
 
 					for (int i = Math.min(
-						this.switches.size(), lineData.switches.size());
-						i < lineData.switches.size(); i++) {
+						_switches.size(), lineData._switches.size());
+						i < lineData._switches.size(); i++) {
 
-						this.switches.add(lineData.switches.get(i));
+						_switches.add(lineData._switches.get(i));
 					}
 				}
 			}
 
-			if (lineData.methodName != null)
-				this.methodName = lineData.methodName;
+			if (lineData._methodName != null)
+				_methodName = lineData._methodName;
 
-			if (lineData.methodDescriptor != null)
-				this.methodDescriptor = lineData.methodDescriptor;
+			if (lineData._methodDescriptor != null)
+				_methodDescriptor = lineData._methodDescriptor;
 		}
 		finally {
-			lock.unlock();
-			lineData.lock.unlock();
+			_lock.unlock();
+			lineData._lock.unlock();
 		}
 	}
 
 	public void touch(int new_hits) {
-		lock.lock();
+		_lock.lock();
 
 		try {
-			this.hits+= new_hits;
+			_hits += new_hits;
 		}
 
 		finally {
-			lock.unlock();
+			_lock.unlock();
 		}
 	}
 
@@ -410,63 +410,63 @@ public class LineData
 	}
 
 	protected JumpData getJumpData(int jumpNumber) {
-		lock.lock();
+		_lock.lock();
 
 		try {
-			if (jumps == null) {
-				jumps = new ArrayList();
+			if (_jumps == null) {
+				_jumps = new ArrayList();
 			}
 
-			if (jumps.size() <= jumpNumber) {
-				for (int i = jumps.size(); i <= jumpNumber;
-					jumps.add(new JumpData(i++)));
+			if (_jumps.size() <= jumpNumber) {
+				for (int i = _jumps.size(); i <= jumpNumber;
+					_jumps.add(new JumpData(i++)));
 			}
 
-			return (JumpData)jumps.get(jumpNumber);
+			return (JumpData) _jumps.get(jumpNumber);
 		}
 		finally {
-			lock.unlock();
+			_lock.unlock();
 		}
 	}
 
 	protected SwitchData getSwitchData(int switchNumber, SwitchData data) {
-		lock.lock();
+		_lock.lock();
 
 		try {
-			if (switches == null) {
-				switches = new ArrayList();
+			if (_switches == null) {
+				_switches = new ArrayList();
 			}
 
-			if (switches.size() < switchNumber) {
-				for (int i = switches.size(); i < switchNumber;
-					 switches.add(new SwitchData(i++)));
+			if (_switches.size() < switchNumber) {
+				for (int i = _switches.size(); i < switchNumber;
+					 _switches.add(new SwitchData(i++)));
 			}
 
-			if (switches.size() == switchNumber) {
+			if (_switches.size() == switchNumber) {
 				if (data != null) {
-					switches.add(data);
+					_switches.add(data);
 				}
 				else {
-					switches.add(new SwitchData(switchNumber));
+					_switches.add(new SwitchData(switchNumber));
 				}
 			}
 
-			return (SwitchData)switches.get(switchNumber);
+			return (SwitchData) _switches.get(switchNumber);
 		}
 		finally {
-			lock.unlock();
+			_lock.unlock();
 		}
 	}
 
 	protected void setMethodNameAndDescriptor(String name, String descriptor) {
-		lock.lock();
+		_lock.lock();
 
 		try {
-			this.methodName = name;
-			this.methodDescriptor = descriptor;
+			_methodName = name;
+			_methodDescriptor = descriptor;
 		}
 		finally {
-			lock.unlock();
+			_lock.unlock();
 		}
 	}
 
@@ -483,8 +483,8 @@ public class LineData
 
 		while (!myLock || !otherLock) {
 			try {
-				myLock = lock.tryLock();
-				otherLock = other.lock.tryLock();
+				myLock = _lock.tryLock();
+				otherLock = other._lock.tryLock();
 			}
 			finally {
 				if ((!myLock) || (!otherLock))
@@ -492,11 +492,11 @@ public class LineData
 					//could not obtain both locks - so unlock the one we got.
 
 					if (myLock) {
-						lock.unlock();
+						_lock.unlock();
 					}
 
 					if (otherLock) {
-						other.lock.unlock();
+						other._lock.unlock();
 					}
 
 					//do a yield so the other threads will get to work.
@@ -508,7 +508,7 @@ public class LineData
 	}
 
 	private void initLock() {
-		lock = new ReentrantLock();
+		_lock = new ReentrantLock();
 	}
 
 	private void readObject(ObjectInputStream in)
@@ -520,12 +520,12 @@ public class LineData
 
 	private static final long serialVersionUID = 4;
 
-	private long hits;
-	private List jumps;
-	private int lineNumber;
-	private transient Lock lock;
-	private String methodDescriptor;
-	private String methodName;
-	private List switches;
+	private long _hits;
+	private List _jumps;
+	private int _lineNumber;
+	private transient Lock _lock;
+	private String _methodDescriptor;
+	private String _methodName;
+	private List _switches;
 
 }

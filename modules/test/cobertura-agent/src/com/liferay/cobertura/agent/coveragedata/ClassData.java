@@ -35,7 +35,7 @@ public class ClassData extends CoverageDataContainer
 			throw new IllegalArgumentException("Class name must be specified.");
 		}
 
-		this.name = name;
+		_name = name;
 	}
 
 	public LineData addLine(
@@ -62,7 +62,7 @@ public class ClassData extends CoverageDataContainer
 			// with no line information was loaded (or was not loaded at all).
 
 			if ( methodName!= null && methodDescriptor!= null) {
-				methodNamesAndDescriptors.add(methodName + methodDescriptor);
+				_methodNamesAndDescriptors.add(methodName + methodDescriptor);
 			}
 
 			return lineData;
@@ -80,7 +80,7 @@ public class ClassData extends CoverageDataContainer
 
 			if (lineData != null) {
 				lineData.addJump(branchNumber);
-				this.branches.put(Integer.valueOf(lineNumber), lineData);
+				_branches.put(Integer.valueOf(lineNumber), lineData);
 			}
 		}
 
@@ -100,7 +100,7 @@ public class ClassData extends CoverageDataContainer
 			if (lineData != null) {
 				lineData.addSwitch(switchNumber, min, max);
 
-				this.branches.put(Integer.valueOf(lineNumber), lineData);
+				_branches.put(Integer.valueOf(lineNumber), lineData);
 			}
 		}
 		finally {
@@ -116,7 +116,7 @@ public class ClassData extends CoverageDataContainer
 
 			if (lineData != null) {
 				lineData.addSwitch(switchNumber, keys);
-				this.branches.put(Integer.valueOf(lineNumber), lineData);
+				_branches.put(Integer.valueOf(lineNumber), lineData);
 			}
 		}
 		finally {
@@ -125,14 +125,14 @@ public class ClassData extends CoverageDataContainer
 	}
 
 	public int compareTo(ClassData o) {
-		return this.name.compareTo(o.name);
+		return _name.compareTo(o._name);
 	}
 
 	public boolean containsInstrumentationInfo() {
 		lock.lock();
 
 		try {
-			return this.containsInstrumentationInfo;
+			return _containsInstrumentationInfo;
 		}
 		finally {
 			lock.unlock();
@@ -154,11 +154,11 @@ public class ClassData extends CoverageDataContainer
 
 		try {
 			return super.equals(obj) &&
-				 this.branches.equals(classData.branches) &&
-				 this.methodNamesAndDescriptors.equals(
-					 classData.methodNamesAndDescriptors) &&
-				 this.name.equals(classData.name) &&
-				 this.sourceFileName.equals(classData.sourceFileName);
+				 _branches.equals(classData._branches) &&
+				 _methodNamesAndDescriptors.equals(
+					 classData._methodNamesAndDescriptors) &&
+				 _name.equals(classData._name) &&
+				 _sourceFileName.equals(classData._sourceFileName);
 		}
 		finally {
 			lock.unlock();
@@ -167,13 +167,13 @@ public class ClassData extends CoverageDataContainer
 	}
 
 	public String getBaseName() {
-		int lastDot = this.name.lastIndexOf('.');
+		int lastDot = _name.lastIndexOf('.');
 
 		if (lastDot == -1) {
-			return this.name;
+			return _name;
 		}
 
-		return this.name.substring(lastDot + 1);
+		return _name.substring(lastDot + 1);
 	}
 
 	public double getBranchCoverageRate(String methodNameAndDescriptor) {
@@ -184,7 +184,7 @@ public class ClassData extends CoverageDataContainer
 		lock.lock();
 
 		try {
-			for (Iterator<LineData> iter = branches.values().iterator();
+			for (Iterator<LineData> iter = _branches.values().iterator();
 				iter.hasNext();) {
 
 				LineData next = (LineData)iter.next();
@@ -217,7 +217,7 @@ public class ClassData extends CoverageDataContainer
 		lock.lock();
 
 		try {
-			return Collections.unmodifiableCollection(branches.keySet());
+			return Collections.unmodifiableCollection(_branches.keySet());
 		}
 		finally {
 			lock.unlock();
@@ -319,7 +319,7 @@ public class ClassData extends CoverageDataContainer
 		lock.lock();
 
 		try {
-			return methodNamesAndDescriptors;
+			return _methodNamesAndDescriptors;
 		}
 
 		finally {
@@ -328,7 +328,7 @@ public class ClassData extends CoverageDataContainer
 	}
 
 	public String getName() {
-		return name;
+		return _name;
 	}
 
 	public int getNumberOfCoveredBranches() {
@@ -337,7 +337,7 @@ public class ClassData extends CoverageDataContainer
 		lock.lock();
 
 		try {
-			for (Iterator<LineData> i = branches.values().iterator();
+			for (Iterator<LineData> i = _branches.values().iterator();
 				i.hasNext(); number += (i.next()).getNumberOfCoveredBranches());
 
 			return number;
@@ -353,7 +353,7 @@ public class ClassData extends CoverageDataContainer
 		lock.lock();
 
 		try {
-			for (Iterator<LineData> i = branches.values().iterator();
+			for (Iterator<LineData> i = _branches.values().iterator();
 				i.hasNext();
 				number += (i.next()).getNumberOfValidBranches());
 
@@ -366,13 +366,13 @@ public class ClassData extends CoverageDataContainer
 	}
 
 	public String getPackageName() {
-		int lastDot = this.name.lastIndexOf('.');
+		int lastDot = _name.lastIndexOf('.');
 
 		if (lastDot == -1) {
 			return "";
 		}
 
-		return this.name.substring(0, lastDot);
+		return _name.substring(0, lastDot);
 	}
 
 	public String getSourceFileName() {
@@ -381,8 +381,8 @@ public class ClassData extends CoverageDataContainer
 		lock.lock();
 
 		try {
-			if (sourceFileName != null) {
-				baseName = sourceFileName;
+			if (_sourceFileName != null) {
+				baseName = _sourceFileName;
 			}
 			else {
 				baseName = getBaseName();
@@ -415,7 +415,7 @@ public class ClassData extends CoverageDataContainer
 		lock.lock();
 
 		try {
-			return branches.containsKey(Integer.valueOf(lineNumber));
+			return _branches.containsKey(Integer.valueOf(lineNumber));
 		}
 		finally {
 			lock.unlock();
@@ -423,7 +423,7 @@ public class ClassData extends CoverageDataContainer
 	}
 
 	public int hashCode() {
-		return this.name.hashCode();
+		return _name.hashCode();
 	}
 
 	public boolean isValidSourceLineNumber(int lineNumber) {
@@ -451,33 +451,33 @@ public class ClassData extends CoverageDataContainer
 		try {
 			super.merge(coverageData);
 
-			// We can't just call this.branches.putAll(classData.branches);
+			// We can't just call _branches.putAll(classData._branches);
 			// Why not?  If we did a putAll, then the LineData objects from
 			// the coverageData class would overwrite the LineData objects
-			// that are already in "this.branches"  And we don't need to
-			// update the LineData objects that are already in this.branches
-			// because they are shared between this.branches and this.children,
+			// that are already in "_branches"  And we don't need to
+			// update the LineData objects that are already in this._branches
+			// because they are shared between _branches and this.children,
 			// so the object hit counts will be moved when we called
 			// super.merge() above.
 
 			for (Iterator<Integer> iter =
-					 classData.branches.keySet().iterator(); iter.hasNext();) {
+					 classData._branches.keySet().iterator(); iter.hasNext();) {
 
 				Integer key = iter.next();
 
-				if (!this.branches.containsKey(key)) {
-					this.branches.put(key, classData.branches.get(key));
+				if (!_branches.containsKey(key)) {
+					_branches.put(key, classData._branches.get(key));
 				}
 			}
 
-			this.containsInstrumentationInfo |=
-				classData.containsInstrumentationInfo;
+			_containsInstrumentationInfo |=
+				classData._containsInstrumentationInfo;
 
-			this.methodNamesAndDescriptors.addAll(
+			_methodNamesAndDescriptors.addAll(
 				classData.getMethodNamesAndDescriptors());
 
-			if (classData.sourceFileName != null) {
-				this.sourceFileName = classData.sourceFileName;
+			if (classData._sourceFileName != null) {
+				_sourceFileName = classData._sourceFileName;
 			}
 		}
 		finally {
@@ -493,7 +493,7 @@ public class ClassData extends CoverageDataContainer
 
 		try {
 			children.remove(lineObject);
-			branches.remove(lineObject);
+			_branches.remove(lineObject);
 		}
 		finally {
 			lock.unlock();
@@ -501,14 +501,14 @@ public class ClassData extends CoverageDataContainer
 	}
 
 	public void setBranches(Map<Integer, LineData> branches) {
-		this.branches = branches;
+		_branches = branches;
 	}
 
 	public void setContainsInstrumentationInfo() {
 		lock.lock();
 
 		try {
-			this.containsInstrumentationInfo = true;
+			_containsInstrumentationInfo = true;
 		}
 
 		finally
@@ -518,14 +518,14 @@ public class ClassData extends CoverageDataContainer
 	}
 
 	public void setName(String name) {
-		this.name = name;
+		_name = name;
 	}
 
 	public void setSourceFileName(String sourceFileName) {
 		lock.lock();
 
 		try {
-			this.sourceFileName = sourceFileName;
+			_sourceFileName = sourceFileName;
 		}
 		finally {
 			lock.unlock();
@@ -597,18 +597,18 @@ public class ClassData extends CoverageDataContainer
 			lock.unlock();
 		}
 	}
-
+	
 	private static final long serialVersionUID = 5;
 
 	/**
 	 * Each key is a line number in this class, stored as an Integer object.
 	 * Each value is information about the line, stored as a LineData object.
 	 */
-	private Map<Integer, LineData> branches = new HashMap<>();
-
-	private boolean containsInstrumentationInfo = false;
-	private final Set<String> methodNamesAndDescriptors = new HashSet<>();
-	private String name = null;
-	private String sourceFileName = null;
+	private Map<Integer, LineData> _branches = new HashMap<>();
+	
+	private boolean _containsInstrumentationInfo = false;
+	private Set<String> _methodNamesAndDescriptors = new HashSet<>();
+	private String _name = null;
+	private String _sourceFileName = null;
 
 }

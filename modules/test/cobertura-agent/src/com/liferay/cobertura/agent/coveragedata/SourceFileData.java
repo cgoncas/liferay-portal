@@ -32,7 +32,7 @@ public class SourceFileData extends CoverageDataContainer
 				"Source file name must be specified.");
 		}
 
-		this.name = name;
+		_name = name;
 	}
 
 	public void addClassData(ClassData classData) {
@@ -41,7 +41,7 @@ public class SourceFileData extends CoverageDataContainer
 		try {
 			if (children.containsKey(classData.getBaseName())) {
 				throw new IllegalArgumentException(
-					"Source file " + this.name + " already contains a class " +
+					"Source file " + _name + " already contains a class " +
 						"with the name " + classData.getBaseName());
 			}
 
@@ -59,14 +59,14 @@ public class SourceFileData extends CoverageDataContainer
 	public int compareTo(Object o) {
 		if (!o.getClass().equals(SourceFileData.class))
 			return Integer.MAX_VALUE;
-		return this.name.compareTo(((SourceFileData)o).name);
+		return _name.compareTo(((SourceFileData)o)._name);
 	}
 
 	public boolean contains(String name) {
 		lock.lock();
 
 		try {
-			return this.children.containsKey(name);
+			return children.containsKey(name);
 		}
 		finally {
 			lock.unlock();
@@ -81,7 +81,7 @@ public class SourceFileData extends CoverageDataContainer
 			// Return false if any of our child ClassData's does not
 			// contain instrumentation info
 
-			Iterator iter = this.children.values().iterator();
+			Iterator iter = children.values().iterator();
 			while (iter.hasNext()) {
 				ClassData classData = (ClassData)iter.next();
 
@@ -107,7 +107,7 @@ public class SourceFileData extends CoverageDataContainer
 			return true;
 		}
 
-		if ((obj == null) || !obj.getClass().equals(this.getClass())) {
+		if ((obj == null) || !obj.getClass().equals(getClass())) {
 			return false;
 		}
 
@@ -115,7 +115,7 @@ public class SourceFileData extends CoverageDataContainer
 		getBothLocks(sourceFileData);
 
 		try {
-			return super.equals(obj) && this.name.equals(sourceFileData.name);
+			return super.equals(obj) && _name.equals(sourceFileData._name);
 		}
 		finally {
 			lock.unlock();
@@ -125,13 +125,13 @@ public class SourceFileData extends CoverageDataContainer
 
 	public String getBaseName() {
 		String fullNameWithoutExtension;
-		int lastDot = this.name.lastIndexOf('.');
+		int lastDot = _name.lastIndexOf('.');
 
 		if (lastDot == -1) {
-			fullNameWithoutExtension = this.name;
+			fullNameWithoutExtension = _name;
 		}
 		else {
-			fullNameWithoutExtension = this.name.substring(0, lastDot);
+			fullNameWithoutExtension = _name.substring(0, lastDot);
 		}
 
 		int lastSlash = fullNameWithoutExtension.lastIndexOf('/');
@@ -147,7 +147,7 @@ public class SourceFileData extends CoverageDataContainer
 		lock.lock();
 
 		try {
-			return new TreeSet(this.children.values());
+			return new TreeSet(children.values());
 		}
 		finally {
 			lock.unlock();
@@ -158,7 +158,7 @@ public class SourceFileData extends CoverageDataContainer
 		lock.lock();
 
 		try {
-			Iterator iter = this.children.values().iterator();
+			Iterator iter = children.values().iterator();
 			while (iter.hasNext()) {
 				ClassData classData = (ClassData)iter.next();
 
@@ -174,44 +174,44 @@ public class SourceFileData extends CoverageDataContainer
 	}
 
 	public String getName() {
-		return this.name;
+		return _name;
 	}
 
 	public String getNormalizedName() {
 		String fullNameWithoutExtension;
-		int lastDot = this.name.lastIndexOf('.');
+		int lastDot = _name.lastIndexOf('.');
 
 		if (lastDot == -1) {
-			fullNameWithoutExtension = this.name;
+			fullNameWithoutExtension = _name;
 		}
 
 		else {
-			fullNameWithoutExtension = this.name.substring(0, lastDot);
+			fullNameWithoutExtension = _name.substring(0, lastDot);
 		}
 
 		return StringUtil.replaceAll(fullNameWithoutExtension, "/", ".");
 	}
 
 	public String getPackageName() {
-		int lastSlash = this.name.lastIndexOf('/');
+		int lastSlash = _name.lastIndexOf('/');
 
 		if (lastSlash == -1) {
 			return null;
 		}
 
 		return StringUtil.replaceAll(
-			this.name.substring(0, lastSlash), "/", ".");
+			_name.substring(0, lastSlash), "/", ".");
 	}
 
 	public int hashCode() {
-		return this.name.hashCode();
+		return _name.hashCode();
 	}
 
 	public boolean isValidSourceLineNumber(int lineNumber) {
 		lock.lock();
 
 		try {
-			Iterator iter = this.children.values().iterator();
+			Iterator iter = children.values().iterator();
 
 			while (iter.hasNext()) {
 				ClassData classData = (ClassData)iter.next();
@@ -227,11 +227,11 @@ public class SourceFileData extends CoverageDataContainer
 	}
 
 	public void setName(String name) {
-		this.name = name;
+		_name = name;
 	}
 
 	private static final long serialVersionUID = 3;
 
-	private String name;
+	private String _name;
 
 }

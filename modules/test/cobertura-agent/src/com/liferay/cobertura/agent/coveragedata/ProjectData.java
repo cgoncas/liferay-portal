@@ -76,10 +76,10 @@ public class ProjectData
 		/*
 		 * A note about the next synchronized block:  Cobertura uses static
 		 * fields to hold the data.   When there are multiple classloaders,
-		 * each classloader will keep track of the line counts for the classes
+		 * each classloader will keep track of the line counts for the _classes
 		 * that it loads.
 		 *
-		 * The static initializers for the Cobertura classes are also called for
+		 * The static initializers for the Cobertura _classes are also called for
 		 * each classloader.   So, there is one shutdown hook for each
 		 * classloader. So, when the JVM exits, each shutdown hook will try to
 		 * write the data it has kept to the datafile. They will do this at
@@ -140,11 +140,11 @@ public class ProjectData
 				// Each value is information about the package, stored as a
 				// PackageData object.
 
-				this.children.put(packageName, packageData);
+				children.put(packageName, packageData);
 			}
 
 			packageData.addClassData(classData);
-			this.classes.put(classData.getName(), classData);
+			_classes.put(classData.getName(), classData);
 		}
 		finally {
 			lock.unlock();
@@ -155,7 +155,7 @@ public class ProjectData
 		lock.lock();
 
 		try {
-			return (ClassData)this.classes.get(name);
+			return (ClassData)_classes.get(name);
 		}
 		finally {
 			lock.unlock();
@@ -166,7 +166,7 @@ public class ProjectData
 		lock.lock();
 
 		try {
-			return this.classes.values();
+			return _classes.values();
 		}
 		finally {
 			lock.unlock();
@@ -177,7 +177,7 @@ public class ProjectData
 		lock.lock();
 
 		try {
-			return this.classes.size();
+			return _classes.size();
 		}
 		finally {
 			lock.unlock();
@@ -195,7 +195,7 @@ public class ProjectData
 		lock.lock();
 
 		try {
-			ClassData classData = (ClassData)this.classes.get(name);
+			ClassData classData = (ClassData)_classes.get(name);
 
 			if (classData == null) {
 				classData = new ClassData(name);
@@ -213,7 +213,7 @@ public class ProjectData
 		lock.lock();
 
 		try {
-			return new TreeSet(this.children.values());
+			return new TreeSet(children.values());
 		}
 		finally {
 			lock.unlock();
@@ -225,7 +225,7 @@ public class ProjectData
 		lock.lock();
 
 		try {
-			Iterator iter = this.children.values().iterator();
+			Iterator iter = children.values().iterator();
 
 			while (iter.hasNext()) {
 				PackageData packageData = (PackageData)iter.next();
@@ -244,7 +244,7 @@ public class ProjectData
 		lock.lock();
 
 		try {
-			Iterator iter = this.children.values().iterator();
+			Iterator iter = children.values().iterator();
 
 			while (iter.hasNext()) {
 				PackageData packageData = (PackageData)iter.next();
@@ -273,12 +273,12 @@ public class ProjectData
 			super.merge(coverageData);
 
 			for (Iterator iter =
-				projectData.classes.keySet().iterator(); iter.hasNext();) {
+				projectData._classes.keySet().iterator(); iter.hasNext();) {
 
 				Object key = iter.next();
 
-				if (!this.classes.containsKey(key)) {
-					this.classes.put(key, projectData.classes.get(key));
+				if (!_classes.containsKey(key)) {
+					_classes.put(key, projectData._classes.get(key));
 				}
 			}
 		}
@@ -289,7 +289,7 @@ public class ProjectData
 	}
 
 	public void setClasses(Map classes) {
-		this.classes = classes;
+		_classes = classes;
 	}
 
 	private static ProjectData loadCoverageDataFromDatafile(File dataFile) {
@@ -316,7 +316,7 @@ public class ProjectData
 
 	private static final long serialVersionUID = 6;
 
-	/** This collection is used for quicker access to the list of classes. */
-	private Map classes = new HashMap();
+	/** This collection is used for quicker access to the list of _classes. */
+	private Map _classes = new HashMap();
 
 }

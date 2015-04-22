@@ -30,10 +30,10 @@ public class PackageData extends CoverageDataContainer
 	public PackageData(String name) {
 		if (name == null) {
 			throw new IllegalArgumentException(
-				"Package name must be specified.");
+				"Package _name must be specified.");
 		}
 
-		this.name = name;
+		_name = name;
 	}
 
 	public void addClassData(ClassData classData) {
@@ -42,8 +42,8 @@ public class PackageData extends CoverageDataContainer
 		try {
 			if (children.containsKey(classData.getBaseName())) {
 				throw new IllegalArgumentException(
-					"Package " + this.name +
-						" already contains a class with the name " +
+					"Package " + _name +
+						" already contains a class with the _name " +
 						classData.getBaseName());
 			}
 
@@ -63,14 +63,14 @@ public class PackageData extends CoverageDataContainer
 	 */
 	public int compareTo(Object o) {
 		if (!o.getClass().equals(PackageData.class))return Integer.MAX_VALUE;
-		return this.name.compareTo(((PackageData)o).name);
+		return _name.compareTo(((PackageData)o)._name);
 	}
 
 	public boolean contains(String name) {
 		lock.lock();
 
 		try {
-			return this.children.containsKey(name);
+			return children.containsKey(name);
 		}
 		finally {
 			lock.unlock();
@@ -87,7 +87,7 @@ public class PackageData extends CoverageDataContainer
 			return true;
 		}
 
-		if ((obj == null) || !obj.getClass().equals(this.getClass())) {
+		if ((obj == null) || !obj.getClass().equals(getClass())) {
 			return false;
 		}
 
@@ -95,7 +95,7 @@ public class PackageData extends CoverageDataContainer
 		getBothLocks(packageData);
 
 		try {
-			return super.equals(obj) && this.name.equals(packageData.name);
+			return super.equals(obj) && _name.equals(packageData._name);
 		}
 		finally {
 			lock.unlock();
@@ -107,7 +107,7 @@ public class PackageData extends CoverageDataContainer
 		lock.lock();
 
 		try {
-			return new TreeSet(this.children.values());
+			return new TreeSet(children.values());
 		}
 		finally {
 			lock.unlock();
@@ -115,11 +115,11 @@ public class PackageData extends CoverageDataContainer
 	}
 
 	public String getName() {
-		return this.name;
+		return _name;
 	}
 
 	public String getSourceFileName() {
-		return this.name.replace('.', '/');
+		return _name.replace('.', '/');
 	}
 
 	public Collection getSourceFiles() {
@@ -128,7 +128,7 @@ public class PackageData extends CoverageDataContainer
 		lock.lock();
 
 		try {
-			Iterator iter = this.children.values().iterator();
+			Iterator iter = children.values().iterator();
 
 			while (iter.hasNext()) {
 				ClassData classData = (ClassData)iter.next();
@@ -152,15 +152,15 @@ public class PackageData extends CoverageDataContainer
 	}
 
 	public int hashCode() {
-		return this.name.hashCode();
+		return _name.hashCode();
 	}
 
 	public void setName(String name) {
-		this.name = name;
+		_name = name;
 	}
 
 	private static final long serialVersionUID = 7;
 
-	private String name;
+	private String _name;
 
 }

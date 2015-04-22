@@ -28,9 +28,9 @@ public class JumpData implements BranchCoverageData, Comparable, Serializable,
 		HasBeenInstrumented {
 
 	public JumpData(int conditionNumber) {
-		this.conditionNumber = conditionNumber;
-		this.trueHits = 0L;
-		this.falseHits = 0L;
+		_conditionNumber = conditionNumber;
+		_trueHits = 0L;
+		_falseHits = 0L;
 		initLock();
 	}
 
@@ -39,7 +39,7 @@ public class JumpData implements BranchCoverageData, Comparable, Serializable,
 			return Integer.MAX_VALUE;
 		}
 
-		return this.conditionNumber - ((JumpData)o).conditionNumber;
+		return _conditionNumber - ((JumpData)o)._conditionNumber;
 	}
 
 	public boolean equals(Object obj) {
@@ -47,7 +47,7 @@ public class JumpData implements BranchCoverageData, Comparable, Serializable,
 			return true;
 		}
 
-		if ((obj == null) || !obj.getClass().equals(this.getClass())) {
+		if ((obj == null) || !obj.getClass().equals(getClass())) {
 			return false;
 		}
 
@@ -55,9 +55,9 @@ public class JumpData implements BranchCoverageData, Comparable, Serializable,
 		getBothLocks(branchData);
 
 		try {
-			return (this.trueHits == branchData.trueHits) &&
-					 (this.falseHits == branchData.falseHits) &&
-					 (this.conditionNumber == branchData.conditionNumber);
+			return (_trueHits == branchData._trueHits) &&
+					 (_falseHits == branchData._falseHits) &&
+					 (_conditionNumber == branchData._conditionNumber);
 		}
 		finally {
 			lock.unlock();
@@ -78,14 +78,14 @@ public class JumpData implements BranchCoverageData, Comparable, Serializable,
 	}
 
 	public int getConditionNumber() {
-		return this.conditionNumber;
+		return _conditionNumber;
 	}
 
 	public long getFalseHits() {
 		lock.lock();
 
 		try {
-			return this.falseHits;
+			return _falseHits;
 		}
 		finally {
 			lock.unlock();
@@ -96,7 +96,7 @@ public class JumpData implements BranchCoverageData, Comparable, Serializable,
 		lock.lock();
 
 		try {
-			return ((trueHits > 0) ? 1 : 0) + ((falseHits > 0) ? 1: 0);
+			return ((_trueHits > 0) ? 1 : 0) + ((_falseHits > 0) ? 1: 0);
 		}
 		finally {
 			lock.unlock();
@@ -111,7 +111,7 @@ public class JumpData implements BranchCoverageData, Comparable, Serializable,
 		lock.lock();
 
 		try {
-			return this.trueHits;
+			return _trueHits;
 		}
 		finally {
 			lock.unlock();
@@ -119,7 +119,7 @@ public class JumpData implements BranchCoverageData, Comparable, Serializable,
 	}
 
 	public int hashCode() {
-		return this.conditionNumber;
+		return _conditionNumber;
 	}
 
 	public void merge(BranchCoverageData coverageData) {
@@ -127,8 +127,8 @@ public class JumpData implements BranchCoverageData, Comparable, Serializable,
 		getBothLocks(jumpData);
 
 		try {
-			this.trueHits += jumpData.trueHits;
-			this.falseHits += jumpData.falseHits;
+			_trueHits += jumpData._trueHits;
+			_falseHits += jumpData._falseHits;
 		}
 		finally {
 			lock.unlock();
@@ -141,10 +141,10 @@ public class JumpData implements BranchCoverageData, Comparable, Serializable,
 
 		try {
 			if (branch) {
-				this.trueHits+= new_hits;
+				_trueHits += new_hits;
 			}
 			else {
-				this.falseHits+= new_hits;
+				_falseHits += new_hits;
 			}
 		}
 		finally {
@@ -201,8 +201,8 @@ public class JumpData implements BranchCoverageData, Comparable, Serializable,
 
 	private static final long serialVersionUID = 8;
 
-	private int conditionNumber;
-	private long falseHits;
-	private long trueHits;
+	private int _conditionNumber;
+	private long _falseHits;
+	private long _trueHits;
 
 }
