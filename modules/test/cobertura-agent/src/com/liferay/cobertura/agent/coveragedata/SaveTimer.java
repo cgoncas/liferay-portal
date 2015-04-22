@@ -19,11 +19,9 @@ import java.util.TimerTask;
 /**
  * @author Cristina González
  */
-public class SaveTimer extends TimerTask implements HasBeenInstrumented
-{
+public class SaveTimer extends TimerTask implements HasBeenInstrumented {
 
-	public void run()
-	{
+	public void run() {
 		ProjectData.saveGlobalProjectData();
 	}
 

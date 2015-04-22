@@ -23,57 +23,82 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 import java.util.concurrent.atomic.AtomicInteger;
 
-
 /**
  * @author Cristina González
  */
-public class AtomicCounterMap<T> implements CounterMap<T>,HasBeenInstrumented {
-	private final ConcurrentMap<T, AtomicInteger> counters=new ConcurrentHashMap<T, AtomicInteger>();
-	
-	public final void incrementValue(T key, int inc){
-		AtomicInteger v=counters.get(key);
-		if(v!=null){
-			v.addAndGet(inc);
-		}else{
-			v=counters.putIfAbsent(key, new AtomicInteger(inc));
-			if(v!=null)v.addAndGet(inc);			
-		}
-	}
-	
-	public final void incrementValue(T key){
-		//AtomicInteger v=counters.putIfAbsent(key, new AtomicInteger(1));
-		//return (v!=null)?v.incrementAndGet():1;
-		AtomicInteger v=counters.get(key);
-		if(v!=null){
-			v.incrementAndGet();			
-		}else{
-			v=counters.putIfAbsent(key, new AtomicInteger(1));
-			if(v!=null)v.incrementAndGet();
-		}
-	}	
-	
-	public final int getValue(T key){
-		AtomicInteger v=counters.get(key);
-		return v==null?0:v.get();
-	}
-	
-	
-	public synchronized  Map<T,Integer> getFinalStateAndCleanIt(){		
-		Map<T,Integer> res=new LinkedHashMap<T, Integer>();
-		Iterator<Map.Entry<T, AtomicInteger>> iterator=counters.entrySet().iterator();
+public class AtomicCounterMap<T> implements CounterMap<T>, HasBeenInstrumented {
+
+	public synchronized Map<T, Integer> getFinalStateAndCleanIt() {
+		Map<T, Integer> res = new LinkedHashMap<>();
+
+		Iterator<Map.Entry<T, AtomicInteger>> iterator =
+			counters.entrySet().iterator();
+
 		while (iterator.hasNext()) {
-			Map.Entry<T, AtomicInteger> entry=iterator.next();
-			T key=entry.getKey();
-			int old=entry.getValue().get();
+			Map.Entry<T, AtomicInteger> entry = iterator.next();
+
+			T key = entry.getKey();
+
+			int old = entry.getValue().get();
+
 			iterator.remove();
-			if(old>0){
+
+			if (old > 0) {
 				res.put(key, old);
 			}
-		}		
-		return res;		
+		}
+
+		return res;
 	}
-	
-	public int getSize(){
+
+	public int getSize() {
 		return counters.size();
 	}
+
+	public final int getValue(T key) {
+		AtomicInteger v = counters.get(key);
+
+		if (v == null) {
+			return 0;
+		}
+
+		return v.get();
+	}
+
+	public final void incrementValue(T key) {
+		//AtomicInteger v=counters.putIfAbsent(key, new AtomicInteger(1));
+		//return (v!=null)?v.incrementAndGet():1;
+
+		AtomicInteger v = counters.get(key);
+
+		if (v != null) {
+			v.incrementAndGet();
+		}
+		else {
+			v = counters.putIfAbsent(key, new AtomicInteger(1));
+
+			if (v != null) {
+				v.incrementAndGet();
+			}
+		}
+	}
+
+	public final void incrementValue(T key, int inc) {
+		AtomicInteger v = counters.get(key);
+
+		if (v!= null) {
+			v.addAndGet(inc);
+		}
+		else {
+			v = counters.putIfAbsent(key, new AtomicInteger(inc));
+
+			if (v != null) {
+				v.addAndGet(inc);
+			}
+		}
+	}
+
+	private final ConcurrentMap<T, AtomicInteger> counters =
+		new ConcurrentHashMap<>();
+
 }

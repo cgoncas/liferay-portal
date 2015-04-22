@@ -17,14 +17,13 @@ package com.liferay.cobertura.agent.coveragedata;
 /**
  * @author Cristina González
  */
-public interface BranchCoverageData
-{
+public interface BranchCoverageData {
 
-	double getBranchCoverageRate();
+	public double getBranchCoverageRate();
 
-	int getNumberOfCoveredBranches();
+	public int getNumberOfCoveredBranches();
 
-	int getNumberOfValidBranches();
+	public int getNumberOfValidBranches();
 
 	/**
 	 * Warning: This is generally implemented as a
@@ -34,5 +33,6 @@ public interface BranchCoverageData
 	 * various classes to do a deep copy of the
 	 * appropriate objects.
 	 */
-	void merge(BranchCoverageData coverageData);
+	public void merge(BranchCoverageData coverageData);
+
 }

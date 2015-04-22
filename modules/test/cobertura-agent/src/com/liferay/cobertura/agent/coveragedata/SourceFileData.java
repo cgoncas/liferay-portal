@@ -24,86 +24,76 @@ import net.sourceforge.cobertura.util.StringUtil;
  * @author Cristina González
  */
 public class SourceFileData extends CoverageDataContainer
-		implements Comparable, HasBeenInstrumented
-{
+	implements Comparable, HasBeenInstrumented {
 
-	private static final long serialVersionUID = 3;
-
-	private String name;
-
-   /**
-    * @param name In the format, "net/sourceforge/cobertura/coveragedata/SourceFileData.java"
-    */
-	public SourceFileData(String name)
-	{
-		if (name == null)
+	public SourceFileData(String name) {
+		if (name == null) {
 			throw new IllegalArgumentException(
 				"Source file name must be specified.");
+		}
+
 		this.name = name;
 	}
 
-	public void addClassData(com.liferay.cobertura.agent.coveragedata.ClassData classData)
-	{
+	public void addClassData(ClassData classData) {
 		lock.lock();
-		try
-		{
-			if (children.containsKey(classData.getBaseName()))
-				throw new IllegalArgumentException("Source file " + this.name
-						+ " already contains a class with the name "
-						+ classData.getBaseName());
-	
+
+		try {
+			if (children.containsKey(classData.getBaseName())) {
+				throw new IllegalArgumentException(
+					"Source file " + this.name + " already contains a class " +
+						"with the name " + classData.getBaseName());
+			}
+
 			// Each key is a class basename, stored as an String object.
-			// Each value is information about the class, stored as a ClassData object.
+			// Each value is information about the class, stored as a
+			// ClassData object.
+
 			children.put(classData.getBaseName(), classData);
 		}
-		finally
-		{
+		finally {
 			lock.unlock();
 		}
 	}
 
-	/**
-	 * This is required because we implement Comparable.
-	 */
-	public int compareTo(Object o)
-	{
+	public int compareTo(Object o) {
 		if (!o.getClass().equals(SourceFileData.class))
 			return Integer.MAX_VALUE;
 		return this.name.compareTo(((SourceFileData)o).name);
 	}
 
-	public boolean contains(String name)
-	{
+	public boolean contains(String name) {
 		lock.lock();
-		try
-		{
+
+		try {
 			return this.children.containsKey(name);
 		}
-		finally
-		{
+		finally {
 			lock.unlock();
 		}
 	}
 
-	public boolean containsInstrumentationInfo()
-	{
+	public boolean containsInstrumentationInfo() {
 		lock.lock();
-		try
-		{
+
+		try {
+
 			// Return false if any of our child ClassData's does not
 			// contain instrumentation info
+
 			Iterator iter = this.children.values().iterator();
-			while (iter.hasNext())
-			{
-				com.liferay.cobertura.agent.coveragedata.ClassData classData = (com.liferay.cobertura.agent.coveragedata.ClassData)iter.next();
-				if (!classData.containsInstrumentationInfo())
+			while (iter.hasNext()) {
+				ClassData classData = (ClassData)iter.next();
+
+				if (!classData.containsInstrumentationInfo()) {
 					return false;
+				}
 			}
 		}
-		finally
-		{
+		finally {
 			lock.unlock();
 		}
+
 		return true;
 	}
 
@@ -112,145 +102,136 @@ public class SourceFileData extends CoverageDataContainer
 	 * SourceFileData class, and it contains the same data as this
 	 * class.
 	 */
-	public boolean equals(Object obj)
-	{
-		if (this == obj)
+	public boolean equals(Object obj) {
+		if (this == obj) {
 			return true;
-		if ((obj == null) || !(obj.getClass().equals(this.getClass())))
+		}
+
+		if ((obj == null) || !obj.getClass().equals(this.getClass())) {
 			return false;
+		}
 
 		SourceFileData sourceFileData = (SourceFileData)obj;
 		getBothLocks(sourceFileData);
-		try
-		{
-			return super.equals(obj)
-					&& this.name.equals(sourceFileData.name);
+
+		try {
+			return super.equals(obj) && this.name.equals(sourceFileData.name);
 		}
-		finally
-		{
+		finally {
 			lock.unlock();
 			sourceFileData.lock.unlock();
 		}
 	}
 
-	public String getBaseName()
-	{
+	public String getBaseName() {
 		String fullNameWithoutExtension;
 		int lastDot = this.name.lastIndexOf('.');
-		if (lastDot == -1)
-		{
+
+		if (lastDot == -1) {
 			fullNameWithoutExtension = this.name;
 		}
-		else
-		{
+		else {
 			fullNameWithoutExtension = this.name.substring(0, lastDot);
 		}
 
 		int lastSlash = fullNameWithoutExtension.lastIndexOf('/');
-		if (lastSlash == -1)
-		{
+
+		if (lastSlash == -1) {
 			return fullNameWithoutExtension;
 		}
+
 		return fullNameWithoutExtension.substring(lastSlash + 1);
 	}
 
-	public SortedSet getClasses()
-	{
+	public SortedSet getClasses() {
 		lock.lock();
-		try
-		{
+
+		try {
 			return new TreeSet(this.children.values());
 		}
-		finally
-		{
+		finally {
 			lock.unlock();
 		}
 	}
 
-	public com.liferay.cobertura.agent.coveragedata.LineData getLineCoverage(int lineNumber)
-	{
+	public LineData getLineCoverage(int lineNumber) {
 		lock.lock();
-		try
-		{
+
+		try {
 			Iterator iter = this.children.values().iterator();
-			while (iter.hasNext())
-			{
-				com.liferay.cobertura.agent.coveragedata.ClassData classData = (com.liferay.cobertura.agent.coveragedata.ClassData)iter.next();
+			while (iter.hasNext()) {
+				ClassData classData = (ClassData)iter.next();
+
 				if (classData.isValidSourceLineNumber(lineNumber))
 					return classData.getLineCoverage(lineNumber);
 			}
 		}
-		finally
-		{
+		finally {
 			lock.unlock();
 		}
+
 		return null;
 	}
 
-	public String getName()
-	{
+	public String getName() {
 		return this.name;
 	}
 
-	/**
-	 * @return The name of this source file without the file extension
-	 *         in the format
-	 *         "net.sourceforge.cobertura.coveragedata.SourceFileData"
-	 */
-	public String getNormalizedName()
-	{
+	public String getNormalizedName() {
 		String fullNameWithoutExtension;
 		int lastDot = this.name.lastIndexOf('.');
-		if (lastDot == -1)
-		{
+
+		if (lastDot == -1) {
 			fullNameWithoutExtension = this.name;
 		}
-		else
-		{
+
+		else {
 			fullNameWithoutExtension = this.name.substring(0, lastDot);
 		}
 
 		return StringUtil.replaceAll(fullNameWithoutExtension, "/", ".");
 	}
 
-	/**
-	 * @return The name of the package that this source file is in.
-	 *         In the format "net.sourceforge.cobertura.coveragedata"
-	 */
-	public String getPackageName()
-	{
+	public String getPackageName() {
 		int lastSlash = this.name.lastIndexOf('/');
-		if (lastSlash == -1)
-		{
+
+		if (lastSlash == -1) {
 			return null;
 		}
-		return StringUtil.replaceAll(this.name.substring(0, lastSlash), "/",
-				".");
+
+		return StringUtil.replaceAll(
+			this.name.substring(0, lastSlash), "/", ".");
 	}
 
-	public int hashCode()
-	{
+	public int hashCode() {
 		return this.name.hashCode();
 	}
 
-	public boolean isValidSourceLineNumber(int lineNumber)
-	{
+	public boolean isValidSourceLineNumber(int lineNumber) {
 		lock.lock();
-		try
-		{
+
+		try {
 			Iterator iter = this.children.values().iterator();
-			while (iter.hasNext())
-			{
-				com.liferay.cobertura.agent.coveragedata.ClassData classData = (ClassData)iter.next();
-				if (classData.isValidSourceLineNumber(lineNumber))
-					return true;
+
+			while (iter.hasNext()) {
+				ClassData classData = (ClassData)iter.next();
+
+				if (classData.isValidSourceLineNumber(lineNumber))return true;
 			}
 		}
-		finally
-		{
+		finally {
 			lock.unlock();
 		}
+
 		return false;
 	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	private static final long serialVersionUID = 3;
+
+	private String name;
 
 }

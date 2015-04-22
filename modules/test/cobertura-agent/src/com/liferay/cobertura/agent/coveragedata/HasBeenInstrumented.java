@@ -17,9 +17,8 @@ package com.liferay.cobertura.agent.coveragedata;
 /**
  * @author Cristina González
  */
-public interface HasBeenInstrumented
-{
-	/*
+public interface HasBeenInstrumented {
+	/**
 	 * This class does not need any members.  If a given class implements
 	 * this class, it means the given class does not want to be instrumented
 	 * by Cobertura.
