@@ -1,40 +1,30 @@
-/*
- * Cobertura - http://cobertura.sourceforge.net/
+/**
+ * Copyright (c) 2000-present Liferay, Inc. All rights reserved.
  *
- * Copyright (C) 2010 Piotr Tabor
+ * This library is free software; you can redistribute it and/or modify it under
+ * the terms of the GNU Lesser General Public License as published by the Free
+ * Software Foundation; either version 2.1 of the License, or (at your option)
+ * any later version.
  *
- * Note: This file is dual licensed under the GPL and the Apache
- * Source License (so that it can be used from both the main
- * Cobertura classes and the ant tasks).
- *
- * Cobertura is free software; you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published
- * by the Free Software Foundation; either version 2 of the License,
- * or (at your option) any later version.
- *
- * Cobertura is distributed in the hope that it will be useful, but
- * WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
- * General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with Cobertura; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307
- * USA
+ * This library is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
+ * details.
  */
 
 package com.liferay.cobertura.agent.coveragedata;
 
-import com.liferay.cobertura.agent.coveragedata.*;
-import com.liferay.cobertura.agent.coveragedata.ProjectData;
+import com.liferay.cobertura.agent.coveragedata.countermaps.AtomicCounterMap;
+import com.liferay.cobertura.agent.coveragedata.countermaps.CounterMap;
+
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicInteger;
 
-import com.liferay.cobertura.agent.coveragedata.countermaps.AtomicCounterMap;
-import com.liferay.cobertura.agent.coveragedata.countermaps.CounterMap;
-
+/**
+ * @author Cristina González
+ */
 public class TouchCollector implements HasBeenInstrumented{
 	
 	private static final CounterMap<LineTouchData> touchedLines=new AtomicCounterMap<LineTouchData>();	
