@@ -14,6 +14,13 @@
 
 package com.liferay.cobertura.agent;
 
+import com.liferay.cobertura.agent.coveragedata.ClassData;
+import com.liferay.cobertura.agent.coveragedata.CoverageData;
+import com.liferay.cobertura.agent.coveragedata.CoverageDataFileHandler;
+import com.liferay.cobertura.agent.coveragedata.LineData;
+import com.liferay.cobertura.agent.coveragedata.ProjectData;
+import com.liferay.cobertura.agent.coveragedata.TouchCollector;
+
 import java.io.File;
 import java.io.IOException;
 
@@ -24,13 +31,6 @@ import java.lang.instrument.UnmodifiableClassException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
-
-import net.sourceforge.cobertura.coveragedata.ClassData;
-import net.sourceforge.cobertura.coveragedata.CoverageData;
-import net.sourceforge.cobertura.coveragedata.CoverageDataFileHandler;
-import net.sourceforge.cobertura.coveragedata.LineData;
-import net.sourceforge.cobertura.coveragedata.ProjectData;
-import net.sourceforge.cobertura.coveragedata.TouchCollector;
 
 /**
  * @author Shuyang Zhou

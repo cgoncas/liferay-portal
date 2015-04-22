@@ -14,6 +14,8 @@
 
 package com.liferay.cobertura.agent;
 
+import com.liferay.cobertura.agent.coveragedata.ProjectData;
+
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.FileWriter;
@@ -28,8 +30,6 @@ import java.security.ProtectionDomain;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-
-import net.sourceforge.cobertura.coveragedata.ProjectData;
 
 import org.objectweb.asm.ClassReader;
 import org.objectweb.asm.ClassVisitor;
@@ -128,7 +128,8 @@ public class CoberturaClassFileTransformer implements ClassFileTransformer {
 
 			if ((className != null) &&
 				className.equals(
-					"net/sourceforge/cobertura/coveragedata/TouchCollector")) {
+					"com/liferay/cobertura/agent/coveragedata/" +
+						"TouchCollector")) {
 
 				ClassWriter classWriter = new ContextAwareClassWriter(
 					ClassWriter.COMPUTE_FRAMES);
@@ -261,7 +262,7 @@ public class CoberturaClassFileTransformer implements ClassFileTransformer {
 
 			if ((opcode == Opcodes.INVOKESTATIC) &&
 				owner.equals(
-					"net/sourceforge/cobertura/coveragedata/ProjectData") &&
+					"com/liferay/cobertura/agent/coveragedata/ProjectData") &&
 				name.equals("initialize") && desc.equals("()V")) {
 
 				owner = "com/liferay/cobertura/agent/InstrumentationAgent";
