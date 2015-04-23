@@ -14,7 +14,7 @@
 
 package com.liferay.cobertura.agent;
 
-import net.sourceforge.cobertura.coveragedata.ClassData;
+import com.liferay.cobertura.agent.coveragedata.ClassData;
 
 import org.objectweb.asm.ClassVisitor;
 import org.objectweb.asm.MethodVisitor;

@@ -14,6 +14,10 @@
 
 package com.liferay.cobertura.agent;
 
+import com.liferay.cobertura.agent.coveragedata.CoverageDataFileHandler;
+import com.liferay.cobertura.agent.coveragedata.ProjectData;
+import com.liferay.cobertura.agent.coveragedata.TouchCollector;
+
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileDescriptor;
@@ -34,10 +38,6 @@ import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 import java.util.concurrent.CopyOnWriteArraySet;
-
-import net.sourceforge.cobertura.coveragedata.CoverageDataFileHandler;
-import net.sourceforge.cobertura.coveragedata.ProjectData;
-import net.sourceforge.cobertura.coveragedata.TouchCollector;
 
 /**
  * @author Shuyang Zhou
