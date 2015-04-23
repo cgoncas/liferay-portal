@@ -108,7 +108,6 @@ public class TouchCollector implements HasBeenInstrumented {
 	private static ClassData _getClassFor(
 		LineTouchData key, ProjectData projectData) {
 
-//		System.out.println("\nLooking for:"+key.classId+"\n");
 		return projectData.getOrCreateClassData(
 			_classId2class.get(key.classId));
 	}
