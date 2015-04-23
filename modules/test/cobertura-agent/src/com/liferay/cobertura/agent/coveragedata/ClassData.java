@@ -44,7 +44,7 @@ public class ClassData extends CoverageDataContainer
 		lock.lock();
 
 		try {
-			LineData lineData = getLineData(lineNumber);
+			LineData lineData = _getLineData(lineNumber);
 
 			if (lineData == null) {
 				lineData = new LineData(lineNumber);
@@ -76,7 +76,7 @@ public class ClassData extends CoverageDataContainer
 		lock.lock();
 
 		try {
-			LineData lineData = getLineData(lineNumber);
+			LineData lineData = _getLineData(lineNumber);
 
 			if (lineData != null) {
 				lineData.addJump(branchNumber);
@@ -95,7 +95,7 @@ public class ClassData extends CoverageDataContainer
 		lock.lock();
 
 		try {
-			LineData lineData = getLineData(lineNumber);
+			LineData lineData = _getLineData(lineNumber);
 
 			if (lineData != null) {
 				lineData.addSwitch(switchNumber, min, max);
@@ -112,7 +112,7 @@ public class ClassData extends CoverageDataContainer
 		lock.lock();
 
 		try {
-			LineData lineData = getLineData(lineNumber);
+			LineData lineData = _getLineData(lineNumber);
 
 			if (lineData != null) {
 				lineData.addSwitch(switchNumber, keys);
@@ -536,7 +536,7 @@ public class ClassData extends CoverageDataContainer
 		lock.lock();
 
 		try {
-			LineData lineData = getLineData(lineNumber);
+			LineData lineData = _getLineData(lineNumber);
 
 			if (lineData == null) {
 				lineData = addLine(lineNumber, null, null);
@@ -555,7 +555,7 @@ public class ClassData extends CoverageDataContainer
 		lock.lock();
 
 		try {
-			LineData lineData = getLineData(lineNumber);
+			LineData lineData = _getLineData(lineNumber);
 
 			if (lineData == null) {
 				lineData = addLine(lineNumber, null, null);
@@ -574,7 +574,7 @@ public class ClassData extends CoverageDataContainer
 		lock.lock();
 
 		try {
-			LineData lineData = getLineData(lineNumber);
+			LineData lineData = _getLineData(lineNumber);
 
 			if (lineData == null) {
 				lineData = addLine(lineNumber, null, null);
@@ -587,7 +587,7 @@ public class ClassData extends CoverageDataContainer
 		}
 	}
 
-	private LineData getLineData(int lineNumber) {
+	private LineData _getLineData(int lineNumber) {
 		lock.lock();
 
 		try {

@@ -31,7 +31,7 @@ public class JumpData implements BranchCoverageData, Comparable, Serializable,
 		_conditionNumber = conditionNumber;
 		_trueHits = 0L;
 		_falseHits = 0L;
-		initLock();
+		_initLock();
 	}
 
 	public int compareTo(Object o) {
@@ -52,7 +52,7 @@ public class JumpData implements BranchCoverageData, Comparable, Serializable,
 		}
 
 		JumpData branchData = (JumpData)obj;
-		getBothLocks(branchData);
+		_getBothLocks(branchData);
 
 		try {
 			return (_trueHits == branchData._trueHits) &&
@@ -124,7 +124,7 @@ public class JumpData implements BranchCoverageData, Comparable, Serializable,
 
 	public void merge(BranchCoverageData coverageData) {
 		JumpData jumpData = (JumpData)coverageData;
-		getBothLocks(jumpData);
+		_getBothLocks(jumpData);
 
 		try {
 			_trueHits += jumpData._trueHits;
@@ -154,7 +154,7 @@ public class JumpData implements BranchCoverageData, Comparable, Serializable,
 
 	protected transient Lock lock;
 
-	private void getBothLocks(JumpData other) {
+	private void _getBothLocks(JumpData other) {
 		/*
 		 * To prevent deadlock, we need to get both locks or none at all.
 		 *
@@ -188,7 +188,7 @@ public class JumpData implements BranchCoverageData, Comparable, Serializable,
 		}
 	}
 
-	private void initLock() {
+	private void _initLock() {
 		lock = new ReentrantLock();
 	}
 
@@ -196,7 +196,7 @@ public class JumpData implements BranchCoverageData, Comparable, Serializable,
 		throws ClassNotFoundException, IOException {
 
 		in.defaultReadObject();
-		initLock();
+		_initLock();
 	}
 
 	private static final long serialVersionUID = 8;

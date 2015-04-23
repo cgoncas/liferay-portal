@@ -52,7 +52,7 @@ public abstract class CoverageDataFileHandler implements HasBeenInstrumented {
 
 		try {
 			is = new BufferedInputStream(new FileInputStream(dataFile), 16384);
-			return loadCoverageData(is);
+			return _loadCoverageData(is);
 		}
 		catch (IOException e) {
 			System.err.println(
@@ -89,7 +89,7 @@ public abstract class CoverageDataFileHandler implements HasBeenInstrumented {
 			}
 
 			os = new FileOutputStream(dataFile);
-			saveCoverageData(projectData, os);
+			_saveCoverageData(projectData, os);
 		}
 		catch (IOException e) {
 			System.err.println(
@@ -113,7 +113,7 @@ public abstract class CoverageDataFileHandler implements HasBeenInstrumented {
 		}
 	}
 
-	private static ProjectData loadCoverageData(InputStream dataFile)
+	private static ProjectData _loadCoverageData(InputStream dataFile)
 		throws IOException {
 
 		ObjectInputStream objects = null;
@@ -154,7 +154,7 @@ public abstract class CoverageDataFileHandler implements HasBeenInstrumented {
 		}
 	}
 
-	private static void saveCoverageData(
+	private static void _saveCoverageData(
 		ProjectData projectData, OutputStream dataFile) {
 
 		ObjectOutputStream objects = null;

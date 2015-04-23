@@ -43,7 +43,7 @@ public class LineData
 		_lineNumber = lineNumber;
 		_methodName = methodName;
 		_methodDescriptor = methodDescriptor;
-		initLock();
+		_initLock();
 	}
 
 	public int compareTo(Object o) {
@@ -507,7 +507,7 @@ public class LineData
 		}
 	}
 
-	private void initLock() {
+	private void _initLock() {
 		_lock = new ReentrantLock();
 	}
 
@@ -515,7 +515,7 @@ public class LineData
 		throws ClassNotFoundException, IOException {
 
 		in.defaultReadObject();
-		initLock();
+		_initLock();
 	}
 
 	private static final long serialVersionUID = 4;

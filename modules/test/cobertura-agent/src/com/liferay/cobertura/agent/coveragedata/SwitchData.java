@@ -40,7 +40,7 @@ public class SwitchData implements BranchCoverageData, Comparable, Serializable,
 		_keys = new int[max - min + 1];
 
 		for (int i = 0; min <= max; _keys[i++] = min++);
-		initLock();
+		_initLock();
 	}
 
 	public SwitchData(int switchNumber, int[] keys) {
@@ -50,7 +50,7 @@ public class SwitchData implements BranchCoverageData, Comparable, Serializable,
 		Arrays.fill(_hits, 0);
 		_keys = new int[keys.length];
 		System.arraycopy(keys, 0, _keys, 0, keys.length);
-		initLock();
+		_initLock();
 	}
 
 	public int compareTo(Object o) {
@@ -68,7 +68,7 @@ public class SwitchData implements BranchCoverageData, Comparable, Serializable,
 		}
 
 		SwitchData switchData = (SwitchData)obj;
-		getBothLocks(switchData);
+		_getBothLocks(switchData);
 
 		try {
 			return (_defaultHits == switchData._defaultHits) &&
@@ -158,7 +158,7 @@ public class SwitchData implements BranchCoverageData, Comparable, Serializable,
 
 	public void merge(BranchCoverageData coverageData) {
 		SwitchData switchData = (SwitchData)coverageData;
-		getBothLocks(switchData);
+		_getBothLocks(switchData);
 
 		try {
 			_defaultHits += switchData._defaultHits;
@@ -210,7 +210,7 @@ public class SwitchData implements BranchCoverageData, Comparable, Serializable,
 		}
 	}
 
-	private void getBothLocks(SwitchData other) {
+	private void _getBothLocks(SwitchData other) {
 		/*
 		 * To prevent deadlock, we need to get both locks or none at all.
 		 *
@@ -242,7 +242,7 @@ public class SwitchData implements BranchCoverageData, Comparable, Serializable,
 		}
 	}
 
-	private void initLock() {
+	private void _initLock() {
 		_lock = new ReentrantLock();
 	}
 
@@ -250,7 +250,7 @@ public class SwitchData implements BranchCoverageData, Comparable, Serializable,
 		throws ClassNotFoundException, IOException {
 
 		in.defaultReadObject();
-		initLock();
+		_initLock();
 	}
 
 	private static final long serialVersionUID = 9;

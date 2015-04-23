@@ -103,7 +103,7 @@ public class ProjectData
 
 				if (fileLocker.lock()) {
 					ProjectData datafileProjectData =
-						loadCoverageDataFromDatafile(dataFile);
+						_loadCoverageDataFromDatafile(dataFile);
 
 					if (datafileProjectData == null) {
 						datafileProjectData = projectDataToSave;
@@ -292,7 +292,7 @@ public class ProjectData
 		_classes = classes;
 	}
 
-	private static ProjectData loadCoverageDataFromDatafile(File dataFile) {
+	private static ProjectData _loadCoverageDataFromDatafile(File dataFile) {
 		ProjectData projectData = null;
 
 		// Read projectData from the serialized file.

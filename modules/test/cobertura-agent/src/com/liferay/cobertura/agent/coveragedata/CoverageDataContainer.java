@@ -31,7 +31,7 @@ public abstract class CoverageDataContainer
 		implements CoverageData, HasBeenInstrumented, Serializable {
 
 	public CoverageDataContainer() {
-		initLock();
+		_initLock();
 	}
 
 	/**
@@ -333,7 +333,7 @@ public abstract class CoverageDataContainer
 	protected Map<Object, CoverageData> children = new HashMap<>();
 	protected transient Lock lock;
 
-	private void initLock() {
+	private void _initLock() {
 		lock = new ReentrantLock();
 	}
 
@@ -341,7 +341,7 @@ public abstract class CoverageDataContainer
 		throws ClassNotFoundException, IOException {
 
 		in.defaultReadObject();
-		initLock();
+		_initLock();
 	}
 
 	private static final long serialVersionUID = 2;
