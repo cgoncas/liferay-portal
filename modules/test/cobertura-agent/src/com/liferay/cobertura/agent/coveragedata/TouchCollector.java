@@ -36,7 +36,7 @@ public class TouchCollector implements HasBeenInstrumented {
 		System.out.println("Flushing results...");
 
 		Map<LineTouchData, Integer> touches =
-			touchedLines.getFinalStateAndCleanIt();
+			_touchedLines.getFinalStateAndCleanIt();
 
 		for (Entry<LineTouchData, Integer> touch :touches.entrySet()) {
 			if (touch.getValue() > 0) {
@@ -48,7 +48,7 @@ public class TouchCollector implements HasBeenInstrumented {
 		}
 
 		Map<SwitchTouchData, Integer> switchTouches =
-			switchTouchData.getFinalStateAndCleanIt();
+			_switchTouchData.getFinalStateAndCleanIt();
 
 		for (Entry<SwitchTouchData, Integer> touch :switchTouches.entrySet()) {
 			if (touch.getValue() > 0) {
@@ -59,7 +59,7 @@ public class TouchCollector implements HasBeenInstrumented {
 		}
 
 		Map<JumpTouchData, Integer> jumpTouches =
-			jumpTouchData.getFinalStateAndCleanIt();
+			_jumpTouchData.getFinalStateAndCleanIt();
 
 		for (Entry<JumpTouchData, Integer> touch :jumpTouches.entrySet()) {
 			if (touch.getValue() > 0) {
@@ -77,7 +77,7 @@ public class TouchCollector implements HasBeenInstrumented {
 	 * is not called by any of the Cobertura code or ant tasks.
 	 */
 	public static final void touch(String classId, int lineNumber) {
-		touchedLines.incrementValue(
+		_touchedLines.incrementValue(
 			new LineTouchData(_registerClassData(classId), lineNumber));
 	}
 
@@ -88,7 +88,7 @@ public class TouchCollector implements HasBeenInstrumented {
 	public static final void touchJump(
 		String classId, int lineNumber, int branchNumber, boolean branch) {
 
-		jumpTouchData.incrementValue(
+		_jumpTouchData.incrementValue(
 			new JumpTouchData(
 				_registerClassData(classId), lineNumber, branchNumber, branch));
 	}
@@ -100,7 +100,7 @@ public class TouchCollector implements HasBeenInstrumented {
 	public static final void touchSwitch(
 		String classId, int lineNumber, int switchNumber, int branch) {
 
-		switchTouchData.incrementValue(
+		_switchTouchData.incrementValue(
 			new SwitchTouchData(
 				_registerClassData(classId), lineNumber, switchNumber, branch));
 	}
@@ -116,7 +116,7 @@ public class TouchCollector implements HasBeenInstrumented {
 		Integer res =_class2classId.get(name);
 
 		if (res == null) {
-			int new_id = lastClassId.incrementAndGet();
+			int new_id = _lastClassId.incrementAndGet();
 
 			_class2classId.put(name, new_id);
 
@@ -132,12 +132,12 @@ public class TouchCollector implements HasBeenInstrumented {
 		new ConcurrentHashMap<>();
 	private static final Map<Integer, String> _classId2class =
 		new ConcurrentHashMap<>();
-	private static final CounterMap<JumpTouchData> jumpTouchData =
+	private static final CounterMap<JumpTouchData> _jumpTouchData =
 		new AtomicCounterMap<>();
-	private static final AtomicInteger lastClassId = new AtomicInteger(1);
-	private static final CounterMap<SwitchTouchData> switchTouchData =
+	private static final AtomicInteger _lastClassId = new AtomicInteger(1);
+	private static final CounterMap<SwitchTouchData> _switchTouchData =
 		new AtomicCounterMap<>();
-	private static final CounterMap<LineTouchData> touchedLines =
+	private static final CounterMap<LineTouchData> _touchedLines =
 		new AtomicCounterMap<>();
 
 	static {
