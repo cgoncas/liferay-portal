@@ -35,7 +35,7 @@ import net.sourceforge.cobertura.coveragedata.BranchCoverageData;
  * problem because instrumented classes make use of this class.
  * </p>
  */
-public class JumpData implements BranchCoverageData, Comparable, Serializable
+public class JumpData implements BranchCoverageData, Serializable
 {
 	private static final long serialVersionUID = 8;
 
@@ -61,13 +61,6 @@ public class JumpData implements BranchCoverageData, Comparable, Serializable
 		lock = new ReentrantLock();
 	}
 
-	public int compareTo(Object o)
-	{
-		if (!o.getClass().equals(JumpData.class))
-			return Integer.MAX_VALUE;
-		return this.conditionNumber - ((JumpData) o).conditionNumber;
-	}
-
 	void touchBranch(boolean branch,int new_hits)
 	{
 		lock.lock();
@@ -81,37 +74,6 @@ public class JumpData implements BranchCoverageData, Comparable, Serializable
 			{
 				this.falseHits+=new_hits;
 			}
-		}
-		finally
-		{
-			lock.unlock();
-		}
-	}
-
-	public int getConditionNumber()
-	{
-		return this.conditionNumber;
-	}
-
-	public long getTrueHits()
-	{
-		lock.lock();
-		try
-		{
-			return this.trueHits;
-		}
-		finally
-		{
-			lock.unlock();
-		}
-	}
-
-	public long getFalseHits()
-	{
-		lock.lock();
-		try
-		{
-			return this.falseHits;
 		}
 		finally
 		{
