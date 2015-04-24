@@ -93,13 +93,6 @@ public class SwitchData implements BranchCoverageData, Serializable
 				defaultHits++;
 			else
 			{
-				if (hits.length <= branch)
-				{
-					long[] old = hits;
-					hits = new long[branch + 1];
-					System.arraycopy(old, 0, hits, 0, old.length);
-					Arrays.fill(hits, old.length, hits.length - 1, 0);
-				}
 				hits[branch]+=new_hits;
 			}
 		}
