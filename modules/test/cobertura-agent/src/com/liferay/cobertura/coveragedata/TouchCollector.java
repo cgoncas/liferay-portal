@@ -14,16 +14,13 @@
 
 package com.liferay.cobertura.coveragedata;
 
-import com.liferay.cobertura.agent.InstrumentationAgent;
+import com.liferay.cobertura.instrument.ProjectDataUtil;
 import com.liferay.cobertura.util.HashUtil;
 
 import java.util.Map.Entry;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 import java.util.concurrent.atomic.AtomicInteger;
-
-import net.sourceforge.cobertura.coveragedata.ClassData;
-import net.sourceforge.cobertura.coveragedata.ProjectData;
 
 /**
  * @author Cristina González
@@ -130,7 +127,7 @@ public class TouchCollector {
 		_switchTouchHitsMap = new ConcurrentHashMap<>();
 
 	static {
-		InstrumentationAgent.initialize();
+		ProjectDataUtil.addMergeHook();
 	}
 
 	private static class JumpTouchData extends LineTouchData {
