@@ -1,0 +1,6 @@
+Bundle-Name: Liferay Sample Service Builder API
+Bundle-SymbolicName: com.liferay.sample.service.builder.api
+Bundle-Version: 1.0.0
+Export-Package: \
+	com.liferay.sample.service.builder.*
+Include-Resource: classes

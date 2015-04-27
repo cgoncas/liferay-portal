@@ -28,10 +28,12 @@
 		<dirset dir="network-utilities" includes="*" />
 		<dirset dir="password-generator" includes="*" />
 		<dirset dir="polls" includes="*" />
+		<dirset dir="portlet-css" includes="*" />
 		<dirset dir="productivity-center" includes="*" />
 		<dirset dir="quick-note" includes="*" />
 		<dirset dir="rss" includes="*" />
 		<dirset dir="search" includes="*" />
+		<dirset dir="sample-service-builder" includes="*" />
 		<dirset dir="service-access-control-profile" includes="*" />
 		<dirset dir="site" includes="*" />
 		<dirset dir="site-navigation" includes="*" />
