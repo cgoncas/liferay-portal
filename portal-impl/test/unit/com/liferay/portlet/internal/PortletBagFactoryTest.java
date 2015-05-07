@@ -21,8 +21,6 @@ import com.liferay.portlet.PortletBagFactory;
 
 import javax.portlet.Portlet;
 
-import junit.framework.TestCase;
-
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -31,7 +29,7 @@ import org.springframework.mock.web.MockServletContext;
 /**
  * @author Raymond Augé
  */
-public class PortletBagFactoryTest extends TestCase {
+public class PortletBagFactoryTest {
 
 	@Test
 	public void test1() throws Exception {
