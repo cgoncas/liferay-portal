@@ -15,6 +15,7 @@
 package com.liferay.document.library.events;
 
 import com.liferay.portal.kernel.events.ActionException;
+import com.liferay.portal.kernel.events.LifecycleAction;
 import com.liferay.portal.kernel.events.SimpleAction;
 import com.liferay.portal.kernel.language.LanguageUtil;
 import com.liferay.portal.kernel.metadata.RawMetadataProcessorUtil;
@@ -55,9 +56,7 @@ import com.liferay.portlet.dynamicdatamapping.util.DDMXML;
 import com.liferay.util.ContentUtil;
 
 import java.io.StringReader;
-
 import java.lang.reflect.Field;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -76,7 +75,7 @@ import org.osgi.service.component.annotations.Reference;
  * @author Roberto Díaz
  * @author Marcellus Tavares
  */
-@Component(immediate = true)
+@Component(immediate = true, service={StartupAction.class, LifecycleAction.class})
 public class StartupAction extends SimpleAction {
 
 	@Override
