@@ -38,8 +38,6 @@ public class PortalTestAuxiliaryArchiveAppender
 
 		File portalTestJarFile = getJarFile(BaseTestRule.class);
 
-		System.out.println("--->> " + portalTestJarFile.getAbsolutePath());
-
 		JavaArchive archive = ShrinkWrap.create(
 			ZipImporter.class, "arquillian-extension-portal-test.jar").
 			importFrom(portalTestJarFile).as(JavaArchive.class);

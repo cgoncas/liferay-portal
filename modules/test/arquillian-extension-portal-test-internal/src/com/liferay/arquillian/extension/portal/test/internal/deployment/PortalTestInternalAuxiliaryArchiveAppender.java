@@ -39,13 +39,18 @@ public class PortalTestInternalAuxiliaryArchiveAppender
 		File portalTestInternalJarFile =
 			getJarFile(LiferayIntegrationTestRule.class);
 
-		System.out.println("--->> " + portalTestInternalJarFile.getAbsolutePath());
+		long statTime = System.currentTimeMillis();
 
 		JavaArchive archive = ShrinkWrap.create(
 			ZipImporter.class, "arquillian-extension-portal-test-internal.jar").
 			importFrom(portalTestInternalJarFile).as(JavaArchive.class);
 
 		archive.addClass(PortalTestInternalAuxiliaryArchiveAppender.class);
+
+		long endTime = System.currentTimeMillis();
+
+		System.out.println("TIME: " + (endTime - statTime));
+
 
 		return archive;
 	}
