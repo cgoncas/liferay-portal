@@ -263,15 +263,9 @@ public class PortletSessionImplTest {
 			value7, _mockHttpSession.getAttribute(_scopePrefix.concat(key7)));
 	}
 
-	@Test
+	@Test(expected = IllegalArgumentException.class)
 	public void testSetAttributeNull() {
-		try {
-			_portletSessionImpl.setAttribute(null, null);
-
-			Assert.fail();
-		}
-		catch (IllegalArgumentException iae) {
-		}
+		_portletSessionImpl.setAttribute(null, null);
 	}
 
 	@Test
