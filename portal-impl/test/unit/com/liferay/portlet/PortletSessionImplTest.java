@@ -254,14 +254,6 @@ public class PortletSessionImplTest {
 
 	@Test
 	public void testSetAttribute() {
-		try {
-			_portletSessionImpl.setAttribute(null, null);
-
-			Assert.fail();
-		}
-		catch (IllegalArgumentException iae) {
-		}
-
 		String key7 = "key7";
 		Object value7 = new Object();
 
@@ -269,7 +261,21 @@ public class PortletSessionImplTest {
 
 		Assert.assertSame(
 			value7, _mockHttpSession.getAttribute(_scopePrefix.concat(key7)));
+	}
 
+	@Test
+	public void testSetAttributeNull() {
+		try {
+			_portletSessionImpl.setAttribute(null, null);
+
+			Assert.fail();
+		}
+		catch (IllegalArgumentException iae) {
+		}
+	}
+
+	@Test
+	public void testSetAttributeWithScope() {
 		String key8 = "key8";
 		Object value8 = new Object();
 
