@@ -240,7 +240,7 @@ public class ExportImportHelperUtilTest extends PowerMockito {
 		for (String entry : testReaderWriter.getEntries()) {
 			Assert.assertTrue(
 				content.contains("[$dl-reference=" + entry + "$]"));
-		};
+		}
 	}
 
 	@Test
