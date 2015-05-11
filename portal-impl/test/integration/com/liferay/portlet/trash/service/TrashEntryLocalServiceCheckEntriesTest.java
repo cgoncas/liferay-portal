@@ -212,8 +212,7 @@ public class TrashEntryLocalServiceCheckEntriesTest {
 	}
 
 	protected long createCompany() throws Exception {
-		Company company = CompanyTestUtil.addCompany(
-			RandomTestUtil.randomString());
+		Company company = CompanyTestUtil.addCompany();
 
 		_companies.add(company);
 

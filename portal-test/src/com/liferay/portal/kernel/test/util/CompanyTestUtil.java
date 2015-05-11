@@ -39,10 +39,8 @@ import javax.portlet.PortletPreferences;
 public class CompanyTestUtil {
 
 	public static Company addCompany() throws Exception {
-		return addCompany(RandomTestUtil.randomString());
-	}
+		String name = RandomTestUtil.randomString();
 
-	public static Company addCompany(String name) throws Exception {
 		String virtualHostname = name + "." + RandomTestUtil.randomString(3);
 		String shardDefaultName = GetterUtil.getString(
 			PropsUtil.get(PropsKeys.SHARD_DEFAULT_NAME));
