@@ -49,23 +49,29 @@ public class PortletSessionAttributeMapTest {
 	}
 
 	@Test
-	public void testConstructor() {
+	public void testConstructorNoScope() {
 		PortletSessionAttributeMap portletSessionAttributeMap =
 			new PortletSessionAttributeMap(_session);
 
 		Assert.assertSame(_session, portletSessionAttributeMap.session);
 		Assert.assertNull(portletSessionAttributeMap.scopePrefix);
+	}
 
-		portletSessionAttributeMap = new PortletSessionAttributeMap(
-			_session, null);
+	@Test
+	public void testConstructorNullScope() {
+		PortletSessionAttributeMap portletSessionAttributeMap =
+			new PortletSessionAttributeMap(_session, null);
 
 		Assert.assertSame(_session, portletSessionAttributeMap.session);
 		Assert.assertNull(portletSessionAttributeMap.scopePrefix);
+	}
 
+	@Test
+	public void testConstructorScope() {
 		String scopePrefix = "scopePrefix";
 
-		portletSessionAttributeMap = new PortletSessionAttributeMap(
-			_session, scopePrefix);
+		PortletSessionAttributeMap portletSessionAttributeMap =
+			new PortletSessionAttributeMap(_session, scopePrefix);
 
 		Assert.assertSame(_session, portletSessionAttributeMap.session);
 		Assert.assertSame(scopePrefix, portletSessionAttributeMap.scopePrefix);
