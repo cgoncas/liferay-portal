@@ -63,7 +63,7 @@ public class HttpImplTest extends PowerMockito {
 
 	@Test
 	public void testAddStringParameter() {
-		_addParameter("http://foo.com", "p", new String("foo"));
+		_addParameter("http://foo.com", "p", "foo");
 	}
 
 	@Test
