@@ -40,6 +40,7 @@ public class PortletBagFactoryTest {
 			Assert.fail();
 		}
 		catch (IllegalStateException ise) {
+			Assert.assertEquals("Class loader is null", ise.getMessage());
 		}
 	}
 
@@ -55,6 +56,7 @@ public class PortletBagFactoryTest {
 			Assert.fail();
 		}
 		catch (IllegalStateException ise) {
+			Assert.assertEquals("Servlet context is null", ise.getMessage());
 		}
 	}
 
@@ -71,6 +73,7 @@ public class PortletBagFactoryTest {
 			Assert.fail();
 		}
 		catch (IllegalStateException ise) {
+			Assert.assertEquals("WAR file is null", ise.getMessage());
 		}
 	}
 
