@@ -1,0 +1,20 @@
+<?xml version="1.0"?>
+<!DOCTYPE project>
+
+<project>
+	<import file="../../../tools/sdk/build-common-osgi-plugin.xml" />
+
+	<property name="auto.deploy.dir" value="${liferay.home}/osgi/modules" />
+
+	<echo>------------------------- ${module.framework.base.dir}/test</echo>
+
+	<target name="compile">
+		<path id="plugin.classpath">
+			<path refid="plugin-lib.classpath" />
+			<fileset dir="${module.framework.base.dir}/test" erroronmissingdir="true" includes="portal-test-internal.jar" />
+		</path>
+
+		<compile module.dir="${basedir}"/>
+
+	</target>
+</project>
