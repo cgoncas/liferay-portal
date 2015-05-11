@@ -22,8 +22,8 @@ import com.liferay.portlet.messageboards.service.MBMessageServiceUtil;
 import java.lang.reflect.Method;
 import java.lang.reflect.Type;
 
-import junit.framework.TestCase;
-
+import org.junit.Assert;
+import org.junit.Before;
 import org.junit.Test;
 
 import org.springframework.mock.web.MockHttpServletRequest;
@@ -31,9 +31,9 @@ import org.springframework.mock.web.MockHttpServletRequest;
 /**
  * @author Igor Spasic
  */
-public class JSONServiceActionTest extends TestCase {
+public class JSONServiceActionTest {
 
-	@Override
+	@Before
 	public void setUp() throws Exception {
 		JSONFactoryUtil jsonFactoryUtil = new JSONFactoryUtil();
 
@@ -67,7 +67,7 @@ public class JSONServiceActionTest extends TestCase {
 			mockHttpServletRequest, MBMessageServiceUtil.class,
 			method.getName(), parameters[5], parameterTypes[5]);
 
-		assertEquals("[]", value.toString());
+		Assert.assertEquals("[]", value.toString());
 
 		mockHttpServletRequest.setParameter(
 			"inputStreamOVPs",
@@ -78,7 +78,7 @@ public class JSONServiceActionTest extends TestCase {
 			mockHttpServletRequest, MBMessageServiceUtil.class,
 			method.getName(), parameters[5], parameterTypes[5]);
 
-		assertEquals(
+		Assert.assertEquals(
 			"{class=com.liferay.portal.kernel.dao.orm.EntityCacheUtil}",
 			value.toString());
 	}
@@ -107,11 +107,11 @@ public class JSONServiceActionTest extends TestCase {
 			mockHttpServletRequest, GroupServiceUtil.class, method.getName(),
 			parameters[1], parameterTypes[1]);
 
-		assertTrue(value.getClass().isArray());
+		Assert.assertTrue(value.getClass().isArray());
 
 		long[] arrayValue = (long[])value;
 
-		assertEquals(3, arrayValue.length);
+		Assert.assertEquals(3, arrayValue.length);
 	}
 
 }
