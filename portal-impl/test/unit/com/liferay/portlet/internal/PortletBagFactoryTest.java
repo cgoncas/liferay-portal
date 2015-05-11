@@ -14,7 +14,6 @@
 
 package com.liferay.portlet.internal;
 
-import com.liferay.portal.kernel.bean.BeanLocatorException;
 import com.liferay.portal.kernel.portlet.bridges.mvc.MVCPortlet;
 import com.liferay.portal.model.impl.PortletImpl;
 import com.liferay.portlet.PortletBagFactory;
@@ -92,8 +91,6 @@ public class PortletBagFactoryTest {
 
 			Assert.fail();
 		}
-		catch (BeanLocatorException ble) {
-		}
 		catch (NullPointerException npe) {
 		}
 	}
@@ -123,8 +120,6 @@ public class PortletBagFactoryTest {
 			portletBagFactory.create(portletImpl);
 
 			Assert.fail();
-		}
-		catch (BeanLocatorException ble) {
 		}
 		catch (NullPointerException npe) {
 		}
