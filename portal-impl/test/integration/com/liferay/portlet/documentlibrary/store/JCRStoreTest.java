@@ -14,18 +14,20 @@
 
 package com.liferay.portlet.documentlibrary.store;
 
+import com.liferay.portal.jcr.JCRFactoryUtil;
 import com.liferay.portal.kernel.test.rule.AggregateTestRule;
 import com.liferay.portal.test.rule.LiferayIntegrationTestRule;
 import com.liferay.portal.test.rule.MainServletTestRule;
 
+import org.junit.AfterClass;
+import org.junit.BeforeClass;
 import org.junit.ClassRule;
 import org.junit.Rule;
 
 /**
- * @author Shuyang Zhou
- * @author Tina Tian
+ * @author Preston Crary
  */
-public class DBStoreTest extends BaseStoreTestCase {
+public class JCRStoreTest extends BaseStoreTestCase {
 
 	@ClassRule
 	@Rule
@@ -33,9 +35,20 @@ public class DBStoreTest extends BaseStoreTestCase {
 		new AggregateTestRule(
 			new LiferayIntegrationTestRule(), MainServletTestRule.INSTANCE);
 
+	@BeforeClass
+	public static void setUpClass() throws Exception {
+		JCRFactoryUtil.prepare();
+		JCRFactoryUtil.initialize();
+	}
+
+	@AfterClass
+	public static void tearDownClass() throws Exception {
+		JCRFactoryUtil.shutdown();
+	}
+
 	@Override
 	protected Store getStore() {
-		return new DBStore();
+		return new JCRStore();
 	}
 
 }

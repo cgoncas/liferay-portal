@@ -22,10 +22,9 @@ import org.junit.ClassRule;
 import org.junit.Rule;
 
 /**
- * @author Shuyang Zhou
- * @author Tina Tian
+ * @author Preston Crary
  */
-public class DBStoreTest extends BaseStoreTestCase {
+public class FileSystemStoreTest extends BaseStoreTestCase {
 
 	@ClassRule
 	@Rule
@@ -35,7 +34,7 @@ public class DBStoreTest extends BaseStoreTestCase {
 
 	@Override
 	protected Store getStore() {
-		return new DBStore();
+		return new FileSystemStore();
 	}
 
 }
