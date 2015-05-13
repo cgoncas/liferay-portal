@@ -963,10 +963,9 @@
 			<bean class="com.liferay.portlet.dynamicdatamapping.io.DDMFormValuesJSONSerializerImpl" />
 		</property>
 	</bean>
+	<bean id="com.liferay.portlet.dynamicdatamapping.io.DDMFormXSDDeserializer" class="com.liferay.portlet.dynamicdatamapping.io.DDMFormXSDDeserializerImpl" />
 	<bean id="com.liferay.portlet.dynamicdatamapping.io.DDMFormXSDDeserializerUtil" class="com.liferay.portlet.dynamicdatamapping.io.DDMFormXSDDeserializerUtil">
-		<property name="DDMFormXSDDeserializer">
-			<bean class="com.liferay.portlet.dynamicdatamapping.io.DDMFormXSDDeserializerImpl" />
-		</property>
+		<property name="DDMFormXSDDeserializer" ref="com.liferay.portlet.dynamicdatamapping.io.DDMFormXSDDeserializer" />
 	</bean>
 	<bean id="com.liferay.portlet.dynamicdatamapping.registry.DDMFormFieldTypeRegistryUtil" class="com.liferay.portlet.dynamicdatamapping.registry.DDMFormFieldTypeRegistryUtil">
 		<property name="DDMFormFieldTypeRegistry">
@@ -1064,10 +1063,9 @@
 			<bean class="com.liferay.portlet.dynamicdatamapping.util.DDMTemplateHelperImpl" />
 		</property>
 	</bean>
+	<bean id="com.liferay.portlet.dynamicdatamapping.util.DDM" class="com.liferay.portlet.dynamicdatamapping.util.DDMImpl" />
 	<bean id="com.liferay.portlet.dynamicdatamapping.util.DDMUtil" class="com.liferay.portlet.dynamicdatamapping.util.DDMUtil">
-		<property name="DDM">
-			<bean class="com.liferay.portlet.dynamicdatamapping.util.DDMImpl" />
-		</property>
+		<property name="DDM" ref="com.liferay.portlet.dynamicdatamapping.util.DDM" />
 	</bean>
 	<bean id="com.liferay.portlet.dynamicdatamapping.util.DDMXML" class="com.liferay.portlet.dynamicdatamapping.util.DDMXMLImpl">
 		<property name="XMLSchema">
