@@ -12,9 +12,10 @@
  * details.
  */
 
-package com.liferay.document.library.events;
+package com.liferay.document.library.events.test;
 
 import com.liferay.arquillian.extension.junit.bridge.junit.Arquillian;
+import com.liferay.document.library.events.StartupAction;
 import com.liferay.portal.kernel.events.SimpleAction;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.repository.model.FileEntry;
