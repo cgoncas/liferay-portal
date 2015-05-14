@@ -14,13 +14,25 @@
 
 package com.liferay.wiki.translator;
 
+import com.liferay.portal.kernel.test.rule.AggregateTestRule;
+import com.liferay.portal.kernel.test.rule.CodeCoverageAssertor;
+import com.liferay.portal.test.rule.AspectJNewEnvTestRule;
+
 import org.junit.Assert;
+import org.junit.ClassRule;
+import org.junit.Rule;
 import org.junit.Test;
 
 /**
  * @author Jorge Ferrer
  */
 public class ClassicToCreoleTranslatorTest {
+
+
+	@ClassRule
+	@Rule
+	public static final CodeCoverageAssertor aggregateTestRule =
+		CodeCoverageAssertor.INSTANCE;
 
 	public ClassicToCreoleTranslatorTest() {
 		_classicToCreoleTranslator = new ClassicToCreoleTranslator();
