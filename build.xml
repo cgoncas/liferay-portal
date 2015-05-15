@@ -70,18 +70,6 @@
 		<antcall target="deploy" />
 	</target>
 
-	<target name="build-registry-api" depends="setup-sdk">
-		<ant-execute
-			ant.dir="${project.dir}/modules"
-			ant.target="clean"
-		/>
-
-		<ant-execute
-			ant.dir="${project.dir}/modules/core/registry-api"
-			ant.target="compile"
-		/>
-	</target>
-
 	<target name="check-sdk-uptodate">
 		<uptodate property="sdk.uptodate">
 			<mapper to="${project.dir}/tools/sdk" type="merge" />
@@ -109,7 +97,16 @@
 
 			<ant dir="sql" target="clean" inheritAll="false" />
 
-			<delete dir="tools/sdk" />
+			<sequential>
+				<delete dir="tools/sdk" />
+
+				<antcall target="setup-sdk" />
+
+				<ant-execute
+					ant.dir="${project.dir}/modules"
+					ant.target="clean"
+				/>
+			</sequential>
 
 			<delete dir="${doc.dir}" />
 
@@ -139,30 +136,9 @@
 			<delete dir="test-results" />
 
 			<if>
-				<equals arg1="${app.server.type}" arg2="resin" />
+				<available file="support-${app.server.type}" />
 				<then>
-					<ant dir="support-resin" target="clean" inheritAll="false" />
-				</then>
-			</if>
-
-			<if>
-				<equals arg1="${app.server.type}" arg2="tomcat" />
-				<then>
-					<delete failonerror="false">
-						<fileset
-							dir="${app.server.dir}/conf/Catalina/localhost"
-							includes="*-hook.xml,*-portlet.xml"
-						/>
-					</delete>
-
-					<ant dir="support-tomcat" target="clean" inheritAll="false" />
-				</then>
-			</if>
-
-			<if>
-				<equals arg1="${app.server.type}" arg2="websphere" />
-				<then>
-					<ant dir="support-websphere" target="clean" inheritAll="false" />
+					<ant dir="support-${app.server.type}" target="clean" inheritAll="false" />
 				</then>
 			</if>
 
@@ -235,8 +211,13 @@
 		<antcall target="print-current-time" />
 	</target>
 
-	<target name="compile" depends="build-registry-api">
+	<target name="compile" depends="setup-sdk">
 		<delete file="javac.output.txt" />
+
+		<ant-execute
+			ant.dir="${project.dir}/modules/core/registry-api"
+			ant.target="compile"
+		/>
 
 		<ant dir="portal-service" target="compile" inheritAll="false" />
 
