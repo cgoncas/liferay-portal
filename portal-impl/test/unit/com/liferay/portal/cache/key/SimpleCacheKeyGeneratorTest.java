@@ -14,12 +14,14 @@
 
 package com.liferay.portal.cache.key;
 
+import org.junit.Before;
+
 /**
  * @author Shuyang Zhou
  */
 public class SimpleCacheKeyGeneratorTest extends BaseCacheKeyGeneratorTestCase {
 
-	@Override
+	@Before
 	public void setUp() throws Exception {
 		cacheKeyGenerator = new SimpleCacheKeyGenerator();
 	}

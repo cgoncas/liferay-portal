@@ -323,7 +323,7 @@ public class LayoutFriendlyURLTest {
 		addLayout(group.getGroupId(), false, friendlyURLMap);
 	}
 
-	@Test
+	@Test(expected = LayoutFriendlyURLsException.class)
 	public void testSameFriendlyURLDifferentLocaleDifferentLayout()
 		throws Exception {
 
@@ -339,13 +339,7 @@ public class LayoutFriendlyURLTest {
 		friendlyURLMap.put(LocaleUtil.SPAIN, "/home");
 		friendlyURLMap.put(LocaleUtil.US, "/welcome");
 
-		try {
-			addLayout(_group.getGroupId(), false, friendlyURLMap);
-
-			Assert.fail();
-		}
-		catch (LayoutFriendlyURLsException lfurle) {
-		}
+		addLayout(_group.getGroupId(), false, friendlyURLMap);
 	}
 
 	@Test
@@ -373,7 +367,7 @@ public class LayoutFriendlyURLTest {
 		addLayout(_group.getGroupId(), false, friendlyURLMap);
 	}
 
-	@Test
+	@Test(expected = LayoutFriendlyURLsException.class)
 	public void testSameFriendlyURLSameLocaleDifferentLayout()
 		throws Exception {
 
@@ -389,13 +383,7 @@ public class LayoutFriendlyURLTest {
 		friendlyURLMap.put(LocaleUtil.SPAIN, "/casa");
 		friendlyURLMap.put(LocaleUtil.US, "/house");
 
-		try {
-			addLayout(_group.getGroupId(), false, friendlyURLMap);
-
-			Assert.fail();
-		}
-		catch (LayoutFriendlyURLsException lfurle) {
-		}
+		addLayout(_group.getGroupId(), false, friendlyURLMap);
 	}
 
 	@Test

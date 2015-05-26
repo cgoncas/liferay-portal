@@ -23,14 +23,13 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
-import junit.framework.TestCase;
-
+import org.junit.Assert;
 import org.junit.Test;
 
 /**
  * @author Shuyang Zhou
  */
-public abstract class BaseCacheKeyGeneratorTestCase extends TestCase {
+public abstract class BaseCacheKeyGeneratorTestCase {
 
 	@Test
 	public void testConsistency() {
@@ -39,11 +38,11 @@ public abstract class BaseCacheKeyGeneratorTestCase extends TestCase {
 		Serializable hashCode1 = cacheKeyGenerator.getCacheKey(sb.toString());
 		Serializable hashCode2 = cacheKeyGenerator.getCacheKey(_KEYS);
 
-		assertEquals(hashCode1, hashCode2);
+		Assert.assertEquals(hashCode1, hashCode2);
 
 		Serializable hashCode3 = cacheKeyGenerator.getCacheKey(sb);
 
-		assertEquals(hashCode2, hashCode3);
+		Assert.assertEquals(hashCode2, hashCode3);
 	}
 
 	@Test
@@ -57,7 +56,7 @@ public abstract class BaseCacheKeyGeneratorTestCase extends TestCase {
 
 			String oldValue = map.put(key, value);
 
-			assertNull(
+			Assert.assertNull(
 				oldValue + " and " + value + " generate the same key " + key,
 				oldValue);
 		}
@@ -74,7 +73,7 @@ public abstract class BaseCacheKeyGeneratorTestCase extends TestCase {
 
 			String oldValue = checkMap.put(key, Arrays.toString(values));
 
-			assertNull(
+			Assert.assertNull(
 				oldValue + " and " + value + " generate the same key " + key,
 				oldValue);
 		}

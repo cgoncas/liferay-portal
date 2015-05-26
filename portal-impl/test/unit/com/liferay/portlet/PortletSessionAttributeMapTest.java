@@ -49,23 +49,29 @@ public class PortletSessionAttributeMapTest {
 	}
 
 	@Test
-	public void testConstructor() {
+	public void testConstructorNoScope() {
 		PortletSessionAttributeMap portletSessionAttributeMap =
 			new PortletSessionAttributeMap(_session);
 
 		Assert.assertSame(_session, portletSessionAttributeMap.session);
 		Assert.assertNull(portletSessionAttributeMap.scopePrefix);
+	}
 
-		portletSessionAttributeMap = new PortletSessionAttributeMap(
-			_session, null);
+	@Test
+	public void testConstructorNullScope() {
+		PortletSessionAttributeMap portletSessionAttributeMap =
+			new PortletSessionAttributeMap(_session, null);
 
 		Assert.assertSame(_session, portletSessionAttributeMap.session);
 		Assert.assertNull(portletSessionAttributeMap.scopePrefix);
+	}
 
+	@Test
+	public void testConstructorScope() {
 		String scopePrefix = "scopePrefix";
 
-		portletSessionAttributeMap = new PortletSessionAttributeMap(
-			_session, scopePrefix);
+		PortletSessionAttributeMap portletSessionAttributeMap =
+			new PortletSessionAttributeMap(_session, scopePrefix);
 
 		Assert.assertSame(_session, portletSessionAttributeMap.session);
 		Assert.assertSame(scopePrefix, portletSessionAttributeMap.scopePrefix);
@@ -159,7 +165,7 @@ public class PortletSessionAttributeMapTest {
 	}
 
 	@Test
-	public void testUnsupportedMethods() {
+	public void testUnsupportedMethodsClear() {
 		PortletSessionAttributeMap portletSessionAttributeMap =
 			new PortletSessionAttributeMap(_session);
 
@@ -170,14 +176,29 @@ public class PortletSessionAttributeMapTest {
 		}
 		catch (UnsupportedOperationException uoe) {
 		}
+	}
+
+	@Test
+	public void testUnsupportedMethodsClearEntrySet() {
+		PortletSessionAttributeMap portletSessionAttributeMap =
+			new PortletSessionAttributeMap(_session);
+
+		Set<Map.Entry<String, Object>> entrySet =
+			portletSessionAttributeMap.entrySet();
 
 		try {
-			portletSessionAttributeMap.put(null, null);
+			entrySet.clear();
 
 			Assert.fail();
 		}
 		catch (UnsupportedOperationException uoe) {
 		}
+	}
+
+	@Test
+	public void testUnsupportedMethodsPutAllNull() {
+		PortletSessionAttributeMap portletSessionAttributeMap =
+			new PortletSessionAttributeMap(_session);
 
 		try {
 			portletSessionAttributeMap.putAll(null);
@@ -186,30 +207,29 @@ public class PortletSessionAttributeMapTest {
 		}
 		catch (UnsupportedOperationException uoe) {
 		}
+	}
+
+	@Test
+	public void testUnsupportedMethodsPutNull() {
+		PortletSessionAttributeMap portletSessionAttributeMap =
+			new PortletSessionAttributeMap(_session);
+
+		try {
+			portletSessionAttributeMap.put(null, null);
+
+			Assert.fail();
+		}
+		catch (UnsupportedOperationException uoe) {
+		}
+	}
+
+	@Test
+	public void testUnsupportedMethodsRemoveNull() {
+		PortletSessionAttributeMap portletSessionAttributeMap =
+			new PortletSessionAttributeMap(_session);
 
 		try {
 			portletSessionAttributeMap.remove(null);
-
-			Assert.fail();
-		}
-		catch (UnsupportedOperationException uoe) {
-		}
-
-		Set<String> keySet = portletSessionAttributeMap.keySet();
-
-		try {
-			keySet.clear();
-
-			Assert.fail();
-		}
-		catch (UnsupportedOperationException uoe) {
-		}
-
-		Set<Map.Entry<String, Object>> entrySet =
-			portletSessionAttributeMap.entrySet();
-
-		try {
-			entrySet.clear();
 
 			Assert.fail();
 		}

@@ -17,8 +17,7 @@ package com.liferay.portal.jsonwebservice;
 import com.liferay.portal.kernel.jsonwebservice.JSONWebServiceAction;
 import com.liferay.portal.kernel.util.StringBundler;
 
-import junit.framework.TestCase;
-
+import org.junit.Assert;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
@@ -47,7 +46,7 @@ public class JSONWebServiceSecureTest extends BaseJSONWebServiceTestCase {
 		try {
 			jsonWebServiceAction.invoke();
 
-			TestCase.fail();
+			Assert.fail();
 		}
 		catch (Exception e) {
 		}
@@ -90,7 +89,7 @@ public class JSONWebServiceSecureTest extends BaseJSONWebServiceTestCase {
 		try {
 			jsonWebServiceAction.invoke();
 
-			TestCase.fail();
+			Assert.fail();
 		}
 		catch (Exception e) {
 		}

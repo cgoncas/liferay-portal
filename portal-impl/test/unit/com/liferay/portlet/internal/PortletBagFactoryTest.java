@@ -14,14 +14,11 @@
 
 package com.liferay.portlet.internal;
 
-import com.liferay.portal.kernel.bean.BeanLocatorException;
 import com.liferay.portal.kernel.portlet.bridges.mvc.MVCPortlet;
 import com.liferay.portal.model.impl.PortletImpl;
 import com.liferay.portlet.PortletBagFactory;
 
 import javax.portlet.Portlet;
-
-import junit.framework.TestCase;
 
 import org.junit.Assert;
 import org.junit.Test;
@@ -31,7 +28,7 @@ import org.springframework.mock.web.MockServletContext;
 /**
  * @author Raymond Augé
  */
-public class PortletBagFactoryTest extends TestCase {
+public class PortletBagFactoryTest {
 
 	@Test
 	public void test1() throws Exception {
@@ -43,6 +40,7 @@ public class PortletBagFactoryTest extends TestCase {
 			Assert.fail();
 		}
 		catch (IllegalStateException ise) {
+			Assert.assertEquals("Class loader is null", ise.getMessage());
 		}
 	}
 
@@ -58,6 +56,7 @@ public class PortletBagFactoryTest extends TestCase {
 			Assert.fail();
 		}
 		catch (IllegalStateException ise) {
+			Assert.assertEquals("Servlet context is null", ise.getMessage());
 		}
 	}
 
@@ -74,6 +73,7 @@ public class PortletBagFactoryTest extends TestCase {
 			Assert.fail();
 		}
 		catch (IllegalStateException ise) {
+			Assert.assertEquals("WAR file is null", ise.getMessage());
 		}
 	}
 
@@ -93,8 +93,6 @@ public class PortletBagFactoryTest extends TestCase {
 			portletBagFactory.create(portletImpl);
 
 			Assert.fail();
-		}
-		catch (BeanLocatorException ble) {
 		}
 		catch (NullPointerException npe) {
 		}
@@ -125,8 +123,6 @@ public class PortletBagFactoryTest extends TestCase {
 			portletBagFactory.create(portletImpl);
 
 			Assert.fail();
-		}
-		catch (BeanLocatorException ble) {
 		}
 		catch (NullPointerException npe) {
 		}

@@ -16,13 +16,15 @@ package com.liferay.portal.cache.key;
 
 import com.liferay.portal.kernel.util.Digester;
 
+import org.junit.Before;
+
 /**
  * @author Vilmos Papp
  */
 public class JavaSHA1CacheKeyGeneratorTest
 	extends BaseCacheKeyGeneratorTestCase {
 
-	@Override
+	@Before
 	public void setUp() throws Exception {
 		cacheKeyGenerator = new MessageDigestCacheKeyGenerator(Digester.SHA_1);
 	}
