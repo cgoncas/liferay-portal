@@ -44,6 +44,7 @@ import com.liferay.portal.upgrade.v7_0_0.UpgradePortalPreferences;
 import com.liferay.portal.upgrade.v7_0_0.UpgradePortletDisplayTemplatePreferences;
 import com.liferay.portal.upgrade.v7_0_0.UpgradePortletSettings;
 import com.liferay.portal.upgrade.v7_0_0.UpgradeRatings;
+import com.liferay.portal.upgrade.v7_0_0.UpgradeRelease;
 import com.liferay.portal.upgrade.v7_0_0.UpgradeRepositoryEntry;
 import com.liferay.portal.upgrade.v7_0_0.UpgradeSchema;
 import com.liferay.portal.upgrade.v7_0_0.UpgradeShopping;
@@ -64,44 +65,45 @@ public class UpgradeProcess_7_0_0 extends UpgradeProcess {
 	@Override
 	protected void doUpgrade() throws Exception {
 		upgrade(UpgradeSchema.class);
-		upgrade(UpgradeAddress.class);
-		upgrade(UpgradeAdminPortlets.class);
-		upgrade(UpgradeAsset.class);
-		upgrade(UpgradeBackgroundTask.class);
-		upgrade(UpgradeCalEvent.class);
-		upgrade(UpgradeContact.class);
-		upgrade(UpgradeDLPreferences.class);
-		upgrade(UpgradeDocumentLibrary.class);
-		upgrade(UpgradeDynamicDataLists.class);
-		upgrade(UpgradeDynamicDataMapping.class);
-		upgrade(UpgradeEmailAddress.class);
-		upgrade(UpgradeEmailNotificationPreferences.class);
-		upgrade(UpgradeExpando.class);
-		upgrade(UpgradeGroup.class);
-		upgrade(UpgradeJournal.class);
-		upgrade(UpgradeJournalDisplayPreferences.class);
-		upgrade(UpgradeJournalArticleType.class);
-		upgrade(UpgradeListType.class);
-		upgrade(UpgradeLock.class);
-		upgrade(UpgradeMembershipRequest.class);
-		upgrade(UpgradeMessageBoards.class);
-		upgrade(UpgradeOrganization.class);
-		upgrade(UpgradeOrgLabor.class);
-		upgrade(UpgradePhone.class);
-		upgrade(UpgradePortalPreferences.class);
-		upgrade(UpgradePortletDisplayTemplatePreferences.class);
-		upgrade(UpgradeRatings.class);
-		upgrade(UpgradeRepositoryEntry.class);
-		upgrade(UpgradeShopping.class);
-		upgrade(UpgradeShoppingPreferences.class);
-		upgrade(UpgradeSubscription.class);
-		upgrade(UpgradeWebsite.class);
+//		upgrade(UpgradeAddress.class);
+//		upgrade(UpgradeAdminPortlets.class);
+//		upgrade(UpgradeAsset.class);
+//		upgrade(UpgradeBackgroundTask.class);
+//		upgrade(UpgradeCalEvent.class);
+//		upgrade(UpgradeContact.class);
+//		upgrade(UpgradeDLPreferences.class);
+//		upgrade(UpgradeDocumentLibrary.class);
+//		upgrade(UpgradeDynamicDataLists.class);
+//		upgrade(UpgradeDynamicDataMapping.class);
+//		upgrade(UpgradeEmailAddress.class);
+//		upgrade(UpgradeEmailNotificationPreferences.class);
+//		upgrade(UpgradeExpando.class);
+//		upgrade(UpgradeGroup.class);
+//		upgrade(UpgradeJournal.class);
+//		upgrade(UpgradeJournalDisplayPreferences.class);
+//		upgrade(UpgradeJournalArticleType.class);
+//		upgrade(UpgradeListType.class);
+//		upgrade(UpgradeLock.class);
+//		upgrade(UpgradeMembershipRequest.class);
+//		upgrade(UpgradeMessageBoards.class);
+//		upgrade(UpgradeOrganization.class);
+//		upgrade(UpgradeOrgLabor.class);
+//		upgrade(UpgradePhone.class);
+//		upgrade(UpgradePortalPreferences.class);
+//		upgrade(UpgradePortletDisplayTemplatePreferences.class);
+//		upgrade(UpgradeRatings.class);
+		upgrade(UpgradeRelease.class);
+//		upgrade(UpgradeRepositoryEntry.class);
+//		upgrade(UpgradeShopping.class);
+//		upgrade(UpgradeShoppingPreferences.class);
+//		upgrade(UpgradeSubscription.class);
+//		upgrade(UpgradeWebsite.class);
 
 		// This must be the last upgrade process. Otherwise, upgrades based on
 		// BaseUpgradePortletPreferences will fail because the portlet
 		// preferences will be in the new settings format.
 
-		upgrade(UpgradePortletSettings.class);
+//		upgrade(UpgradePortletSettings.class);
 	}
 
 }

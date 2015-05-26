@@ -18,7 +18,6 @@ import com.liferay.bookmarks.model.BookmarksEntry;
 import com.liferay.bookmarks.model.BookmarksFolder;
 import com.liferay.bookmarks.service.BookmarksEntryLocalServiceUtil;
 import com.liferay.bookmarks.service.BookmarksFolderLocalServiceUtil;
-import com.liferay.bookmarks.upgrade.BookmarksServicesUpgrade;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.util.PortalInstances;
@@ -28,13 +27,12 @@ import java.util.List;
 
 import org.osgi.service.component.annotations.Activate;
 import org.osgi.service.component.annotations.Component;
-import org.osgi.service.component.annotations.Reference;
 
 /**
  * @author Raymond Augé
  * @author Alexander Chow
  */
-@Component(immediate = true, service = BookmarksServiceVerifyProcess.class)
+@Component(service = BookmarksServiceVerifyProcess.class)
 public class BookmarksServiceVerifyProcess extends VerifyProcess {
 
 	@Activate
@@ -43,11 +41,6 @@ public class BookmarksServiceVerifyProcess extends VerifyProcess {
 		updateEntryAssets();
 		updateFolderAssets();
 		verifyTree();
-	}
-
-	@Reference(unbind = "-")
-	protected void setBookmarksServicesUpgrade(
-		BookmarksServicesUpgrade bookmarksServicesUpgrade) {
 	}
 
 	protected void updateEntryAssets() throws Exception {

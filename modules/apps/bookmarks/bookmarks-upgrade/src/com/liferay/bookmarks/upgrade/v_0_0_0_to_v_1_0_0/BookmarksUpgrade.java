@@ -12,55 +12,50 @@
  * details.
  */
 
-package com.liferay.bookmarks.upgrade;
+package com.liferay.bookmarks.upgrade.v_0_0_0_to_v_1_0_0;
 
+import com.liferay.bookmarks.upgrade.v1_0_0.UpgradeAdminPortlets;
 import com.liferay.bookmarks.upgrade.v1_0_0.UpgradeClassNames;
 import com.liferay.bookmarks.upgrade.v1_0_0.UpgradePortletId;
+import com.liferay.bookmarks.upgrade.v1_0_0.UpgradePortletPreferences;
 import com.liferay.bookmarks.upgrade.v1_0_0.UpgradePortletSettings;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.settings.SettingsFactory;
 import com.liferay.portal.kernel.upgrade.UpgradeProcess;
-import com.liferay.portal.service.ReleaseLocalService;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import org.osgi.service.component.annotations.Activate;
+import com.liferay.portal.upgrade.constants.UpgradeConstants;
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;
-
-import org.springframework.context.ApplicationContext;
 
 /**
  * @author Miguel Pastor
  */
-@Component(immediate = true, service = BookmarksServicesUpgrade.class)
-public class BookmarksServicesUpgrade {
+@Component(
+	immediate = true,
+	property = {
+		UpgradeConstants.FROM + "=0.0.0",
+		UpgradeConstants.TO + "=1.0.0",
+		UpgradeConstants.APPLICATION_NAME + "=bookmarks"
+	},
+	service = UpgradeProcess.class)
+public class BookmarksUpgrade extends UpgradeProcess {
 
-	@Reference(
-		target =
-			"(org.springframework.context.service.name=" +
-				"com.liferay.bookmarks.service)",
-		unbind = "-"
-	)
-	protected void setApplicationContext(
-		ApplicationContext applicationContext) {
+	public static final int BUILD_NUMBER = 1;
+
+	@Override
+	public int getThreshold() {
+		return BUILD_NUMBER;
 	}
 
-	@Reference(unbind = "-")
-	protected void setReleaseLocalService(
-		ReleaseLocalService releaseLocalService) {
-
-		_releaseLocalService = releaseLocalService;
+	@Override
+	protected void doUpgrade() throws PortalException {
+		System.out.println("Upgrade from 0.0.0 to 1.0.0");
 	}
 
-	@Reference(unbind = "-")
-	protected void setSettingsFactory(SettingsFactory settingsFactory) {
-		_settingsFactory = settingsFactory;
-	}
-
-	@Activate
-	protected void upgrade() throws PortalException {
+	protected List<UpgradeProcess> getUpgradeProcesses() {
 		List<UpgradeProcess> upgradeProcesses = new ArrayList<>();
 
 		upgradeProcesses.add(new UpgradePortletId());
@@ -68,11 +63,17 @@ public class BookmarksServicesUpgrade {
 		upgradeProcesses.add(new UpgradeClassNames());
 		upgradeProcesses.add(new UpgradePortletSettings(_settingsFactory));
 
-		_releaseLocalService.updateRelease(
-			"com.liferay.bookmarks.service", upgradeProcesses, 1, 1, false);
+		upgradeProcesses.add(new UpgradeAdminPortlets());
+		upgradeProcesses.add(new UpgradePortletPreferences());
+
+		return upgradeProcesses;
 	}
 
-	private ReleaseLocalService _releaseLocalService;
+	@Reference(unbind = "-")
+	protected void setSettingsFactory(SettingsFactory settingsFactory) {
+		_settingsFactory = settingsFactory;
+	}
+
 	private SettingsFactory _settingsFactory;
 
 }

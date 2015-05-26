@@ -14,8 +14,6 @@
 
 package com.liferay.bookmarks.upgrade.v1_0_0;
 
-import com.liferay.bookmarks.model.BookmarksEntry;
-import com.liferay.bookmarks.model.BookmarksFolder;
 import com.liferay.portal.kernel.upgrade.UpgradeProcess;
 import com.liferay.portal.upgrade.util.classname.ClassNameDependency;
 import com.liferay.portal.upgrade.util.classname.ClassNameDependencyUpgrader;
@@ -44,13 +42,15 @@ public class UpgradeClassNames extends UpgradeProcess {
 
 		classNameDependencyUpgrader = new ClassNameDependencyUpgrader(
 			"com.liferay.portlet.bookmarks.model.BookmarksEntry",
-			BookmarksEntry.class.getName(), classNameDependencies);
+			"com.liferay.bookmarks.model.BookmarksEntry",
+			classNameDependencies);
 
 		classNameDependencyUpgrader.upgrade();
 
 		classNameDependencyUpgrader = new ClassNameDependencyUpgrader(
 			"com.liferay.portlet.bookmarks.model.BookmarksFolder",
-			BookmarksFolder.class.getName(), classNameDependencies );
+			"com.liferay.bookmarks.model.BookmarksFolder",
+			classNameDependencies);
 
 		classNameDependencyUpgrader.upgrade();
 	}

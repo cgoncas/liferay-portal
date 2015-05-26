@@ -16,6 +16,7 @@ package com.liferay.portal.kernel.util;
 
 import com.liferay.portal.kernel.bean.BeanPropertiesUtil;
 import com.liferay.portal.kernel.io.unsync.UnsyncBufferedReader;
+import com.liferay.portal.kernel.upgrade.UpgradeProcess;
 
 import java.io.File;
 import java.io.FileReader;
@@ -612,4 +613,15 @@ public class ListUtil {
 			(Class<? extends List<?>>)unmodifiableList.getClass();
 	}
 
+	public static <F, T> List<T> toList(
+		List<F> origin, Function<F, T> function) {
+
+		final List<T> list = new ArrayList<>(origin.size());
+
+		for (F f : origin) {
+			list.add(function.apply(f));
+		}
+
+		return list;
+	}
 }

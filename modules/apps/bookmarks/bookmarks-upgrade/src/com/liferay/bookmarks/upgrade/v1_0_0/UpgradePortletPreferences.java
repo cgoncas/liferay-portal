@@ -12,9 +12,8 @@
  * details.
  */
 
-package com.liferay.bookmarks.web.upgrade.v1_0_0;
+package com.liferay.bookmarks.upgrade.v1_0_0;
 
-import com.liferay.bookmarks.constants.BookmarksPortletKeys;
 import com.liferay.portal.kernel.upgrade.BaseUpgradePortletPreferences;
 import com.liferay.portlet.PortletPreferencesFactoryUtil;
 
@@ -27,7 +26,7 @@ public class UpgradePortletPreferences extends BaseUpgradePortletPreferences {
 
 	@Override
 	protected String[] getPortletIds() {
-		return new String[] {BookmarksPortletKeys.BOOKMARKS};
+		return new String[] {"28_WAR_bookmarksweb"};
 	}
 
 	@Override

@@ -12,21 +12,16 @@
  * details.
  */
 
-package com.liferay.bookmarks.web.upgrade.v1_0_0;
+package com.liferay.bookmarks.release;
 
-import com.liferay.bookmarks.constants.BookmarksPortletKeys;
-import com.liferay.portal.kernel.upgrade.BaseUpgradeAdminPortlets;
+import aQute.bnd.annotation.headers.RequireCapability;
 
 /**
  * @author Miguel Pastor
  */
-public class UpgradeAdminPortlets extends BaseUpgradeAdminPortlets {
-
-	@Override
-	protected void doUpgrade() throws Exception {
-		updateAccessInControlPanelPermission(
-			BookmarksPortletKeys.BOOKMARKS,
-			BookmarksPortletKeys.BOOKMARKS_ADMIN);
-	}
-
+@RequireCapability(
+	filter = "(&(schema.provider=bookmarks)(version=1.2.0))",
+	ns ="schema.provider"
+)
+public interface ReleaseRequirements {
 }

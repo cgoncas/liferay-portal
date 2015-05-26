@@ -178,11 +178,14 @@ public abstract class UpgradeProcess extends BaseDBProcess {
 		}
 	}
 
-	public void upgrade(Class<?> upgradeProcessClass) throws UpgradeException {
+	public void upgrade(
+		Class<? extends UpgradeProcess> upgradeProcessClass)
+		throws UpgradeException {
+
 		UpgradeProcess upgradeProcess = null;
 
 		try {
-			upgradeProcess = (UpgradeProcess)upgradeProcessClass.newInstance();
+			upgradeProcess = upgradeProcessClass.newInstance();
 		}
 		catch (Exception e) {
 			throw new UpgradeException(e);
