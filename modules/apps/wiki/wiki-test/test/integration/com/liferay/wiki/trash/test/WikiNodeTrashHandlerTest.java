@@ -103,25 +103,29 @@ public class WikiNodeTrashHandlerTest extends BaseTrashHandlerTestCase {
 	@Ignore()
 	@Override
 	@Test
-	public void testTrashIsRestorableBaseModelWithParent1() throws Exception {
+	public void testTrashIsRestorableBaseModelWithDeleteParent()
+		throws Exception {
 	}
 
 	@Ignore()
 	@Override
 	@Test
-	public void testTrashIsRestorableBaseModelWithParent2() throws Exception {
+	public void testTrashIsRestorableBaseModelWithMoveParentToTrash()
+		throws Exception {
 	}
 
 	@Ignore()
 	@Override
 	@Test
-	public void testTrashIsRestorableBaseModelWithParent3() throws Exception {
+	public void testTrashIsRestorableBaseModelWithMoveParentToTrashAndDeleteIt()
+		throws Exception {
 	}
 
 	@Ignore()
 	@Override
 	@Test
-	public void testTrashIsRestorableBaseModelWithParent4() throws Exception {
+	public void testTrashIsRestorableBaseModelWithoutMoveParentToTrash()
+		throws Exception {
 	}
 
 	@Ignore()
