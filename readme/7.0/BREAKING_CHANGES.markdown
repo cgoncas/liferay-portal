@@ -1647,3 +1647,77 @@ The logic inside the `addFileEntry` method was moved, out from
 core repository implementations from additional (optional) functionality.
 
 ---------------------------------------
+
+### Indexers called from Document Library no longer receive a DLFileEntry, but a FileEntry 
+- **Date:** 2015-May-20
+- **JIRA Ticket:** LPS-55613
+
+#### What changed?
+
+Indexers that previously received a DLFileEntry object (for example in the addRelatedEntryFields() method) will no longer receive a DLFileEntry but a FileEntry.
+
+#### Who is affected?
+
+This affects anyone who implements an Indexer handling DLFileEntry objects.
+
+#### How should I update my code?
+
+You should try to use methods in FileEntry or exported repository capabilities to obtain the value you were using. If no capability exist for your use case you can resort to fileEntry.getModel() and cast the result to a DLFileEntry, but this breaks all encapsulation and may result in future failures or compatibility problems.
+
+Example of old code:
+
+```
+	@Override
+	public void addRelatedEntryFields(Document document, Object obj)
+		throws Exception {
+		
+        DLFileEntry dlFileEntry = (DLFileEntry)obj;
+        
+        long fileEntryId = dlFileEntry.getFileEntryId();
+```
+
+should be replaced by:
+
+```
+	@Override
+	public void addRelatedEntryFields(Document document, Object obj)
+		throws Exception {
+		
+        FileEntry fileEntry = (FileEntry)obj;
+        
+        long fileEntryId = fileEntry.getFileEntryId();
+```
+
+#### Why was this change made?
+
+This change was made to enhance the Repository API and make decoupling from Document Library easier when modularizing the portal.
+
+---------------------------------------
+
+### Removed permissionClassName, permissionClassPK and permissionOwner parameters from MBMessage API
+- **Date:** 2015-May-27
+- **JIRA Ticket:** LPS-55877
+
+#### What changed?
+
+The parameters `permissionClassName`, `permissionClassPK` and
+`permissionOwner` have been removed from Message Boards API and
+Discussion taglib.
+
+#### Who is affected?
+
+Any code that invokes the affected methods (locally or remotely) as
+well as any view that uses the Discusion taglib.
+
+#### How should I update my code?
+
+It suffices to remove the parameters from the method calls (for
+consumers of the API) or the attributes in taglib invocations.
+
+#### Why was this change made?
+
+Those API methods were exposed in the remote services, allowing any
+cosumer to bypass the permission system by providing customized
+className, classPK or ownerId.
+
+---------------------------------------
