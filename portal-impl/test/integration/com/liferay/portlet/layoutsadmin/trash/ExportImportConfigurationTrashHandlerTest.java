@@ -57,6 +57,12 @@ public class ExportImportConfigurationTrashHandlerTest
 	@Ignore()
 	@Override
 	@Test
+	public void testTrashBaseModelAndParent() throws Exception {
+	}
+
+	@Ignore()
+	@Override
+	@Test
 	public void testTrashBaseModelAndParentAndDeleteGroupTrashEntries()
 		throws Exception {
 	}
@@ -71,6 +77,12 @@ public class ExportImportConfigurationTrashHandlerTest
 	@Override
 	@Test
 	public void testTrashBaseModelAndParentAndRestoreModel() throws Exception {
+	}
+
+	@Ignore()
+	@Override
+	@Test
+	public void testTrashBaseModelAndParentIsNotVisible() throws Exception {
 	}
 
 	@Ignore()
