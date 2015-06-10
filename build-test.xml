@@ -1410,6 +1410,9 @@ org.apache.catalina.startup.ClassLoaderFactory.level=INFO]]>
 
 			<local name="portal.not.started" />
 
+
+			<echo>CHECKING @{app.server.bin.dir} ${app.server.tcat.admin.bin.dir} </echo>
+
 			<if>
 				<equals arg1="@{app.server.bin.dir}" arg2="${app.server.tcat.admin.bin.dir}" />
 				<then>
@@ -1435,6 +1438,10 @@ org.apache.catalina.startup.ClassLoaderFactory.level=INFO]]>
 			<if>
 				<isset property="portal.not.started" />
 				<then>
+					<echo>NOT STARTED</echo>
+
+
+
 					<if>
 						<not>
 							<equals arg1="@{testable.portal.started.marker.file}" arg2="" />
