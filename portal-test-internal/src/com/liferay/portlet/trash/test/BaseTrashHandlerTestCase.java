@@ -281,6 +281,8 @@ public abstract class BaseTrashHandlerTestCase {
 
 	@Test
 	public void testDeleteTrashVersions() throws Exception {
+		Assume.assumeTrue(this instanceof WhenHasParent);
+
 		ServiceContext serviceContext =
 			ServiceContextTestUtil.getServiceContext(group.getGroupId());
 
@@ -942,6 +944,8 @@ public abstract class BaseTrashHandlerTestCase {
 	public void testTrashBaseModelAndDeleteWithParentIsNotRestorable()
 		throws Exception {
 
+		Assume.assumeTrue(this instanceof WhenHasParent);
+
 		ServiceContext serviceContext =
 			ServiceContextTestUtil.getServiceContext(group.getGroupId());
 
@@ -965,6 +969,8 @@ public abstract class BaseTrashHandlerTestCase {
 
 	@Test
 	public void testTrashBaseModelAndParent() throws Exception {
+		Assume.assumeTrue(this instanceof WhenHasParent);
+
 		ServiceContext serviceContext =
 			ServiceContextTestUtil.getServiceContext(group.getGroupId());
 
@@ -1013,6 +1019,8 @@ public abstract class BaseTrashHandlerTestCase {
 	public void testTrashBaseModelAndParentAndDeleteGroupTrashEntries()
 		throws Exception {
 
+		Assume.assumeTrue(this instanceof WhenHasParent);
+
 		ServiceContext serviceContext =
 			ServiceContextTestUtil.getServiceContext(group.getGroupId());
 
@@ -1040,6 +1048,7 @@ public abstract class BaseTrashHandlerTestCase {
 
 	@Test
 	public void testTrashBaseModelAndParentAndDeleteParent() throws Exception {
+		Assume.assumeTrue(this instanceof WhenHasParent);
 		Assume.assumeTrue(this instanceof WhenIsBaseModelMoveableFromTrash);
 
 		ServiceContext serviceContext =
@@ -1086,6 +1095,7 @@ public abstract class BaseTrashHandlerTestCase {
 	public void testTrashBaseModelAndParentAndDeleteParentNoMoveableFromTrash()
 		throws Exception {
 
+		Assume.assumeTrue(this instanceof WhenHasParent);
 		Assume.assumeFalse(this instanceof WhenIsBaseModelMoveableFromTrash);
 
 		ServiceContext serviceContext =
@@ -1129,6 +1139,7 @@ public abstract class BaseTrashHandlerTestCase {
 
 	@Test
 	public void testTrashBaseModelAndParentAndRestoreModel() throws Exception {
+		Assume.assumeTrue(this instanceof WhenHasParent);
 		Assume.assumeTrue(this instanceof WhenIsBaseModelMoveableFromTrash);
 
 		ServiceContext serviceContext =
@@ -1163,6 +1174,7 @@ public abstract class BaseTrashHandlerTestCase {
 	public void testTrashBaseModelAndParentAndRestoreModelIsVisible()
 		throws Exception {
 
+		Assume.assumeTrue(this instanceof WhenHasParent);
 		Assume.assumeTrue(this instanceof WhenIsAssetableBaseModel);
 		Assume.assumeTrue(this instanceof WhenIsBaseModelMoveableFromTrash);
 
@@ -1188,6 +1200,8 @@ public abstract class BaseTrashHandlerTestCase {
 	public void testTrashBaseModelAndParentIsInContainerBaseModel()
 		throws Exception {
 
+		Assume.assumeTrue(this instanceof WhenHasParent);
+
 		ServiceContext serviceContext =
 			ServiceContextTestUtil.getServiceContext(group.getGroupId());
 
@@ -1205,6 +1219,7 @@ public abstract class BaseTrashHandlerTestCase {
 
 	@Test
 	public void testTrashBaseModelAndParentIsNotVisible() throws Exception {
+		Assume.assumeTrue(this instanceof WhenHasParent);
 		Assume.assumeTrue(this instanceof WhenIsAssetableBaseModel);
 
 		ServiceContext serviceContext =
@@ -1225,6 +1240,8 @@ public abstract class BaseTrashHandlerTestCase {
 	@Test
 	public void testTrashBaseModelAndTrashParentAndDeleteParentIsNotRestorable()
 		throws Exception {
+
+		Assume.assumeTrue(this instanceof WhenHasParent);
 
 		ServiceContext serviceContext =
 			ServiceContextTestUtil.getServiceContext(group.getGroupId());
@@ -1257,6 +1274,8 @@ public abstract class BaseTrashHandlerTestCase {
 	@Test
 	public void testTrashBaseModelAndTrashParentIsNotRestorable()
 		throws Exception {
+
+		Assume.assumeTrue(this instanceof WhenHasParent);
 
 		ServiceContext serviceContext =
 			ServiceContextTestUtil.getServiceContext(group.getGroupId());
@@ -1355,6 +1374,8 @@ public abstract class BaseTrashHandlerTestCase {
 
 	@Test
 	public void testTrashGrandparentBaseModel() throws Exception {
+		Assume.assumeTrue(this instanceof WhenHasParent);
+
 		ServiceContext serviceContext =
 			ServiceContextTestUtil.getServiceContext(group.getGroupId());
 
@@ -1399,6 +1420,8 @@ public abstract class BaseTrashHandlerTestCase {
 	public void testTrashGrandparentBaseModelAndRestoreParentModel()
 		throws Exception {
 
+		Assume.assumeTrue(this instanceof WhenHasParent);
+
 		ServiceContext serviceContext =
 			ServiceContextTestUtil.getServiceContext(group.getGroupId());
 
@@ -1432,6 +1455,8 @@ public abstract class BaseTrashHandlerTestCase {
 	public void testTrashGrandparentBaseModelAndRestoreParentModelIsNotInTrashContainer()
 		throws Exception {
 
+		Assume.assumeTrue(this instanceof WhenHasParent);
+
 		ServiceContext serviceContext =
 			ServiceContextTestUtil.getServiceContext(group.getGroupId());
 
@@ -1463,6 +1488,7 @@ public abstract class BaseTrashHandlerTestCase {
 	public void testTrashGrandparentBaseModelAndRestoreParentModelIsVisible()
 		throws Exception {
 
+		Assume.assumeTrue(this instanceof WhenHasParent);
 		Assume.assumeTrue(this instanceof WhenIsAssetableBaseModel);
 
 		ServiceContext serviceContext =
@@ -1495,6 +1521,7 @@ public abstract class BaseTrashHandlerTestCase {
 	public void testTrashGrandparentBaseModelAndRestoreParentModelIsVisibleParent()
 		throws Exception {
 
+		Assume.assumeTrue(this instanceof WhenHasParent);
 		Assume.assumeTrue(this instanceof WhenIsAssetableParentModel);
 
 		ServiceContext serviceContext =
@@ -1525,6 +1552,7 @@ public abstract class BaseTrashHandlerTestCase {
 
 	@Test
 	public void testTrashGrandparentBaseModelIsNotVisible() throws Exception {
+		Assume.assumeTrue(this instanceof WhenHasParent);
 		Assume.assumeTrue(this instanceof WhenIsAssetableBaseModel);
 
 		ServiceContext serviceContext =
@@ -1549,6 +1577,7 @@ public abstract class BaseTrashHandlerTestCase {
 	public void testTrashGrandparentBaseModelIsNotVisibleParent()
 		throws Exception {
 
+		Assume.assumeTrue(this instanceof WhenHasParent);
 		Assume.assumeTrue(this instanceof WhenIsAssetableParentModel);
 
 		ServiceContext serviceContext =
@@ -1589,6 +1618,8 @@ public abstract class BaseTrashHandlerTestCase {
 
 	@Test
 	public void testTrashMyBaseModel() throws Exception {
+		Assume.assumeTrue(this instanceof WhenHasParent);
+
 		ServiceContext serviceContext =
 			ServiceContextTestUtil.getServiceContext(group.getGroupId());
 
@@ -1615,6 +1646,8 @@ public abstract class BaseTrashHandlerTestCase {
 
 	@Test
 	public void testTrashParent() throws Exception {
+		Assume.assumeTrue(this instanceof WhenHasParent);
+
 		ServiceContext serviceContext =
 			ServiceContextTestUtil.getServiceContext(group.getGroupId());
 
@@ -1664,6 +1697,8 @@ public abstract class BaseTrashHandlerTestCase {
 
 	@Test
 	public void testTrashParentAndDeleteGroupTrashEntries() throws Exception {
+		Assume.assumeTrue(this instanceof WhenHasParent);
+
 		ServiceContext serviceContext =
 			ServiceContextTestUtil.getServiceContext(group.getGroupId());
 
@@ -1689,6 +1724,8 @@ public abstract class BaseTrashHandlerTestCase {
 
 	@Test
 	public void testTrashParentAndDeleteParent() throws Exception {
+		Assume.assumeTrue(this instanceof WhenHasParent);
+
 		ServiceContext serviceContext =
 			ServiceContextTestUtil.getServiceContext(group.getGroupId());
 
@@ -1728,6 +1765,7 @@ public abstract class BaseTrashHandlerTestCase {
 
 	@Test
 	public void testTrashParentAndRestoreBaseModelIsVisible() throws Exception {
+		Assume.assumeTrue(this instanceof WhenHasParent);
 		Assume.assumeTrue(this instanceof WhenIsAssetableBaseModel);
 		Assume.assumeTrue(this instanceof WhenIsBaseModelMoveableFromTrash);
 
@@ -1749,6 +1787,7 @@ public abstract class BaseTrashHandlerTestCase {
 
 	@Test
 	public void testTrashParentAndRestoreIndexable() throws Exception {
+		Assume.assumeTrue(this instanceof WhenHasParent);
 		Assume.assumeTrue(this instanceof WhenIsIndexableBaseModel);
 		Assume.assumeTrue(this instanceof WhenIsBaseModelMoveableFromTrash);
 
@@ -1782,6 +1821,7 @@ public abstract class BaseTrashHandlerTestCase {
 
 	@Test
 	public void testTrashParentIndexable() throws Exception {
+		Assume.assumeTrue(this instanceof WhenHasParent);
 		Assume.assumeTrue(this instanceof WhenIsIndexableBaseModel);
 
 		ServiceContext serviceContext =
@@ -1804,6 +1844,7 @@ public abstract class BaseTrashHandlerTestCase {
 
 	@Test
 	public void testTrashParentIsNotVisible() throws Exception {
+		Assume.assumeTrue(this instanceof WhenHasParent);
 		Assume.assumeTrue(this instanceof WhenIsAssetableBaseModel);
 
 		ServiceContext serviceContext =
@@ -1823,6 +1864,8 @@ public abstract class BaseTrashHandlerTestCase {
 	public void testTrashParentWithBaseModelIsInTrashContainer()
 		throws Exception {
 
+		Assume.assumeTrue(this instanceof WhenHasParent);
+
 		ServiceContext serviceContext =
 			ServiceContextTestUtil.getServiceContext(group.getGroupId());
 
@@ -1838,6 +1881,7 @@ public abstract class BaseTrashHandlerTestCase {
 
 	@Test
 	public void testTrashParentWithBaseModelIsIsNotVisible() throws Exception {
+		Assume.assumeTrue(this instanceof WhenHasParent);
 		Assume.assumeTrue(this instanceof WhenIsAssetableBaseModel);
 
 		ServiceContext serviceContext =
@@ -1856,6 +1900,7 @@ public abstract class BaseTrashHandlerTestCase {
 	@Test
 	public void testTrashRecentBaseModel() throws Exception {
 		Assume.assumeTrue(this instanceof WhenHasRecentBaseModelCount);
+		Assume.assumeTrue(this instanceof WhenHasParent);
 
 		ServiceContext serviceContext =
 			ServiceContextTestUtil.getServiceContext(group.getGroupId());
@@ -2152,6 +2197,8 @@ public abstract class BaseTrashHandlerTestCase {
 
 	@Test
 	public void testTrashVersionParentBaseModel() throws Exception {
+		Assume.assumeTrue(this instanceof WhenHasParent);
+
 		ServiceContext serviceContext =
 			ServiceContextTestUtil.getServiceContext(group.getGroupId());
 
@@ -2200,6 +2247,7 @@ public abstract class BaseTrashHandlerTestCase {
 	public void testTrashVersionParentBaseModelAndCustomRestore()
 		throws Exception {
 
+		Assume.assumeTrue(this instanceof WhenHasParent);
 		Assume.assumeFalse(this instanceof WhenIsBaseModelMoveableFromTrash);
 
 		ServiceContext serviceContext =
@@ -2258,6 +2306,7 @@ public abstract class BaseTrashHandlerTestCase {
 
 	@Test
 	public void testTrashVersionParentBaseModelAndRestore() throws Exception {
+		Assume.assumeTrue(this instanceof WhenHasParent);
 		Assume.assumeTrue(this instanceof WhenIsBaseModelMoveableFromTrash);
 
 		ServiceContext serviceContext =
@@ -2318,6 +2367,7 @@ public abstract class BaseTrashHandlerTestCase {
 	public void testTrashVersionParentBaseModelAndRestoreIsNotInTrashContainer()
 		throws Exception {
 
+		Assume.assumeTrue(this instanceof WhenHasParent);
 		Assume.assumeTrue(this instanceof WhenIsBaseModelMoveableFromTrash);
 
 		WhenIsBaseModelMoveableFromTrash whenIsBaseModelMoveableFromTrash =
@@ -2371,6 +2421,7 @@ public abstract class BaseTrashHandlerTestCase {
 	public void testTrashVersionParentBaseModelAndRestoreIsVisible()
 		throws Exception {
 
+		Assume.assumeTrue(this instanceof WhenHasParent);
 		Assume.assumeTrue(this instanceof WhenIsAssetableBaseModel);
 		Assume.assumeTrue(this instanceof WhenIsBaseModelMoveableFromTrash);
 
@@ -2471,6 +2522,7 @@ public abstract class BaseTrashHandlerTestCase {
 
 	@Test
 	public void testTrashVersionParentBaseModelIsNotVisible() throws Exception {
+		Assume.assumeTrue(this instanceof WhenHasParent);
 		Assume.assumeTrue(this instanceof WhenIsAssetableBaseModel);
 
 		ServiceContext serviceContext =
