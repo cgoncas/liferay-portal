@@ -142,6 +142,8 @@ public abstract class BaseTrashHandlerTestCase {
 
 	@Test
 	public void testAddBaseModelWithDraftStatus() throws Exception {
+		Assume.assumeTrue(this instanceof WhenHasDraftStatus);
+
 		ServiceContext serviceContext =
 			ServiceContextTestUtil.getServiceContext(group.getGroupId());
 
@@ -164,6 +166,7 @@ public abstract class BaseTrashHandlerTestCase {
 
 	@Test
 	public void testAddBaseModelWithDraftStatusIndexable() throws Exception {
+		Assume.assumeTrue(this instanceof WhenHasDraftStatus);
 		Assume.assumeTrue(this instanceof WhenIsIndexableBaseModel);
 
 		ServiceContext serviceContext =
@@ -190,6 +193,7 @@ public abstract class BaseTrashHandlerTestCase {
 
 	@Test
 	public void testAddBaseModelWithDraftStatusIsNotVisible() throws Exception {
+		Assume.assumeTrue(this instanceof WhenHasDraftStatus);
 		Assume.assumeTrue(this instanceof WhenIsAssetableBaseModel);
 
 		ServiceContext serviceContext =
@@ -521,6 +525,8 @@ public abstract class BaseTrashHandlerTestCase {
 
 	@Test
 	public void testTrashAndDeleteWithDraftStatus() throws Exception {
+		Assume.assumeTrue(this instanceof WhenHasDraftStatus);
+
 		ServiceContext serviceContext =
 			ServiceContextTestUtil.getServiceContext(group.getGroupId());
 
@@ -550,6 +556,7 @@ public abstract class BaseTrashHandlerTestCase {
 
 	@Test
 	public void testTrashAndDeleteWithDraftStatusIndexable() throws Exception {
+		Assume.assumeTrue(this instanceof WhenHasDraftStatus);
 		Assume.assumeTrue(this instanceof WhenIsIndexableBaseModel);
 
 		ServiceContext serviceContext =
@@ -584,6 +591,7 @@ public abstract class BaseTrashHandlerTestCase {
 
 	@Test
 	public void testTrashAndDeleteWithDraftStatusIsNotFound() throws Exception {
+		Assume.assumeTrue(this instanceof WhenHasDraftStatus);
 		Assume.assumeTrue(this instanceof WhenIsAssetableBaseModel);
 
 		ServiceContext serviceContext =
@@ -771,6 +779,8 @@ public abstract class BaseTrashHandlerTestCase {
 
 	@Test
 	public void testTrashAndRestoreWithDraftStatus() throws Exception {
+		Assume.assumeTrue(this instanceof WhenHasDraftStatus);
+
 		ServiceContext serviceContext =
 			ServiceContextTestUtil.getServiceContext(group.getGroupId());
 
@@ -799,6 +809,7 @@ public abstract class BaseTrashHandlerTestCase {
 
 	@Test
 	public void testTrashAndRestoreWithDraftStatusIndexable() throws Exception {
+		Assume.assumeTrue(this instanceof WhenHasDraftStatus);
 		Assume.assumeTrue(this instanceof WhenIsIndexableBaseModel);
 
 		ServiceContext serviceContext =
@@ -835,6 +846,7 @@ public abstract class BaseTrashHandlerTestCase {
 	public void testTrashAndRestoreWithDraftStatusIsNotVisible()
 		throws Exception {
 
+		Assume.assumeTrue(this instanceof WhenHasDraftStatus);
 		Assume.assumeTrue(this instanceof WhenIsAssetableBaseModel);
 
 		ServiceContext serviceContext =
@@ -861,6 +873,8 @@ public abstract class BaseTrashHandlerTestCase {
 	@Test
 	public void testTrashAndRestoreWithDraftStatusRestoreStatus()
 		throws Exception {
+
+		Assume.assumeTrue(this instanceof WhenHasDraftStatus);
 
 		ServiceContext serviceContext =
 			ServiceContextTestUtil.getServiceContext(group.getGroupId());
@@ -894,6 +908,8 @@ public abstract class BaseTrashHandlerTestCase {
 	@Test
 	public void testTrashAndRestoreWithDraftStatusRestoreUniqueTitle()
 		throws Exception {
+
+		Assume.assumeTrue(this instanceof WhenHasDraftStatus);
 
 		ServiceContext serviceContext =
 			ServiceContextTestUtil.getServiceContext(group.getGroupId());
