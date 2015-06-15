@@ -320,6 +320,12 @@ public class WikiNodeTrashHandlerTest extends BaseTrashHandlerTestCase {
 	@Ignore
 	@Override
 	@Test
+	public void testTrashVersionBaseModelAndDeleteIsNotFound() throws Exception {
+	}
+
+	@Ignore
+	@Override
+	@Test
 	public void testTrashVersionBaseModelAndRestore() throws Exception {
 	}
 
