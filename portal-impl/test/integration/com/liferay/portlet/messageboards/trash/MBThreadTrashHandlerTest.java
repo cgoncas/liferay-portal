@@ -84,6 +84,22 @@ public class MBThreadTrashHandlerTest
 			groupId, 0, calendar.getTime(), WorkflowConstants.STATUS_APPROVED);
 	}
 
+	@Override
+	public BaseModel<?> moveBaseModelFromTrash(
+			ClassedModel classedModel, Group group,
+			ServiceContext serviceContext)
+		throws Exception {
+
+		BaseModel<?> parentBaseModel = getParentBaseModel(
+			group, serviceContext);
+
+		MBThreadServiceUtil.moveThreadFromTrash(
+			(Long)parentBaseModel.getPrimaryKeyObj(),
+			(Long)classedModel.getPrimaryKeyObj());
+
+		return parentBaseModel;
+	}
+
 	@Ignore
 	@Override
 	@Test
@@ -405,22 +421,6 @@ public class MBThreadTrashHandlerTest
 	@Override
 	protected boolean isBaseModelContainerModel() {
 		return false;
-	}
-
-	@Override
-	protected BaseModel<?> moveBaseModelFromTrash(
-			ClassedModel classedModel, Group group,
-			ServiceContext serviceContext)
-		throws Exception {
-
-		BaseModel<?> parentBaseModel = getParentBaseModel(
-			group, serviceContext);
-
-		MBThreadServiceUtil.moveThreadFromTrash(
-			(Long)parentBaseModel.getPrimaryKeyObj(),
-			(Long)classedModel.getPrimaryKeyObj());
-
-		return parentBaseModel;
 	}
 
 	@Override
