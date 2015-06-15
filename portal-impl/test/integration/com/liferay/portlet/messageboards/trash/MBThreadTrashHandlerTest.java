@@ -43,6 +43,7 @@ import com.liferay.portlet.messageboards.util.test.MBTestUtil;
 import com.liferay.portlet.trash.test.BaseTrashHandlerTestCase;
 import com.liferay.portlet.trash.test.WhenHasRecentBaseModelCount;
 import com.liferay.portlet.trash.test.WhenIsAssetableBaseModel;
+import com.liferay.portlet.trash.test.WhenIsBaseModelMoveableFromTrash;
 import com.liferay.portlet.trash.test.WhenIsIndexableBaseModel;
 
 import java.io.InputStream;
@@ -64,7 +65,7 @@ import org.junit.Test;
 public class MBThreadTrashHandlerTest
 	extends BaseTrashHandlerTestCase
 	implements WhenHasRecentBaseModelCount, WhenIsAssetableBaseModel,
-		WhenIsIndexableBaseModel {
+		WhenIsIndexableBaseModel, WhenIsBaseModelMoveableFromTrash {
 
 	@ClassRule
 	@Rule
