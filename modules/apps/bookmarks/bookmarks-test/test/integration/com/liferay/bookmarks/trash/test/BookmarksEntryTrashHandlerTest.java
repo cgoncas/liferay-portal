@@ -38,6 +38,7 @@ import com.liferay.portal.service.ServiceContext;
 import com.liferay.portal.service.test.ServiceTestUtil;
 import com.liferay.portal.test.rule.LiferayIntegrationTestRule;
 import com.liferay.portlet.trash.test.BaseTrashHandlerTestCase;
+import com.liferay.portlet.trash.test.WhenHasParent;
 import com.liferay.portlet.trash.test.WhenHasRecentBaseModelCount;
 import com.liferay.portlet.trash.test.WhenIsAssetableBaseModel;
 import com.liferay.portlet.trash.test.WhenIsAssetableParentModel;
@@ -59,9 +60,9 @@ import org.junit.runner.RunWith;
 @Sync
 public class BookmarksEntryTrashHandlerTest
 	extends BaseTrashHandlerTestCase
-	implements WhenHasRecentBaseModelCount, WhenIsAssetableBaseModel,
-		WhenIsAssetableParentModel, WhenIsBaseModelMoveableFromTrash,
-		WhenIsIndexableBaseModel {
+	implements WhenHasParent, WhenHasRecentBaseModelCount,
+		WhenIsAssetableBaseModel, WhenIsAssetableParentModel,
+		WhenIsBaseModelMoveableFromTrash, WhenIsIndexableBaseModel {
 
 	@ClassRule
 	@Rule

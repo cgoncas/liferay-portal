@@ -41,6 +41,7 @@ import com.liferay.portlet.messageboards.service.MBThreadLocalServiceUtil;
 import com.liferay.portlet.messageboards.service.MBThreadServiceUtil;
 import com.liferay.portlet.messageboards.util.test.MBTestUtil;
 import com.liferay.portlet.trash.test.BaseTrashHandlerTestCase;
+import com.liferay.portlet.trash.test.WhenHasParent;
 import com.liferay.portlet.trash.test.WhenHasRecentBaseModelCount;
 import com.liferay.portlet.trash.test.WhenIsAssetableBaseModel;
 import com.liferay.portlet.trash.test.WhenIsBaseModelMoveableFromTrash;
@@ -64,8 +65,9 @@ import org.junit.Test;
 @Sync
 public class MBThreadTrashHandlerTest
 	extends BaseTrashHandlerTestCase
-	implements WhenHasRecentBaseModelCount, WhenIsAssetableBaseModel,
-	WhenIsBaseModelMoveableFromTrash, WhenIsIndexableBaseModel {
+	implements WhenHasParent, WhenHasRecentBaseModelCount,
+		WhenIsAssetableBaseModel, WhenIsBaseModelMoveableFromTrash,
+		WhenIsIndexableBaseModel {
 
 	@ClassRule
 	@Rule
