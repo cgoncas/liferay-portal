@@ -41,7 +41,6 @@ import com.liferay.portlet.documentlibrary.service.DLFileShortcutLocalServiceUti
 import com.liferay.portlet.documentlibrary.service.DLFolderLocalServiceUtil;
 import com.liferay.portlet.documentlibrary.util.test.DLAppTestUtil;
 import com.liferay.portlet.trash.test.BaseTrashHandlerTestCase;
-import com.liferay.portlet.trash.test.WhenHasDraftStatus;
 import com.liferay.portlet.trash.test.WhenIsAssetableParentModel;
 import com.liferay.portlet.trash.test.WhenIsBaseModelMoveableFromTrash;
 
@@ -58,8 +57,7 @@ import org.junit.Test;
 @Sync
 public class DLFileShortcutTrashHandlerTest
 	extends BaseTrashHandlerTestCase
-	implements WhenHasDraftStatus, WhenIsAssetableParentModel,
-		WhenIsBaseModelMoveableFromTrash {
+	implements WhenIsAssetableParentModel, WhenIsBaseModelMoveableFromTrash {
 
 	@ClassRule
 	@Rule
@@ -82,57 +80,6 @@ public class DLFileShortcutTrashHandlerTest
 			(Long)parentBaseModel.getPrimaryKeyObj(), serviceContext);
 
 		return parentBaseModel;
-	}
-
-	@Ignore
-	@Override
-	@Test
-	public void testTrashAndDeleteWithDraftStatus() throws Exception {
-	}
-
-	@Ignore
-	@Override
-	@Test
-	public void testTrashAndDeleteWithDraftStatusIndexable() throws Exception {
-	}
-
-	@Ignore
-	@Override
-	@Test
-	public void testTrashAndDeleteWithDraftStatusIsNotFound() throws Exception {
-	}
-
-	@Ignore
-	@Override
-	@Test
-	public void testTrashAndRestoreWithDraftStatus() throws Exception {
-	}
-
-	@Ignore
-	@Override
-	@Test
-	public void testTrashAndRestoreWithDraftStatusIndexable() throws Exception {
-	}
-
-	@Ignore
-	@Override
-	@Test
-	public void testTrashAndRestoreWithDraftStatusIsNotVisible()
-		throws Exception {
-	}
-
-	@Ignore
-	@Override
-	@Test
-	public void testTrashAndRestoreWithDraftStatusRestoreStatus()
-		throws Exception {
-	}
-
-	@Ignore
-	@Override
-	@Test
-	public void testTrashAndRestoreWithDraftStatusRestoreUniqueTitle()
-		throws Exception {
 	}
 
 	@Ignore

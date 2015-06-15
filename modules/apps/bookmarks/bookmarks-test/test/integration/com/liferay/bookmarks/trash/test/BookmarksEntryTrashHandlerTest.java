@@ -38,7 +38,6 @@ import com.liferay.portal.service.ServiceContext;
 import com.liferay.portal.service.test.ServiceTestUtil;
 import com.liferay.portal.test.rule.LiferayIntegrationTestRule;
 import com.liferay.portlet.trash.test.BaseTrashHandlerTestCase;
-import com.liferay.portlet.trash.test.WhenHasDraftStatus;
 import com.liferay.portlet.trash.test.WhenHasRecentBaseModelCount;
 import com.liferay.portlet.trash.test.WhenIsAssetableBaseModel;
 import com.liferay.portlet.trash.test.WhenIsAssetableParentModel;
@@ -60,9 +59,9 @@ import org.junit.runner.RunWith;
 @Sync
 public class BookmarksEntryTrashHandlerTest
 	extends BaseTrashHandlerTestCase
-	implements WhenHasDraftStatus, WhenHasRecentBaseModelCount,
-		WhenIsAssetableBaseModel, WhenIsAssetableParentModel,
-		WhenIsBaseModelMoveableFromTrash, WhenIsIndexableBaseModel {
+	implements WhenHasRecentBaseModelCount, WhenIsAssetableBaseModel,
+		WhenIsAssetableParentModel, WhenIsBaseModelMoveableFromTrash,
+		WhenIsIndexableBaseModel {
 
 	@ClassRule
 	@Rule
@@ -107,75 +106,6 @@ public class BookmarksEntryTrashHandlerTest
 	@After
 	public void tearDown() throws Exception {
 		PortalRunMode.setTestMode(_testMode);
-	}
-
-	@Ignore
-	@Override
-	@Test
-	public void testAddBaseModelWithDraftStatus() throws Exception {
-	}
-
-	@Ignore
-	@Override
-	@Test
-	public void testAddBaseModelWithDraftStatusIndexable() throws Exception {
-	}
-
-	@Ignore
-	@Override
-	@Test
-	public void testAddBaseModelWithDraftStatusIsNotVisible() throws Exception {
-	}
-
-	@Ignore
-	@Override
-	@Test
-	public void testTrashAndDeleteWithDraftStatus() throws Exception {
-	}
-
-	@Ignore
-	@Override
-	@Test
-	public void testTrashAndDeleteWithDraftStatusIndexable() throws Exception {
-	}
-
-	@Ignore
-	@Override
-	@Test
-	public void testTrashAndDeleteWithDraftStatusIsNotFound() throws Exception {
-	}
-
-	@Ignore
-	@Override
-	@Test
-	public void testTrashAndRestoreWithDraftStatus() throws Exception {
-	}
-
-	@Ignore
-	@Override
-	@Test
-	public void testTrashAndRestoreWithDraftStatusIndexable() throws Exception {
-	}
-
-	@Ignore
-	@Override
-	@Test
-	public void testTrashAndRestoreWithDraftStatusIsNotVisible()
-		throws Exception {
-	}
-
-	@Ignore
-	@Override
-	@Test
-	public void testTrashAndRestoreWithDraftStatusRestoreStatus()
-		throws Exception {
-	}
-
-	@Ignore
-	@Override
-	@Test
-	public void testTrashAndRestoreWithDraftStatusRestoreUniqueTitle()
-		throws Exception {
 	}
 
 	@Ignore
