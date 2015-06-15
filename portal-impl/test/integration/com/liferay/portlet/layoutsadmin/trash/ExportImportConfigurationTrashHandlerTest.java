@@ -28,6 +28,7 @@ import com.liferay.portlet.exportimport.model.ExportImportConfiguration;
 import com.liferay.portlet.exportimport.service.ExportImportConfigurationLocalServiceUtil;
 import com.liferay.portlet.layoutsadmin.util.test.ExportImportConfigurationTestUtil;
 import com.liferay.portlet.trash.test.BaseTrashHandlerTestCase;
+import com.liferay.portlet.trash.test.WhenIsAssetableParentModel;
 
 import org.junit.ClassRule;
 import org.junit.Ignore;
@@ -38,7 +39,8 @@ import org.junit.Test;
  * @author Levente Hudak
  */
 @Sync
-public class ExportImportConfigurationTrashHandlerTest extends BaseTrashHandlerTestCase {
+public class ExportImportConfigurationTrashHandlerTest
+	extends BaseTrashHandlerTestCase implements WhenIsAssetableParentModel {
 
 	@ClassRule
 	@Rule
