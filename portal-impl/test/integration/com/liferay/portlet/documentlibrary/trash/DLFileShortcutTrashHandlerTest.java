@@ -41,6 +41,7 @@ import com.liferay.portlet.documentlibrary.service.DLFileShortcutLocalServiceUti
 import com.liferay.portlet.documentlibrary.service.DLFolderLocalServiceUtil;
 import com.liferay.portlet.documentlibrary.util.test.DLAppTestUtil;
 import com.liferay.portlet.trash.test.BaseTrashHandlerTestCase;
+import com.liferay.portlet.trash.test.WhenHasDraftStatus;
 import com.liferay.portlet.trash.test.WhenIsAssetableParentModel;
 import com.liferay.portlet.trash.test.WhenIsBaseModelMoveableFromTrash;
 
@@ -57,7 +58,8 @@ import org.junit.Test;
 @Sync
 public class DLFileShortcutTrashHandlerTest
 	extends BaseTrashHandlerTestCase
-	implements WhenIsAssetableParentModel, WhenIsBaseModelMoveableFromTrash {
+	implements WhenHasDraftStatus, WhenIsAssetableParentModel,
+		WhenIsBaseModelMoveableFromTrash {
 
 	@ClassRule
 	@Rule
