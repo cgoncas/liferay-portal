@@ -94,6 +94,22 @@ public class JournalArticleTrashHandlerTest
 			groupId, 0, JournalFolderConstants.DEFAULT_PARENT_FOLDER_ID);
 	}
 
+	@Override
+	public BaseModel<?> moveBaseModelFromTrash(
+			ClassedModel classedModel, Group group,
+			ServiceContext serviceContext)
+		throws Exception {
+
+		BaseModel<?> parentBaseModel = getParentBaseModel(
+			group, serviceContext);
+
+		JournalArticleServiceUtil.moveArticleFromTrash(
+			group.getGroupId(), getAssetClassPK(classedModel),
+			(Long)parentBaseModel.getPrimaryKeyObj(), serviceContext);
+
+		return parentBaseModel;
+	}
+
 	@Before
 	@Override
 	public void setUp() throws Exception {
@@ -330,22 +346,6 @@ public class JournalArticleTrashHandlerTest
 		String articleId = article.getArticleId();
 
 		return TrashUtil.getOriginalTitle(articleId);
-	}
-
-	@Override
-	protected BaseModel<?> moveBaseModelFromTrash(
-			ClassedModel classedModel, Group group,
-			ServiceContext serviceContext)
-		throws Exception {
-
-		BaseModel<?> parentBaseModel = getParentBaseModel(
-			group, serviceContext);
-
-		JournalArticleServiceUtil.moveArticleFromTrash(
-			group.getGroupId(), getAssetClassPK(classedModel),
-			(Long)parentBaseModel.getPrimaryKeyObj(), serviceContext);
-
-		return parentBaseModel;
 	}
 
 	@Override

@@ -75,6 +75,22 @@ public class BookmarksEntryTrashHandlerTest
 		return BookmarksEntryServiceUtil.getGroupEntriesCount(groupId, 0);
 	}
 
+	@Override
+	public BaseModel<?> moveBaseModelFromTrash(
+			ClassedModel classedModel, Group group,
+			ServiceContext serviceContext)
+		throws Exception {
+
+		BaseModel<?> parentBaseModel = getParentBaseModel(
+			group, serviceContext);
+
+		BookmarksEntryServiceUtil.moveEntryFromTrash(
+			(Long)classedModel.getPrimaryKeyObj(),
+			(Long)parentBaseModel.getPrimaryKeyObj());
+
+		return parentBaseModel;
+	}
+
 	@Before
 	@Override
 	public void setUp() throws Exception {
@@ -373,22 +389,6 @@ public class BookmarksEntryTrashHandlerTest
 		BookmarksEntry entry = (BookmarksEntry)baseModel;
 
 		return entry;
-	}
-
-	@Override
-	protected BaseModel<?> moveBaseModelFromTrash(
-			ClassedModel classedModel, Group group,
-			ServiceContext serviceContext)
-		throws Exception {
-
-		BaseModel<?> parentBaseModel = getParentBaseModel(
-			group, serviceContext);
-
-		BookmarksEntryServiceUtil.moveEntryFromTrash(
-			(Long)classedModel.getPrimaryKeyObj(),
-			(Long)parentBaseModel.getPrimaryKeyObj());
-
-		return parentBaseModel;
 	}
 
 	@Override
