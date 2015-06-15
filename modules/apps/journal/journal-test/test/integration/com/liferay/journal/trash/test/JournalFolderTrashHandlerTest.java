@@ -36,6 +36,7 @@ import com.liferay.portal.test.rule.LiferayIntegrationTestRule;
 import com.liferay.portlet.trash.test.BaseTrashHandlerTestCase;
 import com.liferay.portlet.trash.test.WhenIsAssetableBaseModel;
 import com.liferay.portlet.trash.test.WhenIsAssetableParentModel;
+import com.liferay.portlet.trash.test.WhenIsBaseModelMoveableFromTrash;
 import com.liferay.portlet.trash.test.WhenIsIndexableBaseModel;
 import com.liferay.portlet.trash.util.TrashUtil;
 
@@ -55,7 +56,7 @@ import org.junit.runner.RunWith;
 public class JournalFolderTrashHandlerTest
 	extends BaseTrashHandlerTestCase
 	implements WhenIsAssetableBaseModel, WhenIsAssetableParentModel,
-		WhenIsIndexableBaseModel {
+		WhenIsBaseModelMoveableFromTrash, WhenIsIndexableBaseModel {
 
 	@ClassRule
 	@Rule
