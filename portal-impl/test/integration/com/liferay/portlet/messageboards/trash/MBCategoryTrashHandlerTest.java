@@ -69,6 +69,12 @@ public class MBCategoryTrashHandlerTest
 		return parentBaseModel;
 	}
 
+	@Override
+	public void moveParentBaseModelToTrash(long primaryKey) throws Exception {
+		MBCategoryLocalServiceUtil.moveCategoryToTrash(
+			TestPropsValues.getUserId(), primaryKey);
+	}
+
 	@Ignore
 	@Override
 	@Test
@@ -259,14 +265,6 @@ public class MBCategoryTrashHandlerTest
 
 	@Override
 	protected void moveBaseModelToTrash(long primaryKey) throws Exception {
-		MBCategoryLocalServiceUtil.moveCategoryToTrash(
-			TestPropsValues.getUserId(), primaryKey);
-	}
-
-	@Override
-	protected void moveParentBaseModelToTrash(long primaryKey)
-		throws Exception {
-
 		MBCategoryLocalServiceUtil.moveCategoryToTrash(
 			TestPropsValues.getUserId(), primaryKey);
 	}

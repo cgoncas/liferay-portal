@@ -109,6 +109,11 @@ public class DLFileEntryTrashHandlerTest
 		return parentBaseModel;
 	}
 
+	@Override
+	public void moveParentBaseModelToTrash(long primaryKey) throws Exception {
+		DLAppServiceUtil.moveFolderToTrash(primaryKey);
+	}
+
 	@Test
 	public void testFileNameUpdateWhenUpdatingTitle() throws Exception {
 		ServiceContext serviceContext =
@@ -344,13 +349,6 @@ public class DLFileEntryTrashHandlerTest
 	@Override
 	protected void moveBaseModelToTrash(long primaryKey) throws Exception {
 		DLAppServiceUtil.moveFileEntryToTrash(primaryKey);
-	}
-
-	@Override
-	protected void moveParentBaseModelToTrash(long primaryKey)
-		throws Exception {
-
-		DLAppServiceUtil.moveFolderToTrash(primaryKey);
 	}
 
 	@Override

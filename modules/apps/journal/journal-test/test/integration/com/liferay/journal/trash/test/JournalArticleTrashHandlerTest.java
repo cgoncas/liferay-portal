@@ -112,6 +112,11 @@ public class JournalArticleTrashHandlerTest
 		return parentBaseModel;
 	}
 
+	@Override
+	public void moveParentBaseModelToTrash(long primaryKey) throws Exception {
+		JournalFolderServiceUtil.moveFolderToTrash(primaryKey);
+	}
+
 	@Before
 	@Override
 	public void setUp() throws Exception {
@@ -357,13 +362,6 @@ public class JournalArticleTrashHandlerTest
 
 		JournalArticleLocalServiceUtil.moveArticleToTrash(
 			TestPropsValues.getUserId(), article);
-	}
-
-	@Override
-	protected void moveParentBaseModelToTrash(long primaryKey)
-		throws Exception {
-
-		JournalFolderServiceUtil.moveFolderToTrash(primaryKey);
 	}
 
 	@Override

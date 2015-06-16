@@ -102,6 +102,11 @@ public class MBThreadTrashHandlerTest
 		return parentBaseModel;
 	}
 
+	@Override
+	public void moveParentBaseModelToTrash(long primaryKey) throws Exception {
+		MBCategoryServiceUtil.moveCategoryToTrash(primaryKey);
+	}
+
 	@Test
 	public void testCategoryMessageCount() throws Exception {
 		ServiceContext serviceContext =
@@ -359,13 +364,6 @@ public class MBThreadTrashHandlerTest
 	@Override
 	protected void moveBaseModelToTrash(long primaryKey) throws Exception {
 		MBThreadServiceUtil.moveThreadToTrash(primaryKey);
-	}
-
-	@Override
-	protected void moveParentBaseModelToTrash(long primaryKey)
-		throws Exception {
-
-		MBCategoryServiceUtil.moveCategoryToTrash(primaryKey);
 	}
 
 	protected void replyMessage(BaseModel<?> baseModel) throws Exception {

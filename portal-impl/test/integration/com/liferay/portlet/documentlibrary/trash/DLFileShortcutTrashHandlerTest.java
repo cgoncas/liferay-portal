@@ -84,6 +84,11 @@ public class DLFileShortcutTrashHandlerTest
 		return parentBaseModel;
 	}
 
+	@Override
+	public void moveParentBaseModelToTrash(long primaryKey) throws Exception {
+		DLAppServiceUtil.moveFolderToTrash(primaryKey);
+	}
+
 	@Ignore
 	@Override
 	@Test
@@ -292,13 +297,6 @@ public class DLFileShortcutTrashHandlerTest
 	@Override
 	protected void moveBaseModelToTrash(long primaryKey) throws Exception {
 		DLAppServiceUtil.moveFileShortcutToTrash(primaryKey);
-	}
-
-	@Override
-	protected void moveParentBaseModelToTrash(long primaryKey)
-		throws Exception {
-
-		DLAppServiceUtil.moveFolderToTrash(primaryKey);
 	}
 
 	protected void trashFileEntry() throws Exception {
