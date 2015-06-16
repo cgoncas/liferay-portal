@@ -54,6 +54,11 @@ public class BlogsEntryTrashHandlerTest
 			new LiferayIntegrationTestRule(), MainServletTestRule.INSTANCE,
 			SynchronousDestinationTestRule.INSTANCE);
 
+	@Override
+	public String getSearchKeywords() {
+		return "Title";
+	}
+
 	@Ignore
 	@Override
 	@Test
@@ -146,11 +151,6 @@ public class BlogsEntryTrashHandlerTest
 
 		return BlogsEntryLocalServiceUtil.getGroupEntriesCount(
 			(Long)parentBaseModel.getPrimaryKeyObj(), queryDefinition);
-	}
-
-	@Override
-	protected String getSearchKeywords() {
-		return "Title";
 	}
 
 	@Override

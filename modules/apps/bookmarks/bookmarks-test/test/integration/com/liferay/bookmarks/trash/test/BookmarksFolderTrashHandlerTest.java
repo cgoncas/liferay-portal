@@ -67,6 +67,11 @@ public class BookmarksFolderTrashHandlerTest
 			SynchronousDestinationTestRule.INSTANCE);
 
 	@Override
+	public String getSearchKeywords() {
+		return "Title";
+	}
+
+	@Override
 	public BaseModel<?> moveBaseModelFromTrash(
 			ClassedModel classedModel, Group group,
 			ServiceContext serviceContext)
@@ -284,11 +289,6 @@ public class BookmarksFolderTrashHandlerTest
 		return getParentBaseModel(
 			group, BookmarksFolderConstants.DEFAULT_PARENT_FOLDER_ID,
 			serviceContext);
-	}
-
-	@Override
-	protected String getSearchKeywords() {
-		return "Title";
 	}
 
 	@Override

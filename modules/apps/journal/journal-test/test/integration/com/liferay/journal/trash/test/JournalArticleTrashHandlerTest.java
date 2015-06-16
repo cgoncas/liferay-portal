@@ -97,6 +97,11 @@ public class JournalArticleTrashHandlerTest
 	}
 
 	@Override
+	public String getSearchKeywords() {
+		return "Article";
+	}
+
+	@Override
 	public BaseModel<?> moveBaseModelFromTrash(
 			ClassedModel classedModel, Group group,
 			ServiceContext serviceContext)
@@ -332,11 +337,6 @@ public class JournalArticleTrashHandlerTest
 	@Override
 	protected Class<?> getParentBaseModelClass() {
 		return JournalFolder.class;
-	}
-
-	@Override
-	protected String getSearchKeywords() {
-		return "Article";
 	}
 
 	@Override

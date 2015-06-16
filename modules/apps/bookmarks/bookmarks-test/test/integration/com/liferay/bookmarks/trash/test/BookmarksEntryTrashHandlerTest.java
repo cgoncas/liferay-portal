@@ -77,6 +77,11 @@ public class BookmarksEntryTrashHandlerTest
 	}
 
 	@Override
+	public String getSearchKeywords() {
+		return "Title";
+	}
+
+	@Override
 	public BaseModel<?> moveBaseModelFromTrash(
 			ClassedModel classedModel, Group group,
 			ServiceContext serviceContext)
@@ -307,11 +312,6 @@ public class BookmarksEntryTrashHandlerTest
 	@Override
 	protected Class<?> getParentBaseModelClass() {
 		return BookmarksFolder.class;
-	}
-
-	@Override
-	protected String getSearchKeywords() {
-		return "Title";
 	}
 
 	@Override

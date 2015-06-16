@@ -64,6 +64,11 @@ public class DLFolderTrashHandlerTest
 			SynchronousDestinationTestRule.INSTANCE);
 
 	@Override
+	public String getSearchKeywords() {
+		return _FOLDER_NAME;
+	}
+
+	@Override
 	public BaseModel<?> moveBaseModelFromTrash(
 			ClassedModel classedModel, Group group,
 			ServiceContext serviceContext)
@@ -268,11 +273,6 @@ public class DLFolderTrashHandlerTest
 
 		return getParentBaseModel(
 			group, DLFolderConstants.DEFAULT_PARENT_FOLDER_ID, serviceContext);
-	}
-
-	@Override
-	protected String getSearchKeywords() {
-		return _FOLDER_NAME;
 	}
 
 	@Override

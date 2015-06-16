@@ -94,6 +94,11 @@ public class DLFileEntryTrashHandlerTest
 	}
 
 	@Override
+	public String getSearchKeywords() {
+		return _FILE_ENTRY_TITLE;
+	}
+
+	@Override
 	public BaseModel<?> moveBaseModelFromTrash(
 			ClassedModel classedModel, Group group,
 			ServiceContext serviceContext)
@@ -321,11 +326,6 @@ public class DLFileEntryTrashHandlerTest
 	@Override
 	protected Class<?> getParentBaseModelClass() {
 		return DLFolder.class;
-	}
-
-	@Override
-	protected String getSearchKeywords() {
-		return _FILE_ENTRY_TITLE;
 	}
 
 	@Override
