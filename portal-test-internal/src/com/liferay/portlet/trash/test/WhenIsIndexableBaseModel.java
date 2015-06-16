@@ -18,4 +18,7 @@ package com.liferay.portlet.trash.test;
  * @author Cristina González
  */
 public interface WhenIsIndexableBaseModel {
+
+	public String getSearchKeywords();
+
 }
