@@ -33,6 +33,7 @@ import com.liferay.portlet.trash.test.WhenIsIndexableBaseModel;
 import com.liferay.wiki.asset.WikiPageAssetRenderer;
 import com.liferay.wiki.model.WikiNode;
 import com.liferay.wiki.model.WikiPage;
+import com.liferay.wiki.service.WikiNodeServiceUtil;
 import com.liferay.wiki.util.test.WikiPageTrashHandlerTestUtil;
 
 import org.junit.After;
@@ -62,6 +63,16 @@ public class WikiPageTrashHandlerTest
 			SynchronousDestinationTestRule.INSTANCE);
 
 	@Override
+	public void deleteParentBaseModel(
+			BaseModel<?> parentBaseModel, boolean includeTrashedEntries)
+		throws Exception {
+
+		WikiNode node = (WikiNode)parentBaseModel;
+
+		WikiNodeServiceUtil.deleteNode(node.getNodeId());
+	}
+
+	@Override
 	public String getSearchKeywords() {
 		return WikiPageTrashHandlerTestUtil.getSearchKeywords();
 	}
@@ -86,13 +97,6 @@ public class WikiPageTrashHandlerTest
 	@After
 	public void tearDown() throws Exception {
 		PortalRunMode.setTestMode(_testMode);
-	}
-
-	@Ignore
-	@Override
-	@Test
-	public void testTrashBaseModelAndDeleteWithParentIsNotRestorable()
-		throws Exception {
 	}
 
 	@Ignore
