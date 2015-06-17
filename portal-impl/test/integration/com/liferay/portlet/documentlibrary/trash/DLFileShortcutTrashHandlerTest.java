@@ -115,12 +115,6 @@ public class DLFileShortcutTrashHandlerTest
 	@Ignore
 	@Override
 	@Test
-	public void testTrashVersionBaseModelAndDeleteIndexable() throws Exception {
-	}
-
-	@Ignore
-	@Override
-	@Test
 	public void testTrashVersionBaseModelAndDeleteIsNotFound()
 		throws Exception {
 	}
@@ -129,13 +123,6 @@ public class DLFileShortcutTrashHandlerTest
 	@Override
 	@Test
 	public void testTrashVersionBaseModelAndRestore() throws Exception {
-	}
-
-	@Ignore
-	@Override
-	@Test
-	public void testTrashVersionBaseModelAndRestoreIndexable()
-		throws Exception {
 	}
 
 	@Ignore
@@ -176,12 +163,6 @@ public class DLFileShortcutTrashHandlerTest
 	@Test
 	public void testTrashVersionParentBaseModelAndRestoreIsVisible()
 		throws Exception {
-	}
-
-	@Ignore
-	@Override
-	@Test
-	public void testTrashVersionParentBaseModelIndexable() throws Exception {
 	}
 
 	@Ignore
