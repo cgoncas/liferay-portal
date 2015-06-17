@@ -14,9 +14,7 @@
 
 package com.liferay.portlet.documentlibrary.trash;
 
-import com.liferay.portal.kernel.dao.orm.QueryUtil;
 import com.liferay.portal.kernel.repository.model.Folder;
-import com.liferay.portal.kernel.search.Hits;
 import com.liferay.portal.kernel.test.rule.AggregateTestRule;
 import com.liferay.portal.kernel.test.rule.Sync;
 import com.liferay.portal.kernel.test.rule.SynchronousDestinationTestRule;
@@ -34,8 +32,8 @@ import com.liferay.portlet.documentlibrary.model.DLFolder;
 import com.liferay.portlet.documentlibrary.model.DLFolderConstants;
 import com.liferay.portlet.documentlibrary.service.DLAppServiceUtil;
 import com.liferay.portlet.documentlibrary.service.DLFolderLocalServiceUtil;
-import com.liferay.portlet.trash.service.TrashEntryLocalServiceUtil;
 import com.liferay.portlet.trash.test.BaseTrashHandlerTestCase;
+import com.liferay.portlet.trash.test.DefaultWhenIsIndexableBaseModel;
 import com.liferay.portlet.trash.test.WhenHasParent;
 import com.liferay.portlet.trash.test.WhenIsAssetableBaseModel;
 import com.liferay.portlet.trash.test.WhenIsAssetableParentModel;
@@ -97,12 +95,8 @@ public class DLFolderTrashHandlerTest
 			String keywords, ServiceContext serviceContext)
 		throws Exception {
 
-		Hits results = TrashEntryLocalServiceUtil.search(
-			serviceContext.getCompanyId(), serviceContext.getScopeGroupId(),
-			serviceContext.getUserId(), keywords, QueryUtil.ALL_POS,
-			QueryUtil.ALL_POS, null);
-
-		return results.getLength();
+		return _whenIsIndexableBaseModel.searchTrashEntriesCount(
+			keywords, serviceContext);
 	}
 
 	@Ignore
@@ -326,5 +320,8 @@ public class DLFolderTrashHandlerTest
 	private static final String _FOLDER_NAME = RandomTestUtil.randomString(100);
 
 	private static final int _FOLDER_NAME_MAX_LENGTH = 100;
+
+	private static final WhenIsIndexableBaseModel
+		_whenIsIndexableBaseModel = new DefaultWhenIsIndexableBaseModel();
 
 }

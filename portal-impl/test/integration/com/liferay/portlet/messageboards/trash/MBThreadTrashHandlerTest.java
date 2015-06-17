@@ -41,6 +41,7 @@ import com.liferay.portlet.messageboards.service.MBThreadLocalServiceUtil;
 import com.liferay.portlet.messageboards.service.MBThreadServiceUtil;
 import com.liferay.portlet.messageboards.util.test.MBTestUtil;
 import com.liferay.portlet.trash.test.BaseTrashHandlerTestCase;
+import com.liferay.portlet.trash.test.DefaultWhenIsIndexableBaseModel;
 import com.liferay.portlet.trash.test.WhenHasParent;
 import com.liferay.portlet.trash.test.WhenHasRecentBaseModelCount;
 import com.liferay.portlet.trash.test.WhenIsAssetableBaseModel;
@@ -117,12 +118,8 @@ public class MBThreadTrashHandlerTest
 			String keywords, ServiceContext serviceContext)
 		throws Exception {
 
-		Hits results = TrashEntryLocalServiceUtil.search(
-			serviceContext.getCompanyId(), serviceContext.getScopeGroupId(),
-			serviceContext.getUserId(), keywords, QueryUtil.ALL_POS,
-			QueryUtil.ALL_POS, null);
-
-		return results.getLength();
+		return _whenIsIndexableBaseModel.searchTrashEntriesCount(
+			keywords, serviceContext);
 	}
 
 	@Test
@@ -421,5 +418,8 @@ public class MBThreadTrashHandlerTest
 	}
 
 	private static final String _SUBJECT = "Subject";
+
+	private static final WhenIsIndexableBaseModel
+		_whenIsIndexableBaseModel = new DefaultWhenIsIndexableBaseModel();
 
 }

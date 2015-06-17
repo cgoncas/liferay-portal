@@ -15,8 +15,6 @@
 package com.liferay.portlet.blogs.trash;
 
 import com.liferay.portal.kernel.dao.orm.QueryDefinition;
-import com.liferay.portal.kernel.dao.orm.QueryUtil;
-import com.liferay.portal.kernel.search.Hits;
 import com.liferay.portal.kernel.test.rule.AggregateTestRule;
 import com.liferay.portal.kernel.test.rule.Sync;
 import com.liferay.portal.kernel.test.rule.SynchronousDestinationTestRule;
@@ -29,8 +27,8 @@ import com.liferay.portal.test.rule.MainServletTestRule;
 import com.liferay.portlet.blogs.model.BlogsEntry;
 import com.liferay.portlet.blogs.service.BlogsEntryLocalServiceUtil;
 import com.liferay.portlet.blogs.util.test.BlogsTestUtil;
-import com.liferay.portlet.trash.service.TrashEntryLocalServiceUtil;
 import com.liferay.portlet.trash.test.BaseTrashHandlerTestCase;
+import com.liferay.portlet.trash.test.DefaultWhenIsIndexableBaseModel;
 import com.liferay.portlet.trash.test.WhenHasDraftStatus;
 import com.liferay.portlet.trash.test.WhenIsAssetableBaseModel;
 import com.liferay.portlet.trash.test.WhenIsIndexableBaseModel;
@@ -59,7 +57,7 @@ public class BlogsEntryTrashHandlerTest
 
 	@Override
 	public String getSearchKeywords() {
-		return "Title";
+		return _whenIsIndexableBaseModel.getSearchKeywords();
 	}
 
 	@Override
@@ -67,12 +65,8 @@ public class BlogsEntryTrashHandlerTest
 			String keywords, ServiceContext serviceContext)
 		throws Exception {
 
-		Hits results = TrashEntryLocalServiceUtil.search(
-			serviceContext.getCompanyId(), serviceContext.getScopeGroupId(),
-			serviceContext.getUserId(), keywords, QueryUtil.ALL_POS,
-			QueryUtil.ALL_POS, null);
-
-		return results.getLength();
+		return _whenIsIndexableBaseModel.searchTrashEntriesCount(
+			keywords, serviceContext);
 	}
 
 	@Ignore
@@ -179,5 +173,8 @@ public class BlogsEntryTrashHandlerTest
 		BlogsEntryLocalServiceUtil.moveEntryToTrash(
 			TestPropsValues.getUserId(), primaryKey);
 	}
+
+	private static final WhenIsIndexableBaseModel
+		_whenIsIndexableBaseModel = new DefaultWhenIsIndexableBaseModel();
 
 }
