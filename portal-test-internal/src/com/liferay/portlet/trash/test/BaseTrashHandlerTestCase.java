@@ -1478,7 +1478,9 @@ public abstract class BaseTrashHandlerTestCase {
 
 		baseModel = addBaseModel(parentBaseModel, true, serviceContext);
 
-		((WhenHasParent)this).moveParentBaseModelToTrash(
+		WhenHasParent whenHasParent = (WhenHasParent)this;
+
+		whenHasParent.moveParentBaseModelToTrash(
 			(Long)grandparentBaseModel.getPrimaryKeyObj());
 
 		TrashHandler parentTrashHandler =
@@ -1511,7 +1513,9 @@ public abstract class BaseTrashHandlerTestCase {
 
 		baseModel = addBaseModel(parentBaseModel, true, serviceContext);
 
-		((WhenHasParent)this).moveParentBaseModelToTrash(
+		WhenHasParent whenHasParent = (WhenHasParent)this;
+
+		whenHasParent.moveParentBaseModelToTrash(
 			(Long)grandparentBaseModel.getPrimaryKeyObj());
 
 		TrashHandler parentTrashHandler =
@@ -1703,7 +1707,9 @@ public abstract class BaseTrashHandlerTestCase {
 
 		baseModel = addBaseModel(parentBaseModel, true, serviceContext);
 
-		((WhenHasParent)this).moveParentBaseModelToTrash(
+		WhenHasParent whenHasParent = (WhenHasParent)this;
+
+		whenHasParent.moveParentBaseModelToTrash(
 			(Long)parentBaseModel.getPrimaryKeyObj());
 
 		Assert.assertEquals(
@@ -1751,7 +1757,9 @@ public abstract class BaseTrashHandlerTestCase {
 
 		baseModel = addBaseModel(parentBaseModel, true, serviceContext);
 
-		((WhenHasParent)this).moveParentBaseModelToTrash(
+		WhenHasParent whenHasParent = (WhenHasParent)this;
+
+		whenHasParent.moveParentBaseModelToTrash(
 			(Long)parentBaseModel.getPrimaryKeyObj());
 
 		TrashEntryServiceUtil.deleteEntries(group.getGroupId());
@@ -1849,7 +1857,9 @@ public abstract class BaseTrashHandlerTestCase {
 
 		baseModel = addBaseModel(parentBaseModel, true, serviceContext);
 
-		((WhenHasParent)this).moveParentBaseModelToTrash(
+		WhenHasParent whenHasParent = (WhenHasParent)this;
+
+		whenHasParent.moveParentBaseModelToTrash(
 			(Long)parentBaseModel.getPrimaryKeyObj());
 
 		((WhenIsBaseModelMoveableFromTrash)this).moveBaseModelFromTrash(
@@ -1883,7 +1893,9 @@ public abstract class BaseTrashHandlerTestCase {
 
 		baseModel = addBaseModel(parentBaseModel, true, serviceContext);
 
-		((WhenHasParent)this).moveParentBaseModelToTrash(
+		WhenHasParent whenHasParent = (WhenHasParent)this;
+
+		whenHasParent.moveParentBaseModelToTrash(
 			(Long)parentBaseModel.getPrimaryKeyObj());
 
 		Assert.assertEquals(
@@ -1904,7 +1916,9 @@ public abstract class BaseTrashHandlerTestCase {
 
 		baseModel = addBaseModel(parentBaseModel, true, serviceContext);
 
-		((WhenHasParent)this).moveParentBaseModelToTrash(
+		WhenHasParent whenHasParent = (WhenHasParent)this;
+
+		whenHasParent.moveParentBaseModelToTrash(
 			(Long)parentBaseModel.getPrimaryKeyObj());
 
 		Assert.assertFalse(isAssetEntryVisible(baseModel));
@@ -1924,7 +1938,9 @@ public abstract class BaseTrashHandlerTestCase {
 
 		baseModel = addBaseModel(parentBaseModel, true, serviceContext);
 
-		((WhenHasParent)this).moveParentBaseModelToTrash(
+		WhenHasParent whenHasParent = (WhenHasParent)this;
+
+		whenHasParent.moveParentBaseModelToTrash(
 			(Long)parentBaseModel.getPrimaryKeyObj());
 
 		Assert.assertTrue(isInTrashContainer(baseModel));
@@ -1943,7 +1959,9 @@ public abstract class BaseTrashHandlerTestCase {
 
 		baseModel = addBaseModel(parentBaseModel, true, serviceContext);
 
-		((WhenHasParent)this).moveParentBaseModelToTrash(
+		WhenHasParent whenHasParent = (WhenHasParent)this;
+
+		whenHasParent.moveParentBaseModelToTrash(
 			(Long)parentBaseModel.getPrimaryKeyObj());
 
 		Assert.assertFalse(isAssetEntryVisible(baseModel));
@@ -1971,7 +1989,9 @@ public abstract class BaseTrashHandlerTestCase {
 			((WhenHasRecentBaseModelCount)this).getRecentBaseModelsCount(
 				group.getGroupId()));
 
-		((WhenHasParent)this).moveParentBaseModelToTrash(
+		WhenHasParent whenHasParent = (WhenHasParent)this;
+
+		whenHasParent.moveParentBaseModelToTrash(
 			(Long)parentBaseModel.getPrimaryKeyObj());
 
 		Assert.assertEquals(
