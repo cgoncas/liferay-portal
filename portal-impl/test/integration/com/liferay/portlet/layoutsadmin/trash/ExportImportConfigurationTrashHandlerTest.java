@@ -83,12 +83,6 @@ public class ExportImportConfigurationTrashHandlerTest
 	@Ignore
 	@Override
 	@Test
-	public void testTrashVersionBaseModelAndDeleteIndexable() throws Exception {
-	}
-
-	@Ignore
-	@Override
-	@Test
 	public void testTrashVersionBaseModelAndDeleteIsNotFound() throws Exception {
 	}
 
@@ -96,13 +90,6 @@ public class ExportImportConfigurationTrashHandlerTest
 	@Override
 	@Test
 	public void testTrashVersionBaseModelAndRestore() throws Exception {
-	}
-
-	@Ignore
-	@Override
-	@Test
-	public void testTrashVersionBaseModelAndRestoreIndexable()
-		throws Exception {
 	}
 
 	@Ignore
