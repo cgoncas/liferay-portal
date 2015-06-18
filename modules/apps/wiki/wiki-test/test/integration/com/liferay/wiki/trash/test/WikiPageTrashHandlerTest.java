@@ -26,9 +26,8 @@ import com.liferay.portal.model.Group;
 import com.liferay.portal.service.ServiceContext;
 import com.liferay.portal.service.test.ServiceTestUtil;
 import com.liferay.portal.test.rule.LiferayIntegrationTestRule;
-import com.liferay.portlet.asset.model.AssetEntry;
-import com.liferay.portlet.asset.service.AssetEntryLocalServiceUtil;
 import com.liferay.portlet.trash.test.BaseTrashHandlerTestCase;
+import com.liferay.portlet.trash.test.DefaultWhenIsAssetableBaseModel;
 import com.liferay.portlet.trash.test.DefaultWhenIsIndexableBaseModel;
 import com.liferay.portlet.trash.test.WhenHasParent;
 import com.liferay.portlet.trash.test.WhenIsAssetableBaseModel;
@@ -89,10 +88,7 @@ public class WikiPageTrashHandlerTest
 	public boolean isAssetEntryVisible(ClassedModel classedModel)
 		throws Exception {
 
-		AssetEntry assetEntry = AssetEntryLocalServiceUtil.getEntry(
-			classedModel.getModelClassName(), getAssetClassPK(classedModel));
-
-		return assetEntry.isVisible();
+		return _whenIsAssetableBaseModel.isAssetEntryVisible(classedModel);
 	}
 
 	@Override
@@ -345,6 +341,8 @@ public class WikiPageTrashHandlerTest
 			primaryKey, serviceContext);
 	}
 
+	private static final WhenIsAssetableBaseModel
+		_whenIsAssetableBaseModel = new DefaultWhenIsAssetableBaseModel();
 	private static final WhenIsIndexableBaseModel
 		_whenIsIndexableBaseModel = new DefaultWhenIsIndexableBaseModel();
 

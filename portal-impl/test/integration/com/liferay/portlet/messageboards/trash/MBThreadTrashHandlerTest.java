@@ -29,8 +29,6 @@ import com.liferay.portal.model.Group;
 import com.liferay.portal.service.ServiceContext;
 import com.liferay.portal.test.rule.LiferayIntegrationTestRule;
 import com.liferay.portal.test.rule.MainServletTestRule;
-import com.liferay.portlet.asset.model.AssetEntry;
-import com.liferay.portlet.asset.service.AssetEntryLocalServiceUtil;
 import com.liferay.portlet.messageboards.model.MBCategory;
 import com.liferay.portlet.messageboards.model.MBCategoryConstants;
 import com.liferay.portlet.messageboards.model.MBMessage;
@@ -43,6 +41,7 @@ import com.liferay.portlet.messageboards.service.MBThreadLocalServiceUtil;
 import com.liferay.portlet.messageboards.service.MBThreadServiceUtil;
 import com.liferay.portlet.messageboards.util.test.MBTestUtil;
 import com.liferay.portlet.trash.test.BaseTrashHandlerTestCase;
+import com.liferay.portlet.trash.test.DefaultWhenIsAssetableBaseModel;
 import com.liferay.portlet.trash.test.DefaultWhenIsIndexableBaseModel;
 import com.liferay.portlet.trash.test.WhenHasParent;
 import com.liferay.portlet.trash.test.WhenHasRecentBaseModelCount;
@@ -81,7 +80,7 @@ public class MBThreadTrashHandlerTest
 
 	@Override
 	public Long getAssetClassPK(ClassedModel classedModel) {
-		return (Long)classedModel.getPrimaryKeyObj();
+		return _whenIsAssetableBaseModel.getAssetClassPK(classedModel);
 	}
 
 	@Override
@@ -106,10 +105,7 @@ public class MBThreadTrashHandlerTest
 		MBMessage rootMessage = MBMessageLocalServiceUtil.getMBMessage(
 			((MBThread)classedModel).getRootMessageId());
 
-		AssetEntry assetEntry = AssetEntryLocalServiceUtil.getEntry(
-			rootMessage.getModelClassName(), getAssetClassPK(rootMessage));
-
-		return assetEntry.isVisible();
+		return _whenIsAssetableBaseModel.isAssetEntryVisible(rootMessage);
 	}
 
 	@Override
@@ -430,6 +426,8 @@ public class MBThreadTrashHandlerTest
 
 	private static final String _SUBJECT = "Subject";
 
+	private static final WhenIsAssetableBaseModel
+		_whenIsAssetableBaseModel = new DefaultWhenIsAssetableBaseModel();
 	private static final WhenIsIndexableBaseModel
 		_whenIsIndexableBaseModel = new DefaultWhenIsIndexableBaseModel();
 

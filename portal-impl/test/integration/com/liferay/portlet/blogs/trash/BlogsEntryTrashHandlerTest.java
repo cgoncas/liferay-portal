@@ -25,12 +25,11 @@ import com.liferay.portal.model.ClassedModel;
 import com.liferay.portal.service.ServiceContext;
 import com.liferay.portal.test.rule.LiferayIntegrationTestRule;
 import com.liferay.portal.test.rule.MainServletTestRule;
-import com.liferay.portlet.asset.model.AssetEntry;
-import com.liferay.portlet.asset.service.AssetEntryLocalServiceUtil;
 import com.liferay.portlet.blogs.model.BlogsEntry;
 import com.liferay.portlet.blogs.service.BlogsEntryLocalServiceUtil;
 import com.liferay.portlet.blogs.util.test.BlogsTestUtil;
 import com.liferay.portlet.trash.test.BaseTrashHandlerTestCase;
+import com.liferay.portlet.trash.test.DefaultWhenIsAssetableBaseModel;
 import com.liferay.portlet.trash.test.DefaultWhenIsIndexableBaseModel;
 import com.liferay.portlet.trash.test.WhenHasDraftStatus;
 import com.liferay.portlet.trash.test.WhenIsAssetableBaseModel;
@@ -60,7 +59,7 @@ public class BlogsEntryTrashHandlerTest
 
 	@Override
 	public Long getAssetClassPK(ClassedModel classedModel) {
-		return (Long)classedModel.getPrimaryKeyObj();
+		return _whenIsAssetableBaseModel.getAssetClassPK(classedModel);
 	}
 
 	@Override
@@ -72,10 +71,7 @@ public class BlogsEntryTrashHandlerTest
 	public boolean isAssetEntryVisible(ClassedModel classedModel)
 		throws Exception {
 
-		AssetEntry assetEntry = AssetEntryLocalServiceUtil.getEntry(
-			classedModel.getModelClassName(), getAssetClassPK(classedModel));
-
-		return assetEntry.isVisible();
+		return _whenIsAssetableBaseModel.isAssetEntryVisible(classedModel);
 	}
 
 	@Override
@@ -199,6 +195,8 @@ public class BlogsEntryTrashHandlerTest
 			TestPropsValues.getUserId(), primaryKey);
 	}
 
+	private static final WhenIsAssetableBaseModel
+		_whenIsAssetableBaseModel = new DefaultWhenIsAssetableBaseModel();
 	private static final WhenIsIndexableBaseModel
 		_whenIsIndexableBaseModel = new DefaultWhenIsIndexableBaseModel();
 
