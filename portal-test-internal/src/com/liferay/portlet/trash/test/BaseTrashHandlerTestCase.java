@@ -137,7 +137,8 @@ public abstract class BaseTrashHandlerTestCase {
 
 		baseModel = getBaseModel((Long)baseModel.getPrimaryKeyObj());
 
-		Assert.assertTrue(isAssetEntryVisible(baseModel));
+		Assert.assertTrue(((WhenIsAssetableBaseModel)this).isAssetEntryVisible(
+			baseModel));
 	}
 
 	@Test
@@ -212,7 +213,8 @@ public abstract class BaseTrashHandlerTestCase {
 
 		baseModel = getBaseModel((Long)baseModel.getPrimaryKeyObj());
 
-		Assert.assertFalse(isAssetEntryVisible(baseModel));
+		Assert.assertFalse(((WhenIsAssetableBaseModel)this).isAssetEntryVisible(
+			baseModel));
 	}
 
 	@Test
@@ -288,7 +290,8 @@ public abstract class BaseTrashHandlerTestCase {
 		baseModel = updateBaseModel(
 			(Long)baseModel.getPrimaryKeyObj(), serviceContext);
 
-		Assert.assertTrue(isAssetEntryVisible(baseModel));
+		Assert.assertTrue(((WhenIsAssetableBaseModel)this).isAssetEntryVisible(
+			baseModel));
 	}
 
 	@Test
@@ -406,7 +409,8 @@ public abstract class BaseTrashHandlerTestCase {
 
 		moveBaseModelToTrash((Long)baseModel.getPrimaryKeyObj());
 
-		Assert.assertFalse(isAssetEntryVisible(baseModel));
+		Assert.assertFalse(((WhenIsAssetableBaseModel)this).isAssetEntryVisible(
+			baseModel));
 	}
 
 	@Test
@@ -749,7 +753,8 @@ public abstract class BaseTrashHandlerTestCase {
 
 		baseModel = getBaseModel((Long)baseModel.getPrimaryKeyObj());
 
-		Assert.assertTrue(isAssetEntryVisible(baseModel));
+		Assert.assertTrue(((WhenIsAssetableBaseModel)this).isAssetEntryVisible(
+			baseModel));
 	}
 
 	@Test
@@ -912,7 +917,8 @@ public abstract class BaseTrashHandlerTestCase {
 
 		baseModel = getBaseModel((Long)baseModel.getPrimaryKeyObj());
 
-		Assert.assertFalse(isAssetEntryVisible(baseModel));
+		Assert.assertFalse(((WhenIsAssetableBaseModel)this).isAssetEntryVisible(
+			baseModel));
 	}
 
 	@Test
@@ -1242,7 +1248,8 @@ public abstract class BaseTrashHandlerTestCase {
 		((WhenIsBaseModelMoveableFromTrash)this).moveBaseModelFromTrash(
 			baseModel, group, serviceContext);
 
-		Assert.assertTrue(isAssetEntryVisible(baseModel));
+		Assert.assertTrue(((WhenIsAssetableBaseModel)this).isAssetEntryVisible(
+			baseModel));
 	}
 
 	@Test
@@ -1285,7 +1292,8 @@ public abstract class BaseTrashHandlerTestCase {
 		((WhenHasParent)this).moveParentBaseModelToTrash(
 			(Long)parentBaseModel.getPrimaryKeyObj());
 
-		Assert.assertFalse(isAssetEntryVisible(baseModel));
+		Assert.assertFalse(((WhenIsAssetableBaseModel)this).isAssetEntryVisible(
+			baseModel));
 	}
 
 	@Test
@@ -1571,7 +1579,8 @@ public abstract class BaseTrashHandlerTestCase {
 			TestPropsValues.getUserId(),
 			(Long)grandparentBaseModel.getPrimaryKeyObj());
 
-		Assert.assertTrue(isAssetEntryVisible(baseModel));
+		Assert.assertTrue(((WhenIsAssetableBaseModel)this).isAssetEntryVisible(
+			baseModel));
 	}
 
 	@Test
@@ -1604,7 +1613,8 @@ public abstract class BaseTrashHandlerTestCase {
 			TestPropsValues.getUserId(),
 			(Long)grandparentBaseModel.getPrimaryKeyObj());
 
-		Assert.assertTrue(isAssetEntryVisible(parentBaseModel));
+		Assert.assertTrue(((WhenIsAssetableBaseModel)this).isAssetEntryVisible(
+			parentBaseModel));
 	}
 
 	@Test
@@ -1627,7 +1637,8 @@ public abstract class BaseTrashHandlerTestCase {
 		((WhenHasParent)this).moveParentBaseModelToTrash(
 			(Long)grandparentBaseModel.getPrimaryKeyObj());
 
-		Assert.assertFalse(isAssetEntryVisible(baseModel));
+		Assert.assertFalse(((WhenIsAssetableBaseModel)this).isAssetEntryVisible(
+			baseModel));
 	}
 
 	@Test
@@ -1652,7 +1663,8 @@ public abstract class BaseTrashHandlerTestCase {
 		((WhenHasParent)this).moveParentBaseModelToTrash(
 			(Long)grandparentBaseModel.getPrimaryKeyObj());
 
-		Assert.assertFalse(isAssetEntryVisible(parentBaseModel));
+		Assert.assertFalse(((WhenIsAssetableBaseModel)this).isAssetEntryVisible(
+			parentBaseModel));
 	}
 
 	@Test
@@ -1848,7 +1860,8 @@ public abstract class BaseTrashHandlerTestCase {
 		((WhenIsBaseModelMoveableFromTrash)this).moveBaseModelFromTrash(
 			baseModel, group, serviceContext);
 
-		Assert.assertTrue(isAssetEntryVisible(baseModel));
+		Assert.assertTrue(((WhenIsAssetableBaseModel)this).isAssetEntryVisible(
+			baseModel));
 	}
 
 	@Test
@@ -1937,7 +1950,8 @@ public abstract class BaseTrashHandlerTestCase {
 		whenHasParent.moveParentBaseModelToTrash(
 			(Long)parentBaseModel.getPrimaryKeyObj());
 
-		Assert.assertFalse(isAssetEntryVisible(baseModel));
+		Assert.assertFalse(((WhenIsAssetableBaseModel)this).isAssetEntryVisible(
+			baseModel));
 	}
 
 	@Test
@@ -1980,7 +1994,8 @@ public abstract class BaseTrashHandlerTestCase {
 		whenHasParent.moveParentBaseModelToTrash(
 			(Long)parentBaseModel.getPrimaryKeyObj());
 
-		Assert.assertFalse(isAssetEntryVisible(baseModel));
+		Assert.assertFalse(((WhenIsAssetableBaseModel)this).isAssetEntryVisible(
+			baseModel));
 	}
 
 	@Test
@@ -2243,7 +2258,8 @@ public abstract class BaseTrashHandlerTestCase {
 		trashHandler.restoreTrashEntry(
 			TestPropsValues.getUserId(), getTrashEntryClassPK(baseModel));
 
-		Assert.assertTrue(isAssetEntryVisible(baseModel));
+		Assert.assertTrue(((WhenIsAssetableBaseModel)this).isAssetEntryVisible(
+			baseModel));
 	}
 
 	@Test
@@ -2299,7 +2315,8 @@ public abstract class BaseTrashHandlerTestCase {
 
 		moveBaseModelToTrash((Long)baseModel.getPrimaryKeyObj());
 
-		Assert.assertFalse(isAssetEntryVisible(baseModel));
+		Assert.assertFalse(((WhenIsAssetableBaseModel)this).isAssetEntryVisible(
+			baseModel));
 	}
 
 	@Test
@@ -2575,7 +2592,8 @@ public abstract class BaseTrashHandlerTestCase {
 
 		baseModel = getBaseModel((Long)baseModel.getPrimaryKeyObj());
 
-		Assert.assertTrue(isAssetEntryVisible(baseModel));
+		Assert.assertTrue(((WhenIsAssetableBaseModel)this).isAssetEntryVisible(
+			baseModel));
 	}
 
 	@Test
@@ -2677,7 +2695,8 @@ public abstract class BaseTrashHandlerTestCase {
 		((WhenHasParent)this).moveParentBaseModelToTrash(
 			(Long)parentBaseModel.getPrimaryKeyObj());
 
-		Assert.assertFalse(isAssetEntryVisible(baseModel));
+		Assert.assertFalse(((WhenIsAssetableBaseModel)this).isAssetEntryVisible(
+			baseModel));
 	}
 
 	protected BaseModel<?> addBaseModel(
@@ -2853,15 +2872,6 @@ public abstract class BaseTrashHandlerTestCase {
 		throws Exception {
 
 		return (WorkflowedModel)baseModel;
-	}
-
-	protected boolean isAssetEntryVisible(ClassedModel classedModel)
-		throws Exception {
-
-		AssetEntry assetEntry = AssetEntryLocalServiceUtil.getEntry(
-			classedModel.getModelClassName(), getAssetClassPK(classedModel));
-
-		return assetEntry.isVisible();
 	}
 
 	protected boolean isBaseModelContainerModel() {

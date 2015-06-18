@@ -74,6 +74,16 @@ public class JournalFolderTrashHandlerTest
 	}
 
 	@Override
+	public boolean isAssetEntryVisible(ClassedModel classedModel)
+		throws Exception {
+
+		AssetEntry assetEntry = AssetEntryLocalServiceUtil.getEntry(
+			classedModel.getModelClassName(), getAssetClassPK(classedModel));
+
+		return assetEntry.isVisible();
+	}
+
+	@Override
 	public BaseModel<?> moveBaseModelFromTrash(
 			ClassedModel classedModel, Group group,
 			ServiceContext serviceContext)
