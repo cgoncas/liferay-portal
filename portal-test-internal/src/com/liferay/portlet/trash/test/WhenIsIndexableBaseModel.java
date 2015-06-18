@@ -23,6 +23,9 @@ public interface WhenIsIndexableBaseModel {
 
 	public String getSearchKeywords();
 
+	public int searchBaseModelsCount(Class<?> clazz, long groupId)
+		throws Exception;
+
 	public int searchTrashEntriesCount(
 			String keywords, ServiceContext serviceContext)
 		throws Exception;
