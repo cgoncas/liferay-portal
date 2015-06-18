@@ -114,6 +114,14 @@ public class MBThreadTrashHandlerTest
 	}
 
 	@Override
+	public int searchBaseModelsCount(Class<?> clazz, long groupId)
+		throws Exception {
+
+		return _whenIsIndexableBaseModel.searchBaseModelsCount(
+			MBMessage.class, groupId);
+	}
+
+	@Override
 	public int searchTrashEntriesCount(
 			String keywords, ServiceContext serviceContext)
 		throws Exception {
@@ -390,13 +398,6 @@ public class MBThreadTrashHandlerTest
 			RandomTestUtil.randomString(), MBMessageConstants.DEFAULT_FORMAT,
 			Collections.<ObjectValuePair<String, InputStream>>emptyList(),
 			false, 0.0, false, serviceContext);
-	}
-
-	@Override
-	protected int searchBaseModelsCount(Class<?> clazz, long groupId)
-		throws Exception {
-
-		return super.searchBaseModelsCount(MBMessage.class, groupId);
 	}
 
 	@Override

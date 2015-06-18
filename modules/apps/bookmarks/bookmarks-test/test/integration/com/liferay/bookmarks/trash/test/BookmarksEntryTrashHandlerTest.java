@@ -104,6 +104,13 @@ public class BookmarksEntryTrashHandlerTest
 	}
 
 	@Override
+	public int searchBaseModelsCount(Class<?> clazz, long groupId)
+		throws Exception {
+
+		return _whenIsIndexableBaseModel.searchBaseModelsCount(clazz, groupId);
+	}
+
+	@Override
 	public int searchTrashEntriesCount(
 			String keywords, ServiceContext serviceContext)
 		throws Exception {
