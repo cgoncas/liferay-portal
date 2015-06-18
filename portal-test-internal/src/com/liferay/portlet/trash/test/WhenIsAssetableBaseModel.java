@@ -21,6 +21,8 @@ import com.liferay.portal.model.ClassedModel;
  */
 public interface WhenIsAssetableBaseModel {
 
+	public Long getAssetClassPK(ClassedModel classedModel);
+
 	public boolean isAssetEntryVisible(ClassedModel classedModel)
 		throws Exception;
 

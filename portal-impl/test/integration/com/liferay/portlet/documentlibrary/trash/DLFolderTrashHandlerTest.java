@@ -67,6 +67,11 @@ public class DLFolderTrashHandlerTest
 			SynchronousDestinationTestRule.INSTANCE);
 
 	@Override
+	public Long getAssetClassPK(ClassedModel classedModel) {
+		return (Long)classedModel.getPrimaryKeyObj();
+	}
+
+	@Override
 	public String getSearchKeywords() {
 		return _FOLDER_NAME;
 	}

@@ -76,6 +76,11 @@ public class WikiPageTrashHandlerTest
 	}
 
 	@Override
+	public Long getAssetClassPK(ClassedModel classedModel) {
+		return WikiPageAssetRenderer.getClassPK((WikiPage)classedModel);
+	}
+
+	@Override
 	public String getSearchKeywords() {
 		return WikiPageTrashHandlerTestUtil.getSearchKeywords();
 	}
@@ -277,11 +282,6 @@ public class WikiPageTrashHandlerTest
 
 		return WikiPageTrashHandlerTestUtil.addBaseModelWithWorkflow(
 			parentBaseModel, approved, serviceContext);
-	}
-
-	@Override
-	protected Long getAssetClassPK(ClassedModel classedModel) {
-		return WikiPageAssetRenderer.getClassPK((WikiPage)classedModel);
 	}
 
 	@Override

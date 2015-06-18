@@ -94,6 +94,27 @@ public class JournalArticleTrashHandlerTest
 			SynchronousDestinationTestRule.INSTANCE);
 
 	@Override
+	public Long getAssetClassPK(ClassedModel classedModel) {
+		if (classedModel instanceof JournalArticle) {
+			JournalArticle article = (JournalArticle)classedModel;
+
+			try {
+				JournalArticleResource journalArticleResource =
+					JournalArticleResourceLocalServiceUtil.getArticleResource(
+						article.getResourcePrimKey());
+
+				return journalArticleResource.getResourcePrimKey();
+			}
+			catch (Exception e) {
+				return (Long)classedModel.getPrimaryKeyObj();
+			}
+		}
+		else {
+			return (Long)classedModel.getPrimaryKeyObj();
+		}
+	}
+
+	@Override
 	public int getRecentBaseModelsCount(long groupId) throws Exception {
 		return JournalArticleServiceUtil.getGroupArticlesCount(
 			groupId, 0, JournalFolderConstants.DEFAULT_PARENT_FOLDER_ID);
@@ -274,27 +295,6 @@ public class JournalArticleTrashHandlerTest
 		return JournalArticleLocalServiceUtil.expireArticle(
 			article.getUserId(), article.getGroupId(), article.getArticleId(),
 			article.getVersion(), StringPool.BLANK, serviceContext);
-	}
-
-	@Override
-	protected Long getAssetClassPK(ClassedModel classedModel) {
-		if (classedModel instanceof JournalArticle) {
-			JournalArticle article = (JournalArticle)classedModel;
-
-			try {
-				JournalArticleResource journalArticleResource =
-					JournalArticleResourceLocalServiceUtil.getArticleResource(
-						article.getResourcePrimKey());
-
-				return journalArticleResource.getResourcePrimKey();
-			}
-			catch (Exception e) {
-				return super.getAssetClassPK(classedModel);
-			}
-		}
-		else {
-			return super.getAssetClassPK(classedModel);
-		}
 	}
 
 	@Override

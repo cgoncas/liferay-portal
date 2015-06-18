@@ -75,6 +75,11 @@ public class BookmarksEntryTrashHandlerTest
 			SynchronousDestinationTestRule.INSTANCE);
 
 	@Override
+	public Long getAssetClassPK(ClassedModel classedModel) {
+		return (Long)classedModel.getPrimaryKeyObj();
+	}
+
+	@Override
 	public int getRecentBaseModelsCount(long groupId) throws Exception {
 		return BookmarksEntryServiceUtil.getGroupEntriesCount(groupId, 0);
 	}

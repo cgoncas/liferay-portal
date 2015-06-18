@@ -1011,7 +1011,7 @@ public abstract class BaseTrashHandlerTestCase {
 			getBaseModelClassName());
 
 		boolean restorable = trashHandler.isRestorable(
-			getAssetClassPK(baseModel));
+			((WhenIsAssetableBaseModel)this).getAssetClassPK(baseModel));
 
 		Assert.assertFalse(restorable);
 	}
@@ -1326,7 +1326,7 @@ public abstract class BaseTrashHandlerTestCase {
 			getBaseModelClassName());
 
 		boolean restorable = trashHandler.isRestorable(
-			getAssetClassPK(baseModel));
+			((WhenIsAssetableBaseModel)this).getAssetClassPK(baseModel));
 
 		Assert.assertFalse(restorable);
 	}
@@ -1354,7 +1354,7 @@ public abstract class BaseTrashHandlerTestCase {
 			getBaseModelClassName());
 
 		boolean restorable = trashHandler.isRestorable(
-			getAssetClassPK(baseModel));
+			((WhenIsAssetableBaseModel)this).getAssetClassPK(baseModel));
 
 		Assert.assertFalse(restorable);
 	}
@@ -1390,7 +1390,7 @@ public abstract class BaseTrashHandlerTestCase {
 			getBaseModelClassName());
 
 		boolean restorable = trashHandler.isRestorable(
-			getAssetClassPK(baseModel));
+			((WhenIsAssetableBaseModel)this).getAssetClassPK(baseModel));
 
 		Assert.assertTrue(restorable);
 	}
@@ -1680,7 +1680,7 @@ public abstract class BaseTrashHandlerTestCase {
 			getBaseModelClassName());
 
 		boolean restorable = trashHandler.isRestorable(
-			getAssetClassPK(baseModel));
+			((WhenIsAssetableBaseModel)this).getAssetClassPK(baseModel));
 
 		Assert.assertTrue(restorable);
 	}
@@ -2755,10 +2755,6 @@ public abstract class BaseTrashHandlerTestCase {
 		long classPK = (Long)classedModel.getPrimaryKeyObj();
 
 		return AssetEntryLocalServiceUtil.fetchEntry(clazz.getName(), classPK);
-	}
-
-	protected Long getAssetClassPK(ClassedModel classedModel) {
-		return (Long)classedModel.getPrimaryKeyObj();
 	}
 
 	protected abstract BaseModel<?> getBaseModel(long primaryKey)
