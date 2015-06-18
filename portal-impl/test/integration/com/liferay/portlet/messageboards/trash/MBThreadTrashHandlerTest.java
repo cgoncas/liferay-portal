@@ -112,6 +112,19 @@ public class MBThreadTrashHandlerTest
 		MBCategoryServiceUtil.moveCategoryToTrash(primaryKey);
 	}
 
+	@Override
+	public int searchTrashEntriesCount(
+			String keywords, ServiceContext serviceContext)
+		throws Exception {
+
+		Hits results = TrashEntryLocalServiceUtil.search(
+			serviceContext.getCompanyId(), serviceContext.getScopeGroupId(),
+			serviceContext.getUserId(), keywords, QueryUtil.ALL_POS,
+			QueryUtil.ALL_POS, null);
+
+		return results.getLength();
+	}
+
 	@Test
 	public void testCategoryMessageCount() throws Exception {
 		ServiceContext serviceContext =

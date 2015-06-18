@@ -20,6 +20,8 @@ import com.liferay.journal.model.JournalFolderConstants;
 import com.liferay.journal.service.JournalFolderLocalServiceUtil;
 import com.liferay.journal.service.JournalFolderServiceUtil;
 import com.liferay.journal.test.util.JournalTestUtil;
+import com.liferay.portal.kernel.dao.orm.QueryUtil;
+import com.liferay.portal.kernel.search.Hits;
 import com.liferay.portal.kernel.test.rule.AggregateTestRule;
 import com.liferay.portal.kernel.test.rule.Sync;
 import com.liferay.portal.kernel.test.rule.SynchronousDestinationTestRule;
@@ -91,6 +93,19 @@ public class JournalFolderTrashHandlerTest
 	@Override
 	public void moveParentBaseModelToTrash(long primaryKey) throws Exception {
 		JournalFolderServiceUtil.moveFolderToTrash(primaryKey);
+	}
+
+	@Override
+	public int searchTrashEntriesCount(
+			String keywords, ServiceContext serviceContext)
+		throws Exception {
+
+		Hits results = TrashEntryLocalServiceUtil.search(
+			serviceContext.getCompanyId(), serviceContext.getScopeGroupId(),
+			serviceContext.getUserId(), keywords, QueryUtil.ALL_POS,
+			QueryUtil.ALL_POS, null);
+
+		return results.getLength();
 	}
 
 	@Before

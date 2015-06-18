@@ -19,6 +19,8 @@ import com.liferay.bookmarks.model.BookmarksFolder;
 import com.liferay.bookmarks.model.BookmarksFolderConstants;
 import com.liferay.bookmarks.service.BookmarksFolderLocalServiceUtil;
 import com.liferay.bookmarks.service.BookmarksFolderServiceUtil;
+import com.liferay.portal.kernel.dao.orm.QueryUtil;
+import com.liferay.portal.kernel.search.Hits;
 import com.liferay.portal.kernel.test.rule.AggregateTestRule;
 import com.liferay.portal.kernel.test.rule.Sync;
 import com.liferay.portal.kernel.test.rule.SynchronousDestinationTestRule;
@@ -33,6 +35,7 @@ import com.liferay.portal.model.Group;
 import com.liferay.portal.service.ServiceContext;
 import com.liferay.portal.service.test.ServiceTestUtil;
 import com.liferay.portal.test.rule.LiferayIntegrationTestRule;
+import com.liferay.portlet.trash.service.TrashEntryLocalServiceUtil;
 import com.liferay.portlet.trash.test.BaseTrashHandlerTestCase;
 import com.liferay.portlet.trash.test.WhenHasParent;
 import com.liferay.portlet.trash.test.WhenIsAssetableBaseModel;
@@ -90,6 +93,19 @@ public class BookmarksFolderTrashHandlerTest
 	@Override
 	public void moveParentBaseModelToTrash(long primaryKey) throws Exception {
 		BookmarksFolderServiceUtil.moveFolderToTrash(primaryKey);
+	}
+
+	@Override
+	public int searchTrashEntriesCount(
+			String keywords, ServiceContext serviceContext)
+		throws Exception {
+
+		Hits results = TrashEntryLocalServiceUtil.search(
+			serviceContext.getCompanyId(), serviceContext.getScopeGroupId(),
+			serviceContext.getUserId(), keywords, QueryUtil.ALL_POS,
+			QueryUtil.ALL_POS, null);
+
+		return results.getLength();
 	}
 
 	@Before

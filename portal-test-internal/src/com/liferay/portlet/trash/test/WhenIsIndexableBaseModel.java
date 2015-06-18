@@ -14,11 +14,17 @@
 
 package com.liferay.portlet.trash.test;
 
+import com.liferay.portal.service.ServiceContext;
+
 /**
  * @author Cristina González
  */
 public interface WhenIsIndexableBaseModel {
 
 	public String getSearchKeywords();
+
+	public int searchTrashEntriesCount(
+			String keywords, ServiceContext serviceContext)
+		throws Exception;
 
 }
