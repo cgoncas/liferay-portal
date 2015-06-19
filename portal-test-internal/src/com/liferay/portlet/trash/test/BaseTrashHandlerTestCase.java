@@ -1849,20 +1849,23 @@ public abstract class BaseTrashHandlerTestCase {
 		BaseModel<?> parentBaseModel = getParentBaseModel(
 			group, serviceContext);
 
-		int initialBaseModelsCount = getRecentBaseModelsCount(
-			group.getGroupId());
+		int initialBaseModelsCount =
+			((WhenHasRecentBaseModelCount)this).getRecentBaseModelsCount(
+				group.getGroupId());
 
 		addBaseModel(parentBaseModel, true, serviceContext);
 
 		Assert.assertEquals(
 			initialBaseModelsCount + 1,
-			getRecentBaseModelsCount(group.getGroupId()));
+			((WhenHasRecentBaseModelCount)this).getRecentBaseModelsCount(
+				group.getGroupId()));
 
 		moveParentBaseModelToTrash((Long)parentBaseModel.getPrimaryKeyObj());
 
 		Assert.assertEquals(
 			initialBaseModelsCount,
-			getRecentBaseModelsCount(group.getGroupId()));
+			((WhenHasRecentBaseModelCount)this).getRecentBaseModelsCount(
+				group.getGroupId()));
 	}
 
 	@Test
@@ -2651,10 +2654,6 @@ public abstract class BaseTrashHandlerTestCase {
 		Class<?> clazz = getParentBaseModelClass();
 
 		return clazz.getName();
-	}
-
-	protected int getRecentBaseModelsCount(long groupId) throws Exception {
-		return 0;
 	}
 
 	protected abstract String getSearchKeywords();
