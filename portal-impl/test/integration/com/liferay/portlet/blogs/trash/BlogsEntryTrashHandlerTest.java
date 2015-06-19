@@ -35,7 +35,6 @@ import com.liferay.portlet.trash.test.WhenHasDraftStatus;
 import com.liferay.portlet.trash.test.WhenIsAssetableBaseModel;
 import com.liferay.portlet.trash.test.WhenIsClassModel;
 import com.liferay.portlet.trash.test.WhenIsIndexableBaseModel;
-import com.liferay.portlet.trash.test.WhenIsParentRestorableFromTrash;
 
 import org.junit.ClassRule;
 import org.junit.Ignore;
@@ -50,7 +49,7 @@ import org.junit.Test;
 public class BlogsEntryTrashHandlerTest
 	extends BaseTrashHandlerTestCase
 	implements WhenHasDraftStatus, WhenIsAssetableBaseModel, WhenIsClassModel
-		WhenIsIndexableBaseModel, WhenIsParentRestorableFromTrash {
+		WhenIsIndexableBaseModel {
 
 	@ClassRule
 	@Rule
