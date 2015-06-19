@@ -60,6 +60,7 @@ import com.liferay.portlet.trash.test.WhenIsAssetableParentModel;
 import com.liferay.portlet.trash.test.WhenIsBaseModelMoveableFromTrash;
 import com.liferay.portlet.trash.test.WhenIsClassModel;
 import com.liferay.portlet.trash.test.WhenIsIndexableBaseModel;
+import com.liferay.portlet.trash.test.WhenIsParentRestorableFromTrash;
 import com.liferay.portlet.trash.util.TrashUtil;
 
 import java.util.List;
@@ -81,7 +82,7 @@ public class DLFileEntryTrashHandlerTest
 	implements WhenHasDraftStatus, WhenHasParent, WhenHasRecentBaseModelCount,
 		WhenIsAssetableBaseModel, WhenIsAssetableParentModel,
 		WhenIsBaseModelMoveableFromTrash, WhenIsClassModel,
-		WhenIsIndexableBaseModel {
+		WhenIsIndexableBaseModel, WhenIsParentRestorableFromTrash {
 
 	@ClassRule
 	@Rule

@@ -34,6 +34,7 @@ import com.liferay.portlet.trash.test.DefaultWhenIsClassModel;
 import com.liferay.portlet.trash.test.WhenHasParent;
 import com.liferay.portlet.trash.test.WhenIsBaseModelMoveableFromTrash;
 import com.liferay.portlet.trash.test.WhenIsClassModel;
+import com.liferay.portlet.trash.test.WhenIsParentRestorableFromTrash;
 
 import org.junit.ClassRule;
 import org.junit.Ignore;
@@ -47,7 +48,7 @@ import org.junit.Test;
 public class MBCategoryTrashHandlerTest
 	extends BaseTrashHandlerTestCase
 	implements WhenHasParent, WhenIsBaseModelMoveableFromTrash,
-		WhenIsClassModel {
+	WhenIsClassModel, WhenIsParentRestorableFromTrash {
 
 	@ClassRule
 	@Rule
