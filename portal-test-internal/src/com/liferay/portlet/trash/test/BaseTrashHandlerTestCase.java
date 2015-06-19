@@ -2381,6 +2381,7 @@ public abstract class BaseTrashHandlerTestCase {
 
 		Assume.assumeTrue(this instanceof WhenHasParent);
 		Assume.assumeFalse(this instanceof WhenIsBaseModelMoveableFromTrash);
+		Assume.assumeTrue(this instanceof WhenIsParentRestorableFromTrash);
 
 		ServiceContext serviceContext =
 			ServiceContextTestUtil.getServiceContext(group.getGroupId());
