@@ -44,7 +44,6 @@ import com.liferay.portlet.trash.test.BaseTrashHandlerTestCase;
 import com.liferay.portlet.trash.test.WhenHasParent;
 import com.liferay.portlet.trash.test.WhenIsAssetableParentModel;
 import com.liferay.portlet.trash.test.WhenIsBaseModelMoveableFromTrash;
-import com.liferay.portlet.trash.test.WhenIsParentRestorableFromTrash;
 
 import org.junit.Assert;
 import org.junit.ClassRule;
@@ -60,7 +59,7 @@ import org.junit.Test;
 public class DLFileShortcutTrashHandlerTest
 	extends BaseTrashHandlerTestCase
 	implements WhenHasParent, WhenIsAssetableParentModel,
-		WhenIsBaseModelMoveableFromTrash, WhenIsParentRestorableFromTrash {
+		WhenIsBaseModelMoveableFromTrash {
 
 	@ClassRule
 	@Rule
@@ -137,13 +136,6 @@ public class DLFileShortcutTrashHandlerTest
 	@Override
 	@Test
 	public void testTrashVersionParentBaseModel() throws Exception {
-	}
-
-	@Ignore
-	@Override
-	@Test
-	public void testTrashVersionParentBaseModelAndCustomRestore()
-		throws Exception {
 	}
 
 	@Ignore

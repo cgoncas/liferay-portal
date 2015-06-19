@@ -41,7 +41,6 @@ import com.liferay.portlet.trash.test.WhenIsAssetableBaseModel;
 import com.liferay.portlet.trash.test.WhenIsAssetableParentModel;
 import com.liferay.portlet.trash.test.WhenIsBaseModelMoveableFromTrash;
 import com.liferay.portlet.trash.test.WhenIsIndexableBaseModel;
-import com.liferay.portlet.trash.test.WhenIsParentRestorableFromTrash;
 
 import org.junit.After;
 import org.junit.Before;
@@ -60,7 +59,7 @@ public class BookmarksFolderTrashHandlerTest
 	extends BaseTrashHandlerTestCase
 	implements WhenHasParent, WhenIsAssetableBaseModel,
 		WhenIsAssetableParentModel, WhenIsBaseModelMoveableFromTrash,
-		WhenIsIndexableBaseModel, WhenIsParentRestorableFromTrash {
+		WhenIsIndexableBaseModel {
 
 	@ClassRule
 	@Rule
@@ -195,13 +194,6 @@ public class BookmarksFolderTrashHandlerTest
 	@Override
 	@Test
 	public void testTrashVersionParentBaseModel() throws Exception {
-	}
-
-	@Ignore
-	@Override
-	@Test
-	public void testTrashVersionParentBaseModelAndCustomRestore()
-		throws Exception {
 	}
 
 	@Ignore
