@@ -1841,6 +1841,8 @@ public abstract class BaseTrashHandlerTestCase {
 
 	@Test
 	public void testTrashRecentBaseModel() throws Exception {
+		Assume.assumeTrue(this instanceof WhenHasRecentBaseModelCount);
+
 		ServiceContext serviceContext =
 			ServiceContextTestUtil.getServiceContext(group.getGroupId());
 
