@@ -52,6 +52,11 @@ public class WikiNodeTrashHandlerTest
 			new LiferayIntegrationTestRule(),
 			SynchronousDestinationTestRule.INSTANCE);
 
+	@Override
+	public Long getAssetClassPK(ClassedModel classedModel) {
+		return (Long)classedModel.getPrimaryKeyObj();
+	}
+
 	@Ignore
 	@Override
 	@Test

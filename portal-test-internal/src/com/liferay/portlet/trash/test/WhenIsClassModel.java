@@ -14,8 +14,13 @@
 
 package com.liferay.portlet.trash.test;
 
+import com.liferay.portal.model.ClassedModel;
+
 /**
  * @author Cristina González
  */
 public interface WhenIsClassModel {
+
+	public Long getAssetClassPK(ClassedModel classedModel);
+
 }

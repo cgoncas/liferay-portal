@@ -994,6 +994,7 @@ public abstract class BaseTrashHandlerTestCase {
 		throws Exception {
 
 		Assume.assumeTrue(this instanceof WhenHasParent);
+		Assume.assumeTrue(this instanceof WhenIsClassModel);
 
 		ServiceContext serviceContext =
 			ServiceContextTestUtil.getServiceContext(group.getGroupId());
@@ -1011,7 +1012,7 @@ public abstract class BaseTrashHandlerTestCase {
 			getBaseModelClassName());
 
 		boolean restorable = trashHandler.isRestorable(
-			getAssetClassPK(baseModel));
+			((WhenIsClassModel)this).getAssetClassPK(baseModel));
 
 		Assert.assertFalse(restorable);
 	}
@@ -1301,6 +1302,7 @@ public abstract class BaseTrashHandlerTestCase {
 		throws Exception {
 
 		Assume.assumeTrue(this instanceof WhenHasParent);
+		Assume.assumeTrue(this instanceof WhenIsClassModel);
 
 		ServiceContext serviceContext =
 			ServiceContextTestUtil.getServiceContext(group.getGroupId());
@@ -1326,7 +1328,7 @@ public abstract class BaseTrashHandlerTestCase {
 			getBaseModelClassName());
 
 		boolean restorable = trashHandler.isRestorable(
-			getAssetClassPK(baseModel));
+			((WhenIsClassModel)this).getAssetClassPK(baseModel));
 
 		Assert.assertFalse(restorable);
 	}
@@ -1336,6 +1338,7 @@ public abstract class BaseTrashHandlerTestCase {
 		throws Exception {
 
 		Assume.assumeTrue(this instanceof WhenHasParent);
+		Assume.assumeTrue(this instanceof WhenIsClassModel);
 
 		ServiceContext serviceContext =
 			ServiceContextTestUtil.getServiceContext(group.getGroupId());
@@ -1354,7 +1357,7 @@ public abstract class BaseTrashHandlerTestCase {
 			getBaseModelClassName());
 
 		boolean restorable = trashHandler.isRestorable(
-			getAssetClassPK(baseModel));
+			((WhenIsClassModel)this).getAssetClassPK(baseModel));
 
 		Assert.assertFalse(restorable);
 	}
@@ -1376,6 +1379,8 @@ public abstract class BaseTrashHandlerTestCase {
 
 	@Test
 	public void testTrashBaseModelWithParentIsRestorable() throws Exception {
+		Assume.assumeTrue(this instanceof WhenIsClassModel);
+
 		ServiceContext serviceContext =
 			ServiceContextTestUtil.getServiceContext(group.getGroupId());
 
@@ -1390,7 +1395,7 @@ public abstract class BaseTrashHandlerTestCase {
 			getBaseModelClassName());
 
 		boolean restorable = trashHandler.isRestorable(
-			getAssetClassPK(baseModel));
+			((WhenIsClassModel)this).getAssetClassPK(baseModel));
 
 		Assert.assertTrue(restorable);
 	}
@@ -1669,6 +1674,8 @@ public abstract class BaseTrashHandlerTestCase {
 
 	@Test
 	public void testTrashIsRestorableBaseModel() throws Exception {
+		Assume.assumeTrue(this instanceof WhenIsClassModel);
+
 		ServiceContext serviceContext =
 			ServiceContextTestUtil.getServiceContext(group.getGroupId());
 
@@ -1680,7 +1687,7 @@ public abstract class BaseTrashHandlerTestCase {
 			getBaseModelClassName());
 
 		boolean restorable = trashHandler.isRestorable(
-			getAssetClassPK(baseModel));
+			((WhenIsClassModel)this).getAssetClassPK(baseModel));
 
 		Assert.assertTrue(restorable);
 	}
@@ -2755,10 +2762,6 @@ public abstract class BaseTrashHandlerTestCase {
 		long classPK = (Long)classedModel.getPrimaryKeyObj();
 
 		return AssetEntryLocalServiceUtil.fetchEntry(clazz.getName(), classPK);
-	}
-
-	protected Long getAssetClassPK(ClassedModel classedModel) {
-		return (Long)classedModel.getPrimaryKeyObj();
 	}
 
 	protected abstract BaseModel<?> getBaseModel(long primaryKey)

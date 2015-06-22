@@ -67,6 +67,11 @@ public class WikiPageTrashHandlerTest
 			SynchronousDestinationTestRule.INSTANCE);
 
 	@Override
+	public Long getAssetClassPK(ClassedModel classedModel) {
+		return WikiPageAssetRenderer.getClassPK((WikiPage)classedModel);
+	}
+
+	@Override
 	public String getSearchKeywords() {
 		return WikiPageTrashHandlerTestUtil.getSearchKeywords();
 	}
@@ -278,11 +283,6 @@ public class WikiPageTrashHandlerTest
 		WikiNode node = (WikiNode)parentBaseModel;
 
 		WikiNodeServiceUtil.deleteNode(node.getNodeId());
-	}
-
-	@Override
-	protected Long getAssetClassPK(ClassedModel classedModel) {
-		return WikiPageAssetRenderer.getClassPK((WikiPage)classedModel);
 	}
 
 	@Override

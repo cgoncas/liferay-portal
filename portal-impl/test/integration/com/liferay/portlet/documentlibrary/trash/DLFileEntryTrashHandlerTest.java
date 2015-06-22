@@ -92,6 +92,11 @@ public class DLFileEntryTrashHandlerTest
 			SynchronousDestinationTestRule.INSTANCE);
 
 	@Override
+	public Long getAssetClassPK(ClassedModel classedModel) {
+		return (Long)classedModel.getPrimaryKeyObj();
+	}
+
+	@Override
 	public int getRecentBaseModelsCount(long groupId) throws Exception {
 		return DLAppServiceUtil.getGroupFileEntriesCount(
 			groupId, 0, DLFolderConstants.DEFAULT_PARENT_FOLDER_ID, null,
