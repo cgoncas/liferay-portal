@@ -31,6 +31,7 @@ import com.liferay.portlet.blogs.model.BlogsEntry;
 import com.liferay.portlet.blogs.service.BlogsEntryLocalServiceUtil;
 import com.liferay.portlet.blogs.util.test.BlogsTestUtil;
 import com.liferay.portlet.trash.test.BaseTrashHandlerTestCase;
+import com.liferay.portlet.trash.test.DefaultWhenIsClassModel;
 import com.liferay.portlet.trash.test.DefaultWhenIsIndexableBaseModel;
 import com.liferay.portlet.trash.test.WhenHasDraftStatus;
 import com.liferay.portlet.trash.test.WhenIsAssetableBaseModel;
@@ -61,7 +62,7 @@ public class BlogsEntryTrashHandlerTest
 
 	@Override
 	public Long getAssetClassPK(ClassedModel classedModel) {
-		return (Long)classedModel.getPrimaryKeyObj();
+		return _whenIsClassModel.getAssetClassPK(classedModel);
 	}
 
 	@Override
@@ -200,6 +201,8 @@ public class BlogsEntryTrashHandlerTest
 			TestPropsValues.getUserId(), primaryKey);
 	}
 
+	private static final WhenIsClassModel _whenIsClassModel =
+		new DefaultWhenIsClassModel();
 	private static final WhenIsIndexableBaseModel
 		_whenIsIndexableBaseModel = new DefaultWhenIsIndexableBaseModel();
 

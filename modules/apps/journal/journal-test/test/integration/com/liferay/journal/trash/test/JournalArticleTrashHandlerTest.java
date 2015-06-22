@@ -53,6 +53,7 @@ import com.liferay.portlet.dynamicdatamapping.model.DDMTemplate;
 import com.liferay.portlet.dynamicdatamapping.util.test.DDMStructureTestUtil;
 import com.liferay.portlet.dynamicdatamapping.util.test.DDMTemplateTestUtil;
 import com.liferay.portlet.trash.test.BaseTrashHandlerTestCase;
+import com.liferay.portlet.trash.test.DefaultWhenIsClassModel;
 import com.liferay.portlet.trash.test.DefaultWhenIsIndexableBaseModel;
 import com.liferay.portlet.trash.test.WhenHasDraftStatus;
 import com.liferay.portlet.trash.test.WhenHasParent;
@@ -108,11 +109,11 @@ public class JournalArticleTrashHandlerTest
 				return journalArticleResource.getResourcePrimKey();
 			}
 			catch (Exception e) {
-				return super.getAssetClassPK(classedModel);
+				return _whenIsClassModel.getAssetClassPK(classedModel);
 			}
 		}
 		else {
-			return super.getAssetClassPK(classedModel);
+			return _whenIsClassModel.getAssetClassPK(classedModel);
 		}
 	}
 
@@ -417,6 +418,8 @@ public class JournalArticleTrashHandlerTest
 
 	private static final int _FOLDER_NAME_MAX_LENGTH = 100;
 
+	private static final WhenIsClassModel _whenIsClassModel =
+		new DefaultWhenIsClassModel();
 	private static final WhenIsIndexableBaseModel
 		_whenIsIndexableBaseModel = new DefaultWhenIsIndexableBaseModel();
 

@@ -71,7 +71,7 @@ public class JournalFolderTrashHandlerTest
 
 	@Override
 	public Long getAssetClassPK(ClassedModel classedModel) {
-		return (Long)classedModel.getPrimaryKeyObj();
+		return _whenIsClassModel.getAssetClassPK(classedModel);
 	}
 
 	@Override
@@ -355,6 +355,8 @@ public class JournalFolderTrashHandlerTest
 
 	private static final int _FOLDER_NAME_MAX_LENGTH = 100;
 
+	private static final WhenIsClassModel _whenIsClassModel =
+		new DefaultWhenIsClassModel();
 	private static final WhenIsIndexableBaseModel
 		_whenIsIndexableBaseModel = new DefaultWhenIsIndexableBaseModel();
 

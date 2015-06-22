@@ -30,6 +30,7 @@ import com.liferay.portlet.messageboards.model.MBCategory;
 import com.liferay.portlet.messageboards.model.MBCategoryConstants;
 import com.liferay.portlet.messageboards.service.MBCategoryLocalServiceUtil;
 import com.liferay.portlet.trash.test.BaseTrashHandlerTestCase;
+import com.liferay.portlet.trash.test.DefaultWhenIsClassModel;
 import com.liferay.portlet.trash.test.WhenHasParent;
 import com.liferay.portlet.trash.test.WhenIsBaseModelMoveableFromTrash;
 import com.liferay.portlet.trash.test.WhenIsClassModel;
@@ -57,7 +58,7 @@ public class MBCategoryTrashHandlerTest
 
 	@Override
 	public Long getAssetClassPK(ClassedModel classedModel) {
-		return (Long)classedModel.getPrimaryKeyObj();
+		return _whenIsClassModel.getAssetClassPK(classedModel);
 	}
 
 	@Override
@@ -278,5 +279,8 @@ public class MBCategoryTrashHandlerTest
 	}
 
 	private static final String _TITLE = "Title";
+
+	private static final WhenIsClassModel _whenIsClassModel =
+		new DefaultWhenIsClassModel();
 
 }

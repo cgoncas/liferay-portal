@@ -19,6 +19,7 @@ import com.liferay.portal.kernel.test.rule.Sync;
 import com.liferay.portal.kernel.test.rule.SynchronousDestinationTestRule;
 import com.liferay.portal.kernel.test.util.TestPropsValues;
 import com.liferay.portal.model.BaseModel;
+import com.liferay.portal.model.ClassedModel;
 import com.liferay.portal.model.Group;
 import com.liferay.portal.service.ServiceContext;
 import com.liferay.portal.test.rule.LiferayIntegrationTestRule;
@@ -28,6 +29,7 @@ import com.liferay.portlet.exportimport.model.ExportImportConfiguration;
 import com.liferay.portlet.exportimport.service.ExportImportConfigurationLocalServiceUtil;
 import com.liferay.portlet.layoutsadmin.util.test.ExportImportConfigurationTestUtil;
 import com.liferay.portlet.trash.test.BaseTrashHandlerTestCase;
+import com.liferay.portlet.trash.test.DefaultWhenIsClassModel;
 import com.liferay.portlet.trash.test.WhenHasDraftStatus;
 import com.liferay.portlet.trash.test.WhenIsClassModel;
 
@@ -53,7 +55,7 @@ public class ExportImportConfigurationTrashHandlerTest
 
 	@Override
 	public Long getAssetClassPK(ClassedModel classedModel) {
-		return (Long)classedModel.getPrimaryKeyObj();
+		return _whenIsClassModel.getAssetClassPK(classedModel);
 	}
 
 	@Ignore
@@ -149,5 +151,8 @@ public class ExportImportConfigurationTrashHandlerTest
 			moveExportImportConfigurationToTrash(
 				TestPropsValues.getUserId(), primaryKey);
 	}
+
+	private static final WhenIsClassModel _whenIsClassModel =
+		new DefaultWhenIsClassModel();
 
 }

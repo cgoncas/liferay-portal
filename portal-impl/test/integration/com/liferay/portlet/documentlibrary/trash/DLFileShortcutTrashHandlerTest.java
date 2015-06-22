@@ -41,6 +41,7 @@ import com.liferay.portlet.documentlibrary.service.DLFileShortcutLocalServiceUti
 import com.liferay.portlet.documentlibrary.service.DLFolderLocalServiceUtil;
 import com.liferay.portlet.documentlibrary.util.test.DLAppTestUtil;
 import com.liferay.portlet.trash.test.BaseTrashHandlerTestCase;
+import com.liferay.portlet.trash.test.DefaultWhenIsClassModel;
 import com.liferay.portlet.trash.test.WhenHasParent;
 import com.liferay.portlet.trash.test.WhenIsAssetableParentModel;
 import com.liferay.portlet.trash.test.WhenIsBaseModelMoveableFromTrash;
@@ -71,7 +72,7 @@ public class DLFileShortcutTrashHandlerTest
 
 	@Override
 	public Long getAssetClassPK(ClassedModel classedModel) {
-		return (Long)classedModel.getPrimaryKeyObj();
+		return _whenIsClassModel.getAssetClassPK(classedModel);
 	}
 
 	@Override
@@ -342,5 +343,8 @@ public class DLFileShortcutTrashHandlerTest
 
 		return dlFileShortcut;
 	}
+
+	private static final WhenIsClassModel _whenIsClassModel =
+		new DefaultWhenIsClassModel();
 
 }
