@@ -19,7 +19,7 @@ import com.liferay.portal.model.ClassedModel;
 /**
  * @author Cristina González
  */
-public interface WhenIsAssetableBaseModel {
+public interface WhenIsAssetableBaseModel extends WhenIsClassModel {
 
 	public boolean isAssetEntryVisible(ClassedModel classedModel)
 		throws Exception;
