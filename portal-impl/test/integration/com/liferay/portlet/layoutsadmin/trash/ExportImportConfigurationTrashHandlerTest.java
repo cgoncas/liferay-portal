@@ -28,6 +28,7 @@ import com.liferay.portlet.exportimport.model.ExportImportConfiguration;
 import com.liferay.portlet.exportimport.service.ExportImportConfigurationLocalServiceUtil;
 import com.liferay.portlet.layoutsadmin.util.test.ExportImportConfigurationTestUtil;
 import com.liferay.portlet.trash.test.BaseTrashHandlerTestCase;
+import com.liferay.portlet.trash.test.WhenHasDraftStatus;
 
 import org.junit.ClassRule;
 import org.junit.Ignore;
@@ -39,7 +40,7 @@ import org.junit.Test;
  */
 @Sync
 public class ExportImportConfigurationTrashHandlerTest
-	extends BaseTrashHandlerTestCase {
+	extends BaseTrashHandlerTestCase implements WhenHasDraftStatus {
 
 	@ClassRule
 	@Rule
@@ -51,66 +52,7 @@ public class ExportImportConfigurationTrashHandlerTest
 	@Ignore
 	@Override
 	@Test
-	public void testDeleteTrashVersions() throws Exception {
-	}
-
-	@Ignore
-	@Override
-	@Test
-	public void testTrashBaseModelAndDeleteWithParentIsNotRestorable()
-		throws Exception {
-	}
-
-	@Ignore
-	@Override
-	@Test
-	public void testTrashBaseModelAndParent() throws Exception {
-	}
-
-	@Ignore
-	@Override
-	@Test
-	public void testTrashBaseModelAndParentAndDeleteGroupTrashEntries()
-		throws Exception {
-	}
-
-	@Ignore
-	@Override
-	@Test
-	public void testTrashBaseModelAndParentAndDeleteParent() throws Exception {
-	}
-
-	@Ignore
-	@Override
-	@Test
-	public void testTrashBaseModelAndParentAndRestoreModel() throws Exception {
-	}
-
-	@Ignore
-	@Override
-	@Test
-	public void testTrashBaseModelAndParentAndRestoreModelIsVisible()
-		throws Exception {
-	}
-
-	@Ignore
-	@Override
-	@Test
-	public void testTrashBaseModelAndParentIsNotVisible() throws Exception {
-	}
-
-	@Ignore
-	@Override
-	@Test
-	public void testTrashBaseModelAndTrashParentAndDeleteParentIsNotRestorable()
-		throws Exception {
-	}
-
-	@Ignore
-	@Override
-	@Test
-	public void testTrashBaseModelAndTrashParentIsNotRestorable()
-		throws Exception {
+	public void testTrashBaseModelIsInTrashContainer() throws Exception {
 	}
 
 	@Ignore
@@ -128,62 +70,7 @@ public class ExportImportConfigurationTrashHandlerTest
 	@Ignore
 	@Override
 	@Test
-	public void testTrashGrandparentBaseModel() throws Exception {
-	}
-
-	@Ignore
-	@Override
-	@Test
-	public void testTrashGrandparentBaseModelAndRestoreParentModel()
-		throws Exception {
-	}
-
-	@Ignore
-	@Override
-	@Test
 	public void testTrashIsRestorableBaseModel() throws Exception {
-	}
-
-	@Ignore
-	@Override
-	@Test
-	public void testTrashMoveBaseModel() throws Exception {
-	}
-
-	@Ignore
-	@Override
-	@Test
-	public void testTrashMoveBaseModelIndexable() throws Exception {
-	}
-
-	@Ignore
-	@Override
-	@Test
-	public void testTrashMyBaseModel() throws Exception {
-	}
-
-	@Ignore
-	@Override
-	@Test
-	public void testTrashParent() throws Exception {
-	}
-
-	@Ignore
-	@Override
-	@Test
-	public void testTrashParentAndDeleteGroupTrashEntries() throws Exception {
-	}
-
-	@Ignore
-	@Override
-	@Test
-	public void testTrashParentAndDeleteParent() throws Exception {
-	}
-
-	@Ignore
-	@Override
-	@Test
-	public void testTrashRecentBaseModel() throws Exception {
 	}
 
 	@Ignore
@@ -195,7 +82,7 @@ public class ExportImportConfigurationTrashHandlerTest
 	@Ignore
 	@Override
 	@Test
-	public void testTrashVersionBaseModelAndDeleteIndexable() throws Exception {
+	public void testTrashVersionBaseModelAndDeleteIsNotFound() throws Exception {
 	}
 
 	@Ignore
@@ -207,39 +94,8 @@ public class ExportImportConfigurationTrashHandlerTest
 	@Ignore
 	@Override
 	@Test
-	public void testTrashVersionBaseModelAndRestoreIndexable()
-		throws Exception {
-	}
-
-	@Ignore
-	@Override
-	@Test
 	public void testTrashVersionBaseModelAndRestoreIsVisible()
 		throws Exception {
-	}
-
-	@Ignore
-	@Override
-	@Test
-	public void testTrashVersionParentBaseModel() throws Exception {
-	}
-
-	@Ignore
-	@Override
-	@Test
-	public void testTrashVersionParentBaseModelAndRestore() throws Exception {
-	}
-
-	@Ignore
-	@Override
-	@Test
-	public void testTrashVersionParentBaseModelIndexable() throws Exception {
-	}
-
-	@Ignore
-	@Override
-	@Test
-	public void testTrashVersionParentBaseModelIsNotVisible() throws Exception {
 	}
 
 	@Override
@@ -276,23 +132,8 @@ public class ExportImportConfigurationTrashHandlerTest
 	}
 
 	@Override
-	protected String getSearchKeywords() {
-		return null;
-	}
-
-	@Override
 	protected String getUniqueTitle(BaseModel<?> baseModel) {
 		return null;
-	}
-
-	@Override
-	protected boolean isAssetableModel() {
-		return false;
-	}
-
-	@Override
-	protected boolean isBaseModelMoveableFromTrash() {
-		return false;
 	}
 
 	@Override

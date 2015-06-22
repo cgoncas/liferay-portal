@@ -14,20 +14,29 @@
 
 package com.liferay.portlet.trash.test;
 
-import com.liferay.portal.service.ServiceContext;
+import com.liferay.portal.model.ClassedModel;
+import com.liferay.portlet.asset.model.AssetEntry;
+import com.liferay.portlet.asset.service.AssetEntryLocalServiceUtil;
 
 /**
  * @author Cristina González
  */
-public interface WhenIsIndexableBaseModel {
+public class DefaultWhenIsAssetableBaseModel
+	implements WhenIsAssetableBaseModel {
 
-	public String getSearchKeywords();
+	@Override
+	public Long getAssetClassPK(ClassedModel classedModel) {
+		return (Long)classedModel.getPrimaryKeyObj();
+	}
 
-	public int searchBaseModelsCount(Class<?> clazz, long groupId)
-		throws Exception;
+	@Override
+	public boolean isAssetEntryVisible(ClassedModel classedModel)
+		throws Exception {
 
-	public int searchTrashEntriesCount(
-			String keywords, ServiceContext serviceContext)
-		throws Exception;
+		AssetEntry assetEntry = AssetEntryLocalServiceUtil.getEntry(
+			classedModel.getModelClassName(), getAssetClassPK(classedModel));
+
+		return assetEntry.isVisible();
+	}
 
 }

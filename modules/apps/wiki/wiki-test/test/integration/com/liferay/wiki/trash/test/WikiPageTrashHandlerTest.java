@@ -27,10 +27,15 @@ import com.liferay.portal.service.ServiceContext;
 import com.liferay.portal.service.test.ServiceTestUtil;
 import com.liferay.portal.test.rule.LiferayIntegrationTestRule;
 import com.liferay.portlet.trash.test.BaseTrashHandlerTestCase;
+import com.liferay.portlet.trash.test.DefaultWhenIsAssetableBaseModel;
+import com.liferay.portlet.trash.test.DefaultWhenIsIndexableBaseModel;
+import com.liferay.portlet.trash.test.WhenHasParent;
+import com.liferay.portlet.trash.test.WhenIsAssetableBaseModel;
 import com.liferay.portlet.trash.test.WhenIsIndexableBaseModel;
 import com.liferay.wiki.asset.WikiPageAssetRenderer;
 import com.liferay.wiki.model.WikiNode;
 import com.liferay.wiki.model.WikiPage;
+import com.liferay.wiki.service.WikiNodeServiceUtil;
 import com.liferay.wiki.util.test.WikiPageTrashHandlerTestUtil;
 
 import org.junit.After;
@@ -48,7 +53,9 @@ import org.junit.runner.RunWith;
 @RunWith(Arquillian.class)
 @Sync
 public class WikiPageTrashHandlerTest
-	extends BaseTrashHandlerTestCase implements WhenIsIndexableBaseModel {
+	extends BaseTrashHandlerTestCase
+	implements WhenHasParent, WhenIsAssetableBaseModel,
+		WhenIsIndexableBaseModel {
 
 	@ClassRule
 	@Rule
@@ -56,6 +63,54 @@ public class WikiPageTrashHandlerTest
 		new AggregateTestRule(
 			new LiferayIntegrationTestRule(),
 			SynchronousDestinationTestRule.INSTANCE);
+
+	@Override
+	public void deleteParentBaseModel(
+			BaseModel<?> parentBaseModel, boolean includeTrashedEntries)
+		throws Exception {
+
+		WikiNode node = (WikiNode)parentBaseModel;
+
+		WikiNodeServiceUtil.deleteNode(node.getNodeId());
+	}
+
+	@Override
+	public Long getAssetClassPK(ClassedModel classedModel) {
+		return WikiPageAssetRenderer.getClassPK((WikiPage)classedModel);
+	}
+
+	@Override
+	public String getSearchKeywords() {
+		return WikiPageTrashHandlerTestUtil.getSearchKeywords();
+	}
+
+	@Override
+	public boolean isAssetEntryVisible(ClassedModel classedModel)
+		throws Exception {
+
+		return _whenIsAssetableBaseModel.isAssetEntryVisible(classedModel);
+	}
+
+	@Override
+	public void moveParentBaseModelToTrash(long primaryKey) throws Exception {
+		WikiPageTrashHandlerTestUtil.moveParentBaseModelToTrash(primaryKey);
+	}
+
+	@Override
+	public int searchBaseModelsCount(Class<?> clazz, long groupId)
+		throws Exception {
+
+		return _whenIsIndexableBaseModel.searchBaseModelsCount(clazz, groupId);
+	}
+
+	@Override
+	public int searchTrashEntriesCount(
+			String keywords, ServiceContext serviceContext)
+		throws Exception {
+
+		return _whenIsIndexableBaseModel.searchTrashEntriesCount(
+			keywords, serviceContext);
+	}
 
 	@Before
 	@Override
@@ -72,75 +127,6 @@ public class WikiPageTrashHandlerTest
 	@After
 	public void tearDown() throws Exception {
 		PortalRunMode.setTestMode(_testMode);
-	}
-
-	@Override
-	@Test
-	public void testAddBaseModelWithDraftStatus() throws Exception {
-	}
-
-	@Ignore
-	@Override
-	@Test
-	public void testAddBaseModelWithDraftStatusIndexable() throws Exception {
-	}
-
-	@Ignore
-	@Override
-	@Test
-	public void testAddBaseModelWithDraftStatusIsNotVisible() throws Exception {
-	}
-
-	@Ignore
-	@Override
-	@Test
-	public void testTrashAndDeleteWithDraftStatus() throws Exception {
-	}
-
-	@Ignore
-	@Override
-	@Test
-	public void testTrashAndDeleteWithDraftStatusIndexable() throws Exception {
-	}
-
-	@Ignore
-	@Override
-	@Test
-	public void testTrashAndRestoreWithDraftStatus() throws Exception {
-	}
-
-	@Ignore
-	@Override
-	@Test
-	public void testTrashAndRestoreWithDraftStatusIndexable() throws Exception {
-	}
-
-	@Ignore
-	@Override
-	@Test
-	public void testTrashAndRestoreWithDraftStatusIsNotVisible()
-		throws Exception {
-	}
-
-	@Ignore
-	@Override
-	@Test
-	public void testTrashAndRestoreWithDraftStatusRestoreStatus()
-		throws Exception {
-	}
-
-	@Ignore
-	@Override
-	@Test
-	public void testTrashAndRestoreWithDraftStatusRestoreUniqueTitle()
-		throws Exception {
-	}
-
-	@Ignore
-	@Override
-	@Test
-	public void testTrashBaseModelAndDeleteWithParentIsNotRestorable()
-		throws Exception {
 	}
 
 	@Ignore
@@ -179,19 +165,27 @@ public class WikiPageTrashHandlerTest
 	@Ignore
 	@Override
 	@Test
+	public void testTrashGrandparentBaseModelAndRestoreParentModelIsNotInTrashContainer()
+		throws Exception {
+	}
+
+	@Ignore
+	@Override
+	@Test
+	public void testTrashGrandparentBaseModelAndRestoreParentModelIsVisible()
+		throws Exception {
+	}
+
+	@Ignore
+	@Override
+	@Test
+	public void testTrashGrandparentBaseModelIsNotVisible() throws Exception {
+	}
+
+	@Ignore
+	@Override
+	@Test
 	public void testTrashIsRestorableBaseModel() throws Exception {
-	}
-
-	@Ignore
-	@Override
-	@Test
-	public void testTrashMoveBaseModel() throws Exception {
-	}
-
-	@Ignore
-	@Override
-	@Test
-	public void testTrashMoveBaseModelIndexable() throws Exception {
 	}
 
 	@Ignore
@@ -203,7 +197,32 @@ public class WikiPageTrashHandlerTest
 	@Ignore
 	@Override
 	@Test
-	public void testTrashRecentBaseModel() throws Exception {
+	public void testTrashParentAndRestoreBaseModelIsVisible() throws Exception {
+	}
+
+	@Ignore
+	@Override
+	@Test
+	public void testTrashParentAndRestoreIndexable() throws Exception {
+	}
+
+	@Ignore
+	@Override
+	@Test
+	public void testTrashParentIndexable() throws Exception {
+	}
+
+	@Ignore
+	@Override
+	@Test
+	public void testTrashParentWithBaseModelIsInTrashContainer()
+		throws Exception {
+	}
+
+	@Ignore
+	@Override
+	@Test
+	public void testTrashParentWithBaseModelIsIsNotVisible() throws Exception {
 	}
 
 	@Ignore
@@ -216,6 +235,20 @@ public class WikiPageTrashHandlerTest
 	@Override
 	@Test
 	public void testTrashVersionParentBaseModelAndRestore() throws Exception {
+	}
+
+	@Ignore
+	@Override
+	@Test
+	public void testTrashVersionParentBaseModelAndRestoreIsNotInTrashContainer()
+		throws Exception {
+	}
+
+	@Ignore
+	@Override
+	@Test
+	public void testTrashVersionParentBaseModelAndRestoreIsVisible()
+		throws Exception {
 	}
 
 	@Ignore
@@ -238,11 +271,6 @@ public class WikiPageTrashHandlerTest
 
 		return WikiPageTrashHandlerTestUtil.addBaseModelWithWorkflow(
 			parentBaseModel, approved, serviceContext);
-	}
-
-	@Override
-	protected Long getAssetClassPK(ClassedModel classedModel) {
-		return WikiPageAssetRenderer.getClassPK((WikiPage)classedModel);
 	}
 
 	@Override
@@ -283,11 +311,6 @@ public class WikiPageTrashHandlerTest
 	}
 
 	@Override
-	protected String getSearchKeywords() {
-		return WikiPageTrashHandlerTestUtil.getSearchKeywords();
-	}
-
-	@Override
 	protected long getTrashEntryClassPK(ClassedModel classedModel) {
 		return WikiPageTrashHandlerTestUtil.getTrashEntryClassPK(classedModel);
 	}
@@ -298,20 +321,8 @@ public class WikiPageTrashHandlerTest
 	}
 
 	@Override
-	protected boolean isBaseModelMoveableFromTrash() {
-		return false;
-	}
-
-	@Override
 	protected void moveBaseModelToTrash(long primaryKey) throws Exception {
 		WikiPageTrashHandlerTestUtil.moveBaseModelToTrash(primaryKey);
-	}
-
-	@Override
-	protected void moveParentBaseModelToTrash(long primaryKey)
-		throws Exception {
-
-		WikiPageTrashHandlerTestUtil.moveParentBaseModelToTrash(primaryKey);
 	}
 
 	@Override
@@ -322,6 +333,11 @@ public class WikiPageTrashHandlerTest
 		return WikiPageTrashHandlerTestUtil.updateBaseModel(
 			primaryKey, serviceContext);
 	}
+
+	private static final WhenIsAssetableBaseModel
+		_whenIsAssetableBaseModel = new DefaultWhenIsAssetableBaseModel();
+	private static final WhenIsIndexableBaseModel
+		_whenIsIndexableBaseModel = new DefaultWhenIsIndexableBaseModel();
 
 	private boolean _testMode;
 

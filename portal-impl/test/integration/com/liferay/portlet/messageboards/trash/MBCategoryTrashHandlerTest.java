@@ -30,6 +30,8 @@ import com.liferay.portlet.messageboards.model.MBCategory;
 import com.liferay.portlet.messageboards.model.MBCategoryConstants;
 import com.liferay.portlet.messageboards.service.MBCategoryLocalServiceUtil;
 import com.liferay.portlet.trash.test.BaseTrashHandlerTestCase;
+import com.liferay.portlet.trash.test.WhenHasParent;
+import com.liferay.portlet.trash.test.WhenIsBaseModelMoveableFromTrash;
 
 import org.junit.ClassRule;
 import org.junit.Ignore;
@@ -40,7 +42,9 @@ import org.junit.Test;
  * @author Eduardo Garcia
  */
 @Sync
-public class MBCategoryTrashHandlerTest extends BaseTrashHandlerTestCase {
+public class MBCategoryTrashHandlerTest
+	extends BaseTrashHandlerTestCase
+	implements WhenHasParent, WhenIsBaseModelMoveableFromTrash {
 
 	@ClassRule
 	@Rule
@@ -49,49 +53,26 @@ public class MBCategoryTrashHandlerTest extends BaseTrashHandlerTestCase {
 			new LiferayIntegrationTestRule(), MainServletTestRule.INSTANCE,
 			SynchronousDestinationTestRule.INSTANCE);
 
-	@Ignore
 	@Override
-	@Test
-	public void testTrashAndDeleteWithDraftStatus() throws Exception {
-	}
-
-	@Ignore
-	@Override
-	@Test
-	public void testTrashAndDeleteWithDraftStatusIndexable() throws Exception {
-	}
-
-	@Ignore
-	@Override
-	@Test
-	public void testTrashAndRestoreWithDraftStatus() throws Exception {
-	}
-
-	@Ignore
-	@Override
-	@Test
-	public void testTrashAndRestoreWithDraftStatusIndexable() throws Exception {
-	}
-
-	@Ignore
-	@Override
-	@Test
-	public void testTrashAndRestoreWithDraftStatusIsNotVisible()
+	public BaseModel<?> moveBaseModelFromTrash(
+			ClassedModel classedModel, Group group,
+			ServiceContext serviceContext)
 		throws Exception {
+
+		BaseModel<?> parentBaseModel = getParentBaseModel(
+			group, serviceContext);
+
+		MBCategoryLocalServiceUtil.moveCategoryFromTrash(
+			TestPropsValues.getUserId(), (Long)classedModel.getPrimaryKeyObj(),
+			(Long)parentBaseModel.getPrimaryKeyObj());
+
+		return parentBaseModel;
 	}
 
-	@Ignore
 	@Override
-	@Test
-	public void testTrashAndRestoreWithDraftStatusRestoreStatus()
-		throws Exception {
-	}
-
-	@Ignore
-	@Override
-	@Test
-	public void testTrashAndRestoreWithDraftStatusRestoreUniqueTitle()
-		throws Exception {
+	public void moveParentBaseModelToTrash(long primaryKey) throws Exception {
+		MBCategoryLocalServiceUtil.moveCategoryToTrash(
+			TestPropsValues.getUserId(), primaryKey);
 	}
 
 	@Ignore
@@ -109,32 +90,20 @@ public class MBCategoryTrashHandlerTest extends BaseTrashHandlerTestCase {
 	@Ignore
 	@Override
 	@Test
-	public void testTrashRecentBaseModel() throws Exception {
-	}
-
-	@Ignore
-	@Override
-	@Test
 	public void testTrashVersionBaseModelAndDelete() throws Exception {
 	}
 
 	@Ignore
 	@Override
 	@Test
-	public void testTrashVersionBaseModelAndDeleteIndexable() throws Exception {
+	public void testTrashVersionBaseModelAndDeleteIsNotFound()
+		throws Exception {
 	}
 
 	@Ignore
 	@Override
 	@Test
 	public void testTrashVersionBaseModelAndRestore() throws Exception {
-	}
-
-	@Ignore
-	@Override
-	@Test
-	public void testTrashVersionBaseModelAndRestoreIndexable()
-		throws Exception {
 	}
 
 	@Ignore
@@ -159,6 +128,20 @@ public class MBCategoryTrashHandlerTest extends BaseTrashHandlerTestCase {
 	@Ignore
 	@Override
 	@Test
+	public void testTrashVersionParentBaseModelAndRestoreIsNotInTrashContainer()
+		throws Exception {
+	}
+
+	@Ignore
+	@Override
+	@Test
+	public void testTrashVersionParentBaseModelAndRestoreIsVisible()
+		throws Exception {
+	}
+
+	@Ignore
+	@Override
+	@Test
 	public void testTrashVersionParentBaseModelIndexable() throws Exception {
 	}
 
@@ -177,8 +160,8 @@ public class MBCategoryTrashHandlerTest extends BaseTrashHandlerTestCase {
 		MBCategory parentCategory = (MBCategory)parentBaseModel;
 
 		return MBCategoryLocalServiceUtil.addCategory(
-			TestPropsValues.getUserId(), parentCategory.getCategoryId(),
-			getSearchKeywords(), StringPool.BLANK, serviceContext);
+			TestPropsValues.getUserId(), parentCategory.getCategoryId(), _TITLE,
+			StringPool.BLANK, serviceContext);
 	}
 
 	@Override
@@ -188,7 +171,7 @@ public class MBCategoryTrashHandlerTest extends BaseTrashHandlerTestCase {
 
 		return MBCategoryLocalServiceUtil.addCategory(
 			TestPropsValues.getUserId(),
-			MBCategoryConstants.DEFAULT_PARENT_CATEGORY_ID, getSearchKeywords(),
+			MBCategoryConstants.DEFAULT_PARENT_CATEGORY_ID, _TITLE,
 			StringPool.BLANK, serviceContext);
 	}
 
@@ -236,7 +219,7 @@ public class MBCategoryTrashHandlerTest extends BaseTrashHandlerTestCase {
 		throws Exception {
 
 		return MBCategoryLocalServiceUtil.addCategory(
-			TestPropsValues.getUserId(), parentBaseModelId, getSearchKeywords(),
+			TestPropsValues.getUserId(), parentBaseModelId, _TITLE,
 			StringPool.BLANK, serviceContext);
 	}
 
@@ -251,51 +234,12 @@ public class MBCategoryTrashHandlerTest extends BaseTrashHandlerTestCase {
 	}
 
 	@Override
-	protected String getSearchKeywords() {
-		return "Title";
-	}
-
-	@Override
 	protected String getUniqueTitle(BaseModel<?> baseModel) {
 		return null;
 	}
 
 	@Override
-	protected boolean isAssetableModel() {
-		return false;
-	}
-
-	@Override
-	protected boolean isAssetableParentModel() {
-		return false;
-	}
-
-	@Override
-	protected BaseModel<?> moveBaseModelFromTrash(
-			ClassedModel classedModel, Group group,
-			ServiceContext serviceContext)
-		throws Exception {
-
-		BaseModel<?> parentBaseModel = getParentBaseModel(
-			group, serviceContext);
-
-		MBCategoryLocalServiceUtil.moveCategoryFromTrash(
-			TestPropsValues.getUserId(), (Long)classedModel.getPrimaryKeyObj(),
-			(Long)parentBaseModel.getPrimaryKeyObj());
-
-		return parentBaseModel;
-	}
-
-	@Override
 	protected void moveBaseModelToTrash(long primaryKey) throws Exception {
-		MBCategoryLocalServiceUtil.moveCategoryToTrash(
-			TestPropsValues.getUserId(), primaryKey);
-	}
-
-	@Override
-	protected void moveParentBaseModelToTrash(long primaryKey)
-		throws Exception {
-
 		MBCategoryLocalServiceUtil.moveCategoryToTrash(
 			TestPropsValues.getUserId(), primaryKey);
 	}
@@ -318,5 +262,7 @@ public class MBCategoryTrashHandlerTest extends BaseTrashHandlerTestCase {
 
 		return category;
 	}
+
+	private static final String _TITLE = "Title";
 
 }

@@ -33,6 +33,12 @@ import com.liferay.portlet.documentlibrary.model.DLFolderConstants;
 import com.liferay.portlet.documentlibrary.service.DLAppServiceUtil;
 import com.liferay.portlet.documentlibrary.service.DLFolderLocalServiceUtil;
 import com.liferay.portlet.trash.test.BaseTrashHandlerTestCase;
+import com.liferay.portlet.trash.test.DefaultWhenIsAssetableBaseModel;
+import com.liferay.portlet.trash.test.DefaultWhenIsIndexableBaseModel;
+import com.liferay.portlet.trash.test.WhenHasParent;
+import com.liferay.portlet.trash.test.WhenIsAssetableBaseModel;
+import com.liferay.portlet.trash.test.WhenIsAssetableParentModel;
+import com.liferay.portlet.trash.test.WhenIsBaseModelMoveableFromTrash;
 import com.liferay.portlet.trash.test.WhenIsIndexableBaseModel;
 import com.liferay.portlet.trash.util.TrashUtil;
 
@@ -47,7 +53,10 @@ import org.junit.Test;
  */
 @Sync
 public class DLFolderTrashHandlerTest
-	extends BaseTrashHandlerTestCase implements WhenIsIndexableBaseModel {
+	extends BaseTrashHandlerTestCase
+	implements WhenHasParent, WhenIsAssetableBaseModel,
+		WhenIsAssetableParentModel, WhenIsIndexableBaseModel,
+		WhenIsBaseModelMoveableFromTrash {
 
 	@ClassRule
 	@Rule
@@ -56,79 +65,64 @@ public class DLFolderTrashHandlerTest
 			new LiferayIntegrationTestRule(), MainServletTestRule.INSTANCE,
 			SynchronousDestinationTestRule.INSTANCE);
 
-	@Ignore
 	@Override
-	@Test
-	public void testAddBaseModelWithDraftStatus() throws Exception {
+	public Long getAssetClassPK(ClassedModel classedModel) {
+		return _whenIsAssetableBaseModel.getAssetClassPK(classedModel);
 	}
 
-	@Ignore
 	@Override
-	@Test
-	public void testAddBaseModelWithDraftStatusIndexable() throws Exception {
+	public String getSearchKeywords() {
+		return _FOLDER_NAME;
 	}
 
-	@Ignore
 	@Override
-	@Test
-	public void testAddBaseModelWithDraftStatusIsNotVisible() throws Exception {
-	}
-
-	@Ignore
-	@Override
-	@Test
-	public void testTrashAndDeleteWithDraftStatus() throws Exception {
-	}
-
-	@Ignore
-	@Override
-	@Test
-	public void testTrashAndDeleteWithDraftStatusIndexable() throws Exception {
-	}
-
-	@Ignore
-	@Override
-	@Test
-	public void testTrashAndRestoreWithDraftStatus() throws Exception {
-	}
-
-	@Ignore
-	@Override
-	@Test
-	public void testTrashAndRestoreWithDraftStatusIndexable() throws Exception {
-	}
-
-	@Ignore
-	@Override
-	@Test
-	public void testTrashAndRestoreWithDraftStatusIsNotVisible()
+	public boolean isAssetEntryVisible(ClassedModel classedModel)
 		throws Exception {
+
+		return _whenIsAssetableBaseModel.isAssetEntryVisible(classedModel);
 	}
 
-	@Ignore
 	@Override
-	@Test
-	public void testTrashAndRestoreWithDraftStatusRestoreStatus()
+	public BaseModel<?> moveBaseModelFromTrash(
+			ClassedModel classedModel, Group group,
+			ServiceContext serviceContext)
 		throws Exception {
+
+		BaseModel<?> parentBaseModel = getParentBaseModel(
+			group, serviceContext);
+
+		DLAppServiceUtil.moveFolderFromTrash(
+			(Long)classedModel.getPrimaryKeyObj(),
+			(Long)parentBaseModel.getPrimaryKeyObj(), serviceContext);
+
+		return parentBaseModel;
 	}
 
-	@Ignore
 	@Override
-	@Test
-	public void testTrashAndRestoreWithDraftStatusRestoreUniqueTitle()
+	public void moveParentBaseModelToTrash(long primaryKey) throws Exception {
+		DLAppServiceUtil.moveFolderToTrash(primaryKey);
+	}
+
+	@Override
+	public int searchBaseModelsCount(Class<?> clazz, long groupId)
 		throws Exception {
+
+		return _whenIsIndexableBaseModel.searchBaseModelsCount(clazz, groupId);
+	}
+
+	@Override
+	public int searchTrashEntriesCount(
+			String keywords, ServiceContext serviceContext)
+		throws Exception {
+
+		return _whenIsIndexableBaseModel.searchTrashEntriesCount(
+			keywords, serviceContext);
 	}
 
 	@Ignore
 	@Override
 	@Test
 	public void testTrashMyBaseModel() throws Exception {
-	}
-
-	@Ignore
-	@Override
-	@Test
-	public void testTrashRecentBaseModel() throws Exception {
 	}
 
 	@Ignore
@@ -141,6 +135,13 @@ public class DLFolderTrashHandlerTest
 	@Override
 	@Test
 	public void testTrashVersionBaseModelAndDeleteIndexable() throws Exception {
+	}
+
+	@Ignore
+	@Override
+	@Test
+	public void testTrashVersionBaseModelAndDeleteIsNotFound()
+		throws Exception {
 	}
 
 	@Ignore
@@ -173,6 +174,20 @@ public class DLFolderTrashHandlerTest
 	@Override
 	@Test
 	public void testTrashVersionParentBaseModelAndRestore() throws Exception {
+	}
+
+	@Ignore
+	@Override
+	@Test
+	public void testTrashVersionParentBaseModelAndRestoreIsNotInTrashContainer()
+		throws Exception {
+	}
+
+	@Ignore
+	@Override
+	@Test
+	public void testTrashVersionParentBaseModelAndRestoreIsVisible()
+		throws Exception {
 	}
 
 	@Ignore
@@ -284,11 +299,6 @@ public class DLFolderTrashHandlerTest
 	}
 
 	@Override
-	protected String getSearchKeywords() {
-		return _FOLDER_NAME;
-	}
-
-	@Override
 	protected String getUniqueTitle(BaseModel<?> baseModel) {
 		DLFolder dlFolder = (DLFolder)baseModel;
 
@@ -298,30 +308,7 @@ public class DLFolderTrashHandlerTest
 	}
 
 	@Override
-	protected BaseModel<?> moveBaseModelFromTrash(
-			ClassedModel classedModel, Group group,
-			ServiceContext serviceContext)
-		throws Exception {
-
-		BaseModel<?> parentBaseModel = getParentBaseModel(
-			group, serviceContext);
-
-		DLAppServiceUtil.moveFolderFromTrash(
-			(Long)classedModel.getPrimaryKeyObj(),
-			(Long)parentBaseModel.getPrimaryKeyObj(), serviceContext);
-
-		return parentBaseModel;
-	}
-
-	@Override
 	protected void moveBaseModelToTrash(long primaryKey) throws Exception {
-		DLAppServiceUtil.moveFolderToTrash(primaryKey);
-	}
-
-	@Override
-	protected void moveParentBaseModelToTrash(long primaryKey)
-		throws Exception {
-
 		DLAppServiceUtil.moveFolderToTrash(primaryKey);
 	}
 
@@ -346,5 +333,10 @@ public class DLFolderTrashHandlerTest
 	private static final String _FOLDER_NAME = RandomTestUtil.randomString(100);
 
 	private static final int _FOLDER_NAME_MAX_LENGTH = 100;
+
+	private static final WhenIsAssetableBaseModel
+		_whenIsAssetableBaseModel = new DefaultWhenIsAssetableBaseModel();
+	private static final WhenIsIndexableBaseModel
+		_whenIsIndexableBaseModel = new DefaultWhenIsIndexableBaseModel();
 
 }

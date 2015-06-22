@@ -50,6 +50,14 @@ import com.liferay.portlet.documentlibrary.service.DLFolderLocalServiceUtil;
 import com.liferay.portlet.documentlibrary.util.DLUtil;
 import com.liferay.portlet.documentlibrary.util.test.DLAppTestUtil;
 import com.liferay.portlet.trash.test.BaseTrashHandlerTestCase;
+import com.liferay.portlet.trash.test.DefaultWhenIsAssetableBaseModel;
+import com.liferay.portlet.trash.test.DefaultWhenIsIndexableBaseModel;
+import com.liferay.portlet.trash.test.WhenHasDraftStatus;
+import com.liferay.portlet.trash.test.WhenHasParent;
+import com.liferay.portlet.trash.test.WhenHasRecentBaseModelCount;
+import com.liferay.portlet.trash.test.WhenIsAssetableBaseModel;
+import com.liferay.portlet.trash.test.WhenIsAssetableParentModel;
+import com.liferay.portlet.trash.test.WhenIsBaseModelMoveableFromTrash;
 import com.liferay.portlet.trash.test.WhenIsIndexableBaseModel;
 import com.liferay.portlet.trash.util.TrashUtil;
 
@@ -68,7 +76,10 @@ import org.junit.Test;
  */
 @Sync
 public class DLFileEntryTrashHandlerTest
-	extends BaseTrashHandlerTestCase implements WhenIsIndexableBaseModel {
+	extends BaseTrashHandlerTestCase
+	implements WhenHasDraftStatus, WhenHasParent, WhenHasRecentBaseModelCount,
+		WhenIsAssetableBaseModel, WhenIsAssetableParentModel,
+		WhenIsBaseModelMoveableFromTrash, WhenIsIndexableBaseModel {
 
 	@ClassRule
 	@Rule
@@ -76,6 +87,67 @@ public class DLFileEntryTrashHandlerTest
 		new AggregateTestRule(
 			new LiferayIntegrationTestRule(), MainServletTestRule.INSTANCE,
 			SynchronousDestinationTestRule.INSTANCE);
+
+	@Override
+	public Long getAssetClassPK(ClassedModel classedModel) {
+		return _whenIsAssetableBaseModel.getAssetClassPK(classedModel);
+	}
+
+	@Override
+	public int getRecentBaseModelsCount(long groupId) throws Exception {
+		return DLAppServiceUtil.getGroupFileEntriesCount(
+			groupId, 0, DLFolderConstants.DEFAULT_PARENT_FOLDER_ID, null,
+			WorkflowConstants.STATUS_APPROVED);
+	}
+
+	@Override
+	public String getSearchKeywords() {
+		return _FILE_ENTRY_TITLE;
+	}
+
+	@Override
+	public boolean isAssetEntryVisible(ClassedModel classedModel)
+		throws Exception {
+
+		return _whenIsAssetableBaseModel.isAssetEntryVisible(classedModel);
+	}
+
+	@Override
+	public BaseModel<?> moveBaseModelFromTrash(
+			ClassedModel classedModel, Group group,
+			ServiceContext serviceContext)
+		throws Exception {
+
+		BaseModel<?> parentBaseModel = getParentBaseModel(
+			group, serviceContext);
+
+		DLAppServiceUtil.moveFileEntryFromTrash(
+			(Long)classedModel.getPrimaryKeyObj(),
+			(Long)parentBaseModel.getPrimaryKeyObj(), serviceContext);
+
+		return parentBaseModel;
+	}
+
+	@Override
+	public void moveParentBaseModelToTrash(long primaryKey) throws Exception {
+		DLAppServiceUtil.moveFolderToTrash(primaryKey);
+	}
+
+	@Override
+	public int searchBaseModelsCount(Class<?> clazz, long groupId)
+		throws Exception {
+
+		return _whenIsIndexableBaseModel.searchBaseModelsCount(clazz, groupId);
+	}
+
+	@Override
+	public int searchTrashEntriesCount(
+			String keywords, ServiceContext serviceContext)
+		throws Exception {
+
+		return _whenIsIndexableBaseModel.searchTrashEntriesCount(
+			keywords, serviceContext);
+	}
 
 	@Test
 	public void testFileNameUpdateWhenUpdatingTitle() throws Exception {
@@ -122,6 +194,20 @@ public class DLFileEntryTrashHandlerTest
 	@Override
 	@Test
 	public void testTrashVersionParentBaseModelAndRestore() throws Exception {
+	}
+
+	@Ignore
+	@Override
+	@Test
+	public void testTrashVersionParentBaseModelAndRestoreIsNotInTrashContainer()
+		throws Exception {
+	}
+
+	@Ignore
+	@Override
+	@Test
+	public void testTrashVersionParentBaseModelAndRestoreIsVisible()
+		throws Exception {
 	}
 
 	@Ignore
@@ -266,18 +352,6 @@ public class DLFileEntryTrashHandlerTest
 	}
 
 	@Override
-	protected int getRecentBaseModelsCount(long groupId) throws Exception {
-		return DLAppServiceUtil.getGroupFileEntriesCount(
-			groupId, 0, DLFolderConstants.DEFAULT_PARENT_FOLDER_ID, null,
-			WorkflowConstants.STATUS_APPROVED);
-	}
-
-	@Override
-	protected String getSearchKeywords() {
-		return _FILE_ENTRY_TITLE;
-	}
-
-	@Override
 	protected String getUniqueTitle(BaseModel<?> baseModel) {
 		DLFileEntry dlFileEntry = (DLFileEntry)baseModel;
 
@@ -296,38 +370,8 @@ public class DLFileEntryTrashHandlerTest
 	}
 
 	@Override
-	protected BaseModel<?> moveBaseModelFromTrash(
-			ClassedModel classedModel, Group group,
-			ServiceContext serviceContext)
-		throws Exception {
-
-		BaseModel<?> parentBaseModel = getParentBaseModel(
-			group, serviceContext);
-
-		DLAppServiceUtil.moveFileEntryFromTrash(
-			(Long)classedModel.getPrimaryKeyObj(),
-			(Long)parentBaseModel.getPrimaryKeyObj(), serviceContext);
-
-		return parentBaseModel;
-	}
-
-	@Override
 	protected void moveBaseModelToTrash(long primaryKey) throws Exception {
 		DLAppServiceUtil.moveFileEntryToTrash(primaryKey);
-	}
-
-	@Override
-	protected void moveParentBaseModelToTrash(long primaryKey)
-		throws Exception {
-
-		DLAppServiceUtil.moveFolderToTrash(primaryKey);
-	}
-
-	@Override
-	protected void restoreParentBaseModelFromTrash(long primaryKey)
-		throws Exception {
-
-		DLAppServiceUtil.restoreFolderFromTrash(primaryKey);
 	}
 
 	protected void trashDLFileRank() throws Exception {
@@ -395,5 +439,10 @@ public class DLFileEntryTrashHandlerTest
 		255);
 
 	private static final int _FOLDER_NAME_MAX_LENGTH = 100;
+
+	private static final WhenIsAssetableBaseModel
+		_whenIsAssetableBaseModel = new DefaultWhenIsAssetableBaseModel();
+	private static final WhenIsIndexableBaseModel
+		_whenIsIndexableBaseModel = new DefaultWhenIsIndexableBaseModel();
 
 }
