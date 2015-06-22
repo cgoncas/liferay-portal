@@ -53,7 +53,7 @@ import com.liferay.portlet.dynamicdatamapping.model.DDMTemplate;
 import com.liferay.portlet.dynamicdatamapping.util.test.DDMStructureTestUtil;
 import com.liferay.portlet.dynamicdatamapping.util.test.DDMTemplateTestUtil;
 import com.liferay.portlet.trash.test.BaseTrashHandlerTestCase;
-import com.liferay.portlet.trash.test.DefaultWhenIsClassModel;
+import com.liferay.portlet.trash.test.DefaultWhenIsAssetableBaseModel;
 import com.liferay.portlet.trash.test.DefaultWhenIsIndexableBaseModel;
 import com.liferay.portlet.trash.test.WhenHasDraftStatus;
 import com.liferay.portlet.trash.test.WhenHasParent;
@@ -109,11 +109,11 @@ public class JournalArticleTrashHandlerTest
 				return journalArticleResource.getResourcePrimKey();
 			}
 			catch (Exception e) {
-				return _whenIsClassModel.getAssetClassPK(classedModel);
+				return _whenIsAssetableBaseModel.getAssetClassPK(classedModel);
 			}
 		}
 		else {
-			return _whenIsClassModel.getAssetClassPK(classedModel);
+			return _whenIsAssetableBaseModel.getAssetClassPK(classedModel);
 		}
 	}
 
@@ -132,10 +132,7 @@ public class JournalArticleTrashHandlerTest
 	public boolean isAssetEntryVisible(ClassedModel classedModel)
 		throws Exception {
 
-		AssetEntry assetEntry = AssetEntryLocalServiceUtil.getEntry(
-			classedModel.getModelClassName(), getAssetClassPK(classedModel));
-
-		return assetEntry.isVisible();
+		return _whenIsAssetableBaseModel.isAssetEntryVisible(classedModel);
 	}
 
 	@Override
@@ -418,8 +415,8 @@ public class JournalArticleTrashHandlerTest
 
 	private static final int _FOLDER_NAME_MAX_LENGTH = 100;
 
-	private static final WhenIsClassModel _whenIsClassModel =
-		new DefaultWhenIsClassModel();
+	private static final WhenIsAssetableBaseModel _whenIsAssetableBaseModel =
+		new DefaultWhenIsAssetableBaseModel();
 	private static final WhenIsIndexableBaseModel
 		_whenIsIndexableBaseModel = new DefaultWhenIsIndexableBaseModel();
 
