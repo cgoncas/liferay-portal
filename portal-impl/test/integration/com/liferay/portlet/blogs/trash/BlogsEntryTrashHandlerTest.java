@@ -35,6 +35,7 @@ import com.liferay.portlet.trash.test.WhenHasDraftStatus;
 import com.liferay.portlet.trash.test.WhenIsAssetableBaseModel;
 import com.liferay.portlet.trash.test.WhenIsClassModel;
 import com.liferay.portlet.trash.test.WhenIsIndexableBaseModel;
+import com.liferay.portlet.trash.test.WhenUpdateBaseModel;
 
 import org.junit.ClassRule;
 import org.junit.Ignore;
@@ -48,7 +49,7 @@ import org.junit.Test;
 @Sync
 public class BlogsEntryTrashHandlerTest
 	extends BaseTrashHandlerTestCase
-	implements WhenHasDraftStatus, WhenIsAssetableBaseModel, WhenIsClassModel
+	implements WhenHasDraftStatus, WhenIsAssetableBaseModel, WhenIsClassModel,
 		WhenIsIndexableBaseModel {
 
 	@ClassRule

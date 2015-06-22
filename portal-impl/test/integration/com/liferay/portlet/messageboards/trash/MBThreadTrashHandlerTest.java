@@ -51,6 +51,7 @@ import com.liferay.portlet.trash.test.WhenIsAssetableBaseModel;
 import com.liferay.portlet.trash.test.WhenIsBaseModelMoveableFromTrash;
 import com.liferay.portlet.trash.test.WhenIsClassModel;
 import com.liferay.portlet.trash.test.WhenIsIndexableBaseModel;
+import com.liferay.portlet.trash.test.WhenUpdateBaseModel;
 
 import java.io.InputStream;
 
@@ -72,7 +73,7 @@ public class MBThreadTrashHandlerTest
 	extends BaseTrashHandlerTestCase
 	implements WhenHasParent, WhenHasRecentBaseModelCount,
 		WhenIsAssetableBaseModel, WhenIsBaseModelMoveableFromTrash,
-	WhenIsClassModel, WhenIsIndexableBaseModel {
+	WhenIsClassModel, WhenIsIndexableBaseModel, WhenUpdateBaseModel {
 
 	@ClassRule
 	@Rule

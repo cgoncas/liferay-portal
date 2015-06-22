@@ -44,8 +44,6 @@ import com.liferay.portal.model.WorkflowedModel;
 import com.liferay.portal.service.ServiceContext;
 import com.liferay.portal.service.test.ServiceTestUtil;
 import com.liferay.portal.test.rule.LiferayIntegrationTestRule;
-import com.liferay.portlet.asset.model.AssetEntry;
-import com.liferay.portlet.asset.service.AssetEntryLocalServiceUtil;
 import com.liferay.portlet.dynamicdatamapping.io.DDMFormXSDDeserializerUtil;
 import com.liferay.portlet.dynamicdatamapping.model.DDMForm;
 import com.liferay.portlet.dynamicdatamapping.model.DDMStructure;
@@ -64,6 +62,7 @@ import com.liferay.portlet.trash.test.WhenIsBaseModelMoveableFromTrash;
 import com.liferay.portlet.trash.test.WhenIsClassModel;
 import com.liferay.portlet.trash.test.WhenIsIndexableBaseModel;
 import com.liferay.portlet.trash.test.WhenIsParentRestorableFromTrash;
+import com.liferay.portlet.trash.test.WhenUpdateBaseModel;
 import com.liferay.portlet.trash.util.TrashUtil;
 
 import java.util.HashMap;
@@ -88,7 +87,8 @@ public class JournalArticleTrashHandlerTest
 	implements WhenHasDraftStatus, WhenHasParent, WhenHasRecentBaseModelCount,
 		WhenIsAssetableBaseModel, WhenIsAssetableParentModel,
 		WhenIsBaseModelMoveableFromTrash, WhenIsClassModel,
-		WhenIsIndexableBaseModel, WhenIsParentRestorableFromTrash {
+		WhenIsIndexableBaseModel, WhenIsParentRestorableFromTrash,
+		WhenUpdateBaseModel {
 
 	@ClassRule
 	@Rule
