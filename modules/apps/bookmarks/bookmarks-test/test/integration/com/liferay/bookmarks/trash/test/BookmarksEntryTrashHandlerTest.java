@@ -46,6 +46,7 @@ import com.liferay.portlet.trash.test.WhenHasRecentBaseModelCount;
 import com.liferay.portlet.trash.test.WhenIsAssetableBaseModel;
 import com.liferay.portlet.trash.test.WhenIsAssetableParentModel;
 import com.liferay.portlet.trash.test.WhenIsBaseModelMoveableFromTrash;
+import com.liferay.portlet.trash.test.WhenIsClassModel;
 import com.liferay.portlet.trash.test.WhenIsIndexableBaseModel;
 
 import org.junit.After;
@@ -65,7 +66,8 @@ public class BookmarksEntryTrashHandlerTest
 	extends BaseTrashHandlerTestCase
 	implements WhenHasParent, WhenHasRecentBaseModelCount,
 		WhenIsAssetableBaseModel, WhenIsAssetableParentModel,
-		WhenIsBaseModelMoveableFromTrash, WhenIsIndexableBaseModel {
+		WhenIsBaseModelMoveableFromTrash, WhenIsClassModel,
+		WhenIsIndexableBaseModel {
 
 	@ClassRule
 	@Rule

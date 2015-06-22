@@ -32,6 +32,7 @@ import com.liferay.portlet.messageboards.service.MBCategoryLocalServiceUtil;
 import com.liferay.portlet.trash.test.BaseTrashHandlerTestCase;
 import com.liferay.portlet.trash.test.WhenHasParent;
 import com.liferay.portlet.trash.test.WhenIsBaseModelMoveableFromTrash;
+import com.liferay.portlet.trash.test.WhenIsClassModel;
 
 import org.junit.ClassRule;
 import org.junit.Ignore;
@@ -44,7 +45,8 @@ import org.junit.Test;
 @Sync
 public class MBCategoryTrashHandlerTest
 	extends BaseTrashHandlerTestCase
-	implements WhenHasParent, WhenIsBaseModelMoveableFromTrash {
+	implements WhenHasParent, WhenIsBaseModelMoveableFromTrash,
+		WhenIsClassModel {
 
 	@ClassRule
 	@Rule

@@ -59,6 +59,7 @@ import com.liferay.portlet.trash.test.WhenHasRecentBaseModelCount;
 import com.liferay.portlet.trash.test.WhenIsAssetableBaseModel;
 import com.liferay.portlet.trash.test.WhenIsAssetableParentModel;
 import com.liferay.portlet.trash.test.WhenIsBaseModelMoveableFromTrash;
+import com.liferay.portlet.trash.test.WhenIsClassModel;
 import com.liferay.portlet.trash.test.WhenIsIndexableBaseModel;
 import com.liferay.portlet.trash.util.TrashUtil;
 
@@ -80,7 +81,8 @@ public class DLFileEntryTrashHandlerTest
 	extends BaseTrashHandlerTestCase
 	implements WhenHasDraftStatus, WhenHasParent, WhenHasRecentBaseModelCount,
 		WhenIsAssetableBaseModel, WhenIsAssetableParentModel,
-		WhenIsBaseModelMoveableFromTrash, WhenIsIndexableBaseModel {
+		WhenIsBaseModelMoveableFromTrash, WhenIsClassModel,
+		WhenIsIndexableBaseModel {
 
 	@ClassRule
 	@Rule
