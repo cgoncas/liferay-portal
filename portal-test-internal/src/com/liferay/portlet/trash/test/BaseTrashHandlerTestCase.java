@@ -2413,7 +2413,7 @@ public abstract class BaseTrashHandlerTestCase {
 		((WhenHasParent)this).moveParentBaseModelToTrash(
 			(Long)parentBaseModel.getPrimaryKeyObj());
 
-		restoreParentBaseModelFromTrash(
+		((WhenIsParentRestorableFromTrash)this).restoreParentBaseModelFromTrash(
 			(Long)parentBaseModel.getPrimaryKeyObj());
 
 		List<? extends WorkflowedModel> childrenWorkflowedModels =
@@ -2903,10 +2903,6 @@ public abstract class BaseTrashHandlerTestCase {
 
 	protected abstract void moveBaseModelToTrash(long primaryKey)
 		throws Exception;
-
-	protected void restoreParentBaseModelFromTrash(long primaryKey)
-		throws Exception {
-	}
 
 	protected BaseModel<?> updateBaseModel(
 			long primaryKey, ServiceContext serviceContext)

@@ -134,6 +134,13 @@ public class DLFileEntryTrashHandlerTest
 	}
 
 	@Override
+	public void restoreParentBaseModelFromTrash(long primaryKey)
+		throws Exception {
+
+		DLAppServiceUtil.restoreFolderFromTrash(primaryKey);
+	}
+
+	@Override
 	public int searchBaseModelsCount(Class<?> clazz, long groupId)
 		throws Exception {
 
@@ -372,13 +379,6 @@ public class DLFileEntryTrashHandlerTest
 	@Override
 	protected void moveBaseModelToTrash(long primaryKey) throws Exception {
 		DLAppServiceUtil.moveFileEntryToTrash(primaryKey);
-	}
-
-	@Override
-	protected void restoreParentBaseModelFromTrash(long primaryKey)
-		throws Exception {
-
-		DLAppServiceUtil.restoreFolderFromTrash(primaryKey);
 	}
 
 	protected void trashDLFileRank() throws Exception {

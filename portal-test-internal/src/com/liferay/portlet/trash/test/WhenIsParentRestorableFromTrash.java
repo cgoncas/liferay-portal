@@ -18,4 +18,8 @@ package com.liferay.portlet.trash.test;
  * @author Cristina González
  */
 public interface WhenIsParentRestorableFromTrash {
+
+	public void restoreParentBaseModelFromTrash(long primaryKey)
+		throws Exception;
+
 }

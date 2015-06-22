@@ -155,6 +155,13 @@ public class JournalArticleTrashHandlerTest
 	}
 
 	@Override
+	public void restoreParentBaseModelFromTrash(long primaryKey)
+		throws Exception {
+
+		JournalFolderServiceUtil.restoreFolderFromTrash(primaryKey);
+	}
+
+	@Override
 	public int searchBaseModelsCount(Class<?> clazz, long groupId)
 		throws Exception {
 
@@ -389,13 +396,6 @@ public class JournalArticleTrashHandlerTest
 
 		JournalArticleLocalServiceUtil.moveArticleToTrash(
 			TestPropsValues.getUserId(), article);
-	}
-
-	@Override
-	protected void restoreParentBaseModelFromTrash(long primaryKey)
-		throws Exception {
-
-		JournalFolderServiceUtil.restoreFolderFromTrash(primaryKey);
 	}
 
 	@Override
