@@ -193,12 +193,6 @@ public class WikiPageTrashHandlerTest
 	@Ignore
 	@Override
 	@Test
-	public void testTrashMyBaseModel() throws Exception {
-	}
-
-	@Ignore
-	@Override
-	@Test
 	public void testTrashParentAndRestoreBaseModelIsVisible() throws Exception {
 	}
 
