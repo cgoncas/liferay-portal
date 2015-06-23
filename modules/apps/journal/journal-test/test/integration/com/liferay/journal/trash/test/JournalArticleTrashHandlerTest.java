@@ -98,6 +98,16 @@ public class JournalArticleTrashHandlerTest
 			SynchronousDestinationTestRule.INSTANCE);
 
 	@Override
+	public void deleteParentBaseModel(
+			BaseModel<?> parentBaseModel, boolean includeTrashedEntries)
+		throws Exception {
+
+		JournalFolder folder = (JournalFolder)parentBaseModel;
+
+		JournalFolderServiceUtil.deleteFolder(folder.getFolderId(), false);
+	}
+
+	@Override
 	public Long getAssetClassPK(ClassedModel classedModel) {
 		if (classedModel instanceof JournalArticle) {
 			JournalArticle article = (JournalArticle)classedModel;
@@ -294,16 +304,6 @@ public class JournalArticleTrashHandlerTest
 			serviceContext.getScopeGroupId(),
 			JournalFolderConstants.DEFAULT_PARENT_FOLDER_ID,
 			getSearchKeywords(), getSearchKeywords(), approved);
-	}
-
-	@Override
-	protected void deleteParentBaseModel(
-			BaseModel<?> parentBaseModel, boolean includeTrashedEntries)
-		throws Exception {
-
-		JournalFolder folder = (JournalFolder)parentBaseModel;
-
-		JournalFolderServiceUtil.deleteFolder(folder.getFolderId(), false);
 	}
 
 	@Override

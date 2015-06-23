@@ -58,6 +58,16 @@ public class MBCategoryTrashHandlerTest
 			SynchronousDestinationTestRule.INSTANCE);
 
 	@Override
+	public void deleteParentBaseModel(
+			BaseModel<?> parentBaseModel, boolean includeTrashedEntries)
+		throws Exception {
+
+		MBCategory parentCategory = (MBCategory)parentBaseModel;
+
+		MBCategoryLocalServiceUtil.deleteCategory(parentCategory, false);
+	}
+
+	@Override
 	public Long getAssetClassPK(ClassedModel classedModel) {
 		return _whenIsClassModel.getAssetClassPK(classedModel);
 	}
@@ -201,16 +211,6 @@ public class MBCategoryTrashHandlerTest
 			TestPropsValues.getUserId(),
 			MBCategoryConstants.DEFAULT_PARENT_CATEGORY_ID, _TITLE,
 			StringPool.BLANK, serviceContext);
-	}
-
-	@Override
-	protected void deleteParentBaseModel(
-			BaseModel<?> parentBaseModel, boolean includeTrashedEntries)
-		throws Exception {
-
-		MBCategory parentCategory = (MBCategory)parentBaseModel;
-
-		MBCategoryLocalServiceUtil.deleteCategory(parentCategory, false);
 	}
 
 	@Override

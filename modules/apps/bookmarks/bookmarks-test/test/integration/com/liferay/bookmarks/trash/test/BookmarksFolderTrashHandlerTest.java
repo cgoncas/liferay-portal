@@ -71,6 +71,16 @@ public class BookmarksFolderTrashHandlerTest
 			SynchronousDestinationTestRule.INSTANCE);
 
 	@Override
+	public void deleteParentBaseModel(
+			BaseModel<?> parentBaseModel, boolean includeTrashedEntries)
+		throws Exception {
+
+		BookmarksFolder folder = (BookmarksFolder)parentBaseModel;
+
+		BookmarksFolderServiceUtil.deleteFolder(folder.getFolderId(), false);
+	}
+
+	@Override
 	public Long getAssetClassPK(ClassedModel classedModel) {
 		return _whenIsAssetableBaseModel.getAssetClassPK(classedModel);
 	}
@@ -275,16 +285,6 @@ public class BookmarksFolderTrashHandlerTest
 			TestPropsValues.getUserId(),
 			BookmarksFolderConstants.DEFAULT_PARENT_FOLDER_ID, name,
 			StringPool.BLANK, serviceContext);
-	}
-
-	@Override
-	protected void deleteParentBaseModel(
-			BaseModel<?> parentBaseModel, boolean includeTrashedEntries)
-		throws Exception {
-
-		BookmarksFolder folder = (BookmarksFolder)parentBaseModel;
-
-		BookmarksFolderServiceUtil.deleteFolder(folder.getFolderId(), false);
 	}
 
 	@Override

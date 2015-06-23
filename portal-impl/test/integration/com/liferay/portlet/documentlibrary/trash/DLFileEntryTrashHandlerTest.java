@@ -92,6 +92,16 @@ public class DLFileEntryTrashHandlerTest
 			SynchronousDestinationTestRule.INSTANCE);
 
 	@Override
+	public void deleteParentBaseModel(
+			BaseModel<?> parentBaseModel, boolean includeTrashedEntries)
+		throws Exception {
+
+		DLFolder dlFolder = (DLFolder)parentBaseModel;
+
+		DLFolderLocalServiceUtil.deleteFolder(dlFolder.getFolderId(), false);
+	}
+
+	@Override
 	public Long getAssetClassPK(ClassedModel classedModel) {
 		return _whenIsAssetableBaseModel.getAssetClassPK(classedModel);
 	}
@@ -281,16 +291,6 @@ public class DLFileEntryTrashHandlerTest
 			approved, serviceContext);
 
 		return (DLFileEntry)fileEntry.getModel();
-	}
-
-	@Override
-	protected void deleteParentBaseModel(
-			BaseModel<?> parentBaseModel, boolean includeTrashedEntries)
-		throws Exception {
-
-		DLFolder dlFolder = (DLFolder)parentBaseModel;
-
-		DLFolderLocalServiceUtil.deleteFolder(dlFolder.getFolderId(), false);
 	}
 
 	protected int getActiveDLFileRanksCount(long groupId, long fileEntryId)

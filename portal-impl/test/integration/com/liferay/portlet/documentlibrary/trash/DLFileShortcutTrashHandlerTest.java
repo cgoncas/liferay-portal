@@ -73,6 +73,16 @@ public class DLFileShortcutTrashHandlerTest
 			SynchronousDestinationTestRule.INSTANCE);
 
 	@Override
+	public void deleteParentBaseModel(
+			BaseModel<?> parentBaseModel, boolean includeTrashedEntries)
+		throws Exception {
+
+		DLFolder dlFolder = (DLFolder)parentBaseModel;
+
+		DLFolderLocalServiceUtil.deleteFolder(dlFolder.getFolderId(), false);
+	}
+
+	@Override
 	public Long getAssetClassPK(ClassedModel classedModel) {
 		return _whenIsClassModel.getAssetClassPK(classedModel);
 	}
@@ -227,16 +237,6 @@ public class DLFileShortcutTrashHandlerTest
 			groupId, folderId, fileEntry.getFileEntryId(), serviceContext);
 
 		return (BaseModel<?>)fileShortcut.getModel();
-	}
-
-	@Override
-	protected void deleteParentBaseModel(
-			BaseModel<?> parentBaseModel, boolean includeTrashedEntries)
-		throws Exception {
-
-		DLFolder dlFolder = (DLFolder)parentBaseModel;
-
-		DLFolderLocalServiceUtil.deleteFolder(dlFolder.getFolderId(), false);
 	}
 
 	@Override

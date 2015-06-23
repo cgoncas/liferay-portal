@@ -69,6 +69,16 @@ public class DLFolderTrashHandlerTest
 			SynchronousDestinationTestRule.INSTANCE);
 
 	@Override
+	public void deleteParentBaseModel(
+			BaseModel<?> parentBaseModel, boolean includeTrashedEntries)
+		throws Exception {
+
+		DLFolder dlFolder = (DLFolder)parentBaseModel;
+
+		DLFolderLocalServiceUtil.deleteFolder(dlFolder.getFolderId(), false);
+	}
+
+	@Override
 	public Long getAssetClassPK(ClassedModel classedModel) {
 		return _whenIsAssetableBaseModel.getAssetClassPK(classedModel);
 	}
@@ -257,16 +267,6 @@ public class DLFolderTrashHandlerTest
 			RandomTestUtil.randomString(), serviceContext);
 
 		return (DLFolder)folder.getModel();
-	}
-
-	@Override
-	protected void deleteParentBaseModel(
-			BaseModel<?> parentBaseModel, boolean includeTrashedEntries)
-		throws Exception {
-
-		DLFolder dlFolder = (DLFolder)parentBaseModel;
-
-		DLFolderLocalServiceUtil.deleteFolder(dlFolder.getFolderId(), false);
 	}
 
 	@Override

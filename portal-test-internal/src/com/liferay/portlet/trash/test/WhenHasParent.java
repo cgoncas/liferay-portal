@@ -14,10 +14,16 @@
 
 package com.liferay.portlet.trash.test;
 
+import com.liferay.portal.model.BaseModel;
+
 /**
  * @author Cristina González
  */
 public interface WhenHasParent {
+
+	public void deleteParentBaseModel(
+			BaseModel<?> parentBaseModel, boolean includeTrashedEntries)
+		throws Exception;
 
 	public void moveParentBaseModelToTrash(long primaryKey) throws Exception;
 

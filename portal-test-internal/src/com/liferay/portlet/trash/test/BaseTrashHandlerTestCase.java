@@ -1011,7 +1011,7 @@ public abstract class BaseTrashHandlerTestCase {
 
 		moveBaseModelToTrash((Long)baseModel.getPrimaryKeyObj());
 
-		deleteParentBaseModel(parentBaseModel, false);
+		((WhenHasParent)this).deleteParentBaseModel(parentBaseModel, false);
 
 		TrashHandler trashHandler = TrashHandlerRegistryUtil.getTrashHandler(
 			getBaseModelClassName());
@@ -2766,11 +2766,6 @@ public abstract class BaseTrashHandlerTestCase {
 
 		return addBaseModelWithWorkflow(
 			parentBaseModel, approved, serviceContext);
-	}
-
-	protected void deleteParentBaseModel(
-			BaseModel<?> parentBaseModel, boolean includeTrashedEntries)
-		throws Exception {
 	}
 
 	protected BaseModel<?> expireBaseModel(

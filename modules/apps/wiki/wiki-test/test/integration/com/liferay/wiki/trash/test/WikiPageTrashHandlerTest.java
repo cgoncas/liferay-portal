@@ -67,6 +67,16 @@ public class WikiPageTrashHandlerTest
 			SynchronousDestinationTestRule.INSTANCE);
 
 	@Override
+	public void deleteParentBaseModel(
+			BaseModel<?> parentBaseModel, boolean includeTrashedEntries)
+		throws Exception {
+
+		WikiNode node = (WikiNode)parentBaseModel;
+
+		WikiNodeServiceUtil.deleteNode(node.getNodeId());
+	}
+
+	@Override
 	public Long getAssetClassPK(ClassedModel classedModel) {
 		return WikiPageAssetRenderer.getClassPK((WikiPage)classedModel);
 	}
@@ -272,16 +282,6 @@ public class WikiPageTrashHandlerTest
 
 		return WikiPageTrashHandlerTestUtil.addBaseModelWithWorkflow(
 			parentBaseModel, approved, serviceContext);
-	}
-
-	@Override
-	protected void deleteParentBaseModel(
-			BaseModel<?> parentBaseModel, boolean includeTrashedEntries)
-		throws Exception {
-
-		WikiNode node = (WikiNode)parentBaseModel;
-
-		WikiNodeServiceUtil.deleteNode(node.getNodeId());
 	}
 
 	@Override
