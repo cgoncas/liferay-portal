@@ -14,20 +14,19 @@
 
 package com.liferay.portlet.trash.test;
 
+import com.liferay.portal.model.BaseModel;
+import com.liferay.portal.model.ClassedModel;
+import com.liferay.portal.model.Group;
 import com.liferay.portal.service.ServiceContext;
 
 /**
  * @author Cristina González
  */
-public interface WhenIsIndexableBaseModel {
+public interface WhenIsBaseModelMoveableFromTrash {
 
-	public String getSearchKeywords();
-
-	public int searchBaseModelsCount(Class<?> clazz, long groupId)
-		throws Exception;
-
-	public int searchTrashEntriesCount(
-			String keywords, ServiceContext serviceContext)
+	public BaseModel<?> moveBaseModelFromTrash(
+			ClassedModel classedModel, Group group,
+			ServiceContext serviceContext)
 		throws Exception;
 
 }

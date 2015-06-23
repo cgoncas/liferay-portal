@@ -14,20 +14,16 @@
 
 package com.liferay.portlet.trash.test;
 
-import com.liferay.portal.service.ServiceContext;
+import com.liferay.portal.model.ClassedModel;
 
 /**
  * @author Cristina González
  */
-public interface WhenIsIndexableBaseModel {
+public class DefaultWhenIsClassModel implements WhenIsClassModel {
 
-	public String getSearchKeywords();
-
-	public int searchBaseModelsCount(Class<?> clazz, long groupId)
-		throws Exception;
-
-	public int searchTrashEntriesCount(
-			String keywords, ServiceContext serviceContext)
-		throws Exception;
+	@Override
+	public Long getAssetClassPK(ClassedModel classedModel) {
+		return (Long)classedModel.getPrimaryKeyObj();
+	}
 
 }

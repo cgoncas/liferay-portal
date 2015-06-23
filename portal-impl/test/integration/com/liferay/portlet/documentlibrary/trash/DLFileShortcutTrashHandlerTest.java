@@ -41,6 +41,13 @@ import com.liferay.portlet.documentlibrary.service.DLFileShortcutLocalServiceUti
 import com.liferay.portlet.documentlibrary.service.DLFolderLocalServiceUtil;
 import com.liferay.portlet.documentlibrary.util.test.DLAppTestUtil;
 import com.liferay.portlet.trash.test.BaseTrashHandlerTestCase;
+import com.liferay.portlet.trash.test.DefaultWhenIsClassModel;
+import com.liferay.portlet.trash.test.WhenHasGrandparent;
+import com.liferay.portlet.trash.test.WhenHasParent;
+import com.liferay.portlet.trash.test.WhenIsAssetableParentModel;
+import com.liferay.portlet.trash.test.WhenIsBaseModelMoveableFromTrash;
+import com.liferay.portlet.trash.test.WhenIsClassModel;
+import com.liferay.portlet.trash.test.WhenUpdateBaseModel;
 
 import org.junit.Assert;
 import org.junit.ClassRule;
@@ -53,7 +60,11 @@ import org.junit.Test;
  * @author Eudaldo Alonso
  */
 @Sync
-public class DLFileShortcutTrashHandlerTest extends BaseTrashHandlerTestCase {
+public class DLFileShortcutTrashHandlerTest
+	extends BaseTrashHandlerTestCase
+	implements WhenHasGrandparent, WhenHasParent, WhenIsAssetableParentModel,
+		WhenIsBaseModelMoveableFromTrash, WhenIsClassModel,
+		WhenUpdateBaseModel {
 
 	@ClassRule
 	@Rule
@@ -62,49 +73,40 @@ public class DLFileShortcutTrashHandlerTest extends BaseTrashHandlerTestCase {
 			new LiferayIntegrationTestRule(), MainServletTestRule.INSTANCE,
 			SynchronousDestinationTestRule.INSTANCE);
 
-	@Ignore
 	@Override
-	@Test
-	public void testTrashAndDeleteWithDraftStatus() throws Exception {
-	}
-
-	@Ignore
-	@Override
-	@Test
-	public void testTrashAndDeleteWithDraftStatusIndexable() throws Exception {
-	}
-
-	@Ignore
-	@Override
-	@Test
-	public void testTrashAndRestoreWithDraftStatus() throws Exception {
-	}
-
-	@Ignore
-	@Override
-	@Test
-	public void testTrashAndRestoreWithDraftStatusIndexable() throws Exception {
-	}
-
-	@Ignore
-	@Override
-	@Test
-	public void testTrashAndRestoreWithDraftStatusIsNotVisible()
+	public void deleteParentBaseModel(
+			BaseModel<?> parentBaseModel, boolean includeTrashedEntries)
 		throws Exception {
+
+		DLFolder dlFolder = (DLFolder)parentBaseModel;
+
+		DLFolderLocalServiceUtil.deleteFolder(dlFolder.getFolderId(), false);
 	}
 
-	@Ignore
 	@Override
-	@Test
-	public void testTrashAndRestoreWithDraftStatusRestoreStatus()
-		throws Exception {
+	public Long getAssetClassPK(ClassedModel classedModel) {
+		return _whenIsClassModel.getAssetClassPK(classedModel);
 	}
 
-	@Ignore
 	@Override
-	@Test
-	public void testTrashAndRestoreWithDraftStatusRestoreUniqueTitle()
+	public BaseModel<?> moveBaseModelFromTrash(
+			ClassedModel classedModel, Group group,
+			ServiceContext serviceContext)
 		throws Exception {
+
+		BaseModel<?> parentBaseModel = getParentBaseModel(
+			group, serviceContext);
+
+		DLAppServiceUtil.moveFileShortcutFromTrash(
+			(Long)classedModel.getPrimaryKeyObj(),
+			(Long)parentBaseModel.getPrimaryKeyObj(), serviceContext);
+
+		return parentBaseModel;
+	}
+
+	@Override
+	public void moveParentBaseModelToTrash(long primaryKey) throws Exception {
+		DLAppServiceUtil.moveFolderToTrash(primaryKey);
 	}
 
 	@Ignore
@@ -121,38 +123,20 @@ public class DLFileShortcutTrashHandlerTest extends BaseTrashHandlerTestCase {
 	@Ignore
 	@Override
 	@Test
-	public void testTrashMyBaseModel() throws Exception {
-	}
-
-	@Ignore
-	@Override
-	@Test
-	public void testTrashRecentBaseModel() throws Exception {
-	}
-
-	@Ignore
-	@Override
-	@Test
 	public void testTrashVersionBaseModelAndDelete() throws Exception {
 	}
 
 	@Ignore
 	@Override
 	@Test
-	public void testTrashVersionBaseModelAndDeleteIndexable() throws Exception {
+	public void testTrashVersionBaseModelAndDeleteIsNotFound()
+		throws Exception {
 	}
 
 	@Ignore
 	@Override
 	@Test
 	public void testTrashVersionBaseModelAndRestore() throws Exception {
-	}
-
-	@Ignore
-	@Override
-	@Test
-	public void testTrashVersionBaseModelAndRestoreIndexable()
-		throws Exception {
 	}
 
 	@Ignore
@@ -177,13 +161,40 @@ public class DLFileShortcutTrashHandlerTest extends BaseTrashHandlerTestCase {
 	@Ignore
 	@Override
 	@Test
-	public void testTrashVersionParentBaseModelIndexable() throws Exception {
+	public void testTrashVersionParentBaseModelAndRestoreIsNotInTrashContainer()
+		throws Exception {
+	}
+
+	@Ignore
+	@Override
+	@Test
+	public void testTrashVersionParentBaseModelAndRestoreIsVisible()
+		throws Exception {
 	}
 
 	@Ignore
 	@Override
 	@Test
 	public void testTrashVersionParentBaseModelIsNotVisible() throws Exception {
+	}
+
+	@Override
+	public BaseModel<?> updateBaseModel(
+			long primaryKey, ServiceContext serviceContext)
+		throws Exception {
+
+		DLFileShortcut dlFileShortcut =
+			DLFileShortcutLocalServiceUtil.getFileShortcut(primaryKey);
+
+		if (serviceContext.getWorkflowAction() ==
+				WorkflowConstants.ACTION_SAVE_DRAFT) {
+
+			DLFileShortcutLocalServiceUtil.updateStatus(
+				TestPropsValues.getUserId(), primaryKey,
+				WorkflowConstants.STATUS_DRAFT, serviceContext);
+		}
+
+		return dlFileShortcut;
 	}
 
 	@Override
@@ -221,16 +232,6 @@ public class DLFileShortcutTrashHandlerTest extends BaseTrashHandlerTestCase {
 			groupId, folderId, fileEntry.getFileEntryId(), serviceContext);
 
 		return (BaseModel<?>)fileShortcut.getModel();
-	}
-
-	@Override
-	protected void deleteParentBaseModel(
-			BaseModel<?> parentBaseModel, boolean includeTrashedEntries)
-		throws Exception {
-
-		DLFolder dlFolder = (DLFolder)parentBaseModel;
-
-		DLFolderLocalServiceUtil.deleteFolder(dlFolder.getFolderId(), false);
 	}
 
 	@Override
@@ -281,46 +282,13 @@ public class DLFileShortcutTrashHandlerTest extends BaseTrashHandlerTestCase {
 	}
 
 	@Override
-	protected String getSearchKeywords() {
-		return "Title";
-	}
-
-	@Override
 	protected String getUniqueTitle(BaseModel<?> baseModel) {
 		return null;
 	}
 
 	@Override
-	protected boolean isAssetableModel() {
-		return false;
-	}
-
-	@Override
-	protected BaseModel<?> moveBaseModelFromTrash(
-			ClassedModel classedModel, Group group,
-			ServiceContext serviceContext)
-		throws Exception {
-
-		BaseModel<?> parentBaseModel = getParentBaseModel(
-			group, serviceContext);
-
-		DLAppServiceUtil.moveFileShortcutFromTrash(
-			(Long)classedModel.getPrimaryKeyObj(),
-			(Long)parentBaseModel.getPrimaryKeyObj(), serviceContext);
-
-		return parentBaseModel;
-	}
-
-	@Override
 	protected void moveBaseModelToTrash(long primaryKey) throws Exception {
 		DLAppServiceUtil.moveFileShortcutToTrash(primaryKey);
-	}
-
-	@Override
-	protected void moveParentBaseModelToTrash(long primaryKey)
-		throws Exception {
-
-		DLAppServiceUtil.moveFolderToTrash(primaryKey);
 	}
 
 	protected void trashFileEntry() throws Exception {
@@ -366,23 +334,7 @@ public class DLFileShortcutTrashHandlerTest extends BaseTrashHandlerTestCase {
 			getNotInTrashBaseModelsCount(parentBaseModel));
 	}
 
-	@Override
-	protected BaseModel<?> updateBaseModel(
-			long primaryKey, ServiceContext serviceContext)
-		throws Exception {
-
-		DLFileShortcut dlFileShortcut =
-			DLFileShortcutLocalServiceUtil.getFileShortcut(primaryKey);
-
-		if (serviceContext.getWorkflowAction() ==
-				WorkflowConstants.ACTION_SAVE_DRAFT) {
-
-			DLFileShortcutLocalServiceUtil.updateStatus(
-				TestPropsValues.getUserId(), primaryKey,
-				WorkflowConstants.STATUS_DRAFT, serviceContext);
-		}
-
-		return dlFileShortcut;
-	}
+	private static final WhenIsClassModel _whenIsClassModel =
+		new DefaultWhenIsClassModel();
 
 }

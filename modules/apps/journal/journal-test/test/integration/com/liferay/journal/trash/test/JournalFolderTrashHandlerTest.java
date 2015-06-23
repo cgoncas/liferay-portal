@@ -34,7 +34,16 @@ import com.liferay.portal.service.ServiceContext;
 import com.liferay.portal.service.test.ServiceTestUtil;
 import com.liferay.portal.test.rule.LiferayIntegrationTestRule;
 import com.liferay.portlet.trash.test.BaseTrashHandlerTestCase;
+import com.liferay.portlet.trash.test.DefaultWhenIsAssetableBaseModel;
+import com.liferay.portlet.trash.test.DefaultWhenIsIndexableBaseModel;
+import com.liferay.portlet.trash.test.WhenHasGrandparent;
+import com.liferay.portlet.trash.test.WhenHasParent;
+import com.liferay.portlet.trash.test.WhenIsAssetableBaseModel;
+import com.liferay.portlet.trash.test.WhenIsAssetableParentModel;
+import com.liferay.portlet.trash.test.WhenIsBaseModelMoveableFromTrash;
+import com.liferay.portlet.trash.test.WhenIsClassModel;
 import com.liferay.portlet.trash.test.WhenIsIndexableBaseModel;
+import com.liferay.portlet.trash.test.WhenUpdateBaseModel;
 import com.liferay.portlet.trash.util.TrashUtil;
 
 import org.junit.After;
@@ -51,7 +60,10 @@ import org.junit.runner.RunWith;
 @RunWith(Arquillian.class)
 @Sync
 public class JournalFolderTrashHandlerTest
-	extends BaseTrashHandlerTestCase implements WhenIsIndexableBaseModel {
+	extends BaseTrashHandlerTestCase
+	implements WhenHasGrandparent, WhenHasParent, WhenIsAssetableBaseModel,
+		WhenIsAssetableParentModel, WhenIsBaseModelMoveableFromTrash,
+		WhenIsClassModel, WhenIsIndexableBaseModel, WhenUpdateBaseModel {
 
 	@ClassRule
 	@Rule
@@ -59,6 +71,70 @@ public class JournalFolderTrashHandlerTest
 		new AggregateTestRule(
 			new LiferayIntegrationTestRule(),
 			SynchronousDestinationTestRule.INSTANCE);
+
+	@Override
+	public void deleteParentBaseModel(
+			BaseModel<?> parentBaseModel, boolean includeTrashedEntries)
+		throws Exception {
+
+		JournalFolder folder = (JournalFolder)parentBaseModel;
+
+		JournalFolderServiceUtil.deleteFolder(folder.getFolderId(), false);
+	}
+
+	@Override
+	public Long getAssetClassPK(ClassedModel classedModel) {
+		return _whenIsAssetableBaseModel.getAssetClassPK(classedModel);
+	}
+
+	@Override
+	public String getSearchKeywords() {
+		return _FOLDER_NAME;
+	}
+
+	@Override
+	public boolean isAssetEntryVisible(ClassedModel classedModel)
+		throws Exception {
+
+		return _whenIsAssetableBaseModel.isAssetEntryVisible(classedModel);
+	}
+
+	@Override
+	public BaseModel<?> moveBaseModelFromTrash(
+			ClassedModel classedModel, Group group,
+			ServiceContext serviceContext)
+		throws Exception {
+
+		BaseModel<?> parentBaseModel = getParentBaseModel(
+			group, serviceContext);
+
+		JournalFolderServiceUtil.moveFolderFromTrash(
+			(Long)classedModel.getPrimaryKeyObj(),
+			(Long)parentBaseModel.getPrimaryKeyObj(), serviceContext);
+
+		return parentBaseModel;
+	}
+
+	@Override
+	public void moveParentBaseModelToTrash(long primaryKey) throws Exception {
+		JournalFolderServiceUtil.moveFolderToTrash(primaryKey);
+	}
+
+	@Override
+	public int searchBaseModelsCount(Class<?> clazz, long groupId)
+		throws Exception {
+
+		return _whenIsIndexableBaseModel.searchBaseModelsCount(clazz, groupId);
+	}
+
+	@Override
+	public int searchTrashEntriesCount(
+			String keywords, ServiceContext serviceContext)
+		throws Exception {
+
+		return _whenIsIndexableBaseModel.searchTrashEntriesCount(
+			keywords, serviceContext);
+	}
 
 	@Before
 	@Override
@@ -80,81 +156,6 @@ public class JournalFolderTrashHandlerTest
 	@Ignore
 	@Override
 	@Test
-	public void testAddBaseModelWithDraftStatus() throws Exception {
-	}
-
-	@Ignore
-	@Override
-	@Test
-	public void testAddBaseModelWithDraftStatusIndexable() throws Exception {
-	}
-
-	@Ignore
-	@Override
-	@Test
-	public void testAddBaseModelWithDraftStatusIsNotVisible() throws Exception {
-	}
-
-	@Ignore
-	@Override
-	@Test
-	public void testTrashAndDeleteWithDraftStatus() throws Exception {
-	}
-
-	@Ignore
-	@Override
-	@Test
-	public void testTrashAndDeleteWithDraftStatusIndexable() throws Exception {
-	}
-
-	@Ignore
-	@Override
-	@Test
-	public void testTrashAndRestoreWithDraftStatus() throws Exception {
-	}
-
-	@Ignore
-	@Override
-	@Test
-	public void testTrashAndRestoreWithDraftStatusIndexable() throws Exception {
-	}
-
-	@Ignore
-	@Override
-	@Test
-	public void testTrashAndRestoreWithDraftStatusIsNotVisible()
-		throws Exception {
-	}
-
-	@Ignore
-	@Override
-	@Test
-	public void testTrashAndRestoreWithDraftStatusRestoreStatus()
-		throws Exception {
-	}
-
-	@Ignore
-	@Override
-	@Test
-	public void testTrashAndRestoreWithDraftStatusRestoreUniqueTitle()
-		throws Exception {
-	}
-
-	@Ignore
-	@Override
-	@Test
-	public void testTrashMyBaseModel() throws Exception {
-	}
-
-	@Ignore
-	@Override
-	@Test
-	public void testTrashRecentBaseModel() throws Exception {
-	}
-
-	@Ignore
-	@Override
-	@Test
 	public void testTrashVersionBaseModelAndDelete() throws Exception {
 	}
 
@@ -162,6 +163,13 @@ public class JournalFolderTrashHandlerTest
 	@Override
 	@Test
 	public void testTrashVersionBaseModelAndDeleteIndexable() throws Exception {
+	}
+
+	@Ignore
+	@Override
+	@Test
+	public void testTrashVersionBaseModelAndDeleteIsNotFound()
+		throws Exception {
 	}
 
 	@Ignore
@@ -199,6 +207,20 @@ public class JournalFolderTrashHandlerTest
 	@Ignore
 	@Override
 	@Test
+	public void testTrashVersionParentBaseModelAndRestoreIsNotInTrashContainer()
+		throws Exception {
+	}
+
+	@Ignore
+	@Override
+	@Test
+	public void testTrashVersionParentBaseModelAndRestoreIsVisible()
+		throws Exception {
+	}
+
+	@Ignore
+	@Override
+	@Test
 	public void testTrashVersionParentBaseModelIndexable() throws Exception {
 	}
 
@@ -206,6 +228,25 @@ public class JournalFolderTrashHandlerTest
 	@Override
 	@Test
 	public void testTrashVersionParentBaseModelIsNotVisible() throws Exception {
+	}
+
+	@Override
+	public BaseModel<?> updateBaseModel(
+			long primaryKey, ServiceContext serviceContext)
+		throws Exception {
+
+		JournalFolder folder = JournalFolderLocalServiceUtil.getFolder(
+			primaryKey);
+
+		if (serviceContext.getWorkflowAction() ==
+				WorkflowConstants.ACTION_SAVE_DRAFT) {
+
+			folder = JournalFolderLocalServiceUtil.updateStatus(
+				TestPropsValues.getUserId(), folder,
+				WorkflowConstants.STATUS_DRAFT);
+		}
+
+		return folder;
 	}
 
 	@Override
@@ -234,16 +275,6 @@ public class JournalFolderTrashHandlerTest
 			serviceContext.getScopeGroupId(),
 			JournalFolderConstants.DEFAULT_PARENT_FOLDER_ID,
 			getSearchKeywords());
-	}
-
-	@Override
-	protected void deleteParentBaseModel(
-			BaseModel<?> parentBaseModel, boolean includeTrashedEntries)
-		throws Exception {
-
-		JournalFolder folder = (JournalFolder)parentBaseModel;
-
-		JournalFolderServiceUtil.deleteFolder(folder.getFolderId(), false);
 	}
 
 	@Override
@@ -294,11 +325,6 @@ public class JournalFolderTrashHandlerTest
 	}
 
 	@Override
-	protected String getSearchKeywords() {
-		return _FOLDER_NAME;
-	}
-
-	@Override
 	protected String getUniqueTitle(BaseModel<?> baseModel) {
 		JournalFolder folder = (JournalFolder)baseModel;
 
@@ -308,55 +334,18 @@ public class JournalFolderTrashHandlerTest
 	}
 
 	@Override
-	protected BaseModel<?> moveBaseModelFromTrash(
-			ClassedModel classedModel, Group group,
-			ServiceContext serviceContext)
-		throws Exception {
-
-		BaseModel<?> parentBaseModel = getParentBaseModel(
-			group, serviceContext);
-
-		JournalFolderServiceUtil.moveFolderFromTrash(
-			(Long)classedModel.getPrimaryKeyObj(),
-			(Long)parentBaseModel.getPrimaryKeyObj(), serviceContext);
-
-		return parentBaseModel;
-	}
-
-	@Override
 	protected void moveBaseModelToTrash(long primaryKey) throws Exception {
 		JournalFolderServiceUtil.moveFolderToTrash(primaryKey);
-	}
-
-	@Override
-	protected void moveParentBaseModelToTrash(long primaryKey)
-		throws Exception {
-
-		JournalFolderServiceUtil.moveFolderToTrash(primaryKey);
-	}
-
-	@Override
-	protected BaseModel<?> updateBaseModel(
-			long primaryKey, ServiceContext serviceContext)
-		throws Exception {
-
-		JournalFolder folder = JournalFolderLocalServiceUtil.getFolder(
-			primaryKey);
-
-		if (serviceContext.getWorkflowAction() ==
-				WorkflowConstants.ACTION_SAVE_DRAFT) {
-
-			folder = JournalFolderLocalServiceUtil.updateStatus(
-				TestPropsValues.getUserId(), folder,
-				WorkflowConstants.STATUS_DRAFT);
-		}
-
-		return folder;
 	}
 
 	private static final String _FOLDER_NAME = RandomTestUtil.randomString(100);
 
 	private static final int _FOLDER_NAME_MAX_LENGTH = 100;
+
+	private static final WhenIsAssetableBaseModel _whenIsAssetableBaseModel =
+		new DefaultWhenIsAssetableBaseModel();
+	private static final WhenIsIndexableBaseModel
+		_whenIsIndexableBaseModel = new DefaultWhenIsIndexableBaseModel();
 
 	private boolean _testMode;
 

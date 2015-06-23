@@ -14,20 +14,8 @@
 
 package com.liferay.portlet.trash.test;
 
-import com.liferay.portal.service.ServiceContext;
-
 /**
  * @author Cristina González
  */
-public interface WhenIsIndexableBaseModel {
-
-	public String getSearchKeywords();
-
-	public int searchBaseModelsCount(Class<?> clazz, long groupId)
-		throws Exception;
-
-	public int searchTrashEntriesCount(
-			String keywords, ServiceContext serviceContext)
-		throws Exception;
-
+public interface WhenHasGrandparent {
 }

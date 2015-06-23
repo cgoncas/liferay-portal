@@ -51,7 +51,20 @@ import com.liferay.portlet.dynamicdatamapping.model.DDMTemplate;
 import com.liferay.portlet.dynamicdatamapping.util.test.DDMStructureTestUtil;
 import com.liferay.portlet.dynamicdatamapping.util.test.DDMTemplateTestUtil;
 import com.liferay.portlet.trash.test.BaseTrashHandlerTestCase;
+import com.liferay.portlet.trash.test.DefaultWhenIsAssetableBaseModel;
+import com.liferay.portlet.trash.test.DefaultWhenIsIndexableBaseModel;
+import com.liferay.portlet.trash.test.WhenHasDraftStatus;
+import com.liferay.portlet.trash.test.WhenHasGrandparent;
+import com.liferay.portlet.trash.test.WhenHasParent;
+import com.liferay.portlet.trash.test.WhenHasRecentBaseModelCount;
+import com.liferay.portlet.trash.test.WhenIsAssetableBaseModel;
+import com.liferay.portlet.trash.test.WhenIsAssetableParentModel;
+import com.liferay.portlet.trash.test.WhenIsBaseModelMoveableFromTrash;
+import com.liferay.portlet.trash.test.WhenIsClassModel;
 import com.liferay.portlet.trash.test.WhenIsIndexableBaseModel;
+import com.liferay.portlet.trash.test.WhenIsMineBaseModel;
+import com.liferay.portlet.trash.test.WhenIsParentRestorableFromTrash;
+import com.liferay.portlet.trash.test.WhenUpdateBaseModel;
 import com.liferay.portlet.trash.util.TrashUtil;
 
 import java.util.HashMap;
@@ -72,7 +85,12 @@ import org.junit.runner.RunWith;
 @RunWith(Arquillian.class)
 @Sync
 public class JournalArticleTrashHandlerTest
-	extends BaseTrashHandlerTestCase implements WhenIsIndexableBaseModel {
+	extends BaseTrashHandlerTestCase
+	implements WhenHasGrandparent, WhenHasDraftStatus, WhenHasParent,
+		WhenHasRecentBaseModelCount, WhenIsAssetableBaseModel,
+		WhenIsAssetableParentModel, WhenIsBaseModelMoveableFromTrash,
+		WhenIsClassModel, WhenIsIndexableBaseModel, WhenIsMineBaseModel,
+		WhenIsParentRestorableFromTrash, WhenUpdateBaseModel {
 
 	@ClassRule
 	@Rule
@@ -80,6 +98,107 @@ public class JournalArticleTrashHandlerTest
 		new AggregateTestRule(
 			new LiferayIntegrationTestRule(),
 			SynchronousDestinationTestRule.INSTANCE);
+
+	@Override
+	public void deleteParentBaseModel(
+			BaseModel<?> parentBaseModel, boolean includeTrashedEntries)
+		throws Exception {
+
+		JournalFolder folder = (JournalFolder)parentBaseModel;
+
+		JournalFolderServiceUtil.deleteFolder(folder.getFolderId(), false);
+	}
+
+	@Override
+	public Long getAssetClassPK(ClassedModel classedModel) {
+		if (classedModel instanceof JournalArticle) {
+			JournalArticle article = (JournalArticle)classedModel;
+
+			try {
+				JournalArticleResource journalArticleResource =
+					JournalArticleResourceLocalServiceUtil.getArticleResource(
+						article.getResourcePrimKey());
+
+				return journalArticleResource.getResourcePrimKey();
+			}
+			catch (Exception e) {
+				return _whenIsAssetableBaseModel.getAssetClassPK(classedModel);
+			}
+		}
+		else {
+			return _whenIsAssetableBaseModel.getAssetClassPK(classedModel);
+		}
+	}
+
+	@Override
+	public int getMineBaseModelsCount(long groupId, long userId)
+		throws Exception {
+
+		return JournalArticleServiceUtil.getGroupArticlesCount(
+			groupId, userId, JournalFolderConstants.DEFAULT_PARENT_FOLDER_ID);
+	}
+
+	@Override
+	public int getRecentBaseModelsCount(long groupId) throws Exception {
+		return JournalArticleServiceUtil.getGroupArticlesCount(
+			groupId, 0, JournalFolderConstants.DEFAULT_PARENT_FOLDER_ID);
+	}
+
+	@Override
+	public String getSearchKeywords() {
+		return "Article";
+	}
+
+	@Override
+	public boolean isAssetEntryVisible(ClassedModel classedModel)
+		throws Exception {
+
+		return _whenIsAssetableBaseModel.isAssetEntryVisible(classedModel);
+	}
+
+	@Override
+	public BaseModel<?> moveBaseModelFromTrash(
+			ClassedModel classedModel, Group group,
+			ServiceContext serviceContext)
+		throws Exception {
+
+		BaseModel<?> parentBaseModel = getParentBaseModel(
+			group, serviceContext);
+
+		JournalArticleServiceUtil.moveArticleFromTrash(
+			group.getGroupId(), getAssetClassPK(classedModel),
+			(Long)parentBaseModel.getPrimaryKeyObj(), serviceContext);
+
+		return parentBaseModel;
+	}
+
+	@Override
+	public void moveParentBaseModelToTrash(long primaryKey) throws Exception {
+		JournalFolderServiceUtil.moveFolderToTrash(primaryKey);
+	}
+
+	@Override
+	public void restoreParentBaseModelFromTrash(long primaryKey)
+		throws Exception {
+
+		JournalFolderServiceUtil.restoreFolderFromTrash(primaryKey);
+	}
+
+	@Override
+	public int searchBaseModelsCount(Class<?> clazz, long groupId)
+		throws Exception {
+
+		return _whenIsIndexableBaseModel.searchBaseModelsCount(clazz, groupId);
+	}
+
+	@Override
+	public int searchTrashEntriesCount(
+			String keywords, ServiceContext serviceContext)
+		throws Exception {
+
+		return _whenIsIndexableBaseModel.searchTrashEntriesCount(
+			keywords, serviceContext);
+	}
 
 	@Before
 	@Override
@@ -161,6 +280,19 @@ public class JournalArticleTrashHandlerTest
 	}
 
 	@Override
+	public BaseModel<?> updateBaseModel(
+			long primaryKey, ServiceContext serviceContext)
+		throws Exception {
+
+		JournalArticle article = JournalArticleLocalServiceUtil.getArticle(
+			primaryKey);
+
+		return JournalTestUtil.updateArticle(
+			article, "Content: Enterprise. Open Source. For Life.",
+			article.getContent(), false, true, serviceContext);
+	}
+
+	@Override
 	protected BaseModel<?> addBaseModelWithWorkflow(
 			BaseModel<?> parentBaseModel, boolean approved,
 			ServiceContext serviceContext)
@@ -185,16 +317,6 @@ public class JournalArticleTrashHandlerTest
 	}
 
 	@Override
-	protected void deleteParentBaseModel(
-			BaseModel<?> parentBaseModel, boolean includeTrashedEntries)
-		throws Exception {
-
-		JournalFolder folder = (JournalFolder)parentBaseModel;
-
-		JournalFolderServiceUtil.deleteFolder(folder.getFolderId(), false);
-	}
-
-	@Override
 	protected BaseModel<?> expireBaseModel(
 			BaseModel<?> baseModel, ServiceContext serviceContext)
 		throws Exception {
@@ -204,27 +326,6 @@ public class JournalArticleTrashHandlerTest
 		return JournalArticleLocalServiceUtil.expireArticle(
 			article.getUserId(), article.getGroupId(), article.getArticleId(),
 			article.getVersion(), StringPool.BLANK, serviceContext);
-	}
-
-	@Override
-	protected Long getAssetClassPK(ClassedModel classedModel) {
-		if (classedModel instanceof JournalArticle) {
-			JournalArticle article = (JournalArticle)classedModel;
-
-			try {
-				JournalArticleResource journalArticleResource =
-					JournalArticleResourceLocalServiceUtil.getArticleResource(
-						article.getResourcePrimKey());
-
-				return journalArticleResource.getResourcePrimKey();
-			}
-			catch (Exception e) {
-				return super.getAssetClassPK(classedModel);
-			}
-		}
-		else {
-			return super.getAssetClassPK(classedModel);
-		}
 	}
 
 	@Override
@@ -253,14 +354,6 @@ public class JournalArticleTrashHandlerTest
 
 		return JournalArticleLocalServiceUtil.getArticles(
 			folder.getGroupId(), folder.getFolderId());
-	}
-
-	@Override
-	protected int getMineBaseModelsCount(long groupId, long userId)
-		throws Exception {
-
-		return JournalArticleServiceUtil.getGroupArticlesCount(
-			groupId, userId, JournalFolderConstants.DEFAULT_PARENT_FOLDER_ID);
 	}
 
 	@Override
@@ -299,17 +392,6 @@ public class JournalArticleTrashHandlerTest
 	}
 
 	@Override
-	protected int getRecentBaseModelsCount(long groupId) throws Exception {
-		return JournalArticleServiceUtil.getGroupArticlesCount(
-			groupId, 0, JournalFolderConstants.DEFAULT_PARENT_FOLDER_ID);
-	}
-
-	@Override
-	protected String getSearchKeywords() {
-		return "Article";
-	}
-
-	@Override
 	protected long getTrashEntryClassPK(ClassedModel classedModel) {
 		JournalArticle article = (JournalArticle)classedModel;
 
@@ -326,22 +408,6 @@ public class JournalArticleTrashHandlerTest
 	}
 
 	@Override
-	protected BaseModel<?> moveBaseModelFromTrash(
-			ClassedModel classedModel, Group group,
-			ServiceContext serviceContext)
-		throws Exception {
-
-		BaseModel<?> parentBaseModel = getParentBaseModel(
-			group, serviceContext);
-
-		JournalArticleServiceUtil.moveArticleFromTrash(
-			group.getGroupId(), getAssetClassPK(classedModel),
-			(Long)parentBaseModel.getPrimaryKeyObj(), serviceContext);
-
-		return parentBaseModel;
-	}
-
-	@Override
 	protected void moveBaseModelToTrash(long primaryKey) throws Exception {
 		JournalArticle article = JournalArticleLocalServiceUtil.getArticle(
 			primaryKey);
@@ -350,34 +416,12 @@ public class JournalArticleTrashHandlerTest
 			TestPropsValues.getUserId(), article);
 	}
 
-	@Override
-	protected void moveParentBaseModelToTrash(long primaryKey)
-		throws Exception {
-
-		JournalFolderServiceUtil.moveFolderToTrash(primaryKey);
-	}
-
-	@Override
-	protected void restoreParentBaseModelFromTrash(long primaryKey)
-		throws Exception {
-
-		JournalFolderServiceUtil.restoreFolderFromTrash(primaryKey);
-	}
-
-	@Override
-	protected BaseModel<?> updateBaseModel(
-			long primaryKey, ServiceContext serviceContext)
-		throws Exception {
-
-		JournalArticle article = JournalArticleLocalServiceUtil.getArticle(
-			primaryKey);
-
-		return JournalTestUtil.updateArticle(
-			article, "Content: Enterprise. Open Source. For Life.",
-			article.getContent(), false, true, serviceContext);
-	}
-
 	private static final int _FOLDER_NAME_MAX_LENGTH = 100;
+
+	private static final WhenIsAssetableBaseModel _whenIsAssetableBaseModel =
+		new DefaultWhenIsAssetableBaseModel();
+	private static final WhenIsIndexableBaseModel
+		_whenIsIndexableBaseModel = new DefaultWhenIsIndexableBaseModel();
 
 	private boolean _testMode;
 

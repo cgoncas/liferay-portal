@@ -29,6 +29,8 @@ import com.liferay.portal.model.Group;
 import com.liferay.portal.service.ServiceContext;
 import com.liferay.portal.test.rule.LiferayIntegrationTestRule;
 import com.liferay.portal.test.rule.MainServletTestRule;
+import com.liferay.portlet.asset.model.AssetEntry;
+import com.liferay.portlet.asset.service.AssetEntryLocalServiceUtil;
 import com.liferay.portlet.messageboards.model.MBCategory;
 import com.liferay.portlet.messageboards.model.MBCategoryConstants;
 import com.liferay.portlet.messageboards.model.MBMessage;
@@ -41,7 +43,17 @@ import com.liferay.portlet.messageboards.service.MBThreadLocalServiceUtil;
 import com.liferay.portlet.messageboards.service.MBThreadServiceUtil;
 import com.liferay.portlet.messageboards.util.test.MBTestUtil;
 import com.liferay.portlet.trash.test.BaseTrashHandlerTestCase;
+import com.liferay.portlet.trash.test.DefaultWhenIsAssetableBaseModel;
+import com.liferay.portlet.trash.test.DefaultWhenIsIndexableBaseModel;
+import com.liferay.portlet.trash.test.WhenHasGrandparent;
+import com.liferay.portlet.trash.test.WhenHasParent;
+import com.liferay.portlet.trash.test.WhenHasRecentBaseModelCount;
+import com.liferay.portlet.trash.test.WhenIsAssetableBaseModel;
+import com.liferay.portlet.trash.test.WhenIsBaseModelMoveableFromTrash;
+import com.liferay.portlet.trash.test.WhenIsClassModel;
 import com.liferay.portlet.trash.test.WhenIsIndexableBaseModel;
+import com.liferay.portlet.trash.test.WhenIsMineBaseModel;
+import com.liferay.portlet.trash.test.WhenUpdateBaseModel;
 
 import java.io.InputStream;
 
@@ -60,7 +72,11 @@ import org.junit.Test;
  */
 @Sync
 public class MBThreadTrashHandlerTest
-	extends BaseTrashHandlerTestCase implements WhenIsIndexableBaseModel {
+	extends BaseTrashHandlerTestCase
+	implements WhenHasGrandparent, WhenHasParent, WhenHasRecentBaseModelCount,
+		WhenIsAssetableBaseModel, WhenIsBaseModelMoveableFromTrash,
+		WhenIsClassModel, WhenIsIndexableBaseModel, WhenIsMineBaseModel,
+		WhenUpdateBaseModel {
 
 	@ClassRule
 	@Rule
@@ -69,22 +85,93 @@ public class MBThreadTrashHandlerTest
 			new LiferayIntegrationTestRule(), MainServletTestRule.INSTANCE,
 			SynchronousDestinationTestRule.INSTANCE);
 
-	@Ignore
 	@Override
-	@Test
-	public void testAddBaseModelWithDraftStatus() throws Exception {
+	public void deleteParentBaseModel(
+			BaseModel<?> parentBaseModel, boolean includeTrashedEntries)
+		throws Exception {
+
+		MBCategory parentCategory = (MBCategory)parentBaseModel;
+
+		MBCategoryLocalServiceUtil.deleteCategory(parentCategory, false);
 	}
 
-	@Ignore
 	@Override
-	@Test
-	public void testAddBaseModelWithDraftStatusIndexable() throws Exception {
+	public Long getAssetClassPK(ClassedModel classedModel) {
+		return _whenIsAssetableBaseModel.getAssetClassPK(classedModel);
 	}
 
-	@Ignore
 	@Override
-	@Test
-	public void testAddBaseModelWithDraftStatusIsNotVisible() throws Exception {
+	public int getMineBaseModelsCount(long groupId, long userId)
+		throws Exception {
+
+		return MBThreadServiceUtil.getGroupThreadsCount(
+			groupId, userId, WorkflowConstants.STATUS_APPROVED);
+	}
+
+	@Override
+	public int getRecentBaseModelsCount(long groupId) throws Exception {
+		Calendar calendar = Calendar.getInstance();
+
+		calendar.add(Calendar.HOUR, -1);
+
+		return MBThreadServiceUtil.getGroupThreadsCount(
+			groupId, 0, calendar.getTime(), WorkflowConstants.STATUS_APPROVED);
+	}
+
+	@Override
+	public String getSearchKeywords() {
+		return _SUBJECT;
+	}
+
+	@Override
+	public boolean isAssetEntryVisible(ClassedModel classedModel)
+		throws Exception {
+
+		MBMessage rootMessage = MBMessageLocalServiceUtil.getMBMessage(
+			((MBThread)classedModel).getRootMessageId());
+
+		AssetEntry assetEntry = AssetEntryLocalServiceUtil.getEntry(
+			rootMessage.getModelClassName(), getAssetClassPK(rootMessage));
+
+		return assetEntry.isVisible();
+	}
+
+	@Override
+	public BaseModel<?> moveBaseModelFromTrash(
+			ClassedModel classedModel, Group group,
+			ServiceContext serviceContext)
+		throws Exception {
+
+		BaseModel<?> parentBaseModel = getParentBaseModel(
+			group, serviceContext);
+
+		MBThreadServiceUtil.moveThreadFromTrash(
+			(Long)parentBaseModel.getPrimaryKeyObj(),
+			(Long)classedModel.getPrimaryKeyObj());
+
+		return parentBaseModel;
+	}
+
+	@Override
+	public void moveParentBaseModelToTrash(long primaryKey) throws Exception {
+		MBCategoryServiceUtil.moveCategoryToTrash(primaryKey);
+	}
+
+	@Override
+	public int searchBaseModelsCount(Class<?> clazz, long groupId)
+		throws Exception {
+
+		return _whenIsIndexableBaseModel.searchBaseModelsCount(
+			MBMessage.class, groupId);
+	}
+
+	@Override
+	public int searchTrashEntriesCount(
+			String keywords, ServiceContext serviceContext)
+		throws Exception {
+
+		return _whenIsIndexableBaseModel.searchTrashEntriesCount(
+			keywords, serviceContext);
 	}
 
 	@Test
@@ -126,51 +213,6 @@ public class MBThreadTrashHandlerTest
 	@Ignore
 	@Override
 	@Test
-	public void testTrashAndDeleteWithDraftStatus() throws Exception {
-	}
-
-	@Ignore
-	@Override
-	@Test
-	public void testTrashAndDeleteWithDraftStatusIndexable() throws Exception {
-	}
-
-	@Ignore
-	@Override
-	@Test
-	public void testTrashAndRestoreWithDraftStatus() throws Exception {
-	}
-
-	@Ignore
-	@Override
-	@Test
-	public void testTrashAndRestoreWithDraftStatusIndexable() throws Exception {
-	}
-
-	@Ignore
-	@Override
-	@Test
-	public void testTrashAndRestoreWithDraftStatusIsNotVisible()
-		throws Exception {
-	}
-
-	@Ignore
-	@Override
-	@Test
-	public void testTrashAndRestoreWithDraftStatusRestoreStatus()
-		throws Exception {
-	}
-
-	@Ignore
-	@Override
-	@Test
-	public void testTrashAndRestoreWithDraftStatusRestoreUniqueTitle()
-		throws Exception {
-	}
-
-	@Ignore
-	@Override
-	@Test
 	public void testTrashDuplicate() throws Exception {
 	}
 
@@ -184,6 +226,13 @@ public class MBThreadTrashHandlerTest
 	@Override
 	@Test
 	public void testTrashVersionBaseModelAndDeleteIndexable() throws Exception {
+	}
+
+	@Ignore
+	@Override
+	@Test
+	public void testTrashVersionBaseModelAndDeleteIsNotFound()
+		throws Exception {
 	}
 
 	@Ignore
@@ -221,6 +270,20 @@ public class MBThreadTrashHandlerTest
 	@Ignore
 	@Override
 	@Test
+	public void testTrashVersionParentBaseModelAndRestoreIsNotInTrashContainer()
+		throws Exception {
+	}
+
+	@Ignore
+	@Override
+	@Test
+	public void testTrashVersionParentBaseModelAndRestoreIsVisible()
+		throws Exception {
+	}
+
+	@Ignore
+	@Override
+	@Test
 	public void testTrashVersionParentBaseModelIndexable() throws Exception {
 	}
 
@@ -228,6 +291,24 @@ public class MBThreadTrashHandlerTest
 	@Override
 	@Test
 	public void testTrashVersionParentBaseModelIsNotVisible() throws Exception {
+	}
+
+	@Override
+	public BaseModel<?> updateBaseModel(
+			long primaryKey, ServiceContext serviceContext)
+		throws Exception {
+
+		MBThread thread = MBThreadLocalServiceUtil.getThread(primaryKey);
+
+		if (serviceContext.getWorkflowAction() ==
+				WorkflowConstants.ACTION_SAVE_DRAFT) {
+
+			thread = MBThreadLocalServiceUtil.updateStatus(
+				TestPropsValues.getUserId(), primaryKey,
+				WorkflowConstants.STATUS_DRAFT);
+		}
+
+		return thread;
 	}
 
 	@Override
@@ -262,16 +343,6 @@ public class MBThreadTrashHandlerTest
 	}
 
 	@Override
-	protected void deleteParentBaseModel(
-			BaseModel<?> parentBaseModel, boolean includeTrashedEntries)
-		throws Exception {
-
-		MBCategory parentCategory = (MBCategory)parentBaseModel;
-
-		MBCategoryLocalServiceUtil.deleteCategory(parentCategory, false);
-	}
-
-	@Override
 	protected BaseModel<?> getBaseModel(long primaryKey) throws Exception {
 		return MBThreadLocalServiceUtil.getThread(primaryKey);
 	}
@@ -286,14 +357,6 @@ public class MBThreadTrashHandlerTest
 			categoryId);
 
 		return category.getMessageCount();
-	}
-
-	@Override
-	protected int getMineBaseModelsCount(long groupId, long userId)
-		throws Exception {
-
-		return MBThreadServiceUtil.getGroupThreadsCount(
-			groupId, userId, WorkflowConstants.STATUS_APPROVED);
 	}
 
 	@Override
@@ -334,38 +397,8 @@ public class MBThreadTrashHandlerTest
 	}
 
 	@Override
-	protected int getRecentBaseModelsCount(long groupId) throws Exception {
-		Calendar calendar = Calendar.getInstance();
-
-		calendar.add(Calendar.HOUR, -1);
-
-		return MBThreadServiceUtil.getGroupThreadsCount(
-			groupId, 0, calendar.getTime(), WorkflowConstants.STATUS_APPROVED);
-	}
-
-	@Override
-	protected String getSearchKeywords() {
-		return _SUBJECT;
-	}
-
-	@Override
 	protected String getUniqueTitle(BaseModel<?> baseModel) {
 		return null;
-	}
-
-	@Override
-	protected boolean isAssetableParentModel() {
-		return false;
-	}
-
-	@Override
-	protected boolean isAssetEntryVisible(ClassedModel classedModel)
-		throws Exception {
-
-		MBMessage rootMessage = MBMessageLocalServiceUtil.getMBMessage(
-			((MBThread)classedModel).getRootMessageId());
-
-		return super.isAssetEntryVisible(rootMessage);
 	}
 
 	@Override
@@ -374,31 +407,8 @@ public class MBThreadTrashHandlerTest
 	}
 
 	@Override
-	protected BaseModel<?> moveBaseModelFromTrash(
-			ClassedModel classedModel, Group group,
-			ServiceContext serviceContext)
-		throws Exception {
-
-		BaseModel<?> parentBaseModel = getParentBaseModel(
-			group, serviceContext);
-
-		MBThreadServiceUtil.moveThreadFromTrash(
-			(Long)parentBaseModel.getPrimaryKeyObj(),
-			(Long)classedModel.getPrimaryKeyObj());
-
-		return parentBaseModel;
-	}
-
-	@Override
 	protected void moveBaseModelToTrash(long primaryKey) throws Exception {
 		MBThreadServiceUtil.moveThreadToTrash(primaryKey);
-	}
-
-	@Override
-	protected void moveParentBaseModelToTrash(long primaryKey)
-		throws Exception {
-
-		MBCategoryServiceUtil.moveCategoryToTrash(primaryKey);
 	}
 
 	protected void replyMessage(BaseModel<?> baseModel) throws Exception {
@@ -417,31 +427,11 @@ public class MBThreadTrashHandlerTest
 			false, 0.0, false, serviceContext);
 	}
 
-	@Override
-	protected int searchBaseModelsCount(Class<?> clazz, long groupId)
-		throws Exception {
-
-		return super.searchBaseModelsCount(MBMessage.class, groupId);
-	}
-
-	@Override
-	protected BaseModel<?> updateBaseModel(
-			long primaryKey, ServiceContext serviceContext)
-		throws Exception {
-
-		MBThread thread = MBThreadLocalServiceUtil.getThread(primaryKey);
-
-		if (serviceContext.getWorkflowAction() ==
-				WorkflowConstants.ACTION_SAVE_DRAFT) {
-
-			thread = MBThreadLocalServiceUtil.updateStatus(
-				TestPropsValues.getUserId(), primaryKey,
-				WorkflowConstants.STATUS_DRAFT);
-		}
-
-		return thread;
-	}
-
 	private static final String _SUBJECT = "Subject";
+
+	private static final WhenIsAssetableBaseModel
+		_whenIsAssetableBaseModel = new DefaultWhenIsAssetableBaseModel();
+	private static final WhenIsIndexableBaseModel
+		_whenIsIndexableBaseModel = new DefaultWhenIsIndexableBaseModel();
 
 }

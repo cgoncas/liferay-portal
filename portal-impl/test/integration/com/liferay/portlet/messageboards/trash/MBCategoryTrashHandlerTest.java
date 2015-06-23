@@ -30,6 +30,12 @@ import com.liferay.portlet.messageboards.model.MBCategory;
 import com.liferay.portlet.messageboards.model.MBCategoryConstants;
 import com.liferay.portlet.messageboards.service.MBCategoryLocalServiceUtil;
 import com.liferay.portlet.trash.test.BaseTrashHandlerTestCase;
+import com.liferay.portlet.trash.test.DefaultWhenIsClassModel;
+import com.liferay.portlet.trash.test.WhenHasGrandparent;
+import com.liferay.portlet.trash.test.WhenHasParent;
+import com.liferay.portlet.trash.test.WhenIsBaseModelMoveableFromTrash;
+import com.liferay.portlet.trash.test.WhenIsClassModel;
+import com.liferay.portlet.trash.test.WhenUpdateBaseModel;
 
 import org.junit.ClassRule;
 import org.junit.Ignore;
@@ -40,7 +46,11 @@ import org.junit.Test;
  * @author Eduardo Garcia
  */
 @Sync
-public class MBCategoryTrashHandlerTest extends BaseTrashHandlerTestCase {
+public class MBCategoryTrashHandlerTest
+	extends BaseTrashHandlerTestCase
+	implements WhenHasGrandparent, WhenHasParent,
+		WhenIsBaseModelMoveableFromTrash, WhenIsClassModel,
+		WhenUpdateBaseModel {
 
 	@ClassRule
 	@Rule
@@ -49,49 +59,41 @@ public class MBCategoryTrashHandlerTest extends BaseTrashHandlerTestCase {
 			new LiferayIntegrationTestRule(), MainServletTestRule.INSTANCE,
 			SynchronousDestinationTestRule.INSTANCE);
 
-	@Ignore
 	@Override
-	@Test
-	public void testTrashAndDeleteWithDraftStatus() throws Exception {
-	}
-
-	@Ignore
-	@Override
-	@Test
-	public void testTrashAndDeleteWithDraftStatusIndexable() throws Exception {
-	}
-
-	@Ignore
-	@Override
-	@Test
-	public void testTrashAndRestoreWithDraftStatus() throws Exception {
-	}
-
-	@Ignore
-	@Override
-	@Test
-	public void testTrashAndRestoreWithDraftStatusIndexable() throws Exception {
-	}
-
-	@Ignore
-	@Override
-	@Test
-	public void testTrashAndRestoreWithDraftStatusIsNotVisible()
+	public void deleteParentBaseModel(
+			BaseModel<?> parentBaseModel, boolean includeTrashedEntries)
 		throws Exception {
+
+		MBCategory parentCategory = (MBCategory)parentBaseModel;
+
+		MBCategoryLocalServiceUtil.deleteCategory(parentCategory, false);
 	}
 
-	@Ignore
 	@Override
-	@Test
-	public void testTrashAndRestoreWithDraftStatusRestoreStatus()
-		throws Exception {
+	public Long getAssetClassPK(ClassedModel classedModel) {
+		return _whenIsClassModel.getAssetClassPK(classedModel);
 	}
 
-	@Ignore
 	@Override
-	@Test
-	public void testTrashAndRestoreWithDraftStatusRestoreUniqueTitle()
+	public BaseModel<?> moveBaseModelFromTrash(
+			ClassedModel classedModel, Group group,
+			ServiceContext serviceContext)
 		throws Exception {
+
+		BaseModel<?> parentBaseModel = getParentBaseModel(
+			group, serviceContext);
+
+		MBCategoryLocalServiceUtil.moveCategoryFromTrash(
+			TestPropsValues.getUserId(), (Long)classedModel.getPrimaryKeyObj(),
+			(Long)parentBaseModel.getPrimaryKeyObj());
+
+		return parentBaseModel;
+	}
+
+	@Override
+	public void moveParentBaseModelToTrash(long primaryKey) throws Exception {
+		MBCategoryLocalServiceUtil.moveCategoryToTrash(
+			TestPropsValues.getUserId(), primaryKey);
 	}
 
 	@Ignore
@@ -103,38 +105,20 @@ public class MBCategoryTrashHandlerTest extends BaseTrashHandlerTestCase {
 	@Ignore
 	@Override
 	@Test
-	public void testTrashMyBaseModel() throws Exception {
-	}
-
-	@Ignore
-	@Override
-	@Test
-	public void testTrashRecentBaseModel() throws Exception {
-	}
-
-	@Ignore
-	@Override
-	@Test
 	public void testTrashVersionBaseModelAndDelete() throws Exception {
 	}
 
 	@Ignore
 	@Override
 	@Test
-	public void testTrashVersionBaseModelAndDeleteIndexable() throws Exception {
+	public void testTrashVersionBaseModelAndDeleteIsNotFound()
+		throws Exception {
 	}
 
 	@Ignore
 	@Override
 	@Test
 	public void testTrashVersionBaseModelAndRestore() throws Exception {
-	}
-
-	@Ignore
-	@Override
-	@Test
-	public void testTrashVersionBaseModelAndRestoreIndexable()
-		throws Exception {
 	}
 
 	@Ignore
@@ -159,6 +143,20 @@ public class MBCategoryTrashHandlerTest extends BaseTrashHandlerTestCase {
 	@Ignore
 	@Override
 	@Test
+	public void testTrashVersionParentBaseModelAndRestoreIsNotInTrashContainer()
+		throws Exception {
+	}
+
+	@Ignore
+	@Override
+	@Test
+	public void testTrashVersionParentBaseModelAndRestoreIsVisible()
+		throws Exception {
+	}
+
+	@Ignore
+	@Override
+	@Test
 	public void testTrashVersionParentBaseModelIndexable() throws Exception {
 	}
 
@@ -166,6 +164,25 @@ public class MBCategoryTrashHandlerTest extends BaseTrashHandlerTestCase {
 	@Override
 	@Test
 	public void testTrashVersionParentBaseModelIsNotVisible() throws Exception {
+	}
+
+	@Override
+	public BaseModel<?> updateBaseModel(
+			long primaryKey, ServiceContext serviceContext)
+		throws Exception {
+
+		MBCategory category = MBCategoryLocalServiceUtil.getCategory(
+			primaryKey);
+
+		if (serviceContext.getWorkflowAction() ==
+				WorkflowConstants.ACTION_SAVE_DRAFT) {
+
+			category = MBCategoryLocalServiceUtil.updateStatus(
+				TestPropsValues.getUserId(), primaryKey,
+				WorkflowConstants.STATUS_DRAFT);
+		}
+
+		return category;
 	}
 
 	@Override
@@ -177,8 +194,8 @@ public class MBCategoryTrashHandlerTest extends BaseTrashHandlerTestCase {
 		MBCategory parentCategory = (MBCategory)parentBaseModel;
 
 		return MBCategoryLocalServiceUtil.addCategory(
-			TestPropsValues.getUserId(), parentCategory.getCategoryId(),
-			getSearchKeywords(), StringPool.BLANK, serviceContext);
+			TestPropsValues.getUserId(), parentCategory.getCategoryId(), _TITLE,
+			StringPool.BLANK, serviceContext);
 	}
 
 	@Override
@@ -188,18 +205,8 @@ public class MBCategoryTrashHandlerTest extends BaseTrashHandlerTestCase {
 
 		return MBCategoryLocalServiceUtil.addCategory(
 			TestPropsValues.getUserId(),
-			MBCategoryConstants.DEFAULT_PARENT_CATEGORY_ID, getSearchKeywords(),
+			MBCategoryConstants.DEFAULT_PARENT_CATEGORY_ID, _TITLE,
 			StringPool.BLANK, serviceContext);
-	}
-
-	@Override
-	protected void deleteParentBaseModel(
-			BaseModel<?> parentBaseModel, boolean includeTrashedEntries)
-		throws Exception {
-
-		MBCategory parentCategory = (MBCategory)parentBaseModel;
-
-		MBCategoryLocalServiceUtil.deleteCategory(parentCategory, false);
 	}
 
 	@Override
@@ -236,7 +243,7 @@ public class MBCategoryTrashHandlerTest extends BaseTrashHandlerTestCase {
 		throws Exception {
 
 		return MBCategoryLocalServiceUtil.addCategory(
-			TestPropsValues.getUserId(), parentBaseModelId, getSearchKeywords(),
+			TestPropsValues.getUserId(), parentBaseModelId, _TITLE,
 			StringPool.BLANK, serviceContext);
 	}
 
@@ -251,39 +258,8 @@ public class MBCategoryTrashHandlerTest extends BaseTrashHandlerTestCase {
 	}
 
 	@Override
-	protected String getSearchKeywords() {
-		return "Title";
-	}
-
-	@Override
 	protected String getUniqueTitle(BaseModel<?> baseModel) {
 		return null;
-	}
-
-	@Override
-	protected boolean isAssetableModel() {
-		return false;
-	}
-
-	@Override
-	protected boolean isAssetableParentModel() {
-		return false;
-	}
-
-	@Override
-	protected BaseModel<?> moveBaseModelFromTrash(
-			ClassedModel classedModel, Group group,
-			ServiceContext serviceContext)
-		throws Exception {
-
-		BaseModel<?> parentBaseModel = getParentBaseModel(
-			group, serviceContext);
-
-		MBCategoryLocalServiceUtil.moveCategoryFromTrash(
-			TestPropsValues.getUserId(), (Long)classedModel.getPrimaryKeyObj(),
-			(Long)parentBaseModel.getPrimaryKeyObj());
-
-		return parentBaseModel;
 	}
 
 	@Override
@@ -292,31 +268,9 @@ public class MBCategoryTrashHandlerTest extends BaseTrashHandlerTestCase {
 			TestPropsValues.getUserId(), primaryKey);
 	}
 
-	@Override
-	protected void moveParentBaseModelToTrash(long primaryKey)
-		throws Exception {
+	private static final String _TITLE = "Title";
 
-		MBCategoryLocalServiceUtil.moveCategoryToTrash(
-			TestPropsValues.getUserId(), primaryKey);
-	}
-
-	@Override
-	protected BaseModel<?> updateBaseModel(
-			long primaryKey, ServiceContext serviceContext)
-		throws Exception {
-
-		MBCategory category = MBCategoryLocalServiceUtil.getCategory(
-			primaryKey);
-
-		if (serviceContext.getWorkflowAction() ==
-				WorkflowConstants.ACTION_SAVE_DRAFT) {
-
-			category = MBCategoryLocalServiceUtil.updateStatus(
-				TestPropsValues.getUserId(), primaryKey,
-				WorkflowConstants.STATUS_DRAFT);
-		}
-
-		return category;
-	}
+	private static final WhenIsClassModel _whenIsClassModel =
+		new DefaultWhenIsClassModel();
 
 }

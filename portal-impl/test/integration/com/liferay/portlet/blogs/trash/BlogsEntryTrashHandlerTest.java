@@ -21,6 +21,7 @@ import com.liferay.portal.kernel.test.rule.SynchronousDestinationTestRule;
 import com.liferay.portal.kernel.test.util.TestPropsValues;
 import com.liferay.portal.kernel.workflow.WorkflowConstants;
 import com.liferay.portal.model.BaseModel;
+import com.liferay.portal.model.ClassedModel;
 import com.liferay.portal.service.ServiceContext;
 import com.liferay.portal.test.rule.LiferayIntegrationTestRule;
 import com.liferay.portal.test.rule.MainServletTestRule;
@@ -28,6 +29,12 @@ import com.liferay.portlet.blogs.model.BlogsEntry;
 import com.liferay.portlet.blogs.service.BlogsEntryLocalServiceUtil;
 import com.liferay.portlet.blogs.util.test.BlogsTestUtil;
 import com.liferay.portlet.trash.test.BaseTrashHandlerTestCase;
+import com.liferay.portlet.trash.test.DefaultWhenIsAssetableBaseModel;
+import com.liferay.portlet.trash.test.DefaultWhenIsIndexableBaseModel;
+import com.liferay.portlet.trash.test.WhenHasDraftStatus;
+import com.liferay.portlet.trash.test.WhenHasGrandparent;
+import com.liferay.portlet.trash.test.WhenIsAssetableBaseModel;
+import com.liferay.portlet.trash.test.WhenIsClassModel;
 import com.liferay.portlet.trash.test.WhenIsIndexableBaseModel;
 
 import org.junit.ClassRule;
@@ -41,7 +48,9 @@ import org.junit.Test;
  */
 @Sync
 public class BlogsEntryTrashHandlerTest
-	extends BaseTrashHandlerTestCase implements WhenIsIndexableBaseModel {
+	extends BaseTrashHandlerTestCase
+	implements WhenHasDraftStatus, WhenHasGrandparent, WhenIsAssetableBaseModel,
+		WhenIsClassModel, WhenIsIndexableBaseModel {
 
 	@ClassRule
 	@Rule
@@ -50,69 +59,43 @@ public class BlogsEntryTrashHandlerTest
 			new LiferayIntegrationTestRule(), MainServletTestRule.INSTANCE,
 			SynchronousDestinationTestRule.INSTANCE);
 
-	@Ignore
 	@Override
-	@Test
-	public void testDeleteTrashVersions() throws Exception {
+	public Long getAssetClassPK(ClassedModel classedModel) {
+		return _whenIsAssetableBaseModel.getAssetClassPK(classedModel);
 	}
 
-	@Ignore
 	@Override
-	@Test
-	public void testTrashBaseModelAndDeleteWithParentIsNotRestorable()
+	public String getSearchKeywords() {
+		return _whenIsIndexableBaseModel.getSearchKeywords();
+	}
+
+	@Override
+	public boolean isAssetEntryVisible(ClassedModel classedModel)
 		throws Exception {
+
+		return _whenIsAssetableBaseModel.isAssetEntryVisible(classedModel);
 	}
 
-	@Ignore
 	@Override
-	@Test
-	public void testTrashBaseModelAndParent() throws Exception {
-	}
-
-	@Ignore
-	@Override
-	@Test
-	public void testTrashBaseModelAndParentAndDeleteGroupTrashEntries()
+	public int searchBaseModelsCount(Class<?> clazz, long groupId)
 		throws Exception {
+
+		return _whenIsIndexableBaseModel.searchBaseModelsCount(clazz, groupId);
 	}
 
-	@Ignore
 	@Override
-	@Test
-	public void testTrashBaseModelAndParentAndDeleteParent() throws Exception {
-	}
-
-	@Ignore
-	@Override
-	@Test
-	public void testTrashBaseModelAndParentAndRestoreModel() throws Exception {
-	}
-
-	@Ignore
-	@Override
-	@Test
-	public void testTrashBaseModelAndParentAndRestoreModelIsVisible()
+	public int searchTrashEntriesCount(
+			String keywords, ServiceContext serviceContext)
 		throws Exception {
+
+		return _whenIsIndexableBaseModel.searchTrashEntriesCount(
+			keywords, serviceContext);
 	}
 
 	@Ignore
 	@Override
 	@Test
-	public void testTrashBaseModelAndParentIsNotVisible() throws Exception {
-	}
-
-	@Ignore
-	@Override
-	@Test
-	public void testTrashBaseModelAndTrashParentAndDeleteParentIsNotRestorable()
-		throws Exception {
-	}
-
-	@Ignore
-	@Override
-	@Test
-	public void testTrashBaseModelAndTrashParentIsNotRestorable()
-		throws Exception {
+	public void testTrashBaseModelIsInTrashContainer() throws Exception {
 	}
 
 	@Ignore
@@ -130,62 +113,7 @@ public class BlogsEntryTrashHandlerTest
 	@Ignore
 	@Override
 	@Test
-	public void testTrashGrandparentBaseModel() throws Exception {
-	}
-
-	@Ignore
-	@Override
-	@Test
-	public void testTrashGrandparentBaseModelAndRestoreParentModel()
-		throws Exception {
-	}
-
-	@Ignore
-	@Override
-	@Test
 	public void testTrashIsRestorableBaseModel() throws Exception {
-	}
-
-	@Ignore
-	@Override
-	@Test
-	public void testTrashMoveBaseModel() throws Exception {
-	}
-
-	@Ignore
-	@Override
-	@Test
-	public void testTrashMoveBaseModelIndexable() throws Exception {
-	}
-
-	@Ignore
-	@Override
-	@Test
-	public void testTrashMyBaseModel() throws Exception {
-	}
-
-	@Ignore
-	@Override
-	@Test
-	public void testTrashParent() throws Exception {
-	}
-
-	@Ignore
-	@Override
-	@Test
-	public void testTrashParentAndDeleteGroupTrashEntries() throws Exception {
-	}
-
-	@Ignore
-	@Override
-	@Test
-	public void testTrashParentAndDeleteParent() throws Exception {
-	}
-
-	@Ignore
-	@Override
-	@Test
-	public void testTrashRecentBaseModel() throws Exception {
 	}
 
 	@Ignore
@@ -198,6 +126,12 @@ public class BlogsEntryTrashHandlerTest
 	@Override
 	@Test
 	public void testTrashVersionBaseModelAndDeleteIndexable() throws Exception {
+	}
+
+	@Ignore
+	@Override
+	@Test
+	public void testTrashVersionBaseModelAndDeleteIsNotFound() throws Exception {
 	}
 
 	@Ignore
@@ -218,30 +152,6 @@ public class BlogsEntryTrashHandlerTest
 	@Test
 	public void testTrashVersionBaseModelAndRestoreIsVisible()
 		throws Exception {
-	}
-
-	@Ignore
-	@Override
-	@Test
-	public void testTrashVersionParentBaseModel() throws Exception {
-	}
-
-	@Ignore
-	@Override
-	@Test
-	public void testTrashVersionParentBaseModelAndRestore() throws Exception {
-	}
-
-	@Ignore
-	@Override
-	@Test
-	public void testTrashVersionParentBaseModelIndexable() throws Exception {
-	}
-
-	@Ignore
-	@Override
-	@Test
-	public void testTrashVersionParentBaseModelIsNotVisible() throws Exception {
 	}
 
 	@Override
@@ -277,11 +187,6 @@ public class BlogsEntryTrashHandlerTest
 	}
 
 	@Override
-	protected String getSearchKeywords() {
-		return "Title";
-	}
-
-	@Override
 	protected String getUniqueTitle(BaseModel<?> baseModel) {
 		return null;
 	}
@@ -291,5 +196,10 @@ public class BlogsEntryTrashHandlerTest
 		BlogsEntryLocalServiceUtil.moveEntryToTrash(
 			TestPropsValues.getUserId(), primaryKey);
 	}
+
+	private static final WhenIsAssetableBaseModel _whenIsAssetableBaseModel =
+		new DefaultWhenIsAssetableBaseModel();
+	private static final WhenIsIndexableBaseModel
+		_whenIsIndexableBaseModel = new DefaultWhenIsIndexableBaseModel();
 
 }
