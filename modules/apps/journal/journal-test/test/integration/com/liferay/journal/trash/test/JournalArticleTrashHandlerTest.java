@@ -54,6 +54,7 @@ import com.liferay.portlet.trash.test.BaseTrashHandlerTestCase;
 import com.liferay.portlet.trash.test.DefaultWhenIsAssetableBaseModel;
 import com.liferay.portlet.trash.test.DefaultWhenIsIndexableBaseModel;
 import com.liferay.portlet.trash.test.WhenHasDraftStatus;
+import com.liferay.portlet.trash.test.WhenHasGrandparent;
 import com.liferay.portlet.trash.test.WhenHasParent;
 import com.liferay.portlet.trash.test.WhenHasRecentBaseModelCount;
 import com.liferay.portlet.trash.test.WhenIsAssetableBaseModel;
@@ -85,10 +86,10 @@ import org.junit.runner.RunWith;
 @Sync
 public class JournalArticleTrashHandlerTest
 	extends BaseTrashHandlerTestCase
-	implements WhenHasDraftStatus, WhenHasParent, WhenHasRecentBaseModelCount,
-		WhenIsAssetableBaseModel, WhenIsAssetableParentModel,
-		WhenIsBaseModelMoveableFromTrash, WhenIsClassModel,
-		WhenIsIndexableBaseModel, WhenIsMineBaseModel,
+	implements WhenHasGrandparent, WhenHasDraftStatus, WhenHasParent,
+		WhenHasRecentBaseModelCount, WhenIsAssetableBaseModel,
+		WhenIsAssetableParentModel, WhenIsBaseModelMoveableFromTrash,
+		WhenIsClassModel, WhenIsIndexableBaseModel, WhenIsMineBaseModel,
 		WhenIsParentRestorableFromTrash, WhenUpdateBaseModel {
 
 	@ClassRule

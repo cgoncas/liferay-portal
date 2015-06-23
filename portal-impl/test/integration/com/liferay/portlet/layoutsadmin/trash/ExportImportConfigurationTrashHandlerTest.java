@@ -31,6 +31,7 @@ import com.liferay.portlet.layoutsadmin.util.test.ExportImportConfigurationTestU
 import com.liferay.portlet.trash.test.BaseTrashHandlerTestCase;
 import com.liferay.portlet.trash.test.DefaultWhenIsClassModel;
 import com.liferay.portlet.trash.test.WhenHasDraftStatus;
+import com.liferay.portlet.trash.test.WhenHasGrandparent;
 import com.liferay.portlet.trash.test.WhenIsClassModel;
 
 import org.junit.ClassRule;
@@ -44,7 +45,7 @@ import org.junit.Test;
 @Sync
 public class ExportImportConfigurationTrashHandlerTest
 	extends BaseTrashHandlerTestCase
-	implements WhenHasDraftStatus, WhenIsClassModel {
+	implements WhenHasDraftStatus, WhenHasGrandparent, WhenIsClassModel {
 
 	@ClassRule
 	@Rule
