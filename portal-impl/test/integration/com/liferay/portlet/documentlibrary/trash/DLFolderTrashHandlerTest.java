@@ -206,6 +206,24 @@ public class DLFolderTrashHandlerTest
 	}
 
 	@Override
+	public BaseModel<?> updateBaseModel(
+			long primaryKey, ServiceContext serviceContext)
+		throws Exception {
+
+		DLFolder dlFolder = DLFolderLocalServiceUtil.getFolder(primaryKey);
+
+		if (serviceContext.getWorkflowAction() ==
+				WorkflowConstants.ACTION_SAVE_DRAFT) {
+
+			dlFolder = DLFolderLocalServiceUtil.updateStatus(
+				TestPropsValues.getUserId(), primaryKey,
+				WorkflowConstants.STATUS_DRAFT, null, serviceContext);
+		}
+
+		return dlFolder;
+	}
+
+	@Override
 	protected BaseModel<?> addBaseModelWithWorkflow(
 			BaseModel<?> parentBaseModel, boolean approved,
 			ServiceContext serviceContext)
@@ -313,24 +331,6 @@ public class DLFolderTrashHandlerTest
 	@Override
 	protected void moveBaseModelToTrash(long primaryKey) throws Exception {
 		DLAppServiceUtil.moveFolderToTrash(primaryKey);
-	}
-
-	@Override
-	protected BaseModel<?> updateBaseModel(
-			long primaryKey, ServiceContext serviceContext)
-		throws Exception {
-
-		DLFolder dlFolder = DLFolderLocalServiceUtil.getFolder(primaryKey);
-
-		if (serviceContext.getWorkflowAction() ==
-				WorkflowConstants.ACTION_SAVE_DRAFT) {
-
-			dlFolder = DLFolderLocalServiceUtil.updateStatus(
-				TestPropsValues.getUserId(), primaryKey,
-				WorkflowConstants.STATUS_DRAFT, null, serviceContext);
-		}
-
-		return dlFolder;
 	}
 
 	private static final String _FOLDER_NAME = RandomTestUtil.randomString(100);

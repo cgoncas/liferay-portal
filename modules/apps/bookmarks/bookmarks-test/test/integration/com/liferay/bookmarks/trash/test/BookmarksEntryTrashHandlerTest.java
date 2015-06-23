@@ -236,6 +236,25 @@ public class BookmarksEntryTrashHandlerTest
 	}
 
 	@Override
+	public BaseModel<?> updateBaseModel(
+			long primaryKey, ServiceContext serviceContext)
+		throws Exception {
+
+		BookmarksEntry entry = BookmarksEntryLocalServiceUtil.getEntry(
+			primaryKey);
+
+		if (serviceContext.getWorkflowAction() ==
+				WorkflowConstants.ACTION_SAVE_DRAFT) {
+
+			entry = BookmarksEntryLocalServiceUtil.updateStatus(
+				TestPropsValues.getUserId(), entry,
+				WorkflowConstants.STATUS_DRAFT);
+		}
+
+		return entry;
+	}
+
+	@Override
 	protected BaseModel<?> addBaseModelWithWorkflow(
 			BaseModel<?> parentBaseModel, boolean approved,
 			ServiceContext serviceContext)
@@ -357,25 +376,6 @@ public class BookmarksEntryTrashHandlerTest
 	@Override
 	protected void moveBaseModelToTrash(long primaryKey) throws Exception {
 		BookmarksEntryServiceUtil.moveEntryToTrash(primaryKey);
-	}
-
-	@Override
-	protected BaseModel<?> updateBaseModel(
-			long primaryKey, ServiceContext serviceContext)
-		throws Exception {
-
-		BookmarksEntry entry = BookmarksEntryLocalServiceUtil.getEntry(
-			primaryKey);
-
-		if (serviceContext.getWorkflowAction() ==
-				WorkflowConstants.ACTION_SAVE_DRAFT) {
-
-			entry = BookmarksEntryLocalServiceUtil.updateStatus(
-				TestPropsValues.getUserId(), entry,
-				WorkflowConstants.STATUS_DRAFT);
-		}
-
-		return entry;
 	}
 
 	private static final WhenIsAssetableBaseModel _whenIsAssetableBaseModel =

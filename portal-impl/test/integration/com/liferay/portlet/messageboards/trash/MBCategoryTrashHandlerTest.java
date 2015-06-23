@@ -161,6 +161,25 @@ public class MBCategoryTrashHandlerTest
 	}
 
 	@Override
+	public BaseModel<?> updateBaseModel(
+			long primaryKey, ServiceContext serviceContext)
+		throws Exception {
+
+		MBCategory category = MBCategoryLocalServiceUtil.getCategory(
+			primaryKey);
+
+		if (serviceContext.getWorkflowAction() ==
+				WorkflowConstants.ACTION_SAVE_DRAFT) {
+
+			category = MBCategoryLocalServiceUtil.updateStatus(
+				TestPropsValues.getUserId(), primaryKey,
+				WorkflowConstants.STATUS_DRAFT);
+		}
+
+		return category;
+	}
+
+	@Override
 	protected BaseModel<?> addBaseModelWithWorkflow(
 			BaseModel<?> parentBaseModel, boolean approved,
 			ServiceContext serviceContext)
@@ -251,25 +270,6 @@ public class MBCategoryTrashHandlerTest
 	protected void moveBaseModelToTrash(long primaryKey) throws Exception {
 		MBCategoryLocalServiceUtil.moveCategoryToTrash(
 			TestPropsValues.getUserId(), primaryKey);
-	}
-
-	@Override
-	protected BaseModel<?> updateBaseModel(
-			long primaryKey, ServiceContext serviceContext)
-		throws Exception {
-
-		MBCategory category = MBCategoryLocalServiceUtil.getCategory(
-			primaryKey);
-
-		if (serviceContext.getWorkflowAction() ==
-				WorkflowConstants.ACTION_SAVE_DRAFT) {
-
-			category = MBCategoryLocalServiceUtil.updateStatus(
-				TestPropsValues.getUserId(), primaryKey,
-				WorkflowConstants.STATUS_DRAFT);
-		}
-
-		return category;
 	}
 
 	private static final String _TITLE = "Title";

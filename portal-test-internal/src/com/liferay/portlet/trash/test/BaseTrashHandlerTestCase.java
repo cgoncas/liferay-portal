@@ -233,7 +233,7 @@ public abstract class BaseTrashHandlerTestCase {
 
 		baseModel = addBaseModel(parentBaseModel, true, serviceContext);
 
-		baseModel = updateBaseModel(
+		baseModel = ((WhenUpdateBaseModel)this).updateBaseModel(
 			(Long)baseModel.getPrimaryKeyObj(), serviceContext);
 
 		Assert.assertEquals(
@@ -264,7 +264,7 @@ public abstract class BaseTrashHandlerTestCase {
 
 		baseModel = addBaseModel(parentBaseModel, true, serviceContext);
 
-		baseModel = updateBaseModel(
+		baseModel = ((WhenUpdateBaseModel)this).updateBaseModel(
 			(Long)baseModel.getPrimaryKeyObj(), serviceContext);
 
 		Assert.assertEquals(
@@ -291,7 +291,7 @@ public abstract class BaseTrashHandlerTestCase {
 
 		baseModel = addBaseModel(parentBaseModel, true, serviceContext);
 
-		baseModel = updateBaseModel(
+		baseModel = ((WhenUpdateBaseModel)this).updateBaseModel(
 			(Long)baseModel.getPrimaryKeyObj(), serviceContext);
 
 		Assert.assertTrue(((WhenIsAssetableBaseModel)this).isAssetEntryVisible(
@@ -316,7 +316,7 @@ public abstract class BaseTrashHandlerTestCase {
 
 		serviceContext.setWorkflowAction(WorkflowConstants.ACTION_SAVE_DRAFT);
 
-		baseModel = updateBaseModel(
+		baseModel = ((WhenUpdateBaseModel)this).updateBaseModel(
 			(Long)baseModel.getPrimaryKeyObj(), serviceContext);
 
 		((WhenHasParent)this).moveParentBaseModelToTrash(
@@ -2059,7 +2059,7 @@ public abstract class BaseTrashHandlerTestCase {
 
 		baseModel = addBaseModel(parentBaseModel, true, serviceContext);
 
-		baseModel = updateBaseModel(
+		baseModel = ((WhenUpdateBaseModel)this).updateBaseModel(
 			(Long)baseModel.getPrimaryKeyObj(), serviceContext);
 
 		moveBaseModelToTrash((Long)baseModel.getPrimaryKeyObj());
@@ -2088,7 +2088,7 @@ public abstract class BaseTrashHandlerTestCase {
 
 		baseModel = addBaseModel(parentBaseModel, true, serviceContext);
 
-		baseModel = updateBaseModel(
+		baseModel = ((WhenUpdateBaseModel)this).updateBaseModel(
 			(Long)baseModel.getPrimaryKeyObj(), serviceContext);
 
 		moveBaseModelToTrash((Long)baseModel.getPrimaryKeyObj());
@@ -2126,7 +2126,7 @@ public abstract class BaseTrashHandlerTestCase {
 
 		baseModel = addBaseModel(parentBaseModel, true, serviceContext);
 
-		baseModel = updateBaseModel(
+		baseModel = ((WhenUpdateBaseModel)this).updateBaseModel(
 			(Long)baseModel.getPrimaryKeyObj(), serviceContext);
 
 		moveBaseModelToTrash((Long)baseModel.getPrimaryKeyObj());
@@ -2162,7 +2162,7 @@ public abstract class BaseTrashHandlerTestCase {
 
 		baseModel = addBaseModel(parentBaseModel, true, serviceContext);
 
-		baseModel = updateBaseModel(
+		baseModel = ((WhenUpdateBaseModel)this).updateBaseModel(
 			(Long)baseModel.getPrimaryKeyObj(), serviceContext);
 
 		moveBaseModelToTrash((Long)baseModel.getPrimaryKeyObj());
@@ -2191,7 +2191,7 @@ public abstract class BaseTrashHandlerTestCase {
 
 		baseModel = addBaseModel(parentBaseModel, true, serviceContext);
 
-		baseModel = updateBaseModel(
+		baseModel = ((WhenUpdateBaseModel)this).updateBaseModel(
 			(Long)baseModel.getPrimaryKeyObj(), serviceContext);
 
 		moveBaseModelToTrash((Long)baseModel.getPrimaryKeyObj());
@@ -2232,7 +2232,7 @@ public abstract class BaseTrashHandlerTestCase {
 
 		baseModel = addBaseModel(parentBaseModel, true, serviceContext);
 
-		baseModel = updateBaseModel(
+		baseModel = ((WhenUpdateBaseModel)this).updateBaseModel(
 			(Long)baseModel.getPrimaryKeyObj(), serviceContext);
 
 		moveBaseModelToTrash((Long)baseModel.getPrimaryKeyObj());
@@ -2269,7 +2269,7 @@ public abstract class BaseTrashHandlerTestCase {
 
 		baseModel = addBaseModel(parentBaseModel, true, serviceContext);
 
-		baseModel = updateBaseModel(
+		baseModel = ((WhenUpdateBaseModel)this).updateBaseModel(
 			(Long)baseModel.getPrimaryKeyObj(), serviceContext);
 
 		moveBaseModelToTrash((Long)baseModel.getPrimaryKeyObj());
@@ -2305,7 +2305,7 @@ public abstract class BaseTrashHandlerTestCase {
 
 		baseModel = addBaseModel(parentBaseModel, true, serviceContext);
 
-		baseModel = updateBaseModel(
+		baseModel = ((WhenUpdateBaseModel)this).updateBaseModel(
 			(Long)baseModel.getPrimaryKeyObj(), serviceContext);
 
 		moveBaseModelToTrash((Long)baseModel.getPrimaryKeyObj());
@@ -2334,7 +2334,7 @@ public abstract class BaseTrashHandlerTestCase {
 
 		baseModel = addBaseModel(parentBaseModel, true, serviceContext);
 
-		baseModel = updateBaseModel(
+		baseModel = ((WhenUpdateBaseModel)this).updateBaseModel(
 			(Long)baseModel.getPrimaryKeyObj(), serviceContext);
 
 		moveBaseModelToTrash((Long)baseModel.getPrimaryKeyObj());
@@ -2368,7 +2368,7 @@ public abstract class BaseTrashHandlerTestCase {
 
 		serviceContext.setWorkflowAction(WorkflowConstants.ACTION_PUBLISH);
 
-		baseModel = updateBaseModel(
+		baseModel = ((WhenUpdateBaseModel)this).updateBaseModel(
 			(Long)baseModel.getPrimaryKeyObj(), serviceContext);
 
 		workflowedModel = getWorkflowedModel(baseModel);
@@ -2377,7 +2377,7 @@ public abstract class BaseTrashHandlerTestCase {
 
 		serviceContext.setWorkflowAction(WorkflowConstants.ACTION_SAVE_DRAFT);
 
-		baseModel = updateBaseModel(
+		baseModel = ((WhenUpdateBaseModel)this).updateBaseModel(
 			(Long)baseModel.getPrimaryKeyObj(), serviceContext);
 
 		workflowedModel = getWorkflowedModel(baseModel);
@@ -2420,7 +2420,7 @@ public abstract class BaseTrashHandlerTestCase {
 
 		serviceContext.setWorkflowAction(WorkflowConstants.ACTION_PUBLISH);
 
-		baseModel = updateBaseModel(
+		baseModel = ((WhenUpdateBaseModel)this).updateBaseModel(
 			(Long)baseModel.getPrimaryKeyObj(), serviceContext);
 
 		workflowedModel = getWorkflowedModel(baseModel);
@@ -2429,7 +2429,7 @@ public abstract class BaseTrashHandlerTestCase {
 
 		serviceContext.setWorkflowAction(WorkflowConstants.ACTION_SAVE_DRAFT);
 
-		baseModel = updateBaseModel(
+		baseModel = ((WhenUpdateBaseModel)this).updateBaseModel(
 			(Long)baseModel.getPrimaryKeyObj(), serviceContext);
 
 		workflowedModel = getWorkflowedModel(baseModel);
@@ -2485,7 +2485,7 @@ public abstract class BaseTrashHandlerTestCase {
 
 		serviceContext.setWorkflowAction(WorkflowConstants.ACTION_PUBLISH);
 
-		baseModel = updateBaseModel(
+		baseModel = ((WhenUpdateBaseModel)this).updateBaseModel(
 			(Long)baseModel.getPrimaryKeyObj(), serviceContext);
 
 		workflowedModel = getWorkflowedModel(baseModel);
@@ -2494,7 +2494,7 @@ public abstract class BaseTrashHandlerTestCase {
 
 		serviceContext.setWorkflowAction(WorkflowConstants.ACTION_SAVE_DRAFT);
 
-		baseModel = updateBaseModel(
+		baseModel = ((WhenUpdateBaseModel)this).updateBaseModel(
 			(Long)baseModel.getPrimaryKeyObj(), serviceContext);
 
 		workflowedModel = getWorkflowedModel(baseModel);
@@ -2544,7 +2544,7 @@ public abstract class BaseTrashHandlerTestCase {
 
 		serviceContext.setWorkflowAction(WorkflowConstants.ACTION_PUBLISH);
 
-		baseModel = updateBaseModel(
+		baseModel = ((WhenUpdateBaseModel)this).updateBaseModel(
 			(Long)baseModel.getPrimaryKeyObj(), serviceContext);
 
 		workflowedModel = getWorkflowedModel(baseModel);
@@ -2553,7 +2553,7 @@ public abstract class BaseTrashHandlerTestCase {
 
 		serviceContext.setWorkflowAction(WorkflowConstants.ACTION_SAVE_DRAFT);
 
-		baseModel = updateBaseModel(
+		baseModel = ((WhenUpdateBaseModel)this).updateBaseModel(
 			(Long)baseModel.getPrimaryKeyObj(), serviceContext);
 
 		workflowedModel = getWorkflowedModel(baseModel);
@@ -2598,7 +2598,7 @@ public abstract class BaseTrashHandlerTestCase {
 
 		serviceContext.setWorkflowAction(WorkflowConstants.ACTION_PUBLISH);
 
-		baseModel = updateBaseModel(
+		baseModel = ((WhenUpdateBaseModel)this).updateBaseModel(
 			(Long)baseModel.getPrimaryKeyObj(), serviceContext);
 
 		workflowedModel = getWorkflowedModel(baseModel);
@@ -2607,7 +2607,7 @@ public abstract class BaseTrashHandlerTestCase {
 
 		serviceContext.setWorkflowAction(WorkflowConstants.ACTION_SAVE_DRAFT);
 
-		baseModel = updateBaseModel(
+		baseModel = ((WhenUpdateBaseModel)this).updateBaseModel(
 			(Long)baseModel.getPrimaryKeyObj(), serviceContext);
 
 		workflowedModel = getWorkflowedModel(baseModel);
@@ -2657,7 +2657,7 @@ public abstract class BaseTrashHandlerTestCase {
 
 		serviceContext.setWorkflowAction(WorkflowConstants.ACTION_PUBLISH);
 
-		baseModel = updateBaseModel(
+		baseModel = ((WhenUpdateBaseModel)this).updateBaseModel(
 			(Long)baseModel.getPrimaryKeyObj(), serviceContext);
 
 		workflowedModel = getWorkflowedModel(baseModel);
@@ -2666,7 +2666,7 @@ public abstract class BaseTrashHandlerTestCase {
 
 		serviceContext.setWorkflowAction(WorkflowConstants.ACTION_SAVE_DRAFT);
 
-		baseModel = updateBaseModel(
+		baseModel = ((WhenUpdateBaseModel)this).updateBaseModel(
 			(Long)baseModel.getPrimaryKeyObj(), serviceContext);
 
 		workflowedModel = getWorkflowedModel(baseModel);
@@ -2709,7 +2709,7 @@ public abstract class BaseTrashHandlerTestCase {
 
 		serviceContext.setWorkflowAction(WorkflowConstants.ACTION_PUBLISH);
 
-		baseModel = updateBaseModel(
+		baseModel = ((WhenUpdateBaseModel)this).updateBaseModel(
 			(Long)baseModel.getPrimaryKeyObj(), serviceContext);
 
 		workflowedModel = getWorkflowedModel(baseModel);
@@ -2718,7 +2718,7 @@ public abstract class BaseTrashHandlerTestCase {
 
 		serviceContext.setWorkflowAction(WorkflowConstants.ACTION_SAVE_DRAFT);
 
-		baseModel = updateBaseModel(
+		baseModel = ((WhenUpdateBaseModel)this).updateBaseModel(
 			(Long)baseModel.getPrimaryKeyObj(), serviceContext);
 
 		workflowedModel = getWorkflowedModel(baseModel);
@@ -2935,13 +2935,6 @@ public abstract class BaseTrashHandlerTestCase {
 
 	protected abstract void moveBaseModelToTrash(long primaryKey)
 		throws Exception;
-
-	protected BaseModel<?> updateBaseModel(
-			long primaryKey, ServiceContext serviceContext)
-		throws Exception {
-
-		return getBaseModel(primaryKey);
-	}
 
 	protected BaseModel<?> baseModel;
 

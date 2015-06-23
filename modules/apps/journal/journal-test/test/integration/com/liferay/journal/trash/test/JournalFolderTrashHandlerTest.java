@@ -226,6 +226,25 @@ public class JournalFolderTrashHandlerTest
 	}
 
 	@Override
+	public BaseModel<?> updateBaseModel(
+			long primaryKey, ServiceContext serviceContext)
+		throws Exception {
+
+		JournalFolder folder = JournalFolderLocalServiceUtil.getFolder(
+			primaryKey);
+
+		if (serviceContext.getWorkflowAction() ==
+				WorkflowConstants.ACTION_SAVE_DRAFT) {
+
+			folder = JournalFolderLocalServiceUtil.updateStatus(
+				TestPropsValues.getUserId(), folder,
+				WorkflowConstants.STATUS_DRAFT);
+		}
+
+		return folder;
+	}
+
+	@Override
 	protected BaseModel<?> addBaseModelWithWorkflow(
 			BaseModel<?> parentBaseModel, boolean approved,
 			ServiceContext serviceContext)
@@ -322,25 +341,6 @@ public class JournalFolderTrashHandlerTest
 	@Override
 	protected void moveBaseModelToTrash(long primaryKey) throws Exception {
 		JournalFolderServiceUtil.moveFolderToTrash(primaryKey);
-	}
-
-	@Override
-	protected BaseModel<?> updateBaseModel(
-			long primaryKey, ServiceContext serviceContext)
-		throws Exception {
-
-		JournalFolder folder = JournalFolderLocalServiceUtil.getFolder(
-			primaryKey);
-
-		if (serviceContext.getWorkflowAction() ==
-				WorkflowConstants.ACTION_SAVE_DRAFT) {
-
-			folder = JournalFolderLocalServiceUtil.updateStatus(
-				TestPropsValues.getUserId(), folder,
-				WorkflowConstants.STATUS_DRAFT);
-		}
-
-		return folder;
 	}
 
 	private static final String _FOLDER_NAME = RandomTestUtil.randomString(100);
