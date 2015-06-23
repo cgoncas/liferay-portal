@@ -29,7 +29,6 @@ import com.liferay.portal.test.rule.LiferayIntegrationTestRule;
 import com.liferay.portlet.trash.test.BaseTrashHandlerTestCase;
 import com.liferay.portlet.trash.test.DefaultWhenIsAssetableBaseModel;
 import com.liferay.portlet.trash.test.DefaultWhenIsIndexableBaseModel;
-import com.liferay.portlet.trash.test.WhenHasGrandparent;
 import com.liferay.portlet.trash.test.WhenHasParent;
 import com.liferay.portlet.trash.test.WhenIsAssetableBaseModel;
 import com.liferay.portlet.trash.test.WhenIsClassModel;
@@ -57,8 +56,8 @@ import org.junit.runner.RunWith;
 @Sync
 public class WikiPageTrashHandlerTest
 	extends BaseTrashHandlerTestCase
-	implements WhenHasGrandparent, WhenHasParent, WhenIsAssetableBaseModel,
-		WhenIsClassModel, WhenIsIndexableBaseModel, WhenUpdateBaseModel {
+	implements WhenHasParent, WhenIsAssetableBaseModel, WhenIsClassModel,
+		WhenIsIndexableBaseModel, WhenUpdateBaseModel {
 
 	@ClassRule
 	@Rule
@@ -150,39 +149,6 @@ public class WikiPageTrashHandlerTest
 	@Override
 	@Test
 	public void testTrashBaseModelWithParentIsRestorable() throws Exception {
-	}
-
-	@Ignore
-	@Override
-	@Test
-	public void testTrashGrandparentBaseModel() throws Exception {
-	}
-
-	@Ignore
-	@Override
-	@Test
-	public void testTrashGrandparentBaseModelAndRestoreParentModel()
-		throws Exception {
-	}
-
-	@Ignore
-	@Override
-	@Test
-	public void testTrashGrandparentBaseModelAndRestoreParentModelIsNotInTrashContainer()
-		throws Exception {
-	}
-
-	@Ignore
-	@Override
-	@Test
-	public void testTrashGrandparentBaseModelAndRestoreParentModelIsVisible()
-		throws Exception {
-	}
-
-	@Ignore
-	@Override
-	@Test
-	public void testTrashGrandparentBaseModelIsNotVisible() throws Exception {
 	}
 
 	@Ignore
