@@ -50,7 +50,7 @@ import org.junit.Test;
 public class BlogsEntryTrashHandlerTest
 	extends BaseTrashHandlerTestCase
 	implements WhenHasDraftStatus, WhenIsAssetableBaseModel, WhenIsClassModel,
-		WhenIsIndexableBaseModel {
+		WhenIsIndexableBaseModel, WhenUpdateBaseModel {
 
 	@ClassRule
 	@Rule

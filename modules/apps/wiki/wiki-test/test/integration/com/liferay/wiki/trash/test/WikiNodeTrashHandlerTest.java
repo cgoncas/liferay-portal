@@ -28,7 +28,6 @@ import com.liferay.portal.test.rule.LiferayIntegrationTestRule;
 import com.liferay.portlet.trash.test.BaseTrashHandlerTestCase;
 import com.liferay.portlet.trash.test.DefaultWhenIsClassModel;
 import com.liferay.portlet.trash.test.WhenIsClassModel;
-import com.liferay.portlet.trash.test.WhenUpdateBaseModel;
 import com.liferay.portlet.trash.util.TrashUtil;
 import com.liferay.wiki.model.WikiNode;
 import com.liferay.wiki.service.WikiNodeLocalServiceUtil;
@@ -45,8 +44,7 @@ import org.junit.runner.RunWith;
 @RunWith(Arquillian.class)
 @Sync
 public class WikiNodeTrashHandlerTest
-	extends BaseTrashHandlerTestCase
-	implements WhenIsClassModel, WhenUpdateBaseModel {
+	extends BaseTrashHandlerTestCase implements WhenIsClassModel {
 
 	@ClassRule
 	@Rule
