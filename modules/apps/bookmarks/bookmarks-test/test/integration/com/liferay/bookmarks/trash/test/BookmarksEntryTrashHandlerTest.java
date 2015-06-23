@@ -47,6 +47,7 @@ import com.liferay.portlet.trash.test.WhenIsAssetableParentModel;
 import com.liferay.portlet.trash.test.WhenIsBaseModelMoveableFromTrash;
 import com.liferay.portlet.trash.test.WhenIsClassModel;
 import com.liferay.portlet.trash.test.WhenIsIndexableBaseModel;
+import com.liferay.portlet.trash.test.WhenIsMineBaseModel;
 import com.liferay.portlet.trash.test.WhenUpdateBaseModel;
 
 import org.junit.After;
@@ -67,7 +68,7 @@ public class BookmarksEntryTrashHandlerTest
 	implements WhenHasParent, WhenHasRecentBaseModelCount,
 		WhenIsAssetableBaseModel, WhenIsAssetableParentModel,
 		WhenIsBaseModelMoveableFromTrash, WhenIsClassModel,
-		WhenIsIndexableBaseModel, WhenUpdateBaseModel {
+		WhenIsIndexableBaseModel, WhenIsMineBaseModel, WhenUpdateBaseModel {
 
 	@ClassRule
 	@Rule
