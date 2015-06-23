@@ -100,6 +100,14 @@ public class MBThreadTrashHandlerTest
 	}
 
 	@Override
+	public int getMineBaseModelsCount(long groupId, long userId)
+		throws Exception {
+
+		return MBThreadServiceUtil.getGroupThreadsCount(
+			groupId, userId, WorkflowConstants.STATUS_APPROVED);
+	}
+
+	@Override
 	public int getRecentBaseModelsCount(long groupId) throws Exception {
 		Calendar calendar = Calendar.getInstance();
 
@@ -348,14 +356,6 @@ public class MBThreadTrashHandlerTest
 			categoryId);
 
 		return category.getMessageCount();
-	}
-
-	@Override
-	protected int getMineBaseModelsCount(long groupId, long userId)
-		throws Exception {
-
-		return MBThreadServiceUtil.getGroupThreadsCount(
-			groupId, userId, WorkflowConstants.STATUS_APPROVED);
 	}
 
 	@Override

@@ -130,6 +130,14 @@ public class JournalArticleTrashHandlerTest
 	}
 
 	@Override
+	public int getMineBaseModelsCount(long groupId, long userId)
+		throws Exception {
+
+		return JournalArticleServiceUtil.getGroupArticlesCount(
+			groupId, userId, JournalFolderConstants.DEFAULT_PARENT_FOLDER_ID);
+	}
+
+	@Override
 	public int getRecentBaseModelsCount(long groupId) throws Exception {
 		return JournalArticleServiceUtil.getGroupArticlesCount(
 			groupId, 0, JournalFolderConstants.DEFAULT_PARENT_FOLDER_ID);
@@ -345,14 +353,6 @@ public class JournalArticleTrashHandlerTest
 
 		return JournalArticleLocalServiceUtil.getArticles(
 			folder.getGroupId(), folder.getFolderId());
-	}
-
-	@Override
-	protected int getMineBaseModelsCount(long groupId, long userId)
-		throws Exception {
-
-		return JournalArticleServiceUtil.getGroupArticlesCount(
-			groupId, userId, JournalFolderConstants.DEFAULT_PARENT_FOLDER_ID);
 	}
 
 	@Override

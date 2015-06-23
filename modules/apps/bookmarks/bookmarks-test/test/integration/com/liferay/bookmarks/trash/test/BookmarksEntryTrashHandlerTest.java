@@ -93,6 +93,13 @@ public class BookmarksEntryTrashHandlerTest
 	}
 
 	@Override
+	public int getMineBaseModelsCount(long groupId, long userId)
+		throws Exception {
+
+		return BookmarksEntryServiceUtil.getGroupEntriesCount(groupId, userId);
+	}
+
+	@Override
 	public int getRecentBaseModelsCount(long groupId) throws Exception {
 		return BookmarksEntryServiceUtil.getGroupEntriesCount(groupId, 0);
 	}
@@ -316,13 +323,6 @@ public class BookmarksEntryTrashHandlerTest
 		BookmarksEntry entry = (BookmarksEntry)classedModel;
 
 		return entry.getName();
-	}
-
-	@Override
-	protected int getMineBaseModelsCount(long groupId, long userId)
-		throws Exception {
-
-		return BookmarksEntryServiceUtil.getGroupEntriesCount(groupId, userId);
 	}
 
 	@Override

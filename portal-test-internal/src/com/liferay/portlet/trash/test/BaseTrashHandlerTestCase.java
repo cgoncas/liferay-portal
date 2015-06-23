@@ -1700,6 +1700,7 @@ public abstract class BaseTrashHandlerTestCase {
 	@Test
 	public void testTrashMyBaseModel() throws Exception {
 		Assume.assumeTrue(this instanceof WhenHasParent);
+		Assume.assumeTrue(this instanceof WhenIsMineBaseModel);
 
 		ServiceContext serviceContext =
 			ServiceContextTestUtil.getServiceContext(group.getGroupId());
@@ -1707,14 +1708,15 @@ public abstract class BaseTrashHandlerTestCase {
 		BaseModel<?> parentBaseModel = getParentBaseModel(
 			group, serviceContext);
 
-		int initialBaseModelsCount = getMineBaseModelsCount(
-			group.getGroupId(), TestPropsValues.getUserId());
+		int initialBaseModelsCount =
+			((WhenIsMineBaseModel)this).getMineBaseModelsCount(
+				group.getGroupId(), TestPropsValues.getUserId());
 
 		addBaseModel(parentBaseModel, true, serviceContext);
 
 		Assert.assertEquals(
 			initialBaseModelsCount + 1,
-			getMineBaseModelsCount(
+			((WhenIsMineBaseModel)this).getMineBaseModelsCount(
 				group.getGroupId(), TestPropsValues.getUserId()));
 
 		((WhenHasParent)this).moveParentBaseModelToTrash(
@@ -1722,7 +1724,7 @@ public abstract class BaseTrashHandlerTestCase {
 
 		Assert.assertEquals(
 			initialBaseModelsCount,
-			getMineBaseModelsCount(
+			((WhenIsMineBaseModel)this).getMineBaseModelsCount(
 				group.getGroupId(), TestPropsValues.getUserId()));
 	}
 
@@ -2846,12 +2848,6 @@ public abstract class BaseTrashHandlerTestCase {
 		actionableDynamicQuery.setGroupId(group.getGroupId());
 
 		return actionableDynamicQuery.performCount();
-	}
-
-	protected int getMineBaseModelsCount(long groupId, long userId)
-		throws Exception {
-
-		return 0;
 	}
 
 	protected abstract int getNotInTrashBaseModelsCount(

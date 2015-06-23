@@ -33,7 +33,6 @@ import com.liferay.portlet.trash.test.WhenHasParent;
 import com.liferay.portlet.trash.test.WhenIsAssetableBaseModel;
 import com.liferay.portlet.trash.test.WhenIsClassModel;
 import com.liferay.portlet.trash.test.WhenIsIndexableBaseModel;
-import com.liferay.portlet.trash.test.WhenIsMineBaseModel;
 import com.liferay.portlet.trash.test.WhenUpdateBaseModel;
 import com.liferay.wiki.asset.WikiPageAssetRenderer;
 import com.liferay.wiki.model.WikiNode;
@@ -58,7 +57,7 @@ import org.junit.runner.RunWith;
 public class WikiPageTrashHandlerTest
 	extends BaseTrashHandlerTestCase
 	implements WhenHasParent, WhenIsAssetableBaseModel, WhenIsClassModel,
-		WhenIsIndexableBaseModel, WhenIsMineBaseModel, WhenUpdateBaseModel {
+		WhenIsIndexableBaseModel, WhenUpdateBaseModel {
 
 	@ClassRule
 	@Rule

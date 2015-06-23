@@ -108,6 +108,15 @@ public class DLFileEntryTrashHandlerTest
 	}
 
 	@Override
+	public int getMineBaseModelsCount(long groupId, long userId)
+		throws Exception {
+
+		return DLAppServiceUtil.getGroupFileEntriesCount(
+			groupId, userId, DLFolderConstants.DEFAULT_PARENT_FOLDER_ID, null,
+			WorkflowConstants.STATUS_APPROVED);
+	}
+
+	@Override
 	public int getRecentBaseModelsCount(long groupId) throws Exception {
 		return DLAppServiceUtil.getGroupFileEntriesCount(
 			groupId, 0, DLFolderConstants.DEFAULT_PARENT_FOLDER_ID, null,
@@ -326,15 +335,6 @@ public class DLFileEntryTrashHandlerTest
 		DLFileEntry dlFileEntry = (DLFileEntry)classedModel;
 
 		return dlFileEntry.getTitle();
-	}
-
-	@Override
-	protected int getMineBaseModelsCount(long groupId, long userId)
-		throws Exception {
-
-		return DLAppServiceUtil.getGroupFileEntriesCount(
-			groupId, userId, DLFolderConstants.DEFAULT_PARENT_FOLDER_ID, null,
-			WorkflowConstants.STATUS_APPROVED);
 	}
 
 	@Override

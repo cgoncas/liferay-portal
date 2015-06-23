@@ -46,7 +46,6 @@ import com.liferay.portlet.trash.test.WhenHasParent;
 import com.liferay.portlet.trash.test.WhenIsAssetableParentModel;
 import com.liferay.portlet.trash.test.WhenIsBaseModelMoveableFromTrash;
 import com.liferay.portlet.trash.test.WhenIsClassModel;
-import com.liferay.portlet.trash.test.WhenIsMineBaseModel;
 import com.liferay.portlet.trash.test.WhenUpdateBaseModel;
 
 import org.junit.Assert;
@@ -64,7 +63,7 @@ public class DLFileShortcutTrashHandlerTest
 	extends BaseTrashHandlerTestCase
 	implements WhenHasParent, WhenIsAssetableParentModel,
 		WhenIsBaseModelMoveableFromTrash, WhenIsClassModel,
-		WhenIsMineBaseModel, WhenUpdateBaseModel {
+		WhenUpdateBaseModel {
 
 	@ClassRule
 	@Rule
