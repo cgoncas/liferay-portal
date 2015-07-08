@@ -17,13 +17,22 @@ package com.liferay.portal.tools.service.builder;
 /**
  * @author Glenn Powell
  * @author Brian Wing Shun Chan
+ * @author Manuel de la Peña
  */
 public class EntityMapping {
 
-	public EntityMapping(String table, String entity1, String entity2) {
+	public EntityMapping(
+		String table, Entity company, String entity1, String entity2) {
+
 		_table = table;
-		_entities[0] = entity1;
-		_entities[1] = entity2;
+		_company = company;
+		_entities[0] = company.getName();
+		_entities[1] = entity1;
+		_entities[2] = entity2;
+	}
+
+	public Entity getCompany() {
+		return _company;
 	}
 
 	public String getEntity(int index) {
@@ -39,7 +48,8 @@ public class EntityMapping {
 		return _table;
 	}
 
-	private final String[] _entities = new String[2];
+	private final Entity _company;
+	private final String[] _entities = new String[3];
 	private final String _table;
 
 }
