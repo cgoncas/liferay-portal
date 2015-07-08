@@ -125,6 +125,7 @@ import org.dom4j.io.SAXReader;
  * @author Cody Hoag
  * @author James Hinkey
  * @author Hugo Huijser
+ * @author Manuel de la Peña
  */
 public class ServiceBuilder {
 
@@ -5039,7 +5040,8 @@ public class ServiceBuilder {
 				Validator.isNotNull(mappingTable)) {
 
 				EntityMapping entityMapping = new EntityMapping(
-					mappingTable, ejbName, collectionEntity);
+					mappingTable, getEntity("com.liferay.portal.Company"),
+					ejbName, collectionEntity);
 
 				if (!_entityMappings.containsKey(mappingTable)) {
 					_entityMappings.put(mappingTable, entityMapping);
