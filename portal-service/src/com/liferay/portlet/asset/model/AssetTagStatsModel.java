@@ -75,6 +75,20 @@ public interface AssetTagStatsModel extends BaseModel<AssetTagStats>, TypedModel
 	public void setTagStatsId(long tagStatsId);
 
 	/**
+	 * Returns the company ID of this asset tag stats.
+	 *
+	 * @return the company ID of this asset tag stats
+	 */
+	public long getCompanyId();
+
+	/**
+	 * Sets the company ID of this asset tag stats.
+	 *
+	 * @param companyId the company ID of this asset tag stats
+	 */
+	public void setCompanyId(long companyId);
+
+	/**
 	 * Returns the tag ID of this asset tag stats.
 	 *
 	 * @return the tag ID of this asset tag stats

@@ -75,6 +75,20 @@ public interface ShoppingItemFieldModel extends BaseModel<ShoppingItemField> {
 	public void setItemFieldId(long itemFieldId);
 
 	/**
+	 * Returns the company ID of this shopping item field.
+	 *
+	 * @return the company ID of this shopping item field
+	 */
+	public long getCompanyId();
+
+	/**
+	 * Sets the company ID of this shopping item field.
+	 *
+	 * @param companyId the company ID of this shopping item field
+	 */
+	public void setCompanyId(long companyId);
+
+	/**
 	 * Returns the item ID of this shopping item field.
 	 *
 	 * @return the item ID of this shopping item field

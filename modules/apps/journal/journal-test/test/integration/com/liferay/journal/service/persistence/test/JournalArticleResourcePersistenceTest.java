@@ -125,6 +125,8 @@ public class JournalArticleResourcePersistenceTest {
 
 		newJournalArticleResource.setGroupId(RandomTestUtil.nextLong());
 
+		newJournalArticleResource.setCompanyId(RandomTestUtil.nextLong());
+
 		newJournalArticleResource.setArticleId(RandomTestUtil.randomString());
 
 		_journalArticleResources.add(_persistence.update(
@@ -138,6 +140,8 @@ public class JournalArticleResourcePersistenceTest {
 			newJournalArticleResource.getResourcePrimKey());
 		Assert.assertEquals(existingJournalArticleResource.getGroupId(),
 			newJournalArticleResource.getGroupId());
+		Assert.assertEquals(existingJournalArticleResource.getCompanyId(),
+			newJournalArticleResource.getCompanyId());
 		Assert.assertEquals(existingJournalArticleResource.getArticleId(),
 			newJournalArticleResource.getArticleId());
 	}
@@ -158,6 +162,15 @@ public class JournalArticleResourcePersistenceTest {
 		_persistence.countByUUID_G(StringPool.NULL, 0L);
 
 		_persistence.countByUUID_G((String)null, 0L);
+	}
+
+	@Test
+	public void testCountByUuid_C() throws Exception {
+		_persistence.countByUuid_C(StringPool.BLANK, RandomTestUtil.nextLong());
+
+		_persistence.countByUuid_C(StringPool.NULL, 0L);
+
+		_persistence.countByUuid_C((String)null, 0L);
 	}
 
 	@Test
@@ -202,7 +215,7 @@ public class JournalArticleResourcePersistenceTest {
 	protected OrderByComparator<JournalArticleResource> getOrderByComparator() {
 		return OrderByComparatorFactoryUtil.create("JournalArticleResource",
 			"uuid", true, "resourcePrimKey", true, "groupId", true,
-			"articleId", true);
+			"companyId", true, "articleId", true);
 	}
 
 	@Test
@@ -441,6 +454,8 @@ public class JournalArticleResourcePersistenceTest {
 		journalArticleResource.setUuid(RandomTestUtil.randomString());
 
 		journalArticleResource.setGroupId(RandomTestUtil.nextLong());
+
+		journalArticleResource.setCompanyId(RandomTestUtil.nextLong());
 
 		journalArticleResource.setArticleId(RandomTestUtil.randomString());
 

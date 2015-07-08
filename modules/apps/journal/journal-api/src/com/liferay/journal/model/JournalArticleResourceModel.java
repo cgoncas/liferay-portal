@@ -104,6 +104,20 @@ public interface JournalArticleResourceModel extends BaseModel<JournalArticleRes
 	public void setGroupId(long groupId);
 
 	/**
+	 * Returns the company ID of this journal article resource.
+	 *
+	 * @return the company ID of this journal article resource
+	 */
+	public long getCompanyId();
+
+	/**
+	 * Sets the company ID of this journal article resource.
+	 *
+	 * @param companyId the company ID of this journal article resource
+	 */
+	public void setCompanyId(long companyId);
+
+	/**
 	 * Returns the article ID of this journal article resource.
 	 *
 	 * @return the article ID of this journal article resource

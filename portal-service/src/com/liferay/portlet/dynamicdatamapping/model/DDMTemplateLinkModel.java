@@ -76,6 +76,20 @@ public interface DDMTemplateLinkModel extends AttachedModel,
 	public void setTemplateLinkId(long templateLinkId);
 
 	/**
+	 * Returns the company ID of this d d m template link.
+	 *
+	 * @return the company ID of this d d m template link
+	 */
+	public long getCompanyId();
+
+	/**
+	 * Sets the company ID of this d d m template link.
+	 *
+	 * @param companyId the company ID of this d d m template link
+	 */
+	public void setCompanyId(long companyId);
+
+	/**
 	 * Returns the fully qualified class name of this d d m template link.
 	 *
 	 * @return the fully qualified class name of this d d m template link

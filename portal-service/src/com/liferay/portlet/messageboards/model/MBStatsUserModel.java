@@ -104,6 +104,20 @@ public interface MBStatsUserModel extends BaseModel<MBStatsUser> {
 	public void setGroupId(long groupId);
 
 	/**
+	 * Returns the company ID of this message boards stats user.
+	 *
+	 * @return the company ID of this message boards stats user
+	 */
+	public long getCompanyId();
+
+	/**
+	 * Sets the company ID of this message boards stats user.
+	 *
+	 * @param companyId the company ID of this message boards stats user
+	 */
+	public void setCompanyId(long companyId);
+
+	/**
 	 * Returns the user ID of this message boards stats user.
 	 *
 	 * @return the user ID of this message boards stats user

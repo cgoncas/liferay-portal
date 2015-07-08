@@ -73,6 +73,7 @@ create table AnnouncementsEntry (
 
 create table AnnouncementsFlag (
 	flagId LONG not null primary key,
+	companyId LONG,
 	userId LONG,
 	createDate DATE null,
 	entryId LONG,
@@ -112,13 +113,15 @@ create table AssetCategoryProperty (
 create table AssetEntries_AssetCategories (
 	categoryId LONG not null,
 	entryId LONG not null,
-	primary key (categoryId, entryId)
+	companyId LONG not null,
+	primary key (categoryId, entryId, companyId)
 );
 
 create table AssetEntries_AssetTags (
 	entryId LONG not null,
 	tagId LONG not null,
-	primary key (entryId, tagId)
+	companyId LONG not null,
+	primary key (entryId, tagId, companyId)
 );
 
 create table AssetEntry (
@@ -178,6 +181,7 @@ create table AssetTag (
 
 create table AssetTagStats (
 	tagStatsId LONG not null primary key,
+	companyId LONG,
 	tagId LONG,
 	classNameId LONG,
 	assetCount INTEGER
@@ -263,6 +267,7 @@ create table BlogsStatsUser (
 create table BrowserTracker (
 	mvccVersion LONG default 0,
 	browserTrackerId LONG not null primary key,
+	companyId LONG,
 	userId LONG,
 	browserKey LONG
 );
@@ -402,6 +407,7 @@ create table DDMContent (
 create table DDMStorageLink (
 	uuid_ VARCHAR(75) null,
 	storageLinkId LONG not null primary key,
+	companyId LONG,
 	classNameId LONG,
 	classPK LONG,
 	structureId LONG
@@ -444,6 +450,7 @@ create table DDMStructureLayout (
 
 create table DDMStructureLink (
 	structureLinkId LONG not null primary key,
+	companyId LONG,
 	classNameId LONG,
 	classPK LONG,
 	structureId LONG
@@ -500,6 +507,7 @@ create table DDMTemplate (
 
 create table DDMTemplateLink (
 	templateLinkId LONG not null primary key,
+	companyId LONG,
 	classNameId LONG,
 	classPK LONG,
 	templateId LONG
@@ -572,6 +580,7 @@ create table DLFileEntry (
 create table DLFileEntryMetadata (
 	uuid_ VARCHAR(75) null,
 	fileEntryMetadataId LONG not null primary key,
+	companyId LONG,
 	DDMStorageId LONG,
 	DDMStructureId LONG,
 	fileEntryId LONG,
@@ -593,9 +602,10 @@ create table DLFileEntryType (
 );
 
 create table DLFileEntryTypes_DLFolders (
+	companyId LONG not null,
 	fileEntryTypeId LONG not null,
 	folderId LONG not null,
-	primary key (fileEntryTypeId, folderId)
+	primary key (companyId, fileEntryTypeId, folderId)
 );
 
 create table DLFileRank (
@@ -685,6 +695,7 @@ create table DLFolder (
 
 create table DLSyncEvent (
 	syncEventId LONG not null primary key,
+	companyId LONG,
 	modifiedTime LONG,
 	event VARCHAR(75) null,
 	type_ VARCHAR(75) null,
@@ -788,21 +799,24 @@ create table Group_ (
 );
 
 create table Groups_Orgs (
+	companyId LONG not null,
 	groupId LONG not null,
 	organizationId LONG not null,
-	primary key (groupId, organizationId)
+	primary key (companyId, groupId, organizationId)
 );
 
 create table Groups_Roles (
+	companyId LONG not null,
 	groupId LONG not null,
 	roleId LONG not null,
-	primary key (groupId, roleId)
+	primary key (companyId, groupId, roleId)
 );
 
 create table Groups_UserGroups (
+	companyId LONG not null,
 	groupId LONG not null,
 	userGroupId LONG not null,
-	primary key (groupId, userGroupId)
+	primary key (companyId, groupId, userGroupId)
 );
 
 create table Image (
@@ -1102,6 +1116,7 @@ create table MBMessage (
 create table MBStatsUser (
 	statsUserId LONG not null primary key,
 	groupId LONG,
+	companyId LONG,
 	userId LONG,
 	messageCount INTEGER,
 	lastPostDate DATE null
@@ -1245,12 +1260,14 @@ create table OrgGroupRole (
 	organizationId LONG not null,
 	groupId LONG not null,
 	roleId LONG not null,
-	primary key (organizationId, groupId, roleId)
+	companyId LONG not null,
+	primary key (organizationId, groupId, roleId, companyId)
 );
 
 create table OrgLabor (
 	mvccVersion LONG default 0,
 	orgLaborId LONG not null primary key,
+	companyId LONG,
 	organizationId LONG,
 	typeId LONG,
 	sunOpen INTEGER,
@@ -1310,6 +1327,7 @@ create table PasswordPolicy (
 create table PasswordPolicyRel (
 	mvccVersion LONG default 0,
 	passwordPolicyRelId LONG not null primary key,
+	companyId LONG,
 	passwordPolicyId LONG,
 	classNameId LONG,
 	classPK LONG
@@ -1318,6 +1336,7 @@ create table PasswordPolicyRel (
 create table PasswordTracker (
 	mvccVersion LONG default 0,
 	passwordTrackerId LONG not null primary key,
+	companyId LONG,
 	userId LONG,
 	createDate DATE null,
 	password_ VARCHAR(75) null
@@ -1384,6 +1403,7 @@ create table PortletItem (
 create table PortletPreferences (
 	mvccVersion LONG default 0,
 	portletPreferencesId LONG not null primary key,
+	companyId LONG,
 	ownerId LONG,
 	ownerType INTEGER,
 	plid LONG,
@@ -1406,6 +1426,7 @@ create table RatingsEntry (
 
 create table RatingsStats (
 	statsId LONG not null primary key,
+	companyId LONG,
 	classNameId LONG,
 	classPK LONG,
 	totalEntries INTEGER,
@@ -1489,6 +1510,7 @@ create table ResourceBlock (
 create table ResourceBlockPermission (
 	mvccVersion LONG default 0,
 	resourceBlockPermissionId LONG not null primary key,
+	companyId LONG,
 	resourceBlockId LONG,
 	roleId LONG,
 	actionIds LONG
@@ -1535,9 +1557,10 @@ create table Role_ (
 );
 
 create table SCFrameworkVersi_SCProductVers (
+	companyId LONG not null,
 	frameworkVersionId LONG not null,
 	productVersionId LONG not null,
-	primary key (frameworkVersionId, productVersionId)
+	primary key (companyId, frameworkVersionId, productVersionId)
 );
 
 create table SCFrameworkVersion (
@@ -1556,6 +1579,7 @@ create table SCFrameworkVersion (
 
 create table SCLicense (
 	licenseId LONG not null primary key,
+	companyId LONG,
 	name VARCHAR(75) null,
 	url STRING null,
 	openSource BOOLEAN,
@@ -1564,9 +1588,10 @@ create table SCLicense (
 );
 
 create table SCLicenses_SCProductEntries (
+	companyId LONG not null,
 	licenseId LONG not null,
 	productEntryId LONG not null,
-	primary key (licenseId, productEntryId)
+	primary key (companyId, licenseId, productEntryId)
 );
 
 create table SCProductEntry (
@@ -1616,6 +1641,7 @@ create table SCProductVersion (
 create table ServiceComponent (
 	mvccVersion LONG default 0,
 	serviceComponentId LONG not null primary key,
+	companyId LONG,
 	buildNamespace VARCHAR(75) null,
 	buildNumber LONG,
 	buildDate LONG,
@@ -1709,6 +1735,7 @@ create table ShoppingItem (
 
 create table ShoppingItemField (
 	itemFieldId LONG not null primary key,
+	companyId LONG,
 	itemId LONG,
 	name VARCHAR(75) null,
 	values_ STRING null,
@@ -1717,6 +1744,7 @@ create table ShoppingItemField (
 
 create table ShoppingItemPrice (
 	itemPriceId LONG not null primary key,
+	companyId LONG,
 	itemId LONG,
 	minQuantity INTEGER,
 	maxQuantity INTEGER,
@@ -1784,6 +1812,7 @@ create table ShoppingOrder (
 
 create table ShoppingOrderItem (
 	orderItemId LONG not null primary key,
+	companyId LONG,
 	orderId LONG,
 	itemId TEXT null,
 	sku VARCHAR(75) null,
@@ -1975,6 +2004,7 @@ create table TrashEntry (
 
 create table TrashVersion (
 	versionId LONG not null primary key,
+	companyId LONG,
 	entryId LONG,
 	classNameId LONG,
 	classPK LONG,
@@ -2058,7 +2088,8 @@ create table UserGroupGroupRole (
 	userGroupId LONG not null,
 	groupId LONG not null,
 	roleId LONG not null,
-	primary key (userGroupId, groupId, roleId)
+	companyId LONG not null,
+	primary key (userGroupId, groupId, roleId, companyId)
 );
 
 create table UserGroupRole (
@@ -2066,18 +2097,21 @@ create table UserGroupRole (
 	userId LONG not null,
 	groupId LONG not null,
 	roleId LONG not null,
-	primary key (userId, groupId, roleId)
+	companyId LONG not null,
+	primary key (userId, groupId, roleId, companyId)
 );
 
 create table UserGroups_Teams (
+	companyId LONG not null,
 	teamId LONG not null,
 	userGroupId LONG not null,
-	primary key (teamId, userGroupId)
+	primary key (companyId, teamId, userGroupId)
 );
 
 create table UserIdMapper (
 	mvccVersion LONG default 0,
 	userIdMapperId LONG not null primary key,
+	companyId LONG,
 	userId LONG,
 	type_ VARCHAR(75) null,
 	description VARCHAR(75) null,
@@ -2101,33 +2135,38 @@ create table UserNotificationEvent (
 );
 
 create table Users_Groups (
+	companyId LONG not null,
 	groupId LONG not null,
 	userId LONG not null,
-	primary key (groupId, userId)
+	primary key (companyId, groupId, userId)
 );
 
 create table Users_Orgs (
+	companyId LONG not null,
 	organizationId LONG not null,
 	userId LONG not null,
-	primary key (organizationId, userId)
+	primary key (companyId, organizationId, userId)
 );
 
 create table Users_Roles (
+	companyId LONG not null,
 	roleId LONG not null,
 	userId LONG not null,
-	primary key (roleId, userId)
+	primary key (companyId, roleId, userId)
 );
 
 create table Users_Teams (
+	companyId LONG not null,
 	teamId LONG not null,
 	userId LONG not null,
-	primary key (teamId, userId)
+	primary key (companyId, teamId, userId)
 );
 
 create table Users_UserGroups (
+	companyId LONG not null,
 	userId LONG not null,
 	userGroupId LONG not null,
-	primary key (userId, userGroupId)
+	primary key (companyId, userId, userGroupId)
 );
 
 create table UserTracker (
@@ -2145,6 +2184,7 @@ create table UserTracker (
 create table UserTrackerPath (
 	mvccVersion LONG default 0,
 	userTrackerPathId LONG not null primary key,
+	companyId LONG,
 	userTrackerId LONG,
 	path_ STRING null,
 	pathDate DATE null

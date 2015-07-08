@@ -88,6 +88,20 @@ public interface BrowserTrackerModel extends BaseModel<BrowserTracker>, MVCCMode
 	public void setBrowserTrackerId(long browserTrackerId);
 
 	/**
+	 * Returns the company ID of this browser tracker.
+	 *
+	 * @return the company ID of this browser tracker
+	 */
+	public long getCompanyId();
+
+	/**
+	 * Sets the company ID of this browser tracker.
+	 *
+	 * @param companyId the company ID of this browser tracker
+	 */
+	public void setCompanyId(long companyId);
+
+	/**
 	 * Returns the user ID of this browser tracker.
 	 *
 	 * @return the user ID of this browser tracker

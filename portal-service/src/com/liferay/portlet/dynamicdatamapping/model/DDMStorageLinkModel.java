@@ -92,6 +92,20 @@ public interface DDMStorageLinkModel extends AttachedModel,
 	public void setStorageLinkId(long storageLinkId);
 
 	/**
+	 * Returns the company ID of this d d m storage link.
+	 *
+	 * @return the company ID of this d d m storage link
+	 */
+	public long getCompanyId();
+
+	/**
+	 * Sets the company ID of this d d m storage link.
+	 *
+	 * @param companyId the company ID of this d d m storage link
+	 */
+	public void setCompanyId(long companyId);
+
+	/**
 	 * Returns the fully qualified class name of this d d m storage link.
 	 *
 	 * @return the fully qualified class name of this d d m storage link

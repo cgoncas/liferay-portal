@@ -89,6 +89,20 @@ public interface ResourceBlockPermissionModel extends BaseModel<ResourceBlockPer
 	public void setResourceBlockPermissionId(long resourceBlockPermissionId);
 
 	/**
+	 * Returns the company ID of this resource block permission.
+	 *
+	 * @return the company ID of this resource block permission
+	 */
+	public long getCompanyId();
+
+	/**
+	 * Sets the company ID of this resource block permission.
+	 *
+	 * @param companyId the company ID of this resource block permission
+	 */
+	public void setCompanyId(long companyId);
+
+	/**
 	 * Returns the resource block ID of this resource block permission.
 	 *
 	 * @return the resource block ID of this resource block permission

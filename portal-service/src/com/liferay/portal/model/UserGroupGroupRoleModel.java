@@ -117,6 +117,20 @@ public interface UserGroupGroupRoleModel extends BaseModel<UserGroupGroupRole>,
 	 */
 	public void setRoleId(long roleId);
 
+	/**
+	 * Returns the company ID of this user group group role.
+	 *
+	 * @return the company ID of this user group group role
+	 */
+	public long getCompanyId();
+
+	/**
+	 * Sets the company ID of this user group group role.
+	 *
+	 * @param companyId the company ID of this user group group role
+	 */
+	public void setCompanyId(long companyId);
+
 	@Override
 	public boolean isNew();
 

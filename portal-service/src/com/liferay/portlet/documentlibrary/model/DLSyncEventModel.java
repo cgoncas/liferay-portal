@@ -75,6 +75,20 @@ public interface DLSyncEventModel extends BaseModel<DLSyncEvent> {
 	public void setSyncEventId(long syncEventId);
 
 	/**
+	 * Returns the company ID of this d l sync event.
+	 *
+	 * @return the company ID of this d l sync event
+	 */
+	public long getCompanyId();
+
+	/**
+	 * Sets the company ID of this d l sync event.
+	 *
+	 * @param companyId the company ID of this d l sync event
+	 */
+	public void setCompanyId(long companyId);
+
+	/**
 	 * Returns the modified time of this d l sync event.
 	 *
 	 * @return the modified time of this d l sync event

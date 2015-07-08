@@ -76,6 +76,20 @@ public interface DDMStructureLinkModel extends AttachedModel,
 	public void setStructureLinkId(long structureLinkId);
 
 	/**
+	 * Returns the company ID of this d d m structure link.
+	 *
+	 * @return the company ID of this d d m structure link
+	 */
+	public long getCompanyId();
+
+	/**
+	 * Sets the company ID of this d d m structure link.
+	 *
+	 * @param companyId the company ID of this d d m structure link
+	 */
+	public void setCompanyId(long companyId);
+
+	/**
 	 * Returns the fully qualified class name of this d d m structure link.
 	 *
 	 * @return the fully qualified class name of this d d m structure link

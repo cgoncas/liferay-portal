@@ -32,14 +32,17 @@ public class UserGroupGroupRolePK implements Comparable<UserGroupGroupRolePK>,
 	public long userGroupId;
 	public long groupId;
 	public long roleId;
+	public long companyId;
 
 	public UserGroupGroupRolePK() {
 	}
 
-	public UserGroupGroupRolePK(long userGroupId, long groupId, long roleId) {
+	public UserGroupGroupRolePK(long userGroupId, long groupId, long roleId,
+		long companyId) {
 		this.userGroupId = userGroupId;
 		this.groupId = groupId;
 		this.roleId = roleId;
+		this.companyId = companyId;
 	}
 
 	public long getUserGroupId() {
@@ -64,6 +67,14 @@ public class UserGroupGroupRolePK implements Comparable<UserGroupGroupRolePK>,
 
 	public void setRoleId(long roleId) {
 		this.roleId = roleId;
+	}
+
+	public long getCompanyId() {
+		return companyId;
+	}
+
+	public void setCompanyId(long companyId) {
+		this.companyId = companyId;
 	}
 
 	@Override
@@ -116,6 +127,20 @@ public class UserGroupGroupRolePK implements Comparable<UserGroupGroupRolePK>,
 			return value;
 		}
 
+		if (companyId < pk.companyId) {
+			value = -1;
+		}
+		else if (companyId > pk.companyId) {
+			value = 1;
+		}
+		else {
+			value = 0;
+		}
+
+		if (value != 0) {
+			return value;
+		}
+
 		return 0;
 	}
 
@@ -132,7 +157,7 @@ public class UserGroupGroupRolePK implements Comparable<UserGroupGroupRolePK>,
 		UserGroupGroupRolePK pk = (UserGroupGroupRolePK)obj;
 
 		if ((userGroupId == pk.userGroupId) && (groupId == pk.groupId) &&
-				(roleId == pk.roleId)) {
+				(roleId == pk.roleId) && (companyId == pk.companyId)) {
 			return true;
 		}
 		else {
@@ -147,13 +172,14 @@ public class UserGroupGroupRolePK implements Comparable<UserGroupGroupRolePK>,
 		hashCode = HashUtil.hash(hashCode, userGroupId);
 		hashCode = HashUtil.hash(hashCode, groupId);
 		hashCode = HashUtil.hash(hashCode, roleId);
+		hashCode = HashUtil.hash(hashCode, companyId);
 
 		return hashCode;
 	}
 
 	@Override
 	public String toString() {
-		StringBundler sb = new StringBundler(15);
+		StringBundler sb = new StringBundler(20);
 
 		sb.append(StringPool.OPEN_CURLY_BRACE);
 
@@ -172,6 +198,12 @@ public class UserGroupGroupRolePK implements Comparable<UserGroupGroupRolePK>,
 		sb.append("roleId");
 		sb.append(StringPool.EQUAL);
 		sb.append(roleId);
+
+		sb.append(StringPool.COMMA);
+		sb.append(StringPool.SPACE);
+		sb.append("companyId");
+		sb.append(StringPool.EQUAL);
+		sb.append(companyId);
 
 		sb.append(StringPool.CLOSE_CURLY_BRACE);
 
