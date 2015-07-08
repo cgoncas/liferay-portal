@@ -41,6 +41,10 @@ public class EntityMapping {
 		return _company;
 	}
 
+	public int getEntitiesCount() {
+		return _entities.length;
+	}
+
 	public String getEntity(int index) {
 		try {
 			return _entities[index];

@@ -1176,7 +1176,7 @@ public class ServiceBuilder {
 
 		EntityMapping entityMapping = _entityMappings.get(mappingTable);
 
-		for (int i = 0; i < 2; i++) {
+		for (int i = 0; i < entityMapping.getEntitiesCount(); i++) {
 			Entity entity = getEntity(entityMapping.getEntity(i));
 
 			if (entity == null) {
@@ -3825,7 +3825,7 @@ public class ServiceBuilder {
 			Map<String, List<IndexMetadata>> indexMetadataMap)
 		throws Exception {
 
-		Entity[] entities = new Entity[2];
+		Entity[] entities = new Entity[entityMapping.getEntitiesCount()];
 
 		for (int i = 0; i < entities.length; i++) {
 			entities[i] = getEntity(entityMapping.getEntity(i));
@@ -3857,7 +3857,7 @@ public class ServiceBuilder {
 	private String _getCreateMappingTableSQL(EntityMapping entityMapping)
 		throws Exception {
 
-		Entity[] entities = new Entity[2];
+		Entity[] entities = new Entity[entityMapping.getEntitiesCount()];
 
 		for (int i = 0; i < entities.length; i++) {
 			entities[i] = getEntity(entityMapping.getEntity(i));
