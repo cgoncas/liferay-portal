@@ -1403,6 +1403,8 @@ public class TableMapperTest {
 		Assert.assertTrue(portalCaches.isEmpty());
 	}
 
+	private static final String _COMPANY_ID_COLUMN_NAME = "companyId";
+
 	private static final String _LEFT_COLUMN_NAME = "leftId";
 
 	private static final String _RIGHT_COLUMN_NAME = "rightId";
@@ -1449,22 +1451,24 @@ public class TableMapperTest {
 
 			Assert.assertSame(_dataSource, dataSource);
 			Assert.assertEquals(
-				"INSERT INTO " + _TABLE_NAME + " (" + _LEFT_COLUMN_NAME +
-					", " + _RIGHT_COLUMN_NAME+ ") VALUES (?, ?)",
+				"INSERT INTO " + _TABLE_NAME + " (" + _COMPANY_ID_COLUMN_NAME +
+					", " + _LEFT_COLUMN_NAME + ", " + _RIGHT_COLUMN_NAME +
+					") VALUES (?, ?, ?)",
 				sql);
 			Assert.assertArrayEquals(
-				new int[] {Types.BIGINT, Types.BIGINT},
+				new int[] {Types.BIGINT, Types.BIGINT, Types.BIGINT},
 				types);
 		}
 
 		@Override
 		public int update(Object... params) {
-			Assert.assertEquals(2, params.length);
+			Assert.assertEquals(3, params.length);
 			Assert.assertSame(Long.class, params[0].getClass());
 			Assert.assertSame(Long.class, params[1].getClass());
+			Assert.assertSame(Long.class, params[2].getClass());
 
-			Long leftPrimaryKey = (Long)params[0];
-			Long rightPrimaryKey = (Long)params[1];
+			Long leftPrimaryKey = (Long)params[1];
+			Long rightPrimaryKey = (Long)params[2];
 
 			long[] rightPrimaryKeys = _mappingStore.get(leftPrimaryKey);
 
@@ -1550,9 +1554,10 @@ public class TableMapperTest {
 			Assert.assertSame(_dataSource, dataSource);
 			Assert.assertEquals(
 				"DELETE FROM " + _TABLE_NAME + " WHERE " + _LEFT_COLUMN_NAME +
-					" = ?",
+					" = ? AND " + _COMPANY_ID_COLUMN_NAME + " = ?",
 				sql);
-			Assert.assertArrayEquals(new int[] {Types.BIGINT}, types);
+			Assert.assertArrayEquals(
+				new int[] {Types.BIGINT, Types.BIGINT}, types);
 		}
 
 		public void setDatabaseError(boolean databaseError) {
@@ -1561,8 +1566,9 @@ public class TableMapperTest {
 
 		@Override
 		public int update(Object... params) {
-			Assert.assertEquals(1, params.length);
+			Assert.assertEquals(2, params.length);
 			Assert.assertSame(Long.class, params[0].getClass());
+			Assert.assertSame(Long.class, params[1].getClass());
 
 			if (_databaseError) {
 				throw new RuntimeException("Database error");
@@ -1591,10 +1597,11 @@ public class TableMapperTest {
 			Assert.assertSame(_dataSource, dataSource);
 			Assert.assertEquals(
 				"DELETE FROM " + _TABLE_NAME + " WHERE " + _LEFT_COLUMN_NAME +
-					" = ? AND " + _RIGHT_COLUMN_NAME + " = ?",
+					" = ? AND " + _RIGHT_COLUMN_NAME + " = ? AND " +
+					_COMPANY_ID_COLUMN_NAME + " = ?",
 				sql);
 			Assert.assertArrayEquals(
-				new int[] {Types.BIGINT, Types.BIGINT},
+				new int[] {Types.BIGINT, Types.BIGINT, Types.BIGINT},
 				types);
 		}
 
@@ -1604,9 +1611,10 @@ public class TableMapperTest {
 
 		@Override
 		public int update(Object... params) {
-			Assert.assertEquals(2, params.length);
+			Assert.assertEquals(3, params.length);
 			Assert.assertSame(Long.class, params[0].getClass());
 			Assert.assertSame(Long.class, params[1].getClass());
+			Assert.assertSame(Long.class, params[2].getClass());
 
 			if (_databaseError) {
 				throw new RuntimeException("Database error");
@@ -1646,9 +1654,10 @@ public class TableMapperTest {
 			Assert.assertSame(_dataSource, dataSource);
 			Assert.assertEquals(
 				"DELETE FROM " + _TABLE_NAME + " WHERE " + _RIGHT_COLUMN_NAME +
-					" = ?",
+					" = ? AND " + _COMPANY_ID_COLUMN_NAME + " = ?",
 				sql);
-			Assert.assertArrayEquals(new int[] {Types.BIGINT}, types);
+			Assert.assertArrayEquals(
+				new int[] {Types.BIGINT, Types.BIGINT}, types);
 		}
 
 		public void setDatabaseError(boolean databaseError) {
@@ -1657,8 +1666,9 @@ public class TableMapperTest {
 
 		@Override
 		public int update(Object... params) {
-			Assert.assertEquals(1, params.length);
+			Assert.assertEquals(2, params.length);
 			Assert.assertSame(Long.class, params[0].getClass());
+			Assert.assertSame(Long.class, params[1].getClass());
 
 			if (_databaseError) {
 				throw new RuntimeException("Database error");
@@ -1698,16 +1708,19 @@ public class TableMapperTest {
 			Assert.assertSame(_dataSource, dataSource);
 			Assert.assertEquals(
 				"SELECT " + _LEFT_COLUMN_NAME + " FROM " +
-					_TABLE_NAME + " WHERE " + _RIGHT_COLUMN_NAME + " = ?",
+					_TABLE_NAME + " WHERE " + _RIGHT_COLUMN_NAME + " = ? AND " +
+					_COMPANY_ID_COLUMN_NAME + " = ?",
 				sql);
-			Assert.assertArrayEquals(new int[] {Types.BIGINT}, types);
+			Assert.assertArrayEquals(
+				new int[] {Types.BIGINT, Types.BIGINT}, types);
 			Assert.assertSame(RowMapper.PRIMARY_KEY, rowMapper);
 		}
 
 		@Override
 		public List<Long> execute(Object... params) {
-			Assert.assertEquals(1, params.length);
+			Assert.assertEquals(2, params.length);
 			Assert.assertSame(Long.class, params[0].getClass());
+			Assert.assertSame(Long.class, params[1].getClass());
 
 			if (_databaseError) {
 				throw new RuntimeException("Database error");
@@ -1746,16 +1759,19 @@ public class TableMapperTest {
 			Assert.assertSame(_dataSource, dataSource);
 			Assert.assertEquals(
 				"SELECT " + _RIGHT_COLUMN_NAME + " FROM " +
-					_TABLE_NAME + " WHERE " + _LEFT_COLUMN_NAME + " = ?",
+					_TABLE_NAME + " WHERE " + _LEFT_COLUMN_NAME + " = ? AND " +
+					_COMPANY_ID_COLUMN_NAME + " = ?",
 				sql);
-			Assert.assertArrayEquals(new int[] {Types.BIGINT}, types);
+			Assert.assertArrayEquals(
+				new int[] {Types.BIGINT, Types.BIGINT}, types);
 			Assert.assertSame(RowMapper.PRIMARY_KEY, rowMapper);
 		}
 
 		@Override
 		public List<Long> execute(Object... params) {
-			Assert.assertEquals(1, params.length);
+			Assert.assertEquals(2, params.length);
 			Assert.assertSame(Long.class, params[0].getClass());
+			Assert.assertSame(Long.class, params[1].getClass());
 
 			if (_databaseError) {
 				throw new RuntimeException("Database error");
