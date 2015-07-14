@@ -14,6 +14,8 @@
 
 package com.liferay.portal.tools.service.builder;
 
+import com.liferay.portal.kernel.util.CharPool;
+
 /**
  * @author Glenn Powell
  * @author Brian Wing Shun Chan
@@ -26,7 +28,11 @@ public class EntityMapping {
 
 		_table = table;
 		_company = company;
-		_entities[0] = company.getName();
+
+		String companyModel =
+			company.getPackagePath() + CharPool.PERIOD + company.getName();
+
+		_entities[0] = companyModel;
 		_entities[1] = entity1;
 		_entities[2] = entity2;
 	}
