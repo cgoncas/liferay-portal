@@ -176,8 +176,6 @@ alter table Groups_UserGroups add companyId LONG;
 
 create index IX_676FC818 on Groups_UserGroups (companyId);
 
-alter table Image add companyId LONG;
-
 alter table JournalArticleImage add companyId LONG;
 
 alter table JournalArticleResource add companyId LONG;
