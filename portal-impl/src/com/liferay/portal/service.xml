@@ -1196,10 +1196,6 @@
 
 		<column name="listTypeId" type="long" primary="true" />
 
-		<!-- Audit fields -->
-
-		<column name="companyId" type="long" />
-
 		<!-- Other fields -->
 
 		<column name="name" type="String" />
