@@ -611,7 +611,7 @@
 		<reference package-path="com.liferay.portlet.softwarecatalog" entity="SCProductEntry" />
 		<reference package-path="com.liferay.portlet.trash" entity="TrashEntry" />
 	</entity>
-	<entity name="Image" local-service="true" remote-service="true">
+	<entity name="Image" local-service="true" remote-service="true" partitionable="false">
 
 		<!-- PK fields -->
 
