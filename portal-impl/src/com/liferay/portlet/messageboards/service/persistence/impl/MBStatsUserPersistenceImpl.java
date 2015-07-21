@@ -2132,6 +2132,7 @@ public class MBStatsUserPersistenceImpl extends BasePersistenceImpl<MBStatsUser>
 
 		mbStatsUserImpl.setStatsUserId(mbStatsUser.getStatsUserId());
 		mbStatsUserImpl.setGroupId(mbStatsUser.getGroupId());
+		mbStatsUserImpl.setCompanyId(mbStatsUser.getCompanyId());
 		mbStatsUserImpl.setUserId(mbStatsUser.getUserId());
 		mbStatsUserImpl.setMessageCount(mbStatsUser.getMessageCount());
 		mbStatsUserImpl.setLastPostDate(mbStatsUser.getLastPostDate());

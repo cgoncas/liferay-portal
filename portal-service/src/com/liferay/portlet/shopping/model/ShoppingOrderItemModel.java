@@ -77,6 +77,20 @@ public interface ShoppingOrderItemModel extends BaseModel<ShoppingOrderItem> {
 	public void setOrderItemId(long orderItemId);
 
 	/**
+	 * Returns the company ID of this shopping order item.
+	 *
+	 * @return the company ID of this shopping order item
+	 */
+	public long getCompanyId();
+
+	/**
+	 * Sets the company ID of this shopping order item.
+	 *
+	 * @param companyId the company ID of this shopping order item
+	 */
+	public void setCompanyId(long companyId);
+
+	/**
 	 * Returns the order ID of this shopping order item.
 	 *
 	 * @return the order ID of this shopping order item

@@ -90,6 +90,20 @@ public interface ModuleModel extends BaseModel<Module> {
 	public void setModuleId(long moduleId);
 
 	/**
+	 * Returns the company ID of this module.
+	 *
+	 * @return the company ID of this module
+	 */
+	public long getCompanyId();
+
+	/**
+	 * Sets the company ID of this module.
+	 *
+	 * @param companyId the company ID of this module
+	 */
+	public void setCompanyId(long companyId);
+
+	/**
 	 * Returns the app ID of this module.
 	 *
 	 * @return the app ID of this module

@@ -80,7 +80,8 @@ public class UserGroupGroupRolePersistenceTest {
 	@Test
 	public void testCreate() throws Exception {
 		UserGroupGroupRolePK pk = new UserGroupGroupRolePK(RandomTestUtil.nextLong(),
-				RandomTestUtil.nextLong(), RandomTestUtil.nextLong());
+				RandomTestUtil.nextLong(), RandomTestUtil.nextLong(),
+				RandomTestUtil.nextLong());
 
 		UserGroupGroupRole userGroupGroupRole = _persistence.create(pk);
 
@@ -108,7 +109,8 @@ public class UserGroupGroupRolePersistenceTest {
 	@Test
 	public void testUpdateExisting() throws Exception {
 		UserGroupGroupRolePK pk = new UserGroupGroupRolePK(RandomTestUtil.nextLong(),
-				RandomTestUtil.nextLong(), RandomTestUtil.nextLong());
+				RandomTestUtil.nextLong(), RandomTestUtil.nextLong(),
+				RandomTestUtil.nextLong());
 
 		UserGroupGroupRole newUserGroupGroupRole = _persistence.create(pk);
 
@@ -126,6 +128,8 @@ public class UserGroupGroupRolePersistenceTest {
 			newUserGroupGroupRole.getGroupId());
 		Assert.assertEquals(existingUserGroupGroupRole.getRoleId(),
 			newUserGroupGroupRole.getRoleId());
+		Assert.assertEquals(existingUserGroupGroupRole.getCompanyId(),
+			newUserGroupGroupRole.getCompanyId());
 	}
 
 	@Test
@@ -177,7 +181,8 @@ public class UserGroupGroupRolePersistenceTest {
 	@Test(expected = NoSuchUserGroupGroupRoleException.class)
 	public void testFindByPrimaryKeyMissing() throws Exception {
 		UserGroupGroupRolePK pk = new UserGroupGroupRolePK(RandomTestUtil.nextLong(),
-				RandomTestUtil.nextLong(), RandomTestUtil.nextLong());
+				RandomTestUtil.nextLong(), RandomTestUtil.nextLong(),
+				RandomTestUtil.nextLong());
 
 		_persistence.findByPrimaryKey(pk);
 	}
@@ -194,7 +199,8 @@ public class UserGroupGroupRolePersistenceTest {
 	@Test
 	public void testFetchByPrimaryKeyMissing() throws Exception {
 		UserGroupGroupRolePK pk = new UserGroupGroupRolePK(RandomTestUtil.nextLong(),
-				RandomTestUtil.nextLong(), RandomTestUtil.nextLong());
+				RandomTestUtil.nextLong(), RandomTestUtil.nextLong(),
+				RandomTestUtil.nextLong());
 
 		UserGroupGroupRole missingUserGroupGroupRole = _persistence.fetchByPrimaryKey(pk);
 
@@ -225,10 +231,12 @@ public class UserGroupGroupRolePersistenceTest {
 	public void testFetchByPrimaryKeysWithMultiplePrimaryKeysWhereNoPrimaryKeysExist()
 		throws Exception {
 		UserGroupGroupRolePK pk1 = new UserGroupGroupRolePK(RandomTestUtil.nextLong(),
-				RandomTestUtil.nextLong(), RandomTestUtil.nextLong());
+				RandomTestUtil.nextLong(), RandomTestUtil.nextLong(),
+				RandomTestUtil.nextLong());
 
 		UserGroupGroupRolePK pk2 = new UserGroupGroupRolePK(RandomTestUtil.nextLong(),
-				RandomTestUtil.nextLong(), RandomTestUtil.nextLong());
+				RandomTestUtil.nextLong(), RandomTestUtil.nextLong(),
+				RandomTestUtil.nextLong());
 
 		Set<Serializable> primaryKeys = new HashSet<Serializable>();
 
@@ -246,7 +254,8 @@ public class UserGroupGroupRolePersistenceTest {
 		UserGroupGroupRole newUserGroupGroupRole = addUserGroupGroupRole();
 
 		UserGroupGroupRolePK pk = new UserGroupGroupRolePK(RandomTestUtil.nextLong(),
-				RandomTestUtil.nextLong(), RandomTestUtil.nextLong());
+				RandomTestUtil.nextLong(), RandomTestUtil.nextLong(),
+				RandomTestUtil.nextLong());
 
 		Set<Serializable> primaryKeys = new HashSet<Serializable>();
 
@@ -322,6 +331,8 @@ public class UserGroupGroupRolePersistenceTest {
 				newUserGroupGroupRole.getGroupId()));
 		dynamicQuery.add(RestrictionsFactoryUtil.eq("id.roleId",
 				newUserGroupGroupRole.getRoleId()));
+		dynamicQuery.add(RestrictionsFactoryUtil.eq("id.companyId",
+				newUserGroupGroupRole.getCompanyId()));
 
 		List<UserGroupGroupRole> result = _persistence.findWithDynamicQuery(dynamicQuery);
 
@@ -342,6 +353,8 @@ public class UserGroupGroupRolePersistenceTest {
 		dynamicQuery.add(RestrictionsFactoryUtil.eq("id.groupId",
 				RandomTestUtil.nextLong()));
 		dynamicQuery.add(RestrictionsFactoryUtil.eq("id.roleId",
+				RandomTestUtil.nextLong()));
+		dynamicQuery.add(RestrictionsFactoryUtil.eq("id.companyId",
 				RandomTestUtil.nextLong()));
 
 		List<UserGroupGroupRole> result = _persistence.findWithDynamicQuery(dynamicQuery);
@@ -393,7 +406,8 @@ public class UserGroupGroupRolePersistenceTest {
 	protected UserGroupGroupRole addUserGroupGroupRole()
 		throws Exception {
 		UserGroupGroupRolePK pk = new UserGroupGroupRolePK(RandomTestUtil.nextLong(),
-				RandomTestUtil.nextLong(), RandomTestUtil.nextLong());
+				RandomTestUtil.nextLong(), RandomTestUtil.nextLong(),
+				RandomTestUtil.nextLong());
 
 		UserGroupGroupRole userGroupGroupRole = _persistence.create(pk);
 

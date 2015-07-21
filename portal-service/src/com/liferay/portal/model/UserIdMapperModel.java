@@ -89,6 +89,20 @@ public interface UserIdMapperModel extends BaseModel<UserIdMapper>, MVCCModel {
 	public void setUserIdMapperId(long userIdMapperId);
 
 	/**
+	 * Returns the company ID of this user ID mapper.
+	 *
+	 * @return the company ID of this user ID mapper
+	 */
+	public long getCompanyId();
+
+	/**
+	 * Sets the company ID of this user ID mapper.
+	 *
+	 * @param companyId the company ID of this user ID mapper
+	 */
+	public void setCompanyId(long companyId);
+
+	/**
 	 * Returns the user ID of this user ID mapper.
 	 *
 	 * @return the user ID of this user ID mapper

@@ -1732,8 +1732,9 @@ public interface JournalArticleService extends BaseService {
 
 	/**
 	* @deprecated As of 6.2.0, replaced by {@link
-	#updateArticleTranslation(long, String, double, java.util.Locale,
-	String, String, String, java.util.Map, ServiceContext)}
+	#updateArticleTranslation(long, String, double,
+	java.util.Locale, String, String, String, java.util.Map,
+	ServiceContext)}
 	*/
 	@java.lang.Deprecated
 	public com.liferay.journal.model.JournalArticle updateArticleTranslation(

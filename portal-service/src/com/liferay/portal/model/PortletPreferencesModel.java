@@ -90,6 +90,20 @@ public interface PortletPreferencesModel extends BaseModel<PortletPreferences>,
 	public void setPortletPreferencesId(long portletPreferencesId);
 
 	/**
+	 * Returns the company ID of this portlet preferences.
+	 *
+	 * @return the company ID of this portlet preferences
+	 */
+	public long getCompanyId();
+
+	/**
+	 * Sets the company ID of this portlet preferences.
+	 *
+	 * @param companyId the company ID of this portlet preferences
+	 */
+	public void setCompanyId(long companyId);
+
+	/**
 	 * Returns the owner ID of this portlet preferences.
 	 *
 	 * @return the owner ID of this portlet preferences

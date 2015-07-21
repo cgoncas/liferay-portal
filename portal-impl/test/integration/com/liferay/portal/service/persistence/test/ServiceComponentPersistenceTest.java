@@ -117,6 +117,8 @@ public class ServiceComponentPersistenceTest {
 
 		newServiceComponent.setMvccVersion(RandomTestUtil.nextLong());
 
+		newServiceComponent.setCompanyId(RandomTestUtil.nextLong());
+
 		newServiceComponent.setBuildNamespace(RandomTestUtil.randomString());
 
 		newServiceComponent.setBuildNumber(RandomTestUtil.nextLong());
@@ -133,6 +135,8 @@ public class ServiceComponentPersistenceTest {
 			newServiceComponent.getMvccVersion());
 		Assert.assertEquals(existingServiceComponent.getServiceComponentId(),
 			newServiceComponent.getServiceComponentId());
+		Assert.assertEquals(existingServiceComponent.getCompanyId(),
+			newServiceComponent.getCompanyId());
 		Assert.assertEquals(existingServiceComponent.getBuildNamespace(),
 			newServiceComponent.getBuildNamespace());
 		Assert.assertEquals(existingServiceComponent.getBuildNumber(),
@@ -185,8 +189,9 @@ public class ServiceComponentPersistenceTest {
 
 	protected OrderByComparator<ServiceComponent> getOrderByComparator() {
 		return OrderByComparatorFactoryUtil.create("ServiceComponent",
-			"mvccVersion", true, "serviceComponentId", true, "buildNamespace",
-			true, "buildNumber", true, "buildDate", true, "data", true);
+			"mvccVersion", true, "serviceComponentId", true, "companyId", true,
+			"buildNamespace", true, "buildNumber", true, "buildDate", true,
+			"data", true);
 	}
 
 	@Test
@@ -408,6 +413,8 @@ public class ServiceComponentPersistenceTest {
 		ServiceComponent serviceComponent = _persistence.create(pk);
 
 		serviceComponent.setMvccVersion(RandomTestUtil.nextLong());
+
+		serviceComponent.setCompanyId(RandomTestUtil.nextLong());
 
 		serviceComponent.setBuildNamespace(RandomTestUtil.randomString());
 

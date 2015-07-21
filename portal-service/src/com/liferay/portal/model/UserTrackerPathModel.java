@@ -92,6 +92,20 @@ public interface UserTrackerPathModel extends BaseModel<UserTrackerPath>,
 	public void setUserTrackerPathId(long userTrackerPathId);
 
 	/**
+	 * Returns the company ID of this user tracker path.
+	 *
+	 * @return the company ID of this user tracker path
+	 */
+	public long getCompanyId();
+
+	/**
+	 * Sets the company ID of this user tracker path.
+	 *
+	 * @param companyId the company ID of this user tracker path
+	 */
+	public void setCompanyId(long companyId);
+
+	/**
 	 * Returns the user tracker ID of this user tracker path.
 	 *
 	 * @return the user tracker ID of this user tracker path
