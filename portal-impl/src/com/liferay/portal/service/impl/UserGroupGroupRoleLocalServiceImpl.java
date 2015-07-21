@@ -36,8 +36,12 @@ public class UserGroupGroupRoleLocalServiceImpl
 		long userGroupId, long groupId, long[] roleIds) {
 
 		for (long roleId : roleIds) {
+			Role role = rolePersistence.fetchByPrimaryKey(roleId);
+
+			long companyId = role.getCompanyId();
+
 			UserGroupGroupRolePK pk = new UserGroupGroupRolePK(
-				userGroupId, groupId, roleId);
+				userGroupId, groupId, roleId, companyId);
 
 			UserGroupGroupRole userGroupGroupRole =
 				userGroupGroupRolePersistence.fetchByPrimaryKey(pk);
@@ -56,9 +60,13 @@ public class UserGroupGroupRoleLocalServiceImpl
 	public void addUserGroupGroupRoles(
 		long[] userGroupIds, long groupId, long roleId) {
 
+		Role role = rolePersistence.fetchByPrimaryKey(roleId);
+
+		long companyId = role.getCompanyId();
+
 		for (long userGroupId : userGroupIds) {
 			UserGroupGroupRolePK pk = new UserGroupGroupRolePK(
-				userGroupId, groupId, roleId);
+				userGroupId, groupId, roleId, companyId);
 
 			UserGroupGroupRole userGroupGroupRole =
 				userGroupGroupRolePersistence.fetchByPrimaryKey(pk);
@@ -89,8 +97,12 @@ public class UserGroupGroupRoleLocalServiceImpl
 		long userGroupId, long groupId, long[] roleIds) {
 
 		for (long roleId : roleIds) {
+			Role role = rolePersistence.fetchByPrimaryKey(roleId);
+
+			long companyId = role.getCompanyId();
+
 			UserGroupGroupRolePK pk = new UserGroupGroupRolePK(
-				userGroupId, groupId, roleId);
+				userGroupId, groupId, roleId, companyId);
 
 			try {
 				userGroupGroupRolePersistence.remove(pk);
@@ -124,9 +136,13 @@ public class UserGroupGroupRoleLocalServiceImpl
 	public void deleteUserGroupGroupRoles(
 		long[] userGroupIds, long groupId, long roleId) {
 
+		Role role = rolePersistence.fetchByPrimaryKey(roleId);
+
+		long companyId = role.getCompanyId();
+
 		for (long userGroupId : userGroupIds) {
 			UserGroupGroupRolePK pk = new UserGroupGroupRolePK(
-				userGroupId, groupId, roleId);
+				userGroupId, groupId, roleId, companyId);
 
 			try {
 				userGroupGroupRolePersistence.remove(pk);
@@ -187,8 +203,12 @@ public class UserGroupGroupRoleLocalServiceImpl
 	public boolean hasUserGroupGroupRole(
 		long userGroupId, long groupId, long roleId) {
 
+		Role role = rolePersistence.fetchByPrimaryKey(roleId);
+
+		long companyId = role.getCompanyId();
+
 		UserGroupGroupRolePK pk = new UserGroupGroupRolePK(
-			userGroupId, groupId, roleId);
+			userGroupId, groupId, roleId, companyId);
 
 		UserGroupGroupRole userGroupGroupRole =
 			userGroupGroupRolePersistence.fetchByPrimaryKey(pk);

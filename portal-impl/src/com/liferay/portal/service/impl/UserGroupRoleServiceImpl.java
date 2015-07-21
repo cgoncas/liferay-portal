@@ -48,8 +48,10 @@ public class UserGroupRoleServiceImpl extends UserGroupRoleServiceBaseImpl {
 			UserGroupRolePermissionUtil.check(
 				getPermissionChecker(), group, role);
 
+			long companyId = role.getCompanyId();
+
 			UserGroupRolePK userGroupRolePK = new UserGroupRolePK(
-				userId, groupId, roleId);
+				userId, groupId, roleId, companyId);
 
 			UserGroupRole userGroupRole = userGroupRolePersistence.create(
 				userGroupRolePK);
@@ -92,9 +94,13 @@ public class UserGroupRoleServiceImpl extends UserGroupRoleServiceBaseImpl {
 
 		List<UserGroupRole> userGroupRoles = new ArrayList<>();
 
+		Role role = rolePersistence.findByPrimaryKey(roleId);
+
+		long companyId = role.getCompanyId();
+
 		for (long userId : userIds) {
 			UserGroupRolePK userGroupRolePK = new UserGroupRolePK(
-				userId, groupId, roleId);
+				userId, groupId, roleId, companyId);
 
 			UserGroupRole userGroupRole = userGroupRolePersistence.create(
 				userGroupRolePK);
@@ -105,8 +111,6 @@ public class UserGroupRoleServiceImpl extends UserGroupRoleServiceBaseImpl {
 		if (userGroupRoles.isEmpty()) {
 			return;
 		}
-
-		Role role = rolePersistence.findByPrimaryKey(roleId);
 
 		if (role.getType() == RoleConstants.TYPE_ORGANIZATION) {
 			OrganizationMembershipPolicyUtil.checkRoles(userGroupRoles, null);
@@ -142,8 +146,10 @@ public class UserGroupRoleServiceImpl extends UserGroupRoleServiceBaseImpl {
 			UserGroupRolePermissionUtil.check(
 				getPermissionChecker(), group, role);
 
+			long companyId = role.getCompanyId();
+
 			UserGroupRolePK userGroupRolePK = new UserGroupRolePK(
-				userId, groupId, roleId);
+				userId, groupId, roleId, companyId);
 
 			UserGroupRole userGroupRole = userGroupRolePersistence.create(
 				userGroupRolePK);
@@ -205,9 +211,11 @@ public class UserGroupRoleServiceImpl extends UserGroupRoleServiceBaseImpl {
 
 		Role role = rolePersistence.findByPrimaryKey(roleId);
 
+		long companyId = role.getCompanyId();
+
 		for (long userId : userIds) {
 			UserGroupRolePK userGroupRolePK = new UserGroupRolePK(
-				userId, groupId, roleId);
+				userId, groupId, roleId, companyId);
 
 			UserGroupRole userGroupRole = userGroupRolePersistence.create(
 				userGroupRolePK);

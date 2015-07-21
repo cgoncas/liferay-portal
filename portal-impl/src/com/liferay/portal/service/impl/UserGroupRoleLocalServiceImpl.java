@@ -96,8 +96,12 @@ public class UserGroupRoleLocalServiceImpl
 		long userId, long groupId, long[] roleIds) {
 
 		for (long roleId : roleIds) {
+			Role role = rolePersistence.fetchByPrimaryKey(roleId);
+
+			long companyId = role.getCompanyId();
+
 			UserGroupRolePK userGroupRolePK = new UserGroupRolePK(
-				userId, groupId, roleId);
+				userId, groupId, roleId, companyId);
 
 			try {
 				userGroupRolePersistence.remove(userGroupRolePK);
@@ -136,8 +140,10 @@ public class UserGroupRoleLocalServiceImpl
 
 		for (long userId : userIds) {
 			for (Role role : roles) {
+				long companyId = role.getCompanyId();
+
 				UserGroupRolePK userGroupRolePK = new UserGroupRolePK(
-					userId, groupId, role.getRoleId());
+					userId, groupId, role.getRoleId(), companyId);
 
 				try {
 					userGroupRolePersistence.remove(userGroupRolePK);
@@ -155,7 +161,12 @@ public class UserGroupRoleLocalServiceImpl
 		long[] userIds, long groupId, long roleId) {
 
 		for (long userId : userIds) {
-			UserGroupRolePK pk = new UserGroupRolePK(userId, groupId, roleId);
+			Role role = rolePersistence.fetchByPrimaryKey(roleId);
+
+			long companyId = role.getCompanyId();
+
+			UserGroupRolePK pk = new UserGroupRolePK(
+				userId, groupId, roleId, companyId);
 
 			try {
 				userGroupRolePersistence.remove(pk);
@@ -239,8 +250,12 @@ public class UserGroupRoleLocalServiceImpl
 	public boolean hasUserGroupRole(
 		long userId, long groupId, long roleId, boolean inherit) {
 
+		Role role = rolePersistence.fetchByPrimaryKey(roleId);
+
+		long companyId = role.getCompanyId();
+
 		UserGroupRolePK userGroupRolePK = new UserGroupRolePK(
-			userId, groupId, roleId);
+			userId, groupId, roleId, companyId);
 
 		UserGroupRole userGroupRole =
 			userGroupRolePersistence.fetchByPrimaryKey(userGroupRolePK);
@@ -286,8 +301,12 @@ public class UserGroupRoleLocalServiceImpl
 	protected UserGroupRole addUserGroupRole(
 		long userId, long groupId, long roleId) {
 
+		Role role = rolePersistence.fetchByPrimaryKey(roleId);
+
+		long companyId = role.getCompanyId();
+
 		UserGroupRolePK userGroupRolePK = new UserGroupRolePK(
-			userId, groupId, roleId);
+			userId, groupId, roleId, companyId);
 
 		UserGroupRole userGroupRole =
 			userGroupRolePersistence.fetchByPrimaryKey(userGroupRolePK);
