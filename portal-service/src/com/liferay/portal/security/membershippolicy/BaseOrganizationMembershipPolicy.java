@@ -128,8 +128,10 @@ public abstract class BaseOrganizationMembershipPolicy
 		Organization organization =
 			OrganizationLocalServiceUtil.getOrganization(organizationId);
 
+		long companyId = organization.getCompanyId();
+
 		UserGroupRolePK userGroupRolePK = new UserGroupRolePK(
-			userId, organization.getGroupId(), roleId);
+			userId, organization.getGroupId(), roleId, companyId);
 
 		UserGroupRole userGroupRole =
 			UserGroupRoleLocalServiceUtil.createUserGroupRole(userGroupRolePK);
@@ -189,8 +191,10 @@ public abstract class BaseOrganizationMembershipPolicy
 		Organization organization =
 			OrganizationLocalServiceUtil.getOrganization(organizationId);
 
+		long companyId = organization.getCompanyId();
+
 		UserGroupRolePK userGroupRolePK = new UserGroupRolePK(
-			userId, organization.getGroupId(), roleId);
+			userId, organization.getGroupId(), roleId, companyId);
 
 		UserGroupRole userGroupRole =
 			UserGroupRoleLocalServiceUtil.createUserGroupRole(userGroupRolePK);
