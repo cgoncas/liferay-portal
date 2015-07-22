@@ -4496,8 +4496,11 @@ public class ServiceBuilder {
 			entityElement.attributeValue("uuid-accessor"));
 		boolean localService = GetterUtil.getBoolean(
 			entityElement.attributeValue("local-service"));
+		boolean partitionable = GetterUtil.getBoolean(
+			entityElement.attributeValue("partitionable"), true);
 		boolean remoteService = GetterUtil.getBoolean(
 			entityElement.attributeValue("remote-service"), true);
+
 		String persistenceClass = GetterUtil.getString(
 			entityElement.attributeValue("persistence-class"),
 			_packagePath + ".service.persistence.impl." + ejbName +
