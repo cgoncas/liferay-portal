@@ -28,6 +28,7 @@ import com.liferay.portal.kernel.util.ListUtil;
 import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.model.BaseModel;
 import com.liferay.portal.model.ModelListener;
+import com.liferay.portal.model.PartitionableModel;
 import com.liferay.portal.service.persistence.BasePersistence;
 
 import java.sql.Types;
@@ -143,9 +144,23 @@ public class TableMapperImpl<L extends BaseModel<L>, R extends BaseModel<R>>
 		}
 
 		try {
+			BaseModel leftBaseModel =
+				leftBasePersistence.fetchByPrimaryKey(leftPrimaryKey);
+
+			BaseModel rigthBaseModel =
+				rightBasePersistence.fetchByPrimaryKey(rightPrimaryKey);
+
+			long companyId = companyProvider.getCompanyId();
+
+			if (leftBaseModel instanceof PartitionableModel) {
+				companyId = ((PartitionableModel)leftBaseModel).getCompanyId();
+			}
+			else if (rigthBaseModel instanceof PartitionableModel) {
+				companyId = ((PartitionableModel)rigthBaseModel).getCompanyId();
+			}
+
 			addTableMappingSqlUpdate.update(
-				companyProvider.getCompanyId(), leftPrimaryKey,
-				rightPrimaryKey);
+				companyId, leftPrimaryKey, rightPrimaryKey);
 		}
 		catch (Exception e) {
 			throw new SystemException(e);
@@ -221,9 +236,23 @@ public class TableMapperImpl<L extends BaseModel<L>, R extends BaseModel<R>>
 		int rowCount = 0;
 
 		try {
+			BaseModel leftBaseModel =
+				leftBasePersistence.fetchByPrimaryKey(leftPrimaryKey);
+
+			BaseModel rigthBaseModel =
+				rightBasePersistence.fetchByPrimaryKey(rightPrimaryKey);
+
+			long companyId = companyProvider.getCompanyId();
+
+			if (leftBaseModel instanceof PartitionableModel) {
+				companyId = ((PartitionableModel)leftBaseModel).getCompanyId();
+			}
+			else if (rigthBaseModel instanceof PartitionableModel) {
+				companyId = ((PartitionableModel)rigthBaseModel).getCompanyId();
+			}
+
 			rowCount = deleteTableMappingSqlUpdate.update(
-				leftPrimaryKey, rightPrimaryKey,
-				companyProvider.getCompanyId());
+				leftPrimaryKey, rightPrimaryKey, companyId);
 		}
 		catch (Exception e) {
 			throw new SystemException(e);
@@ -360,8 +389,16 @@ public class TableMapperImpl<L extends BaseModel<L>, R extends BaseModel<R>>
 		int rowCount = 0;
 
 		try {
-			rowCount = deleteSqlUpdate.update(
-				masterPrimaryKey, companyProvider.getCompanyId());
+			BaseModel masterBaseModel =
+				masterBasePersistence.fetchByPrimaryKey(masterPrimaryKey);
+
+			long companyId = companyProvider.getCompanyId();
+
+			if (masterBaseModel instanceof PartitionableModel) {
+				companyId = ((PartitionableModel)masterBaseModel).getCompanyId();
+			}
+
+			rowCount = deleteSqlUpdate.update(masterPrimaryKey, companyId);
 		}
 		catch (Exception e) {
 			throw new SystemException(e);
