@@ -722,6 +722,19 @@ public class Entity {
 		}
 	}
 
+	public boolean isPartitionableModel() {
+		String pkVarName = getPKVarName();
+
+		if (isAuditedModel() && hasColumn("companyId") &&
+			!pkVarName.equals("companyId")) {
+
+			return true;
+		}
+		else {
+			return false;
+		}
+	}
+
 	public boolean isPermissionCheckEnabled() {
 		for (EntityFinder finder : _finderList) {
 			if (isPermissionCheckEnabled(finder)) {

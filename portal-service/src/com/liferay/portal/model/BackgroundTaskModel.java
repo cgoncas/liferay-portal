@@ -41,7 +41,7 @@ import java.util.Map;
  */
 @ProviderType
 public interface BackgroundTaskModel extends BaseModel<BackgroundTask>,
-	GroupedModel, MVCCModel {
+	GroupedModel, MVCCModel, PartitionableModel {
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *

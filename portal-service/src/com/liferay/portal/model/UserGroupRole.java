@@ -68,6 +68,23 @@ public interface UserGroupRole extends UserGroupRoleModel, PersistedModel {
 			}
 		};
 
+	public static final Accessor<UserGroupRole, Long> COMPANY_ID_ACCESSOR = new Accessor<UserGroupRole, Long>() {
+			@Override
+			public Long get(UserGroupRole userGroupRole) {
+				return userGroupRole.getCompanyId();
+			}
+
+			@Override
+			public Class<Long> getAttributeClass() {
+				return Long.class;
+			}
+
+			@Override
+			public Class<UserGroupRole> getTypeClass() {
+				return UserGroupRole.class;
+			}
+		};
+
 	public com.liferay.portal.model.Group getGroup()
 		throws com.liferay.portal.kernel.exception.PortalException;
 

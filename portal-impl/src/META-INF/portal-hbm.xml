@@ -227,6 +227,7 @@
 			<generator class="assigned" />
 		</id>
 		<version name="mvccVersion" type="long" access="com.liferay.portal.dao.orm.hibernate.PrivatePropertyAccessor" />
+		<property name="companyId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
 		<property name="userId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
 		<property name="browserKey" type="com.liferay.portal.dao.orm.hibernate.LongType" />
 	</class>
@@ -596,6 +597,7 @@
 			<key-property name="organizationId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
 			<key-property name="groupId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
 			<key-property name="roleId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
+			<key-property name="companyId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
 		</composite-id>
 		<version name="mvccVersion" type="long" access="com.liferay.portal.dao.orm.hibernate.PrivatePropertyAccessor" />
 	</class>
@@ -604,6 +606,7 @@
 			<generator class="assigned" />
 		</id>
 		<version name="mvccVersion" type="long" access="com.liferay.portal.dao.orm.hibernate.PrivatePropertyAccessor" />
+		<property name="companyId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
 		<property name="organizationId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
 		<property name="typeId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
 		<property name="sunOpen" type="com.liferay.portal.dao.orm.hibernate.IntegerType" />
@@ -665,6 +668,7 @@
 			<generator class="assigned" />
 		</id>
 		<version name="mvccVersion" type="long" access="com.liferay.portal.dao.orm.hibernate.PrivatePropertyAccessor" />
+		<property name="companyId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
 		<property name="passwordPolicyId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
 		<property name="classNameId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
 		<property name="classPK" type="com.liferay.portal.dao.orm.hibernate.LongType" />
@@ -674,6 +678,7 @@
 			<generator class="assigned" />
 		</id>
 		<version name="mvccVersion" type="long" access="com.liferay.portal.dao.orm.hibernate.PrivatePropertyAccessor" />
+		<property name="companyId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
 		<property name="userId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
 		<property name="createDate" type="org.hibernate.type.TimestampType" />
 		<property name="password" type="com.liferay.portal.dao.orm.hibernate.StringType" column="password_" />
@@ -746,6 +751,7 @@
 			<generator class="assigned" />
 		</id>
 		<version name="mvccVersion" type="long" access="com.liferay.portal.dao.orm.hibernate.PrivatePropertyAccessor" />
+		<property name="companyId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
 		<property name="ownerId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
 		<property name="ownerType" type="com.liferay.portal.dao.orm.hibernate.IntegerType" />
 		<property name="plid" type="com.liferay.portal.dao.orm.hibernate.LongType" />
@@ -836,6 +842,7 @@
 			<generator class="assigned" />
 		</id>
 		<version name="mvccVersion" type="long" access="com.liferay.portal.dao.orm.hibernate.PrivatePropertyAccessor" />
+		<property name="companyId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
 		<property name="resourceBlockId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
 		<property name="roleId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
 		<property name="actionIds" type="com.liferay.portal.dao.orm.hibernate.LongType" />
@@ -888,6 +895,7 @@
 			<generator class="assigned" />
 		</id>
 		<version name="mvccVersion" type="long" access="com.liferay.portal.dao.orm.hibernate.PrivatePropertyAccessor" />
+		<property name="companyId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
 		<property name="buildNamespace" type="com.liferay.portal.dao.orm.hibernate.StringType" />
 		<property name="buildNumber" type="com.liferay.portal.dao.orm.hibernate.LongType" />
 		<property name="buildDate" type="com.liferay.portal.dao.orm.hibernate.LongType" />
@@ -1022,6 +1030,7 @@
 			<key-property name="userGroupId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
 			<key-property name="groupId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
 			<key-property name="roleId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
+			<key-property name="companyId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
 		</composite-id>
 		<version name="mvccVersion" type="long" access="com.liferay.portal.dao.orm.hibernate.PrivatePropertyAccessor" />
 	</class>
@@ -1030,6 +1039,7 @@
 			<key-property name="userId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
 			<key-property name="groupId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
 			<key-property name="roleId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
+			<key-property name="companyId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
 		</composite-id>
 		<version name="mvccVersion" type="long" access="com.liferay.portal.dao.orm.hibernate.PrivatePropertyAccessor" />
 	</class>
@@ -1038,6 +1048,7 @@
 			<generator class="assigned" />
 		</id>
 		<version name="mvccVersion" type="long" access="com.liferay.portal.dao.orm.hibernate.PrivatePropertyAccessor" />
+		<property name="companyId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
 		<property name="userId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
 		<property name="type" type="com.liferay.portal.dao.orm.hibernate.StringType" column="type_" />
 		<property name="description" type="com.liferay.portal.dao.orm.hibernate.StringType" />
@@ -1091,6 +1102,7 @@
 			<generator class="assigned" />
 		</id>
 		<version name="mvccVersion" type="long" access="com.liferay.portal.dao.orm.hibernate.PrivatePropertyAccessor" />
+		<property name="companyId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
 		<property name="userTrackerId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
 		<property name="path" type="com.liferay.portal.dao.orm.hibernate.StringType" column="path_" />
 		<property name="pathDate" type="org.hibernate.type.TimestampType" />
@@ -1201,6 +1213,7 @@
 		<id name="flagId" type="long">
 			<generator class="assigned" />
 		</id>
+		<property name="companyId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
 		<property name="userId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
 		<property name="createDate" type="org.hibernate.type.TimestampType" />
 		<property name="entryId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
@@ -1300,6 +1313,7 @@
 		<id name="tagStatsId" type="long">
 			<generator class="assigned" />
 		</id>
+		<property name="companyId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
 		<property name="tagId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
 		<property name="classNameId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
 		<property name="assetCount" type="com.liferay.portal.dao.orm.hibernate.IntegerType" />
@@ -1450,6 +1464,7 @@
 			<generator class="assigned" />
 		</id>
 		<property name="uuid" type="com.liferay.portal.dao.orm.hibernate.StringType" column="uuid_" />
+		<property name="companyId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
 		<property name="DDMStorageId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
 		<property name="DDMStructureId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
 		<property name="fileEntryId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
@@ -1563,6 +1578,7 @@
 		<id name="syncEventId" type="long">
 			<generator class="assigned" />
 		</id>
+		<property name="companyId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
 		<property name="modifiedTime" type="com.liferay.portal.dao.orm.hibernate.LongType" />
 		<property name="event" type="com.liferay.portal.dao.orm.hibernate.StringType" />
 		<property name="type" type="com.liferay.portal.dao.orm.hibernate.StringType" column="type_" />
@@ -1588,6 +1604,7 @@
 			<generator class="assigned" />
 		</id>
 		<property name="uuid" type="com.liferay.portal.dao.orm.hibernate.StringType" column="uuid_" />
+		<property name="companyId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
 		<property name="classNameId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
 		<property name="classPK" type="com.liferay.portal.dao.orm.hibernate.LongType" />
 		<property name="structureId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
@@ -1633,6 +1650,7 @@
 		<id name="structureLinkId" type="long">
 			<generator class="assigned" />
 		</id>
+		<property name="companyId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
 		<property name="classNameId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
 		<property name="classPK" type="com.liferay.portal.dao.orm.hibernate.LongType" />
 		<property name="structureId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
@@ -1692,6 +1710,7 @@
 		<id name="templateLinkId" type="long">
 			<generator class="assigned" />
 		</id>
+		<property name="companyId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
 		<property name="classNameId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
 		<property name="classPK" type="com.liferay.portal.dao.orm.hibernate.LongType" />
 		<property name="templateId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
@@ -1893,6 +1912,7 @@
 			<generator class="assigned" />
 		</id>
 		<property name="groupId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
+		<property name="companyId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
 		<property name="userId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
 		<property name="messageCount" type="com.liferay.portal.dao.orm.hibernate.IntegerType" />
 		<property name="lastPostDate" type="org.hibernate.type.TimestampType" />
@@ -2019,6 +2039,7 @@
 		<id name="statsId" type="long">
 			<generator class="assigned" />
 		</id>
+		<property name="companyId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
 		<property name="classNameId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
 		<property name="classPK" type="com.liferay.portal.dao.orm.hibernate.LongType" />
 		<property name="totalEntries" type="com.liferay.portal.dao.orm.hibernate.IntegerType" />
@@ -2118,6 +2139,7 @@
 		<id name="itemFieldId" type="long">
 			<generator class="assigned" />
 		</id>
+		<property name="companyId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
 		<property name="itemId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
 		<property name="name" type="com.liferay.portal.dao.orm.hibernate.StringType" />
 		<property name="values" type="com.liferay.portal.dao.orm.hibernate.StringType" column="values_" />
@@ -2127,6 +2149,7 @@
 		<id name="itemPriceId" type="long">
 			<generator class="assigned" />
 		</id>
+		<property name="companyId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
 		<property name="itemId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
 		<property name="minQuantity" type="com.liferay.portal.dao.orm.hibernate.IntegerType" />
 		<property name="maxQuantity" type="com.liferay.portal.dao.orm.hibernate.IntegerType" />
@@ -2196,6 +2219,7 @@
 		<id name="orderItemId" type="long">
 			<generator class="assigned" />
 		</id>
+		<property name="companyId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
 		<property name="orderId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
 		<property name="itemId" type="com.liferay.portal.dao.orm.hibernate.StringClobType" />
 		<property name="sku" type="com.liferay.portal.dao.orm.hibernate.StringType" />
@@ -2338,6 +2362,7 @@
 		<id name="licenseId" type="long">
 			<generator class="assigned" />
 		</id>
+		<property name="companyId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
 		<property name="name" type="com.liferay.portal.dao.orm.hibernate.StringType" />
 		<property name="url" type="com.liferay.portal.dao.orm.hibernate.StringType" />
 		<property name="openSource" type="com.liferay.portal.dao.orm.hibernate.BooleanType" />
@@ -2410,6 +2435,7 @@
 		<id name="versionId" type="long">
 			<generator class="assigned" />
 		</id>
+		<property name="companyId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
 		<property name="entryId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
 		<property name="classNameId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
 		<property name="classPK" type="com.liferay.portal.dao.orm.hibernate.LongType" />

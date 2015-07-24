@@ -40,7 +40,7 @@ import java.util.Date;
  */
 @ProviderType
 public interface RepositoryModel extends BaseModel<Repository>, MVCCModel,
-	StagedGroupedModel, TypedModel {
+	PartitionableModel, StagedGroupedModel, TypedModel {
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *

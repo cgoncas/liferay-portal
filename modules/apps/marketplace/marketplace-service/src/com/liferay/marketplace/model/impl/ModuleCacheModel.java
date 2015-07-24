@@ -63,12 +63,14 @@ public class ModuleCacheModel implements CacheModel<Module>, Externalizable {
 
 	@Override
 	public String toString() {
-		StringBundler sb = new StringBundler(13);
+		StringBundler sb = new StringBundler(15);
 
 		sb.append("{uuid=");
 		sb.append(uuid);
 		sb.append(", moduleId=");
 		sb.append(moduleId);
+		sb.append(", companyId=");
+		sb.append(companyId);
 		sb.append(", appId=");
 		sb.append(appId);
 		sb.append(", bundleSymbolicName=");
@@ -94,6 +96,7 @@ public class ModuleCacheModel implements CacheModel<Module>, Externalizable {
 		}
 
 		moduleImpl.setModuleId(moduleId);
+		moduleImpl.setCompanyId(companyId);
 		moduleImpl.setAppId(appId);
 
 		if (bundleSymbolicName == null) {
@@ -126,6 +129,7 @@ public class ModuleCacheModel implements CacheModel<Module>, Externalizable {
 	public void readExternal(ObjectInput objectInput) throws IOException {
 		uuid = objectInput.readUTF();
 		moduleId = objectInput.readLong();
+		companyId = objectInput.readLong();
 		appId = objectInput.readLong();
 		bundleSymbolicName = objectInput.readUTF();
 		bundleVersion = objectInput.readUTF();
@@ -143,6 +147,7 @@ public class ModuleCacheModel implements CacheModel<Module>, Externalizable {
 		}
 
 		objectOutput.writeLong(moduleId);
+		objectOutput.writeLong(companyId);
 		objectOutput.writeLong(appId);
 
 		if (bundleSymbolicName == null) {
@@ -169,6 +174,7 @@ public class ModuleCacheModel implements CacheModel<Module>, Externalizable {
 
 	public String uuid;
 	public long moduleId;
+	public long companyId;
 	public long appId;
 	public String bundleSymbolicName;
 	public String bundleVersion;

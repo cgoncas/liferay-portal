@@ -116,8 +116,12 @@ public abstract class BaseSiteMembershipPolicy implements SiteMembershipPolicy {
 
 		List<UserGroupRole> userGroupRoles = new ArrayList<>();
 
+		Role role = RoleLocalServiceUtil.getRole(roleId);
+
+		long companyId = role.getCompanyId();
+
 		UserGroupRolePK userGroupRolePK = new UserGroupRolePK(
-			userId, groupId, roleId);
+			userId, groupId, roleId, companyId);
 
 		UserGroupRole userGroupRole =
 			UserGroupRoleLocalServiceUtil.createUserGroupRole(userGroupRolePK);
@@ -164,11 +168,17 @@ public abstract class BaseSiteMembershipPolicy implements SiteMembershipPolicy {
 	}
 
 	@Override
-	public boolean isRoleRequired(long userId, long groupId, long roleId) {
+	public boolean isRoleRequired(long userId, long groupId, long roleId)
+		throws PortalException {
+
 		List<UserGroupRole> userGroupRoles = new ArrayList<>();
 
+		Role role = RoleLocalServiceUtil.getRole(roleId);
+
+		long companyId = role.getCompanyId();
+
 		UserGroupRolePK userGroupRolePK = new UserGroupRolePK(
-			userId, groupId, roleId);
+			userId, groupId, roleId, companyId);
 
 		UserGroupRole userGroupRole =
 			UserGroupRoleLocalServiceUtil.createUserGroupRole(userGroupRolePK);

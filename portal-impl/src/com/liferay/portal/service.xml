@@ -194,6 +194,7 @@
 
 		<!-- Audit fields -->
 
+		<column name="companyId" type="long" />
 		<column name="userId" type="long" />
 
 		<!-- Other fields -->
@@ -206,7 +207,7 @@
 			<finder-column name="userId" />
 		</finder>
 	</entity>
-	<entity name="ClassName" local-service="true" remote-service="true">
+	<entity name="ClassName" local-service="true" remote-service="true" partitionable="false">
 
 		<!-- PK fields -->
 
@@ -222,7 +223,7 @@
 			<finder-column name="value" />
 		</finder>
 	</entity>
-	<entity name="ClusterGroup" local-service="true" remote-service="false">
+	<entity name="ClusterGroup" local-service="true" remote-service="false" partitionable="false">
 
 		<!-- PK fields -->
 
@@ -234,7 +235,7 @@
 		<column name="clusterNodeIds" type="String" />
 		<column name="wholeCluster" type="boolean" />
 	</entity>
-	<entity name="Company" local-service="true" remote-service="true">
+	<entity name="Company" local-service="true" remote-service="true" partitionable="false">
 
 		<!-- PK fields -->
 
@@ -352,7 +353,7 @@
 		<reference package-path="com.liferay.portal" entity="User" />
 		<reference package-path="com.liferay.portal" entity="Website" />
 	</entity>
-	<entity name="Country" local-service="false" remote-service="true">
+	<entity name="Country" local-service="false" remote-service="true" partitionable="false" >
 
 		<!-- PK fields -->
 
@@ -1372,6 +1373,10 @@
 		<column name="groupId" type="long" primary="true" />
 		<column name="roleId" type="long" primary="true" />
 
+		<!-- Audit fields -->
+
+		<column name="companyId" type="long" primary="true" />
+
 		<!-- Finder methods -->
 
 		<finder name="GroupId" return-type="Collection">
@@ -1386,6 +1391,10 @@
 		<!-- PK fields -->
 
 		<column name="orgLaborId" type="long" primary="true" />
+
+		<!-- Audit fields -->
+
+		<column name="companyId" type="long" />
 
 		<!-- Other fields -->
 
@@ -1494,6 +1503,10 @@
 
 		<column name="passwordPolicyRelId" type="long" primary="true" />
 
+		<!-- Audit fields -->
+
+		<column name="companyId" type="long" />
+
 		<!-- Other fields -->
 
 		<column name="passwordPolicyId" type="long" />
@@ -1522,6 +1535,7 @@
 
 		<!-- Audit fields -->
 
+		<column name="companyId" type="long" />
 		<column name="userId" type="long" />
 		<column name="createDate" type="Date" />
 
@@ -1657,7 +1671,7 @@
 
 		<reference package-path="com.liferay.portal" entity="ClassName" />
 	</entity>
-	<entity name="PortalPreferences" local-service="true" remote-service="false">
+	<entity name="PortalPreferences" local-service="true" remote-service="false" partitionable="false">
 
 		<!-- PK fields -->
 
@@ -1764,6 +1778,10 @@
 
 		<column name="portletPreferencesId" type="long" primary="true" />
 
+		<!-- Audit fields -->
+
+		<column name="companyId" type="long" />
+
 		<!-- Other fields -->
 
 		<column name="ownerId" type="long" />
@@ -1815,7 +1833,7 @@
 		<reference package-path="com.liferay.portal" entity="Portlet" />
 		<reference package-path="com.liferay.portal" entity="PortletItem" />
 	</entity>
-	<entity name="Region" local-service="false" remote-service="true">
+	<entity name="Region" local-service="false" remote-service="true" partitionable="false" >
 
 		<!-- PK fields -->
 
@@ -1855,7 +1873,7 @@
 
 		<reference package-path="com.liferay.portal" entity="Country" />
 	</entity>
-	<entity name="Release" local-service="true" remote-service="false">
+	<entity name="Release" local-service="true" remote-service="false" partitionable="false">
 
 		<!-- PK fields -->
 
@@ -1983,7 +2001,7 @@
 		<reference package-path="com.liferay.portal" entity="ResourcePermission" />
 		<reference package-path="com.liferay.portal" entity="Role" />
 	</entity>
-	<entity name="ResourceAction" local-service="true" remote-service="false">
+	<entity name="ResourceAction" local-service="true" remote-service="false" partitionable="false">
 
 		<!-- PK fields -->
 
@@ -2065,6 +2083,10 @@
 		<!-- PK fields -->
 
 		<column name="resourceBlockPermissionId" type="long" primary="true" />
+
+		<!-- Audit fields -->
+
+		<column name="companyId" type="long" />
 
 		<!-- Other fields -->
 
@@ -2270,6 +2292,10 @@
 		<!-- PK fields -->
 
 		<column name="serviceComponentId" type="long" primary="true" />
+
+		<!-- Audit fields -->
+
+		<column name="companyId" type="long" />
 
 		<!-- Other fields -->
 
@@ -2731,6 +2757,7 @@
 		<column name="userGroupId" type="long" primary="true" />
 		<column name="groupId" type="long" primary="true" />
 		<column name="roleId" type="long" primary="true" />
+		<column name="companyId" type="long" primary="true" />
 
 		<!-- Finder methods -->
 
@@ -2764,6 +2791,7 @@
 		<column name="userId" type="long" primary="true" />
 		<column name="groupId" type="long" primary="true" accessor="true" />
 		<column name="roleId" type="long" primary="true" accessor="true" />
+		<column name="companyId" type="long" primary="true" accessor="true" />
 
 		<!-- Finder methods -->
 
@@ -2799,6 +2827,7 @@
 
 		<!-- Audit fields -->
 
+		<column name="companyId" type="long" />
 		<column name="userId" type="long" />
 
 		<!-- Other fields -->
@@ -2980,6 +3009,10 @@
 
 		<column name="userTrackerPathId" type="long" primary="true" />
 
+		<!-- Audit fields -->
+
+		<column name="companyId" type="long" />
+
 		<!-- Other fields -->
 
 		<column name="userTrackerId" type="long" />
@@ -2992,7 +3025,7 @@
 			<finder-column name="userTrackerId" />
 		</finder>
 	</entity>
-	<entity name="VirtualHost" local-service="true" remote-service="false">
+	<entity name="VirtualHost" local-service="true" remote-service="false" partitionable="false">
 
 		<!-- PK fields -->
 

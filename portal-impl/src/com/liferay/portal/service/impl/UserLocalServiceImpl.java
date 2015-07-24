@@ -348,13 +348,14 @@ public class UserLocalServiceImpl extends UserLocalServiceBaseImpl {
 
 		Set<Long> roleIdSet = new HashSet<>();
 
+		long companyId = user.getCompanyId();
+
 		String[] defaultRoleNames = PrefsPropsUtil.getStringArray(
-			user.getCompanyId(), PropsKeys.ADMIN_DEFAULT_ROLE_NAMES,
-			StringPool.NEW_LINE, PropsValues.ADMIN_DEFAULT_ROLE_NAMES);
+			companyId, PropsKeys.ADMIN_DEFAULT_ROLE_NAMES, StringPool.NEW_LINE,
+			PropsValues.ADMIN_DEFAULT_ROLE_NAMES);
 
 		for (String defaultRoleName : defaultRoleNames) {
-			Role role = rolePersistence.fetchByC_N(
-				user.getCompanyId(), defaultRoleName);
+			Role role = rolePersistence.fetchByC_N(companyId, defaultRoleName);
 
 			if ((role != null) &&
 				!userPersistence.containsRole(userId, role.getRoleId())) {
@@ -392,7 +393,7 @@ public class UserLocalServiceImpl extends UserLocalServiceBaseImpl {
 		for (long groupRoleId : groupRoleIdsSet) {
 			for (long groupId : groupIds) {
 				UserGroupRolePK userGroupRolePK = new UserGroupRolePK(
-					userId, groupId, groupRoleId);
+					userId, groupId, groupRoleId, companyId);
 
 				UserGroupRole userGroupRole = userGroupRolePersistence.create(
 					userGroupRolePK);

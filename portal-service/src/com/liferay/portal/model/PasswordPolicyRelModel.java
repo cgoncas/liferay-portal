@@ -89,6 +89,20 @@ public interface PasswordPolicyRelModel extends AttachedModel,
 	public void setPasswordPolicyRelId(long passwordPolicyRelId);
 
 	/**
+	 * Returns the company ID of this password policy rel.
+	 *
+	 * @return the company ID of this password policy rel
+	 */
+	public long getCompanyId();
+
+	/**
+	 * Sets the company ID of this password policy rel.
+	 *
+	 * @param companyId the company ID of this password policy rel
+	 */
+	public void setCompanyId(long companyId);
+
+	/**
 	 * Returns the password policy ID of this password policy rel.
 	 *
 	 * @return the password policy ID of this password policy rel

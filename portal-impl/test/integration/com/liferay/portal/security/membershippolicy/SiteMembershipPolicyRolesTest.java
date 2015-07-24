@@ -79,7 +79,8 @@ public class SiteMembershipPolicyRolesTest
 		long[] forbiddenRoleIds = addForbiddenRoles();
 
 		UserGroupRolePK userGroupRolePK = new UserGroupRolePK(
-			userIds[0], group.getGroupId(), forbiddenRoleIds[0]);
+			userIds[0], group.getGroupId(), forbiddenRoleIds[0],
+			group.getCompanyId());
 
 		UserGroupRole userGroupRole =
 			UserGroupRoleLocalServiceUtil.createUserGroupRole(userGroupRolePK);
@@ -108,7 +109,8 @@ public class SiteMembershipPolicyRolesTest
 		long[] standardRoleIds = addStandardRoles();
 
 		UserGroupRolePK userGroupRolePK = new UserGroupRolePK(
-			userIds[0], group.getGroupId(), standardRoleIds[0]);
+			userIds[0], group.getGroupId(), standardRoleIds[0],
+			group.getCompanyId());
 
 		UserGroupRole userGroupRole =
 			UserGroupRoleLocalServiceUtil.createUserGroupRole(userGroupRolePK);

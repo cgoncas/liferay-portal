@@ -104,6 +104,20 @@ public interface WikiPageResourceModel extends BaseModel<WikiPageResource> {
 	public void setGroupId(long groupId);
 
 	/**
+	 * Returns the company ID of this wiki page resource.
+	 *
+	 * @return the company ID of this wiki page resource
+	 */
+	public long getCompanyId();
+
+	/**
+	 * Sets the company ID of this wiki page resource.
+	 *
+	 * @param companyId the company ID of this wiki page resource
+	 */
+	public void setCompanyId(long companyId);
+
+	/**
 	 * Returns the node ID of this wiki page resource.
 	 *
 	 * @return the node ID of this wiki page resource

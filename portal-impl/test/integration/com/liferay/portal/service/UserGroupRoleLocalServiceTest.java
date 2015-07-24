@@ -57,7 +57,8 @@ public class UserGroupRoleLocalServiceTest {
 			TestPropsValues.getCompanyId(), RoleConstants.SITE_ADMINISTRATOR);
 
 		UserGroupRolePK userGroupRolePK = new UserGroupRolePK(
-			_user.getUserId(), _group.getGroupId(), role.getRoleId());
+			_user.getUserId(), _group.getGroupId(), role.getRoleId(),
+			_group.getCompanyId());
 
 		Assert.assertNull(
 			UserGroupRoleLocalServiceUtil.fetchUserGroupRole(userGroupRolePK));

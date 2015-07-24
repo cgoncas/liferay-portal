@@ -40,7 +40,7 @@ import java.util.Date;
  */
 @ProviderType
 public interface AddressModel extends AttachedModel, BaseModel<Address>,
-	MVCCModel, StagedAuditedModel {
+	MVCCModel, PartitionableModel, StagedAuditedModel {
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *

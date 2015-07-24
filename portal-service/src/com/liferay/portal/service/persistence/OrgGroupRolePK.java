@@ -31,14 +31,17 @@ public class OrgGroupRolePK implements Comparable<OrgGroupRolePK>, Serializable 
 	public long organizationId;
 	public long groupId;
 	public long roleId;
+	public long companyId;
 
 	public OrgGroupRolePK() {
 	}
 
-	public OrgGroupRolePK(long organizationId, long groupId, long roleId) {
+	public OrgGroupRolePK(long organizationId, long groupId, long roleId,
+		long companyId) {
 		this.organizationId = organizationId;
 		this.groupId = groupId;
 		this.roleId = roleId;
+		this.companyId = companyId;
 	}
 
 	public long getOrganizationId() {
@@ -63,6 +66,14 @@ public class OrgGroupRolePK implements Comparable<OrgGroupRolePK>, Serializable 
 
 	public void setRoleId(long roleId) {
 		this.roleId = roleId;
+	}
+
+	public long getCompanyId() {
+		return companyId;
+	}
+
+	public void setCompanyId(long companyId) {
+		this.companyId = companyId;
 	}
 
 	@Override
@@ -115,6 +126,20 @@ public class OrgGroupRolePK implements Comparable<OrgGroupRolePK>, Serializable 
 			return value;
 		}
 
+		if (companyId < pk.companyId) {
+			value = -1;
+		}
+		else if (companyId > pk.companyId) {
+			value = 1;
+		}
+		else {
+			value = 0;
+		}
+
+		if (value != 0) {
+			return value;
+		}
+
 		return 0;
 	}
 
@@ -131,7 +156,7 @@ public class OrgGroupRolePK implements Comparable<OrgGroupRolePK>, Serializable 
 		OrgGroupRolePK pk = (OrgGroupRolePK)obj;
 
 		if ((organizationId == pk.organizationId) && (groupId == pk.groupId) &&
-				(roleId == pk.roleId)) {
+				(roleId == pk.roleId) && (companyId == pk.companyId)) {
 			return true;
 		}
 		else {
@@ -146,13 +171,14 @@ public class OrgGroupRolePK implements Comparable<OrgGroupRolePK>, Serializable 
 		hashCode = HashUtil.hash(hashCode, organizationId);
 		hashCode = HashUtil.hash(hashCode, groupId);
 		hashCode = HashUtil.hash(hashCode, roleId);
+		hashCode = HashUtil.hash(hashCode, companyId);
 
 		return hashCode;
 	}
 
 	@Override
 	public String toString() {
-		StringBundler sb = new StringBundler(15);
+		StringBundler sb = new StringBundler(20);
 
 		sb.append(StringPool.OPEN_CURLY_BRACE);
 
@@ -171,6 +197,12 @@ public class OrgGroupRolePK implements Comparable<OrgGroupRolePK>, Serializable 
 		sb.append("roleId");
 		sb.append(StringPool.EQUAL);
 		sb.append(roleId);
+
+		sb.append(StringPool.COMMA);
+		sb.append(StringPool.SPACE);
+		sb.append("companyId");
+		sb.append(StringPool.EQUAL);
+		sb.append(companyId);
 
 		sb.append(StringPool.CLOSE_CURLY_BRACE);
 

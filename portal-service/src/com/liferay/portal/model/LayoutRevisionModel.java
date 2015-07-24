@@ -43,7 +43,7 @@ import java.util.Map;
  */
 @ProviderType
 public interface LayoutRevisionModel extends BaseModel<LayoutRevision>,
-	GroupedModel, LocalizedModel, MVCCModel, WorkflowedModel {
+	GroupedModel, LocalizedModel, MVCCModel, PartitionableModel, WorkflowedModel {
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *

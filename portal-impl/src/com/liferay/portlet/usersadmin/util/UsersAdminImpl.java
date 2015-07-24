@@ -1538,8 +1538,10 @@ public class UsersAdminImpl implements UsersAdmin {
 				continue;
 			}
 
+			long companyId = user.getCompanyId();
+
 			UserGroupRolePK userGroupRolePK = new UserGroupRolePK(
-				userId, groupRolesGroupIds[i], groupRolesRoleIds[i]);
+				userId, groupRolesGroupIds[i], groupRolesRoleIds[i], companyId);
 
 			UserGroupRole userGroupRole =
 				UserGroupRoleLocalServiceUtil.createUserGroupRole(

@@ -117,6 +117,8 @@ public class UserIdMapperPersistenceTest {
 
 		newUserIdMapper.setMvccVersion(RandomTestUtil.nextLong());
 
+		newUserIdMapper.setCompanyId(RandomTestUtil.nextLong());
+
 		newUserIdMapper.setUserId(RandomTestUtil.nextLong());
 
 		newUserIdMapper.setType(RandomTestUtil.randomString());
@@ -133,6 +135,8 @@ public class UserIdMapperPersistenceTest {
 			newUserIdMapper.getMvccVersion());
 		Assert.assertEquals(existingUserIdMapper.getUserIdMapperId(),
 			newUserIdMapper.getUserIdMapperId());
+		Assert.assertEquals(existingUserIdMapper.getCompanyId(),
+			newUserIdMapper.getCompanyId());
 		Assert.assertEquals(existingUserIdMapper.getUserId(),
 			newUserIdMapper.getUserId());
 		Assert.assertEquals(existingUserIdMapper.getType(),
@@ -192,8 +196,9 @@ public class UserIdMapperPersistenceTest {
 
 	protected OrderByComparator<UserIdMapper> getOrderByComparator() {
 		return OrderByComparatorFactoryUtil.create("UserIdMapper",
-			"mvccVersion", true, "userIdMapperId", true, "userId", true,
-			"type", true, "description", true, "externalUserId", true);
+			"mvccVersion", true, "userIdMapperId", true, "companyId", true,
+			"userId", true, "type", true, "description", true,
+			"externalUserId", true);
 	}
 
 	@Test
@@ -422,6 +427,8 @@ public class UserIdMapperPersistenceTest {
 		UserIdMapper userIdMapper = _persistence.create(pk);
 
 		userIdMapper.setMvccVersion(RandomTestUtil.nextLong());
+
+		userIdMapper.setCompanyId(RandomTestUtil.nextLong());
 
 		userIdMapper.setUserId(RandomTestUtil.nextLong());
 

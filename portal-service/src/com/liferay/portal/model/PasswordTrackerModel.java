@@ -92,6 +92,20 @@ public interface PasswordTrackerModel extends BaseModel<PasswordTracker>,
 	public void setPasswordTrackerId(long passwordTrackerId);
 
 	/**
+	 * Returns the company ID of this password tracker.
+	 *
+	 * @return the company ID of this password tracker
+	 */
+	public long getCompanyId();
+
+	/**
+	 * Sets the company ID of this password tracker.
+	 *
+	 * @param companyId the company ID of this password tracker
+	 */
+	public void setCompanyId(long companyId);
+
+	/**
 	 * Returns the user ID of this password tracker.
 	 *
 	 * @return the user ID of this password tracker

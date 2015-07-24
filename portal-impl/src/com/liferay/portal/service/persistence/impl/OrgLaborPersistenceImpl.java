@@ -822,6 +822,7 @@ public class OrgLaborPersistenceImpl extends BasePersistenceImpl<OrgLabor>
 
 		orgLaborImpl.setMvccVersion(orgLabor.getMvccVersion());
 		orgLaborImpl.setOrgLaborId(orgLabor.getOrgLaborId());
+		orgLaborImpl.setCompanyId(orgLabor.getCompanyId());
 		orgLaborImpl.setOrganizationId(orgLabor.getOrganizationId());
 		orgLaborImpl.setTypeId(orgLabor.getTypeId());
 		orgLaborImpl.setSunOpen(orgLabor.getSunOpen());
