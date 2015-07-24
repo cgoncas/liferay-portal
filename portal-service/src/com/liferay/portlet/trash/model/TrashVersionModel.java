@@ -76,6 +76,20 @@ public interface TrashVersionModel extends AttachedModel, BaseModel<TrashVersion
 	public void setVersionId(long versionId);
 
 	/**
+	 * Returns the company ID of this trash version.
+	 *
+	 * @return the company ID of this trash version
+	 */
+	public long getCompanyId();
+
+	/**
+	 * Sets the company ID of this trash version.
+	 *
+	 * @param companyId the company ID of this trash version
+	 */
+	public void setCompanyId(long companyId);
+
+	/**
 	 * Returns the entry ID of this trash version.
 	 *
 	 * @return the entry ID of this trash version

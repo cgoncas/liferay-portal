@@ -89,6 +89,20 @@ public interface JournalArticleImageModel extends BaseModel<JournalArticleImage>
 	public void setGroupId(long groupId);
 
 	/**
+	 * Returns the company ID of this journal article image.
+	 *
+	 * @return the company ID of this journal article image
+	 */
+	public long getCompanyId();
+
+	/**
+	 * Sets the company ID of this journal article image.
+	 *
+	 * @param companyId the company ID of this journal article image
+	 */
+	public void setCompanyId(long companyId);
+
+	/**
 	 * Returns the article ID of this journal article image.
 	 *
 	 * @return the article ID of this journal article image

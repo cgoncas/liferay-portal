@@ -130,6 +130,20 @@ public interface UserGroupRoleModel extends BaseModel<UserGroupRole>, MVCCModel 
 	 */
 	public void setRoleId(long roleId);
 
+	/**
+	 * Returns the company ID of this user group role.
+	 *
+	 * @return the company ID of this user group role
+	 */
+	public long getCompanyId();
+
+	/**
+	 * Sets the company ID of this user group role.
+	 *
+	 * @param companyId the company ID of this user group role
+	 */
+	public void setCompanyId(long companyId);
+
 	@Override
 	public boolean isNew();
 

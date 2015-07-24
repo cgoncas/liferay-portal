@@ -39,6 +39,7 @@ public class UserGroupGroupRoleSoap implements Serializable {
 		soapModel.setUserGroupId(model.getUserGroupId());
 		soapModel.setGroupId(model.getGroupId());
 		soapModel.setRoleId(model.getRoleId());
+		soapModel.setCompanyId(model.getCompanyId());
 
 		return soapModel;
 	}
@@ -87,13 +88,15 @@ public class UserGroupGroupRoleSoap implements Serializable {
 	}
 
 	public UserGroupGroupRolePK getPrimaryKey() {
-		return new UserGroupGroupRolePK(_userGroupId, _groupId, _roleId);
+		return new UserGroupGroupRolePK(_userGroupId, _groupId, _roleId,
+			_companyId);
 	}
 
 	public void setPrimaryKey(UserGroupGroupRolePK pk) {
 		setUserGroupId(pk.userGroupId);
 		setGroupId(pk.groupId);
 		setRoleId(pk.roleId);
+		setCompanyId(pk.companyId);
 	}
 
 	public long getMvccVersion() {
@@ -128,8 +131,17 @@ public class UserGroupGroupRoleSoap implements Serializable {
 		_roleId = roleId;
 	}
 
+	public long getCompanyId() {
+		return _companyId;
+	}
+
+	public void setCompanyId(long companyId) {
+		_companyId = companyId;
+	}
+
 	private long _mvccVersion;
 	private long _userGroupId;
 	private long _groupId;
 	private long _roleId;
+	private long _companyId;
 }

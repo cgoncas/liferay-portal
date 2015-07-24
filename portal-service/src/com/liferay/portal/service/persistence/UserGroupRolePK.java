@@ -32,14 +32,17 @@ public class UserGroupRolePK implements Comparable<UserGroupRolePK>,
 	public long userId;
 	public long groupId;
 	public long roleId;
+	public long companyId;
 
 	public UserGroupRolePK() {
 	}
 
-	public UserGroupRolePK(long userId, long groupId, long roleId) {
+	public UserGroupRolePK(long userId, long groupId, long roleId,
+		long companyId) {
 		this.userId = userId;
 		this.groupId = groupId;
 		this.roleId = roleId;
+		this.companyId = companyId;
 	}
 
 	public long getUserId() {
@@ -64,6 +67,14 @@ public class UserGroupRolePK implements Comparable<UserGroupRolePK>,
 
 	public void setRoleId(long roleId) {
 		this.roleId = roleId;
+	}
+
+	public long getCompanyId() {
+		return companyId;
+	}
+
+	public void setCompanyId(long companyId) {
+		this.companyId = companyId;
 	}
 
 	@Override
@@ -116,6 +127,20 @@ public class UserGroupRolePK implements Comparable<UserGroupRolePK>,
 			return value;
 		}
 
+		if (companyId < pk.companyId) {
+			value = -1;
+		}
+		else if (companyId > pk.companyId) {
+			value = 1;
+		}
+		else {
+			value = 0;
+		}
+
+		if (value != 0) {
+			return value;
+		}
+
 		return 0;
 	}
 
@@ -132,7 +157,7 @@ public class UserGroupRolePK implements Comparable<UserGroupRolePK>,
 		UserGroupRolePK pk = (UserGroupRolePK)obj;
 
 		if ((userId == pk.userId) && (groupId == pk.groupId) &&
-				(roleId == pk.roleId)) {
+				(roleId == pk.roleId) && (companyId == pk.companyId)) {
 			return true;
 		}
 		else {
@@ -147,13 +172,14 @@ public class UserGroupRolePK implements Comparable<UserGroupRolePK>,
 		hashCode = HashUtil.hash(hashCode, userId);
 		hashCode = HashUtil.hash(hashCode, groupId);
 		hashCode = HashUtil.hash(hashCode, roleId);
+		hashCode = HashUtil.hash(hashCode, companyId);
 
 		return hashCode;
 	}
 
 	@Override
 	public String toString() {
-		StringBundler sb = new StringBundler(15);
+		StringBundler sb = new StringBundler(20);
 
 		sb.append(StringPool.OPEN_CURLY_BRACE);
 
@@ -172,6 +198,12 @@ public class UserGroupRolePK implements Comparable<UserGroupRolePK>,
 		sb.append("roleId");
 		sb.append(StringPool.EQUAL);
 		sb.append(roleId);
+
+		sb.append(StringPool.COMMA);
+		sb.append(StringPool.SPACE);
+		sb.append("companyId");
+		sb.append(StringPool.EQUAL);
+		sb.append(companyId);
 
 		sb.append(StringPool.CLOSE_CURLY_BRACE);
 

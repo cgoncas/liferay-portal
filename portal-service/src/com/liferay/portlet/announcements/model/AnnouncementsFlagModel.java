@@ -76,6 +76,20 @@ public interface AnnouncementsFlagModel extends BaseModel<AnnouncementsFlag> {
 	public void setFlagId(long flagId);
 
 	/**
+	 * Returns the company ID of this announcements flag.
+	 *
+	 * @return the company ID of this announcements flag
+	 */
+	public long getCompanyId();
+
+	/**
+	 * Sets the company ID of this announcements flag.
+	 *
+	 * @param companyId the company ID of this announcements flag
+	 */
+	public void setCompanyId(long companyId);
+
+	/**
 	 * Returns the user ID of this announcements flag.
 	 *
 	 * @return the user ID of this announcements flag

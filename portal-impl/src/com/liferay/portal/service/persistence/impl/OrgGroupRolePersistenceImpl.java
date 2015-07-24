@@ -1309,6 +1309,7 @@ public class OrgGroupRolePersistenceImpl extends BasePersistenceImpl<OrgGroupRol
 		orgGroupRoleImpl.setOrganizationId(orgGroupRole.getOrganizationId());
 		orgGroupRoleImpl.setGroupId(orgGroupRole.getGroupId());
 		orgGroupRoleImpl.setRoleId(orgGroupRole.getRoleId());
+		orgGroupRoleImpl.setCompanyId(orgGroupRole.getCompanyId());
 
 		return orgGroupRoleImpl;
 	}

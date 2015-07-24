@@ -116,6 +116,20 @@ public interface OrgGroupRoleModel extends BaseModel<OrgGroupRole>, MVCCModel {
 	 */
 	public void setRoleId(long roleId);
 
+	/**
+	 * Returns the company ID of this org group role.
+	 *
+	 * @return the company ID of this org group role
+	 */
+	public long getCompanyId();
+
+	/**
+	 * Sets the company ID of this org group role.
+	 *
+	 * @param companyId the company ID of this org group role
+	 */
+	public void setCompanyId(long companyId);
+
 	@Override
 	public boolean isNew();
 

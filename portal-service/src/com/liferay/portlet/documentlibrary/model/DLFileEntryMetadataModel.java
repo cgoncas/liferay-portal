@@ -90,6 +90,20 @@ public interface DLFileEntryMetadataModel extends BaseModel<DLFileEntryMetadata>
 	public void setFileEntryMetadataId(long fileEntryMetadataId);
 
 	/**
+	 * Returns the company ID of this document library file entry metadata.
+	 *
+	 * @return the company ID of this document library file entry metadata
+	 */
+	public long getCompanyId();
+
+	/**
+	 * Sets the company ID of this document library file entry metadata.
+	 *
+	 * @param companyId the company ID of this document library file entry metadata
+	 */
+	public void setCompanyId(long companyId);
+
+	/**
 	 * Returns the d d m storage ID of this document library file entry metadata.
 	 *
 	 * @return the d d m storage ID of this document library file entry metadata

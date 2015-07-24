@@ -90,6 +90,20 @@ public interface ServiceComponentModel extends BaseModel<ServiceComponent>,
 	public void setServiceComponentId(long serviceComponentId);
 
 	/**
+	 * Returns the company ID of this service component.
+	 *
+	 * @return the company ID of this service component
+	 */
+	public long getCompanyId();
+
+	/**
+	 * Sets the company ID of this service component.
+	 *
+	 * @param companyId the company ID of this service component
+	 */
+	public void setCompanyId(long companyId);
+
+	/**
 	 * Returns the build namespace of this service component.
 	 *
 	 * @return the build namespace of this service component

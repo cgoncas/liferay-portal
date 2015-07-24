@@ -88,6 +88,20 @@ public interface OrgLaborModel extends BaseModel<OrgLabor>, MVCCModel {
 	public void setOrgLaborId(long orgLaborId);
 
 	/**
+	 * Returns the company ID of this org labor.
+	 *
+	 * @return the company ID of this org labor
+	 */
+	public long getCompanyId();
+
+	/**
+	 * Sets the company ID of this org labor.
+	 *
+	 * @param companyId the company ID of this org labor
+	 */
+	public void setCompanyId(long companyId);
+
+	/**
 	 * Returns the organization ID of this org labor.
 	 *
 	 * @return the organization ID of this org labor

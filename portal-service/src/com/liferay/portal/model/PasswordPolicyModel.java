@@ -40,7 +40,7 @@ import java.util.Date;
  */
 @ProviderType
 public interface PasswordPolicyModel extends BaseModel<PasswordPolicy>, MVCCModel,
-	StagedAuditedModel {
+	PartitionableModel, StagedAuditedModel {
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *

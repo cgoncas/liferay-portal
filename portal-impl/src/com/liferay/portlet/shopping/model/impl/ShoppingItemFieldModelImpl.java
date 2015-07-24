@@ -61,6 +61,7 @@ public class ShoppingItemFieldModelImpl extends BaseModelImpl<ShoppingItemField>
 	public static final String TABLE_NAME = "ShoppingItemField";
 	public static final Object[][] TABLE_COLUMNS = {
 			{ "itemFieldId", Types.BIGINT },
+			{ "companyId", Types.BIGINT },
 			{ "itemId", Types.BIGINT },
 			{ "name", Types.VARCHAR },
 			{ "values_", Types.VARCHAR },
@@ -70,13 +71,14 @@ public class ShoppingItemFieldModelImpl extends BaseModelImpl<ShoppingItemField>
 
 	static {
 		TABLE_COLUMNS_MAP.put("itemFieldId", Types.BIGINT);
+		TABLE_COLUMNS_MAP.put("companyId", Types.BIGINT);
 		TABLE_COLUMNS_MAP.put("itemId", Types.BIGINT);
 		TABLE_COLUMNS_MAP.put("name", Types.VARCHAR);
 		TABLE_COLUMNS_MAP.put("values_", Types.VARCHAR);
 		TABLE_COLUMNS_MAP.put("description", Types.VARCHAR);
 	}
 
-	public static final String TABLE_SQL_CREATE = "create table ShoppingItemField (itemFieldId LONG not null primary key,itemId LONG,name VARCHAR(75) null,values_ STRING null,description STRING null)";
+	public static final String TABLE_SQL_CREATE = "create table ShoppingItemField (itemFieldId LONG not null primary key,companyId LONG,itemId LONG,name VARCHAR(75) null,values_ STRING null,description STRING null)";
 	public static final String TABLE_SQL_DROP = "drop table ShoppingItemField";
 	public static final String ORDER_BY_JPQL = " ORDER BY shoppingItemField.itemId ASC, shoppingItemField.name ASC";
 	public static final String ORDER_BY_SQL = " ORDER BY ShoppingItemField.itemId ASC, ShoppingItemField.name ASC";
@@ -135,6 +137,7 @@ public class ShoppingItemFieldModelImpl extends BaseModelImpl<ShoppingItemField>
 		Map<String, Object> attributes = new HashMap<String, Object>();
 
 		attributes.put("itemFieldId", getItemFieldId());
+		attributes.put("companyId", getCompanyId());
 		attributes.put("itemId", getItemId());
 		attributes.put("name", getName());
 		attributes.put("values", getValues());
@@ -152,6 +155,12 @@ public class ShoppingItemFieldModelImpl extends BaseModelImpl<ShoppingItemField>
 
 		if (itemFieldId != null) {
 			setItemFieldId(itemFieldId);
+		}
+
+		Long companyId = (Long)attributes.get("companyId");
+
+		if (companyId != null) {
+			setCompanyId(companyId);
 		}
 
 		Long itemId = (Long)attributes.get("itemId");
@@ -187,6 +196,16 @@ public class ShoppingItemFieldModelImpl extends BaseModelImpl<ShoppingItemField>
 	@Override
 	public void setItemFieldId(long itemFieldId) {
 		_itemFieldId = itemFieldId;
+	}
+
+	@Override
+	public long getCompanyId() {
+		return _companyId;
+	}
+
+	@Override
+	public void setCompanyId(long companyId) {
+		_companyId = companyId;
 	}
 
 	@Override
@@ -264,7 +283,7 @@ public class ShoppingItemFieldModelImpl extends BaseModelImpl<ShoppingItemField>
 
 	@Override
 	public ExpandoBridge getExpandoBridge() {
-		return ExpandoBridgeFactoryUtil.getExpandoBridge(0,
+		return ExpandoBridgeFactoryUtil.getExpandoBridge(getCompanyId(),
 			ShoppingItemField.class.getName(), getPrimaryKey());
 	}
 
@@ -290,6 +309,7 @@ public class ShoppingItemFieldModelImpl extends BaseModelImpl<ShoppingItemField>
 		ShoppingItemFieldImpl shoppingItemFieldImpl = new ShoppingItemFieldImpl();
 
 		shoppingItemFieldImpl.setItemFieldId(getItemFieldId());
+		shoppingItemFieldImpl.setCompanyId(getCompanyId());
 		shoppingItemFieldImpl.setItemId(getItemId());
 		shoppingItemFieldImpl.setName(getName());
 		shoppingItemFieldImpl.setValues(getValues());
@@ -381,6 +401,8 @@ public class ShoppingItemFieldModelImpl extends BaseModelImpl<ShoppingItemField>
 
 		shoppingItemFieldCacheModel.itemFieldId = getItemFieldId();
 
+		shoppingItemFieldCacheModel.companyId = getCompanyId();
+
 		shoppingItemFieldCacheModel.itemId = getItemId();
 
 		shoppingItemFieldCacheModel.name = getName();
@@ -412,10 +434,12 @@ public class ShoppingItemFieldModelImpl extends BaseModelImpl<ShoppingItemField>
 
 	@Override
 	public String toString() {
-		StringBundler sb = new StringBundler(11);
+		StringBundler sb = new StringBundler(13);
 
 		sb.append("{itemFieldId=");
 		sb.append(getItemFieldId());
+		sb.append(", companyId=");
+		sb.append(getCompanyId());
 		sb.append(", itemId=");
 		sb.append(getItemId());
 		sb.append(", name=");
@@ -431,7 +455,7 @@ public class ShoppingItemFieldModelImpl extends BaseModelImpl<ShoppingItemField>
 
 	@Override
 	public String toXmlString() {
-		StringBundler sb = new StringBundler(19);
+		StringBundler sb = new StringBundler(22);
 
 		sb.append("<model><model-name>");
 		sb.append("com.liferay.portlet.shopping.model.ShoppingItemField");
@@ -440,6 +464,10 @@ public class ShoppingItemFieldModelImpl extends BaseModelImpl<ShoppingItemField>
 		sb.append(
 			"<column><column-name>itemFieldId</column-name><column-value><![CDATA[");
 		sb.append(getItemFieldId());
+		sb.append("]]></column-value></column>");
+		sb.append(
+			"<column><column-name>companyId</column-name><column-value><![CDATA[");
+		sb.append(getCompanyId());
 		sb.append("]]></column-value></column>");
 		sb.append(
 			"<column><column-name>itemId</column-name><column-value><![CDATA[");
@@ -468,6 +496,7 @@ public class ShoppingItemFieldModelImpl extends BaseModelImpl<ShoppingItemField>
 			ShoppingItemField.class
 		};
 	private long _itemFieldId;
+	private long _companyId;
 	private long _itemId;
 	private long _originalItemId;
 	private boolean _setOriginalItemId;

@@ -63,6 +63,7 @@ public class DDMStructureLinkModelImpl extends BaseModelImpl<DDMStructureLink>
 	public static final String TABLE_NAME = "DDMStructureLink";
 	public static final Object[][] TABLE_COLUMNS = {
 			{ "structureLinkId", Types.BIGINT },
+			{ "companyId", Types.BIGINT },
 			{ "classNameId", Types.BIGINT },
 			{ "classPK", Types.BIGINT },
 			{ "structureId", Types.BIGINT }
@@ -71,12 +72,13 @@ public class DDMStructureLinkModelImpl extends BaseModelImpl<DDMStructureLink>
 
 	static {
 		TABLE_COLUMNS_MAP.put("structureLinkId", Types.BIGINT);
+		TABLE_COLUMNS_MAP.put("companyId", Types.BIGINT);
 		TABLE_COLUMNS_MAP.put("classNameId", Types.BIGINT);
 		TABLE_COLUMNS_MAP.put("classPK", Types.BIGINT);
 		TABLE_COLUMNS_MAP.put("structureId", Types.BIGINT);
 	}
 
-	public static final String TABLE_SQL_CREATE = "create table DDMStructureLink (structureLinkId LONG not null primary key,classNameId LONG,classPK LONG,structureId LONG)";
+	public static final String TABLE_SQL_CREATE = "create table DDMStructureLink (structureLinkId LONG not null primary key,companyId LONG,classNameId LONG,classPK LONG,structureId LONG)";
 	public static final String TABLE_SQL_DROP = "drop table DDMStructureLink";
 	public static final String ORDER_BY_JPQL = " ORDER BY ddmStructureLink.structureLinkId ASC";
 	public static final String ORDER_BY_SQL = " ORDER BY DDMStructureLink.structureLinkId ASC";
@@ -137,6 +139,7 @@ public class DDMStructureLinkModelImpl extends BaseModelImpl<DDMStructureLink>
 		Map<String, Object> attributes = new HashMap<String, Object>();
 
 		attributes.put("structureLinkId", getStructureLinkId());
+		attributes.put("companyId", getCompanyId());
 		attributes.put("classNameId", getClassNameId());
 		attributes.put("classPK", getClassPK());
 		attributes.put("structureId", getStructureId());
@@ -153,6 +156,12 @@ public class DDMStructureLinkModelImpl extends BaseModelImpl<DDMStructureLink>
 
 		if (structureLinkId != null) {
 			setStructureLinkId(structureLinkId);
+		}
+
+		Long companyId = (Long)attributes.get("companyId");
+
+		if (companyId != null) {
+			setCompanyId(companyId);
 		}
 
 		Long classNameId = (Long)attributes.get("classNameId");
@@ -182,6 +191,16 @@ public class DDMStructureLinkModelImpl extends BaseModelImpl<DDMStructureLink>
 	@Override
 	public void setStructureLinkId(long structureLinkId) {
 		_structureLinkId = structureLinkId;
+	}
+
+	@Override
+	public long getCompanyId() {
+		return _companyId;
+	}
+
+	@Override
+	public void setCompanyId(long companyId) {
+		_companyId = companyId;
 	}
 
 	@Override
@@ -276,7 +295,7 @@ public class DDMStructureLinkModelImpl extends BaseModelImpl<DDMStructureLink>
 
 	@Override
 	public ExpandoBridge getExpandoBridge() {
-		return ExpandoBridgeFactoryUtil.getExpandoBridge(0,
+		return ExpandoBridgeFactoryUtil.getExpandoBridge(getCompanyId(),
 			DDMStructureLink.class.getName(), getPrimaryKey());
 	}
 
@@ -302,6 +321,7 @@ public class DDMStructureLinkModelImpl extends BaseModelImpl<DDMStructureLink>
 		DDMStructureLinkImpl ddmStructureLinkImpl = new DDMStructureLinkImpl();
 
 		ddmStructureLinkImpl.setStructureLinkId(getStructureLinkId());
+		ddmStructureLinkImpl.setCompanyId(getCompanyId());
 		ddmStructureLinkImpl.setClassNameId(getClassNameId());
 		ddmStructureLinkImpl.setClassPK(getClassPK());
 		ddmStructureLinkImpl.setStructureId(getStructureId());
@@ -388,6 +408,8 @@ public class DDMStructureLinkModelImpl extends BaseModelImpl<DDMStructureLink>
 
 		ddmStructureLinkCacheModel.structureLinkId = getStructureLinkId();
 
+		ddmStructureLinkCacheModel.companyId = getCompanyId();
+
 		ddmStructureLinkCacheModel.classNameId = getClassNameId();
 
 		ddmStructureLinkCacheModel.classPK = getClassPK();
@@ -399,10 +421,12 @@ public class DDMStructureLinkModelImpl extends BaseModelImpl<DDMStructureLink>
 
 	@Override
 	public String toString() {
-		StringBundler sb = new StringBundler(9);
+		StringBundler sb = new StringBundler(11);
 
 		sb.append("{structureLinkId=");
 		sb.append(getStructureLinkId());
+		sb.append(", companyId=");
+		sb.append(getCompanyId());
 		sb.append(", classNameId=");
 		sb.append(getClassNameId());
 		sb.append(", classPK=");
@@ -416,7 +440,7 @@ public class DDMStructureLinkModelImpl extends BaseModelImpl<DDMStructureLink>
 
 	@Override
 	public String toXmlString() {
-		StringBundler sb = new StringBundler(16);
+		StringBundler sb = new StringBundler(19);
 
 		sb.append("<model><model-name>");
 		sb.append(
@@ -426,6 +450,10 @@ public class DDMStructureLinkModelImpl extends BaseModelImpl<DDMStructureLink>
 		sb.append(
 			"<column><column-name>structureLinkId</column-name><column-value><![CDATA[");
 		sb.append(getStructureLinkId());
+		sb.append("]]></column-value></column>");
+		sb.append(
+			"<column><column-name>companyId</column-name><column-value><![CDATA[");
+		sb.append(getCompanyId());
 		sb.append("]]></column-value></column>");
 		sb.append(
 			"<column><column-name>classNameId</column-name><column-value><![CDATA[");
@@ -450,6 +478,7 @@ public class DDMStructureLinkModelImpl extends BaseModelImpl<DDMStructureLink>
 			DDMStructureLink.class
 		};
 	private long _structureLinkId;
+	private long _companyId;
 	private long _classNameId;
 	private long _originalClassNameId;
 	private boolean _setOriginalClassNameId;

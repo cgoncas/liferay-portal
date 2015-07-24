@@ -124,6 +124,8 @@ public class JournalArticleImagePersistenceTest {
 
 		newJournalArticleImage.setGroupId(RandomTestUtil.nextLong());
 
+		newJournalArticleImage.setCompanyId(RandomTestUtil.nextLong());
+
 		newJournalArticleImage.setArticleId(RandomTestUtil.randomString());
 
 		newJournalArticleImage.setVersion(RandomTestUtil.nextDouble());
@@ -144,6 +146,8 @@ public class JournalArticleImagePersistenceTest {
 			newJournalArticleImage.getArticleImageId());
 		Assert.assertEquals(existingJournalArticleImage.getGroupId(),
 			newJournalArticleImage.getGroupId());
+		Assert.assertEquals(existingJournalArticleImage.getCompanyId(),
+			newJournalArticleImage.getCompanyId());
 		Assert.assertEquals(existingJournalArticleImage.getArticleId(),
 			newJournalArticleImage.getArticleId());
 		AssertUtils.assertEquals(existingJournalArticleImage.getVersion(),
@@ -219,9 +223,9 @@ public class JournalArticleImagePersistenceTest {
 
 	protected OrderByComparator<JournalArticleImage> getOrderByComparator() {
 		return OrderByComparatorFactoryUtil.create("JournalArticleImage",
-			"articleImageId", true, "groupId", true, "articleId", true,
-			"version", true, "elInstanceId", true, "elName", true,
-			"languageId", true, "tempImage", true);
+			"articleImageId", true, "groupId", true, "companyId", true,
+			"articleId", true, "version", true, "elInstanceId", true, "elName",
+			true, "languageId", true, "tempImage", true);
 	}
 
 	@Test
@@ -459,6 +463,8 @@ public class JournalArticleImagePersistenceTest {
 		JournalArticleImage journalArticleImage = _persistence.create(pk);
 
 		journalArticleImage.setGroupId(RandomTestUtil.nextLong());
+
+		journalArticleImage.setCompanyId(RandomTestUtil.nextLong());
 
 		journalArticleImage.setArticleId(RandomTestUtil.randomString());
 

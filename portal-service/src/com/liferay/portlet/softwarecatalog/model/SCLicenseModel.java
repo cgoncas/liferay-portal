@@ -75,6 +75,20 @@ public interface SCLicenseModel extends BaseModel<SCLicense> {
 	public void setLicenseId(long licenseId);
 
 	/**
+	 * Returns the company ID of this s c license.
+	 *
+	 * @return the company ID of this s c license
+	 */
+	public long getCompanyId();
+
+	/**
+	 * Sets the company ID of this s c license.
+	 *
+	 * @param companyId the company ID of this s c license
+	 */
+	public void setCompanyId(long companyId);
+
+	/**
 	 * Returns the name of this s c license.
 	 *
 	 * @return the name of this s c license

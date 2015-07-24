@@ -75,6 +75,20 @@ public interface RatingsStatsModel extends AttachedModel, BaseModel<RatingsStats
 	public void setStatsId(long statsId);
 
 	/**
+	 * Returns the company ID of this ratings stats.
+	 *
+	 * @return the company ID of this ratings stats
+	 */
+	public long getCompanyId();
+
+	/**
+	 * Sets the company ID of this ratings stats.
+	 *
+	 * @param companyId the company ID of this ratings stats
+	 */
+	public void setCompanyId(long companyId);
+
+	/**
 	 * Returns the fully qualified class name of this ratings stats.
 	 *
 	 * @return the fully qualified class name of this ratings stats

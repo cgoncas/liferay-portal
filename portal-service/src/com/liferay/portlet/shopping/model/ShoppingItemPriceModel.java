@@ -74,6 +74,20 @@ public interface ShoppingItemPriceModel extends BaseModel<ShoppingItemPrice> {
 	public void setItemPriceId(long itemPriceId);
 
 	/**
+	 * Returns the company ID of this shopping item price.
+	 *
+	 * @return the company ID of this shopping item price
+	 */
+	public long getCompanyId();
+
+	/**
+	 * Sets the company ID of this shopping item price.
+	 *
+	 * @param companyId the company ID of this shopping item price
+	 */
+	public void setCompanyId(long companyId);
+
+	/**
 	 * Returns the item ID of this shopping item price.
 	 *
 	 * @return the item ID of this shopping item price
