@@ -48,13 +48,13 @@ create table DDMStructureLayout (
 	uuid_ VARCHAR(75) null,
 	structureLayoutId LONG not null primary key,
 	groupId LONG,
-	companyId LONG,
 	userId LONG,
 	userName VARCHAR(75) null,
 	createDate DATE null,
 	modifiedDate DATE null,
 	structureVersionId LONG,
-	definition TEXT null
+	definition TEXT null,
+	companyId LONG
 );
 
 alter table DDMStructureLink add companyId LONG;
@@ -66,7 +66,6 @@ drop index IX_C803899D on DDMStructureLink;
 create table DDMStructureVersion (
 	structureVersionId LONG not null primary key,
 	groupId LONG,
-	companyId LONG,
 	userId LONG,
 	userName VARCHAR(75) null,
 	createDate DATE null,
@@ -81,7 +80,8 @@ create table DDMStructureVersion (
 	status INTEGER,
 	statusByUserId LONG,
 	statusByUserName VARCHAR(75) null,
-	statusDate DATE null
+	statusDate DATE null,
+	companyId LONG
 );
 
 alter table DDMTemplate add versionUserId LONG;
@@ -97,13 +97,13 @@ create table DDMTemplateLink (
 	templateLinkId LONG not null primary key,
 	classNameId LONG,
 	classPK LONG,
-	templateId LONG
+	templateId LONG,
+	companyId LONG
 );
 
 create table DDMTemplateVersion (
 	templateVersionId LONG not null primary key,
 	groupId LONG,
-	companyId LONG,
 	userId LONG,
 	userName VARCHAR(75) null,
 	createDate DATE null,
@@ -118,7 +118,8 @@ create table DDMTemplateVersion (
 	status INTEGER,
 	statusByUserId LONG,
 	statusByUserName VARCHAR(75) null,
-	statusDate DATE null
+	statusDate DATE null,
+	companyId LONG
 );
 
 alter table DLFileEntryMetadata add companyId LONG;
@@ -144,7 +145,6 @@ create table ExportImportConfiguration (
 	mvccVersion LONG default 0,
 	exportImportConfigurationId LONG not null primary key,
 	groupId LONG,
-	companyId LONG,
 	userId LONG,
 	userName VARCHAR(75) null,
 	createDate DATE null,
@@ -156,7 +156,8 @@ create table ExportImportConfiguration (
 	status INTEGER,
 	statusByUserId LONG,
 	statusByUserName VARCHAR(75) null,
-	statusDate DATE null
+	statusDate DATE null,
+	companyId LONG
 );
 
 alter table Group_ add groupKey STRING;

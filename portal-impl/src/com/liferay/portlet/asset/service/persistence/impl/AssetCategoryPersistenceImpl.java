@@ -46,6 +46,7 @@ import com.liferay.portal.service.ServiceContextThreadLocal;
 import com.liferay.portal.service.persistence.impl.BasePersistenceImpl;
 import com.liferay.portal.service.persistence.impl.NestedSetsTreeManager;
 import com.liferay.portal.service.persistence.impl.PersistenceNestedSetsTreeManager;
+import com.liferay.portal.service.persistence.impl.ServiceCompanyProvider;
 import com.liferay.portal.service.persistence.impl.TableMapper;
 import com.liferay.portal.service.persistence.impl.TableMapperFactory;
 
@@ -10435,6 +10436,8 @@ public class AssetCategoryPersistenceImpl extends BasePersistenceImpl<AssetCateg
 
 		assetCategory.setUuid(uuid);
 
+		assetCategory.setCompanyId(serviceCompanyProvider.getCompanyId());
+
 		return assetCategory;
 	}
 
@@ -10541,6 +10544,8 @@ public class AssetCategoryPersistenceImpl extends BasePersistenceImpl<AssetCateg
 		assetCategory = toUnwrappedModel(assetCategory);
 
 		boolean isNew = assetCategory.isNew();
+
+		assetCategory.setCompanyId(serviceCompanyProvider.getCompanyId());
 
 		AssetCategoryModelImpl assetCategoryModelImpl = (AssetCategoryModelImpl)assetCategory;
 
@@ -10873,7 +10878,6 @@ public class AssetCategoryPersistenceImpl extends BasePersistenceImpl<AssetCateg
 		assetCategoryImpl.setUuid(assetCategory.getUuid());
 		assetCategoryImpl.setCategoryId(assetCategory.getCategoryId());
 		assetCategoryImpl.setGroupId(assetCategory.getGroupId());
-		assetCategoryImpl.setCompanyId(assetCategory.getCompanyId());
 		assetCategoryImpl.setUserId(assetCategory.getUserId());
 		assetCategoryImpl.setUserName(assetCategory.getUserName());
 		assetCategoryImpl.setCreateDate(assetCategory.getCreateDate());
@@ -10886,6 +10890,7 @@ public class AssetCategoryPersistenceImpl extends BasePersistenceImpl<AssetCateg
 		assetCategoryImpl.setDescription(assetCategory.getDescription());
 		assetCategoryImpl.setVocabularyId(assetCategory.getVocabularyId());
 		assetCategoryImpl.setLastPublishDate(assetCategory.getLastPublishDate());
+		assetCategoryImpl.setCompanyId(assetCategory.getCompanyId());
 
 		return assetCategoryImpl;
 	}
@@ -11781,7 +11786,8 @@ public class AssetCategoryPersistenceImpl extends BasePersistenceImpl<AssetCateg
 	 */
 	public void afterPropertiesSet() {
 		assetCategoryToAssetEntryTableMapper = TableMapperFactory.getTableMapper("AssetEntries_AssetCategories",
-				"categoryId", "entryId", this, assetEntryPersistence);
+				"categoryId", "entryId", this, assetEntryPersistence,
+				serviceCompanyProvider);
 
 		updateTree = new UpdateTree();
 	}
@@ -11798,6 +11804,8 @@ public class AssetCategoryPersistenceImpl extends BasePersistenceImpl<AssetCateg
 	@BeanReference(type = AssetEntryPersistence.class)
 	protected AssetEntryPersistence assetEntryPersistence;
 	protected TableMapper<AssetCategory, com.liferay.portlet.asset.model.AssetEntry> assetCategoryToAssetEntryTableMapper;
+	@BeanReference(type = ServiceCompanyProvider.class)
+	protected ServiceCompanyProvider serviceCompanyProvider;
 	protected NestedSetsTreeManager<AssetCategory> nestedSetsTreeManager = new PersistenceNestedSetsTreeManager<AssetCategory>(this,
 			"AssetCategory", "AssetCategory", AssetCategoryImpl.class,
 			"categoryId", "groupId", "leftCategoryId", "rightCategoryId");

@@ -16,6 +16,7 @@ package com.liferay.portlet.dynamicdatamapping.service.persistence.impl;
 
 import aQute.bnd.annotation.ProviderType;
 
+import com.liferay.portal.kernel.bean.BeanReference;
 import com.liferay.portal.kernel.dao.orm.EntityCacheUtil;
 import com.liferay.portal.kernel.dao.orm.FinderCacheUtil;
 import com.liferay.portal.kernel.dao.orm.FinderPath;
@@ -30,6 +31,7 @@ import com.liferay.portal.kernel.util.StringBundler;
 import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.model.CacheModel;
 import com.liferay.portal.service.persistence.impl.BasePersistenceImpl;
+import com.liferay.portal.service.persistence.impl.ServiceCompanyProvider;
 
 import com.liferay.portlet.dynamicdatamapping.NoSuchStructureLinkException;
 import com.liferay.portlet.dynamicdatamapping.model.DDMStructureLink;
@@ -1986,6 +1988,8 @@ public class DDMStructureLinkPersistenceImpl extends BasePersistenceImpl<DDMStru
 		ddmStructureLink.setNew(true);
 		ddmStructureLink.setPrimaryKey(structureLinkId);
 
+		ddmStructureLink.setCompanyId(serviceCompanyProvider.getCompanyId());
+
 		return ddmStructureLink;
 	}
 
@@ -2079,6 +2083,8 @@ public class DDMStructureLinkPersistenceImpl extends BasePersistenceImpl<DDMStru
 		ddmStructureLink = toUnwrappedModel(ddmStructureLink);
 
 		boolean isNew = ddmStructureLink.isNew();
+
+		ddmStructureLink.setCompanyId(serviceCompanyProvider.getCompanyId());
 
 		DDMStructureLinkModelImpl ddmStructureLinkModelImpl = (DDMStructureLinkModelImpl)ddmStructureLink;
 
@@ -2197,6 +2203,7 @@ public class DDMStructureLinkPersistenceImpl extends BasePersistenceImpl<DDMStru
 		ddmStructureLinkImpl.setClassNameId(ddmStructureLink.getClassNameId());
 		ddmStructureLinkImpl.setClassPK(ddmStructureLink.getClassPK());
 		ddmStructureLinkImpl.setStructureId(ddmStructureLink.getStructureId());
+		ddmStructureLinkImpl.setCompanyId(ddmStructureLink.getCompanyId());
 
 		return ddmStructureLinkImpl;
 	}
@@ -2574,6 +2581,8 @@ public class DDMStructureLinkPersistenceImpl extends BasePersistenceImpl<DDMStru
 		FinderCacheUtil.removeCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
 	}
 
+	@BeanReference(type = ServiceCompanyProvider.class)
+	protected ServiceCompanyProvider serviceCompanyProvider;
 	private static final String _SQL_SELECT_DDMSTRUCTURELINK = "SELECT ddmStructureLink FROM DDMStructureLink ddmStructureLink";
 	private static final String _SQL_SELECT_DDMSTRUCTURELINK_WHERE_PKS_IN = "SELECT ddmStructureLink FROM DDMStructureLink ddmStructureLink WHERE structureLinkId IN (";
 	private static final String _SQL_SELECT_DDMSTRUCTURELINK_WHERE = "SELECT ddmStructureLink FROM DDMStructureLink ddmStructureLink WHERE ";

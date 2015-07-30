@@ -17,6 +17,7 @@ package com.liferay.portal.service.persistence.impl;
 import aQute.bnd.annotation.ProviderType;
 
 import com.liferay.portal.NoSuchOrgLaborException;
+import com.liferay.portal.kernel.bean.BeanReference;
 import com.liferay.portal.kernel.dao.orm.EntityCacheUtil;
 import com.liferay.portal.kernel.dao.orm.FinderCacheUtil;
 import com.liferay.portal.kernel.dao.orm.FinderPath;
@@ -659,6 +660,8 @@ public class OrgLaborPersistenceImpl extends BasePersistenceImpl<OrgLabor>
 		orgLabor.setNew(true);
 		orgLabor.setPrimaryKey(orgLaborId);
 
+		orgLabor.setCompanyId(serviceCompanyProvider.getCompanyId());
+
 		return orgLabor;
 	}
 
@@ -752,6 +755,8 @@ public class OrgLaborPersistenceImpl extends BasePersistenceImpl<OrgLabor>
 
 		boolean isNew = orgLabor.isNew();
 
+		orgLabor.setCompanyId(serviceCompanyProvider.getCompanyId());
+
 		OrgLaborModelImpl orgLaborModelImpl = (OrgLaborModelImpl)orgLabor;
 
 		Session session = null;
@@ -838,6 +843,7 @@ public class OrgLaborPersistenceImpl extends BasePersistenceImpl<OrgLabor>
 		orgLaborImpl.setFriClose(orgLabor.getFriClose());
 		orgLaborImpl.setSatOpen(orgLabor.getSatOpen());
 		orgLaborImpl.setSatClose(orgLabor.getSatClose());
+		orgLaborImpl.setCompanyId(orgLabor.getCompanyId());
 
 		return orgLaborImpl;
 	}
@@ -1212,6 +1218,8 @@ public class OrgLaborPersistenceImpl extends BasePersistenceImpl<OrgLabor>
 		FinderCacheUtil.removeCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
 	}
 
+	@BeanReference(type = ServiceCompanyProvider.class)
+	protected ServiceCompanyProvider serviceCompanyProvider;
 	private static final String _SQL_SELECT_ORGLABOR = "SELECT orgLabor FROM OrgLabor orgLabor";
 	private static final String _SQL_SELECT_ORGLABOR_WHERE_PKS_IN = "SELECT orgLabor FROM OrgLabor orgLabor WHERE orgLaborId IN (";
 	private static final String _SQL_SELECT_ORGLABOR_WHERE = "SELECT orgLabor FROM OrgLabor orgLabor WHERE ";

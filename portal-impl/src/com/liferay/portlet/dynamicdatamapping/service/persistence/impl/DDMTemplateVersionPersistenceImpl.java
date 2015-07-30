@@ -16,6 +16,7 @@ package com.liferay.portlet.dynamicdatamapping.service.persistence.impl;
 
 import aQute.bnd.annotation.ProviderType;
 
+import com.liferay.portal.kernel.bean.BeanReference;
 import com.liferay.portal.kernel.dao.orm.EntityCacheUtil;
 import com.liferay.portal.kernel.dao.orm.FinderCacheUtil;
 import com.liferay.portal.kernel.dao.orm.FinderPath;
@@ -31,6 +32,7 @@ import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.model.CacheModel;
 import com.liferay.portal.service.persistence.impl.BasePersistenceImpl;
+import com.liferay.portal.service.persistence.impl.ServiceCompanyProvider;
 
 import com.liferay.portlet.dynamicdatamapping.NoSuchTemplateVersionException;
 import com.liferay.portlet.dynamicdatamapping.model.DDMTemplateVersion;
@@ -1506,6 +1508,8 @@ public class DDMTemplateVersionPersistenceImpl extends BasePersistenceImpl<DDMTe
 		ddmTemplateVersion.setNew(true);
 		ddmTemplateVersion.setPrimaryKey(templateVersionId);
 
+		ddmTemplateVersion.setCompanyId(serviceCompanyProvider.getCompanyId());
+
 		return ddmTemplateVersion;
 	}
 
@@ -1600,6 +1604,8 @@ public class DDMTemplateVersionPersistenceImpl extends BasePersistenceImpl<DDMTe
 		ddmTemplateVersion = toUnwrappedModel(ddmTemplateVersion);
 
 		boolean isNew = ddmTemplateVersion.isNew();
+
+		ddmTemplateVersion.setCompanyId(serviceCompanyProvider.getCompanyId());
 
 		DDMTemplateVersionModelImpl ddmTemplateVersionModelImpl = (DDMTemplateVersionModelImpl)ddmTemplateVersion;
 
@@ -1697,7 +1703,6 @@ public class DDMTemplateVersionPersistenceImpl extends BasePersistenceImpl<DDMTe
 
 		ddmTemplateVersionImpl.setTemplateVersionId(ddmTemplateVersion.getTemplateVersionId());
 		ddmTemplateVersionImpl.setGroupId(ddmTemplateVersion.getGroupId());
-		ddmTemplateVersionImpl.setCompanyId(ddmTemplateVersion.getCompanyId());
 		ddmTemplateVersionImpl.setUserId(ddmTemplateVersion.getUserId());
 		ddmTemplateVersionImpl.setUserName(ddmTemplateVersion.getUserName());
 		ddmTemplateVersionImpl.setCreateDate(ddmTemplateVersion.getCreateDate());
@@ -1713,6 +1718,7 @@ public class DDMTemplateVersionPersistenceImpl extends BasePersistenceImpl<DDMTe
 		ddmTemplateVersionImpl.setStatusByUserId(ddmTemplateVersion.getStatusByUserId());
 		ddmTemplateVersionImpl.setStatusByUserName(ddmTemplateVersion.getStatusByUserName());
 		ddmTemplateVersionImpl.setStatusDate(ddmTemplateVersion.getStatusDate());
+		ddmTemplateVersionImpl.setCompanyId(ddmTemplateVersion.getCompanyId());
 
 		return ddmTemplateVersionImpl;
 	}
@@ -2091,6 +2097,8 @@ public class DDMTemplateVersionPersistenceImpl extends BasePersistenceImpl<DDMTe
 		FinderCacheUtil.removeCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
 	}
 
+	@BeanReference(type = ServiceCompanyProvider.class)
+	protected ServiceCompanyProvider serviceCompanyProvider;
 	private static final String _SQL_SELECT_DDMTEMPLATEVERSION = "SELECT ddmTemplateVersion FROM DDMTemplateVersion ddmTemplateVersion";
 	private static final String _SQL_SELECT_DDMTEMPLATEVERSION_WHERE_PKS_IN = "SELECT ddmTemplateVersion FROM DDMTemplateVersion ddmTemplateVersion WHERE templateVersionId IN (";
 	private static final String _SQL_SELECT_DDMTEMPLATEVERSION_WHERE = "SELECT ddmTemplateVersion FROM DDMTemplateVersion ddmTemplateVersion WHERE ";

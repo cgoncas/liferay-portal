@@ -21,6 +21,7 @@ import com.liferay.portal.kernel.bean.AutoEscape;
 import com.liferay.portal.model.BaseModel;
 import com.liferay.portal.model.CacheModel;
 import com.liferay.portal.model.LocalizedModel;
+import com.liferay.portal.model.PartitionableModel;
 import com.liferay.portal.model.StagedGroupedModel;
 import com.liferay.portal.service.ServiceContext;
 
@@ -47,7 +48,7 @@ import java.util.Map;
  */
 @ProviderType
 public interface DDMContentModel extends BaseModel<DDMContent>, LocalizedModel,
-	StagedGroupedModel {
+	PartitionableModel, StagedGroupedModel {
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
@@ -114,22 +115,6 @@ public interface DDMContentModel extends BaseModel<DDMContent>, LocalizedModel,
 	 */
 	@Override
 	public void setGroupId(long groupId);
-
-	/**
-	 * Returns the company ID of this d d m content.
-	 *
-	 * @return the company ID of this d d m content
-	 */
-	@Override
-	public long getCompanyId();
-
-	/**
-	 * Sets the company ID of this d d m content.
-	 *
-	 * @param companyId the company ID of this d d m content
-	 */
-	@Override
-	public void setCompanyId(long companyId);
 
 	/**
 	 * Returns the user ID of this d d m content.
@@ -340,6 +325,22 @@ public interface DDMContentModel extends BaseModel<DDMContent>, LocalizedModel,
 	 * @param data the data of this d d m content
 	 */
 	public void setData(String data);
+
+	/**
+	 * Returns the company ID of this d d m content.
+	 *
+	 * @return the company ID of this d d m content
+	 */
+	@Override
+	public long getCompanyId();
+
+	/**
+	 * Sets the company ID of this d d m content.
+	 *
+	 * @param companyId the company ID of this d d m content
+	 */
+	@Override
+	public void setCompanyId(long companyId);
 
 	@Override
 	public boolean isNew();

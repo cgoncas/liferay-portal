@@ -6544,6 +6544,8 @@ public class OrganizationPersistenceImpl extends BasePersistenceImpl<Organizatio
 
 		organization.setUuid(uuid);
 
+		organization.setCompanyId(serviceCompanyProvider.getCompanyId());
+
 		return organization;
 	}
 
@@ -6641,6 +6643,8 @@ public class OrganizationPersistenceImpl extends BasePersistenceImpl<Organizatio
 		organization = toUnwrappedModel(organization);
 
 		boolean isNew = organization.isNew();
+
+		organization.setCompanyId(serviceCompanyProvider.getCompanyId());
 
 		OrganizationModelImpl organizationModelImpl = (OrganizationModelImpl)organization;
 
@@ -6823,7 +6827,6 @@ public class OrganizationPersistenceImpl extends BasePersistenceImpl<Organizatio
 		organizationImpl.setMvccVersion(organization.getMvccVersion());
 		organizationImpl.setUuid(organization.getUuid());
 		organizationImpl.setOrganizationId(organization.getOrganizationId());
-		organizationImpl.setCompanyId(organization.getCompanyId());
 		organizationImpl.setUserId(organization.getUserId());
 		organizationImpl.setUserName(organization.getUserName());
 		organizationImpl.setCreateDate(organization.getCreateDate());
@@ -6839,6 +6842,7 @@ public class OrganizationPersistenceImpl extends BasePersistenceImpl<Organizatio
 		organizationImpl.setComments(organization.getComments());
 		organizationImpl.setLogoId(organization.getLogoId());
 		organizationImpl.setLastPublishDate(organization.getLastPublishDate());
+		organizationImpl.setCompanyId(organization.getCompanyId());
 
 		return organizationImpl;
 	}
@@ -7740,10 +7744,12 @@ public class OrganizationPersistenceImpl extends BasePersistenceImpl<Organizatio
 	 */
 	public void afterPropertiesSet() {
 		organizationToGroupTableMapper = TableMapperFactory.getTableMapper("Groups_Orgs",
-				"organizationId", "groupId", this, groupPersistence);
+				"organizationId", "groupId", this, groupPersistence,
+				serviceCompanyProvider);
 
 		organizationToUserTableMapper = TableMapperFactory.getTableMapper("Users_Orgs",
-				"organizationId", "userId", this, userPersistence);
+				"organizationId", "userId", this, userPersistence,
+				serviceCompanyProvider);
 	}
 
 	public void destroy() {
@@ -7762,6 +7768,8 @@ public class OrganizationPersistenceImpl extends BasePersistenceImpl<Organizatio
 	@BeanReference(type = UserPersistence.class)
 	protected UserPersistence userPersistence;
 	protected TableMapper<Organization, com.liferay.portal.model.User> organizationToUserTableMapper;
+	@BeanReference(type = ServiceCompanyProvider.class)
+	protected ServiceCompanyProvider serviceCompanyProvider;
 	private static final String _SQL_SELECT_ORGANIZATION = "SELECT organization FROM Organization organization";
 	private static final String _SQL_SELECT_ORGANIZATION_WHERE_PKS_IN = "SELECT organization FROM Organization organization WHERE organizationId IN (";
 	private static final String _SQL_SELECT_ORGANIZATION_WHERE = "SELECT organization FROM Organization organization WHERE ";

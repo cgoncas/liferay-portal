@@ -17,6 +17,7 @@ package com.liferay.portal.service.persistence.impl;
 import aQute.bnd.annotation.ProviderType;
 
 import com.liferay.portal.NoSuchServiceComponentException;
+import com.liferay.portal.kernel.bean.BeanReference;
 import com.liferay.portal.kernel.dao.orm.EntityCacheUtil;
 import com.liferay.portal.kernel.dao.orm.FinderCacheUtil;
 import com.liferay.portal.kernel.dao.orm.FinderPath;
@@ -1041,6 +1042,8 @@ public class ServiceComponentPersistenceImpl extends BasePersistenceImpl<Service
 		serviceComponent.setNew(true);
 		serviceComponent.setPrimaryKey(serviceComponentId);
 
+		serviceComponent.setCompanyId(serviceCompanyProvider.getCompanyId());
+
 		return serviceComponent;
 	}
 
@@ -1135,6 +1138,8 @@ public class ServiceComponentPersistenceImpl extends BasePersistenceImpl<Service
 
 		boolean isNew = serviceComponent.isNew();
 
+		serviceComponent.setCompanyId(serviceCompanyProvider.getCompanyId());
+
 		ServiceComponentModelImpl serviceComponentModelImpl = (ServiceComponentModelImpl)serviceComponent;
 
 		Session session = null;
@@ -1216,6 +1221,7 @@ public class ServiceComponentPersistenceImpl extends BasePersistenceImpl<Service
 		serviceComponentImpl.setBuildNumber(serviceComponent.getBuildNumber());
 		serviceComponentImpl.setBuildDate(serviceComponent.getBuildDate());
 		serviceComponentImpl.setData(serviceComponent.getData());
+		serviceComponentImpl.setCompanyId(serviceComponent.getCompanyId());
 
 		return serviceComponentImpl;
 	}
@@ -1598,6 +1604,8 @@ public class ServiceComponentPersistenceImpl extends BasePersistenceImpl<Service
 		FinderCacheUtil.removeCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
 	}
 
+	@BeanReference(type = ServiceCompanyProvider.class)
+	protected ServiceCompanyProvider serviceCompanyProvider;
 	private static final String _SQL_SELECT_SERVICECOMPONENT = "SELECT serviceComponent FROM ServiceComponent serviceComponent";
 	private static final String _SQL_SELECT_SERVICECOMPONENT_WHERE_PKS_IN = "SELECT serviceComponent FROM ServiceComponent serviceComponent WHERE serviceComponentId IN (";
 	private static final String _SQL_SELECT_SERVICECOMPONENT_WHERE = "SELECT serviceComponent FROM ServiceComponent serviceComponent WHERE ";

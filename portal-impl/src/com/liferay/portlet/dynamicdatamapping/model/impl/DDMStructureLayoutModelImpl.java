@@ -69,13 +69,13 @@ public class DDMStructureLayoutModelImpl extends BaseModelImpl<DDMStructureLayou
 			{ "uuid_", Types.VARCHAR },
 			{ "structureLayoutId", Types.BIGINT },
 			{ "groupId", Types.BIGINT },
-			{ "companyId", Types.BIGINT },
 			{ "userId", Types.BIGINT },
 			{ "userName", Types.VARCHAR },
 			{ "createDate", Types.TIMESTAMP },
 			{ "modifiedDate", Types.TIMESTAMP },
 			{ "structureVersionId", Types.BIGINT },
-			{ "definition", Types.CLOB }
+			{ "definition", Types.CLOB },
+			{ "companyId", Types.BIGINT }
 		};
 	public static final Map<String, Integer> TABLE_COLUMNS_MAP = new HashMap<String, Integer>();
 
@@ -83,16 +83,16 @@ public class DDMStructureLayoutModelImpl extends BaseModelImpl<DDMStructureLayou
 		TABLE_COLUMNS_MAP.put("uuid_", Types.VARCHAR);
 		TABLE_COLUMNS_MAP.put("structureLayoutId", Types.BIGINT);
 		TABLE_COLUMNS_MAP.put("groupId", Types.BIGINT);
-		TABLE_COLUMNS_MAP.put("companyId", Types.BIGINT);
 		TABLE_COLUMNS_MAP.put("userId", Types.BIGINT);
 		TABLE_COLUMNS_MAP.put("userName", Types.VARCHAR);
 		TABLE_COLUMNS_MAP.put("createDate", Types.TIMESTAMP);
 		TABLE_COLUMNS_MAP.put("modifiedDate", Types.TIMESTAMP);
 		TABLE_COLUMNS_MAP.put("structureVersionId", Types.BIGINT);
 		TABLE_COLUMNS_MAP.put("definition", Types.CLOB);
+		TABLE_COLUMNS_MAP.put("companyId", Types.BIGINT);
 	}
 
-	public static final String TABLE_SQL_CREATE = "create table DDMStructureLayout (uuid_ VARCHAR(75) null,structureLayoutId LONG not null primary key,groupId LONG,companyId LONG,userId LONG,userName VARCHAR(75) null,createDate DATE null,modifiedDate DATE null,structureVersionId LONG,definition TEXT null)";
+	public static final String TABLE_SQL_CREATE = "create table DDMStructureLayout (uuid_ VARCHAR(75) null,structureLayoutId LONG not null primary key,groupId LONG,userId LONG,userName VARCHAR(75) null,createDate DATE null,modifiedDate DATE null,structureVersionId LONG,definition TEXT null,companyId LONG)";
 	public static final String TABLE_SQL_DROP = "drop table DDMStructureLayout";
 	public static final String ORDER_BY_JPQL = " ORDER BY ddmStructureLayout.structureLayoutId ASC";
 	public static final String ORDER_BY_SQL = " ORDER BY DDMStructureLayout.structureLayoutId ASC";
@@ -156,13 +156,13 @@ public class DDMStructureLayoutModelImpl extends BaseModelImpl<DDMStructureLayou
 		attributes.put("uuid", getUuid());
 		attributes.put("structureLayoutId", getStructureLayoutId());
 		attributes.put("groupId", getGroupId());
-		attributes.put("companyId", getCompanyId());
 		attributes.put("userId", getUserId());
 		attributes.put("userName", getUserName());
 		attributes.put("createDate", getCreateDate());
 		attributes.put("modifiedDate", getModifiedDate());
 		attributes.put("structureVersionId", getStructureVersionId());
 		attributes.put("definition", getDefinition());
+		attributes.put("companyId", getCompanyId());
 
 		attributes.put("entityCacheEnabled", isEntityCacheEnabled());
 		attributes.put("finderCacheEnabled", isFinderCacheEnabled());
@@ -188,12 +188,6 @@ public class DDMStructureLayoutModelImpl extends BaseModelImpl<DDMStructureLayou
 
 		if (groupId != null) {
 			setGroupId(groupId);
-		}
-
-		Long companyId = (Long)attributes.get("companyId");
-
-		if (companyId != null) {
-			setCompanyId(companyId);
 		}
 
 		Long userId = (Long)attributes.get("userId");
@@ -230,6 +224,12 @@ public class DDMStructureLayoutModelImpl extends BaseModelImpl<DDMStructureLayou
 
 		if (definition != null) {
 			setDefinition(definition);
+		}
+
+		Long companyId = (Long)attributes.get("companyId");
+
+		if (companyId != null) {
+			setCompanyId(companyId);
 		}
 	}
 
@@ -286,28 +286,6 @@ public class DDMStructureLayoutModelImpl extends BaseModelImpl<DDMStructureLayou
 
 	public long getOriginalGroupId() {
 		return _originalGroupId;
-	}
-
-	@Override
-	public long getCompanyId() {
-		return _companyId;
-	}
-
-	@Override
-	public void setCompanyId(long companyId) {
-		_columnBitmask |= COMPANYID_COLUMN_BITMASK;
-
-		if (!_setOriginalCompanyId) {
-			_setOriginalCompanyId = true;
-
-			_originalCompanyId = _companyId;
-		}
-
-		_companyId = companyId;
-	}
-
-	public long getOriginalCompanyId() {
-		return _originalCompanyId;
 	}
 
 	@Override
@@ -414,6 +392,28 @@ public class DDMStructureLayoutModelImpl extends BaseModelImpl<DDMStructureLayou
 		_definition = definition;
 	}
 
+	@Override
+	public long getCompanyId() {
+		return _companyId;
+	}
+
+	@Override
+	public void setCompanyId(long companyId) {
+		_columnBitmask |= COMPANYID_COLUMN_BITMASK;
+
+		if (!_setOriginalCompanyId) {
+			_setOriginalCompanyId = true;
+
+			_originalCompanyId = _companyId;
+		}
+
+		_companyId = companyId;
+	}
+
+	public long getOriginalCompanyId() {
+		return _originalCompanyId;
+	}
+
 	public com.liferay.portlet.dynamicdatamapping.model.DDMFormLayout getDDMFormLayout() {
 		return null;
 	}
@@ -462,13 +462,13 @@ public class DDMStructureLayoutModelImpl extends BaseModelImpl<DDMStructureLayou
 		ddmStructureLayoutImpl.setUuid(getUuid());
 		ddmStructureLayoutImpl.setStructureLayoutId(getStructureLayoutId());
 		ddmStructureLayoutImpl.setGroupId(getGroupId());
-		ddmStructureLayoutImpl.setCompanyId(getCompanyId());
 		ddmStructureLayoutImpl.setUserId(getUserId());
 		ddmStructureLayoutImpl.setUserName(getUserName());
 		ddmStructureLayoutImpl.setCreateDate(getCreateDate());
 		ddmStructureLayoutImpl.setModifiedDate(getModifiedDate());
 		ddmStructureLayoutImpl.setStructureVersionId(getStructureVersionId());
 		ddmStructureLayoutImpl.setDefinition(getDefinition());
+		ddmStructureLayoutImpl.setCompanyId(getCompanyId());
 
 		ddmStructureLayoutImpl.resetOriginalValues();
 
@@ -537,15 +537,15 @@ public class DDMStructureLayoutModelImpl extends BaseModelImpl<DDMStructureLayou
 
 		ddmStructureLayoutModelImpl._setOriginalGroupId = false;
 
-		ddmStructureLayoutModelImpl._originalCompanyId = ddmStructureLayoutModelImpl._companyId;
-
-		ddmStructureLayoutModelImpl._setOriginalCompanyId = false;
-
 		ddmStructureLayoutModelImpl._setModifiedDate = false;
 
 		ddmStructureLayoutModelImpl._originalStructureVersionId = ddmStructureLayoutModelImpl._structureVersionId;
 
 		ddmStructureLayoutModelImpl._setOriginalStructureVersionId = false;
+
+		ddmStructureLayoutModelImpl._originalCompanyId = ddmStructureLayoutModelImpl._companyId;
+
+		ddmStructureLayoutModelImpl._setOriginalCompanyId = false;
 
 		setDDMFormLayout(null);
 
@@ -567,8 +567,6 @@ public class DDMStructureLayoutModelImpl extends BaseModelImpl<DDMStructureLayou
 		ddmStructureLayoutCacheModel.structureLayoutId = getStructureLayoutId();
 
 		ddmStructureLayoutCacheModel.groupId = getGroupId();
-
-		ddmStructureLayoutCacheModel.companyId = getCompanyId();
 
 		ddmStructureLayoutCacheModel.userId = getUserId();
 
@@ -608,6 +606,8 @@ public class DDMStructureLayoutModelImpl extends BaseModelImpl<DDMStructureLayou
 			ddmStructureLayoutCacheModel.definition = null;
 		}
 
+		ddmStructureLayoutCacheModel.companyId = getCompanyId();
+
 		ddmStructureLayoutCacheModel._ddmFormLayout = getDDMFormLayout();
 
 		return ddmStructureLayoutCacheModel;
@@ -623,8 +623,6 @@ public class DDMStructureLayoutModelImpl extends BaseModelImpl<DDMStructureLayou
 		sb.append(getStructureLayoutId());
 		sb.append(", groupId=");
 		sb.append(getGroupId());
-		sb.append(", companyId=");
-		sb.append(getCompanyId());
 		sb.append(", userId=");
 		sb.append(getUserId());
 		sb.append(", userName=");
@@ -637,6 +635,8 @@ public class DDMStructureLayoutModelImpl extends BaseModelImpl<DDMStructureLayou
 		sb.append(getStructureVersionId());
 		sb.append(", definition=");
 		sb.append(getDefinition());
+		sb.append(", companyId=");
+		sb.append(getCompanyId());
 		sb.append("}");
 
 		return sb.toString();
@@ -664,10 +664,6 @@ public class DDMStructureLayoutModelImpl extends BaseModelImpl<DDMStructureLayou
 		sb.append(getGroupId());
 		sb.append("]]></column-value></column>");
 		sb.append(
-			"<column><column-name>companyId</column-name><column-value><![CDATA[");
-		sb.append(getCompanyId());
-		sb.append("]]></column-value></column>");
-		sb.append(
 			"<column><column-name>userId</column-name><column-value><![CDATA[");
 		sb.append(getUserId());
 		sb.append("]]></column-value></column>");
@@ -691,6 +687,10 @@ public class DDMStructureLayoutModelImpl extends BaseModelImpl<DDMStructureLayou
 			"<column><column-name>definition</column-name><column-value><![CDATA[");
 		sb.append(getDefinition());
 		sb.append("]]></column-value></column>");
+		sb.append(
+			"<column><column-name>companyId</column-name><column-value><![CDATA[");
+		sb.append(getCompanyId());
+		sb.append("]]></column-value></column>");
 
 		sb.append("</model>");
 
@@ -707,9 +707,6 @@ public class DDMStructureLayoutModelImpl extends BaseModelImpl<DDMStructureLayou
 	private long _groupId;
 	private long _originalGroupId;
 	private boolean _setOriginalGroupId;
-	private long _companyId;
-	private long _originalCompanyId;
-	private boolean _setOriginalCompanyId;
 	private long _userId;
 	private String _userName;
 	private Date _createDate;
@@ -719,6 +716,9 @@ public class DDMStructureLayoutModelImpl extends BaseModelImpl<DDMStructureLayou
 	private long _originalStructureVersionId;
 	private boolean _setOriginalStructureVersionId;
 	private String _definition;
+	private long _companyId;
+	private long _originalCompanyId;
+	private boolean _setOriginalCompanyId;
 	private long _columnBitmask;
 	private DDMStructureLayout _escapedModel;
 }

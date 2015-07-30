@@ -16,6 +16,7 @@ package com.liferay.portlet.expando.service.persistence.impl;
 
 import aQute.bnd.annotation.ProviderType;
 
+import com.liferay.portal.kernel.bean.BeanReference;
 import com.liferay.portal.kernel.dao.orm.EntityCacheUtil;
 import com.liferay.portal.kernel.dao.orm.FinderCacheUtil;
 import com.liferay.portal.kernel.dao.orm.FinderPath;
@@ -31,6 +32,7 @@ import com.liferay.portal.kernel.util.StringBundler;
 import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.model.CacheModel;
 import com.liferay.portal.service.persistence.impl.BasePersistenceImpl;
+import com.liferay.portal.service.persistence.impl.ServiceCompanyProvider;
 
 import com.liferay.portlet.expando.NoSuchRowException;
 import com.liferay.portlet.expando.model.ExpandoRow;
@@ -1407,6 +1409,8 @@ public class ExpandoRowPersistenceImpl extends BasePersistenceImpl<ExpandoRow>
 		expandoRow.setNew(true);
 		expandoRow.setPrimaryKey(rowId);
 
+		expandoRow.setCompanyId(serviceCompanyProvider.getCompanyId());
+
 		return expandoRow;
 	}
 
@@ -1499,6 +1503,8 @@ public class ExpandoRowPersistenceImpl extends BasePersistenceImpl<ExpandoRow>
 
 		boolean isNew = expandoRow.isNew();
 
+		expandoRow.setCompanyId(serviceCompanyProvider.getCompanyId());
+
 		ExpandoRowModelImpl expandoRowModelImpl = (ExpandoRowModelImpl)expandoRow;
 
 		Session session = null;
@@ -1586,10 +1592,10 @@ public class ExpandoRowPersistenceImpl extends BasePersistenceImpl<ExpandoRow>
 		expandoRowImpl.setPrimaryKey(expandoRow.getPrimaryKey());
 
 		expandoRowImpl.setRowId(expandoRow.getRowId());
-		expandoRowImpl.setCompanyId(expandoRow.getCompanyId());
 		expandoRowImpl.setModifiedDate(expandoRow.getModifiedDate());
 		expandoRowImpl.setTableId(expandoRow.getTableId());
 		expandoRowImpl.setClassPK(expandoRow.getClassPK());
+		expandoRowImpl.setCompanyId(expandoRow.getCompanyId());
 
 		return expandoRowImpl;
 	}
@@ -1969,6 +1975,8 @@ public class ExpandoRowPersistenceImpl extends BasePersistenceImpl<ExpandoRow>
 		FinderCacheUtil.removeCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
 	}
 
+	@BeanReference(type = ServiceCompanyProvider.class)
+	protected ServiceCompanyProvider serviceCompanyProvider;
 	private static final String _SQL_SELECT_EXPANDOROW = "SELECT expandoRow FROM ExpandoRow expandoRow";
 	private static final String _SQL_SELECT_EXPANDOROW_WHERE_PKS_IN = "SELECT expandoRow FROM ExpandoRow expandoRow WHERE rowId_ IN (";
 	private static final String _SQL_SELECT_EXPANDOROW_WHERE = "SELECT expandoRow FROM ExpandoRow expandoRow WHERE ";

@@ -17,6 +17,7 @@ package com.liferay.portal.service.persistence.impl;
 import aQute.bnd.annotation.ProviderType;
 
 import com.liferay.portal.NoSuchAccountException;
+import com.liferay.portal.kernel.bean.BeanReference;
 import com.liferay.portal.kernel.dao.orm.EntityCacheUtil;
 import com.liferay.portal.kernel.dao.orm.FinderCacheUtil;
 import com.liferay.portal.kernel.dao.orm.FinderPath;
@@ -176,6 +177,8 @@ public class AccountPersistenceImpl extends BasePersistenceImpl<Account>
 		account.setNew(true);
 		account.setPrimaryKey(accountId);
 
+		account.setCompanyId(serviceCompanyProvider.getCompanyId());
+
 		return account;
 	}
 
@@ -268,6 +271,8 @@ public class AccountPersistenceImpl extends BasePersistenceImpl<Account>
 
 		boolean isNew = account.isNew();
 
+		account.setCompanyId(serviceCompanyProvider.getCompanyId());
+
 		AccountModelImpl accountModelImpl = (AccountModelImpl)account;
 
 		ServiceContext serviceContext = ServiceContextThreadLocal.getServiceContext();
@@ -339,7 +344,6 @@ public class AccountPersistenceImpl extends BasePersistenceImpl<Account>
 
 		accountImpl.setMvccVersion(account.getMvccVersion());
 		accountImpl.setAccountId(account.getAccountId());
-		accountImpl.setCompanyId(account.getCompanyId());
 		accountImpl.setUserId(account.getUserId());
 		accountImpl.setUserName(account.getUserName());
 		accountImpl.setCreateDate(account.getCreateDate());
@@ -354,6 +358,7 @@ public class AccountPersistenceImpl extends BasePersistenceImpl<Account>
 		accountImpl.setIndustry(account.getIndustry());
 		accountImpl.setType(account.getType());
 		accountImpl.setSize(account.getSize());
+		accountImpl.setCompanyId(account.getCompanyId());
 
 		return accountImpl;
 	}
@@ -733,6 +738,8 @@ public class AccountPersistenceImpl extends BasePersistenceImpl<Account>
 		FinderCacheUtil.removeCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
 	}
 
+	@BeanReference(type = ServiceCompanyProvider.class)
+	protected ServiceCompanyProvider serviceCompanyProvider;
 	private static final String _SQL_SELECT_ACCOUNT = "SELECT account FROM Account account";
 	private static final String _SQL_SELECT_ACCOUNT_WHERE_PKS_IN = "SELECT account FROM Account account WHERE accountId IN (";
 	private static final String _SQL_COUNT_ACCOUNT = "SELECT COUNT(account) FROM Account account";

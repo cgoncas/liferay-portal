@@ -19,6 +19,7 @@ import aQute.bnd.annotation.ProviderType;
 import com.liferay.portal.kernel.bean.AutoEscape;
 import com.liferay.portal.model.BaseModel;
 import com.liferay.portal.model.CacheModel;
+import com.liferay.portal.model.PartitionableModel;
 import com.liferay.portal.model.StagedGroupedModel;
 import com.liferay.portal.service.ServiceContext;
 
@@ -43,7 +44,7 @@ import java.util.Date;
  */
 @ProviderType
 public interface MBMailingListModel extends BaseModel<MBMailingList>,
-	StagedGroupedModel {
+	PartitionableModel, StagedGroupedModel {
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
@@ -110,22 +111,6 @@ public interface MBMailingListModel extends BaseModel<MBMailingList>,
 	 */
 	@Override
 	public void setGroupId(long groupId);
-
-	/**
-	 * Returns the company ID of this message boards mailing list.
-	 *
-	 * @return the company ID of this message boards mailing list
-	 */
-	@Override
-	public long getCompanyId();
-
-	/**
-	 * Sets the company ID of this message boards mailing list.
-	 *
-	 * @param companyId the company ID of this message boards mailing list
-	 */
-	@Override
-	public void setCompanyId(long companyId);
 
 	/**
 	 * Returns the user ID of this message boards mailing list.
@@ -503,6 +488,22 @@ public interface MBMailingListModel extends BaseModel<MBMailingList>,
 	 * @param active the active of this message boards mailing list
 	 */
 	public void setActive(boolean active);
+
+	/**
+	 * Returns the company ID of this message boards mailing list.
+	 *
+	 * @return the company ID of this message boards mailing list
+	 */
+	@Override
+	public long getCompanyId();
+
+	/**
+	 * Sets the company ID of this message boards mailing list.
+	 *
+	 * @param companyId the company ID of this message boards mailing list
+	 */
+	@Override
+	public void setCompanyId(long companyId);
 
 	@Override
 	public boolean isNew();

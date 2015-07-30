@@ -20,6 +20,7 @@ import com.liferay.portal.kernel.bean.AutoEscape;
 import com.liferay.portal.model.AttachedModel;
 import com.liferay.portal.model.BaseModel;
 import com.liferay.portal.model.CacheModel;
+import com.liferay.portal.model.PartitionableModel;
 import com.liferay.portal.model.StagedAuditedModel;
 import com.liferay.portal.service.ServiceContext;
 
@@ -44,7 +45,7 @@ import java.util.Date;
  */
 @ProviderType
 public interface AnnouncementsEntryModel extends AttachedModel,
-	BaseModel<AnnouncementsEntry>, StagedAuditedModel {
+	BaseModel<AnnouncementsEntry>, PartitionableModel, StagedAuditedModel {
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
@@ -95,22 +96,6 @@ public interface AnnouncementsEntryModel extends AttachedModel,
 	 * @param entryId the entry ID of this announcements entry
 	 */
 	public void setEntryId(long entryId);
-
-	/**
-	 * Returns the company ID of this announcements entry.
-	 *
-	 * @return the company ID of this announcements entry
-	 */
-	@Override
-	public long getCompanyId();
-
-	/**
-	 * Sets the company ID of this announcements entry.
-	 *
-	 * @param companyId the company ID of this announcements entry
-	 */
-	@Override
-	public void setCompanyId(long companyId);
 
 	/**
 	 * Returns the user ID of this announcements entry.
@@ -357,6 +342,22 @@ public interface AnnouncementsEntryModel extends AttachedModel,
 	 * @param alert the alert of this announcements entry
 	 */
 	public void setAlert(boolean alert);
+
+	/**
+	 * Returns the company ID of this announcements entry.
+	 *
+	 * @return the company ID of this announcements entry
+	 */
+	@Override
+	public long getCompanyId();
+
+	/**
+	 * Sets the company ID of this announcements entry.
+	 *
+	 * @param companyId the company ID of this announcements entry
+	 */
+	@Override
+	public void setCompanyId(long companyId);
 
 	@Override
 	public boolean isNew();

@@ -28,4 +28,5 @@ create index IX_5DC4BD39 on WikiPage (uuid_, companyId);
 create unique index IX_899D3DFB on WikiPage (uuid_, groupId);
 
 create unique index IX_21277664 on WikiPageResource (nodeId, title);
+create index IX_13319367 on WikiPageResource (uuid_, companyId);
 create unique index IX_F705C7A9 on WikiPageResource (uuid_, groupId);

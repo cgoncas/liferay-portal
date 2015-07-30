@@ -56,7 +56,6 @@ public class SAPEntryWrapper implements SAPEntry, ModelWrapper<SAPEntry> {
 
 		attributes.put("uuid", getUuid());
 		attributes.put("sapEntryId", getSapEntryId());
-		attributes.put("companyId", getCompanyId());
 		attributes.put("userId", getUserId());
 		attributes.put("userName", getUserName());
 		attributes.put("createDate", getCreateDate());
@@ -65,6 +64,7 @@ public class SAPEntryWrapper implements SAPEntry, ModelWrapper<SAPEntry> {
 		attributes.put("defaultSAPEntry", getDefaultSAPEntry());
 		attributes.put("name", getName());
 		attributes.put("title", getTitle());
+		attributes.put("companyId", getCompanyId());
 
 		return attributes;
 	}
@@ -81,12 +81,6 @@ public class SAPEntryWrapper implements SAPEntry, ModelWrapper<SAPEntry> {
 
 		if (sapEntryId != null) {
 			setSapEntryId(sapEntryId);
-		}
-
-		Long companyId = (Long)attributes.get("companyId");
-
-		if (companyId != null) {
-			setCompanyId(companyId);
 		}
 
 		Long userId = (Long)attributes.get("userId");
@@ -136,6 +130,12 @@ public class SAPEntryWrapper implements SAPEntry, ModelWrapper<SAPEntry> {
 
 		if (title != null) {
 			setTitle(title);
+		}
+
+		Long companyId = (Long)attributes.get("companyId");
+
+		if (companyId != null) {
+			setCompanyId(companyId);
 		}
 	}
 

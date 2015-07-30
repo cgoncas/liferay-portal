@@ -57,7 +57,6 @@ public class DDLRecordWrapper implements DDLRecord, ModelWrapper<DDLRecord> {
 		attributes.put("uuid", getUuid());
 		attributes.put("recordId", getRecordId());
 		attributes.put("groupId", getGroupId());
-		attributes.put("companyId", getCompanyId());
 		attributes.put("userId", getUserId());
 		attributes.put("userName", getUserName());
 		attributes.put("versionUserId", getVersionUserId());
@@ -68,6 +67,7 @@ public class DDLRecordWrapper implements DDLRecord, ModelWrapper<DDLRecord> {
 		attributes.put("recordSetId", getRecordSetId());
 		attributes.put("version", getVersion());
 		attributes.put("displayIndex", getDisplayIndex());
+		attributes.put("companyId", getCompanyId());
 
 		return attributes;
 	}
@@ -90,12 +90,6 @@ public class DDLRecordWrapper implements DDLRecord, ModelWrapper<DDLRecord> {
 
 		if (groupId != null) {
 			setGroupId(groupId);
-		}
-
-		Long companyId = (Long)attributes.get("companyId");
-
-		if (companyId != null) {
-			setCompanyId(companyId);
 		}
 
 		Long userId = (Long)attributes.get("userId");
@@ -156,6 +150,12 @@ public class DDLRecordWrapper implements DDLRecord, ModelWrapper<DDLRecord> {
 
 		if (displayIndex != null) {
 			setDisplayIndex(displayIndex);
+		}
+
+		Long companyId = (Long)attributes.get("companyId");
+
+		if (companyId != null) {
+			setCompanyId(companyId);
 		}
 	}
 

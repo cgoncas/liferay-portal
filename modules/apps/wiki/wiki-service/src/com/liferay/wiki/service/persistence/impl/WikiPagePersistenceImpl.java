@@ -16,6 +16,7 @@ package com.liferay.wiki.service.persistence.impl;
 
 import aQute.bnd.annotation.ProviderType;
 
+import com.liferay.portal.kernel.bean.BeanReference;
 import com.liferay.portal.kernel.dao.orm.EntityCacheUtil;
 import com.liferay.portal.kernel.dao.orm.FinderCacheUtil;
 import com.liferay.portal.kernel.dao.orm.FinderPath;
@@ -45,6 +46,7 @@ import com.liferay.portal.security.permission.InlineSQLHelperUtil;
 import com.liferay.portal.service.ServiceContext;
 import com.liferay.portal.service.ServiceContextThreadLocal;
 import com.liferay.portal.service.persistence.impl.BasePersistenceImpl;
+import com.liferay.portal.service.persistence.impl.ServiceCompanyProvider;
 
 import com.liferay.wiki.exception.NoSuchPageException;
 import com.liferay.wiki.model.WikiPage;
@@ -21273,6 +21275,8 @@ public class WikiPagePersistenceImpl extends BasePersistenceImpl<WikiPage>
 
 		wikiPage.setUuid(uuid);
 
+		wikiPage.setCompanyId(serviceCompanyProvider.getCompanyId());
+
 		return wikiPage;
 	}
 
@@ -21364,6 +21368,8 @@ public class WikiPagePersistenceImpl extends BasePersistenceImpl<WikiPage>
 		wikiPage = toUnwrappedModel(wikiPage);
 
 		boolean isNew = wikiPage.isNew();
+
+		wikiPage.setCompanyId(serviceCompanyProvider.getCompanyId());
 
 		WikiPageModelImpl wikiPageModelImpl = (WikiPageModelImpl)wikiPage;
 
@@ -22094,7 +22100,6 @@ public class WikiPagePersistenceImpl extends BasePersistenceImpl<WikiPage>
 		wikiPageImpl.setPageId(wikiPage.getPageId());
 		wikiPageImpl.setResourcePrimKey(wikiPage.getResourcePrimKey());
 		wikiPageImpl.setGroupId(wikiPage.getGroupId());
-		wikiPageImpl.setCompanyId(wikiPage.getCompanyId());
 		wikiPageImpl.setUserId(wikiPage.getUserId());
 		wikiPageImpl.setUserName(wikiPage.getUserName());
 		wikiPageImpl.setCreateDate(wikiPage.getCreateDate());
@@ -22114,6 +22119,7 @@ public class WikiPagePersistenceImpl extends BasePersistenceImpl<WikiPage>
 		wikiPageImpl.setStatusByUserId(wikiPage.getStatusByUserId());
 		wikiPageImpl.setStatusByUserName(wikiPage.getStatusByUserName());
 		wikiPageImpl.setStatusDate(wikiPage.getStatusDate());
+		wikiPageImpl.setCompanyId(wikiPage.getCompanyId());
 
 		return wikiPageImpl;
 	}
@@ -22492,6 +22498,8 @@ public class WikiPagePersistenceImpl extends BasePersistenceImpl<WikiPage>
 		FinderCacheUtil.removeCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
 	}
 
+	@BeanReference(type = ServiceCompanyProvider.class)
+	protected ServiceCompanyProvider serviceCompanyProvider;
 	private static final String _SQL_SELECT_WIKIPAGE = "SELECT wikiPage FROM WikiPage wikiPage";
 	private static final String _SQL_SELECT_WIKIPAGE_WHERE_PKS_IN = "SELECT wikiPage FROM WikiPage wikiPage WHERE pageId IN (";
 	private static final String _SQL_SELECT_WIKIPAGE_WHERE = "SELECT wikiPage FROM WikiPage wikiPage WHERE ";

@@ -17,6 +17,7 @@ package com.liferay.portal.service.persistence.impl;
 import aQute.bnd.annotation.ProviderType;
 
 import com.liferay.portal.NoSuchUserNotificationEventException;
+import com.liferay.portal.kernel.bean.BeanReference;
 import com.liferay.portal.kernel.dao.orm.EntityCacheUtil;
 import com.liferay.portal.kernel.dao.orm.FinderCacheUtil;
 import com.liferay.portal.kernel.dao.orm.FinderPath;
@@ -6824,6 +6825,8 @@ public class UserNotificationEventPersistenceImpl extends BasePersistenceImpl<Us
 
 		userNotificationEvent.setUuid(uuid);
 
+		userNotificationEvent.setCompanyId(serviceCompanyProvider.getCompanyId());
+
 		return userNotificationEvent;
 	}
 
@@ -6919,6 +6922,8 @@ public class UserNotificationEventPersistenceImpl extends BasePersistenceImpl<Us
 		userNotificationEvent = toUnwrappedModel(userNotificationEvent);
 
 		boolean isNew = userNotificationEvent.isNew();
+
+		userNotificationEvent.setCompanyId(serviceCompanyProvider.getCompanyId());
 
 		UserNotificationEventModelImpl userNotificationEventModelImpl = (UserNotificationEventModelImpl)userNotificationEvent;
 
@@ -7240,7 +7245,6 @@ public class UserNotificationEventPersistenceImpl extends BasePersistenceImpl<Us
 		userNotificationEventImpl.setMvccVersion(userNotificationEvent.getMvccVersion());
 		userNotificationEventImpl.setUuid(userNotificationEvent.getUuid());
 		userNotificationEventImpl.setUserNotificationEventId(userNotificationEvent.getUserNotificationEventId());
-		userNotificationEventImpl.setCompanyId(userNotificationEvent.getCompanyId());
 		userNotificationEventImpl.setUserId(userNotificationEvent.getUserId());
 		userNotificationEventImpl.setType(userNotificationEvent.getType());
 		userNotificationEventImpl.setTimestamp(userNotificationEvent.getTimestamp());
@@ -7250,6 +7254,7 @@ public class UserNotificationEventPersistenceImpl extends BasePersistenceImpl<Us
 		userNotificationEventImpl.setPayload(userNotificationEvent.getPayload());
 		userNotificationEventImpl.setActionRequired(userNotificationEvent.isActionRequired());
 		userNotificationEventImpl.setArchived(userNotificationEvent.isArchived());
+		userNotificationEventImpl.setCompanyId(userNotificationEvent.getCompanyId());
 
 		return userNotificationEventImpl;
 	}
@@ -7633,6 +7638,8 @@ public class UserNotificationEventPersistenceImpl extends BasePersistenceImpl<Us
 		FinderCacheUtil.removeCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
 	}
 
+	@BeanReference(type = ServiceCompanyProvider.class)
+	protected ServiceCompanyProvider serviceCompanyProvider;
 	private static final String _SQL_SELECT_USERNOTIFICATIONEVENT = "SELECT userNotificationEvent FROM UserNotificationEvent userNotificationEvent";
 	private static final String _SQL_SELECT_USERNOTIFICATIONEVENT_WHERE_PKS_IN = "SELECT userNotificationEvent FROM UserNotificationEvent userNotificationEvent WHERE userNotificationEventId IN (";
 	private static final String _SQL_SELECT_USERNOTIFICATIONEVENT_WHERE = "SELECT userNotificationEvent FROM UserNotificationEvent userNotificationEvent WHERE ";

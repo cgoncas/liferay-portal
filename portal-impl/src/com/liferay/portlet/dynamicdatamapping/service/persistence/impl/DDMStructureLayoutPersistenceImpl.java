@@ -16,6 +16,7 @@ package com.liferay.portlet.dynamicdatamapping.service.persistence.impl;
 
 import aQute.bnd.annotation.ProviderType;
 
+import com.liferay.portal.kernel.bean.BeanReference;
 import com.liferay.portal.kernel.dao.orm.EntityCacheUtil;
 import com.liferay.portal.kernel.dao.orm.FinderCacheUtil;
 import com.liferay.portal.kernel.dao.orm.FinderPath;
@@ -35,6 +36,7 @@ import com.liferay.portal.model.CacheModel;
 import com.liferay.portal.service.ServiceContext;
 import com.liferay.portal.service.ServiceContextThreadLocal;
 import com.liferay.portal.service.persistence.impl.BasePersistenceImpl;
+import com.liferay.portal.service.persistence.impl.ServiceCompanyProvider;
 
 import com.liferay.portlet.dynamicdatamapping.NoSuchStructureLayoutException;
 import com.liferay.portlet.dynamicdatamapping.model.DDMStructureLayout;
@@ -1843,6 +1845,8 @@ public class DDMStructureLayoutPersistenceImpl extends BasePersistenceImpl<DDMSt
 
 		ddmStructureLayout.setUuid(uuid);
 
+		ddmStructureLayout.setCompanyId(serviceCompanyProvider.getCompanyId());
+
 		return ddmStructureLayout;
 	}
 
@@ -1937,6 +1941,8 @@ public class DDMStructureLayoutPersistenceImpl extends BasePersistenceImpl<DDMSt
 		ddmStructureLayout = toUnwrappedModel(ddmStructureLayout);
 
 		boolean isNew = ddmStructureLayout.isNew();
+
+		ddmStructureLayout.setCompanyId(serviceCompanyProvider.getCompanyId());
 
 		DDMStructureLayoutModelImpl ddmStructureLayoutModelImpl = (DDMStructureLayoutModelImpl)ddmStructureLayout;
 
@@ -2063,13 +2069,13 @@ public class DDMStructureLayoutPersistenceImpl extends BasePersistenceImpl<DDMSt
 		ddmStructureLayoutImpl.setUuid(ddmStructureLayout.getUuid());
 		ddmStructureLayoutImpl.setStructureLayoutId(ddmStructureLayout.getStructureLayoutId());
 		ddmStructureLayoutImpl.setGroupId(ddmStructureLayout.getGroupId());
-		ddmStructureLayoutImpl.setCompanyId(ddmStructureLayout.getCompanyId());
 		ddmStructureLayoutImpl.setUserId(ddmStructureLayout.getUserId());
 		ddmStructureLayoutImpl.setUserName(ddmStructureLayout.getUserName());
 		ddmStructureLayoutImpl.setCreateDate(ddmStructureLayout.getCreateDate());
 		ddmStructureLayoutImpl.setModifiedDate(ddmStructureLayout.getModifiedDate());
 		ddmStructureLayoutImpl.setStructureVersionId(ddmStructureLayout.getStructureVersionId());
 		ddmStructureLayoutImpl.setDefinition(ddmStructureLayout.getDefinition());
+		ddmStructureLayoutImpl.setCompanyId(ddmStructureLayout.getCompanyId());
 
 		return ddmStructureLayoutImpl;
 	}
@@ -2453,6 +2459,8 @@ public class DDMStructureLayoutPersistenceImpl extends BasePersistenceImpl<DDMSt
 		FinderCacheUtil.removeCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
 	}
 
+	@BeanReference(type = ServiceCompanyProvider.class)
+	protected ServiceCompanyProvider serviceCompanyProvider;
 	private static final String _SQL_SELECT_DDMSTRUCTURELAYOUT = "SELECT ddmStructureLayout FROM DDMStructureLayout ddmStructureLayout";
 	private static final String _SQL_SELECT_DDMSTRUCTURELAYOUT_WHERE_PKS_IN = "SELECT ddmStructureLayout FROM DDMStructureLayout ddmStructureLayout WHERE structureLayoutId IN (";
 	private static final String _SQL_SELECT_DDMSTRUCTURELAYOUT_WHERE = "SELECT ddmStructureLayout FROM DDMStructureLayout ddmStructureLayout WHERE ";

@@ -16,6 +16,7 @@ package com.liferay.portlet.social.service.persistence.impl;
 
 import aQute.bnd.annotation.ProviderType;
 
+import com.liferay.portal.kernel.bean.BeanReference;
 import com.liferay.portal.kernel.dao.orm.EntityCacheUtil;
 import com.liferay.portal.kernel.dao.orm.FinderCacheUtil;
 import com.liferay.portal.kernel.dao.orm.FinderPath;
@@ -31,6 +32,7 @@ import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.model.CacheModel;
 import com.liferay.portal.service.persistence.impl.BasePersistenceImpl;
+import com.liferay.portal.service.persistence.impl.ServiceCompanyProvider;
 
 import com.liferay.portlet.social.NoSuchActivityAchievementException;
 import com.liferay.portlet.social.model.SocialActivityAchievement;
@@ -3212,6 +3214,8 @@ public class SocialActivityAchievementPersistenceImpl
 		socialActivityAchievement.setNew(true);
 		socialActivityAchievement.setPrimaryKey(activityAchievementId);
 
+		socialActivityAchievement.setCompanyId(serviceCompanyProvider.getCompanyId());
+
 		return socialActivityAchievement;
 	}
 
@@ -3307,6 +3311,8 @@ public class SocialActivityAchievementPersistenceImpl
 		socialActivityAchievement = toUnwrappedModel(socialActivityAchievement);
 
 		boolean isNew = socialActivityAchievement.isNew();
+
+		socialActivityAchievement.setCompanyId(serviceCompanyProvider.getCompanyId());
 
 		SocialActivityAchievementModelImpl socialActivityAchievementModelImpl = (SocialActivityAchievementModelImpl)socialActivityAchievement;
 
@@ -3471,11 +3477,11 @@ public class SocialActivityAchievementPersistenceImpl
 
 		socialActivityAchievementImpl.setActivityAchievementId(socialActivityAchievement.getActivityAchievementId());
 		socialActivityAchievementImpl.setGroupId(socialActivityAchievement.getGroupId());
-		socialActivityAchievementImpl.setCompanyId(socialActivityAchievement.getCompanyId());
 		socialActivityAchievementImpl.setUserId(socialActivityAchievement.getUserId());
 		socialActivityAchievementImpl.setCreateDate(socialActivityAchievement.getCreateDate());
 		socialActivityAchievementImpl.setName(socialActivityAchievement.getName());
 		socialActivityAchievementImpl.setFirstInGroup(socialActivityAchievement.isFirstInGroup());
+		socialActivityAchievementImpl.setCompanyId(socialActivityAchievement.getCompanyId());
 
 		return socialActivityAchievementImpl;
 	}
@@ -3855,6 +3861,8 @@ public class SocialActivityAchievementPersistenceImpl
 		FinderCacheUtil.removeCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
 	}
 
+	@BeanReference(type = ServiceCompanyProvider.class)
+	protected ServiceCompanyProvider serviceCompanyProvider;
 	private static final String _SQL_SELECT_SOCIALACTIVITYACHIEVEMENT = "SELECT socialActivityAchievement FROM SocialActivityAchievement socialActivityAchievement";
 	private static final String _SQL_SELECT_SOCIALACTIVITYACHIEVEMENT_WHERE_PKS_IN =
 		"SELECT socialActivityAchievement FROM SocialActivityAchievement socialActivityAchievement WHERE activityAchievementId IN (";

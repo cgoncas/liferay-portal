@@ -121,8 +121,6 @@ public class DDMTemplatePersistenceTest {
 
 		newDDMTemplate.setGroupId(RandomTestUtil.nextLong());
 
-		newDDMTemplate.setCompanyId(RandomTestUtil.nextLong());
-
 		newDDMTemplate.setUserId(RandomTestUtil.nextLong());
 
 		newDDMTemplate.setUserName(RandomTestUtil.randomString());
@@ -167,6 +165,8 @@ public class DDMTemplatePersistenceTest {
 
 		newDDMTemplate.setLastPublishDate(RandomTestUtil.nextDate());
 
+		newDDMTemplate.setCompanyId(RandomTestUtil.nextLong());
+
 		_ddmTemplates.add(_persistence.update(newDDMTemplate));
 
 		DDMTemplate existingDDMTemplate = _persistence.findByPrimaryKey(newDDMTemplate.getPrimaryKey());
@@ -177,8 +177,6 @@ public class DDMTemplatePersistenceTest {
 			newDDMTemplate.getTemplateId());
 		Assert.assertEquals(existingDDMTemplate.getGroupId(),
 			newDDMTemplate.getGroupId());
-		Assert.assertEquals(existingDDMTemplate.getCompanyId(),
-			newDDMTemplate.getCompanyId());
 		Assert.assertEquals(existingDDMTemplate.getUserId(),
 			newDDMTemplate.getUserId());
 		Assert.assertEquals(existingDDMTemplate.getUserName(),
@@ -226,6 +224,8 @@ public class DDMTemplatePersistenceTest {
 		Assert.assertEquals(Time.getShortTimestamp(
 				existingDDMTemplate.getLastPublishDate()),
 			Time.getShortTimestamp(newDDMTemplate.getLastPublishDate()));
+		Assert.assertEquals(existingDDMTemplate.getCompanyId(),
+			newDDMTemplate.getCompanyId());
 	}
 
 	@Test
@@ -412,14 +412,14 @@ public class DDMTemplatePersistenceTest {
 
 	protected OrderByComparator<DDMTemplate> getOrderByComparator() {
 		return OrderByComparatorFactoryUtil.create("DDMTemplate", "uuid", true,
-			"templateId", true, "groupId", true, "companyId", true, "userId",
-			true, "userName", true, "versionUserId", true, "versionUserName",
-			true, "createDate", true, "modifiedDate", true, "classNameId",
-			true, "classPK", true, "resourceClassNameId", true, "templateKey",
-			true, "version", true, "name", true, "description", true, "type",
-			true, "mode", true, "language", true, "script", true, "cacheable",
-			true, "smallImage", true, "smallImageId", true, "smallImageURL",
-			true, "lastPublishDate", true);
+			"templateId", true, "groupId", true, "userId", true, "userName",
+			true, "versionUserId", true, "versionUserName", true, "createDate",
+			true, "modifiedDate", true, "classNameId", true, "classPK", true,
+			"resourceClassNameId", true, "templateKey", true, "version", true,
+			"name", true, "description", true, "type", true, "mode", true,
+			"language", true, "script", true, "cacheable", true, "smallImage",
+			true, "smallImageId", true, "smallImageURL", true,
+			"lastPublishDate", true, "companyId", true);
 	}
 
 	@Test
@@ -656,8 +656,6 @@ public class DDMTemplatePersistenceTest {
 
 		ddmTemplate.setGroupId(RandomTestUtil.nextLong());
 
-		ddmTemplate.setCompanyId(RandomTestUtil.nextLong());
-
 		ddmTemplate.setUserId(RandomTestUtil.nextLong());
 
 		ddmTemplate.setUserName(RandomTestUtil.randomString());
@@ -701,6 +699,8 @@ public class DDMTemplatePersistenceTest {
 		ddmTemplate.setSmallImageURL(RandomTestUtil.randomString());
 
 		ddmTemplate.setLastPublishDate(RandomTestUtil.nextDate());
+
+		ddmTemplate.setCompanyId(RandomTestUtil.nextLong());
 
 		_ddmTemplates.add(_persistence.update(ddmTemplate));
 

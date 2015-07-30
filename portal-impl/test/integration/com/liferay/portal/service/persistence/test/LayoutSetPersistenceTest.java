@@ -119,8 +119,6 @@ public class LayoutSetPersistenceTest {
 
 		newLayoutSet.setGroupId(RandomTestUtil.nextLong());
 
-		newLayoutSet.setCompanyId(RandomTestUtil.nextLong());
-
 		newLayoutSet.setCreateDate(RandomTestUtil.nextDate());
 
 		newLayoutSet.setModifiedDate(RandomTestUtil.nextDate());
@@ -147,6 +145,8 @@ public class LayoutSetPersistenceTest {
 
 		newLayoutSet.setLayoutSetPrototypeLinkEnabled(RandomTestUtil.randomBoolean());
 
+		newLayoutSet.setCompanyId(RandomTestUtil.nextLong());
+
 		_layoutSets.add(_persistence.update(newLayoutSet));
 
 		LayoutSet existingLayoutSet = _persistence.findByPrimaryKey(newLayoutSet.getPrimaryKey());
@@ -157,8 +157,6 @@ public class LayoutSetPersistenceTest {
 			newLayoutSet.getLayoutSetId());
 		Assert.assertEquals(existingLayoutSet.getGroupId(),
 			newLayoutSet.getGroupId());
-		Assert.assertEquals(existingLayoutSet.getCompanyId(),
-			newLayoutSet.getCompanyId());
 		Assert.assertEquals(Time.getShortTimestamp(
 				existingLayoutSet.getCreateDate()),
 			Time.getShortTimestamp(newLayoutSet.getCreateDate()));
@@ -186,6 +184,8 @@ public class LayoutSetPersistenceTest {
 			newLayoutSet.getLayoutSetPrototypeUuid());
 		Assert.assertEquals(existingLayoutSet.getLayoutSetPrototypeLinkEnabled(),
 			newLayoutSet.getLayoutSetPrototypeLinkEnabled());
+		Assert.assertEquals(existingLayoutSet.getCompanyId(),
+			newLayoutSet.getCompanyId());
 	}
 
 	@Test
@@ -236,12 +236,12 @@ public class LayoutSetPersistenceTest {
 
 	protected OrderByComparator<LayoutSet> getOrderByComparator() {
 		return OrderByComparatorFactoryUtil.create("LayoutSet", "mvccVersion",
-			true, "layoutSetId", true, "groupId", true, "companyId", true,
-			"createDate", true, "modifiedDate", true, "privateLayout", true,
-			"logoId", true, "themeId", true, "colorSchemeId", true,
-			"wapThemeId", true, "wapColorSchemeId", true, "css", true,
-			"pageCount", true, "settings", true, "layoutSetPrototypeUuid",
-			true, "layoutSetPrototypeLinkEnabled", true);
+			true, "layoutSetId", true, "groupId", true, "createDate", true,
+			"modifiedDate", true, "privateLayout", true, "logoId", true,
+			"themeId", true, "colorSchemeId", true, "wapThemeId", true,
+			"wapColorSchemeId", true, "css", true, "pageCount", true,
+			"settings", true, "layoutSetPrototypeUuid", true,
+			"layoutSetPrototypeLinkEnabled", true, "companyId", true);
 	}
 
 	@Test
@@ -463,8 +463,6 @@ public class LayoutSetPersistenceTest {
 
 		layoutSet.setGroupId(RandomTestUtil.nextLong());
 
-		layoutSet.setCompanyId(RandomTestUtil.nextLong());
-
 		layoutSet.setCreateDate(RandomTestUtil.nextDate());
 
 		layoutSet.setModifiedDate(RandomTestUtil.nextDate());
@@ -490,6 +488,8 @@ public class LayoutSetPersistenceTest {
 		layoutSet.setLayoutSetPrototypeUuid(RandomTestUtil.randomString());
 
 		layoutSet.setLayoutSetPrototypeLinkEnabled(RandomTestUtil.randomBoolean());
+
+		layoutSet.setCompanyId(RandomTestUtil.nextLong());
 
 		_layoutSets.add(_persistence.update(layoutSet));
 

@@ -17,6 +17,7 @@ package com.liferay.portal.service.persistence.impl;
 import aQute.bnd.annotation.ProviderType;
 
 import com.liferay.portal.NoSuchVirtualHostException;
+import com.liferay.portal.kernel.bean.BeanReference;
 import com.liferay.portal.kernel.dao.orm.EntityCacheUtil;
 import com.liferay.portal.kernel.dao.orm.FinderCacheUtil;
 import com.liferay.portal.kernel.dao.orm.FinderPath;
@@ -728,6 +729,8 @@ public class VirtualHostPersistenceImpl extends BasePersistenceImpl<VirtualHost>
 		virtualHost.setNew(true);
 		virtualHost.setPrimaryKey(virtualHostId);
 
+		virtualHost.setCompanyId(serviceCompanyProvider.getCompanyId());
+
 		return virtualHost;
 	}
 
@@ -821,6 +824,8 @@ public class VirtualHostPersistenceImpl extends BasePersistenceImpl<VirtualHost>
 		virtualHost = toUnwrappedModel(virtualHost);
 
 		boolean isNew = virtualHost.isNew();
+
+		virtualHost.setCompanyId(serviceCompanyProvider.getCompanyId());
 
 		Session session = null;
 
@@ -1251,6 +1256,8 @@ public class VirtualHostPersistenceImpl extends BasePersistenceImpl<VirtualHost>
 		FinderCacheUtil.removeCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
 	}
 
+	@BeanReference(type = ServiceCompanyProvider.class)
+	protected ServiceCompanyProvider serviceCompanyProvider;
 	private static final String _SQL_SELECT_VIRTUALHOST = "SELECT virtualHost FROM VirtualHost virtualHost";
 	private static final String _SQL_SELECT_VIRTUALHOST_WHERE_PKS_IN = "SELECT virtualHost FROM VirtualHost virtualHost WHERE virtualHostId IN (";
 	private static final String _SQL_SELECT_VIRTUALHOST_WHERE = "SELECT virtualHost FROM VirtualHost virtualHost WHERE ";
