@@ -412,6 +412,10 @@ public class ${entity.name}PersistenceImpl extends BasePersistenceImpl<${entity.
 			${entity.varName}.setUuid(uuid);
 		</#if>
 
+		<#if entity.isPartitionable()>
+			${entity.varName}.setCompanyId(compayProvider.getCompanyId());
+		</#if>
+
 		return ${entity.varName};
 	}
 
@@ -1694,6 +1698,11 @@ public class ${entity.name}PersistenceImpl extends BasePersistenceImpl<${entity.
 			protected TableMapper<${entity.name}, ${tempEntity.packagePath}.model.${tempEntity.name}> ${entity.varName}To${tempEntity.name}TableMapper;
 		</#if>
 	</#list>
+
+	<#if entity.isPartitionable()>
+		@BeanReference(type = CompanyProvider.class)
+		protected CompanyProvider compayProvider;
+	</#if>
 
 	<#if entity.isHierarchicalTree()>
 		protected NestedSetsTreeManager<${entity.name}> nestedSetsTreeManager = new PersistenceNestedSetsTreeManager<${entity.name}>(this, "${entity.table}", "${entity.name}", ${entity.name}Impl.class, "${pkColumn.DBName}", "${scopeColumn.DBName}", "left${pkColumn.methodName}", "right${pkColumn.methodName}");
