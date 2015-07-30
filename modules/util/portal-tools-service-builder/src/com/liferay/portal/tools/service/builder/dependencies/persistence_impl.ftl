@@ -75,6 +75,7 @@ import com.liferay.portal.service.ServiceContextThreadLocal;
 import com.liferay.portal.service.persistence.impl.BasePersistenceImpl;
 import com.liferay.portal.service.persistence.impl.NestedSetsTreeManager;
 import com.liferay.portal.service.persistence.impl.PersistenceNestedSetsTreeManager;
+import com.liferay.portal.service.persistence.impl.ServiceCompanyProvider;
 import com.liferay.portal.service.persistence.impl.TableMapper;
 import com.liferay.portal.service.persistence.impl.TableMapperFactory;
 
@@ -412,8 +413,8 @@ public class ${entity.name}PersistenceImpl extends BasePersistenceImpl<${entity.
 			${entity.varName}.setUuid(uuid);
 		</#if>
 
-		<#if entity.isPartitionable()>
-			${entity.varName}.setCompanyId(compayProvider.getCompanyId());
+		<#if entity.isPartitionableModel()>
+			${entity.varName}.setCompanyId(serviceCompanyProvider.getCompanyId());
 		</#if>
 
 		return ${entity.varName};
@@ -534,6 +535,10 @@ public class ${entity.name}PersistenceImpl extends BasePersistenceImpl<${entity.
 
 		<#if entity.isHierarchicalTree()>
 			<#assign castEntityModelImpl = true>
+		</#if>
+
+		<#if entity.isPartitionableModel()>
+			${entity.varName}.setCompanyId(serviceCompanyProvider.getCompanyId());
 		</#if>
 
 		<#if collectionFinderList?size != 0>
@@ -1682,6 +1687,7 @@ public class ${entity.name}PersistenceImpl extends BasePersistenceImpl<${entity.
 		FinderCacheUtil.removeCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
 		FinderCacheUtil.removeCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
 
+
 		<#list entity.columnList as column>
 			<#if column.isCollection() && column.isMappingManyToMany()>
 				TableMapperFactory.removeTableMapper("${column.mappingTable}");
@@ -1699,10 +1705,25 @@ public class ${entity.name}PersistenceImpl extends BasePersistenceImpl<${entity.
 		</#if>
 	</#list>
 
-	<#if entity.isPartitionable()>
-		@BeanReference(type = CompanyProvider.class)
-		protected CompanyProvider compayProvider;
+	<#if entity.isPartitionableModel()>
+		@BeanReference(type = ServiceCompanyProvider.class)
+		protected ServiceCompanyProvider serviceCompanyProvider;
+	<#else>
+		<#assign isMappeable = false>
+
+		<#list entity.columnList as column>
+			<#if column.isCollection() && column.isMappingManyToMany()>
+				<#assign isMappeable = true>
+			</#if>
+		</#list>
+
+		<#if isMappeable>
+			@BeanReference(type = ServiceCompanyProvider.class)
+			protected ServiceCompanyProvider serviceCompanyProvider;
+		</#if>
 	</#if>
+
+
 
 	<#if entity.isHierarchicalTree()>
 		protected NestedSetsTreeManager<${entity.name}> nestedSetsTreeManager = new PersistenceNestedSetsTreeManager<${entity.name}>(this, "${entity.table}", "${entity.name}", ${entity.name}Impl.class, "${pkColumn.DBName}", "${scopeColumn.DBName}", "left${pkColumn.methodName}", "right${pkColumn.methodName}");
