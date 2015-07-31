@@ -126,8 +126,6 @@ public class DDLRecordPersistenceTest {
 
 		newDDLRecord.setGroupId(RandomTestUtil.nextLong());
 
-		newDDLRecord.setCompanyId(RandomTestUtil.nextLong());
-
 		newDDLRecord.setUserId(RandomTestUtil.nextLong());
 
 		newDDLRecord.setUserName(RandomTestUtil.randomString());
@@ -148,6 +146,8 @@ public class DDLRecordPersistenceTest {
 
 		newDDLRecord.setDisplayIndex(RandomTestUtil.nextInt());
 
+		newDDLRecord.setCompanyId(RandomTestUtil.nextLong());
+
 		_ddlRecords.add(_persistence.update(newDDLRecord));
 
 		DDLRecord existingDDLRecord = _persistence.findByPrimaryKey(newDDLRecord.getPrimaryKey());
@@ -157,8 +157,6 @@ public class DDLRecordPersistenceTest {
 			newDDLRecord.getRecordId());
 		Assert.assertEquals(existingDDLRecord.getGroupId(),
 			newDDLRecord.getGroupId());
-		Assert.assertEquals(existingDDLRecord.getCompanyId(),
-			newDDLRecord.getCompanyId());
 		Assert.assertEquals(existingDDLRecord.getUserId(),
 			newDDLRecord.getUserId());
 		Assert.assertEquals(existingDDLRecord.getUserName(),
@@ -181,6 +179,8 @@ public class DDLRecordPersistenceTest {
 			newDDLRecord.getVersion());
 		Assert.assertEquals(existingDDLRecord.getDisplayIndex(),
 			newDDLRecord.getDisplayIndex());
+		Assert.assertEquals(existingDDLRecord.getCompanyId(),
+			newDDLRecord.getCompanyId());
 	}
 
 	@Test
@@ -211,17 +211,17 @@ public class DDLRecordPersistenceTest {
 	}
 
 	@Test
-	public void testCountByCompanyId() throws Exception {
-		_persistence.countByCompanyId(RandomTestUtil.nextLong());
-
-		_persistence.countByCompanyId(0L);
-	}
-
-	@Test
 	public void testCountByRecordSetId() throws Exception {
 		_persistence.countByRecordSetId(RandomTestUtil.nextLong());
 
 		_persistence.countByRecordSetId(0L);
+	}
+
+	@Test
+	public void testCountByCompanyId() throws Exception {
+		_persistence.countByCompanyId(RandomTestUtil.nextLong());
+
+		_persistence.countByCompanyId(0L);
 	}
 
 	@Test
@@ -256,10 +256,10 @@ public class DDLRecordPersistenceTest {
 
 	protected OrderByComparator<DDLRecord> getOrderByComparator() {
 		return OrderByComparatorFactoryUtil.create("DDLRecord", "uuid", true,
-			"recordId", true, "groupId", true, "companyId", true, "userId",
-			true, "userName", true, "versionUserId", true, "versionUserName",
-			true, "createDate", true, "modifiedDate", true, "DDMStorageId",
-			true, "recordSetId", true, "version", true, "displayIndex", true);
+			"recordId", true, "groupId", true, "userId", true, "userName",
+			true, "versionUserId", true, "versionUserName", true, "createDate",
+			true, "modifiedDate", true, "DDMStorageId", true, "recordSetId",
+			true, "version", true, "displayIndex", true, "companyId", true);
 	}
 
 	@Test
@@ -481,8 +481,6 @@ public class DDLRecordPersistenceTest {
 
 		ddlRecord.setGroupId(RandomTestUtil.nextLong());
 
-		ddlRecord.setCompanyId(RandomTestUtil.nextLong());
-
 		ddlRecord.setUserId(RandomTestUtil.nextLong());
 
 		ddlRecord.setUserName(RandomTestUtil.randomString());
@@ -502,6 +500,8 @@ public class DDLRecordPersistenceTest {
 		ddlRecord.setVersion(RandomTestUtil.randomString());
 
 		ddlRecord.setDisplayIndex(RandomTestUtil.nextInt());
+
+		ddlRecord.setCompanyId(RandomTestUtil.nextLong());
 
 		_ddlRecords.add(_persistence.update(ddlRecord));
 

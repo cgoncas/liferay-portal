@@ -16,6 +16,7 @@ package com.liferay.portlet.asset.service.persistence.impl;
 
 import aQute.bnd.annotation.ProviderType;
 
+import com.liferay.portal.kernel.bean.BeanReference;
 import com.liferay.portal.kernel.dao.orm.EntityCacheUtil;
 import com.liferay.portal.kernel.dao.orm.FinderCacheUtil;
 import com.liferay.portal.kernel.dao.orm.FinderPath;
@@ -40,6 +41,7 @@ import com.liferay.portal.security.permission.InlineSQLHelperUtil;
 import com.liferay.portal.service.ServiceContext;
 import com.liferay.portal.service.ServiceContextThreadLocal;
 import com.liferay.portal.service.persistence.impl.BasePersistenceImpl;
+import com.liferay.portal.service.persistence.impl.ServiceCompanyProvider;
 
 import com.liferay.portlet.asset.NoSuchVocabularyException;
 import com.liferay.portlet.asset.model.AssetVocabulary;
@@ -4610,6 +4612,8 @@ public class AssetVocabularyPersistenceImpl extends BasePersistenceImpl<AssetVoc
 
 		assetVocabulary.setUuid(uuid);
 
+		assetVocabulary.setCompanyId(serviceCompanyProvider.getCompanyId());
+
 		return assetVocabulary;
 	}
 
@@ -4703,6 +4707,8 @@ public class AssetVocabularyPersistenceImpl extends BasePersistenceImpl<AssetVoc
 		assetVocabulary = toUnwrappedModel(assetVocabulary);
 
 		boolean isNew = assetVocabulary.isNew();
+
+		assetVocabulary.setCompanyId(serviceCompanyProvider.getCompanyId());
 
 		AssetVocabularyModelImpl assetVocabularyModelImpl = (AssetVocabularyModelImpl)assetVocabulary;
 
@@ -4863,7 +4869,6 @@ public class AssetVocabularyPersistenceImpl extends BasePersistenceImpl<AssetVoc
 		assetVocabularyImpl.setUuid(assetVocabulary.getUuid());
 		assetVocabularyImpl.setVocabularyId(assetVocabulary.getVocabularyId());
 		assetVocabularyImpl.setGroupId(assetVocabulary.getGroupId());
-		assetVocabularyImpl.setCompanyId(assetVocabulary.getCompanyId());
 		assetVocabularyImpl.setUserId(assetVocabulary.getUserId());
 		assetVocabularyImpl.setUserName(assetVocabulary.getUserName());
 		assetVocabularyImpl.setCreateDate(assetVocabulary.getCreateDate());
@@ -4873,6 +4878,7 @@ public class AssetVocabularyPersistenceImpl extends BasePersistenceImpl<AssetVoc
 		assetVocabularyImpl.setDescription(assetVocabulary.getDescription());
 		assetVocabularyImpl.setSettings(assetVocabulary.getSettings());
 		assetVocabularyImpl.setLastPublishDate(assetVocabulary.getLastPublishDate());
+		assetVocabularyImpl.setCompanyId(assetVocabulary.getCompanyId());
 
 		return assetVocabularyImpl;
 	}
@@ -5254,6 +5260,8 @@ public class AssetVocabularyPersistenceImpl extends BasePersistenceImpl<AssetVoc
 		FinderCacheUtil.removeCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
 	}
 
+	@BeanReference(type = ServiceCompanyProvider.class)
+	protected ServiceCompanyProvider serviceCompanyProvider;
 	private static final String _SQL_SELECT_ASSETVOCABULARY = "SELECT assetVocabulary FROM AssetVocabulary assetVocabulary";
 	private static final String _SQL_SELECT_ASSETVOCABULARY_WHERE_PKS_IN = "SELECT assetVocabulary FROM AssetVocabulary assetVocabulary WHERE vocabularyId IN (";
 	private static final String _SQL_SELECT_ASSETVOCABULARY_WHERE = "SELECT assetVocabulary FROM AssetVocabulary assetVocabulary WHERE ";

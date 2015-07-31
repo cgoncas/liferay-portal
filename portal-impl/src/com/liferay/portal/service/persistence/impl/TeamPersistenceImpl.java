@@ -2677,6 +2677,8 @@ public class TeamPersistenceImpl extends BasePersistenceImpl<Team>
 
 		team.setUuid(uuid);
 
+		team.setCompanyId(serviceCompanyProvider.getCompanyId());
+
 		return team;
 	}
 
@@ -2770,6 +2772,8 @@ public class TeamPersistenceImpl extends BasePersistenceImpl<Team>
 		team = toUnwrappedModel(team);
 
 		boolean isNew = team.isNew();
+
+		team.setCompanyId(serviceCompanyProvider.getCompanyId());
 
 		TeamModelImpl teamModelImpl = (TeamModelImpl)team;
 
@@ -2904,7 +2908,6 @@ public class TeamPersistenceImpl extends BasePersistenceImpl<Team>
 		teamImpl.setMvccVersion(team.getMvccVersion());
 		teamImpl.setUuid(team.getUuid());
 		teamImpl.setTeamId(team.getTeamId());
-		teamImpl.setCompanyId(team.getCompanyId());
 		teamImpl.setUserId(team.getUserId());
 		teamImpl.setUserName(team.getUserName());
 		teamImpl.setCreateDate(team.getCreateDate());
@@ -2912,6 +2915,7 @@ public class TeamPersistenceImpl extends BasePersistenceImpl<Team>
 		teamImpl.setGroupId(team.getGroupId());
 		teamImpl.setName(team.getName());
 		teamImpl.setDescription(team.getDescription());
+		teamImpl.setCompanyId(team.getCompanyId());
 
 		return teamImpl;
 	}
@@ -3812,10 +3816,12 @@ public class TeamPersistenceImpl extends BasePersistenceImpl<Team>
 	 */
 	public void afterPropertiesSet() {
 		teamToUserTableMapper = TableMapperFactory.getTableMapper("Users_Teams",
-				"teamId", "userId", this, userPersistence);
+				"teamId", "userId", this, userPersistence,
+				serviceCompanyProvider);
 
 		teamToUserGroupTableMapper = TableMapperFactory.getTableMapper("UserGroups_Teams",
-				"teamId", "userGroupId", this, userGroupPersistence);
+				"teamId", "userGroupId", this, userGroupPersistence,
+				serviceCompanyProvider);
 	}
 
 	public void destroy() {
@@ -3834,6 +3840,8 @@ public class TeamPersistenceImpl extends BasePersistenceImpl<Team>
 	@BeanReference(type = UserGroupPersistence.class)
 	protected UserGroupPersistence userGroupPersistence;
 	protected TableMapper<Team, com.liferay.portal.model.UserGroup> teamToUserGroupTableMapper;
+	@BeanReference(type = ServiceCompanyProvider.class)
+	protected ServiceCompanyProvider serviceCompanyProvider;
 	private static final String _SQL_SELECT_TEAM = "SELECT team FROM Team team";
 	private static final String _SQL_SELECT_TEAM_WHERE_PKS_IN = "SELECT team FROM Team team WHERE teamId IN (";
 	private static final String _SQL_SELECT_TEAM_WHERE = "SELECT team FROM Team team WHERE ";

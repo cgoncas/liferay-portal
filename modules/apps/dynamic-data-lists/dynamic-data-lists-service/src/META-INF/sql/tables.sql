@@ -2,7 +2,6 @@ create table DDLRecord (
 	uuid_ VARCHAR(75) null,
 	recordId LONG not null primary key,
 	groupId LONG,
-	companyId LONG,
 	userId LONG,
 	userName VARCHAR(75) null,
 	versionUserId LONG,
@@ -12,14 +11,14 @@ create table DDLRecord (
 	DDMStorageId LONG,
 	recordSetId LONG,
 	version VARCHAR(75) null,
-	displayIndex INTEGER
+	displayIndex INTEGER,
+	companyId LONG
 );
 
 create table DDLRecordSet (
 	uuid_ VARCHAR(75) null,
 	recordSetId LONG not null primary key,
 	groupId LONG,
-	companyId LONG,
 	userId LONG,
 	userName VARCHAR(75) null,
 	createDate DATE null,
@@ -29,13 +28,13 @@ create table DDLRecordSet (
 	name STRING null,
 	description STRING null,
 	minDisplayRows INTEGER,
-	scope INTEGER
+	scope INTEGER,
+	companyId LONG
 );
 
 create table DDLRecordVersion (
 	recordVersionId LONG not null primary key,
 	groupId LONG,
-	companyId LONG,
 	userId LONG,
 	userName VARCHAR(75) null,
 	createDate DATE null,
@@ -47,5 +46,6 @@ create table DDLRecordVersion (
 	status INTEGER,
 	statusByUserId LONG,
 	statusByUserName VARCHAR(75) null,
-	statusDate DATE null
+	statusDate DATE null,
+	companyId LONG
 );

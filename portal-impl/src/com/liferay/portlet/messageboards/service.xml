@@ -15,7 +15,6 @@
 
 		<!-- Audit fields -->
 
-		<column name="companyId" type="long" />
 		<column name="userId" type="long" />
 		<column name="userName" type="String" />
 		<column name="createDate" type="Date" />
@@ -59,7 +58,6 @@
 
 		<!-- Audit fields -->
 
-		<column name="companyId" type="long" />
 		<column name="userId" type="long" />
 		<column name="userName" type="String" />
 		<column name="createDate" type="Date" />
@@ -152,7 +150,6 @@
 
 		<!-- Audit fields -->
 
-		<column name="companyId" type="long" />
 		<column name="userId" type="long" />
 		<column name="userName" type="String" />
 		<column name="createDate" type="Date" />
@@ -199,7 +196,6 @@
 
 		<!-- Audit fields -->
 
-		<column name="companyId" type="long" />
 		<column name="userId" type="long" />
 		<column name="userName" type="String" />
 		<column name="createDate" type="Date" />
@@ -252,7 +248,6 @@
 
 		<!-- Audit fields -->
 
-		<column name="companyId" type="long" />
 		<column name="userId" type="long" />
 		<column name="userName" type="String" />
 		<column name="createDate" type="Date" />
@@ -291,9 +286,6 @@
 		<finder name="GroupId" return-type="Collection" where="categoryId != -1">
 			<finder-column name="groupId" />
 		</finder>
-		<finder name="CompanyId" return-type="Collection" where="categoryId != -1">
-			<finder-column name="companyId" />
-		</finder>
 		<finder name="UserId" return-type="Collection" where="categoryId != -1">
 			<finder-column name="userId" />
 		</finder>
@@ -302,6 +294,9 @@
 		</finder>
 		<finder name="ThreadReplies" return-type="Collection" where="parentMessageId != 0" db-index="false">
 			<finder-column name="threadId" />
+		</finder>
+		<finder name="CompanyId" return-type="Collection" where="categoryId != -1">
+			<finder-column name="companyId" />
 		</finder>
 		<finder name="G_U" return-type="Collection" where="(categoryId != -1) AND (anonymous = [$FALSE$])">
 			<finder-column name="groupId" />
@@ -313,10 +308,6 @@
 		</finder>
 		<finder name="G_S" return-type="Collection" where="categoryId != -1">
 			<finder-column name="groupId" />
-			<finder-column name="status" />
-		</finder>
-		<finder name="C_S" return-type="Collection" where="categoryId != -1">
-			<finder-column name="companyId" />
 			<finder-column name="status" />
 		</finder>
 		<finder name="U_C" return-type="Collection">
@@ -341,6 +332,10 @@
 		</finder>
 		<finder name="TR_S" return-type="Collection" where="parentMessageId != 0" db-index="false">
 			<finder-column name="threadId" />
+			<finder-column name="status" />
+		</finder>
+		<finder name="C_S" return-type="Collection" where="categoryId != -1">
+			<finder-column name="companyId" />
 			<finder-column name="status" />
 		</finder>
 		<finder name="G_U_S" return-type="Collection" where="categoryId != -1">
@@ -476,7 +471,6 @@
 
 		<!-- Audit fields -->
 
-		<column name="companyId" type="long" />
 		<column name="userId" type="long" />
 		<column name="userName" type="String" />
 		<column name="createDate" type="Date" />
@@ -588,7 +582,6 @@
 
 		<!-- Audit fields -->
 
-		<column name="companyId" type="long" />
 		<column name="userId" type="long" />
 		<column name="userName" type="String" />
 		<column name="createDate" type="Date" />

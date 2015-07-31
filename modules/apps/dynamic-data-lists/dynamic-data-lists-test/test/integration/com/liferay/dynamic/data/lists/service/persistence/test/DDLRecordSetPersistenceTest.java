@@ -126,8 +126,6 @@ public class DDLRecordSetPersistenceTest {
 
 		newDDLRecordSet.setGroupId(RandomTestUtil.nextLong());
 
-		newDDLRecordSet.setCompanyId(RandomTestUtil.nextLong());
-
 		newDDLRecordSet.setUserId(RandomTestUtil.nextLong());
 
 		newDDLRecordSet.setUserName(RandomTestUtil.randomString());
@@ -148,6 +146,8 @@ public class DDLRecordSetPersistenceTest {
 
 		newDDLRecordSet.setScope(RandomTestUtil.nextInt());
 
+		newDDLRecordSet.setCompanyId(RandomTestUtil.nextLong());
+
 		_ddlRecordSets.add(_persistence.update(newDDLRecordSet));
 
 		DDLRecordSet existingDDLRecordSet = _persistence.findByPrimaryKey(newDDLRecordSet.getPrimaryKey());
@@ -158,8 +158,6 @@ public class DDLRecordSetPersistenceTest {
 			newDDLRecordSet.getRecordSetId());
 		Assert.assertEquals(existingDDLRecordSet.getGroupId(),
 			newDDLRecordSet.getGroupId());
-		Assert.assertEquals(existingDDLRecordSet.getCompanyId(),
-			newDDLRecordSet.getCompanyId());
 		Assert.assertEquals(existingDDLRecordSet.getUserId(),
 			newDDLRecordSet.getUserId());
 		Assert.assertEquals(existingDDLRecordSet.getUserName(),
@@ -182,6 +180,8 @@ public class DDLRecordSetPersistenceTest {
 			newDDLRecordSet.getMinDisplayRows());
 		Assert.assertEquals(existingDDLRecordSet.getScope(),
 			newDDLRecordSet.getScope());
+		Assert.assertEquals(existingDDLRecordSet.getCompanyId(),
+			newDDLRecordSet.getCompanyId());
 	}
 
 	@Test
@@ -262,11 +262,11 @@ public class DDLRecordSetPersistenceTest {
 
 	protected OrderByComparator<DDLRecordSet> getOrderByComparator() {
 		return OrderByComparatorFactoryUtil.create("DDLRecordSet", "uuid",
-			true, "recordSetId", true, "groupId", true, "companyId", true,
-			"userId", true, "userName", true, "createDate", true,
-			"modifiedDate", true, "DDMStructureId", true, "recordSetKey", true,
-			"name", true, "description", true, "minDisplayRows", true, "scope",
-			true);
+			true, "recordSetId", true, "groupId", true, "userId", true,
+			"userName", true, "createDate", true, "modifiedDate", true,
+			"DDMStructureId", true, "recordSetKey", true, "name", true,
+			"description", true, "minDisplayRows", true, "scope", true,
+			"companyId", true);
 	}
 
 	@Test
@@ -496,8 +496,6 @@ public class DDLRecordSetPersistenceTest {
 
 		ddlRecordSet.setGroupId(RandomTestUtil.nextLong());
 
-		ddlRecordSet.setCompanyId(RandomTestUtil.nextLong());
-
 		ddlRecordSet.setUserId(RandomTestUtil.nextLong());
 
 		ddlRecordSet.setUserName(RandomTestUtil.randomString());
@@ -517,6 +515,8 @@ public class DDLRecordSetPersistenceTest {
 		ddlRecordSet.setMinDisplayRows(RandomTestUtil.nextInt());
 
 		ddlRecordSet.setScope(RandomTestUtil.nextInt());
+
+		ddlRecordSet.setCompanyId(RandomTestUtil.nextLong());
 
 		_ddlRecordSets.add(_persistence.update(ddlRecordSet));
 

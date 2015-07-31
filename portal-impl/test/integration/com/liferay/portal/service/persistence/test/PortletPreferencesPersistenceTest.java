@@ -127,6 +127,8 @@ public class PortletPreferencesPersistenceTest {
 
 		newPortletPreferences.setPreferences(RandomTestUtil.randomString());
 
+		newPortletPreferences.setCompanyId(RandomTestUtil.nextLong());
+
 		_portletPreferenceses.add(_persistence.update(newPortletPreferences));
 
 		PortletPreferences existingPortletPreferences = _persistence.findByPrimaryKey(newPortletPreferences.getPrimaryKey());
@@ -145,6 +147,8 @@ public class PortletPreferencesPersistenceTest {
 			newPortletPreferences.getPortletId());
 		Assert.assertEquals(existingPortletPreferences.getPreferences(),
 			newPortletPreferences.getPreferences());
+		Assert.assertEquals(existingPortletPreferences.getCompanyId(),
+			newPortletPreferences.getCompanyId());
 	}
 
 	@Test
@@ -246,7 +250,7 @@ public class PortletPreferencesPersistenceTest {
 		return OrderByComparatorFactoryUtil.create("PortletPreferences",
 			"mvccVersion", true, "portletPreferencesId", true, "ownerId", true,
 			"ownerType", true, "plid", true, "portletId", true, "preferences",
-			true);
+			true, "companyId", true);
 	}
 
 	@Test
@@ -486,6 +490,8 @@ public class PortletPreferencesPersistenceTest {
 		portletPreferences.setPortletId(RandomTestUtil.randomString());
 
 		portletPreferences.setPreferences(RandomTestUtil.randomString());
+
+		portletPreferences.setCompanyId(RandomTestUtil.nextLong());
 
 		_portletPreferenceses.add(_persistence.update(portletPreferences));
 

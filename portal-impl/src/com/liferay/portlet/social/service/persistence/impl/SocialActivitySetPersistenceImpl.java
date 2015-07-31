@@ -16,6 +16,7 @@ package com.liferay.portlet.social.service.persistence.impl;
 
 import aQute.bnd.annotation.ProviderType;
 
+import com.liferay.portal.kernel.bean.BeanReference;
 import com.liferay.portal.kernel.dao.orm.EntityCacheUtil;
 import com.liferay.portal.kernel.dao.orm.FinderCacheUtil;
 import com.liferay.portal.kernel.dao.orm.FinderPath;
@@ -31,6 +32,7 @@ import com.liferay.portal.kernel.util.StringBundler;
 import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.model.CacheModel;
 import com.liferay.portal.service.persistence.impl.BasePersistenceImpl;
+import com.liferay.portal.service.persistence.impl.ServiceCompanyProvider;
 
 import com.liferay.portlet.social.NoSuchActivitySetException;
 import com.liferay.portlet.social.model.SocialActivitySet;
@@ -3458,6 +3460,8 @@ public class SocialActivitySetPersistenceImpl extends BasePersistenceImpl<Social
 		socialActivitySet.setNew(true);
 		socialActivitySet.setPrimaryKey(activitySetId);
 
+		socialActivitySet.setCompanyId(serviceCompanyProvider.getCompanyId());
+
 		return socialActivitySet;
 	}
 
@@ -3551,6 +3555,8 @@ public class SocialActivitySetPersistenceImpl extends BasePersistenceImpl<Social
 		socialActivitySet = toUnwrappedModel(socialActivitySet);
 
 		boolean isNew = socialActivitySet.isNew();
+
+		socialActivitySet.setCompanyId(serviceCompanyProvider.getCompanyId());
 
 		SocialActivitySetModelImpl socialActivitySetModelImpl = (SocialActivitySetModelImpl)socialActivitySet;
 
@@ -3735,7 +3741,6 @@ public class SocialActivitySetPersistenceImpl extends BasePersistenceImpl<Social
 
 		socialActivitySetImpl.setActivitySetId(socialActivitySet.getActivitySetId());
 		socialActivitySetImpl.setGroupId(socialActivitySet.getGroupId());
-		socialActivitySetImpl.setCompanyId(socialActivitySet.getCompanyId());
 		socialActivitySetImpl.setUserId(socialActivitySet.getUserId());
 		socialActivitySetImpl.setCreateDate(socialActivitySet.getCreateDate());
 		socialActivitySetImpl.setModifiedDate(socialActivitySet.getModifiedDate());
@@ -3744,6 +3749,7 @@ public class SocialActivitySetPersistenceImpl extends BasePersistenceImpl<Social
 		socialActivitySetImpl.setType(socialActivitySet.getType());
 		socialActivitySetImpl.setExtraData(socialActivitySet.getExtraData());
 		socialActivitySetImpl.setActivityCount(socialActivitySet.getActivityCount());
+		socialActivitySetImpl.setCompanyId(socialActivitySet.getCompanyId());
 
 		return socialActivitySetImpl;
 	}
@@ -4126,6 +4132,8 @@ public class SocialActivitySetPersistenceImpl extends BasePersistenceImpl<Social
 		FinderCacheUtil.removeCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
 	}
 
+	@BeanReference(type = ServiceCompanyProvider.class)
+	protected ServiceCompanyProvider serviceCompanyProvider;
 	private static final String _SQL_SELECT_SOCIALACTIVITYSET = "SELECT socialActivitySet FROM SocialActivitySet socialActivitySet";
 	private static final String _SQL_SELECT_SOCIALACTIVITYSET_WHERE_PKS_IN = "SELECT socialActivitySet FROM SocialActivitySet socialActivitySet WHERE activitySetId IN (";
 	private static final String _SQL_SELECT_SOCIALACTIVITYSET_WHERE = "SELECT socialActivitySet FROM SocialActivitySet socialActivitySet WHERE ";

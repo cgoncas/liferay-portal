@@ -39,7 +39,8 @@ import java.util.Date;
  * @generated
  */
 @ProviderType
-public interface TeamModel extends BaseModel<Team>, MVCCModel, StagedGroupedModel {
+public interface TeamModel extends BaseModel<Team>, MVCCModel, PartitionableModel,
+	StagedGroupedModel {
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
@@ -106,22 +107,6 @@ public interface TeamModel extends BaseModel<Team>, MVCCModel, StagedGroupedMode
 	 * @param teamId the team ID of this team
 	 */
 	public void setTeamId(long teamId);
-
-	/**
-	 * Returns the company ID of this team.
-	 *
-	 * @return the company ID of this team
-	 */
-	@Override
-	public long getCompanyId();
-
-	/**
-	 * Sets the company ID of this team.
-	 *
-	 * @param companyId the company ID of this team
-	 */
-	@Override
-	public void setCompanyId(long companyId);
 
 	/**
 	 * Returns the user ID of this team.
@@ -249,6 +234,22 @@ public interface TeamModel extends BaseModel<Team>, MVCCModel, StagedGroupedMode
 	 * @param description the description of this team
 	 */
 	public void setDescription(String description);
+
+	/**
+	 * Returns the company ID of this team.
+	 *
+	 * @return the company ID of this team
+	 */
+	@Override
+	public long getCompanyId();
+
+	/**
+	 * Sets the company ID of this team.
+	 *
+	 * @param companyId the company ID of this team
+	 */
+	@Override
+	public void setCompanyId(long companyId);
 
 	@Override
 	public boolean isNew();

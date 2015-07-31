@@ -58,7 +58,6 @@ public class DDLRecordSetWrapper implements DDLRecordSet,
 		attributes.put("uuid", getUuid());
 		attributes.put("recordSetId", getRecordSetId());
 		attributes.put("groupId", getGroupId());
-		attributes.put("companyId", getCompanyId());
 		attributes.put("userId", getUserId());
 		attributes.put("userName", getUserName());
 		attributes.put("createDate", getCreateDate());
@@ -69,6 +68,7 @@ public class DDLRecordSetWrapper implements DDLRecordSet,
 		attributes.put("description", getDescription());
 		attributes.put("minDisplayRows", getMinDisplayRows());
 		attributes.put("scope", getScope());
+		attributes.put("companyId", getCompanyId());
 
 		return attributes;
 	}
@@ -91,12 +91,6 @@ public class DDLRecordSetWrapper implements DDLRecordSet,
 
 		if (groupId != null) {
 			setGroupId(groupId);
-		}
-
-		Long companyId = (Long)attributes.get("companyId");
-
-		if (companyId != null) {
-			setCompanyId(companyId);
 		}
 
 		Long userId = (Long)attributes.get("userId");
@@ -157,6 +151,12 @@ public class DDLRecordSetWrapper implements DDLRecordSet,
 
 		if (scope != null) {
 			setScope(scope);
+		}
+
+		Long companyId = (Long)attributes.get("companyId");
+
+		if (companyId != null) {
+			setCompanyId(companyId);
 		}
 	}
 

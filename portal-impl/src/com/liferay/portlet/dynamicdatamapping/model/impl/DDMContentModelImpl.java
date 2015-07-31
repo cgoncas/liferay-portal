@@ -77,14 +77,14 @@ public class DDMContentModelImpl extends BaseModelImpl<DDMContent>
 			{ "uuid_", Types.VARCHAR },
 			{ "contentId", Types.BIGINT },
 			{ "groupId", Types.BIGINT },
-			{ "companyId", Types.BIGINT },
 			{ "userId", Types.BIGINT },
 			{ "userName", Types.VARCHAR },
 			{ "createDate", Types.TIMESTAMP },
 			{ "modifiedDate", Types.TIMESTAMP },
 			{ "name", Types.VARCHAR },
 			{ "description", Types.VARCHAR },
-			{ "data_", Types.CLOB }
+			{ "data_", Types.CLOB },
+			{ "companyId", Types.BIGINT }
 		};
 	public static final Map<String, Integer> TABLE_COLUMNS_MAP = new HashMap<String, Integer>();
 
@@ -92,7 +92,6 @@ public class DDMContentModelImpl extends BaseModelImpl<DDMContent>
 		TABLE_COLUMNS_MAP.put("uuid_", Types.VARCHAR);
 		TABLE_COLUMNS_MAP.put("contentId", Types.BIGINT);
 		TABLE_COLUMNS_MAP.put("groupId", Types.BIGINT);
-		TABLE_COLUMNS_MAP.put("companyId", Types.BIGINT);
 		TABLE_COLUMNS_MAP.put("userId", Types.BIGINT);
 		TABLE_COLUMNS_MAP.put("userName", Types.VARCHAR);
 		TABLE_COLUMNS_MAP.put("createDate", Types.TIMESTAMP);
@@ -100,9 +99,10 @@ public class DDMContentModelImpl extends BaseModelImpl<DDMContent>
 		TABLE_COLUMNS_MAP.put("name", Types.VARCHAR);
 		TABLE_COLUMNS_MAP.put("description", Types.VARCHAR);
 		TABLE_COLUMNS_MAP.put("data_", Types.CLOB);
+		TABLE_COLUMNS_MAP.put("companyId", Types.BIGINT);
 	}
 
-	public static final String TABLE_SQL_CREATE = "create table DDMContent (uuid_ VARCHAR(75) null,contentId LONG not null primary key,groupId LONG,companyId LONG,userId LONG,userName VARCHAR(75) null,createDate DATE null,modifiedDate DATE null,name STRING null,description STRING null,data_ TEXT null)";
+	public static final String TABLE_SQL_CREATE = "create table DDMContent (uuid_ VARCHAR(75) null,contentId LONG not null primary key,groupId LONG,userId LONG,userName VARCHAR(75) null,createDate DATE null,modifiedDate DATE null,name STRING null,description STRING null,data_ TEXT null,companyId LONG)";
 	public static final String TABLE_SQL_DROP = "drop table DDMContent";
 	public static final String ORDER_BY_JPQL = " ORDER BY ddmContent.contentId ASC";
 	public static final String ORDER_BY_SQL = " ORDER BY DDMContent.contentId ASC";
@@ -165,7 +165,6 @@ public class DDMContentModelImpl extends BaseModelImpl<DDMContent>
 		attributes.put("uuid", getUuid());
 		attributes.put("contentId", getContentId());
 		attributes.put("groupId", getGroupId());
-		attributes.put("companyId", getCompanyId());
 		attributes.put("userId", getUserId());
 		attributes.put("userName", getUserName());
 		attributes.put("createDate", getCreateDate());
@@ -173,6 +172,7 @@ public class DDMContentModelImpl extends BaseModelImpl<DDMContent>
 		attributes.put("name", getName());
 		attributes.put("description", getDescription());
 		attributes.put("data", getData());
+		attributes.put("companyId", getCompanyId());
 
 		attributes.put("entityCacheEnabled", isEntityCacheEnabled());
 		attributes.put("finderCacheEnabled", isFinderCacheEnabled());
@@ -198,12 +198,6 @@ public class DDMContentModelImpl extends BaseModelImpl<DDMContent>
 
 		if (groupId != null) {
 			setGroupId(groupId);
-		}
-
-		Long companyId = (Long)attributes.get("companyId");
-
-		if (companyId != null) {
-			setCompanyId(companyId);
 		}
 
 		Long userId = (Long)attributes.get("userId");
@@ -246,6 +240,12 @@ public class DDMContentModelImpl extends BaseModelImpl<DDMContent>
 
 		if (data != null) {
 			setData(data);
+		}
+
+		Long companyId = (Long)attributes.get("companyId");
+
+		if (companyId != null) {
+			setCompanyId(companyId);
 		}
 	}
 
@@ -302,28 +302,6 @@ public class DDMContentModelImpl extends BaseModelImpl<DDMContent>
 
 	public long getOriginalGroupId() {
 		return _originalGroupId;
-	}
-
-	@Override
-	public long getCompanyId() {
-		return _companyId;
-	}
-
-	@Override
-	public void setCompanyId(long companyId) {
-		_columnBitmask |= COMPANYID_COLUMN_BITMASK;
-
-		if (!_setOriginalCompanyId) {
-			_setOriginalCompanyId = true;
-
-			_originalCompanyId = _companyId;
-		}
-
-		_companyId = companyId;
-	}
-
-	public long getOriginalCompanyId() {
-		return _originalCompanyId;
 	}
 
 	@Override
@@ -522,6 +500,28 @@ public class DDMContentModelImpl extends BaseModelImpl<DDMContent>
 	}
 
 	@Override
+	public long getCompanyId() {
+		return _companyId;
+	}
+
+	@Override
+	public void setCompanyId(long companyId) {
+		_columnBitmask |= COMPANYID_COLUMN_BITMASK;
+
+		if (!_setOriginalCompanyId) {
+			_setOriginalCompanyId = true;
+
+			_originalCompanyId = _companyId;
+		}
+
+		_companyId = companyId;
+	}
+
+	public long getOriginalCompanyId() {
+		return _originalCompanyId;
+	}
+
+	@Override
 	public StagedModelType getStagedModelType() {
 		return new StagedModelType(PortalUtil.getClassNameId(
 				DDMContent.class.getName()));
@@ -622,7 +622,6 @@ public class DDMContentModelImpl extends BaseModelImpl<DDMContent>
 		ddmContentImpl.setUuid(getUuid());
 		ddmContentImpl.setContentId(getContentId());
 		ddmContentImpl.setGroupId(getGroupId());
-		ddmContentImpl.setCompanyId(getCompanyId());
 		ddmContentImpl.setUserId(getUserId());
 		ddmContentImpl.setUserName(getUserName());
 		ddmContentImpl.setCreateDate(getCreateDate());
@@ -630,6 +629,7 @@ public class DDMContentModelImpl extends BaseModelImpl<DDMContent>
 		ddmContentImpl.setName(getName());
 		ddmContentImpl.setDescription(getDescription());
 		ddmContentImpl.setData(getData());
+		ddmContentImpl.setCompanyId(getCompanyId());
 
 		ddmContentImpl.resetOriginalValues();
 
@@ -698,11 +698,11 @@ public class DDMContentModelImpl extends BaseModelImpl<DDMContent>
 
 		ddmContentModelImpl._setOriginalGroupId = false;
 
+		ddmContentModelImpl._setModifiedDate = false;
+
 		ddmContentModelImpl._originalCompanyId = ddmContentModelImpl._companyId;
 
 		ddmContentModelImpl._setOriginalCompanyId = false;
-
-		ddmContentModelImpl._setModifiedDate = false;
 
 		ddmContentModelImpl._columnBitmask = 0;
 	}
@@ -722,8 +722,6 @@ public class DDMContentModelImpl extends BaseModelImpl<DDMContent>
 		ddmContentCacheModel.contentId = getContentId();
 
 		ddmContentCacheModel.groupId = getGroupId();
-
-		ddmContentCacheModel.companyId = getCompanyId();
 
 		ddmContentCacheModel.userId = getUserId();
 
@@ -777,6 +775,8 @@ public class DDMContentModelImpl extends BaseModelImpl<DDMContent>
 			ddmContentCacheModel.data = null;
 		}
 
+		ddmContentCacheModel.companyId = getCompanyId();
+
 		return ddmContentCacheModel;
 	}
 
@@ -790,8 +790,6 @@ public class DDMContentModelImpl extends BaseModelImpl<DDMContent>
 		sb.append(getContentId());
 		sb.append(", groupId=");
 		sb.append(getGroupId());
-		sb.append(", companyId=");
-		sb.append(getCompanyId());
 		sb.append(", userId=");
 		sb.append(getUserId());
 		sb.append(", userName=");
@@ -806,6 +804,8 @@ public class DDMContentModelImpl extends BaseModelImpl<DDMContent>
 		sb.append(getDescription());
 		sb.append(", data=");
 		sb.append(getData());
+		sb.append(", companyId=");
+		sb.append(getCompanyId());
 		sb.append("}");
 
 		return sb.toString();
@@ -830,10 +830,6 @@ public class DDMContentModelImpl extends BaseModelImpl<DDMContent>
 		sb.append(
 			"<column><column-name>groupId</column-name><column-value><![CDATA[");
 		sb.append(getGroupId());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>companyId</column-name><column-value><![CDATA[");
-		sb.append(getCompanyId());
 		sb.append("]]></column-value></column>");
 		sb.append(
 			"<column><column-name>userId</column-name><column-value><![CDATA[");
@@ -863,6 +859,10 @@ public class DDMContentModelImpl extends BaseModelImpl<DDMContent>
 			"<column><column-name>data</column-name><column-value><![CDATA[");
 		sb.append(getData());
 		sb.append("]]></column-value></column>");
+		sb.append(
+			"<column><column-name>companyId</column-name><column-value><![CDATA[");
+		sb.append(getCompanyId());
+		sb.append("]]></column-value></column>");
 
 		sb.append("</model>");
 
@@ -879,9 +879,6 @@ public class DDMContentModelImpl extends BaseModelImpl<DDMContent>
 	private long _groupId;
 	private long _originalGroupId;
 	private boolean _setOriginalGroupId;
-	private long _companyId;
-	private long _originalCompanyId;
-	private boolean _setOriginalCompanyId;
 	private long _userId;
 	private String _userName;
 	private Date _createDate;
@@ -891,6 +888,9 @@ public class DDMContentModelImpl extends BaseModelImpl<DDMContent>
 	private String _nameCurrentLanguageId;
 	private String _description;
 	private String _data;
+	private long _companyId;
+	private long _originalCompanyId;
+	private boolean _setOriginalCompanyId;
 	private long _columnBitmask;
 	private DDMContent _escapedModel;
 }

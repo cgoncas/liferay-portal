@@ -19,6 +19,7 @@ import aQute.bnd.annotation.ProviderType;
 import com.liferay.portal.kernel.bean.AutoEscape;
 import com.liferay.portal.model.BaseModel;
 import com.liferay.portal.model.CacheModel;
+import com.liferay.portal.model.PartitionableModel;
 import com.liferay.portal.model.StagedGroupedModel;
 import com.liferay.portal.service.ServiceContext;
 
@@ -43,7 +44,7 @@ import java.util.Date;
  */
 @ProviderType
 public interface DDMStructureLayoutModel extends BaseModel<DDMStructureLayout>,
-	StagedGroupedModel {
+	PartitionableModel, StagedGroupedModel {
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
@@ -110,22 +111,6 @@ public interface DDMStructureLayoutModel extends BaseModel<DDMStructureLayout>,
 	 */
 	@Override
 	public void setGroupId(long groupId);
-
-	/**
-	 * Returns the company ID of this d d m structure layout.
-	 *
-	 * @return the company ID of this d d m structure layout
-	 */
-	@Override
-	public long getCompanyId();
-
-	/**
-	 * Sets the company ID of this d d m structure layout.
-	 *
-	 * @param companyId the company ID of this d d m structure layout
-	 */
-	@Override
-	public void setCompanyId(long companyId);
 
 	/**
 	 * Returns the user ID of this d d m structure layout.
@@ -236,6 +221,22 @@ public interface DDMStructureLayoutModel extends BaseModel<DDMStructureLayout>,
 	 * @param definition the definition of this d d m structure layout
 	 */
 	public void setDefinition(String definition);
+
+	/**
+	 * Returns the company ID of this d d m structure layout.
+	 *
+	 * @return the company ID of this d d m structure layout
+	 */
+	@Override
+	public long getCompanyId();
+
+	/**
+	 * Sets the company ID of this d d m structure layout.
+	 *
+	 * @param companyId the company ID of this d d m structure layout
+	 */
+	@Override
+	public void setCompanyId(long companyId);
 
 	@Override
 	public boolean isNew();

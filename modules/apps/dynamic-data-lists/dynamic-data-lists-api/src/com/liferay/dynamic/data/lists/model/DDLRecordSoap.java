@@ -37,7 +37,6 @@ public class DDLRecordSoap implements Serializable {
 		soapModel.setUuid(model.getUuid());
 		soapModel.setRecordId(model.getRecordId());
 		soapModel.setGroupId(model.getGroupId());
-		soapModel.setCompanyId(model.getCompanyId());
 		soapModel.setUserId(model.getUserId());
 		soapModel.setUserName(model.getUserName());
 		soapModel.setVersionUserId(model.getVersionUserId());
@@ -48,6 +47,7 @@ public class DDLRecordSoap implements Serializable {
 		soapModel.setRecordSetId(model.getRecordSetId());
 		soapModel.setVersion(model.getVersion());
 		soapModel.setDisplayIndex(model.getDisplayIndex());
+		soapModel.setCompanyId(model.getCompanyId());
 
 		return soapModel;
 	}
@@ -122,14 +122,6 @@ public class DDLRecordSoap implements Serializable {
 
 	public void setGroupId(long groupId) {
 		_groupId = groupId;
-	}
-
-	public long getCompanyId() {
-		return _companyId;
-	}
-
-	public void setCompanyId(long companyId) {
-		_companyId = companyId;
 	}
 
 	public long getUserId() {
@@ -212,10 +204,17 @@ public class DDLRecordSoap implements Serializable {
 		_displayIndex = displayIndex;
 	}
 
+	public long getCompanyId() {
+		return _companyId;
+	}
+
+	public void setCompanyId(long companyId) {
+		_companyId = companyId;
+	}
+
 	private String _uuid;
 	private long _recordId;
 	private long _groupId;
-	private long _companyId;
 	private long _userId;
 	private String _userName;
 	private long _versionUserId;
@@ -226,4 +225,5 @@ public class DDLRecordSoap implements Serializable {
 	private long _recordSetId;
 	private String _version;
 	private int _displayIndex;
+	private long _companyId;
 }
