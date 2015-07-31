@@ -63,6 +63,8 @@ public class BookmarksServiceVerifyProcessTest
 
 	@Before
 	public void setUp() throws Exception {
+		super.setUp();
+
 		ServiceTestUtil.setUser(TestPropsValues.getUser());
 
 		_group = GroupTestUtil.addGroup();

@@ -52,6 +52,8 @@ public class JournalServiceVerifyProcessTest extends BaseVerifyProcessTestCase {
 
 	@Before
 	public void setUp() throws Exception {
+		super.setUp();
+
 		_group = GroupTestUtil.addGroup();
 	}
 

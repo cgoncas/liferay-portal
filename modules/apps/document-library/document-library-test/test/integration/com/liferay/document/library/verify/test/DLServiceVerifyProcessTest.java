@@ -100,6 +100,8 @@ public class DLServiceVerifyProcessTest extends BaseVerifyProcessTestCase {
 
 	@Before
 	public void setUp() throws Exception {
+		super.setUp();
+
 		setUpPermissionThreadLocal();
 		setUpPrincipalThreadLocal();
 

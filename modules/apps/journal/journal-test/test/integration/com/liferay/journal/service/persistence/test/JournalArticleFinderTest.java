@@ -43,6 +43,7 @@ import com.liferay.portal.kernel.test.util.TestPropsValues;
 import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.kernel.workflow.WorkflowConstants;
 import com.liferay.portal.model.Group;
+import com.liferay.portal.security.auth.CompanyThreadLocal;
 import com.liferay.portal.test.rule.LiferayIntegrationTestRule;
 import com.liferay.portal.util.PortalUtil;
 
@@ -84,6 +85,10 @@ public class JournalArticleFinderTest {
 
 	@Before
 	public void setUp() throws Exception {
+		_previousCompanyId = CompanyThreadLocal.getCompanyId();
+
+		CompanyThreadLocal.setCompanyId(TestPropsValues.getCompanyId());
+
 		_group = GroupTestUtil.addGroup();
 
 		_ddmStructure = DDMStructureTestUtil.addStructure(
@@ -171,6 +176,8 @@ public class JournalArticleFinderTest {
 	@After
 	public void tearDown() {
 		_bundleContext.ungetService(_serviceReference);
+
+		CompanyThreadLocal.setCompanyId(_previousCompanyId);
 	}
 
 	@Test
@@ -589,6 +596,8 @@ public class JournalArticleFinderTest {
 	}
 
 	private static final long _USER_ID = 1234L;
+
+	private static long _previousCompanyId;
 
 	private JournalArticle _article;
 	private final List<JournalArticle> _articles = new ArrayList<>();

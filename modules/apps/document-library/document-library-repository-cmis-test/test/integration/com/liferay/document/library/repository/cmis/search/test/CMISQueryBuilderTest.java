@@ -29,6 +29,7 @@ import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.UnicodeProperties;
 import com.liferay.portal.model.Repository;
 import com.liferay.portal.model.RepositoryEntry;
+import com.liferay.portal.security.auth.CompanyThreadLocal;
 import com.liferay.portal.service.ClassNameLocalServiceUtil;
 import com.liferay.portal.service.RepositoryEntryLocalServiceUtil;
 import com.liferay.portal.service.RepositoryLocalServiceUtil;
@@ -39,6 +40,7 @@ import com.liferay.portlet.documentlibrary.model.DLFolderConstants;
 
 import org.apache.chemistry.opencmis.commons.enums.CapabilityQuery;
 
+import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.ClassRule;
@@ -59,6 +61,10 @@ public class CMISQueryBuilderTest {
 
 	@Before
 	public void setUp() throws Exception {
+		_previousCompanyId = CompanyThreadLocal.getCompanyId();
+
+		CompanyThreadLocal.setCompanyId(TestPropsValues.getCompanyId());
+
 		ServiceTestUtil.setUser(TestPropsValues.getUser());
 
 		ServiceContext serviceContext =
@@ -87,6 +93,11 @@ public class CMISQueryBuilderTest {
 		_repositoryEntry.setMappedId(_MAPPED_ID);
 
 		RepositoryEntryLocalServiceUtil.addRepositoryEntry(_repositoryEntry);
+	}
+
+	@After
+	public void tearDown() throws Exception {
+		CompanyThreadLocal.setCompanyId(_previousCompanyId);
 	}
 
 	@Test
@@ -485,6 +496,7 @@ public class CMISQueryBuilderTest {
 
 	private final CMISSearchQueryBuilder _cmisSearchQueryBuilder =
 		new BaseCmisSearchQueryBuilder();
+	private long _previousCompanyId;
 
 	@DeleteAfterTestRun
 	private Repository _repository;

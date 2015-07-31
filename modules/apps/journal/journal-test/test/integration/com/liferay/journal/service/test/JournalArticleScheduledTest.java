@@ -39,6 +39,7 @@ import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.kernel.util.Time;
 import com.liferay.portal.kernel.workflow.WorkflowConstants;
 import com.liferay.portal.model.Group;
+import com.liferay.portal.security.auth.CompanyThreadLocal;
 import com.liferay.portal.service.ServiceContext;
 import com.liferay.portal.service.test.ServiceTestUtil;
 import com.liferay.portal.test.rule.LiferayIntegrationTestRule;
@@ -76,6 +77,10 @@ public class JournalArticleScheduledTest {
 
 	@Before
 	public void setUp() throws Exception {
+		_previousCompanyId = CompanyThreadLocal.getCompanyId();
+
+		CompanyThreadLocal.setCompanyId(TestPropsValues.getCompanyId());
+
 		_group = GroupTestUtil.addGroup();
 
 		_testMode = PortalRunMode.isTestMode();
@@ -88,6 +93,8 @@ public class JournalArticleScheduledTest {
 	@After
 	public void tearDown() {
 		PortalRunMode.setTestMode(_testMode);
+
+		CompanyThreadLocal.setCompanyId(_previousCompanyId);
 	}
 
 	@Test
@@ -221,6 +228,8 @@ public class JournalArticleScheduledTest {
 	private static final int _WHEN_FUTURE = 1;
 
 	private static final int _WHEN_PAST = -1;
+
+	private static long _previousCompanyId;
 
 	@DeleteAfterTestRun
 	private Group _group;

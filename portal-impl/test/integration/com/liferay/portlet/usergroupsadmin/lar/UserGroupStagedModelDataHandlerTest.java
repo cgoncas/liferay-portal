@@ -49,13 +49,13 @@ public class UserGroupStagedModelDataHandlerTest
 	@After
 	@Override
 	public void tearDown() throws Exception {
-		super.tearDown();
-
 		if (_userGroup != null) {
 			_userGroup =
 				UserGroupLocalServiceUtil.fetchUserGroupByUuidAndCompanyId(
 					_userGroup.getUuid(), _userGroup.getCompanyId());
 		}
+
+		super.tearDown();
 	}
 
 	@Override
