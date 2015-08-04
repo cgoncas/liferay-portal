@@ -17,11 +17,13 @@ package com.liferay.portal.lar.test;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.test.rule.DeleteAfterTestRun;
 import com.liferay.portal.kernel.test.util.GroupTestUtil;
+import com.liferay.portal.kernel.test.util.TestPropsValues;
 import com.liferay.portal.kernel.util.DateUtil;
 import com.liferay.portal.kernel.util.FileUtil;
 import com.liferay.portal.model.Group;
 import com.liferay.portal.model.Layout;
 import com.liferay.portal.model.StagedModel;
+import com.liferay.portal.security.auth.CompanyThreadLocal;
 import com.liferay.portal.service.LayoutLocalServiceUtil;
 import com.liferay.portal.service.ServiceContext;
 import com.liferay.portal.util.test.LayoutTestUtil;
@@ -45,6 +47,10 @@ public class BaseExportImportTestCase {
 
 	@Before
 	public void setUp() throws Exception {
+		previousCompanyId = CompanyThreadLocal.getCompanyId();
+
+		CompanyThreadLocal.setCompanyId(TestPropsValues.getCompanyId());
+
 		group = GroupTestUtil.addGroup();
 		importedGroup = GroupTestUtil.addGroup();
 
@@ -63,6 +69,8 @@ public class BaseExportImportTestCase {
 		if ((larFile != null) && larFile.exists()) {
 			FileUtil.delete(larFile);
 		}
+
+		CompanyThreadLocal.setCompanyId(previousCompanyId);
 	}
 
 	protected void addParameter(
@@ -178,6 +186,8 @@ public class BaseExportImportTestCase {
 		Assert.assertEquals(
 			stagedModel.getUuid(), importedStagedModel.getUuid());
 	}
+
+	protected static long previousCompanyId;
 
 	@DeleteAfterTestRun
 	protected Group group;

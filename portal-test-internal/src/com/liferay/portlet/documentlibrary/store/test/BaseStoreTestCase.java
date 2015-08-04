@@ -16,8 +16,10 @@ package com.liferay.portlet.documentlibrary.store.test;
 
 import com.liferay.portal.kernel.io.unsync.UnsyncByteArrayInputStream;
 import com.liferay.portal.kernel.test.util.RandomTestUtil;
+import com.liferay.portal.kernel.test.util.TestPropsValues;
 import com.liferay.portal.kernel.util.SetUtil;
 import com.liferay.portal.kernel.util.StringPool;
+import com.liferay.portal.security.auth.CompanyThreadLocal;
 import com.liferay.portal.test.rule.ExpectedLog;
 import com.liferay.portal.test.rule.ExpectedLogs;
 import com.liferay.portal.test.rule.ExpectedType;
@@ -51,17 +53,23 @@ public abstract class BaseStoreTestCase {
 
 	@Before
 	public void setUp() throws Exception {
+		previousCompanyId = CompanyThreadLocal.getCompanyId();
+
+		CompanyThreadLocal.setCompanyId(TestPropsValues.getCompanyId());
+
 		StoreFactory storeFactory = StoreFactory.getInstance();
 
 		store = storeFactory.getStore(getStoreType());
 
-		companyId = RandomTestUtil.nextLong();
+		companyId = TestPropsValues.getCompanyId();
 		repositoryId = RandomTestUtil.nextLong();
 	}
 
 	@After
 	public void tearDown() throws Exception {
 		store.deleteDirectory(companyId, repositoryId, StringPool.SLASH);
+
+		CompanyThreadLocal.setCompanyId(previousCompanyId);
 	}
 
 	@Test
@@ -731,6 +739,7 @@ public abstract class BaseStoreTestCase {
 	protected abstract String getStoreType();
 
 	protected long companyId;
+	protected long previousCompanyId;
 	protected long repositoryId;
 	protected Store store;
 

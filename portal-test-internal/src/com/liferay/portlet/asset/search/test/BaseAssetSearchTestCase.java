@@ -34,6 +34,7 @@ import com.liferay.portal.kernel.util.Time;
 import com.liferay.portal.model.BaseModel;
 import com.liferay.portal.model.Group;
 import com.liferay.portal.model.User;
+import com.liferay.portal.security.auth.CompanyThreadLocal;
 import com.liferay.portal.service.ServiceContext;
 import com.liferay.portal.test.rule.LiferayIntegrationTestRule;
 import com.liferay.portal.test.rule.MainServletTestRule;
@@ -66,6 +67,7 @@ import java.util.concurrent.TimeUnit;
 
 import org.apache.commons.lang.ArrayUtils;
 
+import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.ClassRule;
@@ -85,6 +87,10 @@ public abstract class BaseAssetSearchTestCase {
 
 	@Before
 	public void setUp() throws Exception {
+		previousCompanyId = CompanyThreadLocal.getCompanyId();
+
+		CompanyThreadLocal.setCompanyId(TestPropsValues.getCompanyId());
+
 		_group1 = GroupTestUtil.addGroup();
 
 		ServiceContext serviceContext =
@@ -169,6 +175,11 @@ public abstract class BaseAssetSearchTestCase {
 		_assetTagsNames1 =
 			new String[] {"liferay", "architecture", "modularity", "osgi"};
 		_assetTagsNames2 = new String[] {"liferay", "architecture", "services"};
+	}
+
+	@After
+	public void tearDown() throws Exception {
+		CompanyThreadLocal.setCompanyId(previousCompanyId);
 	}
 
 	@Test
@@ -1594,6 +1605,8 @@ public abstract class BaseAssetSearchTestCase {
 
 		assertCount(size, assetEntryQuery, searchContext, 0, 1);
 	}
+
+	protected long previousCompanyId;
 
 	private long[] _assetCategoryIds1;
 	private long[] _assetCategoryIds2;

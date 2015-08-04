@@ -17,15 +17,18 @@ package com.liferay.portlet.ratings.test;
 import com.liferay.portal.kernel.test.rule.DeleteAfterTestRun;
 import com.liferay.portal.kernel.test.util.GroupTestUtil;
 import com.liferay.portal.kernel.test.util.ServiceContextTestUtil;
+import com.liferay.portal.kernel.test.util.TestPropsValues;
 import com.liferay.portal.model.BaseModel;
 import com.liferay.portal.model.ClassedModel;
 import com.liferay.portal.model.Group;
+import com.liferay.portal.security.auth.CompanyThreadLocal;
 import com.liferay.portal.service.ServiceContext;
 import com.liferay.portlet.ratings.NoSuchStatsException;
 import com.liferay.portlet.ratings.model.RatingsStats;
 import com.liferay.portlet.ratings.service.RatingsStatsLocalServiceUtil;
 import com.liferay.portlet.ratings.util.test.RatingsTestUtil;
 
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -36,7 +39,16 @@ public abstract class BaseRatingsTestCase {
 
 	@Before
 	public void setUp() throws Exception {
+		previousCompanyId = CompanyThreadLocal.getCompanyId();
+
+		CompanyThreadLocal.setCompanyId(TestPropsValues.getCompanyId());
+
 		group = GroupTestUtil.addGroup();
+	}
+
+	@After
+	public void tearDown() throws Exception {
+		CompanyThreadLocal.setCompanyId(previousCompanyId);
 	}
 
 	@Test(expected = NoSuchStatsException.class)
@@ -80,6 +92,8 @@ public abstract class BaseRatingsTestCase {
 
 	@DeleteAfterTestRun
 	protected Group group;
+
+	protected long previousCompanyId;
 
 	private String _getBaseModelClassName() {
 		Class<?> clazz = getBaseModelClass();

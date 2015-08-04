@@ -84,6 +84,8 @@ public abstract class BaseBackgroundTaskTestCase {
 		_siteDefaultLocale = Locale.CANADA;
 		_themeDisplayLocale = Locale.FRANCE;
 
+		initalizeThreadLocals();
+
 		_principalName = String.valueOf(1234l);
 	}
 

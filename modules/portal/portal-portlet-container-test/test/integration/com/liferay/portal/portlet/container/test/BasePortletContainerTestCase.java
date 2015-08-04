@@ -22,6 +22,7 @@ import com.liferay.portal.kernel.util.WebKeys;
 import com.liferay.portal.model.Company;
 import com.liferay.portal.model.Group;
 import com.liferay.portal.model.Layout;
+import com.liferay.portal.security.auth.CompanyThreadLocal;
 import com.liferay.portal.security.permission.PermissionChecker;
 import com.liferay.portal.security.permission.PermissionCheckerFactoryUtil;
 import com.liferay.portal.security.permission.PermissionThreadLocal;
@@ -68,6 +69,10 @@ public class BasePortletContainerTestCase {
 
 	@Before
 	public void setUp() throws Exception {
+		previousCompanyId = CompanyThreadLocal.getCompanyId();
+
+		CompanyThreadLocal.setCompanyId(TestPropsValues.getCompanyId());
+
 		group = GroupTestUtil.addGroup();
 
 		layout = LayoutTestUtil.addLayout(group);
@@ -95,6 +100,8 @@ public class BasePortletContainerTestCase {
 		}
 
 		serviceRegistrations.clear();
+
+		CompanyThreadLocal.setCompanyId(previousCompanyId);
 	}
 
 	protected BundleContext getBundleContext() {
@@ -236,6 +243,8 @@ public class BasePortletContainerTestCase {
 	}
 
 	protected static final String TEST_PORTLET_ID = "TEST_PORTLET_ID";
+
+	protected static long previousCompanyId;
 
 	@DeleteAfterTestRun
 	protected Group group;

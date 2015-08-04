@@ -16,6 +16,7 @@ package com.liferay.portal.lar.test;
 
 import com.liferay.portal.kernel.test.rule.DeleteAfterTestRun;
 import com.liferay.portal.kernel.test.util.GroupTestUtil;
+import com.liferay.portal.kernel.test.util.TestPropsValues;
 import com.liferay.portal.kernel.util.LongWrapper;
 import com.liferay.portal.kernel.util.Time;
 import com.liferay.portal.kernel.xml.Element;
@@ -23,6 +24,7 @@ import com.liferay.portal.kernel.xml.SAXReaderUtil;
 import com.liferay.portal.kernel.zip.ZipWriter;
 import com.liferay.portal.kernel.zip.ZipWriterFactoryUtil;
 import com.liferay.portal.model.Group;
+import com.liferay.portal.security.auth.CompanyThreadLocal;
 import com.liferay.portlet.PortletPreferencesImpl;
 import com.liferay.portlet.exportimport.lar.ManifestSummary;
 import com.liferay.portlet.exportimport.lar.PortletDataContext;
@@ -35,6 +37,7 @@ import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
+import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -46,10 +49,19 @@ public abstract class BasePortletDataHandlerTestCase {
 
 	@Before
 	public void setUp() throws Exception {
+		previousCompanyId = CompanyThreadLocal.getCompanyId();
+
+		CompanyThreadLocal.setCompanyId(TestPropsValues.getCompanyId());
+
 		stagingGroup = GroupTestUtil.addGroup();
 
 		portletDataHandler = createPortletDataHandler();
 		portletId = getPortletId();
+	}
+
+	@After
+	public void tearDown() throws Exception {
+		CompanyThreadLocal.setCompanyId(previousCompanyId);
 	}
 
 	@Test
@@ -171,6 +183,7 @@ public abstract class BasePortletDataHandlerTestCase {
 	protected PortletDataContext portletDataContext;
 	protected PortletDataHandler portletDataHandler;
 	protected String portletId;
+	protected long previousCompanyId;
 	protected Element rootElement;
 
 	@DeleteAfterTestRun

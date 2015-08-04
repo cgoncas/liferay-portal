@@ -16,11 +16,14 @@ package com.liferay.portlet.subscriptions.test;
 
 import com.liferay.portal.kernel.test.rule.DeleteAfterTestRun;
 import com.liferay.portal.kernel.test.util.GroupTestUtil;
+import com.liferay.portal.kernel.test.util.TestPropsValues;
 import com.liferay.portal.kernel.test.util.UserTestUtil;
 import com.liferay.portal.model.Group;
 import com.liferay.portal.model.RoleConstants;
 import com.liferay.portal.model.User;
+import com.liferay.portal.security.auth.CompanyThreadLocal;
 
+import org.junit.After;
 import org.junit.Before;
 
 /**
@@ -31,12 +34,21 @@ public abstract class BaseSubscriptionTestCase {
 
 	@Before
 	public void setUp() throws Exception {
+		previousCompanyId = CompanyThreadLocal.getCompanyId();
+
+		CompanyThreadLocal.setCompanyId(TestPropsValues.getCompanyId());
+
 		group = GroupTestUtil.addGroup();
 
 		user = UserTestUtil.addGroupUser(group, RoleConstants.SITE_MEMBER);
 
 		creatorUser = UserTestUtil.addGroupUser(
 			group, RoleConstants.SITE_MEMBER);
+	}
+
+	@After
+	public void tearDown() throws Exception {
+		CompanyThreadLocal.setCompanyId(previousCompanyId);
 	}
 
 	protected long addBaseModel(long userId, long containerModelId)
@@ -62,6 +74,8 @@ public abstract class BaseSubscriptionTestCase {
 
 	@DeleteAfterTestRun
 	protected Group group;
+
+	protected long previousCompanyId;
 
 	@DeleteAfterTestRun
 	protected User user;

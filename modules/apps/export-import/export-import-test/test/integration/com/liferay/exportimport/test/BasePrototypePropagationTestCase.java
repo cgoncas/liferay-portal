@@ -29,6 +29,7 @@ import com.liferay.portal.model.Company;
 import com.liferay.portal.model.Group;
 import com.liferay.portal.model.Layout;
 import com.liferay.portal.model.LayoutPrototype;
+import com.liferay.portal.security.auth.CompanyThreadLocal;
 import com.liferay.portal.service.LayoutLocalServiceUtil;
 import com.liferay.portal.service.ServiceContextThreadLocal;
 import com.liferay.portal.service.persistence.CompanyUtil;
@@ -42,6 +43,7 @@ import java.util.Map;
 
 import javax.portlet.PortletPreferences;
 
+import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -55,6 +57,10 @@ public abstract class BasePrototypePropagationTestCase {
 
 	@Before
 	public void setUp() throws Exception {
+		previousCompanyId = CompanyThreadLocal.getCompanyId();
+
+		CompanyThreadLocal.setCompanyId(TestPropsValues.getCompanyId());
+
 		ServiceContextThreadLocal.pushServiceContext(
 			ServiceContextTestUtil.getServiceContext());
 
@@ -84,6 +90,11 @@ public abstract class BasePrototypePropagationTestCase {
 			layoutPrototypeLayout, initialLayoutTemplateId);
 
 		doSetUp();
+	}
+
+	@After
+	public void tearDown() throws Exception {
+		CompanyThreadLocal.setCompanyId(previousCompanyId);
 	}
 
 	@Test
@@ -287,6 +298,7 @@ public abstract class BasePrototypePropagationTestCase {
 
 	protected Layout layoutPrototypeLayout;
 	protected String portletId;
+	protected long previousCompanyId;
 	protected Layout prototypeLayout;
 
 }

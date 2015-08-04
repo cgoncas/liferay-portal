@@ -16,9 +16,11 @@ package com.liferay.portal.service.test;
 
 import com.liferay.portal.kernel.test.rule.DeleteAfterTestRun;
 import com.liferay.portal.kernel.test.util.GroupTestUtil;
+import com.liferay.portal.kernel.test.util.TestPropsValues;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.model.Group;
 import com.liferay.portal.model.TreeModel;
+import com.liferay.portal.security.auth.CompanyThreadLocal;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -35,6 +37,10 @@ public abstract class BaseLocalServiceTreeTestCase {
 
 	@Before
 	public void setUp() throws Exception {
+		previousCompanyId = CompanyThreadLocal.getCompanyId();
+
+		CompanyThreadLocal.setCompanyId(TestPropsValues.getCompanyId());
+
 		group = GroupTestUtil.addGroup();
 
 		createTree();
@@ -45,6 +51,8 @@ public abstract class BaseLocalServiceTreeTestCase {
 		for (int i = _treeModels.size() - 1; i >= 0; i--) {
 			deleteTreeModel(_treeModels.get(i));
 		}
+
+		CompanyThreadLocal.setCompanyId(previousCompanyId);
 	}
 
 	@Test
@@ -209,6 +217,8 @@ public abstract class BaseLocalServiceTreeTestCase {
 	protected abstract TreeModel getTreeModel(long primaryKey) throws Exception;
 
 	protected abstract void rebuildTree() throws Exception;
+
+	protected static long previousCompanyId;
 
 	@DeleteAfterTestRun
 	protected Group group;
