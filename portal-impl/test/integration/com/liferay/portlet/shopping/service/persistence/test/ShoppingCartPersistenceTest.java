@@ -117,8 +117,6 @@ public class ShoppingCartPersistenceTest {
 
 		newShoppingCart.setGroupId(RandomTestUtil.nextLong());
 
-		newShoppingCart.setCompanyId(RandomTestUtil.nextLong());
-
 		newShoppingCart.setUserId(RandomTestUtil.nextLong());
 
 		newShoppingCart.setUserName(RandomTestUtil.randomString());
@@ -135,6 +133,8 @@ public class ShoppingCartPersistenceTest {
 
 		newShoppingCart.setInsure(RandomTestUtil.randomBoolean());
 
+		newShoppingCart.setCompanyId(RandomTestUtil.nextLong());
+
 		_shoppingCarts.add(_persistence.update(newShoppingCart));
 
 		ShoppingCart existingShoppingCart = _persistence.findByPrimaryKey(newShoppingCart.getPrimaryKey());
@@ -143,8 +143,6 @@ public class ShoppingCartPersistenceTest {
 			newShoppingCart.getCartId());
 		Assert.assertEquals(existingShoppingCart.getGroupId(),
 			newShoppingCart.getGroupId());
-		Assert.assertEquals(existingShoppingCart.getCompanyId(),
-			newShoppingCart.getCompanyId());
 		Assert.assertEquals(existingShoppingCart.getUserId(),
 			newShoppingCart.getUserId());
 		Assert.assertEquals(existingShoppingCart.getUserName(),
@@ -163,6 +161,8 @@ public class ShoppingCartPersistenceTest {
 			newShoppingCart.getAltShipping());
 		Assert.assertEquals(existingShoppingCart.getInsure(),
 			newShoppingCart.getInsure());
+		Assert.assertEquals(existingShoppingCart.getCompanyId(),
+			newShoppingCart.getCompanyId());
 	}
 
 	@Test
@@ -211,9 +211,9 @@ public class ShoppingCartPersistenceTest {
 
 	protected OrderByComparator<ShoppingCart> getOrderByComparator() {
 		return OrderByComparatorFactoryUtil.create("ShoppingCart", "cartId",
-			true, "groupId", true, "companyId", true, "userId", true,
-			"userName", true, "createDate", true, "modifiedDate", true,
-			"couponCodes", true, "altShipping", true, "insure", true);
+			true, "groupId", true, "userId", true, "userName", true,
+			"createDate", true, "modifiedDate", true, "couponCodes", true,
+			"altShipping", true, "insure", true, "companyId", true);
 	}
 
 	@Test
@@ -433,8 +433,6 @@ public class ShoppingCartPersistenceTest {
 
 		shoppingCart.setGroupId(RandomTestUtil.nextLong());
 
-		shoppingCart.setCompanyId(RandomTestUtil.nextLong());
-
 		shoppingCart.setUserId(RandomTestUtil.nextLong());
 
 		shoppingCart.setUserName(RandomTestUtil.randomString());
@@ -450,6 +448,8 @@ public class ShoppingCartPersistenceTest {
 		shoppingCart.setAltShipping(RandomTestUtil.nextInt());
 
 		shoppingCart.setInsure(RandomTestUtil.randomBoolean());
+
+		shoppingCart.setCompanyId(RandomTestUtil.nextLong());
 
 		_shoppingCarts.add(_persistence.update(shoppingCart));
 

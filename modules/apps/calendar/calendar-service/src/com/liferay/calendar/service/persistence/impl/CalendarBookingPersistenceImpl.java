@@ -22,6 +22,7 @@ import com.liferay.calendar.model.impl.CalendarBookingImpl;
 import com.liferay.calendar.model.impl.CalendarBookingModelImpl;
 import com.liferay.calendar.service.persistence.CalendarBookingPersistence;
 
+import com.liferay.portal.kernel.bean.BeanReference;
 import com.liferay.portal.kernel.dao.orm.EntityCacheUtil;
 import com.liferay.portal.kernel.dao.orm.FinderCacheUtil;
 import com.liferay.portal.kernel.dao.orm.FinderPath;
@@ -43,6 +44,7 @@ import com.liferay.portal.model.CacheModel;
 import com.liferay.portal.service.ServiceContext;
 import com.liferay.portal.service.ServiceContextThreadLocal;
 import com.liferay.portal.service.persistence.impl.BasePersistenceImpl;
+import com.liferay.portal.service.persistence.impl.ServiceCompanyProvider;
 
 import java.io.Serializable;
 
@@ -5448,6 +5450,8 @@ public class CalendarBookingPersistenceImpl extends BasePersistenceImpl<Calendar
 
 		calendarBooking.setUuid(uuid);
 
+		calendarBooking.setCompanyId(serviceCompanyProvider.getCompanyId());
+
 		return calendarBooking;
 	}
 
@@ -5789,7 +5793,6 @@ public class CalendarBookingPersistenceImpl extends BasePersistenceImpl<Calendar
 		calendarBookingImpl.setUuid(calendarBooking.getUuid());
 		calendarBookingImpl.setCalendarBookingId(calendarBooking.getCalendarBookingId());
 		calendarBookingImpl.setGroupId(calendarBooking.getGroupId());
-		calendarBookingImpl.setCompanyId(calendarBooking.getCompanyId());
 		calendarBookingImpl.setUserId(calendarBooking.getUserId());
 		calendarBookingImpl.setUserName(calendarBooking.getUserName());
 		calendarBookingImpl.setCreateDate(calendarBooking.getCreateDate());
@@ -5815,6 +5818,7 @@ public class CalendarBookingPersistenceImpl extends BasePersistenceImpl<Calendar
 		calendarBookingImpl.setStatusByUserId(calendarBooking.getStatusByUserId());
 		calendarBookingImpl.setStatusByUserName(calendarBooking.getStatusByUserName());
 		calendarBookingImpl.setStatusDate(calendarBooking.getStatusDate());
+		calendarBookingImpl.setCompanyId(calendarBooking.getCompanyId());
 
 		return calendarBookingImpl;
 	}
@@ -6196,6 +6200,8 @@ public class CalendarBookingPersistenceImpl extends BasePersistenceImpl<Calendar
 		FinderCacheUtil.removeCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
 	}
 
+	@BeanReference(type = ServiceCompanyProvider.class)
+	protected ServiceCompanyProvider serviceCompanyProvider;
 	private static final String _SQL_SELECT_CALENDARBOOKING = "SELECT calendarBooking FROM CalendarBooking calendarBooking";
 	private static final String _SQL_SELECT_CALENDARBOOKING_WHERE_PKS_IN = "SELECT calendarBooking FROM CalendarBooking calendarBooking WHERE calendarBookingId IN (";
 	private static final String _SQL_SELECT_CALENDARBOOKING_WHERE = "SELECT calendarBooking FROM CalendarBooking calendarBooking WHERE ";

@@ -72,7 +72,6 @@ public class BackgroundTaskModelImpl extends BaseModelImpl<BackgroundTask>
 			{ "mvccVersion", Types.BIGINT },
 			{ "backgroundTaskId", Types.BIGINT },
 			{ "groupId", Types.BIGINT },
-			{ "companyId", Types.BIGINT },
 			{ "userId", Types.BIGINT },
 			{ "userName", Types.VARCHAR },
 			{ "createDate", Types.TIMESTAMP },
@@ -84,7 +83,8 @@ public class BackgroundTaskModelImpl extends BaseModelImpl<BackgroundTask>
 			{ "completed", Types.BOOLEAN },
 			{ "completionDate", Types.TIMESTAMP },
 			{ "status", Types.INTEGER },
-			{ "statusMessage", Types.CLOB }
+			{ "statusMessage", Types.CLOB },
+			{ "companyId", Types.BIGINT }
 		};
 	public static final Map<String, Integer> TABLE_COLUMNS_MAP = new HashMap<String, Integer>();
 
@@ -92,7 +92,6 @@ public class BackgroundTaskModelImpl extends BaseModelImpl<BackgroundTask>
 		TABLE_COLUMNS_MAP.put("mvccVersion", Types.BIGINT);
 		TABLE_COLUMNS_MAP.put("backgroundTaskId", Types.BIGINT);
 		TABLE_COLUMNS_MAP.put("groupId", Types.BIGINT);
-		TABLE_COLUMNS_MAP.put("companyId", Types.BIGINT);
 		TABLE_COLUMNS_MAP.put("userId", Types.BIGINT);
 		TABLE_COLUMNS_MAP.put("userName", Types.VARCHAR);
 		TABLE_COLUMNS_MAP.put("createDate", Types.TIMESTAMP);
@@ -105,9 +104,10 @@ public class BackgroundTaskModelImpl extends BaseModelImpl<BackgroundTask>
 		TABLE_COLUMNS_MAP.put("completionDate", Types.TIMESTAMP);
 		TABLE_COLUMNS_MAP.put("status", Types.INTEGER);
 		TABLE_COLUMNS_MAP.put("statusMessage", Types.CLOB);
+		TABLE_COLUMNS_MAP.put("companyId", Types.BIGINT);
 	}
 
-	public static final String TABLE_SQL_CREATE = "create table BackgroundTask (mvccVersion LONG default 0,backgroundTaskId LONG not null primary key,groupId LONG,companyId LONG,userId LONG,userName VARCHAR(75) null,createDate DATE null,modifiedDate DATE null,name VARCHAR(255) null,servletContextNames VARCHAR(255) null,taskExecutorClassName VARCHAR(200) null,taskContextMap TEXT null,completed BOOLEAN,completionDate DATE null,status INTEGER,statusMessage TEXT null)";
+	public static final String TABLE_SQL_CREATE = "create table BackgroundTask (mvccVersion LONG default 0,backgroundTaskId LONG not null primary key,groupId LONG,userId LONG,userName VARCHAR(75) null,createDate DATE null,modifiedDate DATE null,name VARCHAR(255) null,servletContextNames VARCHAR(255) null,taskExecutorClassName VARCHAR(200) null,taskContextMap TEXT null,completed BOOLEAN,completionDate DATE null,status INTEGER,statusMessage TEXT null,companyId LONG)";
 	public static final String TABLE_SQL_DROP = "drop table BackgroundTask";
 	public static final String ORDER_BY_JPQL = " ORDER BY backgroundTask.createDate ASC";
 	public static final String ORDER_BY_SQL = " ORDER BY BackgroundTask.createDate ASC";
@@ -147,7 +147,6 @@ public class BackgroundTaskModelImpl extends BaseModelImpl<BackgroundTask>
 		model.setMvccVersion(soapModel.getMvccVersion());
 		model.setBackgroundTaskId(soapModel.getBackgroundTaskId());
 		model.setGroupId(soapModel.getGroupId());
-		model.setCompanyId(soapModel.getCompanyId());
 		model.setUserId(soapModel.getUserId());
 		model.setUserName(soapModel.getUserName());
 		model.setCreateDate(soapModel.getCreateDate());
@@ -160,6 +159,7 @@ public class BackgroundTaskModelImpl extends BaseModelImpl<BackgroundTask>
 		model.setCompletionDate(soapModel.getCompletionDate());
 		model.setStatus(soapModel.getStatus());
 		model.setStatusMessage(soapModel.getStatusMessage());
+		model.setCompanyId(soapModel.getCompanyId());
 
 		return model;
 	}
@@ -227,7 +227,6 @@ public class BackgroundTaskModelImpl extends BaseModelImpl<BackgroundTask>
 		attributes.put("mvccVersion", getMvccVersion());
 		attributes.put("backgroundTaskId", getBackgroundTaskId());
 		attributes.put("groupId", getGroupId());
-		attributes.put("companyId", getCompanyId());
 		attributes.put("userId", getUserId());
 		attributes.put("userName", getUserName());
 		attributes.put("createDate", getCreateDate());
@@ -240,6 +239,7 @@ public class BackgroundTaskModelImpl extends BaseModelImpl<BackgroundTask>
 		attributes.put("completionDate", getCompletionDate());
 		attributes.put("status", getStatus());
 		attributes.put("statusMessage", getStatusMessage());
+		attributes.put("companyId", getCompanyId());
 
 		attributes.put("entityCacheEnabled", isEntityCacheEnabled());
 		attributes.put("finderCacheEnabled", isFinderCacheEnabled());
@@ -265,12 +265,6 @@ public class BackgroundTaskModelImpl extends BaseModelImpl<BackgroundTask>
 
 		if (groupId != null) {
 			setGroupId(groupId);
-		}
-
-		Long companyId = (Long)attributes.get("companyId");
-
-		if (companyId != null) {
-			setCompanyId(companyId);
 		}
 
 		Long userId = (Long)attributes.get("userId");
@@ -347,6 +341,12 @@ public class BackgroundTaskModelImpl extends BaseModelImpl<BackgroundTask>
 		if (statusMessage != null) {
 			setStatusMessage(statusMessage);
 		}
+
+		Long companyId = (Long)attributes.get("companyId");
+
+		if (companyId != null) {
+			setCompanyId(companyId);
+		}
 	}
 
 	@JSON
@@ -392,29 +392,6 @@ public class BackgroundTaskModelImpl extends BaseModelImpl<BackgroundTask>
 
 	public long getOriginalGroupId() {
 		return _originalGroupId;
-	}
-
-	@JSON
-	@Override
-	public long getCompanyId() {
-		return _companyId;
-	}
-
-	@Override
-	public void setCompanyId(long companyId) {
-		_columnBitmask |= COMPANYID_COLUMN_BITMASK;
-
-		if (!_setOriginalCompanyId) {
-			_setOriginalCompanyId = true;
-
-			_originalCompanyId = _companyId;
-		}
-
-		_companyId = companyId;
-	}
-
-	public long getOriginalCompanyId() {
-		return _originalCompanyId;
 	}
 
 	@JSON
@@ -647,6 +624,29 @@ public class BackgroundTaskModelImpl extends BaseModelImpl<BackgroundTask>
 		_statusMessage = statusMessage;
 	}
 
+	@JSON(include = false)
+	@Override
+	public long getCompanyId() {
+		return _companyId;
+	}
+
+	@Override
+	public void setCompanyId(long companyId) {
+		_columnBitmask |= COMPANYID_COLUMN_BITMASK;
+
+		if (!_setOriginalCompanyId) {
+			_setOriginalCompanyId = true;
+
+			_originalCompanyId = _companyId;
+		}
+
+		_companyId = companyId;
+	}
+
+	public long getOriginalCompanyId() {
+		return _originalCompanyId;
+	}
+
 	public long getColumnBitmask() {
 		return _columnBitmask;
 	}
@@ -681,7 +681,6 @@ public class BackgroundTaskModelImpl extends BaseModelImpl<BackgroundTask>
 		backgroundTaskImpl.setMvccVersion(getMvccVersion());
 		backgroundTaskImpl.setBackgroundTaskId(getBackgroundTaskId());
 		backgroundTaskImpl.setGroupId(getGroupId());
-		backgroundTaskImpl.setCompanyId(getCompanyId());
 		backgroundTaskImpl.setUserId(getUserId());
 		backgroundTaskImpl.setUserName(getUserName());
 		backgroundTaskImpl.setCreateDate(getCreateDate());
@@ -694,6 +693,7 @@ public class BackgroundTaskModelImpl extends BaseModelImpl<BackgroundTask>
 		backgroundTaskImpl.setCompletionDate(getCompletionDate());
 		backgroundTaskImpl.setStatus(getStatus());
 		backgroundTaskImpl.setStatusMessage(getStatusMessage());
+		backgroundTaskImpl.setCompanyId(getCompanyId());
 
 		backgroundTaskImpl.resetOriginalValues();
 
@@ -759,10 +759,6 @@ public class BackgroundTaskModelImpl extends BaseModelImpl<BackgroundTask>
 
 		backgroundTaskModelImpl._setOriginalGroupId = false;
 
-		backgroundTaskModelImpl._originalCompanyId = backgroundTaskModelImpl._companyId;
-
-		backgroundTaskModelImpl._setOriginalCompanyId = false;
-
 		backgroundTaskModelImpl._setModifiedDate = false;
 
 		backgroundTaskModelImpl._originalName = backgroundTaskModelImpl._name;
@@ -777,6 +773,10 @@ public class BackgroundTaskModelImpl extends BaseModelImpl<BackgroundTask>
 
 		backgroundTaskModelImpl._setOriginalStatus = false;
 
+		backgroundTaskModelImpl._originalCompanyId = backgroundTaskModelImpl._companyId;
+
+		backgroundTaskModelImpl._setOriginalCompanyId = false;
+
 		backgroundTaskModelImpl._columnBitmask = 0;
 	}
 
@@ -789,8 +789,6 @@ public class BackgroundTaskModelImpl extends BaseModelImpl<BackgroundTask>
 		backgroundTaskCacheModel.backgroundTaskId = getBackgroundTaskId();
 
 		backgroundTaskCacheModel.groupId = getGroupId();
-
-		backgroundTaskCacheModel.companyId = getCompanyId();
 
 		backgroundTaskCacheModel.userId = getUserId();
 
@@ -869,6 +867,8 @@ public class BackgroundTaskModelImpl extends BaseModelImpl<BackgroundTask>
 			backgroundTaskCacheModel.statusMessage = null;
 		}
 
+		backgroundTaskCacheModel.companyId = getCompanyId();
+
 		return backgroundTaskCacheModel;
 	}
 
@@ -882,8 +882,6 @@ public class BackgroundTaskModelImpl extends BaseModelImpl<BackgroundTask>
 		sb.append(getBackgroundTaskId());
 		sb.append(", groupId=");
 		sb.append(getGroupId());
-		sb.append(", companyId=");
-		sb.append(getCompanyId());
 		sb.append(", userId=");
 		sb.append(getUserId());
 		sb.append(", userName=");
@@ -908,6 +906,8 @@ public class BackgroundTaskModelImpl extends BaseModelImpl<BackgroundTask>
 		sb.append(getStatus());
 		sb.append(", statusMessage=");
 		sb.append(getStatusMessage());
+		sb.append(", companyId=");
+		sb.append(getCompanyId());
 		sb.append("}");
 
 		return sb.toString();
@@ -932,10 +932,6 @@ public class BackgroundTaskModelImpl extends BaseModelImpl<BackgroundTask>
 		sb.append(
 			"<column><column-name>groupId</column-name><column-value><![CDATA[");
 		sb.append(getGroupId());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>companyId</column-name><column-value><![CDATA[");
-		sb.append(getCompanyId());
 		sb.append("]]></column-value></column>");
 		sb.append(
 			"<column><column-name>userId</column-name><column-value><![CDATA[");
@@ -985,6 +981,10 @@ public class BackgroundTaskModelImpl extends BaseModelImpl<BackgroundTask>
 			"<column><column-name>statusMessage</column-name><column-value><![CDATA[");
 		sb.append(getStatusMessage());
 		sb.append("]]></column-value></column>");
+		sb.append(
+			"<column><column-name>companyId</column-name><column-value><![CDATA[");
+		sb.append(getCompanyId());
+		sb.append("]]></column-value></column>");
 
 		sb.append("</model>");
 
@@ -1000,9 +1000,6 @@ public class BackgroundTaskModelImpl extends BaseModelImpl<BackgroundTask>
 	private long _groupId;
 	private long _originalGroupId;
 	private boolean _setOriginalGroupId;
-	private long _companyId;
-	private long _originalCompanyId;
-	private boolean _setOriginalCompanyId;
 	private long _userId;
 	private String _userName;
 	private Date _createDate;
@@ -1022,6 +1019,9 @@ public class BackgroundTaskModelImpl extends BaseModelImpl<BackgroundTask>
 	private int _originalStatus;
 	private boolean _setOriginalStatus;
 	private String _statusMessage;
+	private long _companyId;
+	private long _originalCompanyId;
+	private boolean _setOriginalCompanyId;
 	private long _columnBitmask;
 	private BackgroundTask _escapedModel;
 }

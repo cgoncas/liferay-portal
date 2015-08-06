@@ -22,6 +22,7 @@ import com.liferay.calendar.model.impl.CalendarNotificationTemplateImpl;
 import com.liferay.calendar.model.impl.CalendarNotificationTemplateModelImpl;
 import com.liferay.calendar.service.persistence.CalendarNotificationTemplatePersistence;
 
+import com.liferay.portal.kernel.bean.BeanReference;
 import com.liferay.portal.kernel.dao.orm.EntityCacheUtil;
 import com.liferay.portal.kernel.dao.orm.FinderCacheUtil;
 import com.liferay.portal.kernel.dao.orm.FinderPath;
@@ -42,6 +43,7 @@ import com.liferay.portal.model.CacheModel;
 import com.liferay.portal.service.ServiceContext;
 import com.liferay.portal.service.ServiceContextThreadLocal;
 import com.liferay.portal.service.persistence.impl.BasePersistenceImpl;
+import com.liferay.portal.service.persistence.impl.ServiceCompanyProvider;
 
 import java.io.Serializable;
 
@@ -2517,6 +2519,8 @@ public class CalendarNotificationTemplatePersistenceImpl
 
 		calendarNotificationTemplate.setUuid(uuid);
 
+		calendarNotificationTemplate.setCompanyId(serviceCompanyProvider.getCompanyId());
+
 		return calendarNotificationTemplate;
 	}
 
@@ -2765,7 +2769,6 @@ public class CalendarNotificationTemplatePersistenceImpl
 		calendarNotificationTemplateImpl.setUuid(calendarNotificationTemplate.getUuid());
 		calendarNotificationTemplateImpl.setCalendarNotificationTemplateId(calendarNotificationTemplate.getCalendarNotificationTemplateId());
 		calendarNotificationTemplateImpl.setGroupId(calendarNotificationTemplate.getGroupId());
-		calendarNotificationTemplateImpl.setCompanyId(calendarNotificationTemplate.getCompanyId());
 		calendarNotificationTemplateImpl.setUserId(calendarNotificationTemplate.getUserId());
 		calendarNotificationTemplateImpl.setUserName(calendarNotificationTemplate.getUserName());
 		calendarNotificationTemplateImpl.setCreateDate(calendarNotificationTemplate.getCreateDate());
@@ -2777,6 +2780,7 @@ public class CalendarNotificationTemplatePersistenceImpl
 		calendarNotificationTemplateImpl.setSubject(calendarNotificationTemplate.getSubject());
 		calendarNotificationTemplateImpl.setBody(calendarNotificationTemplate.getBody());
 		calendarNotificationTemplateImpl.setLastPublishDate(calendarNotificationTemplate.getLastPublishDate());
+		calendarNotificationTemplateImpl.setCompanyId(calendarNotificationTemplate.getCompanyId());
 
 		return calendarNotificationTemplateImpl;
 	}
@@ -3163,6 +3167,8 @@ public class CalendarNotificationTemplatePersistenceImpl
 		FinderCacheUtil.removeCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
 	}
 
+	@BeanReference(type = ServiceCompanyProvider.class)
+	protected ServiceCompanyProvider serviceCompanyProvider;
 	private static final String _SQL_SELECT_CALENDARNOTIFICATIONTEMPLATE = "SELECT calendarNotificationTemplate FROM CalendarNotificationTemplate calendarNotificationTemplate";
 	private static final String _SQL_SELECT_CALENDARNOTIFICATIONTEMPLATE_WHERE_PKS_IN =
 		"SELECT calendarNotificationTemplate FROM CalendarNotificationTemplate calendarNotificationTemplate WHERE calendarNotificationTemplateId IN (";
