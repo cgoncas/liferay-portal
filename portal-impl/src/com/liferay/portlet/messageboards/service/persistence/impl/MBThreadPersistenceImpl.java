@@ -16,6 +16,7 @@ package com.liferay.portlet.messageboards.service.persistence.impl;
 
 import aQute.bnd.annotation.ProviderType;
 
+import com.liferay.portal.kernel.bean.BeanReference;
 import com.liferay.portal.kernel.dao.orm.EntityCacheUtil;
 import com.liferay.portal.kernel.dao.orm.FinderCacheUtil;
 import com.liferay.portal.kernel.dao.orm.FinderPath;
@@ -39,6 +40,7 @@ import com.liferay.portal.security.permission.InlineSQLHelperUtil;
 import com.liferay.portal.service.ServiceContext;
 import com.liferay.portal.service.ServiceContextThreadLocal;
 import com.liferay.portal.service.persistence.impl.BasePersistenceImpl;
+import com.liferay.portal.service.persistence.impl.ServiceCompanyProvider;
 
 import com.liferay.portlet.messageboards.NoSuchThreadException;
 import com.liferay.portlet.messageboards.model.MBThread;
@@ -12629,6 +12631,8 @@ public class MBThreadPersistenceImpl extends BasePersistenceImpl<MBThread>
 
 		mbThread.setUuid(uuid);
 
+		mbThread.setCompanyId(serviceCompanyProvider.getCompanyId());
+
 		return mbThread;
 	}
 
@@ -12988,7 +12992,6 @@ public class MBThreadPersistenceImpl extends BasePersistenceImpl<MBThread>
 		mbThreadImpl.setUuid(mbThread.getUuid());
 		mbThreadImpl.setThreadId(mbThread.getThreadId());
 		mbThreadImpl.setGroupId(mbThread.getGroupId());
-		mbThreadImpl.setCompanyId(mbThread.getCompanyId());
 		mbThreadImpl.setUserId(mbThread.getUserId());
 		mbThreadImpl.setUserName(mbThread.getUserName());
 		mbThreadImpl.setCreateDate(mbThread.getCreateDate());
@@ -13007,6 +13010,7 @@ public class MBThreadPersistenceImpl extends BasePersistenceImpl<MBThread>
 		mbThreadImpl.setStatusByUserId(mbThread.getStatusByUserId());
 		mbThreadImpl.setStatusByUserName(mbThread.getStatusByUserName());
 		mbThreadImpl.setStatusDate(mbThread.getStatusDate());
+		mbThreadImpl.setCompanyId(mbThread.getCompanyId());
 
 		return mbThreadImpl;
 	}
@@ -13386,6 +13390,8 @@ public class MBThreadPersistenceImpl extends BasePersistenceImpl<MBThread>
 		FinderCacheUtil.removeCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
 	}
 
+	@BeanReference(type = ServiceCompanyProvider.class)
+	protected ServiceCompanyProvider serviceCompanyProvider;
 	private static final String _SQL_SELECT_MBTHREAD = "SELECT mbThread FROM MBThread mbThread";
 	private static final String _SQL_SELECT_MBTHREAD_WHERE_PKS_IN = "SELECT mbThread FROM MBThread mbThread WHERE threadId IN (";
 	private static final String _SQL_SELECT_MBTHREAD_WHERE = "SELECT mbThread FROM MBThread mbThread WHERE ";

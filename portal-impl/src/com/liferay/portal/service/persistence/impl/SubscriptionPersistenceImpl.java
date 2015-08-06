@@ -17,6 +17,7 @@ package com.liferay.portal.service.persistence.impl;
 import aQute.bnd.annotation.ProviderType;
 
 import com.liferay.portal.NoSuchSubscriptionException;
+import com.liferay.portal.kernel.bean.BeanReference;
 import com.liferay.portal.kernel.dao.orm.EntityCacheUtil;
 import com.liferay.portal.kernel.dao.orm.FinderCacheUtil;
 import com.liferay.portal.kernel.dao.orm.FinderPath;
@@ -2904,6 +2905,8 @@ public class SubscriptionPersistenceImpl extends BasePersistenceImpl<Subscriptio
 		subscription.setNew(true);
 		subscription.setPrimaryKey(subscriptionId);
 
+		subscription.setCompanyId(serviceCompanyProvider.getCompanyId());
+
 		return subscription;
 	}
 
@@ -3183,7 +3186,6 @@ public class SubscriptionPersistenceImpl extends BasePersistenceImpl<Subscriptio
 		subscriptionImpl.setMvccVersion(subscription.getMvccVersion());
 		subscriptionImpl.setSubscriptionId(subscription.getSubscriptionId());
 		subscriptionImpl.setGroupId(subscription.getGroupId());
-		subscriptionImpl.setCompanyId(subscription.getCompanyId());
 		subscriptionImpl.setUserId(subscription.getUserId());
 		subscriptionImpl.setUserName(subscription.getUserName());
 		subscriptionImpl.setCreateDate(subscription.getCreateDate());
@@ -3191,6 +3193,7 @@ public class SubscriptionPersistenceImpl extends BasePersistenceImpl<Subscriptio
 		subscriptionImpl.setClassNameId(subscription.getClassNameId());
 		subscriptionImpl.setClassPK(subscription.getClassPK());
 		subscriptionImpl.setFrequency(subscription.getFrequency());
+		subscriptionImpl.setCompanyId(subscription.getCompanyId());
 
 		return subscriptionImpl;
 	}
@@ -3566,6 +3569,8 @@ public class SubscriptionPersistenceImpl extends BasePersistenceImpl<Subscriptio
 		FinderCacheUtil.removeCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
 	}
 
+	@BeanReference(type = ServiceCompanyProvider.class)
+	protected ServiceCompanyProvider serviceCompanyProvider;
 	private static final String _SQL_SELECT_SUBSCRIPTION = "SELECT subscription FROM Subscription subscription";
 	private static final String _SQL_SELECT_SUBSCRIPTION_WHERE_PKS_IN = "SELECT subscription FROM Subscription subscription WHERE subscriptionId IN (";
 	private static final String _SQL_SELECT_SUBSCRIPTION_WHERE = "SELECT subscription FROM Subscription subscription WHERE ";

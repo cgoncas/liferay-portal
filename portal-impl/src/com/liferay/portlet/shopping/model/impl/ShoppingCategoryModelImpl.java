@@ -71,21 +71,20 @@ public class ShoppingCategoryModelImpl extends BaseModelImpl<ShoppingCategory>
 	public static final Object[][] TABLE_COLUMNS = {
 			{ "categoryId", Types.BIGINT },
 			{ "groupId", Types.BIGINT },
-			{ "companyId", Types.BIGINT },
 			{ "userId", Types.BIGINT },
 			{ "userName", Types.VARCHAR },
 			{ "createDate", Types.TIMESTAMP },
 			{ "modifiedDate", Types.TIMESTAMP },
 			{ "parentCategoryId", Types.BIGINT },
 			{ "name", Types.VARCHAR },
-			{ "description", Types.VARCHAR }
+			{ "description", Types.VARCHAR },
+			{ "companyId", Types.BIGINT }
 		};
 	public static final Map<String, Integer> TABLE_COLUMNS_MAP = new HashMap<String, Integer>();
 
 	static {
 		TABLE_COLUMNS_MAP.put("categoryId", Types.BIGINT);
 		TABLE_COLUMNS_MAP.put("groupId", Types.BIGINT);
-		TABLE_COLUMNS_MAP.put("companyId", Types.BIGINT);
 		TABLE_COLUMNS_MAP.put("userId", Types.BIGINT);
 		TABLE_COLUMNS_MAP.put("userName", Types.VARCHAR);
 		TABLE_COLUMNS_MAP.put("createDate", Types.TIMESTAMP);
@@ -93,9 +92,10 @@ public class ShoppingCategoryModelImpl extends BaseModelImpl<ShoppingCategory>
 		TABLE_COLUMNS_MAP.put("parentCategoryId", Types.BIGINT);
 		TABLE_COLUMNS_MAP.put("name", Types.VARCHAR);
 		TABLE_COLUMNS_MAP.put("description", Types.VARCHAR);
+		TABLE_COLUMNS_MAP.put("companyId", Types.BIGINT);
 	}
 
-	public static final String TABLE_SQL_CREATE = "create table ShoppingCategory (categoryId LONG not null primary key,groupId LONG,companyId LONG,userId LONG,userName VARCHAR(75) null,createDate DATE null,modifiedDate DATE null,parentCategoryId LONG,name VARCHAR(75) null,description STRING null)";
+	public static final String TABLE_SQL_CREATE = "create table ShoppingCategory (categoryId LONG not null primary key,groupId LONG,userId LONG,userName VARCHAR(75) null,createDate DATE null,modifiedDate DATE null,parentCategoryId LONG,name VARCHAR(75) null,description STRING null,companyId LONG)";
 	public static final String TABLE_SQL_DROP = "drop table ShoppingCategory";
 	public static final String ORDER_BY_JPQL = " ORDER BY shoppingCategory.parentCategoryId ASC, shoppingCategory.name ASC";
 	public static final String ORDER_BY_SQL = " ORDER BY ShoppingCategory.parentCategoryId ASC, ShoppingCategory.name ASC";
@@ -130,7 +130,6 @@ public class ShoppingCategoryModelImpl extends BaseModelImpl<ShoppingCategory>
 
 		model.setCategoryId(soapModel.getCategoryId());
 		model.setGroupId(soapModel.getGroupId());
-		model.setCompanyId(soapModel.getCompanyId());
 		model.setUserId(soapModel.getUserId());
 		model.setUserName(soapModel.getUserName());
 		model.setCreateDate(soapModel.getCreateDate());
@@ -138,6 +137,7 @@ public class ShoppingCategoryModelImpl extends BaseModelImpl<ShoppingCategory>
 		model.setParentCategoryId(soapModel.getParentCategoryId());
 		model.setName(soapModel.getName());
 		model.setDescription(soapModel.getDescription());
+		model.setCompanyId(soapModel.getCompanyId());
 
 		return model;
 	}
@@ -205,7 +205,6 @@ public class ShoppingCategoryModelImpl extends BaseModelImpl<ShoppingCategory>
 
 		attributes.put("categoryId", getCategoryId());
 		attributes.put("groupId", getGroupId());
-		attributes.put("companyId", getCompanyId());
 		attributes.put("userId", getUserId());
 		attributes.put("userName", getUserName());
 		attributes.put("createDate", getCreateDate());
@@ -213,6 +212,7 @@ public class ShoppingCategoryModelImpl extends BaseModelImpl<ShoppingCategory>
 		attributes.put("parentCategoryId", getParentCategoryId());
 		attributes.put("name", getName());
 		attributes.put("description", getDescription());
+		attributes.put("companyId", getCompanyId());
 
 		attributes.put("entityCacheEnabled", isEntityCacheEnabled());
 		attributes.put("finderCacheEnabled", isFinderCacheEnabled());
@@ -232,12 +232,6 @@ public class ShoppingCategoryModelImpl extends BaseModelImpl<ShoppingCategory>
 
 		if (groupId != null) {
 			setGroupId(groupId);
-		}
-
-		Long companyId = (Long)attributes.get("companyId");
-
-		if (companyId != null) {
-			setCompanyId(companyId);
 		}
 
 		Long userId = (Long)attributes.get("userId");
@@ -281,6 +275,12 @@ public class ShoppingCategoryModelImpl extends BaseModelImpl<ShoppingCategory>
 		if (description != null) {
 			setDescription(description);
 		}
+
+		Long companyId = (Long)attributes.get("companyId");
+
+		if (companyId != null) {
+			setCompanyId(companyId);
+		}
 	}
 
 	@JSON
@@ -315,17 +315,6 @@ public class ShoppingCategoryModelImpl extends BaseModelImpl<ShoppingCategory>
 
 	public long getOriginalGroupId() {
 		return _originalGroupId;
-	}
-
-	@JSON
-	@Override
-	public long getCompanyId() {
-		return _companyId;
-	}
-
-	@Override
-	public void setCompanyId(long companyId) {
-		_companyId = companyId;
 	}
 
 	@JSON
@@ -464,6 +453,17 @@ public class ShoppingCategoryModelImpl extends BaseModelImpl<ShoppingCategory>
 		_description = description;
 	}
 
+	@JSON(include = false)
+	@Override
+	public long getCompanyId() {
+		return _companyId;
+	}
+
+	@Override
+	public void setCompanyId(long companyId) {
+		_companyId = companyId;
+	}
+
 	public long getColumnBitmask() {
 		return _columnBitmask;
 	}
@@ -497,7 +497,6 @@ public class ShoppingCategoryModelImpl extends BaseModelImpl<ShoppingCategory>
 
 		shoppingCategoryImpl.setCategoryId(getCategoryId());
 		shoppingCategoryImpl.setGroupId(getGroupId());
-		shoppingCategoryImpl.setCompanyId(getCompanyId());
 		shoppingCategoryImpl.setUserId(getUserId());
 		shoppingCategoryImpl.setUserName(getUserName());
 		shoppingCategoryImpl.setCreateDate(getCreateDate());
@@ -505,6 +504,7 @@ public class ShoppingCategoryModelImpl extends BaseModelImpl<ShoppingCategory>
 		shoppingCategoryImpl.setParentCategoryId(getParentCategoryId());
 		shoppingCategoryImpl.setName(getName());
 		shoppingCategoryImpl.setDescription(getDescription());
+		shoppingCategoryImpl.setCompanyId(getCompanyId());
 
 		shoppingCategoryImpl.resetOriginalValues();
 
@@ -602,8 +602,6 @@ public class ShoppingCategoryModelImpl extends BaseModelImpl<ShoppingCategory>
 
 		shoppingCategoryCacheModel.groupId = getGroupId();
 
-		shoppingCategoryCacheModel.companyId = getCompanyId();
-
 		shoppingCategoryCacheModel.userId = getUserId();
 
 		shoppingCategoryCacheModel.userName = getUserName();
@@ -650,6 +648,8 @@ public class ShoppingCategoryModelImpl extends BaseModelImpl<ShoppingCategory>
 			shoppingCategoryCacheModel.description = null;
 		}
 
+		shoppingCategoryCacheModel.companyId = getCompanyId();
+
 		return shoppingCategoryCacheModel;
 	}
 
@@ -661,8 +661,6 @@ public class ShoppingCategoryModelImpl extends BaseModelImpl<ShoppingCategory>
 		sb.append(getCategoryId());
 		sb.append(", groupId=");
 		sb.append(getGroupId());
-		sb.append(", companyId=");
-		sb.append(getCompanyId());
 		sb.append(", userId=");
 		sb.append(getUserId());
 		sb.append(", userName=");
@@ -677,6 +675,8 @@ public class ShoppingCategoryModelImpl extends BaseModelImpl<ShoppingCategory>
 		sb.append(getName());
 		sb.append(", description=");
 		sb.append(getDescription());
+		sb.append(", companyId=");
+		sb.append(getCompanyId());
 		sb.append("}");
 
 		return sb.toString();
@@ -697,10 +697,6 @@ public class ShoppingCategoryModelImpl extends BaseModelImpl<ShoppingCategory>
 		sb.append(
 			"<column><column-name>groupId</column-name><column-value><![CDATA[");
 		sb.append(getGroupId());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>companyId</column-name><column-value><![CDATA[");
-		sb.append(getCompanyId());
 		sb.append("]]></column-value></column>");
 		sb.append(
 			"<column><column-name>userId</column-name><column-value><![CDATA[");
@@ -730,6 +726,10 @@ public class ShoppingCategoryModelImpl extends BaseModelImpl<ShoppingCategory>
 			"<column><column-name>description</column-name><column-value><![CDATA[");
 		sb.append(getDescription());
 		sb.append("]]></column-value></column>");
+		sb.append(
+			"<column><column-name>companyId</column-name><column-value><![CDATA[");
+		sb.append(getCompanyId());
+		sb.append("]]></column-value></column>");
 
 		sb.append("</model>");
 
@@ -744,7 +744,6 @@ public class ShoppingCategoryModelImpl extends BaseModelImpl<ShoppingCategory>
 	private long _groupId;
 	private long _originalGroupId;
 	private boolean _setOriginalGroupId;
-	private long _companyId;
 	private long _userId;
 	private String _userName;
 	private Date _createDate;
@@ -756,6 +755,7 @@ public class ShoppingCategoryModelImpl extends BaseModelImpl<ShoppingCategory>
 	private String _name;
 	private String _originalName;
 	private String _description;
+	private long _companyId;
 	private long _columnBitmask;
 	private ShoppingCategory _escapedModel;
 }

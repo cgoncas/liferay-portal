@@ -133,6 +133,8 @@ public class ShoppingOrderItemPersistenceTest {
 
 		newShoppingOrderItem.setShippedDate(RandomTestUtil.nextDate());
 
+		newShoppingOrderItem.setCompanyId(RandomTestUtil.nextLong());
+
 		_shoppingOrderItems.add(_persistence.update(newShoppingOrderItem));
 
 		ShoppingOrderItem existingShoppingOrderItem = _persistence.findByPrimaryKey(newShoppingOrderItem.getPrimaryKey());
@@ -158,6 +160,8 @@ public class ShoppingOrderItemPersistenceTest {
 		Assert.assertEquals(Time.getShortTimestamp(
 				existingShoppingOrderItem.getShippedDate()),
 			Time.getShortTimestamp(newShoppingOrderItem.getShippedDate()));
+		Assert.assertEquals(existingShoppingOrderItem.getCompanyId(),
+			newShoppingOrderItem.getCompanyId());
 	}
 
 	@Test
@@ -193,7 +197,7 @@ public class ShoppingOrderItemPersistenceTest {
 		return OrderByComparatorFactoryUtil.create("ShoppingOrderItem",
 			"orderItemId", true, "orderId", true, "sku", true, "name", true,
 			"description", true, "properties", true, "price", true, "quantity",
-			true, "shippedDate", true);
+			true, "shippedDate", true, "companyId", true);
 	}
 
 	@Test
@@ -413,6 +417,8 @@ public class ShoppingOrderItemPersistenceTest {
 		shoppingOrderItem.setQuantity(RandomTestUtil.nextInt());
 
 		shoppingOrderItem.setShippedDate(RandomTestUtil.nextDate());
+
+		shoppingOrderItem.setCompanyId(RandomTestUtil.nextLong());
 
 		_shoppingOrderItems.add(_persistence.update(shoppingOrderItem));
 

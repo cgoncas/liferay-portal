@@ -16,6 +16,7 @@ package com.liferay.service.access.policy.service.persistence.impl;
 
 import aQute.bnd.annotation.ProviderType;
 
+import com.liferay.portal.kernel.bean.BeanReference;
 import com.liferay.portal.kernel.dao.orm.EntityCacheUtil;
 import com.liferay.portal.kernel.dao.orm.FinderCacheUtil;
 import com.liferay.portal.kernel.dao.orm.FinderPath;
@@ -38,6 +39,7 @@ import com.liferay.portal.security.permission.InlineSQLHelperUtil;
 import com.liferay.portal.service.ServiceContext;
 import com.liferay.portal.service.ServiceContextThreadLocal;
 import com.liferay.portal.service.persistence.impl.BasePersistenceImpl;
+import com.liferay.portal.service.persistence.impl.ServiceCompanyProvider;
 
 import com.liferay.service.access.policy.exception.NoSuchEntryException;
 import com.liferay.service.access.policy.model.SAPEntry;
@@ -3226,6 +3228,8 @@ public class SAPEntryPersistenceImpl extends BasePersistenceImpl<SAPEntry>
 
 		sapEntry.setUuid(uuid);
 
+		sapEntry.setCompanyId(serviceCompanyProvider.getCompanyId());
+
 		return sapEntry;
 	}
 
@@ -3455,7 +3459,6 @@ public class SAPEntryPersistenceImpl extends BasePersistenceImpl<SAPEntry>
 
 		sapEntryImpl.setUuid(sapEntry.getUuid());
 		sapEntryImpl.setSapEntryId(sapEntry.getSapEntryId());
-		sapEntryImpl.setCompanyId(sapEntry.getCompanyId());
 		sapEntryImpl.setUserId(sapEntry.getUserId());
 		sapEntryImpl.setUserName(sapEntry.getUserName());
 		sapEntryImpl.setCreateDate(sapEntry.getCreateDate());
@@ -3464,6 +3467,7 @@ public class SAPEntryPersistenceImpl extends BasePersistenceImpl<SAPEntry>
 		sapEntryImpl.setDefaultSAPEntry(sapEntry.isDefaultSAPEntry());
 		sapEntryImpl.setName(sapEntry.getName());
 		sapEntryImpl.setTitle(sapEntry.getTitle());
+		sapEntryImpl.setCompanyId(sapEntry.getCompanyId());
 
 		return sapEntryImpl;
 	}
@@ -3843,6 +3847,8 @@ public class SAPEntryPersistenceImpl extends BasePersistenceImpl<SAPEntry>
 		FinderCacheUtil.removeCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
 	}
 
+	@BeanReference(type = ServiceCompanyProvider.class)
+	protected ServiceCompanyProvider serviceCompanyProvider;
 	private static final String _SQL_SELECT_SAPENTRY = "SELECT sapEntry FROM SAPEntry sapEntry";
 	private static final String _SQL_SELECT_SAPENTRY_WHERE_PKS_IN = "SELECT sapEntry FROM SAPEntry sapEntry WHERE sapEntryId IN (";
 	private static final String _SQL_SELECT_SAPENTRY_WHERE = "SELECT sapEntry FROM SAPEntry sapEntry WHERE ";

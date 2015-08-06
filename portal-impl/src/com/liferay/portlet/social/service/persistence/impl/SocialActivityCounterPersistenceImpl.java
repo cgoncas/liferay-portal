@@ -16,6 +16,7 @@ package com.liferay.portlet.social.service.persistence.impl;
 
 import aQute.bnd.annotation.ProviderType;
 
+import com.liferay.portal.kernel.bean.BeanReference;
 import com.liferay.portal.kernel.dao.orm.EntityCacheUtil;
 import com.liferay.portal.kernel.dao.orm.FinderCacheUtil;
 import com.liferay.portal.kernel.dao.orm.FinderPath;
@@ -32,6 +33,7 @@ import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.model.CacheModel;
 import com.liferay.portal.service.persistence.impl.BasePersistenceImpl;
+import com.liferay.portal.service.persistence.impl.ServiceCompanyProvider;
 
 import com.liferay.portlet.social.NoSuchActivityCounterException;
 import com.liferay.portlet.social.model.SocialActivityCounter;
@@ -2658,6 +2660,8 @@ public class SocialActivityCounterPersistenceImpl extends BasePersistenceImpl<So
 		socialActivityCounter.setNew(true);
 		socialActivityCounter.setPrimaryKey(activityCounterId);
 
+		socialActivityCounter.setCompanyId(serviceCompanyProvider.getCompanyId());
+
 		return socialActivityCounter;
 	}
 
@@ -2873,7 +2877,6 @@ public class SocialActivityCounterPersistenceImpl extends BasePersistenceImpl<So
 
 		socialActivityCounterImpl.setActivityCounterId(socialActivityCounter.getActivityCounterId());
 		socialActivityCounterImpl.setGroupId(socialActivityCounter.getGroupId());
-		socialActivityCounterImpl.setCompanyId(socialActivityCounter.getCompanyId());
 		socialActivityCounterImpl.setClassNameId(socialActivityCounter.getClassNameId());
 		socialActivityCounterImpl.setClassPK(socialActivityCounter.getClassPK());
 		socialActivityCounterImpl.setName(socialActivityCounter.getName());
@@ -2884,6 +2887,7 @@ public class SocialActivityCounterPersistenceImpl extends BasePersistenceImpl<So
 		socialActivityCounterImpl.setStartPeriod(socialActivityCounter.getStartPeriod());
 		socialActivityCounterImpl.setEndPeriod(socialActivityCounter.getEndPeriod());
 		socialActivityCounterImpl.setActive(socialActivityCounter.isActive());
+		socialActivityCounterImpl.setCompanyId(socialActivityCounter.getCompanyId());
 
 		return socialActivityCounterImpl;
 	}
@@ -3267,6 +3271,8 @@ public class SocialActivityCounterPersistenceImpl extends BasePersistenceImpl<So
 		FinderCacheUtil.removeCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
 	}
 
+	@BeanReference(type = ServiceCompanyProvider.class)
+	protected ServiceCompanyProvider serviceCompanyProvider;
 	private static final String _SQL_SELECT_SOCIALACTIVITYCOUNTER = "SELECT socialActivityCounter FROM SocialActivityCounter socialActivityCounter";
 	private static final String _SQL_SELECT_SOCIALACTIVITYCOUNTER_WHERE_PKS_IN = "SELECT socialActivityCounter FROM SocialActivityCounter socialActivityCounter WHERE activityCounterId IN (";
 	private static final String _SQL_SELECT_SOCIALACTIVITYCOUNTER_WHERE = "SELECT socialActivityCounter FROM SocialActivityCounter socialActivityCounter WHERE ";
