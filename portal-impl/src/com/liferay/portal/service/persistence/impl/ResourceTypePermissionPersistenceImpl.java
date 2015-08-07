@@ -17,6 +17,7 @@ package com.liferay.portal.service.persistence.impl;
 import aQute.bnd.annotation.ProviderType;
 
 import com.liferay.portal.NoSuchResourceTypePermissionException;
+import com.liferay.portal.kernel.bean.BeanReference;
 import com.liferay.portal.kernel.dao.orm.EntityCacheUtil;
 import com.liferay.portal.kernel.dao.orm.FinderCacheUtil;
 import com.liferay.portal.kernel.dao.orm.FinderPath;
@@ -1653,6 +1654,8 @@ public class ResourceTypePermissionPersistenceImpl extends BasePersistenceImpl<R
 		resourceTypePermission.setNew(true);
 		resourceTypePermission.setPrimaryKey(resourceTypePermissionId);
 
+		resourceTypePermission.setCompanyId(companyProviderHolder.getCompanyId());
+
 		return resourceTypePermission;
 	}
 
@@ -1846,11 +1849,11 @@ public class ResourceTypePermissionPersistenceImpl extends BasePersistenceImpl<R
 
 		resourceTypePermissionImpl.setMvccVersion(resourceTypePermission.getMvccVersion());
 		resourceTypePermissionImpl.setResourceTypePermissionId(resourceTypePermission.getResourceTypePermissionId());
-		resourceTypePermissionImpl.setCompanyId(resourceTypePermission.getCompanyId());
 		resourceTypePermissionImpl.setGroupId(resourceTypePermission.getGroupId());
 		resourceTypePermissionImpl.setName(resourceTypePermission.getName());
 		resourceTypePermissionImpl.setRoleId(resourceTypePermission.getRoleId());
 		resourceTypePermissionImpl.setActionIds(resourceTypePermission.getActionIds());
+		resourceTypePermissionImpl.setCompanyId(resourceTypePermission.getCompanyId());
 
 		return resourceTypePermissionImpl;
 	}
@@ -2231,6 +2234,8 @@ public class ResourceTypePermissionPersistenceImpl extends BasePersistenceImpl<R
 		FinderCacheUtil.removeCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
 	}
 
+	@BeanReference(type = CompanyProviderHolder.class)
+	protected CompanyProviderHolder companyProviderHolder;
 	private static final String _SQL_SELECT_RESOURCETYPEPERMISSION = "SELECT resourceTypePermission FROM ResourceTypePermission resourceTypePermission";
 	private static final String _SQL_SELECT_RESOURCETYPEPERMISSION_WHERE_PKS_IN = "SELECT resourceTypePermission FROM ResourceTypePermission resourceTypePermission WHERE resourceTypePermissionId IN (";
 	private static final String _SQL_SELECT_RESOURCETYPEPERMISSION_WHERE = "SELECT resourceTypePermission FROM ResourceTypePermission resourceTypePermission WHERE ";

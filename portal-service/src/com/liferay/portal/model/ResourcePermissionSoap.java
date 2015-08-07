@@ -35,13 +35,13 @@ public class ResourcePermissionSoap implements Serializable {
 
 		soapModel.setMvccVersion(model.getMvccVersion());
 		soapModel.setResourcePermissionId(model.getResourcePermissionId());
-		soapModel.setCompanyId(model.getCompanyId());
 		soapModel.setName(model.getName());
 		soapModel.setScope(model.getScope());
 		soapModel.setPrimKey(model.getPrimKey());
 		soapModel.setRoleId(model.getRoleId());
 		soapModel.setOwnerId(model.getOwnerId());
 		soapModel.setActionIds(model.getActionIds());
+		soapModel.setCompanyId(model.getCompanyId());
 
 		return soapModel;
 	}
@@ -113,14 +113,6 @@ public class ResourcePermissionSoap implements Serializable {
 		_resourcePermissionId = resourcePermissionId;
 	}
 
-	public long getCompanyId() {
-		return _companyId;
-	}
-
-	public void setCompanyId(long companyId) {
-		_companyId = companyId;
-	}
-
 	public String getName() {
 		return _name;
 	}
@@ -169,13 +161,21 @@ public class ResourcePermissionSoap implements Serializable {
 		_actionIds = actionIds;
 	}
 
+	public long getCompanyId() {
+		return _companyId;
+	}
+
+	public void setCompanyId(long companyId) {
+		_companyId = companyId;
+	}
+
 	private long _mvccVersion;
 	private long _resourcePermissionId;
-	private long _companyId;
 	private String _name;
 	private int _scope;
 	private String _primKey;
 	private long _roleId;
 	private long _ownerId;
 	private long _actionIds;
+	private long _companyId;
 }

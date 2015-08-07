@@ -113,6 +113,140 @@ public class MeetupsEntryUtil {
 	}
 
 	/**
+	* Returns all the meetups entries where userId = &#63;.
+	*
+	* @param userId the user ID
+	* @return the matching meetups entries
+	*/
+	public static List<MeetupsEntry> findByUserId(long userId) {
+		return getPersistence().findByUserId(userId);
+	}
+
+	/**
+	* Returns a range of all the meetups entries where userId = &#63;.
+	*
+	* <p>
+	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link MeetupsEntryModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	* </p>
+	*
+	* @param userId the user ID
+	* @param start the lower bound of the range of meetups entries
+	* @param end the upper bound of the range of meetups entries (not inclusive)
+	* @return the range of matching meetups entries
+	*/
+	public static List<MeetupsEntry> findByUserId(long userId, int start,
+		int end) {
+		return getPersistence().findByUserId(userId, start, end);
+	}
+
+	/**
+	* Returns an ordered range of all the meetups entries where userId = &#63;.
+	*
+	* <p>
+	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link MeetupsEntryModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	* </p>
+	*
+	* @param userId the user ID
+	* @param start the lower bound of the range of meetups entries
+	* @param end the upper bound of the range of meetups entries (not inclusive)
+	* @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
+	* @return the ordered range of matching meetups entries
+	*/
+	public static List<MeetupsEntry> findByUserId(long userId, int start,
+		int end, OrderByComparator<MeetupsEntry> orderByComparator) {
+		return getPersistence()
+				   .findByUserId(userId, start, end, orderByComparator);
+	}
+
+	/**
+	* Returns the first meetups entry in the ordered set where userId = &#63;.
+	*
+	* @param userId the user ID
+	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	* @return the first matching meetups entry
+	* @throws com.liferay.social.networking.NoSuchMeetupsEntryException if a matching meetups entry could not be found
+	*/
+	public static MeetupsEntry findByUserId_First(long userId,
+		OrderByComparator<MeetupsEntry> orderByComparator)
+		throws com.liferay.social.networking.exception.NoSuchMeetupsEntryException {
+		return getPersistence().findByUserId_First(userId, orderByComparator);
+	}
+
+	/**
+	* Returns the first meetups entry in the ordered set where userId = &#63;.
+	*
+	* @param userId the user ID
+	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	* @return the first matching meetups entry, or <code>null</code> if a matching meetups entry could not be found
+	*/
+	public static MeetupsEntry fetchByUserId_First(long userId,
+		OrderByComparator<MeetupsEntry> orderByComparator) {
+		return getPersistence().fetchByUserId_First(userId, orderByComparator);
+	}
+
+	/**
+	* Returns the last meetups entry in the ordered set where userId = &#63;.
+	*
+	* @param userId the user ID
+	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	* @return the last matching meetups entry
+	* @throws com.liferay.social.networking.NoSuchMeetupsEntryException if a matching meetups entry could not be found
+	*/
+	public static MeetupsEntry findByUserId_Last(long userId,
+		OrderByComparator<MeetupsEntry> orderByComparator)
+		throws com.liferay.social.networking.exception.NoSuchMeetupsEntryException {
+		return getPersistence().findByUserId_Last(userId, orderByComparator);
+	}
+
+	/**
+	* Returns the last meetups entry in the ordered set where userId = &#63;.
+	*
+	* @param userId the user ID
+	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	* @return the last matching meetups entry, or <code>null</code> if a matching meetups entry could not be found
+	*/
+	public static MeetupsEntry fetchByUserId_Last(long userId,
+		OrderByComparator<MeetupsEntry> orderByComparator) {
+		return getPersistence().fetchByUserId_Last(userId, orderByComparator);
+	}
+
+	/**
+	* Returns the meetups entries before and after the current meetups entry in the ordered set where userId = &#63;.
+	*
+	* @param meetupsEntryId the primary key of the current meetups entry
+	* @param userId the user ID
+	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	* @return the previous, current, and next meetups entry
+	* @throws com.liferay.social.networking.NoSuchMeetupsEntryException if a meetups entry with the primary key could not be found
+	*/
+	public static MeetupsEntry[] findByUserId_PrevAndNext(long meetupsEntryId,
+		long userId, OrderByComparator<MeetupsEntry> orderByComparator)
+		throws com.liferay.social.networking.exception.NoSuchMeetupsEntryException {
+		return getPersistence()
+				   .findByUserId_PrevAndNext(meetupsEntryId, userId,
+			orderByComparator);
+	}
+
+	/**
+	* Removes all the meetups entries where userId = &#63; from the database.
+	*
+	* @param userId the user ID
+	*/
+	public static void removeByUserId(long userId) {
+		getPersistence().removeByUserId(userId);
+	}
+
+	/**
+	* Returns the number of meetups entries where userId = &#63;.
+	*
+	* @param userId the user ID
+	* @return the number of matching meetups entries
+	*/
+	public static int countByUserId(long userId) {
+		return getPersistence().countByUserId(userId);
+	}
+
+	/**
 	* Returns all the meetups entries where companyId = &#63;.
 	*
 	* @param companyId the company ID
@@ -249,140 +383,6 @@ public class MeetupsEntryUtil {
 	*/
 	public static int countByCompanyId(long companyId) {
 		return getPersistence().countByCompanyId(companyId);
-	}
-
-	/**
-	* Returns all the meetups entries where userId = &#63;.
-	*
-	* @param userId the user ID
-	* @return the matching meetups entries
-	*/
-	public static List<MeetupsEntry> findByUserId(long userId) {
-		return getPersistence().findByUserId(userId);
-	}
-
-	/**
-	* Returns a range of all the meetups entries where userId = &#63;.
-	*
-	* <p>
-	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link MeetupsEntryModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
-	* </p>
-	*
-	* @param userId the user ID
-	* @param start the lower bound of the range of meetups entries
-	* @param end the upper bound of the range of meetups entries (not inclusive)
-	* @return the range of matching meetups entries
-	*/
-	public static List<MeetupsEntry> findByUserId(long userId, int start,
-		int end) {
-		return getPersistence().findByUserId(userId, start, end);
-	}
-
-	/**
-	* Returns an ordered range of all the meetups entries where userId = &#63;.
-	*
-	* <p>
-	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link MeetupsEntryModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
-	* </p>
-	*
-	* @param userId the user ID
-	* @param start the lower bound of the range of meetups entries
-	* @param end the upper bound of the range of meetups entries (not inclusive)
-	* @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
-	* @return the ordered range of matching meetups entries
-	*/
-	public static List<MeetupsEntry> findByUserId(long userId, int start,
-		int end, OrderByComparator<MeetupsEntry> orderByComparator) {
-		return getPersistence()
-				   .findByUserId(userId, start, end, orderByComparator);
-	}
-
-	/**
-	* Returns the first meetups entry in the ordered set where userId = &#63;.
-	*
-	* @param userId the user ID
-	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
-	* @return the first matching meetups entry
-	* @throws com.liferay.social.networking.NoSuchMeetupsEntryException if a matching meetups entry could not be found
-	*/
-	public static MeetupsEntry findByUserId_First(long userId,
-		OrderByComparator<MeetupsEntry> orderByComparator)
-		throws com.liferay.social.networking.exception.NoSuchMeetupsEntryException {
-		return getPersistence().findByUserId_First(userId, orderByComparator);
-	}
-
-	/**
-	* Returns the first meetups entry in the ordered set where userId = &#63;.
-	*
-	* @param userId the user ID
-	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
-	* @return the first matching meetups entry, or <code>null</code> if a matching meetups entry could not be found
-	*/
-	public static MeetupsEntry fetchByUserId_First(long userId,
-		OrderByComparator<MeetupsEntry> orderByComparator) {
-		return getPersistence().fetchByUserId_First(userId, orderByComparator);
-	}
-
-	/**
-	* Returns the last meetups entry in the ordered set where userId = &#63;.
-	*
-	* @param userId the user ID
-	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
-	* @return the last matching meetups entry
-	* @throws com.liferay.social.networking.NoSuchMeetupsEntryException if a matching meetups entry could not be found
-	*/
-	public static MeetupsEntry findByUserId_Last(long userId,
-		OrderByComparator<MeetupsEntry> orderByComparator)
-		throws com.liferay.social.networking.exception.NoSuchMeetupsEntryException {
-		return getPersistence().findByUserId_Last(userId, orderByComparator);
-	}
-
-	/**
-	* Returns the last meetups entry in the ordered set where userId = &#63;.
-	*
-	* @param userId the user ID
-	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
-	* @return the last matching meetups entry, or <code>null</code> if a matching meetups entry could not be found
-	*/
-	public static MeetupsEntry fetchByUserId_Last(long userId,
-		OrderByComparator<MeetupsEntry> orderByComparator) {
-		return getPersistence().fetchByUserId_Last(userId, orderByComparator);
-	}
-
-	/**
-	* Returns the meetups entries before and after the current meetups entry in the ordered set where userId = &#63;.
-	*
-	* @param meetupsEntryId the primary key of the current meetups entry
-	* @param userId the user ID
-	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
-	* @return the previous, current, and next meetups entry
-	* @throws com.liferay.social.networking.NoSuchMeetupsEntryException if a meetups entry with the primary key could not be found
-	*/
-	public static MeetupsEntry[] findByUserId_PrevAndNext(long meetupsEntryId,
-		long userId, OrderByComparator<MeetupsEntry> orderByComparator)
-		throws com.liferay.social.networking.exception.NoSuchMeetupsEntryException {
-		return getPersistence()
-				   .findByUserId_PrevAndNext(meetupsEntryId, userId,
-			orderByComparator);
-	}
-
-	/**
-	* Removes all the meetups entries where userId = &#63; from the database.
-	*
-	* @param userId the user ID
-	*/
-	public static void removeByUserId(long userId) {
-		getPersistence().removeByUserId(userId);
-	}
-
-	/**
-	* Returns the number of meetups entries where userId = &#63;.
-	*
-	* @param userId the user ID
-	* @return the number of matching meetups entries
-	*/
-	public static int countByUserId(long userId) {
-		return getPersistence().countByUserId(userId);
 	}
 
 	/**

@@ -121,6 +121,8 @@ public class ShoppingItemFieldPersistenceTest {
 
 		newShoppingItemField.setDescription(RandomTestUtil.randomString());
 
+		newShoppingItemField.setCompanyId(RandomTestUtil.nextLong());
+
 		_shoppingItemFields.add(_persistence.update(newShoppingItemField));
 
 		ShoppingItemField existingShoppingItemField = _persistence.findByPrimaryKey(newShoppingItemField.getPrimaryKey());
@@ -135,6 +137,8 @@ public class ShoppingItemFieldPersistenceTest {
 			newShoppingItemField.getValues());
 		Assert.assertEquals(existingShoppingItemField.getDescription(),
 			newShoppingItemField.getDescription());
+		Assert.assertEquals(existingShoppingItemField.getCompanyId(),
+			newShoppingItemField.getCompanyId());
 	}
 
 	@Test
@@ -169,7 +173,7 @@ public class ShoppingItemFieldPersistenceTest {
 	protected OrderByComparator<ShoppingItemField> getOrderByComparator() {
 		return OrderByComparatorFactoryUtil.create("ShoppingItemField",
 			"itemFieldId", true, "itemId", true, "name", true, "values", true,
-			"description", true);
+			"description", true, "companyId", true);
 	}
 
 	@Test
@@ -379,6 +383,8 @@ public class ShoppingItemFieldPersistenceTest {
 		shoppingItemField.setValues(RandomTestUtil.randomString());
 
 		shoppingItemField.setDescription(RandomTestUtil.randomString());
+
+		shoppingItemField.setCompanyId(RandomTestUtil.nextLong());
 
 		_shoppingItemFields.add(_persistence.update(shoppingItemField));
 

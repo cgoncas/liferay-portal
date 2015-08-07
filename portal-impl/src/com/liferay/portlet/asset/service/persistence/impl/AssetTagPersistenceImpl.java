@@ -41,6 +41,7 @@ import com.liferay.portal.security.permission.InlineSQLHelperUtil;
 import com.liferay.portal.service.ServiceContext;
 import com.liferay.portal.service.ServiceContextThreadLocal;
 import com.liferay.portal.service.persistence.impl.BasePersistenceImpl;
+import com.liferay.portal.service.persistence.impl.CompanyProviderHolder;
 import com.liferay.portal.service.persistence.impl.TableMapper;
 import com.liferay.portal.service.persistence.impl.TableMapperFactory;
 
@@ -4615,6 +4616,8 @@ public class AssetTagPersistenceImpl extends BasePersistenceImpl<AssetTag>
 
 		assetTag.setUuid(uuid);
 
+		assetTag.setCompanyId(companyProviderHolder.getCompanyId());
+
 		return assetTag;
 	}
 
@@ -4845,7 +4848,6 @@ public class AssetTagPersistenceImpl extends BasePersistenceImpl<AssetTag>
 		assetTagImpl.setUuid(assetTag.getUuid());
 		assetTagImpl.setTagId(assetTag.getTagId());
 		assetTagImpl.setGroupId(assetTag.getGroupId());
-		assetTagImpl.setCompanyId(assetTag.getCompanyId());
 		assetTagImpl.setUserId(assetTag.getUserId());
 		assetTagImpl.setUserName(assetTag.getUserName());
 		assetTagImpl.setCreateDate(assetTag.getCreateDate());
@@ -4853,6 +4855,7 @@ public class AssetTagPersistenceImpl extends BasePersistenceImpl<AssetTag>
 		assetTagImpl.setName(assetTag.getName());
 		assetTagImpl.setAssetCount(assetTag.getAssetCount());
 		assetTagImpl.setLastPublishDate(assetTag.getLastPublishDate());
+		assetTagImpl.setCompanyId(assetTag.getCompanyId());
 
 		return assetTagImpl;
 	}
@@ -5496,7 +5499,8 @@ public class AssetTagPersistenceImpl extends BasePersistenceImpl<AssetTag>
 	 */
 	public void afterPropertiesSet() {
 		assetTagToAssetEntryTableMapper = TableMapperFactory.getTableMapper("AssetEntries_AssetTags",
-				"tagId", "entryId", this, assetEntryPersistence);
+				"tagId", "entryId", this, assetEntryPersistence,
+				companyProviderHolder);
 	}
 
 	public void destroy() {
@@ -5511,6 +5515,8 @@ public class AssetTagPersistenceImpl extends BasePersistenceImpl<AssetTag>
 	@BeanReference(type = AssetEntryPersistence.class)
 	protected AssetEntryPersistence assetEntryPersistence;
 	protected TableMapper<AssetTag, com.liferay.portlet.asset.model.AssetEntry> assetTagToAssetEntryTableMapper;
+	@BeanReference(type = CompanyProviderHolder.class)
+	protected CompanyProviderHolder companyProviderHolder;
 	private static final String _SQL_SELECT_ASSETTAG = "SELECT assetTag FROM AssetTag assetTag";
 	private static final String _SQL_SELECT_ASSETTAG_WHERE_PKS_IN = "SELECT assetTag FROM AssetTag assetTag WHERE tagId IN (";
 	private static final String _SQL_SELECT_ASSETTAG_WHERE = "SELECT assetTag FROM AssetTag assetTag WHERE ";

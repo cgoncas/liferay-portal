@@ -29,6 +29,7 @@ import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.kernel.util.WebKeys;
 import com.liferay.portal.portletfilerepository.PortletFileRepositoryUtil;
 import com.liferay.portal.security.permission.PermissionChecker;
+import com.liferay.portal.service.ServiceContext;
 import com.liferay.portal.theme.ThemeDisplay;
 import com.liferay.portal.util.PortalUtil;
 import com.liferay.portlet.documentlibrary.FileNameException;
@@ -60,7 +61,7 @@ public abstract class BaseUploadHandler implements UploadHandler {
 			WebKeys.THEME_DISPLAY);
 
 		checkPermission(
-			themeDisplay.getScopeGroupId(),
+			themeDisplay.getScopeGroupId(), getFolderId(uploadPortletRequest),
 			themeDisplay.getPermissionChecker());
 
 		UploadException uploadException =
@@ -104,12 +105,13 @@ public abstract class BaseUploadHandler implements UploadHandler {
 	}
 
 	protected abstract FileEntry addFileEntry(
-			ThemeDisplay themeDisplay, String fileName, InputStream inputStream,
-			String contentType)
+			long userId, long groupId, long folderId, String fileName,
+			String contentType, InputStream inputStream, long size,
+			ServiceContext serviceContext)
 		throws PortalException;
 
 	protected abstract void checkPermission(
-			long groupId, PermissionChecker permissionChecker)
+			long groupId, long folderId, PermissionChecker permissionChecker)
 		throws PortalException;
 
 	protected abstract void doHandleUploadException(
@@ -118,8 +120,12 @@ public abstract class BaseUploadHandler implements UploadHandler {
 		throws PortalException;
 
 	protected abstract FileEntry fetchFileEntry(
-			ThemeDisplay themeDisplay, String fileName)
+			long userId, long groupId, long folderId, String fileName)
 		throws PortalException;
+
+	protected long getFolderId(UploadPortletRequest uploadPortletRequest) {
+		return 0;
+	}
 
 	protected JSONObject getImageJSONObject(PortletRequest portletRequest)
 		throws PortalException {
@@ -148,19 +154,21 @@ public abstract class BaseUploadHandler implements UploadHandler {
 
 			validateFile(fileName, contentType, size);
 
+			long folderId = getFolderId(uploadPortletRequest);
+
+			String uniqueFileName = getUniqueFileName(
+				themeDisplay, fileName, folderId);
+
 			inputStream = uploadPortletRequest.getFileAsStream(parameterName);
 
-			String uniqueFileName = getUniqueFileName(themeDisplay, fileName);
-
 			FileEntry fileEntry = addFileEntry(
-				themeDisplay, uniqueFileName, inputStream, contentType);
+				themeDisplay.getUserId(), themeDisplay.getScopeGroupId(),
+				folderId, uniqueFileName, contentType, inputStream, size,
+				getServiceContext(uploadPortletRequest));
 
 			imageJSONObject.put("fileEntryId", fileEntry.getFileEntryId());
 
-			imageJSONObject.put(
-				"url",
-				PortletFileRepositoryUtil.getPortletFileEntryURL(
-					themeDisplay, fileEntry, StringPool.BLANK));
+			imageJSONObject.put("url", getURL(fileEntry, themeDisplay));
 
 			return imageJSONObject;
 		}
@@ -174,11 +182,23 @@ public abstract class BaseUploadHandler implements UploadHandler {
 
 	protected abstract String getParameterName();
 
-	protected String getUniqueFileName(
-			ThemeDisplay themeDisplay, String fileName)
+	/**
+	 * @throws PortalException
+	 */
+	protected ServiceContext getServiceContext(
+			UploadPortletRequest uploadPortletRequest)
 		throws PortalException {
 
-		FileEntry fileEntry = fetchFileEntry(themeDisplay, fileName);
+		return null;
+	}
+
+	protected String getUniqueFileName(
+			ThemeDisplay themeDisplay, String fileName, long folderId)
+		throws PortalException {
+
+		FileEntry fileEntry = fetchFileEntry(
+			themeDisplay.getUserId(), themeDisplay.getScopeGroupId(), folderId,
+			fileName);
 
 		if (fileEntry == null) {
 			return fileName;
@@ -190,7 +210,9 @@ public abstract class BaseUploadHandler implements UploadHandler {
 			String curFileName = FileUtil.appendParentheticalSuffix(
 				fileName, String.valueOf(suffix));
 
-			fileEntry = fetchFileEntry(themeDisplay, curFileName);
+			fileEntry = fetchFileEntry(
+				themeDisplay.getUserId(), themeDisplay.getScopeGroupId(),
+				folderId, curFileName);
 
 			if (fileEntry == null) {
 				return curFileName;
@@ -201,6 +223,11 @@ public abstract class BaseUploadHandler implements UploadHandler {
 
 		throw new PortalException(
 			"Unable to get a unique file name for " + fileName);
+	}
+
+	protected String getURL(FileEntry fileEntry, ThemeDisplay themeDisplay) {
+		return PortletFileRepositoryUtil.getPortletFileEntryURL(
+			themeDisplay, fileEntry, StringPool.BLANK);
 	}
 
 	protected void handleUploadException(

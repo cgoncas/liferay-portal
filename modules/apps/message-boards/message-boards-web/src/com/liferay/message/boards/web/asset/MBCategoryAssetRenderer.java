@@ -14,7 +14,7 @@
 
 package com.liferay.message.boards.web.asset;
 
-import com.liferay.message.boards.web.constants.MessageBoardsPortletKeys;
+import com.liferay.message.boards.web.constants.MBPortletKeys;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.portlet.LiferayPortletRequest;
 import com.liferay.portal.kernel.portlet.LiferayPortletResponse;
@@ -101,8 +101,7 @@ public class MBCategoryAssetRenderer extends BaseJSPAssetRenderer {
 
 		PortletURL portletURL = liferayPortletResponse.createLiferayPortletURL(
 			getControlPanelPlid(liferayPortletRequest),
-			MessageBoardsPortletKeys.MESSAGE_BOARDS,
-			PortletRequest.RENDER_PHASE);
+			MBPortletKeys.MESSAGE_BOARDS, PortletRequest.RENDER_PHASE);
 
 		portletURL.setParameter(
 			"mvcRenderCommandName", "/message_boards/edit_category");

@@ -249,12 +249,10 @@
 	<portlet>
 		<portlet-name>132</portlet-name>
 		<icon>/html/icons/plugins_admin.png</icon>
-		<struts-path>plugins_admin</struts-path>
-		<portlet-url-class>com.liferay.portal.struts.StrutsActionPortletURL</portlet-url-class>
 		<control-panel-entry-category>apps</control-panel-entry-category>
 		<control-panel-entry-weight>5.0</control-panel-entry-weight>
 		<preferences-owned-by-group>true</preferences-owned-by-group>
-		<use-default-template>false</use-default-template>
+		<use-default-template>true</use-default-template>
 		<private-request-attributes>false</private-request-attributes>
 		<private-session-attributes>false</private-session-attributes>
 		<render-weight>50</render-weight>
@@ -345,26 +343,6 @@
 		<private-session-attributes>false</private-session-attributes>
 		<render-weight>50</render-weight>
 		<css-class-wrapper>license-manager</css-class-wrapper>
-	</portlet>
-	<portlet>
-		<portlet-name>180</portlet-name>
-		<configuration-action-class>com.liferay.portal.kernel.portlet.DefaultConfigurationAction</configuration-action-class>
-		<preferences-owned-by-group>true</preferences-owned-by-group>
-		<use-default-template>true</use-default-template>
-		<private-request-attributes>false</private-request-attributes>
-		<private-session-attributes>false</private-session-attributes>
-		<header-portlet-css>/html/portlet/user_statistics/css/main.css</header-portlet-css>
-		<css-class-wrapper>portlet-user-statistics</css-class-wrapper>
-	</portlet>
-	<portlet>
-		<portlet-name>181</portlet-name>
-		<configuration-action-class>com.liferay.portal.kernel.portlet.DefaultConfigurationAction</configuration-action-class>
-		<preferences-owned-by-group>true</preferences-owned-by-group>
-		<use-default-template>true</use-default-template>
-		<private-request-attributes>false</private-request-attributes>
-		<private-session-attributes>false</private-session-attributes>
-		<header-portlet-css>/html/portlet/group_statistics/css/main.css</header-portlet-css>
-		<css-class-wrapper>portlet-group-statistics</css-class-wrapper>
 	</portlet>
 	<portlet>
 		<portlet-name>186</portlet-name>

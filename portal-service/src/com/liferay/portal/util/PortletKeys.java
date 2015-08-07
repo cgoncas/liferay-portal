@@ -58,8 +58,6 @@ public class PortletKeys {
 
 	public static final String FRIENDS_DIRECTORY = "186";
 
-	public static final String GROUP_STATISTICS = "181";
-
 	public static final String IMAGE_UPLOADER = "195";
 
 	public static final String ITEM_SELECTOR =
@@ -80,10 +78,6 @@ public class PortletKeys {
 		"3_WAR_marketplaceportlet";
 
 	public static final String MARKETPLACE_STORE = "1_WAR_marketplaceportlet";
-
-	public static final String MESSAGE_BOARDS = "19";
-
-	public static final String MESSAGE_BOARDS_ADMIN = "162";
 
 	public static final String MOBILE_DEVICE_RULES =
 		"com_liferay_mobile_device_rules_web_portlet_MDRPortlet";
@@ -160,8 +154,6 @@ public class PortletKeys {
 
 	public static final String USER_GROUPS_ADMIN =
 		"com_liferay_user_groups_admin_web_portlet_UserGroupsAdminPortlet";
-
-	public static final String USER_STATISTICS = "180";
 
 	public static final String USERS_ADMIN = "125";
 

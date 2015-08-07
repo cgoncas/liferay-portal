@@ -15,7 +15,7 @@
 package com.liferay.message.boards.layout.set.prototype.action;
 
 import com.liferay.layout.set.prototype.web.constants.LayoutSetPrototypePortletKeys;
-import com.liferay.message.boards.web.constants.MessageBoardsPortletKeys;
+import com.liferay.message.boards.web.constants.MBPortletKeys;
 import com.liferay.portal.kernel.dao.orm.QueryUtil;
 import com.liferay.portal.kernel.language.LanguageUtil;
 import com.liferay.portal.kernel.module.framework.ModuleServiceLifecycle;
@@ -32,8 +32,8 @@ import com.liferay.portal.service.LayoutSetPrototypeLocalService;
 import com.liferay.portal.service.UserLocalService;
 import com.liferay.portal.util.DefaultLayoutPrototypesUtil;
 import com.liferay.portal.util.DefaultLayoutSetPrototypesUtil;
-import com.liferay.portal.util.PortletKeys;
 import com.liferay.portlet.messageboards.model.MBMessage;
+import com.liferay.social.user.statistics.web.constants.UserStatisticsPortletKeys;
 
 import java.util.List;
 import java.util.ResourceBundle;
@@ -99,7 +99,7 @@ public class AddLayoutSetPrototypeAction {
 		DefaultLayoutPrototypesUtil.addPortletId(layout, portletId, "column-1");
 
 		DefaultLayoutPrototypesUtil.addPortletId(
-			layout, PortletKeys.USER_STATISTICS, "column-2");
+			layout, UserStatisticsPortletKeys.USER_STATISTICS, "column-2");
 
 		// Wiki layout
 
@@ -139,7 +139,7 @@ public class AddLayoutSetPrototypeAction {
 	}
 
 	@Reference(
-		target = "(javax.portlet.name=" + MessageBoardsPortletKeys.MESSAGE_BOARDS + ")",
+		target = "(javax.portlet.name=" + MBPortletKeys.MESSAGE_BOARDS + ")",
 		unbind = "-"
 	)
 	protected void setMessageBoardsPortlet(Portlet portlet) {
