@@ -36,7 +36,7 @@ import com.liferay.portal.model.CacheModel;
 import com.liferay.portal.service.ServiceContext;
 import com.liferay.portal.service.ServiceContextThreadLocal;
 import com.liferay.portal.service.persistence.impl.BasePersistenceImpl;
-import com.liferay.portal.service.persistence.impl.ServiceCompanyProvider;
+import com.liferay.portal.service.persistence.impl.CompanyProviderHolder;
 
 import com.liferay.portlet.mobiledevicerules.NoSuchActionException;
 import com.liferay.portlet.mobiledevicerules.model.MDRAction;
@@ -2062,7 +2062,7 @@ public class MDRActionPersistenceImpl extends BasePersistenceImpl<MDRAction>
 
 		mdrAction.setUuid(uuid);
 
-		mdrAction.setCompanyId(serviceCompanyProvider.getCompanyId());
+		mdrAction.setCompanyId(companyProviderHolder.getCompanyId());
 
 		return mdrAction;
 	}
@@ -2690,8 +2690,8 @@ public class MDRActionPersistenceImpl extends BasePersistenceImpl<MDRAction>
 		FinderCacheUtil.removeCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
 	}
 
-	@BeanReference(type = ServiceCompanyProvider.class)
-	protected ServiceCompanyProvider serviceCompanyProvider;
+	@BeanReference(type = CompanyProviderHolder.class)
+	protected CompanyProviderHolder companyProviderHolder;
 	private static final String _SQL_SELECT_MDRACTION = "SELECT mdrAction FROM MDRAction mdrAction";
 	private static final String _SQL_SELECT_MDRACTION_WHERE_PKS_IN = "SELECT mdrAction FROM MDRAction mdrAction WHERE actionId IN (";
 	private static final String _SQL_SELECT_MDRACTION_WHERE = "SELECT mdrAction FROM MDRAction mdrAction WHERE ";
