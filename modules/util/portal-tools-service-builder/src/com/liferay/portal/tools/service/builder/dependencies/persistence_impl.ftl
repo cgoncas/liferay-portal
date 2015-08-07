@@ -75,6 +75,7 @@ import com.liferay.portal.service.ServiceContextThreadLocal;
 import com.liferay.portal.service.persistence.impl.BasePersistenceImpl;
 import com.liferay.portal.service.persistence.impl.NestedSetsTreeManager;
 import com.liferay.portal.service.persistence.impl.PersistenceNestedSetsTreeManager;
+import com.liferay.portal.service.persistence.impl.ServiceCompanyProvider;
 import com.liferay.portal.service.persistence.impl.TableMapper;
 import com.liferay.portal.service.persistence.impl.TableMapperFactory;
 
@@ -410,6 +411,10 @@ public class ${entity.name}PersistenceImpl extends BasePersistenceImpl<${entity.
 			String uuid = PortalUUIDUtil.generate();
 
 			${entity.varName}.setUuid(uuid);
+		</#if>
+
+		<#if entity.isPartitionableModel()>
+			${entity.varName}.setCompanyId(serviceCompanyProvider.getCompanyId());
 		</#if>
 
 		return ${entity.varName};
@@ -1663,7 +1668,7 @@ public class ${entity.name}PersistenceImpl extends BasePersistenceImpl<${entity.
 			<#if column.isCollection() && column.isMappingManyToMany()>
 				<#assign tempEntity = serviceBuilder.getEntity(column.getEJBName())>
 
-				${entity.varName}To${tempEntity.name}TableMapper = TableMapperFactory.getTableMapper("${column.mappingTable}", "${entity.PKDBName}", "${tempEntity.PKDBName}", this, ${tempEntity.varName}Persistence);
+				${entity.varName}To${tempEntity.name}TableMapper = TableMapperFactory.getTableMapper("${column.mappingTable}", "${entity.PKDBName}", "${tempEntity.PKDBName}", this, ${tempEntity.varName}Persistence, serviceCompanyProvider);
 			</#if>
 		</#list>
 
@@ -1677,6 +1682,7 @@ public class ${entity.name}PersistenceImpl extends BasePersistenceImpl<${entity.
 		FinderCacheUtil.removeCache(FINDER_CLASS_NAME_ENTITY);
 		FinderCacheUtil.removeCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
 		FinderCacheUtil.removeCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
+
 
 		<#list entity.columnList as column>
 			<#if column.isCollection() && column.isMappingManyToMany()>
@@ -1694,6 +1700,26 @@ public class ${entity.name}PersistenceImpl extends BasePersistenceImpl<${entity.
 			protected TableMapper<${entity.name}, ${tempEntity.packagePath}.model.${tempEntity.name}> ${entity.varName}To${tempEntity.name}TableMapper;
 		</#if>
 	</#list>
+
+	<#if entity.isPartitionableModel()>
+		@BeanReference(type = ServiceCompanyProvider.class)
+		protected ServiceCompanyProvider serviceCompanyProvider;
+	<#else>
+		<#assign isMappeable = false>
+
+		<#list entity.columnList as column>
+			<#if column.isCollection() && column.isMappingManyToMany()>
+				<#assign isMappeable = true>
+			</#if>
+		</#list>
+
+		<#if isMappeable>
+			@BeanReference(type = ServiceCompanyProvider.class)
+			protected ServiceCompanyProvider serviceCompanyProvider;
+		</#if>
+	</#if>
+
+
 
 	<#if entity.isHierarchicalTree()>
 		protected NestedSetsTreeManager<${entity.name}> nestedSetsTreeManager = new PersistenceNestedSetsTreeManager<${entity.name}>(this, "${entity.table}", "${entity.name}", ${entity.name}Impl.class, "${pkColumn.DBName}", "${scopeColumn.DBName}", "left${pkColumn.methodName}", "right${pkColumn.methodName}");

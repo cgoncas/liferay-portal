@@ -23,24 +23,27 @@ import com.liferay.portal.kernel.search.QueryConfig;
 import com.liferay.portal.kernel.search.SearchContext;
 import com.liferay.portal.kernel.search.SearchEngineUtil;
 import com.liferay.portal.kernel.test.rule.DeleteAfterTestRun;
-import com.liferay.portal.kernel.test.rule.DeleteAfterTestRunTestRule;
 import com.liferay.portal.kernel.test.util.ServiceContextTestUtil;
 import com.liferay.portal.kernel.test.util.TestPropsValues;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.UnicodeProperties;
 import com.liferay.portal.model.Repository;
 import com.liferay.portal.model.RepositoryEntry;
+import com.liferay.portal.security.auth.CompanyThreadLocal;
 import com.liferay.portal.service.ClassNameLocalServiceUtil;
 import com.liferay.portal.service.RepositoryEntryLocalServiceUtil;
 import com.liferay.portal.service.RepositoryLocalServiceUtil;
 import com.liferay.portal.service.ServiceContext;
 import com.liferay.portal.service.test.ServiceTestUtil;
+import com.liferay.portal.test.rule.LiferayIntegrationTestRule;
 import com.liferay.portlet.documentlibrary.model.DLFolderConstants;
 
 import org.apache.chemistry.opencmis.commons.enums.CapabilityQuery;
 
+import org.junit.AfterClass;
 import org.junit.Assert;
 import org.junit.Before;
+import org.junit.BeforeClass;
 import org.junit.ClassRule;
 import org.junit.Rule;
 import org.junit.Test;
@@ -54,8 +57,20 @@ public class CMISQueryBuilderTest {
 
 	@ClassRule
 	@Rule
-	public static final DeleteAfterTestRunTestRule deleteAfterTestRule =
-		new DeleteAfterTestRunTestRule();
+	public static final LiferayIntegrationTestRule liferayIntegrationTestRule =
+		new LiferayIntegrationTestRule();
+
+	@BeforeClass
+	public static void setUpClass() throws Exception {
+		_previousCompanyId = CompanyThreadLocal.getCompanyId();
+
+		CompanyThreadLocal.setCompanyId(TestPropsValues.getCompanyId());
+	}
+
+	@AfterClass
+	public static void tearDownClass() throws Exception {
+		CompanyThreadLocal.setCompanyId(_previousCompanyId);
+	}
 
 	@Before
 	public void setUp() throws Exception {
@@ -482,6 +497,8 @@ public class CMISQueryBuilderTest {
 
 	private static final String _REPOSITORY_CLASS_NAME =
 		"com.liferay.portal.repository.liferayrepository.LiferayRepository";
+
+	private static long _previousCompanyId;
 
 	private final CMISSearchQueryBuilder _cmisSearchQueryBuilder =
 		new BaseCmisSearchQueryBuilder();

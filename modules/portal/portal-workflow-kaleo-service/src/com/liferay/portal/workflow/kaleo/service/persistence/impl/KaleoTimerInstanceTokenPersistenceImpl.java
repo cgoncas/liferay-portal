@@ -16,6 +16,7 @@ package com.liferay.portal.workflow.kaleo.service.persistence.impl;
 
 import aQute.bnd.annotation.ProviderType;
 
+import com.liferay.portal.kernel.bean.BeanReference;
 import com.liferay.portal.kernel.dao.orm.EntityCacheUtil;
 import com.liferay.portal.kernel.dao.orm.FinderCacheUtil;
 import com.liferay.portal.kernel.dao.orm.FinderPath;
@@ -33,6 +34,7 @@ import com.liferay.portal.model.CacheModel;
 import com.liferay.portal.service.ServiceContext;
 import com.liferay.portal.service.ServiceContextThreadLocal;
 import com.liferay.portal.service.persistence.impl.BasePersistenceImpl;
+import com.liferay.portal.service.persistence.impl.ServiceCompanyProvider;
 import com.liferay.portal.workflow.kaleo.exception.NoSuchTimerInstanceTokenException;
 import com.liferay.portal.workflow.kaleo.model.KaleoTimerInstanceToken;
 import com.liferay.portal.workflow.kaleo.model.impl.KaleoTimerInstanceTokenImpl;
@@ -2090,6 +2092,8 @@ public class KaleoTimerInstanceTokenPersistenceImpl extends BasePersistenceImpl<
 		kaleoTimerInstanceToken.setNew(true);
 		kaleoTimerInstanceToken.setPrimaryKey(kaleoTimerInstanceTokenId);
 
+		kaleoTimerInstanceToken.setCompanyId(serviceCompanyProvider.getCompanyId());
+
 		return kaleoTimerInstanceToken;
 	}
 
@@ -2332,7 +2336,6 @@ public class KaleoTimerInstanceTokenPersistenceImpl extends BasePersistenceImpl<
 
 		kaleoTimerInstanceTokenImpl.setKaleoTimerInstanceTokenId(kaleoTimerInstanceToken.getKaleoTimerInstanceTokenId());
 		kaleoTimerInstanceTokenImpl.setGroupId(kaleoTimerInstanceToken.getGroupId());
-		kaleoTimerInstanceTokenImpl.setCompanyId(kaleoTimerInstanceToken.getCompanyId());
 		kaleoTimerInstanceTokenImpl.setUserId(kaleoTimerInstanceToken.getUserId());
 		kaleoTimerInstanceTokenImpl.setUserName(kaleoTimerInstanceToken.getUserName());
 		kaleoTimerInstanceTokenImpl.setCreateDate(kaleoTimerInstanceToken.getCreateDate());
@@ -2350,6 +2353,7 @@ public class KaleoTimerInstanceTokenPersistenceImpl extends BasePersistenceImpl<
 		kaleoTimerInstanceTokenImpl.setCompleted(kaleoTimerInstanceToken.isCompleted());
 		kaleoTimerInstanceTokenImpl.setCompletionDate(kaleoTimerInstanceToken.getCompletionDate());
 		kaleoTimerInstanceTokenImpl.setWorkflowContext(kaleoTimerInstanceToken.getWorkflowContext());
+		kaleoTimerInstanceTokenImpl.setCompanyId(kaleoTimerInstanceToken.getCompanyId());
 
 		return kaleoTimerInstanceTokenImpl;
 	}
@@ -2730,6 +2734,8 @@ public class KaleoTimerInstanceTokenPersistenceImpl extends BasePersistenceImpl<
 		FinderCacheUtil.removeCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
 	}
 
+	@BeanReference(type = ServiceCompanyProvider.class)
+	protected ServiceCompanyProvider serviceCompanyProvider;
 	private static final String _SQL_SELECT_KALEOTIMERINSTANCETOKEN = "SELECT kaleoTimerInstanceToken FROM KaleoTimerInstanceToken kaleoTimerInstanceToken";
 	private static final String _SQL_SELECT_KALEOTIMERINSTANCETOKEN_WHERE_PKS_IN =
 		"SELECT kaleoTimerInstanceToken FROM KaleoTimerInstanceToken kaleoTimerInstanceToken WHERE kaleoTimerInstanceTokenId IN (";

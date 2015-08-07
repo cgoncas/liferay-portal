@@ -17,6 +17,7 @@ package com.liferay.portal.service.persistence.impl;
 import aQute.bnd.annotation.ProviderType;
 
 import com.liferay.portal.NoSuchWorkflowDefinitionLinkException;
+import com.liferay.portal.kernel.bean.BeanReference;
 import com.liferay.portal.kernel.dao.orm.EntityCacheUtil;
 import com.liferay.portal.kernel.dao.orm.FinderCacheUtil;
 import com.liferay.portal.kernel.dao.orm.FinderPath;
@@ -2255,6 +2256,8 @@ public class WorkflowDefinitionLinkPersistenceImpl extends BasePersistenceImpl<W
 		workflowDefinitionLink.setNew(true);
 		workflowDefinitionLink.setPrimaryKey(workflowDefinitionLinkId);
 
+		workflowDefinitionLink.setCompanyId(serviceCompanyProvider.getCompanyId());
+
 		return workflowDefinitionLink;
 	}
 
@@ -2500,7 +2503,6 @@ public class WorkflowDefinitionLinkPersistenceImpl extends BasePersistenceImpl<W
 		workflowDefinitionLinkImpl.setMvccVersion(workflowDefinitionLink.getMvccVersion());
 		workflowDefinitionLinkImpl.setWorkflowDefinitionLinkId(workflowDefinitionLink.getWorkflowDefinitionLinkId());
 		workflowDefinitionLinkImpl.setGroupId(workflowDefinitionLink.getGroupId());
-		workflowDefinitionLinkImpl.setCompanyId(workflowDefinitionLink.getCompanyId());
 		workflowDefinitionLinkImpl.setUserId(workflowDefinitionLink.getUserId());
 		workflowDefinitionLinkImpl.setUserName(workflowDefinitionLink.getUserName());
 		workflowDefinitionLinkImpl.setCreateDate(workflowDefinitionLink.getCreateDate());
@@ -2510,6 +2512,7 @@ public class WorkflowDefinitionLinkPersistenceImpl extends BasePersistenceImpl<W
 		workflowDefinitionLinkImpl.setTypePK(workflowDefinitionLink.getTypePK());
 		workflowDefinitionLinkImpl.setWorkflowDefinitionName(workflowDefinitionLink.getWorkflowDefinitionName());
 		workflowDefinitionLinkImpl.setWorkflowDefinitionVersion(workflowDefinitionLink.getWorkflowDefinitionVersion());
+		workflowDefinitionLinkImpl.setCompanyId(workflowDefinitionLink.getCompanyId());
 
 		return workflowDefinitionLinkImpl;
 	}
@@ -2890,6 +2893,8 @@ public class WorkflowDefinitionLinkPersistenceImpl extends BasePersistenceImpl<W
 		FinderCacheUtil.removeCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
 	}
 
+	@BeanReference(type = ServiceCompanyProvider.class)
+	protected ServiceCompanyProvider serviceCompanyProvider;
 	private static final String _SQL_SELECT_WORKFLOWDEFINITIONLINK = "SELECT workflowDefinitionLink FROM WorkflowDefinitionLink workflowDefinitionLink";
 	private static final String _SQL_SELECT_WORKFLOWDEFINITIONLINK_WHERE_PKS_IN = "SELECT workflowDefinitionLink FROM WorkflowDefinitionLink workflowDefinitionLink WHERE workflowDefinitionLinkId IN (";
 	private static final String _SQL_SELECT_WORKFLOWDEFINITIONLINK_WHERE = "SELECT workflowDefinitionLink FROM WorkflowDefinitionLink workflowDefinitionLink WHERE ";
