@@ -24,6 +24,7 @@ import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
+import com.liferay.portal.util.test.PortletContainerTestUtil;
 import org.junit.Assert;
 import org.junit.ClassRule;
 import org.junit.Rule;
