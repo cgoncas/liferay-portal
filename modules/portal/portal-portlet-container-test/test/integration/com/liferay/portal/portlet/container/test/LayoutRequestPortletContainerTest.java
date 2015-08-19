@@ -47,7 +47,8 @@ public class LayoutRequestPortletContainerTest
 	public void testLayoutRequest() throws Exception {
 		setUpPortlet(testPortlet, properties, TEST_PORTLET_ID);
 
-		HttpServletRequest httpServletRequest = getHttpServletRequest();
+		HttpServletRequest httpServletRequest =
+			PortletContainerTestUtil.getHttpServletRequest(group, layout);
 
 		Map<String, List<String>> responseMap = request(
 			layout.getRegularURL(httpServletRequest));

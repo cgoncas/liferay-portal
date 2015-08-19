@@ -81,7 +81,8 @@ public class ActionRequestPortletContainerTest
 
 			setUpPortlet(testPortlet, properties, TEST_PORTLET_ID);
 
-			HttpServletRequest httpServletRequest = getHttpServletRequest();
+			HttpServletRequest httpServletRequest =
+				PortletContainerTestUtil.getHttpServletRequest(group, layout);
 
 			PortletURL portletURL = new PortletURLImpl(
 				httpServletRequest, TEST_PORTLET_ID, layout.getPlid(),
@@ -114,7 +115,8 @@ public class ActionRequestPortletContainerTest
 
 			setUpPortlet(testPortlet, properties, TEST_PORTLET_ID);
 
-			HttpServletRequest httpServletRequest = getHttpServletRequest();
+			HttpServletRequest httpServletRequest =
+				PortletContainerTestUtil.getHttpServletRequest(group, layout);
 
 			PortletURL portletURL = new PortletURLImpl(
 				httpServletRequest, TEST_PORTLET_ID, layout.getPlid(),
@@ -147,7 +149,8 @@ public class ActionRequestPortletContainerTest
 
 			setUpPortlet(testPortlet, properties, TEST_PORTLET_ID);
 
-			HttpServletRequest httpServletRequest = getHttpServletRequest();
+			HttpServletRequest httpServletRequest =
+				PortletContainerTestUtil.getHttpServletRequest(group, layout);
 
 			PortletURL portletURL = new PortletURLImpl(
 				httpServletRequest, TEST_PORTLET_ID, layout.getPlid(),
@@ -174,7 +177,8 @@ public class ActionRequestPortletContainerTest
 
 		setUpPortlet(testPortlet, properties, TEST_PORTLET_ID);
 
-		HttpServletRequest httpServletRequest = getHttpServletRequest();
+		HttpServletRequest httpServletRequest =
+			PortletContainerTestUtil.getHttpServletRequest(group, layout);
 
 		PortletURL portletURL = new PortletURLImpl(
 			httpServletRequest, TEST_PORTLET_ID, layout.getPlid(),
@@ -190,7 +194,8 @@ public class ActionRequestPortletContainerTest
 	public void testNoPortalAuthenticationTokens() throws Exception {
 		setUpPortlet(testPortlet, properties, TEST_PORTLET_ID);
 
-		HttpServletRequest httpServletRequest = getHttpServletRequest();
+		HttpServletRequest httpServletRequest =
+			PortletContainerTestUtil.getHttpServletRequest(group, layout);
 
 		PortletURL portletURL = new PortletURLImpl(
 			httpServletRequest, TEST_PORTLET_ID, layout.getPlid(),
@@ -255,7 +260,8 @@ public class ActionRequestPortletContainerTest
 
 		// Get the portal authentication token by making a resource request
 
-		HttpServletRequest httpServletRequest = getHttpServletRequest();
+		HttpServletRequest httpServletRequest =
+			PortletContainerTestUtil.getHttpServletRequest(group, layout);
 
 		PortletURL portletURL = new PortletURLImpl(
 			httpServletRequest, TEST_PORTLET_ID, layout.getPlid(),
@@ -301,7 +307,8 @@ public class ActionRequestPortletContainerTest
 
 			setUpPortlet(testPortlet, properties, TEST_PORTLET_ID);
 
-			HttpServletRequest httpServletRequest = getHttpServletRequest();
+			HttpServletRequest httpServletRequest =
+				PortletContainerTestUtil.getHttpServletRequest(group, layout);
 
 			PortletURL portletURL = new PortletURLImpl(
 				httpServletRequest, TEST_PORTLET_ID, layout.getPlid(),
@@ -327,7 +334,8 @@ public class ActionRequestPortletContainerTest
 
 		setUpPortlet(testPortlet, properties, TEST_PORTLET_ID);
 
-		HttpServletRequest httpServletRequest = getHttpServletRequest();
+		HttpServletRequest httpServletRequest =
+			PortletContainerTestUtil.getHttpServletRequest(group, layout);
 
 		PortletURL portletURL = new PortletURLImpl(
 			httpServletRequest, TEST_PORTLET_ID, layout.getPlid(),
@@ -373,7 +381,8 @@ public class ActionRequestPortletContainerTest
 
 		// Get the portal authentication token by making a resource request
 
-		HttpServletRequest httpServletRequest = getHttpServletRequest();
+		HttpServletRequest httpServletRequest =
+			PortletContainerTestUtil.getHttpServletRequest(group, layout);
 
 		PortletURL portletURL = new PortletURLImpl(
 			httpServletRequest, TEST_PORTLET_ID, layout.getPlid(),

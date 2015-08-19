@@ -103,31 +103,6 @@ public class BasePortletContainerTestCase {
 		return bundle.getBundleContext();
 	}
 
-	protected HttpServletRequest getHttpServletRequest() throws Exception {
-		HttpServletRequest httpServletRequest = new MockHttpServletRequest();
-
-		httpServletRequest.setAttribute(WebKeys.LAYOUT, layout);
-
-		ThemeDisplay themeDisplay = ThemeDisplayFactory.create();
-
-		Company company = CompanyLocalServiceUtil.getCompany(
-			layout.getCompanyId());
-
-		themeDisplay.setCompany(company);
-
-		themeDisplay.setLayout(layout);
-		themeDisplay.setPlid(layout.getPlid());
-		themeDisplay.setPortalURL(TestPropsValues.PORTAL_URL);
-		themeDisplay.setRequest(httpServletRequest);
-		themeDisplay.setScopeGroupId(group.getGroupId());
-		themeDisplay.setSiteGroupId(group.getGroupId());
-		themeDisplay.setUser(TestPropsValues.getUser());
-
-		httpServletRequest.setAttribute(WebKeys.THEME_DISPLAY, themeDisplay);
-
-		return httpServletRequest;
-	}
-
 	protected String getString(Map<String, List<String>> map, String key) {
 		List<String> values = map.get(key);
 
