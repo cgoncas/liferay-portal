@@ -44,6 +44,10 @@ public class PortletContainerTestUtil {
 	public static HttpServletRequest getHttpServletRequest(
 		Group group, Layout layout) throws Exception {
 
+		if (group == null || layout == null) {
+			throw new IllegalArgumentException("Arguments cannot be null.");
+		}
+
 		HttpServletRequest httpServletRequest = new MockHttpServletRequest();
 
 		httpServletRequest.setAttribute(WebKeys.LAYOUT, layout);
