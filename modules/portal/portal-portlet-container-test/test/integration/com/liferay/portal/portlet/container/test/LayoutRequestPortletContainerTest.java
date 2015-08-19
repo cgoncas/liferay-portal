@@ -50,10 +50,12 @@ public class LayoutRequestPortletContainerTest
 		HttpServletRequest httpServletRequest =
 			PortletContainerTestUtil.getHttpServletRequest(group, layout);
 
-		Map<String, List<String>> responseMap = request(
-			layout.getRegularURL(httpServletRequest));
+		Map<String, List<String>> responseMap =
+			PortletContainerTestUtil.request(
+				layout.getRegularURL(httpServletRequest));
 
-		Assert.assertEquals("200", getString(responseMap, "code"));
+		Assert.assertEquals(
+			"200", PortletContainerTestUtil.getString(responseMap, "code"));
 		Assert.assertTrue(map.containsKey("render"));
 	}
 

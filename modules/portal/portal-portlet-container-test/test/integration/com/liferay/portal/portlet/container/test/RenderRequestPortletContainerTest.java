@@ -84,7 +84,8 @@ public class RenderRequestPortletContainerTest
 					SecurityPortletContainerWrapper.class.getName(),
 					Level.WARN)) {
 
-			Map<String, List<String>> responseMap = request(url);
+			Map<String, List<String>> responseMap =
+				PortletContainerTestUtil.request(url);
 
 			List<LoggingEvent> loggingEvents =
 				captureAppender.getLoggingEvents();
@@ -97,7 +98,8 @@ public class RenderRequestPortletContainerTest
 				"Invalid portlet ID '\"><script>alert(1)</script>",
 				loggingEvent.getMessage());
 
-			Assert.assertEquals("200", getString(responseMap, "code"));
+			Assert.assertEquals(
+				"200", PortletContainerTestUtil.getString(responseMap, "code"));
 		}
 	}
 
@@ -155,9 +157,11 @@ public class RenderRequestPortletContainerTest
 			httpServletRequest, TEST_PORTLET_ID, layout.getPlid(),
 			PortletRequest.RESOURCE_PHASE);
 
-		Map<String, List<String>> responseMap = request(portletURL.toString());
+		Map<String, List<String>> responseMap =
+			PortletContainerTestUtil.request(portletURL.toString());
 
-		String portletAuthenticationToken = getString(responseMap, "body");
+		String portletAuthenticationToken = PortletContainerTestUtil.getString(
+			responseMap, "body");
 
 		List<String> cookies = responseMap.get("Set-Cookie");
 
@@ -181,9 +185,10 @@ public class RenderRequestPortletContainerTest
 
 		headers.put("Cookie", cookies);
 
-		responseMap = request(url, headers);
+		responseMap = PortletContainerTestUtil.request(url, headers);
 
-		Assert.assertEquals("200", getString(responseMap, "code"));
+		Assert.assertEquals(
+			"200", PortletContainerTestUtil.getString(responseMap, "code"));
 		Assert.assertTrue(map.containsKey("render"));
 	}
 
@@ -198,9 +203,11 @@ public class RenderRequestPortletContainerTest
 			httpServletRequest, TEST_PORTLET_ID, layout.getPlid(),
 			PortletRequest.RENDER_PHASE);
 
-		Map<String, List<String>> responseMap = request(portletURL.toString());
+		Map<String, List<String>> responseMap =
+			PortletContainerTestUtil.request(portletURL.toString());
 
-		Assert.assertEquals("200", getString(responseMap, "code"));
+		Assert.assertEquals(
+			"200", PortletContainerTestUtil.getString(responseMap, "code"));
 		Assert.assertTrue(map.containsKey("render"));
 	}
 
@@ -239,9 +246,11 @@ public class RenderRequestPortletContainerTest
 
 		portletURL.setParameter("testRuntimePortletId", testRuntimePortletId);
 
-		Map<String, List<String>> responseMap = request(portletURL.toString());
+		Map<String, List<String>> responseMap =
+			PortletContainerTestUtil.request(portletURL.toString());
 
-		Assert.assertEquals("200", getString(responseMap, "code"));
+		Assert.assertEquals(
+			"200", PortletContainerTestUtil.getString(responseMap, "code"));
 		Assert.assertTrue(map.containsKey("render"));
 	}
 

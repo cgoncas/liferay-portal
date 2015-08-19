@@ -15,6 +15,7 @@
 package com.liferay.portal.portlet.container.test;
 
 import com.liferay.portal.kernel.test.util.TestPropsValues;
+import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.WebKeys;
 import com.liferay.portal.model.Company;
 import com.liferay.portal.model.Group;
@@ -25,6 +26,15 @@ import com.liferay.portal.theme.ThemeDisplayFactory;
 import org.springframework.mock.web.MockHttpServletRequest;
 
 import javax.servlet.http.HttpServletRequest;
+
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.HttpURLConnection;
+import java.net.URL;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * @author Manuel de la Peña
@@ -56,6 +66,83 @@ public class PortletContainerTestUtil {
 		httpServletRequest.setAttribute(WebKeys.THEME_DISPLAY, themeDisplay);
 
 		return httpServletRequest;
+	}
+
+	public static String getString(Map<String, List<String>> map, String key) {
+		List<String> values = map.get(key);
+
+		return values.get(0);
+	}
+
+	public static Map<String, List<String>> request(String url)
+		throws IOException {
+
+		return request(url, null);
+	}
+
+	public static Map<String, List<String>> request(
+			String url, Map<String, List<String>> headers)
+		throws IOException {
+
+		URL urlObject = new URL(url);
+
+		HttpURLConnection httpURLConnection =
+			(HttpURLConnection)urlObject.openConnection();
+
+		httpURLConnection.setInstanceFollowRedirects(true);
+		httpURLConnection.setConnectTimeout(1500 * 1000);
+		httpURLConnection.setReadTimeout(1500 * 1000);
+
+		if (headers != null) {
+			for (Map.Entry<String, List<String>> entry : headers.entrySet()) {
+				String key = entry.getKey();
+
+				for (String value : entry.getValue()) {
+					if (key.equals("Cookie")) {
+						httpURLConnection.addRequestProperty(
+							key, value.split(";", 2)[0]);
+					}
+					else {
+						httpURLConnection.setRequestProperty(key, value);
+					}
+				}
+			}
+		}
+
+		InputStream inputStream = null;
+
+		try {
+			inputStream = httpURLConnection.getInputStream();
+		}
+		catch (IOException ioe) {
+			inputStream = httpURLConnection.getErrorStream();
+		}
+
+		try {
+			Map<String, List<String>> responseMap = new HashMap<>(
+				httpURLConnection.getHeaderFields());
+
+			responseMap.put("body", Arrays.asList(read(inputStream)));
+
+			String code = String.valueOf(httpURLConnection.getResponseCode());
+
+			responseMap.put("code", Arrays.asList(code));
+
+			return responseMap;
+		}
+		finally {
+			if (inputStream != null) {
+				inputStream.close();
+			}
+		}
+	}
+
+	protected static String read(InputStream inputStream) throws IOException {
+		if (inputStream == null) {
+			return "";
+		}
+
+		return StringUtil.read(inputStream);
 	}
 
 }
