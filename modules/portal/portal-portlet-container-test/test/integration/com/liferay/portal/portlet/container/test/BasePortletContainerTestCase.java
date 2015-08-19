@@ -17,26 +17,13 @@ package com.liferay.portal.portlet.container.test;
 import com.liferay.portal.kernel.test.rule.DeleteAfterTestRun;
 import com.liferay.portal.kernel.test.util.GroupTestUtil;
 import com.liferay.portal.kernel.test.util.TestPropsValues;
-import com.liferay.portal.kernel.util.StringUtil;
-import com.liferay.portal.kernel.util.WebKeys;
-import com.liferay.portal.model.Company;
 import com.liferay.portal.model.Group;
 import com.liferay.portal.model.Layout;
 import com.liferay.portal.security.permission.PermissionChecker;
 import com.liferay.portal.security.permission.PermissionCheckerFactoryUtil;
 import com.liferay.portal.security.permission.PermissionThreadLocal;
-import com.liferay.portal.service.CompanyLocalServiceUtil;
-import com.liferay.portal.theme.ThemeDisplay;
-import com.liferay.portal.theme.ThemeDisplayFactory;
 import com.liferay.portal.util.test.LayoutTestUtil;
 
-import java.io.IOException;
-import java.io.InputStream;
-
-import java.net.HttpURLConnection;
-import java.net.URL;
-
-import java.util.Arrays;
 import java.util.Dictionary;
 import java.util.HashMap;
 import java.util.Hashtable;
@@ -47,8 +34,6 @@ import java.util.concurrent.CopyOnWriteArrayList;
 
 import javax.portlet.Portlet;
 
-import javax.servlet.http.HttpServletRequest;
-
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
@@ -58,8 +43,6 @@ import org.osgi.framework.BundleContext;
 import org.osgi.framework.FrameworkUtil;
 import org.osgi.framework.ServiceRegistration;
 import org.osgi.util.tracker.ServiceTracker;
-
-import org.springframework.mock.web.MockHttpServletRequest;
 
 /**
  * @author Raymond Augé

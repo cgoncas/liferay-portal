@@ -405,8 +405,8 @@ public class ActionRequestPortletContainerTest
 		Map<String, List<String>> responseMap =
 			PortletContainerTestUtil.request(portletURL.toString());
 
-		String portalAuthenticationToken =
-			PortletContainerTestUtil.getString(responseMap, "body");
+		String portalAuthenticationToken = PortletContainerTestUtil.getString(
+			responseMap, "body");
 
 		List<String> cookies = responseMap.get("Set-Cookie");
 
