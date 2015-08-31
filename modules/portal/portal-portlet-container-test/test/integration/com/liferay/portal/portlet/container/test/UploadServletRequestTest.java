@@ -104,7 +104,7 @@ public class UploadServletRequestTest {
 
 		Map<String, FileItem[]> fileParameters = new HashMap<>();
 
-		putFileParameter(fileParameters);
+		putFileParameter(getClass(), fileParameters);
 
 		LiferayServletRequest liferayServletRequest =
 			PortletContainerTestUtil.mockLiferayServletRequest(getClass());
@@ -182,7 +182,7 @@ public class UploadServletRequestTest {
 
 		Map<String, FileItem[]> fileParameters = new HashMap<>();
 
-		putFileParameter(fileParameters);
+		putFileParameter(getClass(), fileParameters);
 
 		LiferayServletRequest liferayServletRequest =
 			PortletContainerTestUtil.mockLiferayServletRequest(getClass());
@@ -231,7 +231,7 @@ public class UploadServletRequestTest {
 
 		Map<String, FileItem[]> fileParameters = new HashMap<>();
 
-		putFileParameter(fileParameters);
+		putFileParameter(getClass(), fileParameters);
 
 		LiferayServletRequest liferayServletRequest =
 			PortletContainerTestUtil.mockLiferayServletRequest(getClass());
@@ -279,7 +279,7 @@ public class UploadServletRequestTest {
 	public void testGetFileAsStreamShouldReturnAStream() throws Exception {
 		Map<String, FileItem[]> fileParameters = new HashMap<>();
 
-		putFileParameter(fileParameters);
+		putFileParameter(getClass(), fileParameters);
 
 		LiferayServletRequest liferayServletRequest =
 			PortletContainerTestUtil.mockLiferayServletRequest(getClass());
@@ -332,7 +332,7 @@ public class UploadServletRequestTest {
 
 		Map<String, FileItem[]> fileParameters = new HashMap<>();
 
-		putFileParameter(fileParameters);
+		putFileParameter(getClass(), fileParameters);
 
 		LiferayServletRequest liferayServletRequest =
 			PortletContainerTestUtil.mockLiferayServletRequest(getClass());
@@ -354,7 +354,7 @@ public class UploadServletRequestTest {
 
 		Map<String, FileItem[]> fileParameters = new HashMap<>();
 
-		putFileParameter(fileParameters);
+		putFileParameter(getClass(), fileParameters);
 
 		LiferayServletRequest liferayServletRequest =
 			PortletContainerTestUtil.mockLiferayServletRequest(getClass());
@@ -404,7 +404,7 @@ public class UploadServletRequestTest {
 
 		Map<String, FileItem[]> fileParameters = new HashMap<>();
 
-		putFileParameter(fileParameters);
+		putFileParameter(getClass(), fileParameters);
 
 		LiferayServletRequest liferayServletRequest =
 			PortletContainerTestUtil.mockLiferayServletRequest(getClass());
@@ -426,7 +426,7 @@ public class UploadServletRequestTest {
 		Map<String, FileItem[]> fileParameters = new HashMap<>();
 
 		for (int i = 0; i < 10; i++) {
-			putFileParameter(i, fileParameters);
+			putFileParameter(i, getClass(), fileParameters);
 		}
 
 		LiferayServletRequest liferayServletRequest =
@@ -480,7 +480,7 @@ public class UploadServletRequestTest {
 
 		Map<String, FileItem[]> fileParameters = new HashMap<>();
 
-		putFileParameter(fileParameters);
+		putFileParameter(getClass(), fileParameters);
 
 		LiferayServletRequest liferayServletRequest =
 			PortletContainerTestUtil.mockLiferayServletRequest(getClass());
@@ -502,7 +502,7 @@ public class UploadServletRequestTest {
 		Map<String, FileItem[]> fileParameters = new HashMap<>();
 
 		for (int i = 0; i < 10; i++) {
-			putFileParameter(i, fileParameters);
+			putFileParameter(i, getClass(), fileParameters);
 		}
 
 		LiferayServletRequest liferayServletRequest =
@@ -560,7 +560,7 @@ public class UploadServletRequestTest {
 
 		Map<String, FileItem[]> fileParameters = new HashMap<>();
 
-		putFileParameter(fileParameters);
+		putFileParameter(getClass(), fileParameters);
 
 		LiferayServletRequest liferayServletRequest =
 			PortletContainerTestUtil.mockLiferayServletRequest(getClass());
@@ -578,7 +578,7 @@ public class UploadServletRequestTest {
 	public void testGetFileShouldReturnAFile() throws Exception {
 		Map<String, FileItem[]> fileParameters = new HashMap<>();
 
-		putFileParameter(fileParameters);
+		putFileParameter(getClass(), fileParameters);
 
 		LiferayServletRequest liferayServletRequest =
 			PortletContainerTestUtil.mockLiferayServletRequest(getClass());
@@ -632,7 +632,7 @@ public class UploadServletRequestTest {
 
 		Map<String, FileItem[]> fileParameters = new HashMap<>();
 
-		putFileParameter(fileParameters);
+		putFileParameter(getClass(), fileParameters);
 
 		LiferayServletRequest liferayServletRequest =
 			PortletContainerTestUtil.mockLiferayServletRequest(getClass());
@@ -655,7 +655,7 @@ public class UploadServletRequestTest {
 		Map<String, FileItem[]> fileParameters = new HashMap<>();
 
 		for (int i = 0; i < 10; i++) {
-			putFileParameter(i, fileParameters);
+			putFileParameter(i, getClass(), fileParameters);
 		}
 
 		LiferayServletRequest liferayServletRequest =
@@ -713,7 +713,7 @@ public class UploadServletRequestTest {
 
 		Map<String, FileItem[]> fileParameters = new HashMap<>();
 
-		putFileParameter(fileParameters);
+		putFileParameter(getClass(), fileParameters);
 
 		LiferayServletRequest liferayServletRequest =
 			PortletContainerTestUtil.mockLiferayServletRequest(getClass());
@@ -732,7 +732,7 @@ public class UploadServletRequestTest {
 
 		Map<String, FileItem[]> fileParameters = new HashMap<>();
 
-		putFileParameter(fileParameters);
+		putFileParameter(getClass(), fileParameters);
 
 		LiferayServletRequest liferayServletRequest =
 			PortletContainerTestUtil.mockLiferayServletRequest(getClass());
@@ -783,7 +783,7 @@ public class UploadServletRequestTest {
 
 		Map<String, FileItem[]> fileParameters = new HashMap<>();
 
-		putFileParameter(fileParameters);
+		putFileParameter(getClass(), fileParameters);
 
 		LiferayServletRequest liferayServletRequest =
 			PortletContainerTestUtil.mockLiferayServletRequest(getClass());
@@ -864,7 +864,7 @@ public class UploadServletRequestTest {
 		Map<String, List<String>> regularParameters = new HashMap<>();
 
 		for (int i = 0; i < 10; i++) {
-			putFileParameter(i, fileParameters);
+			putFileParameter(i, getClass(), fileParameters);
 			putRegularParameter(i, regularParameters);
 		}
 
@@ -915,7 +915,7 @@ public class UploadServletRequestTest {
 		Map<String, List<String>> regularParameters = new HashMap<>();
 
 		for (int i = 0; i < 10; i++) {
-			putFileParameter(i, fileParameters);
+			putFileParameter(i, getClass(), fileParameters);
 			putRegularParameter(i, regularParameters);
 		}
 
@@ -979,7 +979,7 @@ public class UploadServletRequestTest {
 
 		Map<String, FileItem[]> fileParameters = new HashMap<>();
 
-		putFileParameter(fileParameters);
+		putFileParameter(getClass(), fileParameters);
 
 		LiferayServletRequest liferayServletRequest =
 			PortletContainerTestUtil.mockLiferayServletRequest(getClass());
@@ -1029,7 +1029,7 @@ public class UploadServletRequestTest {
 
 		Map<String, FileItem[]> fileParameters = new HashMap<>();
 
-		putFileParameter(fileParameters);
+		putFileParameter(getClass(), fileParameters);
 
 		LiferayServletRequest liferayServletRequest =
 			PortletContainerTestUtil.mockLiferayServletRequest(getClass());
@@ -1084,7 +1084,7 @@ public class UploadServletRequestTest {
 
 		Map<String, FileItem[]> fileParameters = new HashMap<>();
 
-		putFileParameter(fileParameters);
+		putFileParameter(getClass(), fileParameters);
 
 		LiferayServletRequest liferayServletRequest =
 			PortletContainerTestUtil.mockLiferayServletRequest(getClass());
@@ -1133,7 +1133,7 @@ public class UploadServletRequestTest {
 
 		Map<String, FileItem[]> fileParameters = new HashMap<>();
 
-		putFileParameter(fileParameters);
+		putFileParameter(getClass(), fileParameters);
 
 		LiferayServletRequest liferayServletRequest =
 			PortletContainerTestUtil.mockLiferayServletRequest(getClass());
@@ -1192,10 +1192,11 @@ public class UploadServletRequestTest {
 	}
 
 	protected void putFileParameter(
-			int currentIndex, Map<String, FileItem[]> fileParameters)
+			int currentIndex, Class<?> clazz,
+			Map<String, FileItem[]> fileParameters)
 		throws Exception {
 
-		InputStream inputStream = getClass().getResourceAsStream(
+		InputStream inputStream = clazz.getResourceAsStream(
 			"/com/liferay/portal/portlet/container/test/dependencies/" +
 				"file_upload.txt");
 
@@ -1231,10 +1232,11 @@ public class UploadServletRequestTest {
 		fileParameters.put(fileParameter, fileItems);
 	}
 
-	protected void putFileParameter(Map<String, FileItem[]> fileParameters)
+	protected void putFileParameter(
+			Class<?> clazz, Map<String, FileItem[]> fileParameters)
 		throws Exception {
 
-		putFileParameter(0, fileParameters);
+		putFileParameter(0, clazz, fileParameters);
 	}
 
 	protected void putRegularParameter(
