@@ -14,7 +14,9 @@
 
 package com.liferay.portal.util.test;
 
+import com.liferay.portal.kernel.test.util.RandomTestUtil;
 import com.liferay.portal.kernel.test.util.TestPropsValues;
+import com.liferay.portal.kernel.upload.FileItem;
 import com.liferay.portal.kernel.util.ProgressTracker;
 import com.liferay.portal.kernel.util.PropsKeys;
 import com.liferay.portal.kernel.util.StringUtil;
@@ -25,6 +27,7 @@ import com.liferay.portal.model.Layout;
 import com.liferay.portal.service.CompanyLocalServiceUtil;
 import com.liferay.portal.theme.ThemeDisplay;
 import com.liferay.portal.theme.ThemeDisplayFactory;
+import com.liferay.portal.upload.LiferayFileItem;
 import com.liferay.portal.upload.LiferayFileItemFactory;
 import com.liferay.portal.upload.LiferayServletRequest;
 import com.liferay.portal.upload.UploadServletRequestImpl;
@@ -34,11 +37,13 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 
+import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
 import java.nio.charset.StandardCharsets;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.HashMap;
@@ -148,6 +153,68 @@ public class PortletContainerTestUtil {
 			mockMultipartHttpServletRequest);
 
 		return liferayServletRequest;
+	}
+
+	public static void putFileParameter(
+			int currentIndex, Class<?> clazz,
+			Map<String, FileItem[]> fileParameters)
+		throws Exception {
+
+		InputStream inputStream = clazz.getResourceAsStream(
+			"/com/liferay/portal/portlet/container/test/dependencies/" +
+				"file_upload.txt");
+
+		byte[] bytes = toByteArray(inputStream);
+
+		String fileParameter = "fileParameter" + currentIndex;
+
+		FileItem[] fileItems = new FileItem[2];
+
+		LiferayFileItemFactory fileItemFactory = new LiferayFileItemFactory(
+			UploadServletRequestImpl.getTempDir());
+
+		for (int i = 0; i < fileItems.length; i++) {
+			org.apache.commons.fileupload.FileItem fileItem =
+				fileItemFactory.createItem(
+					RandomTestUtil.randomString(),
+					RandomTestUtil.randomString(), true,
+					RandomTestUtil.randomString());
+
+			LiferayFileItem liferayFileItem = (LiferayFileItem)fileItem;
+
+			// force a temp file for the file item
+
+			OutputStream outputStream = liferayFileItem.getOutputStream();
+
+			outputStream.write(bytes);
+			outputStream.flush();
+			outputStream.close();
+
+			fileItems[i] = liferayFileItem;
+		}
+
+		fileParameters.put(fileParameter, fileItems);
+	}
+
+	public static void putFileParameter(
+			Class<?> clazz, Map<String, FileItem[]> fileParameters)
+		throws Exception {
+
+		putFileParameter(0, clazz, fileParameters);
+	}
+
+	public static void putRegularParameter(
+		int currentIndex, Map<String, List<String>> fileParameters) {
+
+		String fileParameter = "regularParameter" + currentIndex;
+
+		List<String> regularItems = new ArrayList<>();
+
+		for (int i = 0; i < 10; i++) {
+			regularItems.add(RandomTestUtil.randomString());
+		}
+
+		fileParameters.put(fileParameter, regularItems);
 	}
 
 	public static Map<String, List<String>> request(String url)
