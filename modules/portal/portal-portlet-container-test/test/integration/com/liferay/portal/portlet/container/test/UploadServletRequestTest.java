@@ -85,7 +85,7 @@ public class UploadServletRequestTest {
 		Map<String, FileItem[]> fileParameters = new HashMap<>();
 
 		LiferayServletRequest liferayServletRequest =
-			mockLiferayServletRequest();
+			mockLiferayServletRequest(getClass());
 
 		UploadServletRequestImpl uploadServletRequest =
 			new UploadServletRequestImpl(
@@ -114,7 +114,7 @@ public class UploadServletRequestTest {
 		putFileParameter(fileParameters);
 
 		LiferayServletRequest liferayServletRequest =
-			mockLiferayServletRequest();
+			mockLiferayServletRequest(getClass());
 
 		UploadServletRequestImpl uploadServletRequest =
 			new UploadServletRequestImpl(
@@ -145,7 +145,7 @@ public class UploadServletRequestTest {
 		}
 
 		LiferayServletRequest liferayServletRequest =
-			mockLiferayServletRequest();
+			mockLiferayServletRequest(getClass());
 
 		UploadServletRequestImpl uploadServletRequest =
 			new UploadServletRequestImpl(
@@ -168,7 +168,7 @@ public class UploadServletRequestTest {
 	@Test
 	public void testCleanUpShouldNotFailFromMainConstructor() throws Exception {
 		LiferayServletRequest liferayServletRequest =
-			mockLiferayServletRequest();
+			mockLiferayServletRequest(getClass());
 
 		UploadServletRequestImpl uploadServletRequest =
 			new UploadServletRequestImpl(
@@ -192,7 +192,7 @@ public class UploadServletRequestTest {
 		putFileParameter(fileParameters);
 
 		LiferayServletRequest liferayServletRequest =
-			mockLiferayServletRequest();
+			mockLiferayServletRequest(getClass());
 
 		UploadServletRequestImpl uploadServletRequest =
 			new UploadServletRequestImpl(
@@ -221,7 +221,7 @@ public class UploadServletRequestTest {
 		throws Exception {
 
 		LiferayServletRequest liferayServletRequest =
-			mockLiferayServletRequest();
+			mockLiferayServletRequest(getClass());
 
 		UploadServletRequestImpl uploadServletRequest =
 			new UploadServletRequestImpl(
@@ -241,7 +241,7 @@ public class UploadServletRequestTest {
 		putFileParameter(fileParameters);
 
 		LiferayServletRequest liferayServletRequest =
-			mockLiferayServletRequest();
+			mockLiferayServletRequest(getClass());
 
 		UploadServletRequestImpl uploadServletRequest =
 			new UploadServletRequestImpl(
@@ -271,7 +271,7 @@ public class UploadServletRequestTest {
 		throws Exception {
 
 		LiferayServletRequest liferayServletRequest =
-			mockLiferayServletRequest();
+			mockLiferayServletRequest(getClass());
 
 		UploadServletRequestImpl uploadServletRequest =
 			new UploadServletRequestImpl(
@@ -289,7 +289,7 @@ public class UploadServletRequestTest {
 		putFileParameter(fileParameters);
 
 		LiferayServletRequest liferayServletRequest =
-			mockLiferayServletRequest();
+			mockLiferayServletRequest(getClass());
 
 		UploadServletRequestImpl uploadServletRequest =
 			new UploadServletRequestImpl(
@@ -319,7 +319,7 @@ public class UploadServletRequestTest {
 		throws Exception {
 
 		LiferayServletRequest liferayServletRequest =
-			mockLiferayServletRequest();
+			mockLiferayServletRequest(getClass());
 
 		UploadServletRequestImpl uploadServletRequest =
 			new UploadServletRequestImpl(
@@ -342,7 +342,7 @@ public class UploadServletRequestTest {
 		putFileParameter(fileParameters);
 
 		LiferayServletRequest liferayServletRequest =
-			mockLiferayServletRequest();
+			mockLiferayServletRequest(getClass());
 
 		UploadServletRequestImpl uploadServletRequest =
 			new UploadServletRequestImpl(
@@ -364,7 +364,7 @@ public class UploadServletRequestTest {
 		putFileParameter(fileParameters);
 
 		LiferayServletRequest liferayServletRequest =
-			mockLiferayServletRequest();
+			mockLiferayServletRequest(getClass());
 
 		UploadServletRequestImpl uploadServletRequest =
 			new UploadServletRequestImpl(
@@ -394,7 +394,7 @@ public class UploadServletRequestTest {
 		throws Exception {
 
 		LiferayServletRequest liferayServletRequest =
-			mockLiferayServletRequest();
+			mockLiferayServletRequest(getClass());
 
 		UploadServletRequestImpl uploadServletRequest =
 			new UploadServletRequestImpl(
@@ -414,7 +414,7 @@ public class UploadServletRequestTest {
 		putFileParameter(fileParameters);
 
 		LiferayServletRequest liferayServletRequest =
-			mockLiferayServletRequest();
+			mockLiferayServletRequest(getClass());
 
 		UploadServletRequestImpl uploadServletRequest =
 			new UploadServletRequestImpl(
@@ -437,7 +437,7 @@ public class UploadServletRequestTest {
 		}
 
 		LiferayServletRequest liferayServletRequest =
-			mockLiferayServletRequest();
+			mockLiferayServletRequest(getClass());
 
 		UploadServletRequestImpl uploadServletRequest =
 			new UploadServletRequestImpl(
@@ -470,7 +470,7 @@ public class UploadServletRequestTest {
 		throws Exception {
 
 		LiferayServletRequest liferayServletRequest =
-			mockLiferayServletRequest();
+			mockLiferayServletRequest(getClass());
 
 		UploadServletRequestImpl uploadServletRequest =
 			new UploadServletRequestImpl(
@@ -490,7 +490,7 @@ public class UploadServletRequestTest {
 		putFileParameter(fileParameters);
 
 		LiferayServletRequest liferayServletRequest =
-			mockLiferayServletRequest();
+			mockLiferayServletRequest(getClass());
 
 		UploadServletRequestImpl uploadServletRequest =
 			new UploadServletRequestImpl(
@@ -513,7 +513,7 @@ public class UploadServletRequestTest {
 		}
 
 		LiferayServletRequest liferayServletRequest =
-			mockLiferayServletRequest();
+			mockLiferayServletRequest(getClass());
 
 		UploadServletRequestImpl uploadServletRequest =
 			new UploadServletRequestImpl(
@@ -549,7 +549,7 @@ public class UploadServletRequestTest {
 		throws Exception {
 
 		LiferayServletRequest liferayServletRequest =
-			mockLiferayServletRequest();
+			mockLiferayServletRequest(getClass());
 
 		UploadServletRequestImpl uploadServletRequest =
 			new UploadServletRequestImpl(
@@ -570,7 +570,7 @@ public class UploadServletRequestTest {
 		putFileParameter(fileParameters);
 
 		LiferayServletRequest liferayServletRequest =
-			mockLiferayServletRequest();
+			mockLiferayServletRequest(getClass());
 
 		UploadServletRequestImpl uploadServletRequest =
 			new UploadServletRequestImpl(
@@ -588,7 +588,7 @@ public class UploadServletRequestTest {
 		putFileParameter(fileParameters);
 
 		LiferayServletRequest liferayServletRequest =
-			mockLiferayServletRequest();
+			mockLiferayServletRequest(getClass());
 
 		UploadServletRequestImpl uploadServletRequest =
 			new UploadServletRequestImpl(
@@ -620,7 +620,7 @@ public class UploadServletRequestTest {
 		throws Exception {
 
 		LiferayServletRequest liferayServletRequest =
-			mockLiferayServletRequest();
+			mockLiferayServletRequest(getClass());
 
 		UploadServletRequestImpl uploadServletRequest =
 			new UploadServletRequestImpl(
@@ -642,7 +642,7 @@ public class UploadServletRequestTest {
 		putFileParameter(fileParameters);
 
 		LiferayServletRequest liferayServletRequest =
-			mockLiferayServletRequest();
+			mockLiferayServletRequest(getClass());
 
 		UploadServletRequestImpl uploadServletRequest =
 			new UploadServletRequestImpl(
@@ -666,7 +666,7 @@ public class UploadServletRequestTest {
 		}
 
 		LiferayServletRequest liferayServletRequest =
-			mockLiferayServletRequest();
+			mockLiferayServletRequest(getClass());
 
 		UploadServletRequestImpl uploadServletRequest =
 			new UploadServletRequestImpl(
@@ -703,7 +703,7 @@ public class UploadServletRequestTest {
 		throws Exception {
 
 		LiferayServletRequest liferayServletRequest =
-			mockLiferayServletRequest();
+			mockLiferayServletRequest(getClass());
 
 		UploadServletRequestImpl uploadServletRequest =
 			new UploadServletRequestImpl(
@@ -723,7 +723,7 @@ public class UploadServletRequestTest {
 		putFileParameter(fileParameters);
 
 		LiferayServletRequest liferayServletRequest =
-			mockLiferayServletRequest();
+			mockLiferayServletRequest(getClass());
 
 		UploadServletRequestImpl uploadServletRequest =
 			new UploadServletRequestImpl(
@@ -742,7 +742,7 @@ public class UploadServletRequestTest {
 		putFileParameter(fileParameters);
 
 		LiferayServletRequest liferayServletRequest =
-			mockLiferayServletRequest();
+			mockLiferayServletRequest(getClass());
 
 		UploadServletRequestImpl uploadServletRequest =
 			new UploadServletRequestImpl(
@@ -772,7 +772,7 @@ public class UploadServletRequestTest {
 		throws Exception {
 
 		LiferayServletRequest liferayServletRequest =
-			mockLiferayServletRequest();
+			mockLiferayServletRequest(getClass());
 
 		UploadServletRequestImpl uploadServletRequest =
 			new UploadServletRequestImpl(
@@ -793,7 +793,7 @@ public class UploadServletRequestTest {
 		putFileParameter(fileParameters);
 
 		LiferayServletRequest liferayServletRequest =
-			mockLiferayServletRequest();
+			mockLiferayServletRequest(getClass());
 
 		UploadServletRequestImpl uploadServletRequest =
 			new UploadServletRequestImpl(
@@ -816,7 +816,7 @@ public class UploadServletRequestTest {
 		throws Exception {
 
 		LiferayServletRequest liferayServletRequest =
-			mockLiferayServletRequest();
+			mockLiferayServletRequest(getClass());
 
 		UploadServletRequestImpl uploadServletRequest =
 			new UploadServletRequestImpl(
@@ -851,7 +851,7 @@ public class UploadServletRequestTest {
 		throws Exception {
 
 		LiferayServletRequest liferayServletRequest =
-			mockLiferayServletRequest();
+			mockLiferayServletRequest(getClass());
 
 		UploadServletRequestImpl uploadServletRequest =
 			new UploadServletRequestImpl(
@@ -876,7 +876,7 @@ public class UploadServletRequestTest {
 		}
 
 		LiferayServletRequest liferayServletRequest =
-			mockLiferayServletRequest();
+			mockLiferayServletRequest(getClass());
 
 		String parameter = RandomTestUtil.randomString();
 
@@ -927,7 +927,7 @@ public class UploadServletRequestTest {
 		}
 
 		LiferayServletRequest liferayServletRequest =
-			mockLiferayServletRequest();
+			mockLiferayServletRequest(getClass());
 
 		String parameter = RandomTestUtil.randomString();
 
@@ -989,7 +989,7 @@ public class UploadServletRequestTest {
 		putFileParameter(fileParameters);
 
 		LiferayServletRequest liferayServletRequest =
-			mockLiferayServletRequest();
+			mockLiferayServletRequest(getClass());
 
 		UploadServletRequestImpl uploadServletRequest =
 			new UploadServletRequestImpl(
@@ -1019,7 +1019,7 @@ public class UploadServletRequestTest {
 		throws Exception {
 
 		LiferayServletRequest liferayServletRequest =
-			mockLiferayServletRequest();
+			mockLiferayServletRequest(getClass());
 
 		UploadServletRequestImpl uploadServletRequest =
 			new UploadServletRequestImpl(
@@ -1039,7 +1039,7 @@ public class UploadServletRequestTest {
 		putFileParameter(fileParameters);
 
 		LiferayServletRequest liferayServletRequest =
-			mockLiferayServletRequest();
+			mockLiferayServletRequest(getClass());
 
 		UploadServletRequestImpl uploadServletRequest =
 			new UploadServletRequestImpl(
@@ -1094,7 +1094,7 @@ public class UploadServletRequestTest {
 		putFileParameter(fileParameters);
 
 		LiferayServletRequest liferayServletRequest =
-			mockLiferayServletRequest();
+			mockLiferayServletRequest(getClass());
 
 		UploadServletRequestImpl uploadServletRequest =
 			new UploadServletRequestImpl(
@@ -1123,7 +1123,7 @@ public class UploadServletRequestTest {
 		throws Exception {
 
 		LiferayServletRequest liferayServletRequest =
-			mockLiferayServletRequest();
+			mockLiferayServletRequest(getClass());
 
 		UploadServletRequestImpl uploadServletRequest =
 			new UploadServletRequestImpl(
@@ -1143,7 +1143,7 @@ public class UploadServletRequestTest {
 		putFileParameter(fileParameters);
 
 		LiferayServletRequest liferayServletRequest =
-			mockLiferayServletRequest();
+			mockLiferayServletRequest(getClass());
 
 		UploadServletRequestImpl uploadServletRequest =
 			new UploadServletRequestImpl(
@@ -1159,7 +1159,7 @@ public class UploadServletRequestTest {
 		throws Exception {
 
 		LiferayServletRequest liferayServletRequest =
-			mockLiferayServletRequest();
+			mockLiferayServletRequest(getClass());
 
 		HttpServletRequest mockHttpServletRequest =
 			(HttpServletRequest)liferayServletRequest.getRequest();
@@ -1177,7 +1177,7 @@ public class UploadServletRequestTest {
 		throws Exception {
 
 		LiferayServletRequest liferayServletRequest =
-			mockLiferayServletRequest();
+			mockLiferayServletRequest(getClass());
 
 		HttpServletRequest mockHttpServletRequest =
 			(HttpServletRequest)liferayServletRequest.getRequest();
@@ -1198,7 +1198,7 @@ public class UploadServletRequestTest {
 		Assert.assertEquals(0, regularParameterMap.size());
 	}
 
-	protected LiferayServletRequest mockLiferayServletRequest()
+	protected LiferayServletRequest mockLiferayServletRequest(Class<?> clazz)
 		throws Exception {
 
 		MockMultipartHttpServletRequest mockMultipartHttpServletRequest =
@@ -1207,7 +1207,7 @@ public class UploadServletRequestTest {
 		mockMultipartHttpServletRequest.setContentType(
 			"multipart/form-data;boundary=" + new Date().getTime());
 
-		InputStream inputStream = getClass().getResourceAsStream(
+		InputStream inputStream = clazz.getResourceAsStream(
 			"/com/liferay/portal/portlet/container/test/dependencies/" +
 				"file_upload.txt");
 
@@ -1220,7 +1220,7 @@ public class UploadServletRequestTest {
 
 		// refresh the inputStream
 
-		inputStream = getClass().getResourceAsStream(
+		inputStream = clazz.getResourceAsStream(
 			"/com/liferay/portal/portlet/container/test/dependencies/" +
 				"file_upload.txt");
 
