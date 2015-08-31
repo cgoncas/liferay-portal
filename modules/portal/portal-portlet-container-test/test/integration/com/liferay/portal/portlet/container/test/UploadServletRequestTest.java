@@ -257,10 +257,10 @@ public class UploadServletRequestTest {
 
 			FileItem[] fileItems = entry.getValue();
 
-			FileItem first = fileItems[0];
+			FileItem firstFileItem = fileItems[0];
 
 			Assert.assertEquals(
-				first.getContentType(),
+				firstFileItem.getContentType(),
 				uploadServletRequest.getContentType(key));
 		}
 	}
@@ -390,9 +390,9 @@ public class UploadServletRequestTest {
 
 			FileItem[] fileItems = entry.getValue();
 
-			FileItem first = fileItems[0];
+			FileItem firstFileItem = fileItems[0];
 
-			Assert.assertEquals(first.getFileName(), fileName);
+			Assert.assertEquals(firstFileItem.getFileName(), fileName);
 		}
 	}
 
@@ -793,9 +793,9 @@ public class UploadServletRequestTest {
 
 			FileItem[] fileItems = entry.getValue();
 
-			FileItem first = fileItems[0];
+			FileItem firstFileItem = fileItems[0];
 
-			Assert.assertEquals(first.getFullFileName(), fullFileName);
+			Assert.assertEquals(firstFileItem.getFullFileName(), fullFileName);
 		}
 	}
 
@@ -1051,9 +1051,9 @@ public class UploadServletRequestTest {
 
 			FileItem[] fileItems = entry.getValue();
 
-			FileItem first = fileItems[0];
+			FileItem firstFileItem = fileItems[0];
 
-			Assert.assertEquals(first.getSize(), size.longValue());
+			Assert.assertEquals(firstFileItem.getSize(), size.longValue());
 		}
 	}
 
@@ -1159,10 +1159,11 @@ public class UploadServletRequestTest {
 
 			FileItem[] fileItems = entry.getValue();
 
-			FileItem first = fileItems[0];
+			FileItem firstFileItem = fileItems[0];
 
 			Assert.assertEquals(
-				first.isFormField(), uploadServletRequest.isFormField(key));
+				firstFileItem.isFormField(),
+				uploadServletRequest.isFormField(key));
 		}
 	}
 
