@@ -36,8 +36,8 @@ import com.liferay.portal.util.PrefsPropsUtil;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
-
 import java.io.OutputStream;
+
 import java.net.HttpURLConnection;
 import java.net.URL;
 
@@ -152,8 +152,32 @@ public class PortletContainerTestUtil {
 	}
 
 	public static void putFileParameter(
+			Class<?> clazz, String dependency,
+			Map<String, FileItem[]> fileParameters)
+		throws Exception {
+
+		putFileParameter(0, clazz, dependency, fileParameters, null);
+	}
+
+	public static void putFileParameter(
+			Class<?> clazz, String dependency,
+			Map<String, FileItem[]> fileParameters, String namespace)
+		throws Exception {
+
+		putFileParameter(0, clazz, dependency, fileParameters, namespace);
+	}
+
+	public static void putFileParameter(
 			int currentIndex, Class<?> clazz, String dependency,
 			Map<String, FileItem[]> fileParameters)
+		throws Exception {
+
+		putFileParameter(currentIndex, clazz, dependency, fileParameters, null);
+	}
+
+	public static void putFileParameter(
+			int currentIndex, Class<?> clazz, String dependency,
+			Map<String, FileItem[]> fileParameters, String namespace)
 		throws Exception {
 
 		InputStream inputStream = clazz.getResourceAsStream(dependency);
@@ -161,6 +185,10 @@ public class PortletContainerTestUtil {
 		byte[] bytes = toByteArray(inputStream);
 
 		String fileParameter = "fileParameter" + currentIndex;
+
+		if (namespace != null) {
+			fileParameter = namespace.concat(fileParameter);
+		}
 
 		FileItem[] fileItems = new FileItem[2];
 
@@ -188,14 +216,6 @@ public class PortletContainerTestUtil {
 		}
 
 		fileParameters.put(fileParameter, fileItems);
-	}
-
-	public static void putFileParameter(
-			Class<?> clazz, String dependency,
-			Map<String, FileItem[]> fileParameters)
-		throws Exception {
-
-		putFileParameter(0, clazz, dependency, fileParameters);
 	}
 
 	public static void putRegularParameter(
