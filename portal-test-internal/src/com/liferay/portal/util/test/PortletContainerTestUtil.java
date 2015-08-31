@@ -15,6 +15,8 @@
 package com.liferay.portal.util.test;
 
 import com.liferay.portal.kernel.test.util.TestPropsValues;
+import com.liferay.portal.kernel.util.ProgressTracker;
+import com.liferay.portal.kernel.util.PropsKeys;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.WebKeys;
 import com.liferay.portal.model.Company;
@@ -23,21 +25,34 @@ import com.liferay.portal.model.Layout;
 import com.liferay.portal.service.CompanyLocalServiceUtil;
 import com.liferay.portal.theme.ThemeDisplay;
 import com.liferay.portal.theme.ThemeDisplayFactory;
+import com.liferay.portal.upload.LiferayFileItemFactory;
+import com.liferay.portal.upload.LiferayServletRequest;
+import com.liferay.portal.upload.UploadServletRequestImpl;
+import com.liferay.portal.util.PrefsPropsUtil;
 
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 
 import java.net.HttpURLConnection;
 import java.net.URL;
 
+import java.nio.charset.StandardCharsets;
+
 import java.util.Arrays;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.apache.commons.fileupload.servlet.ServletFileUpload;
+
 import org.springframework.mock.web.MockHttpServletRequest;
+import org.springframework.mock.web.MockHttpSession;
+import org.springframework.mock.web.MockMultipartFile;
+import org.springframework.mock.web.MockMultipartHttpServletRequest;
 
 /**
  * @author Manuel de la Peña
@@ -80,6 +95,59 @@ public class PortletContainerTestUtil {
 		List<String> values = map.get(key);
 
 		return values.get(0);
+	}
+
+	public static LiferayServletRequest mockLiferayServletRequest(
+			Class<?> clazz)
+		throws Exception {
+
+		MockMultipartHttpServletRequest mockMultipartHttpServletRequest =
+			new MockMultipartHttpServletRequest();
+
+		mockMultipartHttpServletRequest.setContentType(
+			"multipart/form-data;boundary=" + new Date().getTime());
+
+		InputStream inputStream = clazz.getResourceAsStream(
+			"/com/liferay/portal/portlet/container/test/dependencies/" +
+				"file_upload.txt");
+
+		MockMultipartFile multipartFile = new MockMultipartFile(
+			"file_upload.txt", inputStream);
+
+		mockMultipartHttpServletRequest.addFile(multipartFile);
+
+		mockMultipartHttpServletRequest.setCharacterEncoding("UTF-8");
+
+		// refresh the inputStream
+
+		inputStream = clazz.getResourceAsStream(
+			"/com/liferay/portal/portlet/container/test/dependencies/" +
+				"file_upload.txt");
+
+		byte[] bytes = toByteArray(inputStream);
+
+		mockMultipartHttpServletRequest.setContent(bytes);
+
+		MockHttpSession mockHttpSession = new MockHttpSession();
+
+		mockHttpSession.setAttribute(ProgressTracker.PERCENT, new Object());
+
+		mockMultipartHttpServletRequest.setSession(mockHttpSession);
+
+		ServletFileUpload servletFileUpload = new ServletFileUpload(
+			new LiferayFileItemFactory(UploadServletRequestImpl.getTempDir()));
+
+		servletFileUpload.setSizeMax(
+			PrefsPropsUtil.getLong(
+				PropsKeys.UPLOAD_SERVLET_REQUEST_IMPL_MAX_SIZE));
+
+		servletFileUpload.setHeaderEncoding(
+			StandardCharsets.UTF_8.displayName());
+
+		LiferayServletRequest liferayServletRequest = new LiferayServletRequest(
+			mockMultipartHttpServletRequest);
+
+		return liferayServletRequest;
 	}
 
 	public static Map<String, List<String>> request(String url)
@@ -143,6 +211,21 @@ public class PortletContainerTestUtil {
 				inputStream.close();
 			}
 		}
+	}
+
+	public static byte[] toByteArray(InputStream is) throws IOException {
+		ByteArrayOutputStream buffer = new ByteArrayOutputStream();
+
+		int nRead = 0;
+		byte[] data = new byte[16384];
+
+		while ((nRead = is.read(data, 0, data.length)) != -1) {
+			buffer.write(data, 0, nRead);
+		}
+
+		buffer.flush();
+
+		return buffer.toByteArray();
 	}
 
 	protected static String read(InputStream inputStream) throws IOException {
