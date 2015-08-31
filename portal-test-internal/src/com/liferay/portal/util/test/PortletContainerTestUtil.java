@@ -103,7 +103,7 @@ public class PortletContainerTestUtil {
 	}
 
 	public static LiferayServletRequest mockLiferayServletRequest(
-			Class<?> clazz)
+			Class<?> clazz, String dependency)
 		throws Exception {
 
 		MockMultipartHttpServletRequest mockMultipartHttpServletRequest =
@@ -112,12 +112,10 @@ public class PortletContainerTestUtil {
 		mockMultipartHttpServletRequest.setContentType(
 			"multipart/form-data;boundary=" + new Date().getTime());
 
-		InputStream inputStream = clazz.getResourceAsStream(
-			"/com/liferay/portal/portlet/container/test/dependencies/" +
-				"file_upload.txt");
+		InputStream inputStream = clazz.getResourceAsStream(dependency);
 
 		MockMultipartFile multipartFile = new MockMultipartFile(
-			"file_upload.txt", inputStream);
+			"attachment", inputStream);
 
 		mockMultipartHttpServletRequest.addFile(multipartFile);
 
@@ -125,9 +123,7 @@ public class PortletContainerTestUtil {
 
 		// refresh the inputStream
 
-		inputStream = clazz.getResourceAsStream(
-			"/com/liferay/portal/portlet/container/test/dependencies/" +
-				"file_upload.txt");
+		inputStream = clazz.getResourceAsStream(dependency);
 
 		byte[] bytes = toByteArray(inputStream);
 
@@ -156,13 +152,11 @@ public class PortletContainerTestUtil {
 	}
 
 	public static void putFileParameter(
-			int currentIndex, Class<?> clazz,
+			int currentIndex, Class<?> clazz, String dependency,
 			Map<String, FileItem[]> fileParameters)
 		throws Exception {
 
-		InputStream inputStream = clazz.getResourceAsStream(
-			"/com/liferay/portal/portlet/container/test/dependencies/" +
-				"file_upload.txt");
+		InputStream inputStream = clazz.getResourceAsStream(dependency);
 
 		byte[] bytes = toByteArray(inputStream);
 
@@ -197,10 +191,11 @@ public class PortletContainerTestUtil {
 	}
 
 	public static void putFileParameter(
-			Class<?> clazz, Map<String, FileItem[]> fileParameters)
+			Class<?> clazz, String dependency,
+			Map<String, FileItem[]> fileParameters)
 		throws Exception {
 
-		putFileParameter(0, clazz, fileParameters);
+		putFileParameter(0, clazz, dependency, fileParameters);
 	}
 
 	public static void putRegularParameter(

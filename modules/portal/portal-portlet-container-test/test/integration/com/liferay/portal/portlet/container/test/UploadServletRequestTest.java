@@ -74,7 +74,8 @@ public class UploadServletRequestTest {
 		Map<String, FileItem[]> fileParameters = new HashMap<>();
 
 		LiferayServletRequest liferayServletRequest =
-			PortletContainerTestUtil.mockLiferayServletRequest(getClass());
+			PortletContainerTestUtil.mockLiferayServletRequest(
+				getClass(), _TXT_DEPENDENCY);
 
 		UploadServletRequestImpl uploadServletRequest =
 			new UploadServletRequestImpl(
@@ -100,10 +101,12 @@ public class UploadServletRequestTest {
 
 		Map<String, FileItem[]> fileParameters = new HashMap<>();
 
-		PortletContainerTestUtil.putFileParameter(getClass(), fileParameters);
+		PortletContainerTestUtil.putFileParameter(
+			getClass(), _TXT_DEPENDENCY, fileParameters);
 
 		LiferayServletRequest liferayServletRequest =
-			PortletContainerTestUtil.mockLiferayServletRequest(getClass());
+			PortletContainerTestUtil.mockLiferayServletRequest(
+				getClass(), _TXT_DEPENDENCY);
 
 		UploadServletRequestImpl uploadServletRequest =
 			new UploadServletRequestImpl(
@@ -134,7 +137,8 @@ public class UploadServletRequestTest {
 		}
 
 		LiferayServletRequest liferayServletRequest =
-			PortletContainerTestUtil.mockLiferayServletRequest(getClass());
+			PortletContainerTestUtil.mockLiferayServletRequest(
+				getClass(), _TXT_DEPENDENCY);
 
 		UploadServletRequestImpl uploadServletRequest =
 			new UploadServletRequestImpl(
@@ -157,7 +161,8 @@ public class UploadServletRequestTest {
 	@Test
 	public void testCleanUpShouldNotFailFromMainConstructor() throws Exception {
 		LiferayServletRequest liferayServletRequest =
-			PortletContainerTestUtil.mockLiferayServletRequest(getClass());
+			PortletContainerTestUtil.mockLiferayServletRequest(
+				getClass(), _TXT_DEPENDENCY);
 
 		UploadServletRequestImpl uploadServletRequest =
 			new UploadServletRequestImpl(
@@ -178,10 +183,12 @@ public class UploadServletRequestTest {
 
 		Map<String, FileItem[]> fileParameters = new HashMap<>();
 
-		PortletContainerTestUtil.putFileParameter(getClass(), fileParameters);
+		PortletContainerTestUtil.putFileParameter(
+			getClass(), _TXT_DEPENDENCY, fileParameters);
 
 		LiferayServletRequest liferayServletRequest =
-			PortletContainerTestUtil.mockLiferayServletRequest(getClass());
+			PortletContainerTestUtil.mockLiferayServletRequest(
+				getClass(), _TXT_DEPENDENCY);
 
 		UploadServletRequestImpl uploadServletRequest =
 			new UploadServletRequestImpl(
@@ -210,7 +217,8 @@ public class UploadServletRequestTest {
 		throws Exception {
 
 		LiferayServletRequest liferayServletRequest =
-			PortletContainerTestUtil.mockLiferayServletRequest(getClass());
+			PortletContainerTestUtil.mockLiferayServletRequest(
+				getClass(), _TXT_DEPENDENCY);
 
 		UploadServletRequestImpl uploadServletRequest =
 			new UploadServletRequestImpl(
@@ -227,10 +235,12 @@ public class UploadServletRequestTest {
 
 		Map<String, FileItem[]> fileParameters = new HashMap<>();
 
-		PortletContainerTestUtil.putFileParameter(getClass(), fileParameters);
+		PortletContainerTestUtil.putFileParameter(
+			getClass(), _TXT_DEPENDENCY, fileParameters);
 
 		LiferayServletRequest liferayServletRequest =
-			PortletContainerTestUtil.mockLiferayServletRequest(getClass());
+			PortletContainerTestUtil.mockLiferayServletRequest(
+				getClass(), _TXT_DEPENDENCY);
 
 		UploadServletRequestImpl uploadServletRequest =
 			new UploadServletRequestImpl(
@@ -260,7 +270,8 @@ public class UploadServletRequestTest {
 		throws Exception {
 
 		LiferayServletRequest liferayServletRequest =
-			PortletContainerTestUtil.mockLiferayServletRequest(getClass());
+			PortletContainerTestUtil.mockLiferayServletRequest(
+				getClass(), _TXT_DEPENDENCY);
 
 		UploadServletRequestImpl uploadServletRequest =
 			new UploadServletRequestImpl(
@@ -275,10 +286,12 @@ public class UploadServletRequestTest {
 	public void testGetFileAsStreamShouldReturnAStream() throws Exception {
 		Map<String, FileItem[]> fileParameters = new HashMap<>();
 
-		PortletContainerTestUtil.putFileParameter(getClass(), fileParameters);
+		PortletContainerTestUtil.putFileParameter(
+			getClass(), _TXT_DEPENDENCY, fileParameters);
 
 		LiferayServletRequest liferayServletRequest =
-			PortletContainerTestUtil.mockLiferayServletRequest(getClass());
+			PortletContainerTestUtil.mockLiferayServletRequest(
+				getClass(), _TXT_DEPENDENCY);
 
 		UploadServletRequestImpl uploadServletRequest =
 			new UploadServletRequestImpl(
@@ -308,7 +321,8 @@ public class UploadServletRequestTest {
 		throws Exception {
 
 		LiferayServletRequest liferayServletRequest =
-			PortletContainerTestUtil.mockLiferayServletRequest(getClass());
+			PortletContainerTestUtil.mockLiferayServletRequest(
+				getClass(), _TXT_DEPENDENCY);
 
 		UploadServletRequestImpl uploadServletRequest =
 			new UploadServletRequestImpl(
@@ -328,10 +342,12 @@ public class UploadServletRequestTest {
 
 		Map<String, FileItem[]> fileParameters = new HashMap<>();
 
-		PortletContainerTestUtil.putFileParameter(getClass(), fileParameters);
+		PortletContainerTestUtil.putFileParameter(
+			getClass(), _TXT_DEPENDENCY, fileParameters);
 
 		LiferayServletRequest liferayServletRequest =
-			PortletContainerTestUtil.mockLiferayServletRequest(getClass());
+			PortletContainerTestUtil.mockLiferayServletRequest(
+				getClass(), _TXT_DEPENDENCY);
 
 		UploadServletRequestImpl uploadServletRequest =
 			new UploadServletRequestImpl(
@@ -350,10 +366,12 @@ public class UploadServletRequestTest {
 
 		Map<String, FileItem[]> fileParameters = new HashMap<>();
 
-		PortletContainerTestUtil.putFileParameter(getClass(), fileParameters);
+		PortletContainerTestUtil.putFileParameter(
+			getClass(), _TXT_DEPENDENCY, fileParameters);
 
 		LiferayServletRequest liferayServletRequest =
-			PortletContainerTestUtil.mockLiferayServletRequest(getClass());
+			PortletContainerTestUtil.mockLiferayServletRequest(
+				getClass(), _TXT_DEPENDENCY);
 
 		UploadServletRequestImpl uploadServletRequest =
 			new UploadServletRequestImpl(
@@ -383,7 +401,8 @@ public class UploadServletRequestTest {
 		throws Exception {
 
 		LiferayServletRequest liferayServletRequest =
-			PortletContainerTestUtil.mockLiferayServletRequest(getClass());
+			PortletContainerTestUtil.mockLiferayServletRequest(
+				getClass(), _TXT_DEPENDENCY);
 
 		UploadServletRequestImpl uploadServletRequest =
 			new UploadServletRequestImpl(
@@ -400,10 +419,12 @@ public class UploadServletRequestTest {
 
 		Map<String, FileItem[]> fileParameters = new HashMap<>();
 
-		PortletContainerTestUtil.putFileParameter(getClass(), fileParameters);
+		PortletContainerTestUtil.putFileParameter(
+			getClass(), _TXT_DEPENDENCY, fileParameters);
 
 		LiferayServletRequest liferayServletRequest =
-			PortletContainerTestUtil.mockLiferayServletRequest(getClass());
+			PortletContainerTestUtil.mockLiferayServletRequest(
+				getClass(), _TXT_DEPENDENCY);
 
 		UploadServletRequestImpl uploadServletRequest =
 			new UploadServletRequestImpl(
@@ -423,11 +444,12 @@ public class UploadServletRequestTest {
 
 		for (int i = 0; i < 10; i++) {
 			PortletContainerTestUtil.putFileParameter(
-				i, getClass(), fileParameters);
+				i, getClass(), _TXT_DEPENDENCY, fileParameters);
 		}
 
 		LiferayServletRequest liferayServletRequest =
-			PortletContainerTestUtil.mockLiferayServletRequest(getClass());
+			PortletContainerTestUtil.mockLiferayServletRequest(
+				getClass(), _TXT_DEPENDENCY);
 
 		UploadServletRequestImpl uploadServletRequest =
 			new UploadServletRequestImpl(
@@ -460,7 +482,8 @@ public class UploadServletRequestTest {
 		throws Exception {
 
 		LiferayServletRequest liferayServletRequest =
-			PortletContainerTestUtil.mockLiferayServletRequest(getClass());
+			PortletContainerTestUtil.mockLiferayServletRequest(
+				getClass(), _TXT_DEPENDENCY);
 
 		UploadServletRequestImpl uploadServletRequest =
 			new UploadServletRequestImpl(
@@ -477,10 +500,12 @@ public class UploadServletRequestTest {
 
 		Map<String, FileItem[]> fileParameters = new HashMap<>();
 
-		PortletContainerTestUtil.putFileParameter(getClass(), fileParameters);
+		PortletContainerTestUtil.putFileParameter(
+			getClass(), _TXT_DEPENDENCY, fileParameters);
 
 		LiferayServletRequest liferayServletRequest =
-			PortletContainerTestUtil.mockLiferayServletRequest(getClass());
+			PortletContainerTestUtil.mockLiferayServletRequest(
+				getClass(), _TXT_DEPENDENCY);
 
 		UploadServletRequestImpl uploadServletRequest =
 			new UploadServletRequestImpl(
@@ -500,11 +525,12 @@ public class UploadServletRequestTest {
 
 		for (int i = 0; i < 10; i++) {
 			PortletContainerTestUtil.putFileParameter(
-				i, getClass(), fileParameters);
+				i, getClass(), _TXT_DEPENDENCY, fileParameters);
 		}
 
 		LiferayServletRequest liferayServletRequest =
-			PortletContainerTestUtil.mockLiferayServletRequest(getClass());
+			PortletContainerTestUtil.mockLiferayServletRequest(
+				getClass(), _TXT_DEPENDENCY);
 
 		UploadServletRequestImpl uploadServletRequest =
 			new UploadServletRequestImpl(
@@ -540,7 +566,8 @@ public class UploadServletRequestTest {
 		throws Exception {
 
 		LiferayServletRequest liferayServletRequest =
-			PortletContainerTestUtil.mockLiferayServletRequest(getClass());
+			PortletContainerTestUtil.mockLiferayServletRequest(
+				getClass(), _TXT_DEPENDENCY);
 
 		UploadServletRequestImpl uploadServletRequest =
 			new UploadServletRequestImpl(
@@ -558,10 +585,12 @@ public class UploadServletRequestTest {
 
 		Map<String, FileItem[]> fileParameters = new HashMap<>();
 
-		PortletContainerTestUtil.putFileParameter(getClass(), fileParameters);
+		PortletContainerTestUtil.putFileParameter(
+			getClass(), _TXT_DEPENDENCY, fileParameters);
 
 		LiferayServletRequest liferayServletRequest =
-			PortletContainerTestUtil.mockLiferayServletRequest(getClass());
+			PortletContainerTestUtil.mockLiferayServletRequest(
+				getClass(), _TXT_DEPENDENCY);
 
 		UploadServletRequestImpl uploadServletRequest =
 			new UploadServletRequestImpl(
@@ -576,10 +605,12 @@ public class UploadServletRequestTest {
 	public void testGetFileShouldReturnAFile() throws Exception {
 		Map<String, FileItem[]> fileParameters = new HashMap<>();
 
-		PortletContainerTestUtil.putFileParameter(getClass(), fileParameters);
+		PortletContainerTestUtil.putFileParameter(
+			getClass(), _TXT_DEPENDENCY, fileParameters);
 
 		LiferayServletRequest liferayServletRequest =
-			PortletContainerTestUtil.mockLiferayServletRequest(getClass());
+			PortletContainerTestUtil.mockLiferayServletRequest(
+				getClass(), _TXT_DEPENDENCY);
 
 		UploadServletRequestImpl uploadServletRequest =
 			new UploadServletRequestImpl(
@@ -611,7 +642,8 @@ public class UploadServletRequestTest {
 		throws Exception {
 
 		LiferayServletRequest liferayServletRequest =
-			PortletContainerTestUtil.mockLiferayServletRequest(getClass());
+			PortletContainerTestUtil.mockLiferayServletRequest(
+				getClass(), _TXT_DEPENDENCY);
 
 		UploadServletRequestImpl uploadServletRequest =
 			new UploadServletRequestImpl(
@@ -630,10 +662,12 @@ public class UploadServletRequestTest {
 
 		Map<String, FileItem[]> fileParameters = new HashMap<>();
 
-		PortletContainerTestUtil.putFileParameter(getClass(), fileParameters);
+		PortletContainerTestUtil.putFileParameter(
+			getClass(), _TXT_DEPENDENCY, fileParameters);
 
 		LiferayServletRequest liferayServletRequest =
-			PortletContainerTestUtil.mockLiferayServletRequest(getClass());
+			PortletContainerTestUtil.mockLiferayServletRequest(
+				getClass(), _TXT_DEPENDENCY);
 
 		UploadServletRequestImpl uploadServletRequest =
 			new UploadServletRequestImpl(
@@ -654,11 +688,12 @@ public class UploadServletRequestTest {
 
 		for (int i = 0; i < 10; i++) {
 			PortletContainerTestUtil.putFileParameter(
-				i, getClass(), fileParameters);
+				i, getClass(), _TXT_DEPENDENCY, fileParameters);
 		}
 
 		LiferayServletRequest liferayServletRequest =
-			PortletContainerTestUtil.mockLiferayServletRequest(getClass());
+			PortletContainerTestUtil.mockLiferayServletRequest(
+				getClass(), _TXT_DEPENDENCY);
 
 		UploadServletRequestImpl uploadServletRequest =
 			new UploadServletRequestImpl(
@@ -695,7 +730,8 @@ public class UploadServletRequestTest {
 		throws Exception {
 
 		LiferayServletRequest liferayServletRequest =
-			PortletContainerTestUtil.mockLiferayServletRequest(getClass());
+			PortletContainerTestUtil.mockLiferayServletRequest(
+				getClass(), _TXT_DEPENDENCY);
 
 		UploadServletRequestImpl uploadServletRequest =
 			new UploadServletRequestImpl(
@@ -712,10 +748,12 @@ public class UploadServletRequestTest {
 
 		Map<String, FileItem[]> fileParameters = new HashMap<>();
 
-		PortletContainerTestUtil.putFileParameter(getClass(), fileParameters);
+		PortletContainerTestUtil.putFileParameter(
+			getClass(), _TXT_DEPENDENCY, fileParameters);
 
 		LiferayServletRequest liferayServletRequest =
-			PortletContainerTestUtil.mockLiferayServletRequest(getClass());
+			PortletContainerTestUtil.mockLiferayServletRequest(
+				getClass(), _TXT_DEPENDENCY);
 
 		UploadServletRequestImpl uploadServletRequest =
 			new UploadServletRequestImpl(
@@ -731,10 +769,12 @@ public class UploadServletRequestTest {
 
 		Map<String, FileItem[]> fileParameters = new HashMap<>();
 
-		PortletContainerTestUtil.putFileParameter(getClass(), fileParameters);
+		PortletContainerTestUtil.putFileParameter(
+			getClass(), _TXT_DEPENDENCY, fileParameters);
 
 		LiferayServletRequest liferayServletRequest =
-			PortletContainerTestUtil.mockLiferayServletRequest(getClass());
+			PortletContainerTestUtil.mockLiferayServletRequest(
+				getClass(), _TXT_DEPENDENCY);
 
 		UploadServletRequestImpl uploadServletRequest =
 			new UploadServletRequestImpl(
@@ -764,7 +804,8 @@ public class UploadServletRequestTest {
 		throws Exception {
 
 		LiferayServletRequest liferayServletRequest =
-			PortletContainerTestUtil.mockLiferayServletRequest(getClass());
+			PortletContainerTestUtil.mockLiferayServletRequest(
+				getClass(), _TXT_DEPENDENCY);
 
 		UploadServletRequestImpl uploadServletRequest =
 			new UploadServletRequestImpl(
@@ -782,10 +823,12 @@ public class UploadServletRequestTest {
 
 		Map<String, FileItem[]> fileParameters = new HashMap<>();
 
-		PortletContainerTestUtil.putFileParameter(getClass(), fileParameters);
+		PortletContainerTestUtil.putFileParameter(
+			getClass(), _TXT_DEPENDENCY, fileParameters);
 
 		LiferayServletRequest liferayServletRequest =
-			PortletContainerTestUtil.mockLiferayServletRequest(getClass());
+			PortletContainerTestUtil.mockLiferayServletRequest(
+				getClass(), _TXT_DEPENDENCY);
 
 		UploadServletRequestImpl uploadServletRequest =
 			new UploadServletRequestImpl(
@@ -808,7 +851,8 @@ public class UploadServletRequestTest {
 		throws Exception {
 
 		LiferayServletRequest liferayServletRequest =
-			PortletContainerTestUtil.mockLiferayServletRequest(getClass());
+			PortletContainerTestUtil.mockLiferayServletRequest(
+				getClass(), _TXT_DEPENDENCY);
 
 		UploadServletRequestImpl uploadServletRequest =
 			new UploadServletRequestImpl(
@@ -843,7 +887,8 @@ public class UploadServletRequestTest {
 		throws Exception {
 
 		LiferayServletRequest liferayServletRequest =
-			PortletContainerTestUtil.mockLiferayServletRequest(getClass());
+			PortletContainerTestUtil.mockLiferayServletRequest(
+				getClass(), _TXT_DEPENDENCY);
 
 		UploadServletRequestImpl uploadServletRequest =
 			new UploadServletRequestImpl(
@@ -864,12 +909,13 @@ public class UploadServletRequestTest {
 
 		for (int i = 0; i < 10; i++) {
 			PortletContainerTestUtil.putFileParameter(
-				i, getClass(), fileParameters);
+				i, getClass(), _TXT_DEPENDENCY, fileParameters);
 			PortletContainerTestUtil.putRegularParameter(i, regularParameters);
 		}
 
 		LiferayServletRequest liferayServletRequest =
-			PortletContainerTestUtil.mockLiferayServletRequest(getClass());
+			PortletContainerTestUtil.mockLiferayServletRequest(
+				getClass(), _TXT_DEPENDENCY);
 
 		String parameter = RandomTestUtil.randomString();
 
@@ -916,12 +962,13 @@ public class UploadServletRequestTest {
 
 		for (int i = 0; i < 10; i++) {
 			PortletContainerTestUtil.putFileParameter(
-				i, getClass(), fileParameters);
+				i, getClass(), _TXT_DEPENDENCY, fileParameters);
 			PortletContainerTestUtil.putRegularParameter(i, regularParameters);
 		}
 
 		LiferayServletRequest liferayServletRequest =
-			PortletContainerTestUtil.mockLiferayServletRequest(getClass());
+			PortletContainerTestUtil.mockLiferayServletRequest(
+				getClass(), _TXT_DEPENDENCY);
 
 		String parameter = RandomTestUtil.randomString();
 
@@ -980,10 +1027,12 @@ public class UploadServletRequestTest {
 
 		Map<String, FileItem[]> fileParameters = new HashMap<>();
 
-		PortletContainerTestUtil.putFileParameter(getClass(), fileParameters);
+		PortletContainerTestUtil.putFileParameter(
+			getClass(), _TXT_DEPENDENCY, fileParameters);
 
 		LiferayServletRequest liferayServletRequest =
-			PortletContainerTestUtil.mockLiferayServletRequest(getClass());
+			PortletContainerTestUtil.mockLiferayServletRequest(
+				getClass(), _TXT_DEPENDENCY);
 
 		UploadServletRequestImpl uploadServletRequest =
 			new UploadServletRequestImpl(
@@ -1013,7 +1062,8 @@ public class UploadServletRequestTest {
 		throws Exception {
 
 		LiferayServletRequest liferayServletRequest =
-			PortletContainerTestUtil.mockLiferayServletRequest(getClass());
+			PortletContainerTestUtil.mockLiferayServletRequest(
+				getClass(), _TXT_DEPENDENCY);
 
 		UploadServletRequestImpl uploadServletRequest =
 			new UploadServletRequestImpl(
@@ -1030,10 +1080,12 @@ public class UploadServletRequestTest {
 
 		Map<String, FileItem[]> fileParameters = new HashMap<>();
 
-		PortletContainerTestUtil.putFileParameter(getClass(), fileParameters);
+		PortletContainerTestUtil.putFileParameter(
+			getClass(), _TXT_DEPENDENCY, fileParameters);
 
 		LiferayServletRequest liferayServletRequest =
-			PortletContainerTestUtil.mockLiferayServletRequest(getClass());
+			PortletContainerTestUtil.mockLiferayServletRequest(
+				getClass(), _TXT_DEPENDENCY);
 
 		UploadServletRequestImpl uploadServletRequest =
 			new UploadServletRequestImpl(
@@ -1085,10 +1137,12 @@ public class UploadServletRequestTest {
 
 		Map<String, FileItem[]> fileParameters = new HashMap<>();
 
-		PortletContainerTestUtil.putFileParameter(getClass(), fileParameters);
+		PortletContainerTestUtil.putFileParameter(
+			getClass(), _TXT_DEPENDENCY, fileParameters);
 
 		LiferayServletRequest liferayServletRequest =
-			PortletContainerTestUtil.mockLiferayServletRequest(getClass());
+			PortletContainerTestUtil.mockLiferayServletRequest(
+				getClass(), _TXT_DEPENDENCY);
 
 		UploadServletRequestImpl uploadServletRequest =
 			new UploadServletRequestImpl(
@@ -1117,7 +1171,8 @@ public class UploadServletRequestTest {
 		throws Exception {
 
 		LiferayServletRequest liferayServletRequest =
-			PortletContainerTestUtil.mockLiferayServletRequest(getClass());
+			PortletContainerTestUtil.mockLiferayServletRequest(
+				getClass(), _TXT_DEPENDENCY);
 
 		UploadServletRequestImpl uploadServletRequest =
 			new UploadServletRequestImpl(
@@ -1134,10 +1189,12 @@ public class UploadServletRequestTest {
 
 		Map<String, FileItem[]> fileParameters = new HashMap<>();
 
-		PortletContainerTestUtil.putFileParameter(getClass(), fileParameters);
+		PortletContainerTestUtil.putFileParameter(
+			getClass(), _TXT_DEPENDENCY, fileParameters);
 
 		LiferayServletRequest liferayServletRequest =
-			PortletContainerTestUtil.mockLiferayServletRequest(getClass());
+			PortletContainerTestUtil.mockLiferayServletRequest(
+				getClass(), _TXT_DEPENDENCY);
 
 		UploadServletRequestImpl uploadServletRequest =
 			new UploadServletRequestImpl(
@@ -1153,7 +1210,8 @@ public class UploadServletRequestTest {
 		throws Exception {
 
 		LiferayServletRequest liferayServletRequest =
-			PortletContainerTestUtil.mockLiferayServletRequest(getClass());
+			PortletContainerTestUtil.mockLiferayServletRequest(
+				getClass(), _TXT_DEPENDENCY);
 
 		HttpServletRequest mockHttpServletRequest =
 			(HttpServletRequest)liferayServletRequest.getRequest();
@@ -1171,7 +1229,8 @@ public class UploadServletRequestTest {
 		throws Exception {
 
 		LiferayServletRequest liferayServletRequest =
-			PortletContainerTestUtil.mockLiferayServletRequest(getClass());
+			PortletContainerTestUtil.mockLiferayServletRequest(
+				getClass(), _TXT_DEPENDENCY);
 
 		HttpServletRequest mockHttpServletRequest =
 			(HttpServletRequest)liferayServletRequest.getRequest();
@@ -1191,5 +1250,9 @@ public class UploadServletRequestTest {
 		Assert.assertNotNull(regularParameterMap);
 		Assert.assertEquals(0, regularParameterMap.size());
 	}
+
+	private static final String _TXT_DEPENDENCY =
+		"/com/liferay/portal/portlet/container/test/dependencies/" +
+			"file_upload.txt";
 
 }
