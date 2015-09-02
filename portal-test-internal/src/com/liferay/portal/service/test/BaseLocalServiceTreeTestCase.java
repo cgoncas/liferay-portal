@@ -41,6 +41,8 @@ public abstract class BaseLocalServiceTreeTestCase {
 
 		CompanyThreadLocal.setCompanyId(TestPropsValues.getCompanyId());
 
+		ServiceTestUtil.setUser(TestPropsValues.getUser());
+
 		group = GroupTestUtil.addGroup();
 
 		createTree();

@@ -51,8 +51,10 @@ import javax.portlet.Portlet;
 import javax.servlet.http.HttpServletRequest;
 
 import org.junit.After;
+import org.junit.AfterClass;
 import org.junit.Assert;
 import org.junit.Before;
+import org.junit.BeforeClass;
 
 import org.osgi.framework.Bundle;
 import org.osgi.framework.BundleContext;
@@ -67,12 +69,20 @@ import org.springframework.mock.web.MockHttpServletRequest;
  */
 public class BasePortletContainerTestCase {
 
-	@Before
-	public void setUp() throws Exception {
+	@BeforeClass
+	public static void setUpClass() throws Exception {
 		previousCompanyId = CompanyThreadLocal.getCompanyId();
 
 		CompanyThreadLocal.setCompanyId(TestPropsValues.getCompanyId());
+	}
 
+	@AfterClass
+	public static void tearDownClass() throws Exception {
+		CompanyThreadLocal.setCompanyId(previousCompanyId);
+	}
+
+	@Before
+	public void setUp() throws Exception {
 		group = GroupTestUtil.addGroup();
 
 		layout = LayoutTestUtil.addLayout(group);
@@ -100,8 +110,6 @@ public class BasePortletContainerTestCase {
 		}
 
 		serviceRegistrations.clear();
-
-		CompanyThreadLocal.setCompanyId(previousCompanyId);
 	}
 
 	protected BundleContext getBundleContext() {

@@ -24,9 +24,9 @@ import com.liferay.portal.service.GroupLocalServiceUtil;
 import com.liferay.portal.service.ServiceContext;
 import com.liferay.portal.test.rule.PACLTestRule;
 
-import org.junit.After;
+import org.junit.AfterClass;
 import org.junit.Assert;
-import org.junit.Before;
+import org.junit.BeforeClass;
 import org.junit.ClassRule;
 import org.junit.Rule;
 import org.junit.Test;
@@ -40,15 +40,15 @@ public class ExpandoBridgeTest {
 	@Rule
 	public static final PACLTestRule paclTestRule = new PACLTestRule();
 
-	@Before
-	public void setUp() throws Exception {
+	@BeforeClass
+	public static void setUpClass() throws Exception {
 		_previousCompanyId = CompanyThreadLocal.getCompanyId();
 
 		CompanyThreadLocal.setCompanyId(TestPropsValues.getCompanyId());
 	}
 
-	@After
-	public void tearDown() throws Exception {
+	@AfterClass
+	public static void tearDownClass() throws Exception {
 		CompanyThreadLocal.setCompanyId(_previousCompanyId);
 	}
 
@@ -136,6 +136,6 @@ public class ExpandoBridgeTest {
 		user.setExpandoBridgeAttributes(serviceContext);
 	}
 
-	private long _previousCompanyId;
+	private static long _previousCompanyId;
 
 }

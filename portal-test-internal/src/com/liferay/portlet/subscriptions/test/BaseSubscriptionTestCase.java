@@ -23,8 +23,9 @@ import com.liferay.portal.model.RoleConstants;
 import com.liferay.portal.model.User;
 import com.liferay.portal.security.auth.CompanyThreadLocal;
 
-import org.junit.After;
+import org.junit.AfterClass;
 import org.junit.Before;
+import org.junit.BeforeClass;
 
 /**
  * @author Sergio González
@@ -32,23 +33,26 @@ import org.junit.Before;
  */
 public abstract class BaseSubscriptionTestCase {
 
-	@Before
-	public void setUp() throws Exception {
+	@BeforeClass
+	public static void setUpClass() throws Exception {
 		previousCompanyId = CompanyThreadLocal.getCompanyId();
 
 		CompanyThreadLocal.setCompanyId(TestPropsValues.getCompanyId());
+	}
 
+	@AfterClass
+	public static void tearDownClass() throws Exception {
+		CompanyThreadLocal.setCompanyId(previousCompanyId);
+	}
+
+	@Before
+	public void setUp() throws Exception {
 		group = GroupTestUtil.addGroup();
 
 		user = UserTestUtil.addGroupUser(group, RoleConstants.SITE_MEMBER);
 
 		creatorUser = UserTestUtil.addGroupUser(
 			group, RoleConstants.SITE_MEMBER);
-	}
-
-	@After
-	public void tearDown() throws Exception {
-		CompanyThreadLocal.setCompanyId(previousCompanyId);
 	}
 
 	protected long addBaseModel(long userId, long containerModelId)
@@ -69,13 +73,13 @@ public abstract class BaseSubscriptionTestCase {
 
 	protected static final long PARENT_CONTAINER_MODEL_ID_DEFAULT = 0;
 
+	protected static long previousCompanyId;
+
 	@DeleteAfterTestRun
 	protected User creatorUser;
 
 	@DeleteAfterTestRun
 	protected Group group;
-
-	protected long previousCompanyId;
 
 	@DeleteAfterTestRun
 	protected User user;

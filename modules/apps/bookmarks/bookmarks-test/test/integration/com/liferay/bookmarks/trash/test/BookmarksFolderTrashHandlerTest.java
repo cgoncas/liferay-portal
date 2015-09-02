@@ -138,13 +138,13 @@ public class BookmarksFolderTrashHandlerTest
 	@Before
 	@Override
 	public void setUp() throws Exception {
+		super.setUp();
+
 		_testMode = PortalRunMode.isTestMode();
 
 		PortalRunMode.setTestMode(true);
 
 		ServiceTestUtil.setUser(TestPropsValues.getUser());
-
-		super.setUp();
 	}
 
 	@After

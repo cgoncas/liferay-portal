@@ -23,14 +23,11 @@ import com.liferay.portal.kernel.test.rule.AggregateTestRule;
 import com.liferay.portal.kernel.test.rule.Sync;
 import com.liferay.portal.kernel.test.rule.SynchronousDestinationTestRule;
 import com.liferay.portal.kernel.test.util.RandomTestUtil;
-import com.liferay.portal.kernel.test.util.TestPropsValues;
 import com.liferay.portal.security.permission.ActionKeys;
 import com.liferay.portal.service.permission.test.BasePermissionTestCase;
-import com.liferay.portal.service.test.ServiceTestUtil;
 import com.liferay.portal.test.rule.LiferayIntegrationTestRule;
 
 import org.junit.Assert;
-import org.junit.Before;
 import org.junit.ClassRule;
 import org.junit.Rule;
 import org.junit.Test;
@@ -51,14 +48,6 @@ public class BookmarksFolderPermissionCheckerTest
 		new AggregateTestRule(
 			new LiferayIntegrationTestRule(),
 			SynchronousDestinationTestRule.INSTANCE);
-
-	@Before
-	@Override
-	public void setUp() throws Exception {
-		ServiceTestUtil.setUser(TestPropsValues.getUser());
-
-		super.setUp();
-	}
 
 	@Test
 	public void testContains() throws Exception {

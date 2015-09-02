@@ -30,6 +30,7 @@ import com.liferay.portal.model.UserNotificationEvent;
 import com.liferay.portal.security.auth.CompanyThreadLocal;
 import com.liferay.portal.service.UserNotificationDeliveryLocalServiceUtil;
 import com.liferay.portal.service.UserNotificationEventLocalServiceUtil;
+import com.liferay.portal.service.test.ServiceTestUtil;
 import com.liferay.portal.util.test.MailServiceTestUtil;
 
 import java.util.ArrayList;
@@ -51,6 +52,8 @@ public abstract class BaseUserNotificationTestCase {
 		previousCompanyId = CompanyThreadLocal.getCompanyId();
 
 		CompanyThreadLocal.setCompanyId(TestPropsValues.getCompanyId());
+
+		ServiceTestUtil.setUser(TestPropsValues.getUser());
 
 		user = UserTestUtil.addOmniAdminUser();
 

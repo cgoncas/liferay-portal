@@ -53,15 +53,16 @@ public abstract class BaseStoreTestCase {
 
 	@Before
 	public void setUp() throws Exception {
-		previousCompanyId = CompanyThreadLocal.getCompanyId();
-
-		CompanyThreadLocal.setCompanyId(TestPropsValues.getCompanyId());
-
 		StoreFactory storeFactory = StoreFactory.getInstance();
 
 		store = storeFactory.getStore(getStoreType());
 
 		companyId = TestPropsValues.getCompanyId();
+
+		previousCompanyId = CompanyThreadLocal.getCompanyId();
+
+		CompanyThreadLocal.setCompanyId(companyId);
+
 		repositoryId = RandomTestUtil.nextLong();
 	}
 

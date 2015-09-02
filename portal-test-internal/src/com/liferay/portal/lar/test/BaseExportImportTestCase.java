@@ -187,8 +187,6 @@ public class BaseExportImportTestCase {
 			stagedModel.getUuid(), importedStagedModel.getUuid());
 	}
 
-	protected static long previousCompanyId;
-
 	@DeleteAfterTestRun
 	protected Group group;
 
@@ -198,5 +196,6 @@ public class BaseExportImportTestCase {
 	protected Layout importedLayout;
 	protected File larFile;
 	protected Layout layout;
+	protected long previousCompanyId;
 
 }

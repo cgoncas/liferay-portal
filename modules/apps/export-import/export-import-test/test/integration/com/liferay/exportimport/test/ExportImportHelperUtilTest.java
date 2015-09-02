@@ -51,6 +51,7 @@ import com.liferay.portal.model.Group;
 import com.liferay.portal.model.Layout;
 import com.liferay.portal.model.StagedModel;
 import com.liferay.portal.model.User;
+import com.liferay.portal.security.auth.CompanyThreadLocal;
 import com.liferay.portal.service.GroupLocalServiceUtil;
 import com.liferay.portal.service.LayoutLocalServiceUtil;
 import com.liferay.portal.service.ServiceContext;
@@ -91,6 +92,7 @@ import java.util.Scanner;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.ClassRule;
@@ -117,6 +119,10 @@ public class ExportImportHelperUtilTest {
 
 	@Before
 	public void setUp() throws Exception {
+		_previousCompanyId = CompanyThreadLocal.getCompanyId();
+
+		CompanyThreadLocal.setCompanyId(TestPropsValues.getCompanyId());
+
 		_liveGroup = GroupTestUtil.addGroup();
 		_stagingGroup = GroupTestUtil.addGroup();
 
@@ -182,6 +188,11 @@ public class ExportImportHelperUtilTest {
 		_referrerStagedModel = JournalTestUtil.addArticle(
 			_stagingGroup.getGroupId(), RandomTestUtil.randomString(),
 			RandomTestUtil.randomString());
+	}
+
+	@After
+	public void tearDown() throws Exception {
+		CompanyThreadLocal.setCompanyId(_previousCompanyId);
 	}
 
 	@Ignore
@@ -880,6 +891,7 @@ public class ExportImportHelperUtilTest {
 	private final Pattern _pattern = Pattern.compile("href=|\\{|\\[");
 	private PortletDataContext _portletDataContextExport;
 	private PortletDataContext _portletDataContextImport;
+	private long _previousCompanyId;
 	private StagedModel _referrerStagedModel;
 
 	@DeleteAfterTestRun

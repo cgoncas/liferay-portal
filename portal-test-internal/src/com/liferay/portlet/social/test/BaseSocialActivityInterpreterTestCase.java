@@ -233,11 +233,10 @@ public abstract class BaseSocialActivityInterpreterTestCase {
 
 	protected abstract void restoreModelsFromTrash() throws Exception;
 
-	protected static long previousCompanyId;
-
 	@DeleteAfterTestRun
 	protected Group group;
 
+	protected long previousCompanyId;
 	protected ServiceContext serviceContext;
 
 }

@@ -48,6 +48,8 @@ public abstract class BasePermissionTestCase {
 
 		CompanyThreadLocal.setCompanyId(TestPropsValues.getCompanyId());
 
+		ServiceTestUtil.setUser(TestPropsValues.getUser());
+
 		group = GroupTestUtil.addGroup();
 		user = UserTestUtil.addUser();
 

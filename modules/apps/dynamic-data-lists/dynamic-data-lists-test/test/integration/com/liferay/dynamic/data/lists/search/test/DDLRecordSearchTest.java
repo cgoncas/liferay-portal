@@ -373,13 +373,12 @@ public class DDLRecordSearchTest {
 		PrincipalThreadLocal.setName(TestPropsValues.getUserId());
 	}
 
-	private static long _previousCompanyId;
-
 	@DeleteAfterTestRun
 	private Group _group;
 
 	private String _originalName;
 	private PermissionChecker _originalPermissionChecker;
+	private long _previousCompanyId;
 	private DDLRecordTestHelper _recordTestHelper;
 	private SearchContext _searchContext;
 

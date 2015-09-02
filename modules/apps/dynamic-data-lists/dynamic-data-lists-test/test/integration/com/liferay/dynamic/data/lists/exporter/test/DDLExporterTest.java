@@ -385,8 +385,6 @@ public class DDLExporterTest {
 		});
 	}
 
-	private static long _previousCompanyId;
-
 	private Set<Locale> _availableLocales;
 	private Map<DDMFormFieldType, String> _ddmFormFieldDataTypes;
 	private Locale _defaultLocale;
@@ -396,6 +394,7 @@ public class DDLExporterTest {
 	private Group _group;
 
 	private PermissionChecker _originalPermissionChecker;
+	private long _previousCompanyId;
 
 	private enum DDMFormFieldType {
 

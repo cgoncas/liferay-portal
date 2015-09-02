@@ -402,8 +402,6 @@ public class DLFileEntryTypeServiceTest {
 	private static final String _TEST_DDM_STRUCTURE =
 		"dependencies/ddmstructure.xml";
 
-	private static long _previousCompanyId;
-
 	private DLFileEntryType _basicDocumentDLFileEntryType;
 	private DLFileEntryType _contractDLFileEntryType;
 	private List<DLFileEntryType> _dlFileEntryTypes;
@@ -415,6 +413,7 @@ public class DLFileEntryTypeServiceTest {
 	private DLFileEntryType _marketingBannerDLFileEntryType;
 	private String _originalName;
 	private PermissionChecker _originalPermissionChecker;
+	private long _previousCompanyId;
 	private Folder _subfolder;
 
 }
