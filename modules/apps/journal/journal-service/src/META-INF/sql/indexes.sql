@@ -28,6 +28,7 @@ create unique index IX_103D6207 on JournalArticleImage (groupId, articleId, vers
 create index IX_D4121315 on JournalArticleImage (tempImage);
 
 create unique index IX_88DF994A on JournalArticleResource (groupId, articleId);
+create index IX_CC7576C7 on JournalArticleResource (uuid_, companyId);
 create unique index IX_84AB0309 on JournalArticleResource (uuid_, groupId);
 
 create index IX_9207CB31 on JournalContentSearch (articleId);
