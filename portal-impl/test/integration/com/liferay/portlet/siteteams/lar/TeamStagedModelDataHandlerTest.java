@@ -57,8 +57,6 @@ public class TeamStagedModelDataHandlerTest
 	@After
 	@Override
 	public void tearDown() throws Exception {
-		super.tearDown();
-
 		if (_user != null) {
 			UserLocalServiceUtil.deleteUser(_user);
 		}
@@ -66,6 +64,8 @@ public class TeamStagedModelDataHandlerTest
 		if (_userGroup != null) {
 			UserGroupLocalServiceUtil.deleteUserGroup(_userGroup);
 		}
+
+		super.tearDown();
 	}
 
 	@Override

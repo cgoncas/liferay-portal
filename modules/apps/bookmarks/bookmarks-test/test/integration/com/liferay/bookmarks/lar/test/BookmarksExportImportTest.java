@@ -68,9 +68,9 @@ public class BookmarksExportImportTest extends BasePortletExportImportTestCase {
 	@Before
 	@Override
 	public void setUp() throws Exception {
-		ServiceTestUtil.setUser(TestPropsValues.getUser());
-
 		super.setUp();
+
+		ServiceTestUtil.setUser(TestPropsValues.getUser());
 	}
 
 	@Override

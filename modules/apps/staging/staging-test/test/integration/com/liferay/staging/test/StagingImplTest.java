@@ -36,6 +36,7 @@ import com.liferay.portal.model.LayoutSet;
 import com.liferay.portal.model.LayoutSetBranch;
 import com.liferay.portal.model.LayoutSetBranchConstants;
 import com.liferay.portal.model.impl.LayoutImpl;
+import com.liferay.portal.security.auth.CompanyThreadLocal;
 import com.liferay.portal.service.LayoutLocalServiceUtil;
 import com.liferay.portal.service.LayoutSetBranchLocalServiceUtil;
 import com.liferay.portal.service.LayoutSetLocalServiceUtil;
@@ -60,6 +61,7 @@ import java.util.Map;
 
 import javax.portlet.PortletPreferences;
 
+import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.ClassRule;
@@ -84,7 +86,16 @@ public class StagingImplTest {
 
 	@Before
 	public void setUp() throws Exception {
+		_previousCompanyId = CompanyThreadLocal.getCompanyId();
+
+		CompanyThreadLocal.setCompanyId(TestPropsValues.getCompanyId());
+
 		_group = GroupTestUtil.addGroup();
+	}
+
+	@After
+	public void tearDown() throws Exception {
+		CompanyThreadLocal.setCompanyId(_previousCompanyId);
 	}
 
 	@Test
@@ -369,5 +380,7 @@ public class StagingImplTest {
 
 	@DeleteAfterTestRun
 	private Group _group;
+
+	private long _previousCompanyId;
 
 }

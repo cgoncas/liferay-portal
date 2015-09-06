@@ -27,12 +27,15 @@ import com.liferay.dynamic.data.mapping.test.util.DDMTemplateTestUtil;
 import com.liferay.portal.kernel.test.rule.AggregateTestRule;
 import com.liferay.portal.kernel.test.rule.DeleteAfterTestRun;
 import com.liferay.portal.kernel.test.util.GroupTestUtil;
+import com.liferay.portal.kernel.test.util.TestPropsValues;
 import com.liferay.portal.kernel.util.LocaleUtil;
 import com.liferay.portal.model.Group;
+import com.liferay.portal.security.auth.CompanyThreadLocal;
 import com.liferay.portal.test.rule.LiferayIntegrationTestRule;
 
 import java.util.Set;
 
+import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.ClassRule;
@@ -53,9 +56,18 @@ public class DDLRecordSetImplTest {
 
 	@Before
 	public void setUp() throws Exception {
+		_previousCompanyId = CompanyThreadLocal.getCompanyId();
+
+		CompanyThreadLocal.setCompanyId(TestPropsValues.getCompanyId());
+
 		_group = GroupTestUtil.addGroup();
 
 		_ddlRecordSetTestHelper = new DDLRecordSetTestHelper(_group);
+	}
+
+	@After
+	public void tearDown() throws Exception {
+		CompanyThreadLocal.setCompanyId(_previousCompanyId);
 	}
 
 	@Test
@@ -95,5 +107,7 @@ public class DDLRecordSetImplTest {
 
 	@DeleteAfterTestRun
 	private Group _group;
+
+	private long _previousCompanyId;
 
 }

@@ -46,6 +46,7 @@ import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.kernel.workflow.WorkflowConstants;
 import com.liferay.portal.model.Group;
 import com.liferay.portal.model.User;
+import com.liferay.portal.security.auth.CompanyThreadLocal;
 import com.liferay.portal.service.ServiceContext;
 import com.liferay.portal.service.test.ServiceTestUtil;
 import com.liferay.portal.test.rule.LiferayIntegrationTestRule;
@@ -56,6 +57,7 @@ import java.util.Map;
 import java.util.concurrent.Callable;
 import java.util.concurrent.TimeUnit;
 
+import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.ClassRule;
@@ -79,9 +81,18 @@ public class JournalIndexerTest {
 
 	@Before
 	public void setUp() throws Exception {
+		_previousCompanyId = CompanyThreadLocal.getCompanyId();
+
+		CompanyThreadLocal.setCompanyId(TestPropsValues.getCompanyId());
+
 		_group = GroupTestUtil.addGroup();
 
 		ServiceTestUtil.setUser(TestPropsValues.getUser());
+	}
+
+	@After
+	public void tearDown() throws Exception {
+		CompanyThreadLocal.setCompanyId(_previousCompanyId);
 	}
 
 	@Test
@@ -820,5 +831,7 @@ public class JournalIndexerTest {
 
 	@DeleteAfterTestRun
 	private Group _group;
+
+	private long _previousCompanyId;
 
 }

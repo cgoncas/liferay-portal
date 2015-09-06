@@ -55,6 +55,7 @@ import com.liferay.portal.kernel.xml.XPath;
 import com.liferay.portal.model.Group;
 import com.liferay.portal.model.Layout;
 import com.liferay.portal.model.User;
+import com.liferay.portal.security.auth.CompanyThreadLocal;
 import com.liferay.portal.service.ServiceContext;
 import com.liferay.portal.test.randomizerbumpers.TikaSafeRandomizerBumper;
 import com.liferay.portal.test.rule.LiferayIntegrationTestRule;
@@ -78,6 +79,7 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
 
+import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.BeforeClass;
@@ -102,13 +104,17 @@ public class JournalConverterUtilTest {
 			SynchronousDestinationTestRule.INSTANCE);
 
 	@BeforeClass
-	public static void setUpClass() {
+	public static void setUpClass() throws Exception {
 		_enLocale = LocaleUtil.fromLanguageId("en_US");
 		_ptLocale = LocaleUtil.fromLanguageId("pt_BR");
 	}
 
 	@Before
 	public void setUp() throws Exception {
+		_previousCompanyId = CompanyThreadLocal.getCompanyId();
+
+		CompanyThreadLocal.setCompanyId(TestPropsValues.getCompanyId());
+
 		_group = GroupTestUtil.addGroup();
 
 		_ddmStructureTestHelper = new DDMStructureTestHelper(_group);
@@ -124,6 +130,11 @@ public class JournalConverterUtilTest {
 		Registry registry = RegistryUtil.getRegistry();
 
 		_journalConverter = registry.getService(JournalConverter.class);
+	}
+
+	@After
+	public void tearDown() throws Exception {
+		CompanyThreadLocal.setCompanyId(_previousCompanyId);
 	}
 
 	@Test
@@ -1007,5 +1018,6 @@ public class JournalConverterUtilTest {
 	private Group _group;
 
 	private JournalConverter _journalConverter;
+	private long _previousCompanyId;
 
 }

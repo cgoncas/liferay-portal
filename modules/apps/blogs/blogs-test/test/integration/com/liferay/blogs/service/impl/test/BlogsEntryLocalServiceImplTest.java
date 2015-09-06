@@ -22,6 +22,7 @@ import com.liferay.portal.kernel.test.rule.SynchronousDestinationTestRule;
 import com.liferay.portal.kernel.test.util.ServiceContextTestUtil;
 import com.liferay.portal.kernel.test.util.TestPropsValues;
 import com.liferay.portal.kernel.util.StringUtil;
+import com.liferay.portal.security.auth.CompanyThreadLocal;
 import com.liferay.portal.service.IdentityServiceContextFunction;
 import com.liferay.portal.service.ServiceContext;
 import com.liferay.portal.test.rule.LiferayIntegrationTestRule;
@@ -30,7 +31,9 @@ import com.liferay.portlet.blogs.service.BlogsEntryLocalServiceUtil;
 
 import java.util.Date;
 
+import org.junit.After;
 import org.junit.Assert;
+import org.junit.Before;
 import org.junit.ClassRule;
 import org.junit.Rule;
 import org.junit.Test;
@@ -49,6 +52,18 @@ public class BlogsEntryLocalServiceImplTest {
 		new AggregateTestRule(
 			new LiferayIntegrationTestRule(),
 			SynchronousDestinationTestRule.INSTANCE);
+
+	@Before
+	public void setUp() throws Exception {
+		_previousCompanyId = CompanyThreadLocal.getCompanyId();
+
+		CompanyThreadLocal.setCompanyId(TestPropsValues.getCompanyId());
+	}
+
+	@After
+	public void tearDown() throws Exception {
+		CompanyThreadLocal.setCompanyId(_previousCompanyId);
+	}
 
 	@Test
 	public void testAddDiscussion() throws Exception {
@@ -94,5 +109,7 @@ public class BlogsEntryLocalServiceImplTest {
 			CommentManagerUtil.hasDiscussion(
 				BlogsEntry.class.getName(), blogsEntry.getEntryId()));
 	}
+
+	private long _previousCompanyId;
 
 }

@@ -14,14 +14,30 @@
 
 package com.liferay.portal.verify.test;
 
+import com.liferay.portal.kernel.test.util.TestPropsValues;
+import com.liferay.portal.security.auth.CompanyThreadLocal;
 import com.liferay.portal.verify.VerifyProcess;
 
+import org.junit.After;
+import org.junit.Before;
 import org.junit.Test;
 
 /**
  * @author Manuel de la Peña
  */
 public abstract class BaseVerifyProcessTestCase {
+
+	@Before
+	public void setUp() throws Exception {
+		previousCompanyId = CompanyThreadLocal.getCompanyId();
+
+		CompanyThreadLocal.setCompanyId(TestPropsValues.getCompanyId());
+	}
+
+	@After
+	public void tearDown() throws Exception {
+		CompanyThreadLocal.setCompanyId(previousCompanyId);
+	}
 
 	@Test
 	public void testVerify() throws Exception {
@@ -35,5 +51,7 @@ public abstract class BaseVerifyProcessTestCase {
 	}
 
 	protected abstract VerifyProcess getVerifyProcess();
+
+	protected long previousCompanyId;
 
 }

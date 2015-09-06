@@ -27,6 +27,7 @@ import com.liferay.portal.kernel.workflow.WorkflowConstants;
 import com.liferay.portal.model.Group;
 import com.liferay.portal.model.RoleConstants;
 import com.liferay.portal.model.User;
+import com.liferay.portal.security.auth.CompanyThreadLocal;
 import com.liferay.portal.service.test.ServiceTestUtil;
 import com.liferay.portal.test.rule.LiferayIntegrationTestRule;
 import com.liferay.wiki.model.WikiNode;
@@ -37,6 +38,7 @@ import com.liferay.wiki.util.test.WikiTestUtil;
 
 import java.util.List;
 
+import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.ClassRule;
@@ -58,6 +60,10 @@ public class WikiPageFinderTest {
 
 	@Before
 	public void setUp() throws Exception {
+		_previousCompanyId = CompanyThreadLocal.getCompanyId();
+
+		CompanyThreadLocal.setCompanyId(TestPropsValues.getCompanyId());
+
 		_group = GroupTestUtil.addGroup();
 
 		_node = WikiTestUtil.addNode(_group.getGroupId());
@@ -77,6 +83,11 @@ public class WikiPageFinderTest {
 		userDraft.setHead(true);
 
 		WikiPageLocalServiceUtil.updateWikiPage(userDraft);
+	}
+
+	@After
+	public void tearDown() throws Exception {
+		CompanyThreadLocal.setCompanyId(_previousCompanyId);
 	}
 
 	@Test
@@ -138,6 +149,7 @@ public class WikiPageFinderTest {
 	private Group _group;
 
 	private WikiNode _node;
+	private long _previousCompanyId;
 
 	@DeleteAfterTestRun
 	private User _user;

@@ -34,12 +34,14 @@ import com.liferay.portal.kernel.util.LocaleUtil;
 import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.model.Group;
+import com.liferay.portal.security.auth.CompanyThreadLocal;
 import com.liferay.portal.util.PortalUtil;
 
 import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
 
+import org.junit.After;
 import org.junit.Before;
 
 /**
@@ -50,10 +52,19 @@ public class BaseDDMServiceTestCase {
 
 	@Before
 	public void setUp() throws Exception {
+		previousCompanyId = CompanyThreadLocal.getCompanyId();
+
+		CompanyThreadLocal.setCompanyId(TestPropsValues.getCompanyId());
+
 		group = GroupTestUtil.addGroup();
 
 		ddmStructureTestHelper = new DDMStructureTestHelper(group);
 		ddmStructureLayoutTestHelper = new DDMStructureLayoutTestHelper(group);
+	}
+
+	@After
+	public void tearDown() throws Exception {
+		CompanyThreadLocal.setCompanyId(previousCompanyId);
 	}
 
 	protected DDMTemplate addDisplayTemplate(
@@ -228,5 +239,7 @@ public class BaseDDMServiceTestCase {
 
 	@DeleteAfterTestRun
 	protected Group group;
+
+	protected long previousCompanyId;
 
 }

@@ -44,6 +44,7 @@ import com.liferay.portal.kernel.test.util.TestPropsValues;
 import com.liferay.portal.kernel.util.LocaleUtil;
 import com.liferay.portal.kernel.workflow.WorkflowConstants;
 import com.liferay.portal.model.Group;
+import com.liferay.portal.security.auth.CompanyThreadLocal;
 import com.liferay.portal.security.auth.PrincipalThreadLocal;
 import com.liferay.portal.security.permission.PermissionChecker;
 import com.liferay.portal.security.permission.PermissionThreadLocal;
@@ -79,6 +80,10 @@ public class DDLRecordSearchTest {
 
 	@Before
 	public void setUp() throws Exception {
+		_previousCompanyId = CompanyThreadLocal.getCompanyId();
+
+		CompanyThreadLocal.setCompanyId(TestPropsValues.getCompanyId());
+
 		setUpPermissionThreadLocal();
 		setUpPrincipalThreadLocal();
 
@@ -95,6 +100,8 @@ public class DDLRecordSearchTest {
 		PermissionThreadLocal.setPermissionChecker(_originalPermissionChecker);
 
 		PrincipalThreadLocal.setName(_originalName);
+
+		CompanyThreadLocal.setCompanyId(_previousCompanyId);
 	}
 
 	@Test
@@ -371,6 +378,7 @@ public class DDLRecordSearchTest {
 
 	private String _originalName;
 	private PermissionChecker _originalPermissionChecker;
+	private long _previousCompanyId;
 	private DDLRecordTestHelper _recordTestHelper;
 	private SearchContext _searchContext;
 

@@ -102,10 +102,12 @@ public class DLFileEntrySearchTest extends BaseSearchTestCase {
 	}
 
 	@After
-	public void tearDown() {
+	public void tearDown() throws Exception {
 		PermissionThreadLocal.setPermissionChecker(_originalPermissionChecker);
 
 		PrincipalThreadLocal.setName(_originalName);
+
+		super.tearDown();
 	}
 
 	@Ignore

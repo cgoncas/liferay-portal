@@ -50,6 +50,7 @@ import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.workflow.WorkflowConstants;
 import com.liferay.portal.model.ClassName;
 import com.liferay.portal.model.Group;
+import com.liferay.portal.security.auth.CompanyThreadLocal;
 import com.liferay.portal.service.ClassNameServiceUtil;
 import com.liferay.portal.service.ServiceContext;
 import com.liferay.portal.service.test.ServiceTestUtil;
@@ -90,6 +91,10 @@ public class JournalArticleServiceTest {
 
 	@Before
 	public void setUp() throws Exception {
+		_previousCompanyId = CompanyThreadLocal.getCompanyId();
+
+		CompanyThreadLocal.setCompanyId(TestPropsValues.getCompanyId());
+
 		_group = GroupTestUtil.addGroup();
 
 		_article = JournalTestUtil.addArticle(
@@ -110,6 +115,8 @@ public class JournalArticleServiceTest {
 			_group.getGroupId(), _article.getArticleId(), new ServiceContext());
 
 		PortalRunMode.setTestMode(_testMode);
+
+		CompanyThreadLocal.setCompanyId(_previousCompanyId);
 	}
 
 	@Test
@@ -709,6 +716,8 @@ public class JournalArticleServiceTest {
 			article, "Version 2", article.getContent(), false, true,
 			serviceContext);
 	}
+
+	private static long _previousCompanyId;
 
 	private JournalArticle _article;
 

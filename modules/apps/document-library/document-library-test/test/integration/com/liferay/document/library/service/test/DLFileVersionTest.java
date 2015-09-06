@@ -35,6 +35,7 @@ import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.model.Group;
 import com.liferay.portal.model.ResourceConstants;
 import com.liferay.portal.model.RoleConstants;
+import com.liferay.portal.security.auth.CompanyThreadLocal;
 import com.liferay.portal.security.auth.PrincipalThreadLocal;
 import com.liferay.portal.security.permission.ActionKeys;
 import com.liferay.portal.security.permission.PermissionChecker;
@@ -94,6 +95,10 @@ public class DLFileVersionTest {
 
 	@Before
 	public void setUp() throws Exception {
+		_previousCompanyId = CompanyThreadLocal.getCompanyId();
+
+		CompanyThreadLocal.setCompanyId(TestPropsValues.getCompanyId());
+
 		setUpPermissionThreadLocal();
 		setUpPrincipalThreadLocal();
 
@@ -157,6 +162,8 @@ public class DLFileVersionTest {
 		tearDownPermissionThreadLocal();
 		tearDownPrincipalThreadLocal();
 		tearDownResourcePermission();
+
+		CompanyThreadLocal.setCompanyId(_previousCompanyId);
 	}
 
 	@Test
@@ -521,6 +528,7 @@ public class DLFileVersionTest {
 	private String _originalName;
 	private PermissionChecker _originalPermissionChecker;
 	private Folder _parentFolder;
+	private long _previousCompanyId;
 	private ServiceContext _serviceContext;
 
 }

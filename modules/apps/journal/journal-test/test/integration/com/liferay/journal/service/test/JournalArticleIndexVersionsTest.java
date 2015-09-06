@@ -40,6 +40,7 @@ import com.liferay.portal.kernel.test.util.TestPropsValues;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.workflow.WorkflowConstants;
 import com.liferay.portal.model.Group;
+import com.liferay.portal.security.auth.CompanyThreadLocal;
 import com.liferay.portal.service.ServiceContext;
 import com.liferay.portal.service.test.ServiceTestUtil;
 import com.liferay.portal.test.rule.LiferayIntegrationTestRule;
@@ -72,6 +73,10 @@ public class JournalArticleIndexVersionsTest {
 
 	@Before
 	public void setUp() throws Exception {
+		_previousCompanyId = CompanyThreadLocal.getCompanyId();
+
+		CompanyThreadLocal.setCompanyId(TestPropsValues.getCompanyId());
+
 		JournalServiceConfigurationValues.JOURNAL_ARTICLE_INDEX_ALL_VERSIONS =
 			false;
 
@@ -87,6 +92,8 @@ public class JournalArticleIndexVersionsTest {
 				JournalServiceConfigurationUtil.get(
 					JournalServiceConfigurationKeys.
 						JOURNAL_ARTICLE_INDEX_ALL_VERSIONS));
+
+		CompanyThreadLocal.setCompanyId(_previousCompanyId);
 	}
 
 	@Test
@@ -293,6 +300,8 @@ public class JournalArticleIndexVersionsTest {
 
 		return results.getLength();
 	}
+
+	private static long _previousCompanyId;
 
 	@DeleteAfterTestRun
 	private Group _group;

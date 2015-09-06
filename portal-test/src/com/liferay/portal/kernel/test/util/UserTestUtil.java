@@ -28,6 +28,7 @@ import com.liferay.portal.model.Role;
 import com.liferay.portal.model.RoleConstants;
 import com.liferay.portal.model.User;
 import com.liferay.portal.model.UserGroupRole;
+import com.liferay.portal.security.auth.CompanyThreadLocal;
 import com.liferay.portal.service.CompanyLocalServiceUtil;
 import com.liferay.portal.service.RoleLocalServiceUtil;
 import com.liferay.portal.service.ServiceContext;
@@ -272,11 +273,17 @@ public class UserTestUtil {
 	}
 
 	public static User getAdminUser(long companyId) throws PortalException {
+		long previousCompanyId = CompanyThreadLocal.getCompanyId();
+
+		CompanyThreadLocal.setCompanyId(TestPropsValues.getCompanyId());
+
 		Role role = RoleLocalServiceUtil.getRole(
 			companyId, RoleConstants.ADMINISTRATOR);
 
 		List<User> users = UserLocalServiceUtil.getRoleUsers(
 			role.getRoleId(), 0, 1);
+
+		CompanyThreadLocal.setCompanyId(previousCompanyId);
 
 		if (!users.isEmpty()) {
 			return users.get(0);

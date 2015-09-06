@@ -25,6 +25,7 @@ import com.liferay.portal.model.ResourceConstants;
 import com.liferay.portal.model.Role;
 import com.liferay.portal.model.RoleConstants;
 import com.liferay.portal.model.User;
+import com.liferay.portal.security.auth.CompanyThreadLocal;
 import com.liferay.portal.security.permission.ActionKeys;
 import com.liferay.portal.security.permission.PermissionChecker;
 import com.liferay.portal.security.permission.PermissionThreadLocal;
@@ -43,6 +44,12 @@ public abstract class BasePermissionTestCase {
 
 	@Before
 	public void setUp() throws Exception {
+		previousCompanyId = CompanyThreadLocal.getCompanyId();
+
+		CompanyThreadLocal.setCompanyId(TestPropsValues.getCompanyId());
+
+		ServiceTestUtil.setUser(TestPropsValues.getUser());
+
 		group = GroupTestUtil.addGroup();
 		user = UserTestUtil.addUser();
 
@@ -63,6 +70,8 @@ public abstract class BasePermissionTestCase {
 		ServiceTestUtil.setUser(TestPropsValues.getUser());
 
 		removePortletModelViewPermission();
+
+		CompanyThreadLocal.setCompanyId(previousCompanyId);
 	}
 
 	protected void addPortletModelViewPermission() throws Exception {
@@ -100,6 +109,8 @@ public abstract class BasePermissionTestCase {
 			getRoleName(), getResourceName(),
 			ResourceConstants.SCOPE_INDIVIDUAL, getPrimKey(), ActionKeys.VIEW);
 	}
+
+	protected static long previousCompanyId;
 
 	@DeleteAfterTestRun
 	protected Group group;

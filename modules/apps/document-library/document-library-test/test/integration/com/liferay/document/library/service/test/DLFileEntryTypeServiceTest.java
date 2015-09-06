@@ -42,6 +42,7 @@ import com.liferay.portal.kernel.util.LocaleUtil;
 import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.model.Group;
 import com.liferay.portal.model.User;
+import com.liferay.portal.security.auth.CompanyThreadLocal;
 import com.liferay.portal.security.auth.PrincipalThreadLocal;
 import com.liferay.portal.security.permission.PermissionChecker;
 import com.liferay.portal.security.permission.PermissionThreadLocal;
@@ -86,6 +87,10 @@ public class DLFileEntryTypeServiceTest {
 
 	@Before
 	public void setUp() throws Exception {
+		_previousCompanyId = CompanyThreadLocal.getCompanyId();
+
+		CompanyThreadLocal.setCompanyId(TestPropsValues.getCompanyId());
+
 		setUpPermissionThreadLocal();
 		setUpPrincipalThreadLocal();
 
@@ -139,6 +144,8 @@ public class DLFileEntryTypeServiceTest {
 		PermissionThreadLocal.setPermissionChecker(_originalPermissionChecker);
 
 		PrincipalThreadLocal.setName(_originalName);
+
+		CompanyThreadLocal.setCompanyId(_previousCompanyId);
 	}
 
 	@Test
@@ -406,6 +413,7 @@ public class DLFileEntryTypeServiceTest {
 	private DLFileEntryType _marketingBannerDLFileEntryType;
 	private String _originalName;
 	private PermissionChecker _originalPermissionChecker;
+	private long _previousCompanyId;
 	private Folder _subfolder;
 
 }

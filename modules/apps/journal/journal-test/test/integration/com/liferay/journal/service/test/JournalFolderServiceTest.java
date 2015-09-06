@@ -40,6 +40,7 @@ import com.liferay.portal.kernel.trash.TrashHandlerRegistryUtil;
 import com.liferay.portal.kernel.util.LocaleUtil;
 import com.liferay.portal.kernel.util.PortalRunMode;
 import com.liferay.portal.model.Group;
+import com.liferay.portal.security.auth.CompanyThreadLocal;
 import com.liferay.portal.service.ServiceContext;
 import com.liferay.portal.service.test.ServiceTestUtil;
 import com.liferay.portal.test.rule.LiferayIntegrationTestRule;
@@ -72,6 +73,10 @@ public class JournalFolderServiceTest {
 
 	@Before
 	public void setUp() throws Exception {
+		_previousCompanyId = CompanyThreadLocal.getCompanyId();
+
+		CompanyThreadLocal.setCompanyId(TestPropsValues.getCompanyId());
+
 		_group = GroupTestUtil.addGroup();
 
 		_testMode = PortalRunMode.isTestMode();
@@ -84,6 +89,8 @@ public class JournalFolderServiceTest {
 	@After
 	public void tearDown() throws Exception {
 		PortalRunMode.setTestMode(_testMode);
+
+		CompanyThreadLocal.setCompanyId(_previousCompanyId);
 	}
 
 	@Test
@@ -582,6 +589,8 @@ public class JournalFolderServiceTest {
 		catch (InvalidDDMStructureException iddmse) {
 		}
 	}
+
+	private static long _previousCompanyId;
 
 	@DeleteAfterTestRun
 	private Group _group;

@@ -21,6 +21,7 @@ import com.liferay.portal.kernel.test.util.GroupTestUtil;
 import com.liferay.portal.kernel.test.util.TestPropsValues;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.model.Group;
+import com.liferay.portal.security.auth.CompanyThreadLocal;
 import com.liferay.portal.service.ServiceContext;
 import com.liferay.portal.service.ServiceContextFactory;
 import com.liferay.portal.theme.ThemeDisplay;
@@ -41,6 +42,7 @@ import javax.portlet.PortletURL;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -55,6 +57,10 @@ public abstract class BaseSocialActivityInterpreterTestCase {
 
 	@Before
 	public void setUp() throws Exception {
+		previousCompanyId = CompanyThreadLocal.getCompanyId();
+
+		CompanyThreadLocal.setCompanyId(TestPropsValues.getCompanyId());
+
 		group = GroupTestUtil.addGroup();
 
 		HttpServletRequest request = new MockHttpServletRequest();
@@ -73,6 +79,11 @@ public abstract class BaseSocialActivityInterpreterTestCase {
 		request.setAttribute(WebKeys.THEME_DISPLAY, themeDisplay);
 
 		serviceContext = ServiceContextFactory.getInstance(request);
+	}
+
+	@After
+	public void tearDown() throws Exception {
+		CompanyThreadLocal.setCompanyId(previousCompanyId);
 	}
 
 	@Test
@@ -225,6 +236,7 @@ public abstract class BaseSocialActivityInterpreterTestCase {
 	@DeleteAfterTestRun
 	protected Group group;
 
+	protected long previousCompanyId;
 	protected ServiceContext serviceContext;
 
 }

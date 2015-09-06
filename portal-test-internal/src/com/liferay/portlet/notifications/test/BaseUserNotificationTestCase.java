@@ -19,6 +19,7 @@ import com.liferay.portal.kernel.json.JSONObject;
 import com.liferay.portal.kernel.notifications.UserNotificationDefinition;
 import com.liferay.portal.kernel.test.rule.DeleteAfterTestRun;
 import com.liferay.portal.kernel.test.util.GroupTestUtil;
+import com.liferay.portal.kernel.test.util.TestPropsValues;
 import com.liferay.portal.kernel.test.util.UserTestUtil;
 import com.liferay.portal.model.BaseModel;
 import com.liferay.portal.model.Group;
@@ -26,8 +27,10 @@ import com.liferay.portal.model.User;
 import com.liferay.portal.model.UserNotificationDelivery;
 import com.liferay.portal.model.UserNotificationDeliveryConstants;
 import com.liferay.portal.model.UserNotificationEvent;
+import com.liferay.portal.security.auth.CompanyThreadLocal;
 import com.liferay.portal.service.UserNotificationDeliveryLocalServiceUtil;
 import com.liferay.portal.service.UserNotificationEventLocalServiceUtil;
+import com.liferay.portal.service.test.ServiceTestUtil;
 import com.liferay.portal.util.test.MailServiceTestUtil;
 
 import java.util.ArrayList;
@@ -46,6 +49,12 @@ public abstract class BaseUserNotificationTestCase {
 
 	@Before
 	public void setUp() throws Exception {
+		previousCompanyId = CompanyThreadLocal.getCompanyId();
+
+		CompanyThreadLocal.setCompanyId(TestPropsValues.getCompanyId());
+
+		ServiceTestUtil.setUser(TestPropsValues.getUser());
+
 		user = UserTestUtil.addOmniAdminUser();
 
 		group = GroupTestUtil.addGroup();
@@ -61,6 +70,8 @@ public abstract class BaseUserNotificationTestCase {
 		deleteUserNotificationEvents(user.getUserId());
 
 		deleteUserNotificationDeliveries();
+
+		CompanyThreadLocal.setCompanyId(previousCompanyId);
 	}
 
 	@Test
@@ -436,6 +447,8 @@ public abstract class BaseUserNotificationTestCase {
 
 	@DeleteAfterTestRun
 	protected Group group;
+
+	protected long previousCompanyId;
 
 	@DeleteAfterTestRun
 	protected User user;

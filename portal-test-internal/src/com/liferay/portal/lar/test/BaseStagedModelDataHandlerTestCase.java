@@ -35,6 +35,7 @@ import com.liferay.portal.model.Company;
 import com.liferay.portal.model.Group;
 import com.liferay.portal.model.StagedModel;
 import com.liferay.portal.model.User;
+import com.liferay.portal.security.auth.CompanyThreadLocal;
 import com.liferay.portal.service.CompanyLocalServiceUtil;
 import com.liferay.portal.service.GroupLocalServiceUtil;
 import com.liferay.portal.service.IdentityServiceContextFunction;
@@ -88,6 +89,10 @@ public abstract class BaseStagedModelDataHandlerTestCase {
 
 	@Before
 	public void setUp() throws Exception {
+		previousCompanyId = CompanyThreadLocal.getCompanyId();
+
+		CompanyThreadLocal.setCompanyId(TestPropsValues.getCompanyId());
+
 		liveGroup = GroupTestUtil.addGroup();
 		stagingGroup = GroupTestUtil.addGroup();
 
@@ -100,6 +105,8 @@ public abstract class BaseStagedModelDataHandlerTestCase {
 	@After
 	public void tearDown() throws Exception {
 		ServiceContextThreadLocal.popServiceContext();
+
+		CompanyThreadLocal.setCompanyId(previousCompanyId);
 	}
 
 	@Ignore
@@ -814,6 +821,7 @@ public abstract class BaseStagedModelDataHandlerTestCase {
 
 	protected Element missingReferencesElement;
 	protected PortletDataContext portletDataContext;
+	protected long previousCompanyId;
 	protected Element rootElement;
 
 	@DeleteAfterTestRun

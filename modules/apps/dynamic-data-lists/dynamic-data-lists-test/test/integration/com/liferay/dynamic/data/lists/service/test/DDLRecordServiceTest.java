@@ -45,6 +45,7 @@ import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.workflow.WorkflowConstants;
 import com.liferay.portal.model.Group;
+import com.liferay.portal.security.auth.CompanyThreadLocal;
 import com.liferay.portal.service.ServiceContext;
 import com.liferay.portal.test.rule.LiferayIntegrationTestRule;
 
@@ -52,6 +53,7 @@ import java.util.HashSet;
 import java.util.Locale;
 import java.util.Set;
 
+import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.ClassRule;
@@ -75,10 +77,19 @@ public class DDLRecordServiceTest {
 
 	@Before
 	public void setUp() throws Exception {
+		_previousCompanyId = CompanyThreadLocal.getCompanyId();
+
+		CompanyThreadLocal.setCompanyId(TestPropsValues.getCompanyId());
+
 		_group = GroupTestUtil.addGroup();
 
 		_ddmStructureTestHelper = new DDMStructureTestHelper(_group);
 		_recordSetTestHelper = new DDLRecordSetTestHelper(_group);
+	}
+
+	@After
+	public void tearDown() throws Exception {
+		CompanyThreadLocal.setCompanyId(_previousCompanyId);
 	}
 
 	@Test
@@ -359,6 +370,7 @@ public class DDLRecordServiceTest {
 	@DeleteAfterTestRun
 	private Group _group;
 
+	private long _previousCompanyId;
 	private DDLRecordSetTestHelper _recordSetTestHelper;
 
 }

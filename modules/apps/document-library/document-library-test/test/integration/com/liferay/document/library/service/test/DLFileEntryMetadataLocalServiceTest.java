@@ -31,6 +31,7 @@ import com.liferay.portal.kernel.util.LocaleUtil;
 import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.model.Group;
 import com.liferay.portal.model.User;
+import com.liferay.portal.security.auth.CompanyThreadLocal;
 import com.liferay.portal.service.ServiceContext;
 import com.liferay.portal.test.randomizerbumpers.TikaSafeRandomizerBumper;
 import com.liferay.portal.test.rule.LiferayIntegrationTestRule;
@@ -56,6 +57,7 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
 
+import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.ClassRule;
@@ -76,6 +78,10 @@ public class DLFileEntryMetadataLocalServiceTest {
 
 	@Before
 	public void setUp() throws Exception {
+		_previousCompanyId = CompanyThreadLocal.getCompanyId();
+
+		CompanyThreadLocal.setCompanyId(TestPropsValues.getCompanyId());
+
 		_group = GroupTestUtil.addGroup();
 
 		ServiceContext serviceContext =
@@ -119,6 +125,11 @@ public class DLFileEntryMetadataLocalServiceTest {
 			null, null, _dlFileEntryType.getFileEntryTypeId(), ddmFormValuesMap,
 			null, byteArrayInputStream, byteArrayInputStream.available(),
 			serviceContext);
+	}
+
+	@After
+	public void tearDown() throws Exception {
+		CompanyThreadLocal.setCompanyId(_previousCompanyId);
 	}
 
 	@Test
@@ -223,5 +234,7 @@ public class DLFileEntryMetadataLocalServiceTest {
 
 	@DeleteAfterTestRun
 	private Group _group;
+
+	private long _previousCompanyId;
 
 }

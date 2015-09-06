@@ -26,12 +26,15 @@ import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.kernel.webdav.WebDAVStorage;
 import com.liferay.portal.kernel.webdav.WebDAVUtil;
 import com.liferay.portal.kernel.webdav.methods.Method;
+import com.liferay.portal.security.auth.CompanyThreadLocal;
 import com.liferay.portal.webdav.WebDAVServlet;
 
 import java.util.HashMap;
 import java.util.Map;
 
+import org.junit.After;
 import org.junit.Assert;
+import org.junit.Before;
 
 import org.springframework.mock.web.MockHttpServletRequest;
 import org.springframework.mock.web.MockHttpServletResponse;
@@ -261,6 +264,18 @@ public class BaseWebDAVTestCase {
 		return service(Method.UNLOCK, path, headers, null);
 	}
 
+	@Before
+	public void setUp() throws Exception {
+		previousCompanyId = CompanyThreadLocal.getCompanyId();
+
+		CompanyThreadLocal.setCompanyId(TestPropsValues.getCompanyId());
+	}
+
+	@After
+	public void tearDown() throws Exception {
+		CompanyThreadLocal.setCompanyId(previousCompanyId);
+	}
+
 	protected static String getDepth(int depth) {
 		String depthString = "infinity";
 
@@ -328,6 +343,8 @@ public class BaseWebDAVTestCase {
 	protected String getUserAgent() {
 		return _DEFAULT_USER_AGENT;
 	}
+
+	protected static long previousCompanyId;
 
 	private static final String _CONTEXT_PATH = "/webdav";
 

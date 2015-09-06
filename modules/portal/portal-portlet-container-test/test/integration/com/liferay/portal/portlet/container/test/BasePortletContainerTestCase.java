@@ -22,6 +22,7 @@ import com.liferay.portal.kernel.util.WebKeys;
 import com.liferay.portal.model.Company;
 import com.liferay.portal.model.Group;
 import com.liferay.portal.model.Layout;
+import com.liferay.portal.security.auth.CompanyThreadLocal;
 import com.liferay.portal.security.permission.PermissionChecker;
 import com.liferay.portal.security.permission.PermissionCheckerFactoryUtil;
 import com.liferay.portal.security.permission.PermissionThreadLocal;
@@ -50,8 +51,10 @@ import javax.portlet.Portlet;
 import javax.servlet.http.HttpServletRequest;
 
 import org.junit.After;
+import org.junit.AfterClass;
 import org.junit.Assert;
 import org.junit.Before;
+import org.junit.BeforeClass;
 
 import org.osgi.framework.Bundle;
 import org.osgi.framework.BundleContext;
@@ -65,6 +68,18 @@ import org.springframework.mock.web.MockHttpServletRequest;
  * @author Raymond Augé
  */
 public class BasePortletContainerTestCase {
+
+	@BeforeClass
+	public static void setUpClass() throws Exception {
+		previousCompanyId = CompanyThreadLocal.getCompanyId();
+
+		CompanyThreadLocal.setCompanyId(TestPropsValues.getCompanyId());
+	}
+
+	@AfterClass
+	public static void tearDownClass() throws Exception {
+		CompanyThreadLocal.setCompanyId(previousCompanyId);
+	}
 
 	@Before
 	public void setUp() throws Exception {
@@ -236,6 +251,8 @@ public class BasePortletContainerTestCase {
 	}
 
 	protected static final String TEST_PORTLET_ID = "TEST_PORTLET_ID";
+
+	protected static long previousCompanyId;
 
 	@DeleteAfterTestRun
 	protected Group group;

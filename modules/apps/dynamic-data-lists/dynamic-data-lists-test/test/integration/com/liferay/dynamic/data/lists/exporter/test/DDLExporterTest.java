@@ -50,6 +50,7 @@ import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.workflow.WorkflowConstants;
 import com.liferay.portal.model.Group;
 import com.liferay.portal.model.Layout;
+import com.liferay.portal.security.auth.CompanyThreadLocal;
 import com.liferay.portal.security.permission.PermissionChecker;
 import com.liferay.portal.security.permission.PermissionThreadLocal;
 import com.liferay.portal.security.permission.SimplePermissionChecker;
@@ -91,6 +92,10 @@ public class DDLExporterTest {
 
 	@Before
 	public void setUp() throws Exception {
+		_previousCompanyId = CompanyThreadLocal.getCompanyId();
+
+		CompanyThreadLocal.setCompanyId(TestPropsValues.getCompanyId());
+
 		_availableLocales = DDMFormTestUtil.createAvailableLocales(Locale.US);
 		_defaultLocale = Locale.US;
 		_group = GroupTestUtil.addGroup();
@@ -109,6 +114,8 @@ public class DDLExporterTest {
 		FileUtil.delete("record-set.csv");
 
 		PermissionThreadLocal.setPermissionChecker(_originalPermissionChecker);
+
+		CompanyThreadLocal.setCompanyId(_previousCompanyId);
 	}
 
 	@Test
@@ -387,6 +394,7 @@ public class DDLExporterTest {
 	private Group _group;
 
 	private PermissionChecker _originalPermissionChecker;
+	private long _previousCompanyId;
 
 	private enum DDMFormFieldType {
 
