@@ -60,7 +60,8 @@ public class AssetTagStatsLocalServiceUtil {
 	* @return the asset tag statistics instance
 	*/
 	public static com.liferay.portlet.asset.model.AssetTagStats addTagStats(
-		long tagId, long classNameId) {
+		long tagId, long classNameId)
+		throws com.liferay.portal.kernel.exception.PortalException {
 		return getService().addTagStats(tagId, classNameId);
 	}
 
@@ -324,7 +325,8 @@ public class AssetTagStatsLocalServiceUtil {
 	entry  matching the class name ID
 	*/
 	public static com.liferay.portlet.asset.model.AssetTagStats getTagStats(
-		long tagId, long classNameId) {
+		long tagId, long classNameId)
+		throws com.liferay.portal.kernel.exception.PortalException {
 		return getService().getTagStats(tagId, classNameId);
 	}
 
