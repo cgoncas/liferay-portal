@@ -53,7 +53,8 @@ public class AnnouncementsFlagLocalServiceUtil {
 	}
 
 	public static com.liferay.portlet.announcements.model.AnnouncementsFlag addFlag(
-		long userId, long entryId, int value) {
+		long userId, long entryId, int value)
+		throws com.liferay.portal.kernel.exception.PortalException {
 		return getService().addFlag(userId, entryId, value);
 	}
 
