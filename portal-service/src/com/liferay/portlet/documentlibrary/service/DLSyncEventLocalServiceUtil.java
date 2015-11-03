@@ -40,6 +40,11 @@ public class DLSyncEventLocalServiceUtil {
 	 *
 	 * Never modify this class directly. Add custom service methods to {@link com.liferay.portlet.documentlibrary.service.impl.DLSyncEventLocalServiceImpl} and rerun ServiceBuilder to regenerate this class.
 	 */
+	public static com.liferay.portlet.documentlibrary.model.DLSyncEvent addDLSyncEvent(
+		long companyId, java.lang.String event, java.lang.String type,
+		long typePK) {
+		return getService().addDLSyncEvent(companyId, event, type, typePK);
+	}
 
 	/**
 	* Adds the d l sync event to the database. Also notifies the appropriate model listeners.
@@ -50,11 +55,6 @@ public class DLSyncEventLocalServiceUtil {
 	public static com.liferay.portlet.documentlibrary.model.DLSyncEvent addDLSyncEvent(
 		com.liferay.portlet.documentlibrary.model.DLSyncEvent dlSyncEvent) {
 		return getService().addDLSyncEvent(dlSyncEvent);
-	}
-
-	public static com.liferay.portlet.documentlibrary.model.DLSyncEvent addDLSyncEvent(
-		java.lang.String event, java.lang.String type, long typePK) {
-		return getService().addDLSyncEvent(event, type, typePK);
 	}
 
 	/**
