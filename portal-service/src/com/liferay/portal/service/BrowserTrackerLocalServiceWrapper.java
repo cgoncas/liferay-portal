@@ -209,7 +209,8 @@ public class BrowserTrackerLocalServiceWrapper
 
 	@Override
 	public com.liferay.portal.model.BrowserTracker getBrowserTracker(
-		long userId, long browserKey) {
+		long userId, long browserKey)
+		throws com.liferay.portal.kernel.exception.PortalException {
 		return _browserTrackerLocalService.getBrowserTracker(userId, browserKey);
 	}
 
@@ -271,7 +272,8 @@ public class BrowserTrackerLocalServiceWrapper
 
 	@Override
 	public com.liferay.portal.model.BrowserTracker updateBrowserTracker(
-		long userId, long browserKey) {
+		long userId, long browserKey)
+		throws com.liferay.portal.kernel.exception.PortalException {
 		return _browserTrackerLocalService.updateBrowserTracker(userId,
 			browserKey);
 	}

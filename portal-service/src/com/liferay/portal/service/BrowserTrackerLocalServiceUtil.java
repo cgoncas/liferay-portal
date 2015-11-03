@@ -201,7 +201,8 @@ public class BrowserTrackerLocalServiceUtil {
 	}
 
 	public static com.liferay.portal.model.BrowserTracker getBrowserTracker(
-		long userId, long browserKey) {
+		long userId, long browserKey)
+		throws com.liferay.portal.kernel.exception.PortalException {
 		return getService().getBrowserTracker(userId, browserKey);
 	}
 
@@ -257,7 +258,8 @@ public class BrowserTrackerLocalServiceUtil {
 	}
 
 	public static com.liferay.portal.model.BrowserTracker updateBrowserTracker(
-		long userId, long browserKey) {
+		long userId, long browserKey)
+		throws com.liferay.portal.kernel.exception.PortalException {
 		return getService().updateBrowserTracker(userId, browserKey);
 	}
 
