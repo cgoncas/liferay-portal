@@ -30,6 +30,7 @@ import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.util.ClassLoaderUtil;
 import com.liferay.portal.kernel.workflow.WorkflowConstants;
 import com.liferay.portal.model.Group;
+import com.liferay.portal.model.User;
 import com.liferay.portlet.messageboards.model.MBStatsUser;
 import com.liferay.portlet.messageboards.model.MBThread;
 import com.liferay.portlet.messageboards.model.impl.MBStatsUserImpl;
@@ -45,13 +46,18 @@ public class MBStatsUserLocalServiceImpl
 	extends MBStatsUserLocalServiceBaseImpl {
 
 	@Override
-	public MBStatsUser addStatsUser(long groupId, long userId) {
+	public MBStatsUser addStatsUser(long groupId, long userId)
+		throws PortalException {
+
 		long statsUserId = counterLocalService.increment();
+
+		User user = userLocalService.getUser(userId);
 
 		MBStatsUser statsUser = mbStatsUserPersistence.create(statsUserId);
 
 		statsUser.setGroupId(groupId);
 		statsUser.setUserId(userId);
+		statsUser.setCompanyId(user.getCompanyId());
 
 		try {
 			mbStatsUserPersistence.update(statsUser);
@@ -185,7 +191,9 @@ public class MBStatsUserLocalServiceImpl
 	}
 
 	@Override
-	public MBStatsUser getStatsUser(long groupId, long userId) {
+	public MBStatsUser getStatsUser(long groupId, long userId)
+		throws PortalException {
+
 		MBStatsUser statsUser = mbStatsUserPersistence.fetchByG_U(
 			groupId, userId);
 
@@ -229,14 +237,16 @@ public class MBStatsUserLocalServiceImpl
 	}
 
 	@Override
-	public MBStatsUser updateStatsUser(long groupId, long userId) {
+	public MBStatsUser updateStatsUser(long groupId, long userId)
+		throws PortalException {
+
 		return updateStatsUser(
 			groupId, userId, getLastPostDateByUserId(groupId, userId));
 	}
 
 	@Override
 	public MBStatsUser updateStatsUser(
-		long groupId, long userId, Date lastPostDate) {
+		long groupId, long userId, Date lastPostDate) throws PortalException {
 
 		int messageCount = mbMessagePersistence.countByG_U_S(
 			groupId, userId, WorkflowConstants.STATUS_APPROVED);
@@ -246,7 +256,8 @@ public class MBStatsUserLocalServiceImpl
 
 	@Override
 	public MBStatsUser updateStatsUser(
-		long groupId, long userId, int messageCount, Date lastPostDate) {
+			long groupId, long userId, int messageCount, Date lastPostDate)
+		throws PortalException {
 
 		MBStatsUser statsUser = getStatsUser(groupId, userId);
 
