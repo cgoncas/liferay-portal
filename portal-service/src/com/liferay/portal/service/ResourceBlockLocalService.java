@@ -71,7 +71,7 @@ public interface ResourceBlockLocalService extends BaseLocalService,
 	public void addIndividualScopePermissions(long companyId, long groupId,
 		java.lang.String name,
 		com.liferay.portal.model.PermissionedModel permissionedModel,
-		long roleId, long actionIdsLong);
+		long roleId, long actionIdsLong) throws PortalException;
 
 	public void addIndividualScopePermissions(long companyId, long groupId,
 		java.lang.String name, long primKey, long roleId, long actionIdsLong)
@@ -93,7 +93,8 @@ public interface ResourceBlockLocalService extends BaseLocalService,
 	public com.liferay.portal.model.ResourceBlock addResourceBlock(
 		long companyId, long groupId, java.lang.String name,
 		java.lang.String permissionsHash,
-		com.liferay.portal.model.ResourceBlockPermissionsContainer resourceBlockPermissionsContainer);
+		com.liferay.portal.model.ResourceBlockPermissionsContainer resourceBlockPermissionsContainer)
+		throws PortalException;
 
 	/**
 	* Adds the resource block to the database. Also notifies the appropriate model listeners.
@@ -385,7 +386,7 @@ public interface ResourceBlockLocalService extends BaseLocalService,
 	public void removeIndividualScopePermissions(long companyId, long groupId,
 		java.lang.String name,
 		com.liferay.portal.model.PermissionedModel permissionedModel,
-		long roleId, long actionIdsLong);
+		long roleId, long actionIdsLong) throws PortalException;
 
 	public void removeIndividualScopePermissions(long companyId, long groupId,
 		java.lang.String name, long primKey, long roleId, long actionIdsLong)
@@ -414,7 +415,7 @@ public interface ResourceBlockLocalService extends BaseLocalService,
 	public void setIndividualScopePermissions(long companyId, long groupId,
 		java.lang.String name,
 		com.liferay.portal.model.PermissionedModel permissionedModel,
-		long roleId, long actionIdsLong);
+		long roleId, long actionIdsLong) throws PortalException;
 
 	public void setIndividualScopePermissions(long companyId, long groupId,
 		java.lang.String name, long primKey, long roleId,
@@ -438,7 +439,8 @@ public interface ResourceBlockLocalService extends BaseLocalService,
 	public void updateIndividualScopePermissions(long companyId, long groupId,
 		java.lang.String name,
 		com.liferay.portal.model.PermissionedModel permissionedModel,
-		long roleId, long actionIdsLong, int operator);
+		long roleId, long actionIdsLong, int operator)
+		throws PortalException;
 
 	/**
 	* Updates the resource block in the database or adds it if it does not yet exist. Also notifies the appropriate model listeners.
@@ -455,7 +457,8 @@ public interface ResourceBlockLocalService extends BaseLocalService,
 		long companyId, long groupId, java.lang.String name,
 		com.liferay.portal.model.PermissionedModel permissionedModel,
 		java.lang.String permissionsHash,
-		com.liferay.portal.model.ResourceBlockPermissionsContainer resourceBlockPermissionsContainer);
+		com.liferay.portal.model.ResourceBlockPermissionsContainer resourceBlockPermissionsContainer)
+		throws PortalException;
 
 	public void verifyResourceBlockId(long companyId, java.lang.String name,
 		long primKey) throws PortalException;
