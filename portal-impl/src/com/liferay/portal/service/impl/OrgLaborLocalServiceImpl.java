@@ -17,6 +17,7 @@ package com.liferay.portal.service.impl;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.model.ListTypeConstants;
 import com.liferay.portal.model.OrgLabor;
+import com.liferay.portal.model.Organization;
 import com.liferay.portal.service.base.OrgLaborLocalServiceBaseImpl;
 
 import java.util.List;
@@ -35,6 +36,9 @@ public class OrgLaborLocalServiceImpl extends OrgLaborLocalServiceBaseImpl {
 		throws PortalException {
 
 		validate(typeId);
+
+		Organization organization = organizationLocalService.getOrganization(
+			organizationId);
 
 		long orgLaborId = counterLocalService.increment();
 
@@ -56,6 +60,7 @@ public class OrgLaborLocalServiceImpl extends OrgLaborLocalServiceBaseImpl {
 		orgLabor.setFriClose(friClose);
 		orgLabor.setSatOpen(satOpen);
 		orgLabor.setSatClose(satClose);
+		orgLabor.setCompanyId(organization.getCompanyId());
 
 		orgLaborPersistence.update(orgLabor);
 

@@ -1343,6 +1343,7 @@
 		<!-- References -->
 
 		<reference package-path="com.liferay.portal" entity="ListType" />
+		<reference package-path="com.liferay.portal" entity="Organization" />
 	</entity>
 	<entity name="PasswordPolicy" uuid="true" local-service="true" remote-service="true">
 
