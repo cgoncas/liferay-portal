@@ -55,6 +55,7 @@ public class PortletPreferencesLocalServiceImpl
 		portletPreferences.setOwnerType(ownerType);
 		portletPreferences.setPlid(plid);
 		portletPreferences.setPortletId(portletId);
+		portletPreferences.setCompanyId(companyId);
 
 		if (Validator.isNull(defaultPreferences)) {
 			if (portlet == null) {
