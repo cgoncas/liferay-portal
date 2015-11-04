@@ -57,10 +57,10 @@ public interface UserGroupGroupRoleLocalService extends BaseLocalService,
 		com.liferay.portal.model.UserGroupGroupRole userGroupGroupRole);
 
 	public void addUserGroupGroupRoles(long userGroupId, long groupId,
-		long[] roleIds);
+		long[] roleIds) throws PortalException;
 
 	public void addUserGroupGroupRoles(long[] userGroupIds, long groupId,
-		long roleId);
+		long roleId) throws PortalException;
 
 	/**
 	* Creates a new user group group role with the primary key. Does not add the user group group role to the database.
