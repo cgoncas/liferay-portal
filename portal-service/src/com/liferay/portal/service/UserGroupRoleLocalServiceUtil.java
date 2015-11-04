@@ -53,12 +53,14 @@ public class UserGroupRoleLocalServiceUtil {
 	}
 
 	public static java.util.List<com.liferay.portal.model.UserGroupRole> addUserGroupRoles(
-		long userId, long groupId, long[] roleIds) {
+		long userId, long groupId, long[] roleIds)
+		throws com.liferay.portal.kernel.exception.PortalException {
 		return getService().addUserGroupRoles(userId, groupId, roleIds);
 	}
 
 	public static java.util.List<com.liferay.portal.model.UserGroupRole> addUserGroupRoles(
-		long[] userIds, long groupId, long roleId) {
+		long[] userIds, long groupId, long roleId)
+		throws com.liferay.portal.kernel.exception.PortalException {
 		return getService().addUserGroupRoles(userIds, groupId, roleId);
 	}
 
