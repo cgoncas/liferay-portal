@@ -29,8 +29,18 @@ public class JournalArticleImageUpgradeCompanyId
 	}
 
 	@Override
-	public void upgradeProcess() {
+	public void upgradeProcess() throws Exception {
+		String select =
+			"select g.companyId, jai.articleImageId from " +
+				"Group_ g, JournalArticleImage jai where g.groupId=jai.groupId";
 
+		String update =
+			"update JournalArticleImage set companyId = ? " +
+				"where articleImageId = ?";
+
+		UpgradeCompanyIdUtil.updateCompanyColumnOnTable(
+			"JournalArticleImage", select, update, "companyId",
+			"articleImageId");
 	}
 
 }
