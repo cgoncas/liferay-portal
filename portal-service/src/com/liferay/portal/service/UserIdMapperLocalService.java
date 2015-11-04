@@ -229,7 +229,7 @@ public interface UserIdMapperLocalService extends BaseLocalService,
 
 	public com.liferay.portal.model.UserIdMapper updateUserIdMapper(
 		long userId, java.lang.String type, java.lang.String description,
-		java.lang.String externalUserId);
+		java.lang.String externalUserId) throws PortalException;
 
 	/**
 	* Updates the user ID mapper in the database or adds it if it does not yet exist. Also notifies the appropriate model listeners.
