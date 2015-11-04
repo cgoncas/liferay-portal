@@ -15,6 +15,7 @@
 package com.liferay.portal.upgrade.v6_1_0;
 
 import com.liferay.portal.kernel.dao.jdbc.DataAccess;
+import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
@@ -48,8 +49,9 @@ import java.util.List;
 public class UpgradePermission extends UpgradeProcess {
 
 	protected ResourceBlock convertResourcePermissions(
-		String tableName, String pkColumnName, long companyId, long groupId,
-		String name, long primKey) {
+			String tableName, String pkColumnName, long companyId, long groupId,
+			String name, long primKey)
+		throws PortalException {
 
 		PermissionedModel permissionedModel = new UpgradePermissionedModel(
 			tableName, pkColumnName, primKey);
