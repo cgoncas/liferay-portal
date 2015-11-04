@@ -112,9 +112,12 @@ public class PasswordTrackerLocalServiceImpl
 		if ((passwordPolicy != null) && passwordPolicy.isHistory()) {
 			long passwordTrackerId = counterLocalService.increment();
 
+			User user = userLocalService.getUser(userId);
+
 			PasswordTracker passwordTracker = passwordTrackerPersistence.create(
 				passwordTrackerId);
 
+			passwordTracker.setCompanyId(user.getCompanyId());
 			passwordTracker.setUserId(userId);
 			passwordTracker.setCreateDate(new Date());
 			passwordTracker.setPassword(encPassword);
