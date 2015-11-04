@@ -59,7 +59,7 @@ public interface MBStatsUserLocalService extends BaseLocalService,
 		com.liferay.portlet.messageboards.model.MBStatsUser mbStatsUser);
 
 	public com.liferay.portlet.messageboards.model.MBStatsUser addStatsUser(
-		long groupId, long userId);
+		long groupId, long userId) throws PortalException;
 
 	/**
 	* Creates a new message boards stats user with the primary key. Does not add the message boards stats user to the database.
@@ -237,7 +237,7 @@ public interface MBStatsUserLocalService extends BaseLocalService,
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public com.liferay.portlet.messageboards.model.MBStatsUser getStatsUser(
-		long groupId, long userId);
+		long groupId, long userId) throws PortalException;
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public java.util.List<com.liferay.portlet.messageboards.model.MBStatsUser> getStatsUsersByGroupId(
@@ -262,11 +262,13 @@ public interface MBStatsUserLocalService extends BaseLocalService,
 		com.liferay.portlet.messageboards.model.MBStatsUser mbStatsUser);
 
 	public com.liferay.portlet.messageboards.model.MBStatsUser updateStatsUser(
-		long groupId, long userId);
+		long groupId, long userId) throws PortalException;
 
 	public com.liferay.portlet.messageboards.model.MBStatsUser updateStatsUser(
-		long groupId, long userId, java.util.Date lastPostDate);
+		long groupId, long userId, java.util.Date lastPostDate)
+		throws PortalException;
 
 	public com.liferay.portlet.messageboards.model.MBStatsUser updateStatsUser(
-		long groupId, long userId, int messageCount, java.util.Date lastPostDate);
+		long groupId, long userId, int messageCount, java.util.Date lastPostDate)
+		throws PortalException;
 }

@@ -47,7 +47,8 @@ public class MBStatsUserLocalServiceWrapper implements MBStatsUserLocalService,
 
 	@Override
 	public com.liferay.portlet.messageboards.model.MBStatsUser addStatsUser(
-		long groupId, long userId) {
+		long groupId, long userId)
+		throws com.liferay.portal.kernel.exception.PortalException {
 		return _mbStatsUserLocalService.addStatsUser(groupId, userId);
 	}
 
@@ -292,7 +293,8 @@ public class MBStatsUserLocalServiceWrapper implements MBStatsUserLocalService,
 
 	@Override
 	public com.liferay.portlet.messageboards.model.MBStatsUser getStatsUser(
-		long groupId, long userId) {
+		long groupId, long userId)
+		throws com.liferay.portal.kernel.exception.PortalException {
 		return _mbStatsUserLocalService.getStatsUser(groupId, userId);
 	}
 
@@ -330,20 +332,23 @@ public class MBStatsUserLocalServiceWrapper implements MBStatsUserLocalService,
 
 	@Override
 	public com.liferay.portlet.messageboards.model.MBStatsUser updateStatsUser(
-		long groupId, long userId) {
+		long groupId, long userId)
+		throws com.liferay.portal.kernel.exception.PortalException {
 		return _mbStatsUserLocalService.updateStatsUser(groupId, userId);
 	}
 
 	@Override
 	public com.liferay.portlet.messageboards.model.MBStatsUser updateStatsUser(
-		long groupId, long userId, java.util.Date lastPostDate) {
+		long groupId, long userId, java.util.Date lastPostDate)
+		throws com.liferay.portal.kernel.exception.PortalException {
 		return _mbStatsUserLocalService.updateStatsUser(groupId, userId,
 			lastPostDate);
 	}
 
 	@Override
 	public com.liferay.portlet.messageboards.model.MBStatsUser updateStatsUser(
-		long groupId, long userId, int messageCount, java.util.Date lastPostDate) {
+		long groupId, long userId, int messageCount, java.util.Date lastPostDate)
+		throws com.liferay.portal.kernel.exception.PortalException {
 		return _mbStatsUserLocalService.updateStatsUser(groupId, userId,
 			messageCount, lastPostDate);
 	}
