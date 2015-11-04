@@ -15,6 +15,7 @@
 package com.liferay.shopping.upgrade.v1_0_0.util.companyId;
 
 import com.liferay.portal.kernel.upgrade.util.UpgradeCompanyIdInTable;
+import com.liferay.portal.kernel.upgrade.util.UpgradeCompanyIdUtil;
 
 /**
  * @author Cristina González
@@ -29,6 +30,15 @@ public class ShoppingItemPriceUpgradeCompanyId
 
 	@Override
 	public void upgradeProcess() throws Exception {
+		String select =
+			"select si.companyId, sif.itemFieldId from ShoppingItem si, " +
+				"ShoppingItemField sif where si.itemId=sif.itemId";
+
+		String update =
+			"update ShoppingItemField set companyId = ? where itemFieldId = ?";
+
+		UpgradeCompanyIdUtil.updateCompanyColumnOnTable(
+			"ShoppingItemField", select, update, "companyId", "itemFieldId");
 	}
 
 }
