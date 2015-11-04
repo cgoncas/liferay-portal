@@ -14,8 +14,10 @@
 
 package com.liferay.portlet.trash.service.impl;
 
+import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.util.UnicodeProperties;
 import com.liferay.portal.kernel.util.Validator;
+import com.liferay.portlet.trash.model.TrashEntry;
 import com.liferay.portlet.trash.model.TrashVersion;
 import com.liferay.portlet.trash.service.base.TrashVersionLocalServiceBaseImpl;
 
@@ -30,12 +32,16 @@ public class TrashVersionLocalServiceImpl
 	@Override
 	public TrashVersion addTrashVersion(
 		long trashEntryId, String className, long classPK, int status,
-		UnicodeProperties typeSettingsProperties) {
+		UnicodeProperties typeSettingsProperties) throws PortalException {
 
 		long versionId = counterLocalService.increment();
 
 		TrashVersion trashVersion = trashVersionPersistence.create(versionId);
 
+		TrashEntry trashEntry = trashEntryLocalService.getTrashEntry(
+			trashEntryId);
+
+		trashVersion.setCompanyId(trashEntry.getCompanyId());
 		trashVersion.setEntryId(trashEntryId);
 		trashVersion.setClassName(className);
 		trashVersion.setClassPK(classPK);
