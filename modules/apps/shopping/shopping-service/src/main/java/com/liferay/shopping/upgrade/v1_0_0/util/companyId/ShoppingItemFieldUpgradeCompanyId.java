@@ -30,6 +30,15 @@ public class ShoppingItemFieldUpgradeCompanyId
 
 	@Override
 	public void upgradeProcess() throws Exception {
+		String select =
+			"select si.companyId, sif.itemFieldId from ShoppingItem si, " +
+				"ShoppingItemField sif where si.itemId=sif.itemId";
+
+		String update =
+			"update ShoppingItemField set companyId = ? where itemFieldId = ?";
+
+		UpgradeCompanyIdUtil.updateCompanyColumnOnTable(
+			"ShoppingItemField", select, update, "companyId", "itemFieldId");
 	}
 
 }
