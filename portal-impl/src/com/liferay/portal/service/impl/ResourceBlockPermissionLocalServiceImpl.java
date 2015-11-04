@@ -43,8 +43,9 @@ public class ResourceBlockPermissionLocalServiceImpl
 
 	@Override
 	public void addResourceBlockPermissions(
-		long resourceBlockId,
-		ResourceBlockPermissionsContainer resourceBlockPermissionsContainer) {
+			long resourceBlockId,
+			ResourceBlockPermissionsContainer resourceBlockPermissionsContainer)
+		throws PortalException {
 
 		Map<Long, Long> permissions =
 			resourceBlockPermissionsContainer.getPermissions();
@@ -55,6 +56,11 @@ public class ResourceBlockPermissionLocalServiceImpl
 			ResourceBlockPermission resourceBlockPermission =
 				resourceBlockPermissionPersistence.create(
 					resourceBlockPermissionId);
+
+			ResourceBlock resourceBlock =
+				resourceBlockLocalService.getResourceBlock(resourceBlockId);
+
+			resourceBlockPermission.setCompanyId(resourceBlock.getCompanyId());
 
 			resourceBlockPermission.setResourceBlockId(resourceBlockId);
 			resourceBlockPermission.setRoleId(permission.getKey());
