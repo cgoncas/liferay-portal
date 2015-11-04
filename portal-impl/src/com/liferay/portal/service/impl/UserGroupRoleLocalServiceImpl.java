@@ -14,6 +14,7 @@
 
 package com.liferay.portal.service.impl;
 
+import com.liferay.portal.NoSuchGroupException;
 import com.liferay.portal.NoSuchUserGroupRoleException;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.util.StringPool;
@@ -36,7 +37,7 @@ public class UserGroupRoleLocalServiceImpl
 
 	@Override
 	public List<UserGroupRole> addUserGroupRoles(
-		long userId, long groupId, long[] roleIds) {
+		long userId, long groupId, long[] roleIds) throws PortalException {
 
 		List<UserGroupRole> userGroupRoles = new ArrayList<>();
 
@@ -60,7 +61,7 @@ public class UserGroupRoleLocalServiceImpl
 
 	@Override
 	public List<UserGroupRole> addUserGroupRoles(
-		long[] userIds, long groupId, long roleId) {
+		long[] userIds, long groupId, long roleId) throws PortalException {
 
 		List<UserGroupRole> userGroupRoles = new ArrayList<>();
 
@@ -297,7 +298,7 @@ public class UserGroupRoleLocalServiceImpl
 	}
 
 	protected UserGroupRole addUserGroupRole(
-		long userId, long groupId, long roleId) {
+		long userId, long groupId, long roleId) throws PortalException {
 
 		UserGroupRolePK userGroupRolePK = new UserGroupRolePK(
 			userId, groupId, roleId);
@@ -307,6 +308,10 @@ public class UserGroupRoleLocalServiceImpl
 
 		if (userGroupRole == null) {
 			userGroupRole = userGroupRolePersistence.create(userGroupRolePK);
+
+			Group group = groupPersistence.findByPrimaryKey(groupId);
+
+			userGroupRole.setCompanyId(group.getCompanyId());
 
 			userGroupRolePersistence.update(userGroupRole);
 		}
