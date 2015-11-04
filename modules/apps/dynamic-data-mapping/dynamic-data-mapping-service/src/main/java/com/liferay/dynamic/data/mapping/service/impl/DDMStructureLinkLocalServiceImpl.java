@@ -33,12 +33,18 @@ public class DDMStructureLinkLocalServiceImpl
 
 	@Override
 	public DDMStructureLink addStructureLink(
-		long classNameId, long classPK, long structureId) {
+		long classNameId, long classPK, long structureId)
+		throws PortalException {
 
 		long structureLinkId = counterLocalService.increment();
 
 		DDMStructureLink structureLink = ddmStructureLinkPersistence.create(
 			structureLinkId);
+
+		DDMStructure ddmStructure = ddmStructureLocalService.getDDMStructure(
+			structureId);
+
+		structureLink.setCompanyId(ddmStructure.getCompanyId());
 
 		structureLink.setClassNameId(classNameId);
 		structureLink.setClassPK(classPK);

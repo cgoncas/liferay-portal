@@ -253,6 +253,10 @@
 			<finder-column name="classPK" />
 			<finder-column name="structureId" />
 		</finder>
+
+		<!-- References -->
+
+		<reference package-path="com.liferay.dynamic.data.mapping" entity="DDMStructure" />
 	</entity>
 	<entity name="DDMStructureVersion" local-service="true" remote-service="true">
 
