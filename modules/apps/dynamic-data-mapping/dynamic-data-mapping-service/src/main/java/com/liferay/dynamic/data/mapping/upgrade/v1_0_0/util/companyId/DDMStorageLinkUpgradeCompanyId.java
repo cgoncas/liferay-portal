@@ -29,7 +29,16 @@ public class DDMStorageLinkUpgradeCompanyId
 	}
 
 	@Override
-	public void upgradeProcess() {
+	public void upgradeProcess() throws Exception {
+		String select =
+			"select ds.companyId, dsl.structureId from DDMStructure ds, " +
+				"DDMStorageLink dsl where ds.structureId=dsl.structureId";
+
+		String update =
+			"update DDMStorageLink set companyId = ? where structureId = ?";
+
+		UpgradeCompanyIdUtil.updateCompanyColumnOnTable(
+			"DDMStorageLink", select, update, "companyId", "structureId");
 	}
 
 }
