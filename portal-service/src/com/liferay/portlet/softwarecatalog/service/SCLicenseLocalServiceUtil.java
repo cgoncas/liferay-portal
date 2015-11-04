@@ -41,11 +41,12 @@ public class SCLicenseLocalServiceUtil {
 	 * Never modify this class directly. Add custom service methods to {@link com.liferay.portlet.softwarecatalog.service.impl.SCLicenseLocalServiceImpl} and rerun ServiceBuilder to regenerate this class.
 	 */
 	public static com.liferay.portlet.softwarecatalog.model.SCLicense addLicense(
-		java.lang.String name, java.lang.String url, boolean openSource,
-		boolean active, boolean recommended)
+		long companyId, java.lang.String name, java.lang.String url,
+		boolean openSource, boolean active, boolean recommended)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return getService()
-				   .addLicense(name, url, openSource, active, recommended);
+				   .addLicense(companyId, name, url, openSource, active,
+			recommended);
 	}
 
 	/**
