@@ -309,6 +309,10 @@
 			<finder-column name="groupId" />
 			<finder-column name="articleId" />
 		</finder>
+
+		<!-- References -->
+
+		<reference package-path="com.liferay.portal" entity="Group" />
 	</entity>
 	<entity name="JournalContentSearch" local-service="true" remote-service="false">
 

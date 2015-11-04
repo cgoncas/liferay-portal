@@ -19,6 +19,7 @@ import com.liferay.journal.service.base.JournalArticleResourceLocalServiceBaseIm
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.util.Validator;
 
+import com.liferay.portal.model.Group;
 import java.util.List;
 
 /**
@@ -58,13 +59,15 @@ public class JournalArticleResourceLocalServiceImpl
 	}
 
 	@Override
-	public long getArticleResourcePrimKey(long groupId, String articleId) {
+	public long getArticleResourcePrimKey(long groupId, String articleId)
+		throws PortalException {
+
 		return getArticleResourcePrimKey(null, groupId, articleId);
 	}
 
 	@Override
 	public long getArticleResourcePrimKey(
-		String uuid, long groupId, String articleId) {
+		String uuid, long groupId, String articleId) throws PortalException {
 
 		JournalArticleResource articleResource = null;
 
@@ -87,6 +90,10 @@ public class JournalArticleResourceLocalServiceImpl
 			if (Validator.isNotNull(uuid)) {
 				articleResource.setUuid(uuid);
 			}
+
+			Group group = groupLocalService.getGroup(groupId);
+
+			articleResource.setCompanyId(group.getCompanyId());
 
 			articleResource.setGroupId(groupId);
 			articleResource.setArticleId(articleId);
