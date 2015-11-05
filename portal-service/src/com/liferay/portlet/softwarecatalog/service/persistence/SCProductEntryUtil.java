@@ -1063,8 +1063,8 @@ public class SCProductEntryUtil {
 	* @param pk the primary key of the s c product entry
 	* @param scLicensePK the primary key of the s c license
 	*/
-	public static void addSCLicense(long pk, long scLicensePK) {
-		getPersistence().addSCLicense(pk, scLicensePK);
+	public static void addSCLicense(long companyId, long pk, long scLicensePK) {
+		getPersistence().addSCLicense(companyId, pk, scLicensePK);
 	}
 
 	/**
@@ -1073,9 +1073,9 @@ public class SCProductEntryUtil {
 	* @param pk the primary key of the s c product entry
 	* @param scLicense the s c license
 	*/
-	public static void addSCLicense(long pk,
+	public static void addSCLicense(long companyId, long pk,
 		com.liferay.portlet.softwarecatalog.model.SCLicense scLicense) {
-		getPersistence().addSCLicense(pk, scLicense);
+		getPersistence().addSCLicense(companyId, pk, scLicense);
 	}
 
 	/**
@@ -1084,8 +1084,9 @@ public class SCProductEntryUtil {
 	* @param pk the primary key of the s c product entry
 	* @param scLicensePKs the primary keys of the s c licenses
 	*/
-	public static void addSCLicenses(long pk, long[] scLicensePKs) {
-		getPersistence().addSCLicenses(pk, scLicensePKs);
+	public static void addSCLicenses(long companyId, long pk,
+		long[] scLicensePKs) {
+		getPersistence().addSCLicenses(companyId, pk, scLicensePKs);
 	}
 
 	/**
@@ -1094,9 +1095,9 @@ public class SCProductEntryUtil {
 	* @param pk the primary key of the s c product entry
 	* @param scLicenses the s c licenses
 	*/
-	public static void addSCLicenses(long pk,
+	public static void addSCLicenses(long companyId, long pk,
 		List<com.liferay.portlet.softwarecatalog.model.SCLicense> scLicenses) {
-		getPersistence().addSCLicenses(pk, scLicenses);
+		getPersistence().addSCLicenses(companyId, pk, scLicenses);
 	}
 
 	/**
@@ -1156,8 +1157,9 @@ public class SCProductEntryUtil {
 	* @param pk the primary key of the s c product entry
 	* @param scLicensePKs the primary keys of the s c licenses to be associated with the s c product entry
 	*/
-	public static void setSCLicenses(long pk, long[] scLicensePKs) {
-		getPersistence().setSCLicenses(pk, scLicensePKs);
+	public static void setSCLicenses(long companyId, long pk,
+		long[] scLicensePKs) {
+		getPersistence().setSCLicenses(companyId, pk, scLicensePKs);
 	}
 
 	/**

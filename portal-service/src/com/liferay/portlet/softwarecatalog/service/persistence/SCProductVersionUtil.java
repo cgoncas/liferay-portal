@@ -585,8 +585,10 @@ public class SCProductVersionUtil {
 	* @param pk the primary key of the s c product version
 	* @param scFrameworkVersionPK the primary key of the s c framework version
 	*/
-	public static void addSCFrameworkVersion(long pk, long scFrameworkVersionPK) {
-		getPersistence().addSCFrameworkVersion(pk, scFrameworkVersionPK);
+	public static void addSCFrameworkVersion(long companyId, long pk,
+		long scFrameworkVersionPK) {
+		getPersistence()
+			.addSCFrameworkVersion(companyId, pk, scFrameworkVersionPK);
 	}
 
 	/**
@@ -595,9 +597,9 @@ public class SCProductVersionUtil {
 	* @param pk the primary key of the s c product version
 	* @param scFrameworkVersion the s c framework version
 	*/
-	public static void addSCFrameworkVersion(long pk,
+	public static void addSCFrameworkVersion(long companyId, long pk,
 		com.liferay.portlet.softwarecatalog.model.SCFrameworkVersion scFrameworkVersion) {
-		getPersistence().addSCFrameworkVersion(pk, scFrameworkVersion);
+		getPersistence().addSCFrameworkVersion(companyId, pk, scFrameworkVersion);
 	}
 
 	/**
@@ -606,9 +608,10 @@ public class SCProductVersionUtil {
 	* @param pk the primary key of the s c product version
 	* @param scFrameworkVersionPKs the primary keys of the s c framework versions
 	*/
-	public static void addSCFrameworkVersions(long pk,
+	public static void addSCFrameworkVersions(long companyId, long pk,
 		long[] scFrameworkVersionPKs) {
-		getPersistence().addSCFrameworkVersions(pk, scFrameworkVersionPKs);
+		getPersistence()
+			.addSCFrameworkVersions(companyId, pk, scFrameworkVersionPKs);
 	}
 
 	/**
@@ -617,9 +620,10 @@ public class SCProductVersionUtil {
 	* @param pk the primary key of the s c product version
 	* @param scFrameworkVersions the s c framework versions
 	*/
-	public static void addSCFrameworkVersions(long pk,
+	public static void addSCFrameworkVersions(long companyId, long pk,
 		List<com.liferay.portlet.softwarecatalog.model.SCFrameworkVersion> scFrameworkVersions) {
-		getPersistence().addSCFrameworkVersions(pk, scFrameworkVersions);
+		getPersistence()
+			.addSCFrameworkVersions(companyId, pk, scFrameworkVersions);
 	}
 
 	/**
@@ -681,9 +685,10 @@ public class SCProductVersionUtil {
 	* @param pk the primary key of the s c product version
 	* @param scFrameworkVersionPKs the primary keys of the s c framework versions to be associated with the s c product version
 	*/
-	public static void setSCFrameworkVersions(long pk,
+	public static void setSCFrameworkVersions(long companyId, long pk,
 		long[] scFrameworkVersionPKs) {
-		getPersistence().setSCFrameworkVersions(pk, scFrameworkVersionPKs);
+		getPersistence()
+			.setSCFrameworkVersions(companyId, pk, scFrameworkVersionPKs);
 	}
 
 	/**

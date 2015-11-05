@@ -1392,8 +1392,8 @@ public class UserGroupUtil {
 	* @param pk the primary key of the user group
 	* @param groupPK the primary key of the group
 	*/
-	public static void addGroup(long pk, long groupPK) {
-		getPersistence().addGroup(pk, groupPK);
+	public static void addGroup(long companyId, long pk, long groupPK) {
+		getPersistence().addGroup(companyId, pk, groupPK);
 	}
 
 	/**
@@ -1402,8 +1402,9 @@ public class UserGroupUtil {
 	* @param pk the primary key of the user group
 	* @param group the group
 	*/
-	public static void addGroup(long pk, com.liferay.portal.model.Group group) {
-		getPersistence().addGroup(pk, group);
+	public static void addGroup(long companyId, long pk,
+		com.liferay.portal.model.Group group) {
+		getPersistence().addGroup(companyId, pk, group);
 	}
 
 	/**
@@ -1412,8 +1413,8 @@ public class UserGroupUtil {
 	* @param pk the primary key of the user group
 	* @param groupPKs the primary keys of the groups
 	*/
-	public static void addGroups(long pk, long[] groupPKs) {
-		getPersistence().addGroups(pk, groupPKs);
+	public static void addGroups(long companyId, long pk, long[] groupPKs) {
+		getPersistence().addGroups(companyId, pk, groupPKs);
 	}
 
 	/**
@@ -1422,9 +1423,9 @@ public class UserGroupUtil {
 	* @param pk the primary key of the user group
 	* @param groups the groups
 	*/
-	public static void addGroups(long pk,
+	public static void addGroups(long companyId, long pk,
 		List<com.liferay.portal.model.Group> groups) {
-		getPersistence().addGroups(pk, groups);
+		getPersistence().addGroups(companyId, pk, groups);
 	}
 
 	/**
@@ -1483,8 +1484,8 @@ public class UserGroupUtil {
 	* @param pk the primary key of the user group
 	* @param groupPKs the primary keys of the groups to be associated with the user group
 	*/
-	public static void setGroups(long pk, long[] groupPKs) {
-		getPersistence().setGroups(pk, groupPKs);
+	public static void setGroups(long companyId, long pk, long[] groupPKs) {
+		getPersistence().setGroups(companyId, pk, groupPKs);
 	}
 
 	/**
@@ -1591,8 +1592,8 @@ public class UserGroupUtil {
 	* @param pk the primary key of the user group
 	* @param teamPK the primary key of the team
 	*/
-	public static void addTeam(long pk, long teamPK) {
-		getPersistence().addTeam(pk, teamPK);
+	public static void addTeam(long companyId, long pk, long teamPK) {
+		getPersistence().addTeam(companyId, pk, teamPK);
 	}
 
 	/**
@@ -1601,8 +1602,9 @@ public class UserGroupUtil {
 	* @param pk the primary key of the user group
 	* @param team the team
 	*/
-	public static void addTeam(long pk, com.liferay.portal.model.Team team) {
-		getPersistence().addTeam(pk, team);
+	public static void addTeam(long companyId, long pk,
+		com.liferay.portal.model.Team team) {
+		getPersistence().addTeam(companyId, pk, team);
 	}
 
 	/**
@@ -1611,8 +1613,8 @@ public class UserGroupUtil {
 	* @param pk the primary key of the user group
 	* @param teamPKs the primary keys of the teams
 	*/
-	public static void addTeams(long pk, long[] teamPKs) {
-		getPersistence().addTeams(pk, teamPKs);
+	public static void addTeams(long companyId, long pk, long[] teamPKs) {
+		getPersistence().addTeams(companyId, pk, teamPKs);
 	}
 
 	/**
@@ -1621,9 +1623,9 @@ public class UserGroupUtil {
 	* @param pk the primary key of the user group
 	* @param teams the teams
 	*/
-	public static void addTeams(long pk,
+	public static void addTeams(long companyId, long pk,
 		List<com.liferay.portal.model.Team> teams) {
-		getPersistence().addTeams(pk, teams);
+		getPersistence().addTeams(companyId, pk, teams);
 	}
 
 	/**
@@ -1682,8 +1684,8 @@ public class UserGroupUtil {
 	* @param pk the primary key of the user group
 	* @param teamPKs the primary keys of the teams to be associated with the user group
 	*/
-	public static void setTeams(long pk, long[] teamPKs) {
-		getPersistence().setTeams(pk, teamPKs);
+	public static void setTeams(long companyId, long pk, long[] teamPKs) {
+		getPersistence().setTeams(companyId, pk, teamPKs);
 	}
 
 	/**
@@ -1790,8 +1792,8 @@ public class UserGroupUtil {
 	* @param pk the primary key of the user group
 	* @param userPK the primary key of the user
 	*/
-	public static void addUser(long pk, long userPK) {
-		getPersistence().addUser(pk, userPK);
+	public static void addUser(long companyId, long pk, long userPK) {
+		getPersistence().addUser(companyId, pk, userPK);
 	}
 
 	/**
@@ -1800,8 +1802,9 @@ public class UserGroupUtil {
 	* @param pk the primary key of the user group
 	* @param user the user
 	*/
-	public static void addUser(long pk, com.liferay.portal.model.User user) {
-		getPersistence().addUser(pk, user);
+	public static void addUser(long companyId, long pk,
+		com.liferay.portal.model.User user) {
+		getPersistence().addUser(companyId, pk, user);
 	}
 
 	/**
@@ -1810,8 +1813,8 @@ public class UserGroupUtil {
 	* @param pk the primary key of the user group
 	* @param userPKs the primary keys of the users
 	*/
-	public static void addUsers(long pk, long[] userPKs) {
-		getPersistence().addUsers(pk, userPKs);
+	public static void addUsers(long companyId, long pk, long[] userPKs) {
+		getPersistence().addUsers(companyId, pk, userPKs);
 	}
 
 	/**
@@ -1820,9 +1823,9 @@ public class UserGroupUtil {
 	* @param pk the primary key of the user group
 	* @param users the users
 	*/
-	public static void addUsers(long pk,
+	public static void addUsers(long companyId, long pk,
 		List<com.liferay.portal.model.User> users) {
-		getPersistence().addUsers(pk, users);
+		getPersistence().addUsers(companyId, pk, users);
 	}
 
 	/**
@@ -1881,8 +1884,8 @@ public class UserGroupUtil {
 	* @param pk the primary key of the user group
 	* @param userPKs the primary keys of the users to be associated with the user group
 	*/
-	public static void setUsers(long pk, long[] userPKs) {
-		getPersistence().setUsers(pk, userPKs);
+	public static void setUsers(long companyId, long pk, long[] userPKs) {
+		getPersistence().setUsers(companyId, pk, userPKs);
 	}
 
 	/**

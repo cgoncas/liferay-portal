@@ -11771,8 +11771,9 @@ public class AssetCategoryPersistenceImpl extends BasePersistenceImpl<AssetCateg
 	 * @param assetEntryPK the primary key of the asset entry
 	 */
 	@Override
-	public void addAssetEntry(long pk, long assetEntryPK) {
-		assetCategoryToAssetEntryTableMapper.addTableMapping(0, pk, assetEntryPK);
+	public void addAssetEntry(long companyId, long pk, long assetEntryPK) {
+		assetCategoryToAssetEntryTableMapper.addTableMapping(companyId, pk,
+			assetEntryPK);
 	}
 
 	/**
@@ -11782,9 +11783,9 @@ public class AssetCategoryPersistenceImpl extends BasePersistenceImpl<AssetCateg
 	 * @param assetEntry the asset entry
 	 */
 	@Override
-	public void addAssetEntry(long pk,
+	public void addAssetEntry(long companyId, long pk,
 		com.liferay.portlet.asset.model.AssetEntry assetEntry) {
-		assetCategoryToAssetEntryTableMapper.addTableMapping(0, pk,
+		assetCategoryToAssetEntryTableMapper.addTableMapping(companyId, pk,
 			assetEntry.getPrimaryKey());
 	}
 
@@ -11795,9 +11796,9 @@ public class AssetCategoryPersistenceImpl extends BasePersistenceImpl<AssetCateg
 	 * @param assetEntryPKs the primary keys of the asset entries
 	 */
 	@Override
-	public void addAssetEntries(long pk, long[] assetEntryPKs) {
+	public void addAssetEntries(long companyId, long pk, long[] assetEntryPKs) {
 		for (long assetEntryPK : assetEntryPKs) {
-			assetCategoryToAssetEntryTableMapper.addTableMapping(0, pk,
+			assetCategoryToAssetEntryTableMapper.addTableMapping(companyId, pk,
 				assetEntryPK);
 		}
 	}
@@ -11809,10 +11810,10 @@ public class AssetCategoryPersistenceImpl extends BasePersistenceImpl<AssetCateg
 	 * @param assetEntries the asset entries
 	 */
 	@Override
-	public void addAssetEntries(long pk,
+	public void addAssetEntries(long companyId, long pk,
 		List<com.liferay.portlet.asset.model.AssetEntry> assetEntries) {
 		for (com.liferay.portlet.asset.model.AssetEntry assetEntry : assetEntries) {
-			assetCategoryToAssetEntryTableMapper.addTableMapping(0, pk,
+			assetCategoryToAssetEntryTableMapper.addTableMapping(companyId, pk,
 				assetEntry.getPrimaryKey());
 		}
 	}
@@ -11889,7 +11890,7 @@ public class AssetCategoryPersistenceImpl extends BasePersistenceImpl<AssetCateg
 	 * @param assetEntryPKs the primary keys of the asset entries to be associated with the asset category
 	 */
 	@Override
-	public void setAssetEntries(long pk, long[] assetEntryPKs) {
+	public void setAssetEntries(long companyId, long pk, long[] assetEntryPKs) {
 		Set<Long> newAssetEntryPKsSet = SetUtil.fromArray(assetEntryPKs);
 		Set<Long> oldAssetEntryPKsSet = SetUtil.fromArray(assetCategoryToAssetEntryTableMapper.getRightPrimaryKeys(
 					0, pk));
@@ -11906,7 +11907,7 @@ public class AssetCategoryPersistenceImpl extends BasePersistenceImpl<AssetCateg
 		newAssetEntryPKsSet.removeAll(oldAssetEntryPKsSet);
 
 		for (long newAssetEntryPK : newAssetEntryPKsSet) {
-			assetCategoryToAssetEntryTableMapper.addTableMapping(0, pk,
+			assetCategoryToAssetEntryTableMapper.addTableMapping(companyId, pk,
 				newAssetEntryPK);
 		}
 	}

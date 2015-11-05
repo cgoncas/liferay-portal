@@ -1720,7 +1720,7 @@ public interface OrganizationPersistence extends BasePersistence<Organization> {
 	* @param pk the primary key of the organization
 	* @param groupPK the primary key of the group
 	*/
-	public void addGroup(long pk, long groupPK);
+	public void addGroup(long companyId, long pk, long groupPK);
 
 	/**
 	* Adds an association between the organization and the group. Also notifies the appropriate model listeners and clears the mapping table finder cache.
@@ -1728,7 +1728,8 @@ public interface OrganizationPersistence extends BasePersistence<Organization> {
 	* @param pk the primary key of the organization
 	* @param group the group
 	*/
-	public void addGroup(long pk, com.liferay.portal.model.Group group);
+	public void addGroup(long companyId, long pk,
+		com.liferay.portal.model.Group group);
 
 	/**
 	* Adds an association between the organization and the groups. Also notifies the appropriate model listeners and clears the mapping table finder cache.
@@ -1736,7 +1737,7 @@ public interface OrganizationPersistence extends BasePersistence<Organization> {
 	* @param pk the primary key of the organization
 	* @param groupPKs the primary keys of the groups
 	*/
-	public void addGroups(long pk, long[] groupPKs);
+	public void addGroups(long companyId, long pk, long[] groupPKs);
 
 	/**
 	* Adds an association between the organization and the groups. Also notifies the appropriate model listeners and clears the mapping table finder cache.
@@ -1744,7 +1745,7 @@ public interface OrganizationPersistence extends BasePersistence<Organization> {
 	* @param pk the primary key of the organization
 	* @param groups the groups
 	*/
-	public void addGroups(long pk,
+	public void addGroups(long companyId, long pk,
 		java.util.List<com.liferay.portal.model.Group> groups);
 
 	/**
@@ -1793,7 +1794,7 @@ public interface OrganizationPersistence extends BasePersistence<Organization> {
 	* @param pk the primary key of the organization
 	* @param groupPKs the primary keys of the groups to be associated with the organization
 	*/
-	public void setGroups(long pk, long[] groupPKs);
+	public void setGroups(long companyId, long pk, long[] groupPKs);
 
 	/**
 	* Sets the groups associated with the organization, removing and adding associations as necessary. Also notifies the appropriate model listeners and clears the mapping table finder cache.
@@ -1883,7 +1884,7 @@ public interface OrganizationPersistence extends BasePersistence<Organization> {
 	* @param pk the primary key of the organization
 	* @param userPK the primary key of the user
 	*/
-	public void addUser(long pk, long userPK);
+	public void addUser(long companyId, long pk, long userPK);
 
 	/**
 	* Adds an association between the organization and the user. Also notifies the appropriate model listeners and clears the mapping table finder cache.
@@ -1891,7 +1892,8 @@ public interface OrganizationPersistence extends BasePersistence<Organization> {
 	* @param pk the primary key of the organization
 	* @param user the user
 	*/
-	public void addUser(long pk, com.liferay.portal.model.User user);
+	public void addUser(long companyId, long pk,
+		com.liferay.portal.model.User user);
 
 	/**
 	* Adds an association between the organization and the users. Also notifies the appropriate model listeners and clears the mapping table finder cache.
@@ -1899,7 +1901,7 @@ public interface OrganizationPersistence extends BasePersistence<Organization> {
 	* @param pk the primary key of the organization
 	* @param userPKs the primary keys of the users
 	*/
-	public void addUsers(long pk, long[] userPKs);
+	public void addUsers(long companyId, long pk, long[] userPKs);
 
 	/**
 	* Adds an association between the organization and the users. Also notifies the appropriate model listeners and clears the mapping table finder cache.
@@ -1907,7 +1909,7 @@ public interface OrganizationPersistence extends BasePersistence<Organization> {
 	* @param pk the primary key of the organization
 	* @param users the users
 	*/
-	public void addUsers(long pk,
+	public void addUsers(long companyId, long pk,
 		java.util.List<com.liferay.portal.model.User> users);
 
 	/**
@@ -1956,7 +1958,7 @@ public interface OrganizationPersistence extends BasePersistence<Organization> {
 	* @param pk the primary key of the organization
 	* @param userPKs the primary keys of the users to be associated with the organization
 	*/
-	public void setUsers(long pk, long[] userPKs);
+	public void setUsers(long companyId, long pk, long[] userPKs);
 
 	/**
 	* Sets the users associated with the organization, removing and adding associations as necessary. Also notifies the appropriate model listeners and clears the mapping table finder cache.

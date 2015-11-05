@@ -1452,8 +1452,9 @@ public class AssetEntryUtil {
 	* @param pk the primary key of the asset entry
 	* @param assetCategoryPK the primary key of the asset category
 	*/
-	public static void addAssetCategory(long pk, long assetCategoryPK) {
-		getPersistence().addAssetCategory(pk, assetCategoryPK);
+	public static void addAssetCategory(long companyId, long pk,
+		long assetCategoryPK) {
+		getPersistence().addAssetCategory(companyId, pk, assetCategoryPK);
 	}
 
 	/**
@@ -1462,9 +1463,9 @@ public class AssetEntryUtil {
 	* @param pk the primary key of the asset entry
 	* @param assetCategory the asset category
 	*/
-	public static void addAssetCategory(long pk,
+	public static void addAssetCategory(long companyId, long pk,
 		com.liferay.portlet.asset.model.AssetCategory assetCategory) {
-		getPersistence().addAssetCategory(pk, assetCategory);
+		getPersistence().addAssetCategory(companyId, pk, assetCategory);
 	}
 
 	/**
@@ -1473,8 +1474,9 @@ public class AssetEntryUtil {
 	* @param pk the primary key of the asset entry
 	* @param assetCategoryPKs the primary keys of the asset categories
 	*/
-	public static void addAssetCategories(long pk, long[] assetCategoryPKs) {
-		getPersistence().addAssetCategories(pk, assetCategoryPKs);
+	public static void addAssetCategories(long companyId, long pk,
+		long[] assetCategoryPKs) {
+		getPersistence().addAssetCategories(companyId, pk, assetCategoryPKs);
 	}
 
 	/**
@@ -1483,9 +1485,9 @@ public class AssetEntryUtil {
 	* @param pk the primary key of the asset entry
 	* @param assetCategories the asset categories
 	*/
-	public static void addAssetCategories(long pk,
+	public static void addAssetCategories(long companyId, long pk,
 		List<com.liferay.portlet.asset.model.AssetCategory> assetCategories) {
-		getPersistence().addAssetCategories(pk, assetCategories);
+		getPersistence().addAssetCategories(companyId, pk, assetCategories);
 	}
 
 	/**
@@ -1545,8 +1547,9 @@ public class AssetEntryUtil {
 	* @param pk the primary key of the asset entry
 	* @param assetCategoryPKs the primary keys of the asset categories to be associated with the asset entry
 	*/
-	public static void setAssetCategories(long pk, long[] assetCategoryPKs) {
-		getPersistence().setAssetCategories(pk, assetCategoryPKs);
+	public static void setAssetCategories(long companyId, long pk,
+		long[] assetCategoryPKs) {
+		getPersistence().setAssetCategories(companyId, pk, assetCategoryPKs);
 	}
 
 	/**
@@ -1654,8 +1657,8 @@ public class AssetEntryUtil {
 	* @param pk the primary key of the asset entry
 	* @param assetTagPK the primary key of the asset tag
 	*/
-	public static void addAssetTag(long pk, long assetTagPK) {
-		getPersistence().addAssetTag(pk, assetTagPK);
+	public static void addAssetTag(long companyId, long pk, long assetTagPK) {
+		getPersistence().addAssetTag(companyId, pk, assetTagPK);
 	}
 
 	/**
@@ -1664,9 +1667,9 @@ public class AssetEntryUtil {
 	* @param pk the primary key of the asset entry
 	* @param assetTag the asset tag
 	*/
-	public static void addAssetTag(long pk,
+	public static void addAssetTag(long companyId, long pk,
 		com.liferay.portlet.asset.model.AssetTag assetTag) {
-		getPersistence().addAssetTag(pk, assetTag);
+		getPersistence().addAssetTag(companyId, pk, assetTag);
 	}
 
 	/**
@@ -1675,8 +1678,8 @@ public class AssetEntryUtil {
 	* @param pk the primary key of the asset entry
 	* @param assetTagPKs the primary keys of the asset tags
 	*/
-	public static void addAssetTags(long pk, long[] assetTagPKs) {
-		getPersistence().addAssetTags(pk, assetTagPKs);
+	public static void addAssetTags(long companyId, long pk, long[] assetTagPKs) {
+		getPersistence().addAssetTags(companyId, pk, assetTagPKs);
 	}
 
 	/**
@@ -1685,9 +1688,9 @@ public class AssetEntryUtil {
 	* @param pk the primary key of the asset entry
 	* @param assetTags the asset tags
 	*/
-	public static void addAssetTags(long pk,
+	public static void addAssetTags(long companyId, long pk,
 		List<com.liferay.portlet.asset.model.AssetTag> assetTags) {
-		getPersistence().addAssetTags(pk, assetTags);
+		getPersistence().addAssetTags(companyId, pk, assetTags);
 	}
 
 	/**
@@ -1747,8 +1750,8 @@ public class AssetEntryUtil {
 	* @param pk the primary key of the asset entry
 	* @param assetTagPKs the primary keys of the asset tags to be associated with the asset entry
 	*/
-	public static void setAssetTags(long pk, long[] assetTagPKs) {
-		getPersistence().setAssetTags(pk, assetTagPKs);
+	public static void setAssetTags(long companyId, long pk, long[] assetTagPKs) {
+		getPersistence().setAssetTags(companyId, pk, assetTagPKs);
 	}
 
 	/**
