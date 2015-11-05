@@ -221,12 +221,14 @@ public class JournalArticleResourceLocalServiceUtil {
 	}
 
 	public static long getArticleResourcePrimKey(long groupId,
-		java.lang.String articleId) {
+		java.lang.String articleId)
+		throws com.liferay.portal.kernel.exception.PortalException {
 		return getService().getArticleResourcePrimKey(groupId, articleId);
 	}
 
 	public static long getArticleResourcePrimKey(java.lang.String uuid,
-		long groupId, java.lang.String articleId) {
+		long groupId, java.lang.String articleId)
+		throws com.liferay.portal.kernel.exception.PortalException {
 		return getService().getArticleResourcePrimKey(uuid, groupId, articleId);
 	}
 

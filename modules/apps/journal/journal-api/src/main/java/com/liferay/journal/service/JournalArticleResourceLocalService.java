@@ -196,11 +196,11 @@ public interface JournalArticleResourceLocalService extends BaseLocalService,
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public long getArticleResourcePrimKey(long groupId,
-		java.lang.String articleId);
+		java.lang.String articleId) throws PortalException;
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public long getArticleResourcePrimKey(java.lang.String uuid, long groupId,
-		java.lang.String articleId);
+		java.lang.String articleId) throws PortalException;
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public java.util.List<com.liferay.journal.model.JournalArticleResource> getArticleResources(

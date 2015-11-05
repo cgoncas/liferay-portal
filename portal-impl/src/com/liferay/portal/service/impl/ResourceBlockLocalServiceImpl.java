@@ -156,8 +156,9 @@ public class ResourceBlockLocalServiceImpl
 
 	@Override
 	public void addIndividualScopePermissions(
-		long companyId, long groupId, String name,
-		PermissionedModel permissionedModel, long roleId, long actionIdsLong) {
+			long companyId, long groupId, String name,
+			PermissionedModel permissionedModel, long roleId, long actionIdsLong)
+		throws PortalException {
 
 		updateIndividualScopePermissions(
 			companyId, groupId, name, permissionedModel, roleId, actionIdsLong,
@@ -179,8 +180,9 @@ public class ResourceBlockLocalServiceImpl
 	 */
 	@Override
 	public ResourceBlock addResourceBlock(
-		long companyId, long groupId, String name, String permissionsHash,
-		ResourceBlockPermissionsContainer resourceBlockPermissionsContainer) {
+			long companyId, long groupId, String name, String permissionsHash,
+			ResourceBlockPermissionsContainer resourceBlockPermissionsContainer)
+		throws PortalException {
 
 		long resourceBlockId = counterLocalService.increment(
 			ResourceBlock.class.getName());
@@ -623,7 +625,8 @@ public class ResourceBlockLocalServiceImpl
 	@Override
 	public void removeIndividualScopePermissions(
 		long companyId, long groupId, String name,
-		PermissionedModel permissionedModel, long roleId, long actionIdsLong) {
+		PermissionedModel permissionedModel, long roleId, long actionIdsLong)
+		throws PortalException {
 
 		updateIndividualScopePermissions(
 			companyId, groupId, name, permissionedModel, roleId, actionIdsLong,
@@ -761,8 +764,9 @@ public class ResourceBlockLocalServiceImpl
 
 	@Override
 	public void setIndividualScopePermissions(
-		long companyId, long groupId, String name,
-		PermissionedModel permissionedModel, long roleId, long actionIdsLong) {
+			long companyId, long groupId, String name,
+			PermissionedModel permissionedModel, long roleId, long actionIdsLong)
+		throws PortalException {
 
 		updateIndividualScopePermissions(
 			companyId, groupId, name, permissionedModel, roleId, actionIdsLong,
@@ -797,7 +801,7 @@ public class ResourceBlockLocalServiceImpl
 	public void updateIndividualScopePermissions(
 		long companyId, long groupId, String name,
 		PermissionedModel permissionedModel, long roleId, long actionIdsLong,
-		int operator) {
+		int operator) throws PortalException {
 
 		ResourceBlock resourceBlock =
 			resourceBlockPersistence.fetchByPrimaryKey(
@@ -855,9 +859,10 @@ public class ResourceBlockLocalServiceImpl
 		propagation = Propagation.REQUIRES_NEW
 	)
 	public ResourceBlock updateResourceBlockId(
-		long companyId, long groupId, String name,
-		final PermissionedModel permissionedModel, String permissionsHash,
-		ResourceBlockPermissionsContainer resourceBlockPermissionsContainer) {
+			long companyId, long groupId, String name,
+			final PermissionedModel permissionedModel, String permissionsHash,
+			ResourceBlockPermissionsContainer resourceBlockPermissionsContainer)
+		throws PortalException {
 
 		ResourceBlock resourceBlock = null;
 

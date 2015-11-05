@@ -219,6 +219,7 @@ public class DLFileEntryMetadataLocalServiceImpl
 			fileEntryMetadata.setDDMStructureId(ddmStructure.getStructureId());
 			fileEntryMetadata.setFileEntryId(fileEntryId);
 			fileEntryMetadata.setFileVersionId(fileVersionId);
+			fileEntryMetadata.setCompanyId(companyId);
 
 			dlFileEntryMetadataPersistence.update(fileEntryMetadata);
 

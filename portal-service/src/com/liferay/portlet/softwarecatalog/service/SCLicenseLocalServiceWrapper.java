@@ -35,11 +35,11 @@ public class SCLicenseLocalServiceWrapper implements SCLicenseLocalService,
 
 	@Override
 	public com.liferay.portlet.softwarecatalog.model.SCLicense addLicense(
-		java.lang.String name, java.lang.String url, boolean openSource,
-		boolean active, boolean recommended)
+		long companyId, java.lang.String name, java.lang.String url,
+		boolean openSource, boolean active, boolean recommended)
 		throws com.liferay.portal.kernel.exception.PortalException {
-		return _scLicenseLocalService.addLicense(name, url, openSource, active,
-			recommended);
+		return _scLicenseLocalService.addLicense(companyId, name, url,
+			openSource, active, recommended);
 	}
 
 	/**

@@ -2743,7 +2743,7 @@ public interface AssetCategoryPersistence extends BasePersistence<AssetCategory>
 	* @param pk the primary key of the asset category
 	* @param assetEntryPK the primary key of the asset entry
 	*/
-	public void addAssetEntry(long pk, long assetEntryPK);
+	public void addAssetEntry(long companyId, long pk, long assetEntryPK);
 
 	/**
 	* Adds an association between the asset category and the asset entry. Also notifies the appropriate model listeners and clears the mapping table finder cache.
@@ -2751,7 +2751,7 @@ public interface AssetCategoryPersistence extends BasePersistence<AssetCategory>
 	* @param pk the primary key of the asset category
 	* @param assetEntry the asset entry
 	*/
-	public void addAssetEntry(long pk,
+	public void addAssetEntry(long companyId, long pk,
 		com.liferay.portlet.asset.model.AssetEntry assetEntry);
 
 	/**
@@ -2760,7 +2760,7 @@ public interface AssetCategoryPersistence extends BasePersistence<AssetCategory>
 	* @param pk the primary key of the asset category
 	* @param assetEntryPKs the primary keys of the asset entries
 	*/
-	public void addAssetEntries(long pk, long[] assetEntryPKs);
+	public void addAssetEntries(long companyId, long pk, long[] assetEntryPKs);
 
 	/**
 	* Adds an association between the asset category and the asset entries. Also notifies the appropriate model listeners and clears the mapping table finder cache.
@@ -2768,7 +2768,7 @@ public interface AssetCategoryPersistence extends BasePersistence<AssetCategory>
 	* @param pk the primary key of the asset category
 	* @param assetEntries the asset entries
 	*/
-	public void addAssetEntries(long pk,
+	public void addAssetEntries(long companyId, long pk,
 		java.util.List<com.liferay.portlet.asset.model.AssetEntry> assetEntries);
 
 	/**
@@ -2818,7 +2818,7 @@ public interface AssetCategoryPersistence extends BasePersistence<AssetCategory>
 	* @param pk the primary key of the asset category
 	* @param assetEntryPKs the primary keys of the asset entries to be associated with the asset category
 	*/
-	public void setAssetEntries(long pk, long[] assetEntryPKs);
+	public void setAssetEntries(long companyId, long pk, long[] assetEntryPKs);
 
 	/**
 	* Sets the asset entries associated with the asset category, removing and adding associations as necessary. Also notifies the appropriate model listeners and clears the mapping table finder cache.

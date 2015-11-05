@@ -57,7 +57,8 @@ public interface ResourceBlockPermissionLocalService extends BaseLocalService,
 		com.liferay.portal.model.ResourceBlockPermission resourceBlockPermission);
 
 	public void addResourceBlockPermissions(long resourceBlockId,
-		com.liferay.portal.model.ResourceBlockPermissionsContainer resourceBlockPermissionsContainer);
+		com.liferay.portal.model.ResourceBlockPermissionsContainer resourceBlockPermissionsContainer)
+		throws PortalException;
 
 	/**
 	* Creates a new resource block permission with the primary key. Does not add the resource block permission to the database.

@@ -15,6 +15,7 @@
 package com.liferay.dynamic.data.mapping.service.impl;
 
 import com.liferay.dynamic.data.mapping.model.DDMStorageLink;
+import com.liferay.dynamic.data.mapping.model.DDMStructure;
 import com.liferay.dynamic.data.mapping.service.base.DDMStorageLinkLocalServiceBaseImpl;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.service.ServiceContext;
@@ -31,12 +32,17 @@ public class DDMStorageLinkLocalServiceImpl
 	@Override
 	public DDMStorageLink addStorageLink(
 		long classNameId, long classPK, long structureId,
-		ServiceContext serviceContext) {
+		ServiceContext serviceContext) throws PortalException {
 
 		long storageLinkId = counterLocalService.increment();
 
 		DDMStorageLink storageLink = ddmStorageLinkPersistence.create(
 			storageLinkId);
+
+		DDMStructure ddmStructure = ddmStructureLocalService.getDDMStructure(
+			structureId);
+
+		storageLink.setCompanyId(ddmStructure.getCompanyId());
 
 		storageLink.setClassNameId(classNameId);
 		storageLink.setClassPK(classPK);

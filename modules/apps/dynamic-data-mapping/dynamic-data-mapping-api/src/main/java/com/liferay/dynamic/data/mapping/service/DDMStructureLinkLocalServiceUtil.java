@@ -55,7 +55,8 @@ public class DDMStructureLinkLocalServiceUtil {
 	}
 
 	public static com.liferay.dynamic.data.mapping.model.DDMStructureLink addStructureLink(
-		long classNameId, long classPK, long structureId) {
+		long classNameId, long classPK, long structureId)
+		throws com.liferay.portal.kernel.exception.PortalException {
 		return getService().addStructureLink(classNameId, classPK, structureId);
 	}
 

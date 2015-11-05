@@ -338,7 +338,8 @@ public class JournalArticleWrapper implements JournalArticle,
 
 	@Override
 	public long getArticleImageId(java.lang.String elInstanceId,
-		java.lang.String elName, java.lang.String languageId) {
+		java.lang.String elName, java.lang.String languageId)
+		throws com.liferay.portal.kernel.exception.PortalException {
 		return _journalArticle.getArticleImageId(elInstanceId, elName,
 			languageId);
 	}

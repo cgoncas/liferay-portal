@@ -122,6 +122,10 @@
 		<finder name="UserId" return-type="BrowserTracker" unique="true">
 			<finder-column name="userId" />
 		</finder>
+
+		<!-- References -->
+
+		<reference package-path="com.liferay.portal" entity="User" />
 	</entity>
 	<entity name="ClassName" local-service="true" remote-service="true">
 
@@ -1339,6 +1343,7 @@
 		<!-- References -->
 
 		<reference package-path="com.liferay.portal" entity="ListType" />
+		<reference package-path="com.liferay.portal" entity="Organization" />
 	</entity>
 	<entity name="PasswordPolicy" uuid="true" local-service="true" remote-service="true">
 
@@ -2774,6 +2779,10 @@
 			<finder-column name="type" />
 			<finder-column name="externalUserId" />
 		</finder>
+
+		<!-- References -->
+
+		<reference package-path="com.liferay.portal" entity="User" />
 	</entity>
 	<entity name="UserNotificationDelivery" local-service="true" remote-service="false">
 

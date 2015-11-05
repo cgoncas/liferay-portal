@@ -801,7 +801,7 @@ public interface TeamPersistence extends BasePersistence<Team> {
 	* @param pk the primary key of the team
 	* @param userPK the primary key of the user
 	*/
-	public void addUser(long pk, long userPK);
+	public void addUser(long companyId, long pk, long userPK);
 
 	/**
 	* Adds an association between the team and the user. Also notifies the appropriate model listeners and clears the mapping table finder cache.
@@ -809,7 +809,8 @@ public interface TeamPersistence extends BasePersistence<Team> {
 	* @param pk the primary key of the team
 	* @param user the user
 	*/
-	public void addUser(long pk, com.liferay.portal.model.User user);
+	public void addUser(long companyId, long pk,
+		com.liferay.portal.model.User user);
 
 	/**
 	* Adds an association between the team and the users. Also notifies the appropriate model listeners and clears the mapping table finder cache.
@@ -817,7 +818,7 @@ public interface TeamPersistence extends BasePersistence<Team> {
 	* @param pk the primary key of the team
 	* @param userPKs the primary keys of the users
 	*/
-	public void addUsers(long pk, long[] userPKs);
+	public void addUsers(long companyId, long pk, long[] userPKs);
 
 	/**
 	* Adds an association between the team and the users. Also notifies the appropriate model listeners and clears the mapping table finder cache.
@@ -825,7 +826,7 @@ public interface TeamPersistence extends BasePersistence<Team> {
 	* @param pk the primary key of the team
 	* @param users the users
 	*/
-	public void addUsers(long pk,
+	public void addUsers(long companyId, long pk,
 		java.util.List<com.liferay.portal.model.User> users);
 
 	/**
@@ -874,7 +875,7 @@ public interface TeamPersistence extends BasePersistence<Team> {
 	* @param pk the primary key of the team
 	* @param userPKs the primary keys of the users to be associated with the team
 	*/
-	public void setUsers(long pk, long[] userPKs);
+	public void setUsers(long companyId, long pk, long[] userPKs);
 
 	/**
 	* Sets the users associated with the team, removing and adding associations as necessary. Also notifies the appropriate model listeners and clears the mapping table finder cache.
@@ -965,7 +966,7 @@ public interface TeamPersistence extends BasePersistence<Team> {
 	* @param pk the primary key of the team
 	* @param userGroupPK the primary key of the user group
 	*/
-	public void addUserGroup(long pk, long userGroupPK);
+	public void addUserGroup(long companyId, long pk, long userGroupPK);
 
 	/**
 	* Adds an association between the team and the user group. Also notifies the appropriate model listeners and clears the mapping table finder cache.
@@ -973,7 +974,7 @@ public interface TeamPersistence extends BasePersistence<Team> {
 	* @param pk the primary key of the team
 	* @param userGroup the user group
 	*/
-	public void addUserGroup(long pk,
+	public void addUserGroup(long companyId, long pk,
 		com.liferay.portal.model.UserGroup userGroup);
 
 	/**
@@ -982,7 +983,7 @@ public interface TeamPersistence extends BasePersistence<Team> {
 	* @param pk the primary key of the team
 	* @param userGroupPKs the primary keys of the user groups
 	*/
-	public void addUserGroups(long pk, long[] userGroupPKs);
+	public void addUserGroups(long companyId, long pk, long[] userGroupPKs);
 
 	/**
 	* Adds an association between the team and the user groups. Also notifies the appropriate model listeners and clears the mapping table finder cache.
@@ -990,7 +991,7 @@ public interface TeamPersistence extends BasePersistence<Team> {
 	* @param pk the primary key of the team
 	* @param userGroups the user groups
 	*/
-	public void addUserGroups(long pk,
+	public void addUserGroups(long companyId, long pk,
 		java.util.List<com.liferay.portal.model.UserGroup> userGroups);
 
 	/**
@@ -1040,7 +1041,7 @@ public interface TeamPersistence extends BasePersistence<Team> {
 	* @param pk the primary key of the team
 	* @param userGroupPKs the primary keys of the user groups to be associated with the team
 	*/
-	public void setUserGroups(long pk, long[] userGroupPKs);
+	public void setUserGroups(long companyId, long pk, long[] userGroupPKs);
 
 	/**
 	* Sets the user groups associated with the team, removing and adding associations as necessary. Also notifies the appropriate model listeners and clears the mapping table finder cache.

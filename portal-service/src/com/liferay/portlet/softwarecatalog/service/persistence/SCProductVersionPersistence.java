@@ -421,7 +421,8 @@ public interface SCProductVersionPersistence extends BasePersistence<SCProductVe
 	* @param pk the primary key of the s c product version
 	* @param scFrameworkVersionPK the primary key of the s c framework version
 	*/
-	public void addSCFrameworkVersion(long pk, long scFrameworkVersionPK);
+	public void addSCFrameworkVersion(long companyId, long pk,
+		long scFrameworkVersionPK);
 
 	/**
 	* Adds an association between the s c product version and the s c framework version. Also notifies the appropriate model listeners and clears the mapping table finder cache.
@@ -429,7 +430,7 @@ public interface SCProductVersionPersistence extends BasePersistence<SCProductVe
 	* @param pk the primary key of the s c product version
 	* @param scFrameworkVersion the s c framework version
 	*/
-	public void addSCFrameworkVersion(long pk,
+	public void addSCFrameworkVersion(long companyId, long pk,
 		com.liferay.portlet.softwarecatalog.model.SCFrameworkVersion scFrameworkVersion);
 
 	/**
@@ -438,7 +439,8 @@ public interface SCProductVersionPersistence extends BasePersistence<SCProductVe
 	* @param pk the primary key of the s c product version
 	* @param scFrameworkVersionPKs the primary keys of the s c framework versions
 	*/
-	public void addSCFrameworkVersions(long pk, long[] scFrameworkVersionPKs);
+	public void addSCFrameworkVersions(long companyId, long pk,
+		long[] scFrameworkVersionPKs);
 
 	/**
 	* Adds an association between the s c product version and the s c framework versions. Also notifies the appropriate model listeners and clears the mapping table finder cache.
@@ -446,7 +448,7 @@ public interface SCProductVersionPersistence extends BasePersistence<SCProductVe
 	* @param pk the primary key of the s c product version
 	* @param scFrameworkVersions the s c framework versions
 	*/
-	public void addSCFrameworkVersions(long pk,
+	public void addSCFrameworkVersions(long companyId, long pk,
 		java.util.List<com.liferay.portlet.softwarecatalog.model.SCFrameworkVersion> scFrameworkVersions);
 
 	/**
@@ -496,7 +498,8 @@ public interface SCProductVersionPersistence extends BasePersistence<SCProductVe
 	* @param pk the primary key of the s c product version
 	* @param scFrameworkVersionPKs the primary keys of the s c framework versions to be associated with the s c product version
 	*/
-	public void setSCFrameworkVersions(long pk, long[] scFrameworkVersionPKs);
+	public void setSCFrameworkVersions(long companyId, long pk,
+		long[] scFrameworkVersionPKs);
 
 	/**
 	* Sets the s c framework versions associated with the s c product version, removing and adding associations as necessary. Also notifies the appropriate model listeners and clears the mapping table finder cache.

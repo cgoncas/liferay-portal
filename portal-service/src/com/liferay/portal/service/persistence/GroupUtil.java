@@ -2751,8 +2751,9 @@ public class GroupUtil {
 	* @param pk the primary key of the group
 	* @param organizationPK the primary key of the organization
 	*/
-	public static void addOrganization(long pk, long organizationPK) {
-		getPersistence().addOrganization(pk, organizationPK);
+	public static void addOrganization(long companyId, long pk,
+		long organizationPK) {
+		getPersistence().addOrganization(companyId, pk, organizationPK);
 	}
 
 	/**
@@ -2761,9 +2762,9 @@ public class GroupUtil {
 	* @param pk the primary key of the group
 	* @param organization the organization
 	*/
-	public static void addOrganization(long pk,
+	public static void addOrganization(long companyId, long pk,
 		com.liferay.portal.model.Organization organization) {
-		getPersistence().addOrganization(pk, organization);
+		getPersistence().addOrganization(companyId, pk, organization);
 	}
 
 	/**
@@ -2772,8 +2773,9 @@ public class GroupUtil {
 	* @param pk the primary key of the group
 	* @param organizationPKs the primary keys of the organizations
 	*/
-	public static void addOrganizations(long pk, long[] organizationPKs) {
-		getPersistence().addOrganizations(pk, organizationPKs);
+	public static void addOrganizations(long companyId, long pk,
+		long[] organizationPKs) {
+		getPersistence().addOrganizations(companyId, pk, organizationPKs);
 	}
 
 	/**
@@ -2782,9 +2784,9 @@ public class GroupUtil {
 	* @param pk the primary key of the group
 	* @param organizations the organizations
 	*/
-	public static void addOrganizations(long pk,
+	public static void addOrganizations(long companyId, long pk,
 		List<com.liferay.portal.model.Organization> organizations) {
-		getPersistence().addOrganizations(pk, organizations);
+		getPersistence().addOrganizations(companyId, pk, organizations);
 	}
 
 	/**
@@ -2844,8 +2846,9 @@ public class GroupUtil {
 	* @param pk the primary key of the group
 	* @param organizationPKs the primary keys of the organizations to be associated with the group
 	*/
-	public static void setOrganizations(long pk, long[] organizationPKs) {
-		getPersistence().setOrganizations(pk, organizationPKs);
+	public static void setOrganizations(long companyId, long pk,
+		long[] organizationPKs) {
+		getPersistence().setOrganizations(companyId, pk, organizationPKs);
 	}
 
 	/**
@@ -2952,8 +2955,8 @@ public class GroupUtil {
 	* @param pk the primary key of the group
 	* @param rolePK the primary key of the role
 	*/
-	public static void addRole(long pk, long rolePK) {
-		getPersistence().addRole(pk, rolePK);
+	public static void addRole(long companyId, long pk, long rolePK) {
+		getPersistence().addRole(companyId, pk, rolePK);
 	}
 
 	/**
@@ -2962,8 +2965,9 @@ public class GroupUtil {
 	* @param pk the primary key of the group
 	* @param role the role
 	*/
-	public static void addRole(long pk, com.liferay.portal.model.Role role) {
-		getPersistence().addRole(pk, role);
+	public static void addRole(long companyId, long pk,
+		com.liferay.portal.model.Role role) {
+		getPersistence().addRole(companyId, pk, role);
 	}
 
 	/**
@@ -2972,8 +2976,8 @@ public class GroupUtil {
 	* @param pk the primary key of the group
 	* @param rolePKs the primary keys of the roles
 	*/
-	public static void addRoles(long pk, long[] rolePKs) {
-		getPersistence().addRoles(pk, rolePKs);
+	public static void addRoles(long companyId, long pk, long[] rolePKs) {
+		getPersistence().addRoles(companyId, pk, rolePKs);
 	}
 
 	/**
@@ -2982,9 +2986,9 @@ public class GroupUtil {
 	* @param pk the primary key of the group
 	* @param roles the roles
 	*/
-	public static void addRoles(long pk,
+	public static void addRoles(long companyId, long pk,
 		List<com.liferay.portal.model.Role> roles) {
-		getPersistence().addRoles(pk, roles);
+		getPersistence().addRoles(companyId, pk, roles);
 	}
 
 	/**
@@ -3043,8 +3047,8 @@ public class GroupUtil {
 	* @param pk the primary key of the group
 	* @param rolePKs the primary keys of the roles to be associated with the group
 	*/
-	public static void setRoles(long pk, long[] rolePKs) {
-		getPersistence().setRoles(pk, rolePKs);
+	public static void setRoles(long companyId, long pk, long[] rolePKs) {
+		getPersistence().setRoles(companyId, pk, rolePKs);
 	}
 
 	/**
@@ -3152,8 +3156,8 @@ public class GroupUtil {
 	* @param pk the primary key of the group
 	* @param userGroupPK the primary key of the user group
 	*/
-	public static void addUserGroup(long pk, long userGroupPK) {
-		getPersistence().addUserGroup(pk, userGroupPK);
+	public static void addUserGroup(long companyId, long pk, long userGroupPK) {
+		getPersistence().addUserGroup(companyId, pk, userGroupPK);
 	}
 
 	/**
@@ -3162,9 +3166,9 @@ public class GroupUtil {
 	* @param pk the primary key of the group
 	* @param userGroup the user group
 	*/
-	public static void addUserGroup(long pk,
+	public static void addUserGroup(long companyId, long pk,
 		com.liferay.portal.model.UserGroup userGroup) {
-		getPersistence().addUserGroup(pk, userGroup);
+		getPersistence().addUserGroup(companyId, pk, userGroup);
 	}
 
 	/**
@@ -3173,8 +3177,9 @@ public class GroupUtil {
 	* @param pk the primary key of the group
 	* @param userGroupPKs the primary keys of the user groups
 	*/
-	public static void addUserGroups(long pk, long[] userGroupPKs) {
-		getPersistence().addUserGroups(pk, userGroupPKs);
+	public static void addUserGroups(long companyId, long pk,
+		long[] userGroupPKs) {
+		getPersistence().addUserGroups(companyId, pk, userGroupPKs);
 	}
 
 	/**
@@ -3183,9 +3188,9 @@ public class GroupUtil {
 	* @param pk the primary key of the group
 	* @param userGroups the user groups
 	*/
-	public static void addUserGroups(long pk,
+	public static void addUserGroups(long companyId, long pk,
 		List<com.liferay.portal.model.UserGroup> userGroups) {
-		getPersistence().addUserGroups(pk, userGroups);
+		getPersistence().addUserGroups(companyId, pk, userGroups);
 	}
 
 	/**
@@ -3245,8 +3250,9 @@ public class GroupUtil {
 	* @param pk the primary key of the group
 	* @param userGroupPKs the primary keys of the user groups to be associated with the group
 	*/
-	public static void setUserGroups(long pk, long[] userGroupPKs) {
-		getPersistence().setUserGroups(pk, userGroupPKs);
+	public static void setUserGroups(long companyId, long pk,
+		long[] userGroupPKs) {
+		getPersistence().setUserGroups(companyId, pk, userGroupPKs);
 	}
 
 	/**
@@ -3353,8 +3359,8 @@ public class GroupUtil {
 	* @param pk the primary key of the group
 	* @param userPK the primary key of the user
 	*/
-	public static void addUser(long pk, long userPK) {
-		getPersistence().addUser(pk, userPK);
+	public static void addUser(long companyId, long pk, long userPK) {
+		getPersistence().addUser(companyId, pk, userPK);
 	}
 
 	/**
@@ -3363,8 +3369,9 @@ public class GroupUtil {
 	* @param pk the primary key of the group
 	* @param user the user
 	*/
-	public static void addUser(long pk, com.liferay.portal.model.User user) {
-		getPersistence().addUser(pk, user);
+	public static void addUser(long companyId, long pk,
+		com.liferay.portal.model.User user) {
+		getPersistence().addUser(companyId, pk, user);
 	}
 
 	/**
@@ -3373,8 +3380,8 @@ public class GroupUtil {
 	* @param pk the primary key of the group
 	* @param userPKs the primary keys of the users
 	*/
-	public static void addUsers(long pk, long[] userPKs) {
-		getPersistence().addUsers(pk, userPKs);
+	public static void addUsers(long companyId, long pk, long[] userPKs) {
+		getPersistence().addUsers(companyId, pk, userPKs);
 	}
 
 	/**
@@ -3383,9 +3390,9 @@ public class GroupUtil {
 	* @param pk the primary key of the group
 	* @param users the users
 	*/
-	public static void addUsers(long pk,
+	public static void addUsers(long companyId, long pk,
 		List<com.liferay.portal.model.User> users) {
-		getPersistence().addUsers(pk, users);
+		getPersistence().addUsers(companyId, pk, users);
 	}
 
 	/**
@@ -3444,8 +3451,8 @@ public class GroupUtil {
 	* @param pk the primary key of the group
 	* @param userPKs the primary keys of the users to be associated with the group
 	*/
-	public static void setUsers(long pk, long[] userPKs) {
-		getPersistence().setUsers(pk, userPKs);
+	public static void setUsers(long companyId, long pk, long[] userPKs) {
+		getPersistence().setUsers(companyId, pk, userPKs);
 	}
 
 	/**

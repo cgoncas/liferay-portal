@@ -41,11 +41,18 @@ public class AssetTagStatsLocalServiceImpl
 	 * @return the asset tag statistics instance
 	 */
 	@Override
-	public AssetTagStats addTagStats(long tagId, long classNameId) {
+	public AssetTagStats addTagStats(long tagId, long classNameId)
+		throws PortalException {
+
 		long tagStatsId = counterLocalService.increment();
+
+		AssetTag assetTag = assetTagLocalService.getAssetTag(tagId);
+
+		long companyId = assetTag.getCompanyId();
 
 		AssetTagStats tagStats = assetTagStatsPersistence.create(tagStatsId);
 
+		tagStats.setCompanyId(companyId);
 		tagStats.setTagId(tagId);
 		tagStats.setClassNameId(classNameId);
 
@@ -164,7 +171,9 @@ public class AssetTagStatsLocalServiceImpl
 	 *         entry  matching the class name ID
 	 */
 	@Override
-	public AssetTagStats getTagStats(long tagId, long classNameId) {
+	public AssetTagStats getTagStats(long tagId, long classNameId)
+		throws PortalException {
+
 		AssetTagStats tagStats = assetTagStatsPersistence.fetchByT_C(
 			tagId, classNameId);
 

@@ -41,7 +41,8 @@ public class DLFileEntryTypeLocalServiceUtil {
 	 * Never modify this class directly. Add custom service methods to {@link com.liferay.portlet.documentlibrary.service.impl.DLFileEntryTypeLocalServiceImpl} and rerun ServiceBuilder to regenerate this class.
 	 */
 	public static void addDDMStructureLinks(long fileEntryTypeId,
-		java.util.Set<java.lang.Long> ddmStructureIds) {
+		java.util.Set<java.lang.Long> ddmStructureIds)
+		throws com.liferay.portal.kernel.exception.PortalException {
 		getService().addDDMStructureLinks(fileEntryTypeId, ddmStructureIds);
 	}
 

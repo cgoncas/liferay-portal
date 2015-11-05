@@ -59,7 +59,8 @@ public interface DDMStructureLinkLocalService extends BaseLocalService,
 		com.liferay.dynamic.data.mapping.model.DDMStructureLink ddmStructureLink);
 
 	public com.liferay.dynamic.data.mapping.model.DDMStructureLink addStructureLink(
-		long classNameId, long classPK, long structureId);
+		long classNameId, long classPK, long structureId)
+		throws PortalException;
 
 	/**
 	* Creates a new d d m structure link with the primary key. Does not add the d d m structure link to the database.

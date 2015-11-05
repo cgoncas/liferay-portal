@@ -48,7 +48,8 @@ public class DDMStructureLinkLocalServiceWrapper
 
 	@Override
 	public com.liferay.dynamic.data.mapping.model.DDMStructureLink addStructureLink(
-		long classNameId, long classPK, long structureId) {
+		long classNameId, long classPK, long structureId)
+		throws com.liferay.portal.kernel.exception.PortalException {
 		return _ddmStructureLinkLocalService.addStructureLink(classNameId,
 			classPK, structureId);
 	}

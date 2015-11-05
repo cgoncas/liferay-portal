@@ -55,6 +55,7 @@ public class PasswordPolicyRelLocalServiceImpl
 		passwordPolicyRel.setPasswordPolicyId(passwordPolicyId);
 		passwordPolicyRel.setClassNameId(classNameId);
 		passwordPolicyRel.setClassPK(classPK);
+		passwordPolicyRel.setCompanyId(passwordPolicyRel.getCompanyId());
 
 		passwordPolicyRelPersistence.update(passwordPolicyRel);
 

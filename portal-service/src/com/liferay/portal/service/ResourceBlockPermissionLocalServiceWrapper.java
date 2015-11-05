@@ -46,7 +46,8 @@ public class ResourceBlockPermissionLocalServiceWrapper
 
 	@Override
 	public void addResourceBlockPermissions(long resourceBlockId,
-		com.liferay.portal.model.ResourceBlockPermissionsContainer resourceBlockPermissionsContainer) {
+		com.liferay.portal.model.ResourceBlockPermissionsContainer resourceBlockPermissionsContainer)
+		throws com.liferay.portal.kernel.exception.PortalException {
 		_resourceBlockPermissionLocalService.addResourceBlockPermissions(resourceBlockId,
 			resourceBlockPermissionsContainer);
 	}

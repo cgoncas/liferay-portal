@@ -55,7 +55,8 @@ public class AssetTagStatsLocalServiceWrapper
 	*/
 	@Override
 	public com.liferay.portlet.asset.model.AssetTagStats addTagStats(
-		long tagId, long classNameId) {
+		long tagId, long classNameId)
+		throws com.liferay.portal.kernel.exception.PortalException {
 		return _assetTagStatsLocalService.addTagStats(tagId, classNameId);
 	}
 
@@ -343,7 +344,8 @@ public class AssetTagStatsLocalServiceWrapper
 	*/
 	@Override
 	public com.liferay.portlet.asset.model.AssetTagStats getTagStats(
-		long tagId, long classNameId) {
+		long tagId, long classNameId)
+		throws com.liferay.portal.kernel.exception.PortalException {
 		return _assetTagStatsLocalService.getTagStats(tagId, classNameId);
 	}
 

@@ -4715,8 +4715,8 @@ public class AssetEntryPersistenceImpl extends BasePersistenceImpl<AssetEntry>
 	 * @param assetCategoryPK the primary key of the asset category
 	 */
 	@Override
-	public void addAssetCategory(long pk, long assetCategoryPK) {
-		assetEntryToAssetCategoryTableMapper.addTableMapping(0, pk,
+	public void addAssetCategory(long companyId, long pk, long assetCategoryPK) {
+		assetEntryToAssetCategoryTableMapper.addTableMapping(companyId, pk,
 			assetCategoryPK);
 	}
 
@@ -4727,9 +4727,9 @@ public class AssetEntryPersistenceImpl extends BasePersistenceImpl<AssetEntry>
 	 * @param assetCategory the asset category
 	 */
 	@Override
-	public void addAssetCategory(long pk,
+	public void addAssetCategory(long companyId, long pk,
 		com.liferay.portlet.asset.model.AssetCategory assetCategory) {
-		assetEntryToAssetCategoryTableMapper.addTableMapping(0, pk,
+		assetEntryToAssetCategoryTableMapper.addTableMapping(companyId, pk,
 			assetCategory.getPrimaryKey());
 	}
 
@@ -4740,9 +4740,10 @@ public class AssetEntryPersistenceImpl extends BasePersistenceImpl<AssetEntry>
 	 * @param assetCategoryPKs the primary keys of the asset categories
 	 */
 	@Override
-	public void addAssetCategories(long pk, long[] assetCategoryPKs) {
+	public void addAssetCategories(long companyId, long pk,
+		long[] assetCategoryPKs) {
 		for (long assetCategoryPK : assetCategoryPKs) {
-			assetEntryToAssetCategoryTableMapper.addTableMapping(0, pk,
+			assetEntryToAssetCategoryTableMapper.addTableMapping(companyId, pk,
 				assetCategoryPK);
 		}
 	}
@@ -4754,10 +4755,10 @@ public class AssetEntryPersistenceImpl extends BasePersistenceImpl<AssetEntry>
 	 * @param assetCategories the asset categories
 	 */
 	@Override
-	public void addAssetCategories(long pk,
+	public void addAssetCategories(long companyId, long pk,
 		List<com.liferay.portlet.asset.model.AssetCategory> assetCategories) {
 		for (com.liferay.portlet.asset.model.AssetCategory assetCategory : assetCategories) {
-			assetEntryToAssetCategoryTableMapper.addTableMapping(0, pk,
+			assetEntryToAssetCategoryTableMapper.addTableMapping(companyId, pk,
 				assetCategory.getPrimaryKey());
 		}
 	}
@@ -4834,7 +4835,8 @@ public class AssetEntryPersistenceImpl extends BasePersistenceImpl<AssetEntry>
 	 * @param assetCategoryPKs the primary keys of the asset categories to be associated with the asset entry
 	 */
 	@Override
-	public void setAssetCategories(long pk, long[] assetCategoryPKs) {
+	public void setAssetCategories(long companyId, long pk,
+		long[] assetCategoryPKs) {
 		Set<Long> newAssetCategoryPKsSet = SetUtil.fromArray(assetCategoryPKs);
 		Set<Long> oldAssetCategoryPKsSet = SetUtil.fromArray(assetEntryToAssetCategoryTableMapper.getRightPrimaryKeys(
 					0, pk));
@@ -4851,7 +4853,7 @@ public class AssetEntryPersistenceImpl extends BasePersistenceImpl<AssetEntry>
 		newAssetCategoryPKsSet.removeAll(oldAssetCategoryPKsSet);
 
 		for (long newAssetCategoryPK : newAssetCategoryPKsSet) {
-			assetEntryToAssetCategoryTableMapper.addTableMapping(0, pk,
+			assetEntryToAssetCategoryTableMapper.addTableMapping(companyId, pk,
 				newAssetCategoryPK);
 		}
 	}
@@ -4993,8 +4995,9 @@ public class AssetEntryPersistenceImpl extends BasePersistenceImpl<AssetEntry>
 	 * @param assetTagPK the primary key of the asset tag
 	 */
 	@Override
-	public void addAssetTag(long pk, long assetTagPK) {
-		assetEntryToAssetTagTableMapper.addTableMapping(0, pk, assetTagPK);
+	public void addAssetTag(long companyId, long pk, long assetTagPK) {
+		assetEntryToAssetTagTableMapper.addTableMapping(companyId, pk,
+			assetTagPK);
 	}
 
 	/**
@@ -5004,9 +5007,9 @@ public class AssetEntryPersistenceImpl extends BasePersistenceImpl<AssetEntry>
 	 * @param assetTag the asset tag
 	 */
 	@Override
-	public void addAssetTag(long pk,
+	public void addAssetTag(long companyId, long pk,
 		com.liferay.portlet.asset.model.AssetTag assetTag) {
-		assetEntryToAssetTagTableMapper.addTableMapping(0, pk,
+		assetEntryToAssetTagTableMapper.addTableMapping(companyId, pk,
 			assetTag.getPrimaryKey());
 	}
 
@@ -5017,9 +5020,10 @@ public class AssetEntryPersistenceImpl extends BasePersistenceImpl<AssetEntry>
 	 * @param assetTagPKs the primary keys of the asset tags
 	 */
 	@Override
-	public void addAssetTags(long pk, long[] assetTagPKs) {
+	public void addAssetTags(long companyId, long pk, long[] assetTagPKs) {
 		for (long assetTagPK : assetTagPKs) {
-			assetEntryToAssetTagTableMapper.addTableMapping(0, pk, assetTagPK);
+			assetEntryToAssetTagTableMapper.addTableMapping(companyId, pk,
+				assetTagPK);
 		}
 	}
 
@@ -5030,10 +5034,10 @@ public class AssetEntryPersistenceImpl extends BasePersistenceImpl<AssetEntry>
 	 * @param assetTags the asset tags
 	 */
 	@Override
-	public void addAssetTags(long pk,
+	public void addAssetTags(long companyId, long pk,
 		List<com.liferay.portlet.asset.model.AssetTag> assetTags) {
 		for (com.liferay.portlet.asset.model.AssetTag assetTag : assetTags) {
-			assetEntryToAssetTagTableMapper.addTableMapping(0, pk,
+			assetEntryToAssetTagTableMapper.addTableMapping(companyId, pk,
 				assetTag.getPrimaryKey());
 		}
 	}
@@ -5107,7 +5111,7 @@ public class AssetEntryPersistenceImpl extends BasePersistenceImpl<AssetEntry>
 	 * @param assetTagPKs the primary keys of the asset tags to be associated with the asset entry
 	 */
 	@Override
-	public void setAssetTags(long pk, long[] assetTagPKs) {
+	public void setAssetTags(long companyId, long pk, long[] assetTagPKs) {
 		Set<Long> newAssetTagPKsSet = SetUtil.fromArray(assetTagPKs);
 		Set<Long> oldAssetTagPKsSet = SetUtil.fromArray(assetEntryToAssetTagTableMapper.getRightPrimaryKeys(
 					0, pk));
@@ -5124,7 +5128,8 @@ public class AssetEntryPersistenceImpl extends BasePersistenceImpl<AssetEntry>
 		newAssetTagPKsSet.removeAll(oldAssetTagPKsSet);
 
 		for (long newAssetTagPK : newAssetTagPKsSet) {
-			assetEntryToAssetTagTableMapper.addTableMapping(0, pk, newAssetTagPK);
+			assetEntryToAssetTagTableMapper.addTableMapping(companyId, pk,
+				newAssetTagPK);
 		}
 	}
 

@@ -66,11 +66,12 @@ import java.rmi.RemoteException;
 @ProviderType
 public class SCLicenseServiceSoap {
 	public static com.liferay.portlet.softwarecatalog.model.SCLicenseSoap addLicense(
-		java.lang.String name, java.lang.String url, boolean openSource,
-		boolean active, boolean recommended) throws RemoteException {
+		long companyId, java.lang.String name, java.lang.String url,
+		boolean openSource, boolean active, boolean recommended)
+		throws RemoteException {
 		try {
-			com.liferay.portlet.softwarecatalog.model.SCLicense returnValue = SCLicenseServiceUtil.addLicense(name,
-					url, openSource, active, recommended);
+			com.liferay.portlet.softwarecatalog.model.SCLicense returnValue = SCLicenseServiceUtil.addLicense(companyId,
+					name, url, openSource, active, recommended);
 
 			return com.liferay.portlet.softwarecatalog.model.SCLicenseSoap.toSoapModel(returnValue);
 		}

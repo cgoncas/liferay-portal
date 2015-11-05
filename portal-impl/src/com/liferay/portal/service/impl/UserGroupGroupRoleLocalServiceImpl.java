@@ -33,7 +33,9 @@ public class UserGroupGroupRoleLocalServiceImpl
 
 	@Override
 	public void addUserGroupGroupRoles(
-		long userGroupId, long groupId, long[] roleIds) {
+		long userGroupId, long groupId, long[] roleIds) throws PortalException {
+
+		UserGroup userGroup = userGroupLocalService.getUserGroup(userGroupId);
 
 		for (long roleId : roleIds) {
 			UserGroupGroupRolePK pk = new UserGroupGroupRolePK(
@@ -45,6 +47,8 @@ public class UserGroupGroupRoleLocalServiceImpl
 			if (userGroupGroupRole == null) {
 				userGroupGroupRole = userGroupGroupRolePersistence.create(pk);
 
+				userGroupGroupRole.setCompanyId(userGroup.getCompanyId());
+
 				userGroupGroupRolePersistence.update(userGroupGroupRole);
 			}
 		}
@@ -54,7 +58,9 @@ public class UserGroupGroupRoleLocalServiceImpl
 
 	@Override
 	public void addUserGroupGroupRoles(
-		long[] userGroupIds, long groupId, long roleId) {
+		long[] userGroupIds, long groupId, long roleId) throws PortalException {
+
+		Role role = roleLocalService.getRole(roleId);
 
 		for (long userGroupId : userGroupIds) {
 			UserGroupGroupRolePK pk = new UserGroupGroupRolePK(
@@ -65,6 +71,8 @@ public class UserGroupGroupRoleLocalServiceImpl
 
 			if (userGroupGroupRole == null) {
 				userGroupGroupRole = userGroupGroupRolePersistence.create(pk);
+
+				userGroupGroupRole.setCompanyId(role.getCompanyId());
 
 				userGroupGroupRolePersistence.update(userGroupGroupRole);
 			}

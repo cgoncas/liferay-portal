@@ -49,7 +49,8 @@ public interface DLFileEntryTypeLocalService extends BaseLocalService,
 	 * Never modify or reference this interface directly. Always use {@link DLFileEntryTypeLocalServiceUtil} to access the document library file entry type local service. Add custom service methods to {@link com.liferay.portlet.documentlibrary.service.impl.DLFileEntryTypeLocalServiceImpl} and rerun ServiceBuilder to automatically copy the method declarations to this interface.
 	 */
 	public void addDDMStructureLinks(long fileEntryTypeId,
-		java.util.Set<java.lang.Long> ddmStructureIds);
+		java.util.Set<java.lang.Long> ddmStructureIds)
+		throws PortalException;
 
 	/**
 	* Adds the document library file entry type to the database. Also notifies the appropriate model listeners.

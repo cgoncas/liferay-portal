@@ -1300,8 +1300,8 @@ public class ${entity.name}PersistenceImpl extends BasePersistenceImpl<${entity.
 				 * @param ${tempEntity.varName}PK the primary key of the ${tempEntity.humanName}
 				 */
 				@Override
-				public void add${tempEntity.name}(${entity.PKClassName} pk, ${tempEntity.PKClassName} ${tempEntity.varName}PK) {
-					${entity.varName}To${tempEntity.name}TableMapper.addTableMapping(0, pk, ${tempEntity.varName}PK);
+				public void add${tempEntity.name}(long companyId, ${entity.PKClassName} pk, ${tempEntity.PKClassName} ${tempEntity.varName}PK) {
+					${entity.varName}To${tempEntity.name}TableMapper.addTableMapping(companyId, pk, ${tempEntity.varName}PK);
 				}
 
 				/**
@@ -1311,8 +1311,8 @@ public class ${entity.name}PersistenceImpl extends BasePersistenceImpl<${entity.
 				 * @param ${tempEntity.varName} the ${tempEntity.humanName}
 				 */
 				@Override
-				public void add${tempEntity.name}(${entity.PKClassName} pk, ${tempEntity.packagePath}.model.${tempEntity.name} ${tempEntity.varName}) {
-					${entity.varName}To${tempEntity.name}TableMapper.addTableMapping(0, pk, ${tempEntity.varName}.getPrimaryKey());
+				public void add${tempEntity.name}(long companyId, ${entity.PKClassName} pk, ${tempEntity.packagePath}.model.${tempEntity.name} ${tempEntity.varName}) {
+					${entity.varName}To${tempEntity.name}TableMapper.addTableMapping(companyId, pk, ${tempEntity.varName}.getPrimaryKey());
 				}
 
 				/**
@@ -1322,9 +1322,9 @@ public class ${entity.name}PersistenceImpl extends BasePersistenceImpl<${entity.
 				 * @param ${tempEntity.varName}PKs the primary keys of the ${tempEntity.humanNames}
 				 */
 				@Override
-				public void add${tempEntity.names}(${entity.PKClassName} pk, ${tempEntity.PKClassName}[] ${tempEntity.varName}PKs) {
+				public void add${tempEntity.names}(long companyId, ${entity.PKClassName} pk, ${tempEntity.PKClassName}[] ${tempEntity.varName}PKs) {
 					for (${tempEntity.PKClassName} ${tempEntity.varName}PK : ${tempEntity.varName}PKs) {
-						${entity.varName}To${tempEntity.name}TableMapper.addTableMapping(0, pk, ${tempEntity.varName}PK);
+						${entity.varName}To${tempEntity.name}TableMapper.addTableMapping(companyId, pk, ${tempEntity.varName}PK);
 					}
 				}
 
@@ -1335,9 +1335,9 @@ public class ${entity.name}PersistenceImpl extends BasePersistenceImpl<${entity.
 				 * @param ${tempEntity.varNames} the ${tempEntity.humanNames}
 				 */
 				@Override
-				public void add${tempEntity.names}(${entity.PKClassName} pk, List<${tempEntity.packagePath}.model.${tempEntity.name}> ${tempEntity.varNames}) {
+				public void add${tempEntity.names}(long companyId, ${entity.PKClassName} pk, List<${tempEntity.packagePath}.model.${tempEntity.name}> ${tempEntity.varNames}) {
 					for (${tempEntity.packagePath}.model.${tempEntity.name} ${tempEntity.varName} : ${tempEntity.varNames}) {
-						${entity.varName}To${tempEntity.name}TableMapper.addTableMapping(0, pk, ${tempEntity.varName}.getPrimaryKey());
+						${entity.varName}To${tempEntity.name}TableMapper.addTableMapping(companyId, pk, ${tempEntity.varName}.getPrimaryKey());
 					}
 				}
 
@@ -1406,7 +1406,7 @@ public class ${entity.name}PersistenceImpl extends BasePersistenceImpl<${entity.
 				 * @param ${tempEntity.varName}PKs the primary keys of the ${tempEntity.humanNames} to be associated with the ${entity.humanName}
 				 */
 				@Override
-				public void set${tempEntity.names}(${entity.PKClassName} pk, ${tempEntity.PKClassName}[] ${tempEntity.varName}PKs) {
+				public void set${tempEntity.names}(long companyId, ${entity.PKClassName} pk, ${tempEntity.PKClassName}[] ${tempEntity.varName}PKs) {
 					Set<Long> new${tempEntity.name}PKsSet = SetUtil.fromArray(${tempEntity.varName}PKs);
 					Set<Long> old${tempEntity.name}PKsSet = SetUtil.fromArray(${entity.varName}To${tempEntity.name}TableMapper.getRightPrimaryKeys(0, pk));
 
@@ -1421,7 +1421,7 @@ public class ${entity.name}PersistenceImpl extends BasePersistenceImpl<${entity.
 					new${tempEntity.name}PKsSet.removeAll(old${tempEntity.name}PKsSet);
 
 					for (long new${tempEntity.name}PK :new${tempEntity.name}PKsSet) {
-						${entity.varName}To${tempEntity.name}TableMapper.addTableMapping(0, pk, new${tempEntity.name}PK);
+						${entity.varName}To${tempEntity.name}TableMapper.addTableMapping(companyId, pk, new${tempEntity.name}PK);
 					}
 				}
 

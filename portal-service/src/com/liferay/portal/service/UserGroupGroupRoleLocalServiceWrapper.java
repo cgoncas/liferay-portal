@@ -46,14 +46,15 @@ public class UserGroupGroupRoleLocalServiceWrapper
 
 	@Override
 	public void addUserGroupGroupRoles(long userGroupId, long groupId,
-		long[] roleIds) {
+		long[] roleIds)
+		throws com.liferay.portal.kernel.exception.PortalException {
 		_userGroupGroupRoleLocalService.addUserGroupGroupRoles(userGroupId,
 			groupId, roleIds);
 	}
 
 	@Override
 	public void addUserGroupGroupRoles(long[] userGroupIds, long groupId,
-		long roleId) {
+		long roleId) throws com.liferay.portal.kernel.exception.PortalException {
 		_userGroupGroupRoleLocalService.addUserGroupGroupRoles(userGroupIds,
 			groupId, roleId);
 	}

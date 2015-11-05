@@ -49,7 +49,8 @@ public class DDMStorageLinkLocalServiceWrapper
 	@Override
 	public com.liferay.dynamic.data.mapping.model.DDMStorageLink addStorageLink(
 		long classNameId, long classPK, long structureId,
-		com.liferay.portal.service.ServiceContext serviceContext) {
+		com.liferay.portal.service.ServiceContext serviceContext)
+		throws com.liferay.portal.kernel.exception.PortalException {
 		return _ddmStorageLinkLocalService.addStorageLink(classNameId, classPK,
 			structureId, serviceContext);
 	}

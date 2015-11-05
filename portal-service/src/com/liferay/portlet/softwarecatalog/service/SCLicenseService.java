@@ -48,8 +48,9 @@ public interface SCLicenseService extends BaseService {
 	 * Never modify or reference this interface directly. Always use {@link SCLicenseServiceUtil} to access the s c license remote service. Add custom service methods to {@link com.liferay.portlet.softwarecatalog.service.impl.SCLicenseServiceImpl} and rerun ServiceBuilder to automatically copy the method declarations to this interface.
 	 */
 	public com.liferay.portlet.softwarecatalog.model.SCLicense addLicense(
-		java.lang.String name, java.lang.String url, boolean openSource,
-		boolean active, boolean recommended) throws PortalException;
+		long companyId, java.lang.String name, java.lang.String url,
+		boolean openSource, boolean active, boolean recommended)
+		throws PortalException;
 
 	public void deleteLicense(long licenseId) throws PortalException;
 

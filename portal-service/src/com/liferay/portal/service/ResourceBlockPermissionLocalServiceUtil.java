@@ -53,7 +53,8 @@ public class ResourceBlockPermissionLocalServiceUtil {
 	}
 
 	public static void addResourceBlockPermissions(long resourceBlockId,
-		com.liferay.portal.model.ResourceBlockPermissionsContainer resourceBlockPermissionsContainer) {
+		com.liferay.portal.model.ResourceBlockPermissionsContainer resourceBlockPermissionsContainer)
+		throws com.liferay.portal.kernel.exception.PortalException {
 		getService()
 			.addResourceBlockPermissions(resourceBlockId,
 			resourceBlockPermissionsContainer);

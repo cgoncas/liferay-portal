@@ -1180,8 +1180,8 @@ public class DLFileEntryTypeUtil {
 	* @param pk the primary key of the document library file entry type
 	* @param dlFolderPK the primary key of the document library folder
 	*/
-	public static void addDLFolder(long pk, long dlFolderPK) {
-		getPersistence().addDLFolder(pk, dlFolderPK);
+	public static void addDLFolder(long companyId, long pk, long dlFolderPK) {
+		getPersistence().addDLFolder(companyId, pk, dlFolderPK);
 	}
 
 	/**
@@ -1190,9 +1190,9 @@ public class DLFileEntryTypeUtil {
 	* @param pk the primary key of the document library file entry type
 	* @param dlFolder the document library folder
 	*/
-	public static void addDLFolder(long pk,
+	public static void addDLFolder(long companyId, long pk,
 		com.liferay.portlet.documentlibrary.model.DLFolder dlFolder) {
-		getPersistence().addDLFolder(pk, dlFolder);
+		getPersistence().addDLFolder(companyId, pk, dlFolder);
 	}
 
 	/**
@@ -1201,8 +1201,8 @@ public class DLFileEntryTypeUtil {
 	* @param pk the primary key of the document library file entry type
 	* @param dlFolderPKs the primary keys of the document library folders
 	*/
-	public static void addDLFolders(long pk, long[] dlFolderPKs) {
-		getPersistence().addDLFolders(pk, dlFolderPKs);
+	public static void addDLFolders(long companyId, long pk, long[] dlFolderPKs) {
+		getPersistence().addDLFolders(companyId, pk, dlFolderPKs);
 	}
 
 	/**
@@ -1211,9 +1211,9 @@ public class DLFileEntryTypeUtil {
 	* @param pk the primary key of the document library file entry type
 	* @param dlFolders the document library folders
 	*/
-	public static void addDLFolders(long pk,
+	public static void addDLFolders(long companyId, long pk,
 		List<com.liferay.portlet.documentlibrary.model.DLFolder> dlFolders) {
-		getPersistence().addDLFolders(pk, dlFolders);
+		getPersistence().addDLFolders(companyId, pk, dlFolders);
 	}
 
 	/**
@@ -1273,8 +1273,8 @@ public class DLFileEntryTypeUtil {
 	* @param pk the primary key of the document library file entry type
 	* @param dlFolderPKs the primary keys of the document library folders to be associated with the document library file entry type
 	*/
-	public static void setDLFolders(long pk, long[] dlFolderPKs) {
-		getPersistence().setDLFolders(pk, dlFolderPKs);
+	public static void setDLFolders(long companyId, long pk, long[] dlFolderPKs) {
+		getPersistence().setDLFolders(companyId, pk, dlFolderPKs);
 	}
 
 	/**

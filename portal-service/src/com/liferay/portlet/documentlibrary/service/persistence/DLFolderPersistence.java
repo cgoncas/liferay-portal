@@ -3202,7 +3202,8 @@ public interface DLFolderPersistence extends BasePersistence<DLFolder> {
 	* @param pk the primary key of the document library folder
 	* @param dlFileEntryTypePK the primary key of the document library file entry type
 	*/
-	public void addDLFileEntryType(long pk, long dlFileEntryTypePK);
+	public void addDLFileEntryType(long companyId, long pk,
+		long dlFileEntryTypePK);
 
 	/**
 	* Adds an association between the document library folder and the document library file entry type. Also notifies the appropriate model listeners and clears the mapping table finder cache.
@@ -3210,7 +3211,7 @@ public interface DLFolderPersistence extends BasePersistence<DLFolder> {
 	* @param pk the primary key of the document library folder
 	* @param dlFileEntryType the document library file entry type
 	*/
-	public void addDLFileEntryType(long pk,
+	public void addDLFileEntryType(long companyId, long pk,
 		com.liferay.portlet.documentlibrary.model.DLFileEntryType dlFileEntryType);
 
 	/**
@@ -3219,7 +3220,8 @@ public interface DLFolderPersistence extends BasePersistence<DLFolder> {
 	* @param pk the primary key of the document library folder
 	* @param dlFileEntryTypePKs the primary keys of the document library file entry types
 	*/
-	public void addDLFileEntryTypes(long pk, long[] dlFileEntryTypePKs);
+	public void addDLFileEntryTypes(long companyId, long pk,
+		long[] dlFileEntryTypePKs);
 
 	/**
 	* Adds an association between the document library folder and the document library file entry types. Also notifies the appropriate model listeners and clears the mapping table finder cache.
@@ -3227,7 +3229,7 @@ public interface DLFolderPersistence extends BasePersistence<DLFolder> {
 	* @param pk the primary key of the document library folder
 	* @param dlFileEntryTypes the document library file entry types
 	*/
-	public void addDLFileEntryTypes(long pk,
+	public void addDLFileEntryTypes(long companyId, long pk,
 		java.util.List<com.liferay.portlet.documentlibrary.model.DLFileEntryType> dlFileEntryTypes);
 
 	/**
@@ -3277,7 +3279,8 @@ public interface DLFolderPersistence extends BasePersistence<DLFolder> {
 	* @param pk the primary key of the document library folder
 	* @param dlFileEntryTypePKs the primary keys of the document library file entry types to be associated with the document library folder
 	*/
-	public void setDLFileEntryTypes(long pk, long[] dlFileEntryTypePKs);
+	public void setDLFileEntryTypes(long companyId, long pk,
+		long[] dlFileEntryTypePKs);
 
 	/**
 	* Sets the document library file entry types associated with the document library folder, removing and adding associations as necessary. Also notifies the appropriate model listeners and clears the mapping table finder cache.

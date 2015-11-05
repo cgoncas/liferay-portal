@@ -9481,8 +9481,8 @@ public class RolePersistenceImpl extends BasePersistenceImpl<Role>
 	 * @param groupPK the primary key of the group
 	 */
 	@Override
-	public void addGroup(long pk, long groupPK) {
-		roleToGroupTableMapper.addTableMapping(0, pk, groupPK);
+	public void addGroup(long companyId, long pk, long groupPK) {
+		roleToGroupTableMapper.addTableMapping(companyId, pk, groupPK);
 	}
 
 	/**
@@ -9492,8 +9492,10 @@ public class RolePersistenceImpl extends BasePersistenceImpl<Role>
 	 * @param group the group
 	 */
 	@Override
-	public void addGroup(long pk, com.liferay.portal.model.Group group) {
-		roleToGroupTableMapper.addTableMapping(0, pk, group.getPrimaryKey());
+	public void addGroup(long companyId, long pk,
+		com.liferay.portal.model.Group group) {
+		roleToGroupTableMapper.addTableMapping(companyId, pk,
+			group.getPrimaryKey());
 	}
 
 	/**
@@ -9503,9 +9505,9 @@ public class RolePersistenceImpl extends BasePersistenceImpl<Role>
 	 * @param groupPKs the primary keys of the groups
 	 */
 	@Override
-	public void addGroups(long pk, long[] groupPKs) {
+	public void addGroups(long companyId, long pk, long[] groupPKs) {
 		for (long groupPK : groupPKs) {
-			roleToGroupTableMapper.addTableMapping(0, pk, groupPK);
+			roleToGroupTableMapper.addTableMapping(companyId, pk, groupPK);
 		}
 	}
 
@@ -9516,9 +9518,11 @@ public class RolePersistenceImpl extends BasePersistenceImpl<Role>
 	 * @param groups the groups
 	 */
 	@Override
-	public void addGroups(long pk, List<com.liferay.portal.model.Group> groups) {
+	public void addGroups(long companyId, long pk,
+		List<com.liferay.portal.model.Group> groups) {
 		for (com.liferay.portal.model.Group group : groups) {
-			roleToGroupTableMapper.addTableMapping(0, pk, group.getPrimaryKey());
+			roleToGroupTableMapper.addTableMapping(companyId, pk,
+				group.getPrimaryKey());
 		}
 	}
 
@@ -9589,7 +9593,7 @@ public class RolePersistenceImpl extends BasePersistenceImpl<Role>
 	 * @param groupPKs the primary keys of the groups to be associated with the role
 	 */
 	@Override
-	public void setGroups(long pk, long[] groupPKs) {
+	public void setGroups(long companyId, long pk, long[] groupPKs) {
 		Set<Long> newGroupPKsSet = SetUtil.fromArray(groupPKs);
 		Set<Long> oldGroupPKsSet = SetUtil.fromArray(roleToGroupTableMapper.getRightPrimaryKeys(
 					0, pk));
@@ -9605,7 +9609,7 @@ public class RolePersistenceImpl extends BasePersistenceImpl<Role>
 		newGroupPKsSet.removeAll(oldGroupPKsSet);
 
 		for (long newGroupPK : newGroupPKsSet) {
-			roleToGroupTableMapper.addTableMapping(0, pk, newGroupPK);
+			roleToGroupTableMapper.addTableMapping(companyId, pk, newGroupPK);
 		}
 	}
 
@@ -9744,8 +9748,8 @@ public class RolePersistenceImpl extends BasePersistenceImpl<Role>
 	 * @param userPK the primary key of the user
 	 */
 	@Override
-	public void addUser(long pk, long userPK) {
-		roleToUserTableMapper.addTableMapping(0, pk, userPK);
+	public void addUser(long companyId, long pk, long userPK) {
+		roleToUserTableMapper.addTableMapping(companyId, pk, userPK);
 	}
 
 	/**
@@ -9755,8 +9759,10 @@ public class RolePersistenceImpl extends BasePersistenceImpl<Role>
 	 * @param user the user
 	 */
 	@Override
-	public void addUser(long pk, com.liferay.portal.model.User user) {
-		roleToUserTableMapper.addTableMapping(0, pk, user.getPrimaryKey());
+	public void addUser(long companyId, long pk,
+		com.liferay.portal.model.User user) {
+		roleToUserTableMapper.addTableMapping(companyId, pk,
+			user.getPrimaryKey());
 	}
 
 	/**
@@ -9766,9 +9772,9 @@ public class RolePersistenceImpl extends BasePersistenceImpl<Role>
 	 * @param userPKs the primary keys of the users
 	 */
 	@Override
-	public void addUsers(long pk, long[] userPKs) {
+	public void addUsers(long companyId, long pk, long[] userPKs) {
 		for (long userPK : userPKs) {
-			roleToUserTableMapper.addTableMapping(0, pk, userPK);
+			roleToUserTableMapper.addTableMapping(companyId, pk, userPK);
 		}
 	}
 
@@ -9779,9 +9785,11 @@ public class RolePersistenceImpl extends BasePersistenceImpl<Role>
 	 * @param users the users
 	 */
 	@Override
-	public void addUsers(long pk, List<com.liferay.portal.model.User> users) {
+	public void addUsers(long companyId, long pk,
+		List<com.liferay.portal.model.User> users) {
 		for (com.liferay.portal.model.User user : users) {
-			roleToUserTableMapper.addTableMapping(0, pk, user.getPrimaryKey());
+			roleToUserTableMapper.addTableMapping(companyId, pk,
+				user.getPrimaryKey());
 		}
 	}
 
@@ -9850,7 +9858,7 @@ public class RolePersistenceImpl extends BasePersistenceImpl<Role>
 	 * @param userPKs the primary keys of the users to be associated with the role
 	 */
 	@Override
-	public void setUsers(long pk, long[] userPKs) {
+	public void setUsers(long companyId, long pk, long[] userPKs) {
 		Set<Long> newUserPKsSet = SetUtil.fromArray(userPKs);
 		Set<Long> oldUserPKsSet = SetUtil.fromArray(roleToUserTableMapper.getRightPrimaryKeys(
 					0, pk));
@@ -9866,7 +9874,7 @@ public class RolePersistenceImpl extends BasePersistenceImpl<Role>
 		newUserPKsSet.removeAll(oldUserPKsSet);
 
 		for (long newUserPK : newUserPKsSet) {
-			roleToUserTableMapper.addTableMapping(0, pk, newUserPK);
+			roleToUserTableMapper.addTableMapping(companyId, pk, newUserPK);
 		}
 	}
 

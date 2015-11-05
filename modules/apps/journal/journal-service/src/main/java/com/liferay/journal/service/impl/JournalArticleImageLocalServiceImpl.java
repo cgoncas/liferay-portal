@@ -21,6 +21,7 @@ import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 
+import com.liferay.portal.model.Group;
 import java.util.List;
 
 /**
@@ -47,6 +48,9 @@ public class JournalArticleImageLocalServiceImpl
 			articleImage = journalArticleImagePersistence.create(
 				articleImageId);
 
+			Group group = groupLocalService.getGroup(groupId);
+
+			articleImage.setCompanyId(group.getCompanyId());
 			articleImage.setGroupId(groupId);
 			articleImage.setArticleId(articleId);
 			articleImage.setVersion(version);
@@ -123,8 +127,9 @@ public class JournalArticleImageLocalServiceImpl
 
 	@Override
 	public long getArticleImageId(
-		long groupId, String articleId, double version, String elInstanceId,
-		String elName, String languageId) {
+			long groupId, String articleId, double version, String elInstanceId,
+			String elName, String languageId)
+		throws PortalException {
 
 		return getArticleImageId(
 			groupId, articleId, version, elInstanceId, elName, languageId,
@@ -133,8 +138,9 @@ public class JournalArticleImageLocalServiceImpl
 
 	@Override
 	public long getArticleImageId(
-		long groupId, String articleId, double version, String elInstanceId,
-		String elName, String languageId, boolean tempImage) {
+			long groupId, String articleId, double version, String elInstanceId,
+			String elName, String languageId, boolean tempImage)
+		throws PortalException {
 
 		JournalArticleImage articleImage =
 			journalArticleImagePersistence.fetchByG_A_V_E_E_L(
@@ -145,6 +151,10 @@ public class JournalArticleImageLocalServiceImpl
 
 			articleImage = journalArticleImagePersistence.create(
 				articleImageId);
+
+			Group group = groupLocalService.getGroup(groupId);
+
+			articleImage.setCompanyId(group.getCompanyId());
 
 			articleImage.setGroupId(groupId);
 			articleImage.setArticleId(articleId);

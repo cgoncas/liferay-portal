@@ -645,7 +645,7 @@ public interface SCLicensePersistence extends BasePersistence<SCLicense> {
 	* @param pk the primary key of the s c license
 	* @param scProductEntryPK the primary key of the s c product entry
 	*/
-	public void addSCProductEntry(long pk, long scProductEntryPK);
+	public void addSCProductEntry(long companyId, long pk, long scProductEntryPK);
 
 	/**
 	* Adds an association between the s c license and the s c product entry. Also notifies the appropriate model listeners and clears the mapping table finder cache.
@@ -653,7 +653,7 @@ public interface SCLicensePersistence extends BasePersistence<SCLicense> {
 	* @param pk the primary key of the s c license
 	* @param scProductEntry the s c product entry
 	*/
-	public void addSCProductEntry(long pk,
+	public void addSCProductEntry(long companyId, long pk,
 		com.liferay.portlet.softwarecatalog.model.SCProductEntry scProductEntry);
 
 	/**
@@ -662,7 +662,8 @@ public interface SCLicensePersistence extends BasePersistence<SCLicense> {
 	* @param pk the primary key of the s c license
 	* @param scProductEntryPKs the primary keys of the s c product entries
 	*/
-	public void addSCProductEntries(long pk, long[] scProductEntryPKs);
+	public void addSCProductEntries(long companyId, long pk,
+		long[] scProductEntryPKs);
 
 	/**
 	* Adds an association between the s c license and the s c product entries. Also notifies the appropriate model listeners and clears the mapping table finder cache.
@@ -670,7 +671,7 @@ public interface SCLicensePersistence extends BasePersistence<SCLicense> {
 	* @param pk the primary key of the s c license
 	* @param scProductEntries the s c product entries
 	*/
-	public void addSCProductEntries(long pk,
+	public void addSCProductEntries(long companyId, long pk,
 		java.util.List<com.liferay.portlet.softwarecatalog.model.SCProductEntry> scProductEntries);
 
 	/**
@@ -720,7 +721,8 @@ public interface SCLicensePersistence extends BasePersistence<SCLicense> {
 	* @param pk the primary key of the s c license
 	* @param scProductEntryPKs the primary keys of the s c product entries to be associated with the s c license
 	*/
-	public void setSCProductEntries(long pk, long[] scProductEntryPKs);
+	public void setSCProductEntries(long companyId, long pk,
+		long[] scProductEntryPKs);
 
 	/**
 	* Sets the s c product entries associated with the s c license, removing and adding associations as necessary. Also notifies the appropriate model listeners and clears the mapping table finder cache.

@@ -15,6 +15,7 @@
 package com.liferay.portal.service.impl;
 
 import com.liferay.portal.kernel.exception.PortalException;
+import com.liferay.portal.model.User;
 import com.liferay.portal.model.UserIdMapper;
 import com.liferay.portal.service.base.UserIdMapperLocalServiceBaseImpl;
 
@@ -53,7 +54,8 @@ public class UserIdMapperLocalServiceImpl
 
 	@Override
 	public UserIdMapper updateUserIdMapper(
-		long userId, String type, String description, String externalUserId) {
+			long userId, String type, String description, String externalUserId)
+		throws PortalException {
 
 		UserIdMapper userIdMapper = userIdMapperPersistence.fetchByU_T(
 			userId, type);
@@ -62,6 +64,10 @@ public class UserIdMapperLocalServiceImpl
 			long userIdMapperId = counterLocalService.increment();
 
 			userIdMapper = userIdMapperPersistence.create(userIdMapperId);
+
+			User user = userLocalService.getUser(userId);
+
+			userIdMapper.setCompanyId(user.getCompanyId());
 		}
 
 		userIdMapper.setUserId(userId);

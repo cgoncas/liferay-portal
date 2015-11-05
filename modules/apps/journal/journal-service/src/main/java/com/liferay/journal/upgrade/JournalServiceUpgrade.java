@@ -69,7 +69,6 @@ public class JournalServiceUpgrade implements UpgradeStepRegistrator {
 								dbProcessContext.getOutputStream(), true));
 					}
 				}
-
 			});
 	}
 

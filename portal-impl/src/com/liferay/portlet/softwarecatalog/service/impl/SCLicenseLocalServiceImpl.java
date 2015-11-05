@@ -31,8 +31,8 @@ public class SCLicenseLocalServiceImpl extends SCLicenseLocalServiceBaseImpl {
 
 	@Override
 	public SCLicense addLicense(
-			String name, String url, boolean openSource, boolean active,
-			boolean recommended)
+			long companyId, String name, String url, boolean openSource,
+			boolean active, boolean recommended)
 		throws PortalException {
 
 		validate(name);
@@ -41,6 +41,7 @@ public class SCLicenseLocalServiceImpl extends SCLicenseLocalServiceBaseImpl {
 
 		SCLicense license = scLicensePersistence.create(licenseId);
 
+		license.setCompanyId(companyId);
 		license.setName(name);
 		license.setUrl(url);
 		license.setOpenSource(openSource);

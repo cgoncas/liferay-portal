@@ -3232,9 +3232,10 @@ public class SCFrameworkVersionPersistenceImpl extends BasePersistenceImpl<SCFra
 	 * @param scProductVersionPK the primary key of the s c product version
 	 */
 	@Override
-	public void addSCProductVersion(long pk, long scProductVersionPK) {
-		scFrameworkVersionToSCProductVersionTableMapper.addTableMapping(0, pk,
-			scProductVersionPK);
+	public void addSCProductVersion(long companyId, long pk,
+		long scProductVersionPK) {
+		scFrameworkVersionToSCProductVersionTableMapper.addTableMapping(companyId,
+			pk, scProductVersionPK);
 	}
 
 	/**
@@ -3244,10 +3245,10 @@ public class SCFrameworkVersionPersistenceImpl extends BasePersistenceImpl<SCFra
 	 * @param scProductVersion the s c product version
 	 */
 	@Override
-	public void addSCProductVersion(long pk,
+	public void addSCProductVersion(long companyId, long pk,
 		com.liferay.portlet.softwarecatalog.model.SCProductVersion scProductVersion) {
-		scFrameworkVersionToSCProductVersionTableMapper.addTableMapping(0, pk,
-			scProductVersion.getPrimaryKey());
+		scFrameworkVersionToSCProductVersionTableMapper.addTableMapping(companyId,
+			pk, scProductVersion.getPrimaryKey());
 	}
 
 	/**
@@ -3257,9 +3258,10 @@ public class SCFrameworkVersionPersistenceImpl extends BasePersistenceImpl<SCFra
 	 * @param scProductVersionPKs the primary keys of the s c product versions
 	 */
 	@Override
-	public void addSCProductVersions(long pk, long[] scProductVersionPKs) {
+	public void addSCProductVersions(long companyId, long pk,
+		long[] scProductVersionPKs) {
 		for (long scProductVersionPK : scProductVersionPKs) {
-			scFrameworkVersionToSCProductVersionTableMapper.addTableMapping(0,
+			scFrameworkVersionToSCProductVersionTableMapper.addTableMapping(companyId,
 				pk, scProductVersionPK);
 		}
 	}
@@ -3271,10 +3273,10 @@ public class SCFrameworkVersionPersistenceImpl extends BasePersistenceImpl<SCFra
 	 * @param scProductVersions the s c product versions
 	 */
 	@Override
-	public void addSCProductVersions(long pk,
+	public void addSCProductVersions(long companyId, long pk,
 		List<com.liferay.portlet.softwarecatalog.model.SCProductVersion> scProductVersions) {
 		for (com.liferay.portlet.softwarecatalog.model.SCProductVersion scProductVersion : scProductVersions) {
-			scFrameworkVersionToSCProductVersionTableMapper.addTableMapping(0,
+			scFrameworkVersionToSCProductVersionTableMapper.addTableMapping(companyId,
 				pk, scProductVersion.getPrimaryKey());
 		}
 	}
@@ -3351,7 +3353,8 @@ public class SCFrameworkVersionPersistenceImpl extends BasePersistenceImpl<SCFra
 	 * @param scProductVersionPKs the primary keys of the s c product versions to be associated with the s c framework version
 	 */
 	@Override
-	public void setSCProductVersions(long pk, long[] scProductVersionPKs) {
+	public void setSCProductVersions(long companyId, long pk,
+		long[] scProductVersionPKs) {
 		Set<Long> newSCProductVersionPKsSet = SetUtil.fromArray(scProductVersionPKs);
 		Set<Long> oldSCProductVersionPKsSet = SetUtil.fromArray(scFrameworkVersionToSCProductVersionTableMapper.getRightPrimaryKeys(
 					0, pk));
@@ -3368,7 +3371,7 @@ public class SCFrameworkVersionPersistenceImpl extends BasePersistenceImpl<SCFra
 		newSCProductVersionPKsSet.removeAll(oldSCProductVersionPKsSet);
 
 		for (long newSCProductVersionPK : newSCProductVersionPKsSet) {
-			scFrameworkVersionToSCProductVersionTableMapper.addTableMapping(0,
+			scFrameworkVersionToSCProductVersionTableMapper.addTableMapping(companyId,
 				pk, newSCProductVersionPK);
 		}
 	}

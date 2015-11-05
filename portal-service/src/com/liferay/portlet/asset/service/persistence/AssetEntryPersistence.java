@@ -1137,7 +1137,7 @@ public interface AssetEntryPersistence extends BasePersistence<AssetEntry> {
 	* @param pk the primary key of the asset entry
 	* @param assetCategoryPK the primary key of the asset category
 	*/
-	public void addAssetCategory(long pk, long assetCategoryPK);
+	public void addAssetCategory(long companyId, long pk, long assetCategoryPK);
 
 	/**
 	* Adds an association between the asset entry and the asset category. Also notifies the appropriate model listeners and clears the mapping table finder cache.
@@ -1145,7 +1145,7 @@ public interface AssetEntryPersistence extends BasePersistence<AssetEntry> {
 	* @param pk the primary key of the asset entry
 	* @param assetCategory the asset category
 	*/
-	public void addAssetCategory(long pk,
+	public void addAssetCategory(long companyId, long pk,
 		com.liferay.portlet.asset.model.AssetCategory assetCategory);
 
 	/**
@@ -1154,7 +1154,8 @@ public interface AssetEntryPersistence extends BasePersistence<AssetEntry> {
 	* @param pk the primary key of the asset entry
 	* @param assetCategoryPKs the primary keys of the asset categories
 	*/
-	public void addAssetCategories(long pk, long[] assetCategoryPKs);
+	public void addAssetCategories(long companyId, long pk,
+		long[] assetCategoryPKs);
 
 	/**
 	* Adds an association between the asset entry and the asset categories. Also notifies the appropriate model listeners and clears the mapping table finder cache.
@@ -1162,7 +1163,7 @@ public interface AssetEntryPersistence extends BasePersistence<AssetEntry> {
 	* @param pk the primary key of the asset entry
 	* @param assetCategories the asset categories
 	*/
-	public void addAssetCategories(long pk,
+	public void addAssetCategories(long companyId, long pk,
 		java.util.List<com.liferay.portlet.asset.model.AssetCategory> assetCategories);
 
 	/**
@@ -1212,7 +1213,8 @@ public interface AssetEntryPersistence extends BasePersistence<AssetEntry> {
 	* @param pk the primary key of the asset entry
 	* @param assetCategoryPKs the primary keys of the asset categories to be associated with the asset entry
 	*/
-	public void setAssetCategories(long pk, long[] assetCategoryPKs);
+	public void setAssetCategories(long companyId, long pk,
+		long[] assetCategoryPKs);
 
 	/**
 	* Sets the asset categories associated with the asset entry, removing and adding associations as necessary. Also notifies the appropriate model listeners and clears the mapping table finder cache.
@@ -1303,7 +1305,7 @@ public interface AssetEntryPersistence extends BasePersistence<AssetEntry> {
 	* @param pk the primary key of the asset entry
 	* @param assetTagPK the primary key of the asset tag
 	*/
-	public void addAssetTag(long pk, long assetTagPK);
+	public void addAssetTag(long companyId, long pk, long assetTagPK);
 
 	/**
 	* Adds an association between the asset entry and the asset tag. Also notifies the appropriate model listeners and clears the mapping table finder cache.
@@ -1311,7 +1313,7 @@ public interface AssetEntryPersistence extends BasePersistence<AssetEntry> {
 	* @param pk the primary key of the asset entry
 	* @param assetTag the asset tag
 	*/
-	public void addAssetTag(long pk,
+	public void addAssetTag(long companyId, long pk,
 		com.liferay.portlet.asset.model.AssetTag assetTag);
 
 	/**
@@ -1320,7 +1322,7 @@ public interface AssetEntryPersistence extends BasePersistence<AssetEntry> {
 	* @param pk the primary key of the asset entry
 	* @param assetTagPKs the primary keys of the asset tags
 	*/
-	public void addAssetTags(long pk, long[] assetTagPKs);
+	public void addAssetTags(long companyId, long pk, long[] assetTagPKs);
 
 	/**
 	* Adds an association between the asset entry and the asset tags. Also notifies the appropriate model listeners and clears the mapping table finder cache.
@@ -1328,7 +1330,7 @@ public interface AssetEntryPersistence extends BasePersistence<AssetEntry> {
 	* @param pk the primary key of the asset entry
 	* @param assetTags the asset tags
 	*/
-	public void addAssetTags(long pk,
+	public void addAssetTags(long companyId, long pk,
 		java.util.List<com.liferay.portlet.asset.model.AssetTag> assetTags);
 
 	/**
@@ -1378,7 +1380,7 @@ public interface AssetEntryPersistence extends BasePersistence<AssetEntry> {
 	* @param pk the primary key of the asset entry
 	* @param assetTagPKs the primary keys of the asset tags to be associated with the asset entry
 	*/
-	public void setAssetTags(long pk, long[] assetTagPKs);
+	public void setAssetTags(long companyId, long pk, long[] assetTagPKs);
 
 	/**
 	* Sets the asset tags associated with the asset entry, removing and adding associations as necessary. Also notifies the appropriate model listeners and clears the mapping table finder cache.

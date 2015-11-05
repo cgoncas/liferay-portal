@@ -50,7 +50,8 @@ public interface TrashVersionLocalService extends BaseLocalService,
 	public com.liferay.portlet.trash.model.TrashVersion addTrashVersion(
 		long trashEntryId, java.lang.String className, long classPK,
 		int status,
-		com.liferay.portal.kernel.util.UnicodeProperties typeSettingsProperties);
+		com.liferay.portal.kernel.util.UnicodeProperties typeSettingsProperties)
+		throws PortalException;
 
 	/**
 	* Adds the trash version to the database. Also notifies the appropriate model listeners.

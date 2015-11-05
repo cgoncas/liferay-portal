@@ -14,6 +14,7 @@
 
 package com.liferay.portal.poller;
 
+import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.json.JSONFactoryUtil;
 import com.liferay.portal.kernel.json.JSONObject;
 import com.liferay.portal.kernel.log.Log;
@@ -239,7 +240,9 @@ public class PollerRequestHandlerImpl
 		return pollerRequests;
 	}
 
-	protected JSONObject createPollerResponseHeader(PollerHeader pollerHeader) {
+	protected JSONObject createPollerResponseHeader(PollerHeader pollerHeader)
+		throws PortalException {
+
 		if (pollerHeader == null) {
 			return null;
 		}

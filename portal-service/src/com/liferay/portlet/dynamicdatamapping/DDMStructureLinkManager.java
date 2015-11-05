@@ -24,7 +24,8 @@ import java.util.List;
 public interface DDMStructureLinkManager {
 
 	public DDMStructureLink addStructureLink(
-		long classNameId, long classPK, long structureId);
+			long classNameId, long classPK, long structureId)
+		throws PortalException;
 
 	public void deleteStructureLink(
 			long classNameId, long classPK, long structureId)

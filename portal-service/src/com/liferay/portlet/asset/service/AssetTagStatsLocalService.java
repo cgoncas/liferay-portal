@@ -66,7 +66,7 @@ public interface AssetTagStatsLocalService extends BaseLocalService,
 	* @return the asset tag statistics instance
 	*/
 	public com.liferay.portlet.asset.model.AssetTagStats addTagStats(
-		long tagId, long classNameId);
+		long tagId, long classNameId) throws PortalException;
 
 	/**
 	* Creates a new asset tag stats with the primary key. Does not add the asset tag stats to the database.
@@ -291,7 +291,7 @@ public interface AssetTagStatsLocalService extends BaseLocalService,
 	*/
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public com.liferay.portlet.asset.model.AssetTagStats getTagStats(
-		long tagId, long classNameId);
+		long tagId, long classNameId) throws PortalException;
 
 	/**
 	* Updates the asset tag stats in the database or adds it if it does not yet exist. Also notifies the appropriate model listeners.

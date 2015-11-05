@@ -109,8 +109,7 @@ public class LiferaySyncCapability
 		}
 	}
 
-	protected void registerDLSyncEventCallback(
-		String event, FileEntry fileEntry) {
+	protected void registerDLSyncEventCallback(String event, FileEntry fileEntry) {
 
 		if (isStagingGroup(fileEntry.getGroupId()) ||
 			!(fileEntry instanceof LiferayFileEntry)) {
@@ -119,7 +118,8 @@ public class LiferaySyncCapability
 		}
 
 		registerDLSyncEventCallback(
-			event, DLSyncConstants.TYPE_FILE, fileEntry.getFileEntryId());
+			fileEntry.getCompanyId(), event, DLSyncConstants.TYPE_FILE,
+			fileEntry.getFileEntryId());
 	}
 
 	protected void registerDLSyncEventCallback(String event, Folder folder) {
@@ -130,14 +130,16 @@ public class LiferaySyncCapability
 		}
 
 		registerDLSyncEventCallback(
-			event, DLSyncConstants.TYPE_FOLDER, folder.getFolderId());
+			folder.getCompanyId(), event, DLSyncConstants.TYPE_FOLDER,
+			folder.getFolderId());
 	}
 
 	protected void registerDLSyncEventCallback(
-		final String event, final String type, final long typePK) {
+		final long companyId, final String event, final String type,
+		final long typePK) {
 
 		DLSyncEvent dlSyncEvent = _dlSyncEventLocalService.addDLSyncEvent(
-			event, type, typePK);
+			companyId, event, type, typePK);
 
 		final long modifiedTime = dlSyncEvent.getModifiedTime();
 

@@ -837,8 +837,9 @@ public class SCLicenseUtil {
 	* @param pk the primary key of the s c license
 	* @param scProductEntryPK the primary key of the s c product entry
 	*/
-	public static void addSCProductEntry(long pk, long scProductEntryPK) {
-		getPersistence().addSCProductEntry(pk, scProductEntryPK);
+	public static void addSCProductEntry(long companyId, long pk,
+		long scProductEntryPK) {
+		getPersistence().addSCProductEntry(companyId, pk, scProductEntryPK);
 	}
 
 	/**
@@ -847,9 +848,9 @@ public class SCLicenseUtil {
 	* @param pk the primary key of the s c license
 	* @param scProductEntry the s c product entry
 	*/
-	public static void addSCProductEntry(long pk,
+	public static void addSCProductEntry(long companyId, long pk,
 		com.liferay.portlet.softwarecatalog.model.SCProductEntry scProductEntry) {
-		getPersistence().addSCProductEntry(pk, scProductEntry);
+		getPersistence().addSCProductEntry(companyId, pk, scProductEntry);
 	}
 
 	/**
@@ -858,8 +859,9 @@ public class SCLicenseUtil {
 	* @param pk the primary key of the s c license
 	* @param scProductEntryPKs the primary keys of the s c product entries
 	*/
-	public static void addSCProductEntries(long pk, long[] scProductEntryPKs) {
-		getPersistence().addSCProductEntries(pk, scProductEntryPKs);
+	public static void addSCProductEntries(long companyId, long pk,
+		long[] scProductEntryPKs) {
+		getPersistence().addSCProductEntries(companyId, pk, scProductEntryPKs);
 	}
 
 	/**
@@ -868,9 +870,9 @@ public class SCLicenseUtil {
 	* @param pk the primary key of the s c license
 	* @param scProductEntries the s c product entries
 	*/
-	public static void addSCProductEntries(long pk,
+	public static void addSCProductEntries(long companyId, long pk,
 		List<com.liferay.portlet.softwarecatalog.model.SCProductEntry> scProductEntries) {
-		getPersistence().addSCProductEntries(pk, scProductEntries);
+		getPersistence().addSCProductEntries(companyId, pk, scProductEntries);
 	}
 
 	/**
@@ -930,8 +932,9 @@ public class SCLicenseUtil {
 	* @param pk the primary key of the s c license
 	* @param scProductEntryPKs the primary keys of the s c product entries to be associated with the s c license
 	*/
-	public static void setSCProductEntries(long pk, long[] scProductEntryPKs) {
-		getPersistence().setSCProductEntries(pk, scProductEntryPKs);
+	public static void setSCProductEntries(long companyId, long pk,
+		long[] scProductEntryPKs) {
+		getPersistence().setSCProductEntries(companyId, pk, scProductEntryPKs);
 	}
 
 	/**

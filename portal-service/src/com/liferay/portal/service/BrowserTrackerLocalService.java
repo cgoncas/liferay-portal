@@ -181,7 +181,7 @@ public interface BrowserTrackerLocalService extends BaseLocalService,
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public com.liferay.portal.model.BrowserTracker getBrowserTracker(
-		long userId, long browserKey);
+		long userId, long browserKey) throws PortalException;
 
 	/**
 	* Returns a range of all the browser trackers.
@@ -229,5 +229,5 @@ public interface BrowserTrackerLocalService extends BaseLocalService,
 		com.liferay.portal.model.BrowserTracker browserTracker);
 
 	public com.liferay.portal.model.BrowserTracker updateBrowserTracker(
-		long userId, long browserKey);
+		long userId, long browserKey) throws PortalException;
 }

@@ -53,7 +53,8 @@ public class MBStatsUserLocalServiceUtil {
 	}
 
 	public static com.liferay.portlet.messageboards.model.MBStatsUser addStatsUser(
-		long groupId, long userId) {
+		long groupId, long userId)
+		throws com.liferay.portal.kernel.exception.PortalException {
 		return getService().addStatsUser(groupId, userId);
 	}
 
@@ -273,7 +274,8 @@ public class MBStatsUserLocalServiceUtil {
 	}
 
 	public static com.liferay.portlet.messageboards.model.MBStatsUser getStatsUser(
-		long groupId, long userId) {
+		long groupId, long userId)
+		throws com.liferay.portal.kernel.exception.PortalException {
 		return getService().getStatsUser(groupId, userId);
 	}
 
@@ -305,17 +307,20 @@ public class MBStatsUserLocalServiceUtil {
 	}
 
 	public static com.liferay.portlet.messageboards.model.MBStatsUser updateStatsUser(
-		long groupId, long userId) {
+		long groupId, long userId)
+		throws com.liferay.portal.kernel.exception.PortalException {
 		return getService().updateStatsUser(groupId, userId);
 	}
 
 	public static com.liferay.portlet.messageboards.model.MBStatsUser updateStatsUser(
-		long groupId, long userId, java.util.Date lastPostDate) {
+		long groupId, long userId, java.util.Date lastPostDate)
+		throws com.liferay.portal.kernel.exception.PortalException {
 		return getService().updateStatsUser(groupId, userId, lastPostDate);
 	}
 
 	public static com.liferay.portlet.messageboards.model.MBStatsUser updateStatsUser(
-		long groupId, long userId, int messageCount, java.util.Date lastPostDate) {
+		long groupId, long userId, int messageCount, java.util.Date lastPostDate)
+		throws com.liferay.portal.kernel.exception.PortalException {
 		return getService()
 				   .updateStatsUser(groupId, userId, messageCount, lastPostDate);
 	}

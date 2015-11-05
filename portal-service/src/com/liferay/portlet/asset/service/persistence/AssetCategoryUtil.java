@@ -3400,8 +3400,8 @@ public class AssetCategoryUtil {
 	* @param pk the primary key of the asset category
 	* @param assetEntryPK the primary key of the asset entry
 	*/
-	public static void addAssetEntry(long pk, long assetEntryPK) {
-		getPersistence().addAssetEntry(pk, assetEntryPK);
+	public static void addAssetEntry(long companyId, long pk, long assetEntryPK) {
+		getPersistence().addAssetEntry(companyId, pk, assetEntryPK);
 	}
 
 	/**
@@ -3410,9 +3410,9 @@ public class AssetCategoryUtil {
 	* @param pk the primary key of the asset category
 	* @param assetEntry the asset entry
 	*/
-	public static void addAssetEntry(long pk,
+	public static void addAssetEntry(long companyId, long pk,
 		com.liferay.portlet.asset.model.AssetEntry assetEntry) {
-		getPersistence().addAssetEntry(pk, assetEntry);
+		getPersistence().addAssetEntry(companyId, pk, assetEntry);
 	}
 
 	/**
@@ -3421,8 +3421,9 @@ public class AssetCategoryUtil {
 	* @param pk the primary key of the asset category
 	* @param assetEntryPKs the primary keys of the asset entries
 	*/
-	public static void addAssetEntries(long pk, long[] assetEntryPKs) {
-		getPersistence().addAssetEntries(pk, assetEntryPKs);
+	public static void addAssetEntries(long companyId, long pk,
+		long[] assetEntryPKs) {
+		getPersistence().addAssetEntries(companyId, pk, assetEntryPKs);
 	}
 
 	/**
@@ -3431,9 +3432,9 @@ public class AssetCategoryUtil {
 	* @param pk the primary key of the asset category
 	* @param assetEntries the asset entries
 	*/
-	public static void addAssetEntries(long pk,
+	public static void addAssetEntries(long companyId, long pk,
 		List<com.liferay.portlet.asset.model.AssetEntry> assetEntries) {
-		getPersistence().addAssetEntries(pk, assetEntries);
+		getPersistence().addAssetEntries(companyId, pk, assetEntries);
 	}
 
 	/**
@@ -3493,8 +3494,9 @@ public class AssetCategoryUtil {
 	* @param pk the primary key of the asset category
 	* @param assetEntryPKs the primary keys of the asset entries to be associated with the asset category
 	*/
-	public static void setAssetEntries(long pk, long[] assetEntryPKs) {
-		getPersistence().setAssetEntries(pk, assetEntryPKs);
+	public static void setAssetEntries(long companyId, long pk,
+		long[] assetEntryPKs) {
+		getPersistence().setAssetEntries(companyId, pk, assetEntryPKs);
 	}
 
 	/**

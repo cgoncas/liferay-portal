@@ -59,7 +59,7 @@ public interface AnnouncementsFlagLocalService extends BaseLocalService,
 		com.liferay.portlet.announcements.model.AnnouncementsFlag announcementsFlag);
 
 	public com.liferay.portlet.announcements.model.AnnouncementsFlag addFlag(
-		long userId, long entryId, int value);
+		long userId, long entryId, int value) throws PortalException;
 
 	/**
 	* Creates a new announcements flag with the primary key. Does not add the announcements flag to the database.

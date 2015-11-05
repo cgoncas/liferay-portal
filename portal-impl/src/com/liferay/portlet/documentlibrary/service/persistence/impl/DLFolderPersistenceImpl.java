@@ -13357,8 +13357,9 @@ public class DLFolderPersistenceImpl extends BasePersistenceImpl<DLFolder>
 	 * @param dlFileEntryTypePK the primary key of the document library file entry type
 	 */
 	@Override
-	public void addDLFileEntryType(long pk, long dlFileEntryTypePK) {
-		dlFolderToDLFileEntryTypeTableMapper.addTableMapping(0, pk,
+	public void addDLFileEntryType(long companyId, long pk,
+		long dlFileEntryTypePK) {
+		dlFolderToDLFileEntryTypeTableMapper.addTableMapping(companyId, pk,
 			dlFileEntryTypePK);
 	}
 
@@ -13369,9 +13370,9 @@ public class DLFolderPersistenceImpl extends BasePersistenceImpl<DLFolder>
 	 * @param dlFileEntryType the document library file entry type
 	 */
 	@Override
-	public void addDLFileEntryType(long pk,
+	public void addDLFileEntryType(long companyId, long pk,
 		com.liferay.portlet.documentlibrary.model.DLFileEntryType dlFileEntryType) {
-		dlFolderToDLFileEntryTypeTableMapper.addTableMapping(0, pk,
+		dlFolderToDLFileEntryTypeTableMapper.addTableMapping(companyId, pk,
 			dlFileEntryType.getPrimaryKey());
 	}
 
@@ -13382,9 +13383,10 @@ public class DLFolderPersistenceImpl extends BasePersistenceImpl<DLFolder>
 	 * @param dlFileEntryTypePKs the primary keys of the document library file entry types
 	 */
 	@Override
-	public void addDLFileEntryTypes(long pk, long[] dlFileEntryTypePKs) {
+	public void addDLFileEntryTypes(long companyId, long pk,
+		long[] dlFileEntryTypePKs) {
 		for (long dlFileEntryTypePK : dlFileEntryTypePKs) {
-			dlFolderToDLFileEntryTypeTableMapper.addTableMapping(0, pk,
+			dlFolderToDLFileEntryTypeTableMapper.addTableMapping(companyId, pk,
 				dlFileEntryTypePK);
 		}
 	}
@@ -13396,10 +13398,10 @@ public class DLFolderPersistenceImpl extends BasePersistenceImpl<DLFolder>
 	 * @param dlFileEntryTypes the document library file entry types
 	 */
 	@Override
-	public void addDLFileEntryTypes(long pk,
+	public void addDLFileEntryTypes(long companyId, long pk,
 		List<com.liferay.portlet.documentlibrary.model.DLFileEntryType> dlFileEntryTypes) {
 		for (com.liferay.portlet.documentlibrary.model.DLFileEntryType dlFileEntryType : dlFileEntryTypes) {
-			dlFolderToDLFileEntryTypeTableMapper.addTableMapping(0, pk,
+			dlFolderToDLFileEntryTypeTableMapper.addTableMapping(companyId, pk,
 				dlFileEntryType.getPrimaryKey());
 		}
 	}
@@ -13476,7 +13478,8 @@ public class DLFolderPersistenceImpl extends BasePersistenceImpl<DLFolder>
 	 * @param dlFileEntryTypePKs the primary keys of the document library file entry types to be associated with the document library folder
 	 */
 	@Override
-	public void setDLFileEntryTypes(long pk, long[] dlFileEntryTypePKs) {
+	public void setDLFileEntryTypes(long companyId, long pk,
+		long[] dlFileEntryTypePKs) {
 		Set<Long> newDLFileEntryTypePKsSet = SetUtil.fromArray(dlFileEntryTypePKs);
 		Set<Long> oldDLFileEntryTypePKsSet = SetUtil.fromArray(dlFolderToDLFileEntryTypeTableMapper.getRightPrimaryKeys(
 					0, pk));
@@ -13493,7 +13496,7 @@ public class DLFolderPersistenceImpl extends BasePersistenceImpl<DLFolder>
 		newDLFileEntryTypePKsSet.removeAll(oldDLFileEntryTypePKsSet);
 
 		for (long newDLFileEntryTypePK : newDLFileEntryTypePKsSet) {
-			dlFolderToDLFileEntryTypeTableMapper.addTableMapping(0, pk,
+			dlFolderToDLFileEntryTypeTableMapper.addTableMapping(companyId, pk,
 				newDLFileEntryTypePK);
 		}
 	}

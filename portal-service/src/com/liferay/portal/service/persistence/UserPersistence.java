@@ -1918,7 +1918,7 @@ public interface UserPersistence extends BasePersistence<User> {
 	* @param pk the primary key of the user
 	* @param groupPK the primary key of the group
 	*/
-	public void addGroup(long pk, long groupPK);
+	public void addGroup(long companyId, long pk, long groupPK);
 
 	/**
 	* Adds an association between the user and the group. Also notifies the appropriate model listeners and clears the mapping table finder cache.
@@ -1926,7 +1926,8 @@ public interface UserPersistence extends BasePersistence<User> {
 	* @param pk the primary key of the user
 	* @param group the group
 	*/
-	public void addGroup(long pk, com.liferay.portal.model.Group group);
+	public void addGroup(long companyId, long pk,
+		com.liferay.portal.model.Group group);
 
 	/**
 	* Adds an association between the user and the groups. Also notifies the appropriate model listeners and clears the mapping table finder cache.
@@ -1934,7 +1935,7 @@ public interface UserPersistence extends BasePersistence<User> {
 	* @param pk the primary key of the user
 	* @param groupPKs the primary keys of the groups
 	*/
-	public void addGroups(long pk, long[] groupPKs);
+	public void addGroups(long companyId, long pk, long[] groupPKs);
 
 	/**
 	* Adds an association between the user and the groups. Also notifies the appropriate model listeners and clears the mapping table finder cache.
@@ -1942,7 +1943,7 @@ public interface UserPersistence extends BasePersistence<User> {
 	* @param pk the primary key of the user
 	* @param groups the groups
 	*/
-	public void addGroups(long pk,
+	public void addGroups(long companyId, long pk,
 		java.util.List<com.liferay.portal.model.Group> groups);
 
 	/**
@@ -1991,7 +1992,7 @@ public interface UserPersistence extends BasePersistence<User> {
 	* @param pk the primary key of the user
 	* @param groupPKs the primary keys of the groups to be associated with the user
 	*/
-	public void setGroups(long pk, long[] groupPKs);
+	public void setGroups(long companyId, long pk, long[] groupPKs);
 
 	/**
 	* Sets the groups associated with the user, removing and adding associations as necessary. Also notifies the appropriate model listeners and clears the mapping table finder cache.
@@ -2082,7 +2083,7 @@ public interface UserPersistence extends BasePersistence<User> {
 	* @param pk the primary key of the user
 	* @param organizationPK the primary key of the organization
 	*/
-	public void addOrganization(long pk, long organizationPK);
+	public void addOrganization(long companyId, long pk, long organizationPK);
 
 	/**
 	* Adds an association between the user and the organization. Also notifies the appropriate model listeners and clears the mapping table finder cache.
@@ -2090,7 +2091,7 @@ public interface UserPersistence extends BasePersistence<User> {
 	* @param pk the primary key of the user
 	* @param organization the organization
 	*/
-	public void addOrganization(long pk,
+	public void addOrganization(long companyId, long pk,
 		com.liferay.portal.model.Organization organization);
 
 	/**
@@ -2099,7 +2100,7 @@ public interface UserPersistence extends BasePersistence<User> {
 	* @param pk the primary key of the user
 	* @param organizationPKs the primary keys of the organizations
 	*/
-	public void addOrganizations(long pk, long[] organizationPKs);
+	public void addOrganizations(long companyId, long pk, long[] organizationPKs);
 
 	/**
 	* Adds an association between the user and the organizations. Also notifies the appropriate model listeners and clears the mapping table finder cache.
@@ -2107,7 +2108,7 @@ public interface UserPersistence extends BasePersistence<User> {
 	* @param pk the primary key of the user
 	* @param organizations the organizations
 	*/
-	public void addOrganizations(long pk,
+	public void addOrganizations(long companyId, long pk,
 		java.util.List<com.liferay.portal.model.Organization> organizations);
 
 	/**
@@ -2157,7 +2158,7 @@ public interface UserPersistence extends BasePersistence<User> {
 	* @param pk the primary key of the user
 	* @param organizationPKs the primary keys of the organizations to be associated with the user
 	*/
-	public void setOrganizations(long pk, long[] organizationPKs);
+	public void setOrganizations(long companyId, long pk, long[] organizationPKs);
 
 	/**
 	* Sets the organizations associated with the user, removing and adding associations as necessary. Also notifies the appropriate model listeners and clears the mapping table finder cache.
@@ -2247,7 +2248,7 @@ public interface UserPersistence extends BasePersistence<User> {
 	* @param pk the primary key of the user
 	* @param rolePK the primary key of the role
 	*/
-	public void addRole(long pk, long rolePK);
+	public void addRole(long companyId, long pk, long rolePK);
 
 	/**
 	* Adds an association between the user and the role. Also notifies the appropriate model listeners and clears the mapping table finder cache.
@@ -2255,7 +2256,8 @@ public interface UserPersistence extends BasePersistence<User> {
 	* @param pk the primary key of the user
 	* @param role the role
 	*/
-	public void addRole(long pk, com.liferay.portal.model.Role role);
+	public void addRole(long companyId, long pk,
+		com.liferay.portal.model.Role role);
 
 	/**
 	* Adds an association between the user and the roles. Also notifies the appropriate model listeners and clears the mapping table finder cache.
@@ -2263,7 +2265,7 @@ public interface UserPersistence extends BasePersistence<User> {
 	* @param pk the primary key of the user
 	* @param rolePKs the primary keys of the roles
 	*/
-	public void addRoles(long pk, long[] rolePKs);
+	public void addRoles(long companyId, long pk, long[] rolePKs);
 
 	/**
 	* Adds an association between the user and the roles. Also notifies the appropriate model listeners and clears the mapping table finder cache.
@@ -2271,7 +2273,7 @@ public interface UserPersistence extends BasePersistence<User> {
 	* @param pk the primary key of the user
 	* @param roles the roles
 	*/
-	public void addRoles(long pk,
+	public void addRoles(long companyId, long pk,
 		java.util.List<com.liferay.portal.model.Role> roles);
 
 	/**
@@ -2320,7 +2322,7 @@ public interface UserPersistence extends BasePersistence<User> {
 	* @param pk the primary key of the user
 	* @param rolePKs the primary keys of the roles to be associated with the user
 	*/
-	public void setRoles(long pk, long[] rolePKs);
+	public void setRoles(long companyId, long pk, long[] rolePKs);
 
 	/**
 	* Sets the roles associated with the user, removing and adding associations as necessary. Also notifies the appropriate model listeners and clears the mapping table finder cache.
@@ -2410,7 +2412,7 @@ public interface UserPersistence extends BasePersistence<User> {
 	* @param pk the primary key of the user
 	* @param teamPK the primary key of the team
 	*/
-	public void addTeam(long pk, long teamPK);
+	public void addTeam(long companyId, long pk, long teamPK);
 
 	/**
 	* Adds an association between the user and the team. Also notifies the appropriate model listeners and clears the mapping table finder cache.
@@ -2418,7 +2420,8 @@ public interface UserPersistence extends BasePersistence<User> {
 	* @param pk the primary key of the user
 	* @param team the team
 	*/
-	public void addTeam(long pk, com.liferay.portal.model.Team team);
+	public void addTeam(long companyId, long pk,
+		com.liferay.portal.model.Team team);
 
 	/**
 	* Adds an association between the user and the teams. Also notifies the appropriate model listeners and clears the mapping table finder cache.
@@ -2426,7 +2429,7 @@ public interface UserPersistence extends BasePersistence<User> {
 	* @param pk the primary key of the user
 	* @param teamPKs the primary keys of the teams
 	*/
-	public void addTeams(long pk, long[] teamPKs);
+	public void addTeams(long companyId, long pk, long[] teamPKs);
 
 	/**
 	* Adds an association between the user and the teams. Also notifies the appropriate model listeners and clears the mapping table finder cache.
@@ -2434,7 +2437,7 @@ public interface UserPersistence extends BasePersistence<User> {
 	* @param pk the primary key of the user
 	* @param teams the teams
 	*/
-	public void addTeams(long pk,
+	public void addTeams(long companyId, long pk,
 		java.util.List<com.liferay.portal.model.Team> teams);
 
 	/**
@@ -2483,7 +2486,7 @@ public interface UserPersistence extends BasePersistence<User> {
 	* @param pk the primary key of the user
 	* @param teamPKs the primary keys of the teams to be associated with the user
 	*/
-	public void setTeams(long pk, long[] teamPKs);
+	public void setTeams(long companyId, long pk, long[] teamPKs);
 
 	/**
 	* Sets the teams associated with the user, removing and adding associations as necessary. Also notifies the appropriate model listeners and clears the mapping table finder cache.
@@ -2574,7 +2577,7 @@ public interface UserPersistence extends BasePersistence<User> {
 	* @param pk the primary key of the user
 	* @param userGroupPK the primary key of the user group
 	*/
-	public void addUserGroup(long pk, long userGroupPK);
+	public void addUserGroup(long companyId, long pk, long userGroupPK);
 
 	/**
 	* Adds an association between the user and the user group. Also notifies the appropriate model listeners and clears the mapping table finder cache.
@@ -2582,7 +2585,7 @@ public interface UserPersistence extends BasePersistence<User> {
 	* @param pk the primary key of the user
 	* @param userGroup the user group
 	*/
-	public void addUserGroup(long pk,
+	public void addUserGroup(long companyId, long pk,
 		com.liferay.portal.model.UserGroup userGroup);
 
 	/**
@@ -2591,7 +2594,7 @@ public interface UserPersistence extends BasePersistence<User> {
 	* @param pk the primary key of the user
 	* @param userGroupPKs the primary keys of the user groups
 	*/
-	public void addUserGroups(long pk, long[] userGroupPKs);
+	public void addUserGroups(long companyId, long pk, long[] userGroupPKs);
 
 	/**
 	* Adds an association between the user and the user groups. Also notifies the appropriate model listeners and clears the mapping table finder cache.
@@ -2599,7 +2602,7 @@ public interface UserPersistence extends BasePersistence<User> {
 	* @param pk the primary key of the user
 	* @param userGroups the user groups
 	*/
-	public void addUserGroups(long pk,
+	public void addUserGroups(long companyId, long pk,
 		java.util.List<com.liferay.portal.model.UserGroup> userGroups);
 
 	/**
@@ -2649,7 +2652,7 @@ public interface UserPersistence extends BasePersistence<User> {
 	* @param pk the primary key of the user
 	* @param userGroupPKs the primary keys of the user groups to be associated with the user
 	*/
-	public void setUserGroups(long pk, long[] userGroupPKs);
+	public void setUserGroups(long companyId, long pk, long[] userGroupPKs);
 
 	/**
 	* Sets the user groups associated with the user, removing and adding associations as necessary. Also notifies the appropriate model listeners and clears the mapping table finder cache.

@@ -226,7 +226,8 @@ public class JournalArticleImageLocalServiceUtil {
 	public static long getArticleImageId(long groupId,
 		java.lang.String articleId, double version,
 		java.lang.String elInstanceId, java.lang.String elName,
-		java.lang.String languageId) {
+		java.lang.String languageId)
+		throws com.liferay.portal.kernel.exception.PortalException {
 		return getService()
 				   .getArticleImageId(groupId, articleId, version,
 			elInstanceId, elName, languageId);
@@ -235,7 +236,8 @@ public class JournalArticleImageLocalServiceUtil {
 	public static long getArticleImageId(long groupId,
 		java.lang.String articleId, double version,
 		java.lang.String elInstanceId, java.lang.String elName,
-		java.lang.String languageId, boolean tempImage) {
+		java.lang.String languageId, boolean tempImage)
+		throws com.liferay.portal.kernel.exception.PortalException {
 		return getService()
 				   .getArticleImageId(groupId, articleId, version,
 			elInstanceId, elName, languageId, tempImage);
