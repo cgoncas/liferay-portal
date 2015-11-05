@@ -19,6 +19,7 @@ import com.liferay.portal.kernel.portlet.bridges.mvc.MVCActionCommand;
 import com.liferay.portal.kernel.spring.osgi.OSGiBeanProperties;
 import com.liferay.portal.kernel.util.Constants;
 import com.liferay.portal.kernel.util.ParamUtil;
+import com.liferay.portal.security.auth.CompanyThreadLocal;
 import com.liferay.portal.util.PortletKeys;
 import com.liferay.portlet.softwarecatalog.service.SCLicenseServiceUtil;
 
@@ -73,12 +74,14 @@ public class EditLicenseMVCActionCommand extends BaseMVCActionCommand {
 		boolean recommended = ParamUtil.getBoolean(
 			actionRequest, "recommended");
 
+		long companyId = CompanyThreadLocal.getCompanyId();
+
 		if (licenseId <= 0) {
 
 			// Add license
 
 			SCLicenseServiceUtil.addLicense(
-				name, url, openSource, active, recommended);
+				companyId, name, url, openSource, active, recommended);
 		}
 		else {
 

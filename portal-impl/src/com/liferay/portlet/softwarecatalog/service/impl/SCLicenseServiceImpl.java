@@ -29,15 +29,15 @@ public class SCLicenseServiceImpl extends SCLicenseServiceBaseImpl {
 
 	@Override
 	public SCLicense addLicense(
-			String name, String url, boolean openSource, boolean active,
-			boolean recommended)
+			long companyId, String name, String url, boolean openSource,
+			boolean active, boolean recommended)
 		throws PortalException {
 
 		PortalPermissionUtil.check(
 			getPermissionChecker(), ActionKeys.ADD_LICENSE);
 
 		return scLicenseLocalService.addLicense(
-			name, url, openSource, active, recommended);
+			companyId, name, url, openSource, active, recommended);
 	}
 
 	@Override
