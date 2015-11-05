@@ -36,7 +36,8 @@ public class DLFileEntryTypeLocalServiceWrapper
 
 	@Override
 	public void addDDMStructureLinks(long fileEntryTypeId,
-		java.util.Set<java.lang.Long> ddmStructureIds) {
+		java.util.Set<java.lang.Long> ddmStructureIds)
+		throws com.liferay.portal.kernel.exception.PortalException {
 		_dlFileEntryTypeLocalService.addDDMStructureLinks(fileEntryTypeId,
 			ddmStructureIds);
 	}

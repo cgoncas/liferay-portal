@@ -115,7 +115,8 @@ public class JournalArticleImpl extends JournalArticleBaseImpl {
 
 	@Override
 	public long getArticleImageId(
-		String elInstanceId, String elName, String languageId) {
+			String elInstanceId, String elName, String languageId)
+		throws PortalException {
 
 		return JournalArticleImageLocalServiceUtil.getArticleImageId(
 			getGroupId(), getArticleId(), getVersion(), elInstanceId, elName,

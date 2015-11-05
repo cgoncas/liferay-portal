@@ -33,7 +33,8 @@ public class DDMStructureLinkManagerImpl implements DDMStructureLinkManager {
 
 	@Override
 	public DDMStructureLink addStructureLink(
-		long classNameId, long classPK, long structureId) {
+			long classNameId, long classPK, long structureId)
+		throws PortalException {
 
 		com.liferay.dynamic.data.mapping.model.DDMStructureLink
 			ddmStructureLink = _ddmStructureLinkLocalService.addStructureLink(

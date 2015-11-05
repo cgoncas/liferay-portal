@@ -75,7 +75,8 @@ public class DLFileEntryTypeLocalServiceImpl
 
 	@Override
 	public void addDDMStructureLinks(
-		long fileEntryTypeId, Set<Long> ddmStructureIds) {
+			long fileEntryTypeId, Set<Long> ddmStructureIds)
+		throws PortalException {
 
 		long classNameId = classNameLocalService.getClassNameId(
 			DLFileEntryType.class);
