@@ -56,7 +56,7 @@ import com.liferay.portlet.softwarecatalog.service.SCLicenseServiceUtil;
 @ProviderType
 public class SCLicenseServiceHttp {
 	public static com.liferay.portlet.softwarecatalog.model.SCLicense addLicense(
-		HttpPrincipal httpPrincipal, java.lang.String name,
+		HttpPrincipal httpPrincipal, long companyId, java.lang.String name,
 		java.lang.String url, boolean openSource, boolean active,
 		boolean recommended)
 		throws com.liferay.portal.kernel.exception.PortalException {
@@ -64,8 +64,8 @@ public class SCLicenseServiceHttp {
 			MethodKey methodKey = new MethodKey(SCLicenseServiceUtil.class,
 					"addLicense", _addLicenseParameterTypes0);
 
-			MethodHandler methodHandler = new MethodHandler(methodKey, name,
-					url, openSource, active, recommended);
+			MethodHandler methodHandler = new MethodHandler(methodKey,
+					companyId, name, url, openSource, active, recommended);
 
 			Object returnObj = null;
 
@@ -182,8 +182,8 @@ public class SCLicenseServiceHttp {
 
 	private static Log _log = LogFactoryUtil.getLog(SCLicenseServiceHttp.class);
 	private static final Class<?>[] _addLicenseParameterTypes0 = new Class[] {
-			java.lang.String.class, java.lang.String.class, boolean.class,
-			boolean.class, boolean.class
+			long.class, java.lang.String.class, java.lang.String.class,
+			boolean.class, boolean.class, boolean.class
 		};
 	private static final Class<?>[] _deleteLicenseParameterTypes1 = new Class[] {
 			long.class
