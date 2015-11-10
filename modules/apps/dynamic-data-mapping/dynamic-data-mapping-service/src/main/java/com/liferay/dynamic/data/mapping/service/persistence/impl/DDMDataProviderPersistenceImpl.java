@@ -3555,6 +3555,22 @@ public class DDMDataProviderPersistenceImpl extends BasePersistenceImpl<DDMDataP
 		return count.intValue();
 	}
 
+	/**
+	* Get the companyId associated with the d d m data provider
+	*
+	* @param pk the primary key of the d d m data provider
+	*/
+	protected long getCompanyIdFromPK(long pk) {
+		DDMDataProvider ddmDataProvider = fetchByPrimaryKey(pk);
+
+		if (ddmDataProvider == null) {
+			throw new RuntimeException("The entity DDMDataProvider with PK " +
+				pk + " was not found");
+		}
+
+		return ddmDataProvider.getCompanyId();
+	}
+
 	@Override
 	public Set<String> getBadColumnNames() {
 		return _badColumnNames;

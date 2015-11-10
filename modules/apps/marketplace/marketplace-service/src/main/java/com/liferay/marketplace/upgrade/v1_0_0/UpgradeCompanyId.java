@@ -14,6 +14,9 @@
 
 package com.liferay.marketplace.upgrade.v1_0_0;
 
+import com.liferay.marketplace.upgrade.v1_0_0.util.companyId.MarketplaceModuleUpgradeCompanyId;
+import com.liferay.portal.kernel.upgrade.util.UpgradeCompanyIdInTable;
+
 /**
  * @author Brian Wing Shun Chan
  */
@@ -21,8 +24,10 @@ public class UpgradeCompanyId
 	extends com.liferay.portal.upgrade.util.UpgradeCompanyId {
 
 	@Override
-	protected String[] getTableNames() {
-		return new String[] {"Marketplace_Module"};
+	protected UpgradeCompanyIdInTable[] getUpgradeCompanyIdInTable() {
+		return new UpgradeCompanyIdInTable[] {
+			new MarketplaceModuleUpgradeCompanyId()
+		};
 	}
 
 }
