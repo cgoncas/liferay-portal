@@ -628,6 +628,8 @@ public class AssetEntryLocalServiceImpl extends AssetEntryLocalServiceBaseImpl {
 
 		boolean oldVisible = false;
 
+		boolean isNew = false;
+
 		if (entry != null) {
 			oldVisible = entry.isVisible();
 		}
@@ -671,6 +673,10 @@ public class AssetEntryLocalServiceImpl extends AssetEntryLocalServiceBaseImpl {
 			}
 
 			entry.setViewCount(0);
+
+			entry = assetEntryPersistence.updateImpl(entry);
+
+			isNew = true;
 		}
 
 		entry.setGroupId(groupId);
@@ -704,16 +710,16 @@ public class AssetEntryLocalServiceImpl extends AssetEntryLocalServiceBaseImpl {
 
 		// Categories
 
-		if (categoryIds != null) {
+		/*if (categoryIds != null) {
 			categoryIds = checkCategories(className, classPK, categoryIds);
 
 			assetEntryPersistence.setAssetCategories(
 				entry.getEntryId(), categoryIds);
-		}
+		}*/
 
 		// Tags
 
-		if (tagNames != null) {
+		/*if (tagNames != null) {
 			tagNames = checkTags(className, classPK, tagNames);
 
 			long siteGroupId = PortalUtil.getSiteGroupId(groupId);
@@ -723,45 +729,49 @@ public class AssetEntryLocalServiceImpl extends AssetEntryLocalServiceBaseImpl {
 			List<AssetTag> tags = assetTagLocalService.checkTags(
 				userId, siteGroup, tagNames);
 
-			List<AssetTag> oldTags = assetEntryPersistence.getAssetTags(
-				entry.getEntryId());
-
 			assetEntryPersistence.setAssetTags(entry.getEntryId(), tags);
 
-			if (entry.isVisible()) {
-				boolean isNew = entry.isNew();
-
+			if (isNew && entry.isVisible()) {
 				assetEntryPersistence.updateImpl(entry);
 
-				if (isNew) {
-					for (AssetTag tag : tags) {
+				for (AssetTag tag : tags) {
+					assetTagLocalService.incrementAssetCount(
+						tag.getTagId(), classNameId);
+				}
+			}
+			else if (!isNew && entry.isVisible()) {
+				assetEntryPersistence.updateImpl(entry);
+
+				List<AssetTag> oldTags = assetEntryPersistence.getAssetTags(
+					entry.getEntryId());
+
+				for (AssetTag oldTag : oldTags) {
+					if (!tags.contains(oldTag)) {
+						assetTagLocalService.decrementAssetCount(
+							oldTag.getTagId(), classNameId);
+					}
+				}
+
+				for (AssetTag tag : tags) {
+					if (!oldTags.contains(tag)) {
 						assetTagLocalService.incrementAssetCount(
 							tag.getTagId(), classNameId);
 					}
 				}
-				else {
-					for (AssetTag oldTag : oldTags) {
-						if (!tags.contains(oldTag)) {
-							assetTagLocalService.decrementAssetCount(
-								oldTag.getTagId(), classNameId);
-						}
-					}
+			} else if (oldVisible) {
+				assetEntryPersistence.updateImpl(entry);
 
-					for (AssetTag tag : tags) {
-						if (!oldTags.contains(tag)) {
-							assetTagLocalService.incrementAssetCount(
-								tag.getTagId(), classNameId);
-						}
-					}
-				}
-			}
-			else if (oldVisible) {
+				List<AssetTag> oldTags = assetEntryPersistence.getAssetTags(
+					entry.getEntryId());
+
 				for (AssetTag oldTag : oldTags) {
 					assetTagLocalService.decrementAssetCount(
 						oldTag.getTagId(), classNameId);
 				}
+
 			}
-		}
+
+		}*/
 
 		// Update entry after tags so that entry listeners have access to the
 		// saved categories and tags
