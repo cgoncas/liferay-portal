@@ -471,8 +471,11 @@ public class ${entity.name}PersistenceImpl extends BasePersistenceImpl<${entity.
 		<#list entity.columnList as column>
 			<#if column.isCollection() && column.isMappingManyToMany()>
 				<#assign tempEntity = serviceBuilder.getEntity(column.getEJBName())>
-
-				${entity.varName}To${tempEntity.name}TableMapper.deleteLeftPrimaryKeyTableMappings(0, ${entity.varName}.getPrimaryKey());
+					<#if entity.isShardedModel()>
+						${entity.varName}To${tempEntity.name}TableMapper.deleteLeftPrimaryKeyTableMappings(${entity.varName}.getCompanyId(), ${entity.varName}.getPrimaryKey());
+					<#else>
+						${entity.varName}To${tempEntity.name}TableMapper.deleteLeftPrimaryKeyTableMappings(0, ${entity.varName}.getPrimaryKey());
+					</#if>
 			</#if>
 		</#list>
 
@@ -1198,7 +1201,7 @@ public class ${entity.name}PersistenceImpl extends BasePersistenceImpl<${entity.
 			 */
 			@Override
 			public long[] get${tempEntity.name}PrimaryKeys(${entity.PKClassName} pk) {
-				long[] pks = ${entity.varName}To${tempEntity.name}TableMapper.getRightPrimaryKeys(0, pk);
+				long[] pks = ${entity.varName}To${tempEntity.name}TableMapper.getRightPrimaryKeys(getCompanyId(pk), pk);
 
 				return pks.clone();
 			}
@@ -1246,7 +1249,7 @@ public class ${entity.name}PersistenceImpl extends BasePersistenceImpl<${entity.
 			 */
 			@Override
 			public List<${tempEntity.packagePath}.model.${tempEntity.name}> get${tempEntity.names}(${entity.PKClassName} pk, int start, int end, OrderByComparator<${tempEntity.packagePath}.model.${tempEntity.name}> orderByComparator) {
-				return ${entity.varName}To${tempEntity.name}TableMapper.getRightBaseModels(0, pk, start, end, orderByComparator);
+				return ${entity.varName}To${tempEntity.name}TableMapper.getRightBaseModels(getCompanyId(pk), pk, start, end, orderByComparator);
 			}
 
 			/**
@@ -1257,7 +1260,7 @@ public class ${entity.name}PersistenceImpl extends BasePersistenceImpl<${entity.
 			 */
 			@Override
 			public int get${tempEntity.names}Size(${entity.PKClassName} pk) {
-				long[] pks = ${entity.varName}To${tempEntity.name}TableMapper.getRightPrimaryKeys(0, pk);
+				long[] pks = ${entity.varName}To${tempEntity.name}TableMapper.getRightPrimaryKeys(getCompanyId(pk), pk);
 
 				return pks.length;
 			}
@@ -1271,7 +1274,7 @@ public class ${entity.name}PersistenceImpl extends BasePersistenceImpl<${entity.
 			 */
 			@Override
 			public boolean contains${tempEntity.name}(${entity.PKClassName} pk, ${tempEntity.PKClassName} ${tempEntity.varName}PK) {
-				return ${entity.varName}To${tempEntity.name}TableMapper.containsTableMapping(0, pk, ${tempEntity.varName}PK);
+				return ${entity.varName}To${tempEntity.name}TableMapper.containsTableMapping(getCompanyId(pk), pk, ${tempEntity.varName}PK);
 			}
 
 			/**
@@ -1301,7 +1304,7 @@ public class ${entity.name}PersistenceImpl extends BasePersistenceImpl<${entity.
 				 */
 				@Override
 				public void add${tempEntity.name}(${entity.PKClassName} pk, ${tempEntity.PKClassName} ${tempEntity.varName}PK) {
-					${entity.varName}To${tempEntity.name}TableMapper.addTableMapping(0, pk, ${tempEntity.varName}PK);
+					${entity.varName}To${tempEntity.name}TableMapper.addTableMapping(getCompanyId(pk), pk, ${tempEntity.varName}PK);
 				}
 
 				/**
@@ -1312,7 +1315,7 @@ public class ${entity.name}PersistenceImpl extends BasePersistenceImpl<${entity.
 				 */
 				@Override
 				public void add${tempEntity.name}(${entity.PKClassName} pk, ${tempEntity.packagePath}.model.${tempEntity.name} ${tempEntity.varName}) {
-					${entity.varName}To${tempEntity.name}TableMapper.addTableMapping(0, pk, ${tempEntity.varName}.getPrimaryKey());
+					${entity.varName}To${tempEntity.name}TableMapper.addTableMapping(getCompanyId(pk), pk, ${tempEntity.varName}.getPrimaryKey());
 				}
 
 				/**
@@ -1323,8 +1326,10 @@ public class ${entity.name}PersistenceImpl extends BasePersistenceImpl<${entity.
 				 */
 				@Override
 				public void add${tempEntity.names}(${entity.PKClassName} pk, ${tempEntity.PKClassName}[] ${tempEntity.varName}PKs) {
+					long companyId = getCompanyId(pk);
+
 					for (${tempEntity.PKClassName} ${tempEntity.varName}PK : ${tempEntity.varName}PKs) {
-						${entity.varName}To${tempEntity.name}TableMapper.addTableMapping(0, pk, ${tempEntity.varName}PK);
+						${entity.varName}To${tempEntity.name}TableMapper.addTableMapping(companyId, pk, ${tempEntity.varName}PK);
 					}
 				}
 
@@ -1336,8 +1341,10 @@ public class ${entity.name}PersistenceImpl extends BasePersistenceImpl<${entity.
 				 */
 				@Override
 				public void add${tempEntity.names}(${entity.PKClassName} pk, List<${tempEntity.packagePath}.model.${tempEntity.name}> ${tempEntity.varNames}) {
+					long companyId = getCompanyId(pk);
+
 					for (${tempEntity.packagePath}.model.${tempEntity.name} ${tempEntity.varName} : ${tempEntity.varNames}) {
-						${entity.varName}To${tempEntity.name}TableMapper.addTableMapping(0, pk, ${tempEntity.varName}.getPrimaryKey());
+						${entity.varName}To${tempEntity.name}TableMapper.addTableMapping(companyId, pk, ${tempEntity.varName}.getPrimaryKey());
 					}
 				}
 
@@ -1348,7 +1355,7 @@ public class ${entity.name}PersistenceImpl extends BasePersistenceImpl<${entity.
 				 */
 				@Override
 				public void clear${tempEntity.names}(${entity.PKClassName} pk) {
-					${entity.varName}To${tempEntity.name}TableMapper.deleteLeftPrimaryKeyTableMappings(0, pk);
+					${entity.varName}To${tempEntity.name}TableMapper.deleteLeftPrimaryKeyTableMappings(getCompanyId(pk), pk);
 				}
 
 				/**
@@ -1359,7 +1366,7 @@ public class ${entity.name}PersistenceImpl extends BasePersistenceImpl<${entity.
 				 */
 				@Override
 				public void remove${tempEntity.name}(${entity.PKClassName} pk, ${tempEntity.PKClassName} ${tempEntity.varName}PK) {
-					${entity.varName}To${tempEntity.name}TableMapper.deleteTableMapping(0, pk, ${tempEntity.varName}PK);
+					${entity.varName}To${tempEntity.name}TableMapper.deleteTableMapping(getCompanyId(pk), pk, ${tempEntity.varName}PK);
 				}
 
 				/**
@@ -1370,7 +1377,7 @@ public class ${entity.name}PersistenceImpl extends BasePersistenceImpl<${entity.
 				 */
 				@Override
 				public void remove${tempEntity.name}(${entity.PKClassName} pk, ${tempEntity.packagePath}.model.${tempEntity.name} ${tempEntity.varName}) {
-					${entity.varName}To${tempEntity.name}TableMapper.deleteTableMapping(0, pk, ${tempEntity.varName}.getPrimaryKey());
+					${entity.varName}To${tempEntity.name}TableMapper.deleteTableMapping(getCompanyId(pk), pk, ${tempEntity.varName}.getPrimaryKey());
 				}
 
 				/**
@@ -1381,8 +1388,10 @@ public class ${entity.name}PersistenceImpl extends BasePersistenceImpl<${entity.
 				 */
 				@Override
 				public void remove${tempEntity.names}(${entity.PKClassName} pk, ${tempEntity.PKClassName}[] ${tempEntity.varName}PKs) {
+					long companyId = getCompanyId(pk);
+
 					for (${tempEntity.PKClassName} ${tempEntity.varName}PK : ${tempEntity.varName}PKs) {
-						${entity.varName}To${tempEntity.name}TableMapper.deleteTableMapping(0, pk, ${tempEntity.varName}PK);
+						${entity.varName}To${tempEntity.name}TableMapper.deleteTableMapping(companyId, pk, ${tempEntity.varName}PK);
 					}
 				}
 
@@ -1394,8 +1403,10 @@ public class ${entity.name}PersistenceImpl extends BasePersistenceImpl<${entity.
 				 */
 				@Override
 				public void remove${tempEntity.names}(${entity.PKClassName} pk, List<${tempEntity.packagePath}.model.${tempEntity.name}> ${tempEntity.varNames}) {
+					long companyId = getCompanyId(pk);
+
 					for (${tempEntity.packagePath}.model.${tempEntity.name} ${tempEntity.varName} : ${tempEntity.varNames}) {
-						${entity.varName}To${tempEntity.name}TableMapper.deleteTableMapping(0, pk, ${tempEntity.varName}.getPrimaryKey());
+						${entity.varName}To${tempEntity.name}TableMapper.deleteTableMapping(companyId, pk, ${tempEntity.varName}.getPrimaryKey());
 					}
 				}
 
@@ -1407,21 +1418,23 @@ public class ${entity.name}PersistenceImpl extends BasePersistenceImpl<${entity.
 				 */
 				@Override
 				public void set${tempEntity.names}(${entity.PKClassName} pk, ${tempEntity.PKClassName}[] ${tempEntity.varName}PKs) {
+					long companyId = getCompanyId(pk);
+
 					Set<Long> new${tempEntity.name}PKsSet = SetUtil.fromArray(${tempEntity.varName}PKs);
-					Set<Long> old${tempEntity.name}PKsSet = SetUtil.fromArray(${entity.varName}To${tempEntity.name}TableMapper.getRightPrimaryKeys(0, pk));
+					Set<Long> old${tempEntity.name}PKsSet = SetUtil.fromArray(${entity.varName}To${tempEntity.name}TableMapper.getRightPrimaryKeys(companyId, pk));
 
 					Set<Long> remove${tempEntity.name}PKsSet = new HashSet<Long>(old${tempEntity.name}PKsSet);
 
 					remove${tempEntity.name}PKsSet.removeAll(new${tempEntity.name}PKsSet);
 
 					for (long remove${tempEntity.name}PK : remove${tempEntity.name}PKsSet) {
-						${entity.varName}To${tempEntity.name}TableMapper.deleteTableMapping(0, pk, remove${tempEntity.name}PK);
+						${entity.varName}To${tempEntity.name}TableMapper.deleteTableMapping(companyId, pk, remove${tempEntity.name}PK);
 					}
 
 					new${tempEntity.name}PKsSet.removeAll(old${tempEntity.name}PKsSet);
 
 					for (long new${tempEntity.name}PK :new${tempEntity.name}PKsSet) {
-						${entity.varName}To${tempEntity.name}TableMapper.addTableMapping(0, pk, new${tempEntity.name}PK);
+						${entity.varName}To${tempEntity.name}TableMapper.addTableMapping(companyId, pk, new${tempEntity.name}PK);
 					}
 				}
 
@@ -1448,7 +1461,34 @@ public class ${entity.name}PersistenceImpl extends BasePersistenceImpl<${entity.
 						throw processException(e);
 					}
 				}
+
 			</#if>
+		</#if>
+	</#list>
+
+
+	<#list entity.columnList as column>
+		<#if column.isCollection() && column.isMappingManyToMany()>
+			/**
+			* Get the companyId associated with the ${entity.humanName}
+			*
+			* @param pk the primary key of the ${entity.humanName}
+			*/
+			protected long getCompanyId(long pk) {
+				<#if entity.isShardedModel()>
+					${entity.name} ${entity.varName} = fetchByPrimaryKey(pk);
+
+					if (${entity.varName} == null) {
+						return 0;
+					}
+
+					return ${entity.varName}.getCompanyId();
+				<#else>
+					return 0;
+				</#if>
+			}
+
+			<#break>
 		</#if>
 	</#list>
 
