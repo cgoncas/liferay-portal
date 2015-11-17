@@ -49,6 +49,15 @@ public class AssetTagStatsLocalServiceImpl
 		tagStats.setTagId(tagId);
 		tagStats.setClassNameId(classNameId);
 
+		AssetTag assetTag = assetTagLocalService.fetchAssetTag(tagId);
+
+		if (assetTag == null) {
+			throw new SystemException(
+				"The entity AssetTag with PK " + tagId + " was not found");
+		}
+
+		tagStats.setCompanyId(assetTag.getCompanyId());
+
 		try {
 			assetTagStatsPersistence.update(tagStats);
 		}
