@@ -220,6 +220,8 @@ public class DLFileEntryMetadataLocalServiceImpl
 			fileEntryMetadata.setFileEntryId(fileEntryId);
 			fileEntryMetadata.setFileVersionId(fileVersionId);
 
+			fileEntryMetadata.setCompanyId(companyId);
+
 			dlFileEntryMetadataPersistence.update(fileEntryMetadata);
 
 			// Dynamic data mapping structure link
