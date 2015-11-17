@@ -132,6 +132,10 @@
 			<finder-column name="entryId" />
 			<finder-column name="value" />
 		</finder>
+
+		<!-- References -->
+
+		<reference package-path="com.liferay.portal" entity="User" />
 	</entity>
 	<exceptions>
 		<exception>EntryContent</exception>
