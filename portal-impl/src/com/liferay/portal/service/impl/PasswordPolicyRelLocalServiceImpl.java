@@ -16,8 +16,10 @@ package com.liferay.portal.service.impl;
 
 import com.liferay.portal.NoSuchPasswordPolicyRelException;
 import com.liferay.portal.kernel.exception.PortalException;
+import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.util.StringBundler;
 import com.liferay.portal.kernel.util.StringPool;
+import com.liferay.portal.model.PasswordPolicy;
 import com.liferay.portal.model.PasswordPolicyRel;
 import com.liferay.portal.service.base.PasswordPolicyRelLocalServiceBaseImpl;
 
@@ -55,6 +57,17 @@ public class PasswordPolicyRelLocalServiceImpl
 		passwordPolicyRel.setPasswordPolicyId(passwordPolicyId);
 		passwordPolicyRel.setClassNameId(classNameId);
 		passwordPolicyRel.setClassPK(classPK);
+
+		PasswordPolicy passwordPolicy =
+			passwordPolicyLocalService.fetchPasswordPolicy(passwordPolicyId);
+
+		if (passwordPolicy == null) {
+			throw new SystemException(
+				"The entity PasswordPolicy with PK " + passwordPolicy +
+					" was not found");
+		}
+
+		passwordPolicyRel.setCompanyId(passwordPolicy.getCompanyId());
 
 		passwordPolicyRelPersistence.update(passwordPolicyRel);
 
