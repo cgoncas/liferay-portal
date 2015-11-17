@@ -15,8 +15,10 @@
 package com.liferay.portal.service.impl;
 
 import com.liferay.portal.kernel.exception.PortalException;
+import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.model.ListTypeConstants;
 import com.liferay.portal.model.OrgLabor;
+import com.liferay.portal.model.Organization;
 import com.liferay.portal.service.base.OrgLaborLocalServiceBaseImpl;
 
 import java.util.List;
@@ -56,6 +58,17 @@ public class OrgLaborLocalServiceImpl extends OrgLaborLocalServiceBaseImpl {
 		orgLabor.setFriClose(friClose);
 		orgLabor.setSatOpen(satOpen);
 		orgLabor.setSatClose(satClose);
+
+		Organization organization = organizationLocalService.fetchOrganization(
+			organizationId);
+
+		if (organization == null) {
+			throw new SystemException(
+				"The entity Organization with PK " + organization +
+					" was not found");
+		}
+
+		orgLabor.setCompanyId(organization.getCompanyId());
 
 		orgLaborPersistence.update(orgLabor);
 
