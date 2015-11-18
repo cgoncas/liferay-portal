@@ -273,6 +273,14 @@ public class AssetCategoryLocalServiceImpl
 			AssetCategory category, boolean skipRebuildTree)
 		throws PortalException {
 
+		AssetCategory assetCategory =
+			assetCategoryPersistence.fetchByPrimaryKey(
+				category.getCategoryId());
+
+		if (assetCategory == null) {
+			return null;
+		}
+
 		// Categories
 
 		List<AssetCategory> categories =
