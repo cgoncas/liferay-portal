@@ -343,13 +343,11 @@ public class DLFileEntryTypeLocalServiceImpl
 			long[] groupIds, long folderId, boolean inherited)
 		throws PortalException {
 
-		if (!inherited) {
-			return dlFolderPersistence.getDLFileEntryTypes(folderId);
+		if (inherited) {
+			folderId = getFileEntryTypesPrimaryFolderId(folderId);
 		}
 
 		List<DLFileEntryType> dlFileEntryTypes = null;
-
-		folderId = getFileEntryTypesPrimaryFolderId(folderId);
 
 		if (folderId != DLFolderConstants.DEFAULT_PARENT_FOLDER_ID) {
 			dlFileEntryTypes = dlFolderPersistence.getDLFileEntryTypes(
