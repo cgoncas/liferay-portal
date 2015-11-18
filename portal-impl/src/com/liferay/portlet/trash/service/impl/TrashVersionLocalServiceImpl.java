@@ -14,8 +14,10 @@
 
 package com.liferay.portlet.trash.service.impl;
 
+import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.util.UnicodeProperties;
 import com.liferay.portal.kernel.util.Validator;
+import com.liferay.portlet.trash.model.TrashEntry;
 import com.liferay.portlet.trash.model.TrashVersion;
 import com.liferay.portlet.trash.service.base.TrashVersionLocalServiceBaseImpl;
 
@@ -45,6 +47,14 @@ public class TrashVersionLocalServiceImpl
 		}
 
 		trashVersion.setStatus(status);
+
+		TrashEntry trashEntry = trashEntryLocalService.fetchEntry(trashEntryId);
+
+		if (trashEntry == null) {
+			throw new SystemException(
+				"The entity TrashEntry with PK " + trashEntryId +
+					" was not found");
+		}
 
 		return trashVersionPersistence.update(trashVersion);
 	}
