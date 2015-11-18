@@ -34,6 +34,8 @@ public class UserTrackerImpl extends UserTrackerBaseImpl {
 	@Override
 	public void addPath(UserTrackerPath path) {
 		try {
+			path.setCompanyId(getCompanyId());
+
 			_paths.add(path);
 		}
 		catch (ArrayIndexOutOfBoundsException aioobe) {
