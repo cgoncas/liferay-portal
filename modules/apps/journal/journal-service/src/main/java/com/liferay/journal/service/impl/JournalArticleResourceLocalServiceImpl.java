@@ -17,7 +17,9 @@ package com.liferay.journal.service.impl;
 import com.liferay.journal.model.JournalArticleResource;
 import com.liferay.journal.service.base.JournalArticleResourceLocalServiceBaseImpl;
 import com.liferay.portal.kernel.exception.PortalException;
+import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.util.Validator;
+import com.liferay.portal.model.Group;
 
 import java.util.List;
 
@@ -90,6 +92,15 @@ public class JournalArticleResourceLocalServiceImpl
 
 			articleResource.setGroupId(groupId);
 			articleResource.setArticleId(articleId);
+
+			Group group = groupLocalService.fetchGroup(groupId);
+
+			if (group == null) {
+				throw new SystemException(
+					"The entity Group with PK " + groupId + " was not found");
+			}
+
+			articleResource.setCompanyId(group.getCompanyId());
 
 			journalArticleResourcePersistence.update(articleResource);
 		}
