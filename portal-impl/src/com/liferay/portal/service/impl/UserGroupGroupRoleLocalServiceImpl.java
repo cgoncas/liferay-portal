@@ -16,6 +16,7 @@ package com.liferay.portal.service.impl;
 
 import com.liferay.portal.NoSuchUserGroupGroupRoleException;
 import com.liferay.portal.kernel.exception.PortalException;
+import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.model.Role;
 import com.liferay.portal.model.UserGroup;
 import com.liferay.portal.model.UserGroupGroupRole;
@@ -45,6 +46,17 @@ public class UserGroupGroupRoleLocalServiceImpl
 			if (userGroupGroupRole == null) {
 				userGroupGroupRole = userGroupGroupRolePersistence.create(pk);
 
+				UserGroup userGroup = userGroupLocalService.fetchUserGroup(
+					userGroupId);
+
+				if (userGroup == null) {
+					throw new SystemException(
+						"The entity UserGroup with PK " + userGroupId +
+							" was not found");
+				}
+
+				userGroupGroupRole.setCompanyId(userGroup.getCompanyId());
+
 				userGroupGroupRolePersistence.update(userGroupGroupRole);
 			}
 		}
@@ -56,6 +68,13 @@ public class UserGroupGroupRoleLocalServiceImpl
 	public void addUserGroupGroupRoles(
 		long[] userGroupIds, long groupId, long roleId) {
 
+		Role role = roleLocalService.fetchRole(roleId);
+
+		if (role == null) {
+			throw new SystemException(
+				"The entity Role with PK " + roleId + " was not found");
+		}
+
 		for (long userGroupId : userGroupIds) {
 			UserGroupGroupRolePK pk = new UserGroupGroupRolePK(
 				userGroupId, groupId, roleId);
@@ -65,6 +84,8 @@ public class UserGroupGroupRoleLocalServiceImpl
 
 			if (userGroupGroupRole == null) {
 				userGroupGroupRole = userGroupGroupRolePersistence.create(pk);
+
+				userGroupGroupRole.setCompanyId(role.getCompanyId());
 
 				userGroupGroupRolePersistence.update(userGroupGroupRole);
 			}
