@@ -19,6 +19,7 @@ import com.liferay.dynamic.data.mapping.model.DDMStructure;
 import com.liferay.dynamic.data.mapping.model.DDMStructureLink;
 import com.liferay.dynamic.data.mapping.service.base.DDMStructureLinkLocalServiceBaseImpl;
 import com.liferay.portal.kernel.exception.PortalException;
+import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.util.StringBundler;
 import com.liferay.portal.kernel.util.StringPool;
 
@@ -45,6 +46,17 @@ public class DDMStructureLinkLocalServiceImpl
 		structureLink.setClassNameId(classNameId);
 		structureLink.setClassPK(classPK);
 		structureLink.setStructureId(structureId);
+
+		DDMStructure ddmStructure = ddmStructureLocalService.fetchDDMStructure(
+			structureId);
+
+		if (ddmStructure == null) {
+			throw new SystemException(
+				"The entity Structure with PK " + structureId +
+					" was not found");
+		}
+
+		structureLink.setCompanyId(ddmStructure.getCompanyId());
 
 		ddmStructureLinkPersistence.update(structureLink);
 
