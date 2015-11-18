@@ -16,6 +16,7 @@ package com.liferay.portal.service.impl;
 
 import com.liferay.portal.NoSuchUserGroupRoleException;
 import com.liferay.portal.kernel.exception.PortalException;
+import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.model.Group;
 import com.liferay.portal.model.Role;
@@ -307,6 +308,15 @@ public class UserGroupRoleLocalServiceImpl
 
 		if (userGroupRole == null) {
 			userGroupRole = userGroupRolePersistence.create(userGroupRolePK);
+
+			User user = userPersistence.fetchByPrimaryKey(userId);
+
+			if (user == null) {
+				throw new SystemException(
+					"The entity User with PK " + userId + " was not found");
+			}
+
+			userGroupRole.setCompanyId(user.getCompanyId());
 
 			userGroupRolePersistence.update(userGroupRole);
 		}
