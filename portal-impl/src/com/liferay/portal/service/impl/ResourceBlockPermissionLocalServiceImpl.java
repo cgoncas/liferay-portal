@@ -15,6 +15,7 @@
 package com.liferay.portal.service.impl;
 
 import com.liferay.portal.kernel.exception.PortalException;
+import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.model.ResourceBlock;
 import com.liferay.portal.model.ResourceBlockConstants;
 import com.liferay.portal.model.ResourceBlockPermission;
@@ -59,6 +60,17 @@ public class ResourceBlockPermissionLocalServiceImpl
 			resourceBlockPermission.setResourceBlockId(resourceBlockId);
 			resourceBlockPermission.setRoleId(permission.getKey());
 			resourceBlockPermission.setActionIds(permission.getValue());
+
+			ResourceBlock resourceBlock =
+				resourceBlockLocalService.fetchResourceBlock(resourceBlockId);
+
+			if (resourceBlock == null) {
+				throw new SystemException(
+					"The entity ResourceBlock with PK " + resourceBlockId +
+						" was not found");
+			}
+
+			resourceBlockPermission.setCompanyId(resourceBlock.getCompanyId());
 
 			updateResourceBlockPermission(resourceBlockPermission);
 		}
