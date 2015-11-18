@@ -15,6 +15,8 @@
 package com.liferay.portal.service.impl;
 
 import com.liferay.portal.kernel.exception.PortalException;
+import com.liferay.portal.kernel.exception.SystemException;
+import com.liferay.portal.model.User;
 import com.liferay.portal.model.UserIdMapper;
 import com.liferay.portal.service.base.UserIdMapperLocalServiceBaseImpl;
 
@@ -62,6 +64,15 @@ public class UserIdMapperLocalServiceImpl
 			long userIdMapperId = counterLocalService.increment();
 
 			userIdMapper = userIdMapperPersistence.create(userIdMapperId);
+
+			User user = userLocalService.fetchUser(userId);
+
+			if (user == null) {
+				throw new SystemException(
+					"The entity User with PK " + userId + " was not found");
+			}
+
+			userIdMapper.setCompanyId(user.getCompanyId());
 		}
 
 		userIdMapper.setUserId(userId);
