@@ -133,8 +133,11 @@ public class ImageLocalServiceImpl extends ImageLocalServiceBaseImpl {
 	}
 
 	@Override
-	public Image moveImage(long imageId, byte[] bytes) throws PortalException {
-		Image image = updateImage(counterLocalService.increment(), bytes);
+	public Image moveImage(long companyId, long imageId, byte[] bytes)
+		throws PortalException {
+
+		Image image = updateImage(
+			companyId, counterLocalService.increment(), bytes);
 
 		if (imageId > 0) {
 			deleteImage(imageId);
@@ -144,7 +147,7 @@ public class ImageLocalServiceImpl extends ImageLocalServiceBaseImpl {
 	}
 
 	@Override
-	public Image updateImage(long imageId, byte[] bytes)
+	public Image updateImage(long companyId, long imageId, byte[] bytes)
 		throws PortalException {
 
 		Image image = null;
@@ -157,14 +160,14 @@ public class ImageLocalServiceImpl extends ImageLocalServiceBaseImpl {
 		}
 
 		return updateImage(
-			imageId, image.getTextObj(), image.getType(), image.getHeight(),
-			image.getWidth(), image.getSize());
+			companyId, imageId, image.getTextObj(), image.getType(),
+			image.getHeight(), image.getWidth(), image.getSize());
 	}
 
 	@Override
 	public Image updateImage(
-			long imageId, byte[] bytes, String type, int height, int width,
-			int size)
+			long companyId, long imageId, byte[] bytes, String type, int height,
+			int width, int size)
 		throws PortalException {
 
 		validate(type);
@@ -180,6 +183,7 @@ public class ImageLocalServiceImpl extends ImageLocalServiceBaseImpl {
 		image.setHeight(height);
 		image.setWidth(width);
 		image.setSize(size);
+		image.setCompanyId(companyId);
 
 		Hook hook = HookFactory.getInstance();
 
@@ -193,7 +197,9 @@ public class ImageLocalServiceImpl extends ImageLocalServiceBaseImpl {
 	}
 
 	@Override
-	public Image updateImage(long imageId, File file) throws PortalException {
+	public Image updateImage(long companyId, long imageId, File file)
+		throws PortalException {
+
 		Image image = null;
 
 		try {
@@ -204,12 +210,12 @@ public class ImageLocalServiceImpl extends ImageLocalServiceBaseImpl {
 		}
 
 		return updateImage(
-			imageId, image.getTextObj(), image.getType(), image.getHeight(),
-			image.getWidth(), image.getSize());
+			companyId, imageId, image.getTextObj(), image.getType(),
+			image.getHeight(), image.getWidth(), image.getSize());
 	}
 
 	@Override
-	public Image updateImage(long imageId, InputStream is)
+	public Image updateImage(long companyId, long imageId, InputStream is)
 		throws PortalException {
 
 		Image image = null;
@@ -222,13 +228,13 @@ public class ImageLocalServiceImpl extends ImageLocalServiceBaseImpl {
 		}
 
 		return updateImage(
-			imageId, image.getTextObj(), image.getType(), image.getHeight(),
-			image.getWidth(), image.getSize());
+			companyId, imageId, image.getTextObj(), image.getType(),
+			image.getHeight(), image.getWidth(), image.getSize());
 	}
 
 	@Override
 	public Image updateImage(
-			long imageId, InputStream is, boolean cleanUpStream)
+			long companyId, long imageId, InputStream is, boolean cleanUpStream)
 		throws PortalException {
 
 		Image image = null;
@@ -241,8 +247,8 @@ public class ImageLocalServiceImpl extends ImageLocalServiceBaseImpl {
 		}
 
 		return updateImage(
-			imageId, image.getTextObj(), image.getType(), image.getHeight(),
-			image.getWidth(), image.getSize());
+			companyId, imageId, image.getTextObj(), image.getType(),
+			image.getHeight(), image.getWidth(), image.getSize());
 	}
 
 	protected void validate(String type) throws PortalException {
