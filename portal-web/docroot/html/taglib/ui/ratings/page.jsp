@@ -39,7 +39,7 @@ if (!setRatingsEntry) {
 }
 
 if (!setRatingsStats) {
-	ratingsStats = RatingsStatsLocalServiceUtil.getStats(className, classPK);
+	ratingsStats = RatingsStatsLocalServiceUtil.getStats(themeDisplay.getCompanyId(), className, classPK);
 }
 
 if (Validator.isNull(url)) {

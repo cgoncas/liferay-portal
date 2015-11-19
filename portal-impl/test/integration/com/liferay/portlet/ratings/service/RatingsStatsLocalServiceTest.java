@@ -19,6 +19,7 @@ import com.liferay.portal.kernel.test.rule.DeleteAfterTestRun;
 import com.liferay.portal.kernel.test.util.GroupTestUtil;
 import com.liferay.portal.kernel.test.util.RandomTestUtil;
 import com.liferay.portal.kernel.test.util.ServiceContextTestUtil;
+import com.liferay.portal.kernel.test.util.TestPropsValues;
 import com.liferay.portal.kernel.test.util.UserTestUtil;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.model.Group;
@@ -76,12 +77,12 @@ public class RatingsStatsLocalServiceTest {
 			_user3.getUserId(), className2, classPK2, 0.2, serviceContext);
 
 		RatingsStats ratingsStats = RatingsStatsLocalServiceUtil.getStats(
-			className1, classPK1);
+			TestPropsValues.getCompanyId(), className1, classPK1);
 
 		Assert.assertEquals(1.4 / 2, ratingsStats.getAverageScore(), 0.001);
 
 		ratingsStats = RatingsStatsLocalServiceUtil.getStats(
-			className2, classPK2);
+			TestPropsValues.getCompanyId(), className2, classPK2);
 
 		Assert.assertEquals(0.2 / 1, ratingsStats.getAverageScore(), 0.001);
 	}
@@ -102,7 +103,7 @@ public class RatingsStatsLocalServiceTest {
 			_user3.getUserId(), className, classPK, 0.2, serviceContext);
 
 		RatingsStats ratingsStats = RatingsStatsLocalServiceUtil.getStats(
-			className, classPK);
+			TestPropsValues.getCompanyId(), className, classPK);
 
 		Assert.assertEquals(1.6 / 3, ratingsStats.getAverageScore(), 0.001);
 	}
@@ -121,7 +122,7 @@ public class RatingsStatsLocalServiceTest {
 			_user2.getUserId(), className, classPK, 0.4, serviceContext);
 
 		RatingsStats ratingsStats = RatingsStatsLocalServiceUtil.getStats(
-			className, classPK);
+			TestPropsValues.getCompanyId(), className, classPK);
 
 		Assert.assertEquals(2, ratingsStats.getTotalEntries());
 	}
@@ -148,12 +149,12 @@ public class RatingsStatsLocalServiceTest {
 			_user3.getUserId(), className2, classPK2, 0.2, serviceContext);
 
 		RatingsStats ratingsStats = RatingsStatsLocalServiceUtil.getStats(
-			className1, classPK1);
+			TestPropsValues.getCompanyId(), className1, classPK1);
 
 		Assert.assertEquals(1.4, ratingsStats.getTotalScore(), 0.001);
 
 		ratingsStats = RatingsStatsLocalServiceUtil.getStats(
-			className2, classPK2);
+			TestPropsValues.getCompanyId(), className2, classPK2);
 
 		Assert.assertEquals(0.2, ratingsStats.getTotalScore(), 0.001);
 	}
@@ -174,7 +175,7 @@ public class RatingsStatsLocalServiceTest {
 			_user3.getUserId(), className, classPK, 0.2, serviceContext);
 
 		RatingsStats ratingsStats = RatingsStatsLocalServiceUtil.getStats(
-			className, classPK);
+			TestPropsValues.getCompanyId(), className, classPK);
 
 		Assert.assertEquals(1.6, ratingsStats.getTotalScore(), 0.001);
 	}

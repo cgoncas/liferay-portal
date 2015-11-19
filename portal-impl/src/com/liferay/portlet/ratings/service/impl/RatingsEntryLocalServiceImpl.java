@@ -73,7 +73,7 @@ public class RatingsEntryLocalServiceImpl
 		// Stats
 
 		RatingsStats stats = ratingsStatsLocalService.getStats(
-			className, classPK);
+			entry.getCompanyId(), className, classPK);
 
 		int totalEntries = stats.getTotalEntries() - 1;
 		double totalScore = stats.getTotalScore() - oldScore;
@@ -171,7 +171,7 @@ public class RatingsEntryLocalServiceImpl
 			// Stats
 
 			RatingsStats stats = ratingsStatsLocalService.getStats(
-				className, classPK);
+				entry.getCompanyId(), className, classPK);
 
 			stats.setTotalScore(stats.getTotalScore() - oldScore + score);
 			stats.setAverageScore(
@@ -200,7 +200,7 @@ public class RatingsEntryLocalServiceImpl
 			// Stats
 
 			RatingsStats stats = ratingsStatsLocalService.getStats(
-				className, classPK);
+				entry.getCompanyId(), className, classPK);
 
 			stats.setTotalEntries(stats.getTotalEntries() + 1);
 			stats.setTotalScore(stats.getTotalScore() + score);

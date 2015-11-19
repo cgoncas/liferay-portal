@@ -64,6 +64,8 @@ public class RatingsTestUtil {
 		ratingsStats.setTotalScore(RandomTestUtil.randomInt());
 		ratingsStats.setAverageScore(averageScore);
 
+		ratingsStats.setCompanyId(TestPropsValues.getCompanyId());
+
 		return RatingsStatsLocalServiceUtil.updateRatingsStats(ratingsStats);
 	}
 

@@ -872,7 +872,8 @@ public class CompanyLocalServiceImpl extends CompanyLocalServiceBaseImpl {
 		company.setHomeURL(homeURL);
 
 		PortalUtil.updateImageId(
-			company.getCompanyId(), company, logo, logoBytes, "logoId", 0, 0, 0);
+			company.getCompanyId(), company, logo, logoBytes, "logoId", 0, 0,
+			0);
 
 		companyPersistence.update(company);
 

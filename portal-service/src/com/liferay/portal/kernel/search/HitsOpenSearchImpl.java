@@ -176,7 +176,8 @@ public abstract class HitsOpenSearchImpl extends BaseOpenSearchImpl {
 
 				if (Validator.isNotNull(entryClassName) && (entryClassPK > 0)) {
 					RatingsStats stats = RatingsStatsLocalServiceUtil.getStats(
-						entryClassName, entryClassPK);
+						themeDisplay.getCompanyId(), entryClassName,
+						entryClassPK);
 
 					ratings = stats.getTotalScore();
 				}
