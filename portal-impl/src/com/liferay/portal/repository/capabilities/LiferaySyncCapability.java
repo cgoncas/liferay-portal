@@ -110,34 +110,11 @@ public class LiferaySyncCapability
 	}
 
 	protected void registerDLSyncEventCallback(
-		String event, FileEntry fileEntry) {
-
-		if (isStagingGroup(fileEntry.getGroupId()) ||
-			!(fileEntry instanceof LiferayFileEntry)) {
-
-			return;
-		}
-
-		registerDLSyncEventCallback(
-			event, DLSyncConstants.TYPE_FILE, fileEntry.getFileEntryId());
-	}
-
-	protected void registerDLSyncEventCallback(String event, Folder folder) {
-		if (isStagingGroup(folder.getGroupId()) ||
-			!(folder instanceof LiferayFolder)) {
-
-			return;
-		}
-
-		registerDLSyncEventCallback(
-			event, DLSyncConstants.TYPE_FOLDER, folder.getFolderId());
-	}
-
-	protected void registerDLSyncEventCallback(
-		final String event, final String type, final long typePK) {
+		long companyId, final String event, final String type,
+		final long typePK) {
 
 		DLSyncEvent dlSyncEvent = _dlSyncEventLocalService.addDLSyncEvent(
-			event, type, typePK);
+			companyId, event, type, typePK);
 
 		final long modifiedTime = dlSyncEvent.getModifiedTime();
 
@@ -166,6 +143,32 @@ public class LiferaySyncCapability
 
 			}
 		);
+	}
+
+	protected void registerDLSyncEventCallback(
+		String event, FileEntry fileEntry) {
+
+		if (isStagingGroup(fileEntry.getGroupId()) ||
+			!(fileEntry instanceof LiferayFileEntry)) {
+
+			return;
+		}
+
+		registerDLSyncEventCallback(
+			fileEntry.getCompanyId(), event, DLSyncConstants.TYPE_FILE,
+			fileEntry.getFileEntryId());
+	}
+
+	protected void registerDLSyncEventCallback(String event, Folder folder) {
+		if (isStagingGroup(folder.getGroupId()) ||
+			!(folder instanceof LiferayFolder)) {
+
+			return;
+		}
+
+		registerDLSyncEventCallback(
+			folder.getCompanyId(), event, DLSyncConstants.TYPE_FOLDER,
+			folder.getFolderId());
 	}
 
 	private final RepositoryEventListener
