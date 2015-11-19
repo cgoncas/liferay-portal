@@ -14,12 +14,13 @@
 
 package com.liferay.portlet.subscriptions.test;
 
-import com.liferay.portal.kernel.test.rule.DeleteAfterTestRun;
 import com.liferay.portal.kernel.test.util.GroupTestUtil;
 import com.liferay.portal.kernel.test.util.UserTestUtil;
 import com.liferay.portal.model.Group;
 import com.liferay.portal.model.RoleConstants;
 import com.liferay.portal.model.User;
+import com.liferay.portal.service.GroupLocalServiceUtil;
+import com.liferay.portal.service.UserLocalServiceUtil;
 
 import org.junit.Before;
 
@@ -37,6 +38,14 @@ public abstract class BaseSubscriptionTestCase {
 
 		creatorUser = UserTestUtil.addGroupUser(
 			group, RoleConstants.SITE_MEMBER);
+	}
+
+	public void tearDown() throws Exception {
+		GroupLocalServiceUtil.deleteGroup(group);
+
+		UserLocalServiceUtil.deleteUser(user);
+
+		UserLocalServiceUtil.deleteUser(creatorUser);
 	}
 
 	protected long addBaseModel(long userId, long containerModelId)
@@ -57,13 +66,8 @@ public abstract class BaseSubscriptionTestCase {
 
 	protected static final long PARENT_CONTAINER_MODEL_ID_DEFAULT = 0;
 
-	@DeleteAfterTestRun
 	protected User creatorUser;
-
-	@DeleteAfterTestRun
 	protected Group group;
-
-	@DeleteAfterTestRun
 	protected User user;
 
 }
