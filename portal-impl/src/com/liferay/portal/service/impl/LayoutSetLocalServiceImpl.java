@@ -261,7 +261,9 @@ public class LayoutSetLocalServiceImpl extends LayoutSetLocalServiceBaseImpl {
 
 		layoutSet.setModifiedDate(new Date());
 
-		PortalUtil.updateImageId(layoutSet, logo, bytes, "logoId", 0, 0, 0);
+		PortalUtil.updateImageId(
+			layoutSet.getCompanyId(), layoutSet, logo, bytes, "logoId", 0, 0,
+			0);
 
 		return layoutSetPersistence.update(layoutSet);
 	}
@@ -482,9 +484,9 @@ public class LayoutSetLocalServiceImpl extends LayoutSetLocalServiceBaseImpl {
 				long logoId = counterLocalService.increment();
 
 				imageLocalService.updateImage(
-					logoId, logoImage.getTextObj(), logoImage.getType(),
-					logoImage.getHeight(), logoImage.getWidth(),
-					logoImage.getSize());
+					group.getCompanyId(), logoId, logoImage.getTextObj(),
+					logoImage.getType(), logoImage.getHeight(),
+					logoImage.getWidth(), logoImage.getSize());
 
 				layoutSet.setLogoId(logoId);
 			}

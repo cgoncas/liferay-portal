@@ -291,7 +291,8 @@ public class LayoutLocalServiceStagingAdvice implements MethodInterceptor {
 		originalLayout.setFriendlyURL(friendlyURL);
 
 		PortalUtil.updateImageId(
-			layoutRevision, iconImage, iconBytes, "iconImageId", 0, 0, 0);
+			layoutRevision.getCompanyId(), layoutRevision, iconImage, iconBytes,
+			"iconImageId", 0, 0, 0);
 
 		boolean layoutPrototypeLinkEnabled = ParamUtil.getBoolean(
 			serviceContext, "layoutPrototypeLinkEnabled");

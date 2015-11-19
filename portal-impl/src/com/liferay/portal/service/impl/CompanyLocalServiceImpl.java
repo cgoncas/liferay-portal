@@ -457,7 +457,8 @@ public class CompanyLocalServiceImpl extends CompanyLocalServiceBaseImpl {
 	public Company deleteLogo(long companyId) throws PortalException {
 		Company company = companyPersistence.findByPrimaryKey(companyId);
 
-		PortalUtil.updateImageId(company, false, null, "logoId", 0, 0, 0);
+		PortalUtil.updateImageId(
+			company.getCompanyId(), company, false, null, "logoId", 0, 0, 0);
 
 		return company;
 	}
@@ -870,7 +871,8 @@ public class CompanyLocalServiceImpl extends CompanyLocalServiceBaseImpl {
 
 		company.setHomeURL(homeURL);
 
-		PortalUtil.updateImageId(company, logo, logoBytes, "logoId", 0, 0, 0);
+		PortalUtil.updateImageId(
+			company.getCompanyId(), company, logo, logoBytes, "logoId", 0, 0, 0);
 
 		companyPersistence.update(company);
 
@@ -964,7 +966,8 @@ public class CompanyLocalServiceImpl extends CompanyLocalServiceBaseImpl {
 
 		Company company = checkLogo(companyId);
 
-		imageLocalService.updateImage(company.getLogoId(), bytes);
+		imageLocalService.updateImage(
+			company.getCompanyId(), company.getLogoId(), bytes);
 
 		return company;
 	}
@@ -982,7 +985,8 @@ public class CompanyLocalServiceImpl extends CompanyLocalServiceBaseImpl {
 
 		Company company = checkLogo(companyId);
 
-		imageLocalService.updateImage(company.getLogoId(), file);
+		imageLocalService.updateImage
+			(company.getCompanyId(), company.getLogoId(), file);
 
 		return company;
 	}
@@ -1000,7 +1004,8 @@ public class CompanyLocalServiceImpl extends CompanyLocalServiceBaseImpl {
 
 		Company company = checkLogo(companyId);
 
-		imageLocalService.updateImage(company.getLogoId(), is);
+		imageLocalService.updateImage(
+			company.getCompanyId(), company.getLogoId(), is);
 
 		return company;
 	}

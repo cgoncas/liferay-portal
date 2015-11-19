@@ -1435,7 +1435,7 @@ public interface Portal {
 	public String transformSQL(String sql);
 
 	public void updateImageId(
-			BaseModel<?> baseModel, boolean image, byte[] bytes,
+			long companyId, BaseModel<?> baseModel, boolean image, byte[] bytes,
 			String fieldName, long maxSize, int maxHeight, int maxWidth)
 		throws PortalException;
 

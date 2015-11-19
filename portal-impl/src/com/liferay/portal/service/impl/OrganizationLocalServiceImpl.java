@@ -353,7 +353,9 @@ public class OrganizationLocalServiceImpl
 	public void deleteLogo(long organizationId) throws PortalException {
 		Organization organization = getOrganization(organizationId);
 
-		PortalUtil.updateImageId(organization, false, null, "logoId", 0, 0, 0);
+		PortalUtil.updateImageId(
+			organization.getCompanyId(), organization, false, null, "logoId", 0,
+			0, 0);
 	}
 
 	/**
@@ -1763,8 +1765,8 @@ public class OrganizationLocalServiceImpl
 		organization.setComments(comments);
 
 		PortalUtil.updateImageId(
-			organization, logo, logoBytes, "logoId",
-			PrefsPropsUtil.getLong(PropsKeys.USERS_IMAGE_MAX_SIZE),
+			organization.getCompanyId(), organization, logo, logoBytes,
+			"logoId", PrefsPropsUtil.getLong(PropsKeys.USERS_IMAGE_MAX_SIZE),
 			PropsValues.USERS_IMAGE_MAX_HEIGHT,
 			PropsValues.USERS_IMAGE_MAX_WIDTH);
 

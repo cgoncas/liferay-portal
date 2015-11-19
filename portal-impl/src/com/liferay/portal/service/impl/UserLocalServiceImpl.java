@@ -1704,7 +1704,8 @@ public class UserLocalServiceImpl extends UserLocalServiceBaseImpl {
 	public void deletePortrait(long userId) throws PortalException {
 		User user = userPersistence.findByPrimaryKey(userId);
 
-		PortalUtil.updateImageId(user, false, null, "portraitId", 0, 0, 0);
+		PortalUtil.updateImageId(
+			user.getCompanyId(), user, false, null, "portraitId", 0, 0, 0);
 	}
 
 	/**
@@ -4849,7 +4850,7 @@ public class UserLocalServiceImpl extends UserLocalServiceBaseImpl {
 		User user = userPersistence.findByPrimaryKey(userId);
 
 		PortalUtil.updateImageId(
-			user, true, bytes, "portraitId",
+			user.getCompanyId(), user, true, bytes, "portraitId",
 			PrefsPropsUtil.getLong(PropsKeys.USERS_IMAGE_MAX_SIZE),
 			PropsValues.USERS_IMAGE_MAX_HEIGHT,
 			PropsValues.USERS_IMAGE_MAX_WIDTH);
@@ -5155,7 +5156,7 @@ public class UserLocalServiceImpl extends UserLocalServiceBaseImpl {
 		user.setOpenId(openId);
 
 		PortalUtil.updateImageId(
-			user, portrait, portraitBytes, "portraitId",
+			user.getCompanyId(), user, portrait, portraitBytes, "portraitId",
 			PrefsPropsUtil.getLong(PropsKeys.USERS_IMAGE_MAX_SIZE),
 			PropsValues.USERS_IMAGE_MAX_HEIGHT,
 			PropsValues.USERS_IMAGE_MAX_WIDTH);

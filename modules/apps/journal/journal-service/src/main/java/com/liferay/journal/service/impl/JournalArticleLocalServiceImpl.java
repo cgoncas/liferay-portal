@@ -436,8 +436,8 @@ public class JournalArticleLocalServiceImpl
 		// Small image
 
 		saveImages(
-			smallImage, article.getSmallImageId(), smallImageFile,
-			smallImageBytes);
+			article.getCompanyId(), smallImage, article.getSmallImageId(),
+			smallImageFile, smallImageBytes);
 
 		// Asset
 
@@ -846,7 +846,8 @@ public class JournalArticleLocalServiceImpl
 				byte[] smallImageBytes = image.getTextObj();
 
 				imageLocalService.updateImage(
-					newArticle.getSmallImageId(), smallImageBytes);
+					newArticle.getCompanyId(), newArticle.getSmallImageId(),
+					smallImageBytes);
 			}
 		}
 
@@ -5234,8 +5235,8 @@ public class JournalArticleLocalServiceImpl
 		// Small image
 
 		saveImages(
-			smallImage, article.getSmallImageId(), smallImageFile,
-			smallImageBytes);
+			article.getCompanyId(), smallImage, article.getSmallImageId(),
+			smallImageFile, smallImageBytes);
 
 		// Email
 
@@ -6298,7 +6299,8 @@ public class JournalArticleLocalServiceImpl
 					newArticle.getGroupId(), newArticle.getArticleId(),
 					newArticle.getVersion(), elInstanceId, name, languageId);
 
-				imageLocalService.updateImage(imageId, oldImage.getTextObj());
+				imageLocalService.updateImage(
+					newArticle.getCompanyId(), imageId, oldImage.getTextObj());
 
 				String elContent =
 					"/image/journal/article?img_id=" + imageId + "&t=" +
@@ -6386,8 +6388,8 @@ public class JournalArticleLocalServiceImpl
 				String name = elName + StringPool.UNDERLINE + elIndex;
 
 				formatImage(
-					groupId, articleId, version, incrementVersion, element,
-					elInstanceId, name, images);
+					user.getCompanyId(), groupId, articleId, version,
+					incrementVersion, element, elInstanceId, name, images);
 			}
 			else if (elType.equals("text_area") || elType.equals("text") ||
 					 elType.equals("text_box")) {
@@ -6498,7 +6500,7 @@ public class JournalArticleLocalServiceImpl
 	}
 
 	protected void formatImage(
-			long groupId, String articleId, double version,
+			long companyId, long groupId, String articleId, double version,
 			boolean incrementVersion, Element el, String elInstanceId,
 			String elName, Map<String, byte[]> images)
 		throws PortalException {
@@ -6556,7 +6558,7 @@ public class JournalArticleLocalServiceImpl
 				dynamicContent.setText(elContent);
 				dynamicContent.addAttribute("id", String.valueOf(imageId));
 
-				imageLocalService.updateImage(imageId, bytes);
+				imageLocalService.updateImage(companyId, imageId, bytes);
 
 				continue;
 			}
@@ -6587,7 +6589,7 @@ public class JournalArticleLocalServiceImpl
 
 					bytes = oldImage.getTextObj();
 
-					imageLocalService.updateImage(imageId, bytes);
+					imageLocalService.updateImage(companyId, imageId, bytes);
 				}
 				else if (dynamicContent.getText().equals("update")) {
 					dynamicContent.setText(StringPool.BLANK);
@@ -6651,7 +6653,7 @@ public class JournalArticleLocalServiceImpl
 
 				bytes = defaultImage.getTextObj();
 
-				imageLocalService.updateImage(defaultImageId, bytes);
+				imageLocalService.updateImage(companyId, defaultImageId, bytes);
 
 				continue;
 			}
@@ -7186,13 +7188,14 @@ public class JournalArticleLocalServiceImpl
 	}
 
 	protected void saveImages(
-			boolean smallImage, long smallImageId, File smallImageFile,
-			byte[] smallImageBytes)
+			long companyId, boolean smallImage, long smallImageId,
+			File smallImageFile, byte[] smallImageBytes)
 		throws PortalException {
 
 		if (smallImage) {
 			if ((smallImageFile != null) && (smallImageBytes != null)) {
-				imageLocalService.updateImage(smallImageId, smallImageBytes);
+				imageLocalService.updateImage(
+					companyId, smallImageId, smallImageBytes);
 			}
 		}
 		else {

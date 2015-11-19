@@ -2219,7 +2219,8 @@ public class LayoutLocalServiceImpl extends LayoutLocalServiceBaseImpl {
 			return null;
 		}
 
-		PortalUtil.updateImageId(layout, true, bytes, "iconImageId", 0, 0, 0);
+		PortalUtil.updateImageId(
+			layout.getCompanyId(), layout, true, bytes, "iconImageId", 0, 0, 0);
 
 		layoutPersistence.update(layout);
 
@@ -2315,7 +2316,8 @@ public class LayoutLocalServiceImpl extends LayoutLocalServiceBaseImpl {
 		layout.setFriendlyURL(friendlyURL);
 
 		PortalUtil.updateImageId(
-			layout, iconImage, iconBytes, "iconImageId", 0, 0, 0);
+			layout.getCompanyId(), layout, iconImage, iconBytes, "iconImageId",
+			0, 0, 0);
 
 		boolean layoutUpdateable = ParamUtil.getBoolean(
 			serviceContext, Sites.LAYOUT_UPDATEABLE, true);
