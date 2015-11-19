@@ -346,6 +346,7 @@ public class ShoppingOrderLocalServiceImpl
 				ShoppingUtil.calculateActualPrice(item, count.intValue()) /
 					count.intValue());
 			orderItem.setQuantity(count.intValue());
+			orderItem.setCompanyId(item.getCompanyId());
 
 			shoppingOrderItemPersistence.update(orderItem);
 		}

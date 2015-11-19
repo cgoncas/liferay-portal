@@ -182,6 +182,7 @@ public class ShoppingItemLocalServiceImpl
 			itemField.setItemId(itemId);
 			itemField.setName(checkItemField(itemField.getName()));
 			itemField.setValues(checkItemField(itemField.getValues()));
+			itemField.setCompanyId(item.getCompanyId());
 
 			shoppingItemFieldPersistence.update(itemField);
 		}
@@ -194,6 +195,7 @@ public class ShoppingItemLocalServiceImpl
 
 				itemPrice.setItemPriceId(itemPriceId);
 				itemPrice.setItemId(itemId);
+				itemPrice.setCompanyId(item.getCompanyId());
 
 				shoppingItemPricePersistence.update(itemPrice);
 			}
