@@ -104,6 +104,8 @@ public class StagingImplTest {
 	@Before
 	public void setUp() throws Exception {
 		_group = GroupTestUtil.addGroup();
+
+		System.out.println("A");
 	}
 
 	@Test
