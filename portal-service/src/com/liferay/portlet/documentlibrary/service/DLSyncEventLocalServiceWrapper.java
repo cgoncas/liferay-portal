@@ -33,6 +33,14 @@ public class DLSyncEventLocalServiceWrapper implements DLSyncEventLocalService,
 		_dlSyncEventLocalService = dlSyncEventLocalService;
 	}
 
+	@Override
+	public com.liferay.portlet.documentlibrary.model.DLSyncEvent addDLSyncEvent(
+		long companyId, java.lang.String event, java.lang.String type,
+		long typePK) {
+		return _dlSyncEventLocalService.addDLSyncEvent(companyId, event, type,
+			typePK);
+	}
+
 	/**
 	* Adds the d l sync event to the database. Also notifies the appropriate model listeners.
 	*
@@ -43,12 +51,6 @@ public class DLSyncEventLocalServiceWrapper implements DLSyncEventLocalService,
 	public com.liferay.portlet.documentlibrary.model.DLSyncEvent addDLSyncEvent(
 		com.liferay.portlet.documentlibrary.model.DLSyncEvent dlSyncEvent) {
 		return _dlSyncEventLocalService.addDLSyncEvent(dlSyncEvent);
-	}
-
-	@Override
-	public com.liferay.portlet.documentlibrary.model.DLSyncEvent addDLSyncEvent(
-		java.lang.String event, java.lang.String type, long typePK) {
-		return _dlSyncEventLocalService.addDLSyncEvent(event, type, typePK);
 	}
 
 	/**

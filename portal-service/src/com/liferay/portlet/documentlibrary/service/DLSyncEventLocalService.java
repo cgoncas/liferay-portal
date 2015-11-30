@@ -47,6 +47,9 @@ public interface DLSyncEventLocalService extends BaseLocalService,
 	 *
 	 * Never modify or reference this interface directly. Always use {@link DLSyncEventLocalServiceUtil} to access the d l sync event local service. Add custom service methods to {@link com.liferay.portlet.documentlibrary.service.impl.DLSyncEventLocalServiceImpl} and rerun ServiceBuilder to automatically copy the method declarations to this interface.
 	 */
+	public com.liferay.portlet.documentlibrary.model.DLSyncEvent addDLSyncEvent(
+		long companyId, java.lang.String event, java.lang.String type,
+		long typePK);
 
 	/**
 	* Adds the d l sync event to the database. Also notifies the appropriate model listeners.
@@ -57,9 +60,6 @@ public interface DLSyncEventLocalService extends BaseLocalService,
 	@com.liferay.portal.kernel.search.Indexable(type = IndexableType.REINDEX)
 	public com.liferay.portlet.documentlibrary.model.DLSyncEvent addDLSyncEvent(
 		com.liferay.portlet.documentlibrary.model.DLSyncEvent dlSyncEvent);
-
-	public com.liferay.portlet.documentlibrary.model.DLSyncEvent addDLSyncEvent(
-		java.lang.String event, java.lang.String type, long typePK);
 
 	/**
 	* Creates a new d l sync event with the primary key. Does not add the d l sync event to the database.
