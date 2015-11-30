@@ -53,8 +53,8 @@ public class RatingsStatsLocalServiceUtil {
 	}
 
 	public static com.liferay.portlet.ratings.model.RatingsStats addStats(
-		long classNameId, long classPK) {
-		return getService().addStats(classNameId, classPK);
+		long companyId, long classNameId, long classPK) {
+		return getService().addStats(companyId, classNameId, classPK);
 	}
 
 	/**
@@ -254,14 +254,14 @@ public class RatingsStatsLocalServiceUtil {
 		return getService().getRatingsStatsesCount();
 	}
 
-	public static com.liferay.portlet.ratings.model.RatingsStats getStats(
-		java.lang.String className, long classPK) {
-		return getService().getStats(className, classPK);
-	}
-
 	public static java.util.List<com.liferay.portlet.ratings.model.RatingsStats> getStats(
 		java.lang.String className, java.util.List<java.lang.Long> classPKs) {
 		return getService().getStats(className, classPKs);
+	}
+
+	public static com.liferay.portlet.ratings.model.RatingsStats getStats(
+		long companyid, java.lang.String className, long classPK) {
+		return getService().getStats(companyid, className, classPK);
 	}
 
 	public static com.liferay.portlet.ratings.model.RatingsStats getStats(

@@ -59,7 +59,7 @@ public interface RatingsStatsLocalService extends BaseLocalService,
 		com.liferay.portlet.ratings.model.RatingsStats ratingsStats);
 
 	public com.liferay.portlet.ratings.model.RatingsStats addStats(
-		long classNameId, long classPK);
+		long companyId, long classNameId, long classPK);
 
 	/**
 	* Creates a new ratings stats with the primary key. Does not add the ratings stats to the database.
@@ -227,12 +227,12 @@ public interface RatingsStatsLocalService extends BaseLocalService,
 	public int getRatingsStatsesCount();
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public com.liferay.portlet.ratings.model.RatingsStats getStats(
-		java.lang.String className, long classPK);
-
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public java.util.List<com.liferay.portlet.ratings.model.RatingsStats> getStats(
 		java.lang.String className, java.util.List<java.lang.Long> classPKs);
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public com.liferay.portlet.ratings.model.RatingsStats getStats(
+		long companyid, java.lang.String className, long classPK);
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public com.liferay.portlet.ratings.model.RatingsStats getStats(long statsId)
