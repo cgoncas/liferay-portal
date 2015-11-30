@@ -226,7 +226,24 @@ public interface ImageLocalService extends BaseLocalService,
 	public com.liferay.portal.model.PersistedModel getPersistedModel(
 		java.io.Serializable primaryKeyObj) throws PortalException;
 
-	public com.liferay.portal.model.Image moveImage(long imageId, byte[] bytes)
+	public com.liferay.portal.model.Image moveImage(long companyId,
+		long imageId, byte[] bytes) throws PortalException;
+
+	public com.liferay.portal.model.Image updateImage(long companyId,
+		long imageId, byte[] bytes) throws PortalException;
+
+	public com.liferay.portal.model.Image updateImage(long companyId,
+		long imageId, byte[] bytes, java.lang.String type, int height,
+		int width, int size) throws PortalException;
+
+	public com.liferay.portal.model.Image updateImage(long companyId,
+		long imageId, java.io.File file) throws PortalException;
+
+	public com.liferay.portal.model.Image updateImage(long companyId,
+		long imageId, java.io.InputStream is) throws PortalException;
+
+	public com.liferay.portal.model.Image updateImage(long companyId,
+		long imageId, java.io.InputStream is, boolean cleanUpStream)
 		throws PortalException;
 
 	/**
@@ -238,21 +255,4 @@ public interface ImageLocalService extends BaseLocalService,
 	@com.liferay.portal.kernel.search.Indexable(type = IndexableType.REINDEX)
 	public com.liferay.portal.model.Image updateImage(
 		com.liferay.portal.model.Image image);
-
-	public com.liferay.portal.model.Image updateImage(long imageId, byte[] bytes)
-		throws PortalException;
-
-	public com.liferay.portal.model.Image updateImage(long imageId,
-		byte[] bytes, java.lang.String type, int height, int width, int size)
-		throws PortalException;
-
-	public com.liferay.portal.model.Image updateImage(long imageId,
-		java.io.File file) throws PortalException;
-
-	public com.liferay.portal.model.Image updateImage(long imageId,
-		java.io.InputStream is) throws PortalException;
-
-	public com.liferay.portal.model.Image updateImage(long imageId,
-		java.io.InputStream is, boolean cleanUpStream)
-		throws PortalException;
 }
