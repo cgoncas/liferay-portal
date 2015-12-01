@@ -5713,7 +5713,7 @@ public class JournalArticleLocalServiceImpl
 
 				// Asset
 
-				if ((oldStatus != WorkflowConstants.STATUS_APPROVED) &&
+				/*if ((oldStatus != WorkflowConstants.STATUS_APPROVED) &&
 					(article.getVersion() !=
 						JournalArticleConstants.VERSION_DEFAULT)) {
 
@@ -5756,7 +5756,7 @@ public class JournalArticleLocalServiceImpl
 
 						assetEntryLocalService.deleteEntry(draftAssetEntry);
 					}
-				}
+				}*/
 
 				if (article.getClassNameId() ==
 						JournalArticleConstants.CLASSNAME_ID_DEFAULT) {
