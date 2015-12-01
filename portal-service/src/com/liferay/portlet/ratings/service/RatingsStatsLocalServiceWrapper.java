@@ -47,8 +47,9 @@ public class RatingsStatsLocalServiceWrapper implements RatingsStatsLocalService
 
 	@Override
 	public com.liferay.portlet.ratings.model.RatingsStats addStats(
-		long classNameId, long classPK) {
-		return _ratingsStatsLocalService.addStats(classNameId, classPK);
+		long companyId, long classNameId, long classPK) {
+		return _ratingsStatsLocalService.addStats(companyId, classNameId,
+			classPK);
 	}
 
 	/**
@@ -270,15 +271,15 @@ public class RatingsStatsLocalServiceWrapper implements RatingsStatsLocalService
 	}
 
 	@Override
-	public com.liferay.portlet.ratings.model.RatingsStats getStats(
-		java.lang.String className, long classPK) {
-		return _ratingsStatsLocalService.getStats(className, classPK);
-	}
-
-	@Override
 	public java.util.List<com.liferay.portlet.ratings.model.RatingsStats> getStats(
 		java.lang.String className, java.util.List<java.lang.Long> classPKs) {
 		return _ratingsStatsLocalService.getStats(className, classPKs);
+	}
+
+	@Override
+	public com.liferay.portlet.ratings.model.RatingsStats getStats(
+		long companyid, java.lang.String className, long classPK) {
+		return _ratingsStatsLocalService.getStats(companyid, className, classPK);
 	}
 
 	@Override

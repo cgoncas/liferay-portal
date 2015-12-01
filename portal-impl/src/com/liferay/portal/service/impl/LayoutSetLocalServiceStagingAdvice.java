@@ -190,7 +190,8 @@ public class LayoutSetLocalServiceStagingAdvice
 		layoutSetBranch.setModifiedDate(new Date());
 
 		PortalUtil.updateImageId(
-			layoutSetBranch, logo, logoBytes, "logoId", 0, 0, 0);
+			layoutSetBranch.getCompanyId(), layoutSetBranch, logo, logoBytes,
+			"logoId", 0, 0, 0);
 
 		layoutSetBranchPersistence.update(layoutSetBranch);
 

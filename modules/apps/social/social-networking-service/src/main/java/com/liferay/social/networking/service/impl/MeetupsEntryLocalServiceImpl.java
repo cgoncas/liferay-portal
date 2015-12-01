@@ -77,7 +77,8 @@ public class MeetupsEntryLocalServiceImpl
 
 		if (ArrayUtil.isNotEmpty(thumbnail)) {
 			imageLocalService.updateImage(
-				meetupsEntry.getThumbnailId(), thumbnail);
+				meetupsEntry.getCompanyId(), meetupsEntry.getThumbnailId(),
+				thumbnail);
 		}
 
 		return meetupsEntry;
@@ -151,7 +152,8 @@ public class MeetupsEntryLocalServiceImpl
 
 		if (ArrayUtil.isNotEmpty(thumbnail)) {
 			imageLocalService.updateImage(
-				meetupsEntry.getThumbnailId(), thumbnail);
+				meetupsEntry.getCompanyId(), meetupsEntry.getThumbnailId(),
+				thumbnail);
 		}
 
 		return meetupsEntry;

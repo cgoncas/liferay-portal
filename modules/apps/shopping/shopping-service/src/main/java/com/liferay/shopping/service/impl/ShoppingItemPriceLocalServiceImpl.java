@@ -55,6 +55,8 @@ public class ShoppingItemPriceLocalServiceImpl
 			itemPrice.setStatus(
 				ShoppingItemPriceConstants.STATUS_ACTIVE_DEFAULT);
 
+			itemPrice.setCompanyId(item.getCompanyId());
+
 			itemPrices.add(itemPrice);
 		}
 

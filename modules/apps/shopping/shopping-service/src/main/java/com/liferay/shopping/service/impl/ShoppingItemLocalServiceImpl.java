@@ -168,10 +168,11 @@ public class ShoppingItemLocalServiceImpl
 		// Images
 
 		saveImages(
-			smallImage, item.getSmallImageId(), smallImageFile, smallImageBytes,
-			mediumImage, item.getMediumImageId(), mediumImageFile,
-			mediumImageBytes, largeImage, item.getLargeImageId(),
-			largeImageFile, largeImageBytes);
+			item.getCompanyId(), smallImage, item.getSmallImageId(),
+			smallImageFile, smallImageBytes, mediumImage,
+			item.getMediumImageId(), mediumImageFile, mediumImageBytes,
+			largeImage, item.getLargeImageId(), largeImageFile,
+			largeImageBytes);
 
 		// Item fields
 
@@ -182,6 +183,7 @@ public class ShoppingItemLocalServiceImpl
 			itemField.setItemId(itemId);
 			itemField.setName(checkItemField(itemField.getName()));
 			itemField.setValues(checkItemField(itemField.getValues()));
+			itemField.setCompanyId(item.getCompanyId());
 
 			shoppingItemFieldPersistence.update(itemField);
 		}
@@ -194,6 +196,7 @@ public class ShoppingItemLocalServiceImpl
 
 				itemPrice.setItemPriceId(itemPriceId);
 				itemPrice.setItemId(itemId);
+				itemPrice.setCompanyId(item.getCompanyId());
 
 				shoppingItemPricePersistence.update(itemPrice);
 			}
@@ -516,10 +519,11 @@ public class ShoppingItemLocalServiceImpl
 		// Images
 
 		saveImages(
-			smallImage, item.getSmallImageId(), smallImageFile, smallImageBytes,
-			mediumImage, item.getMediumImageId(), mediumImageFile,
-			mediumImageBytes, largeImage, item.getLargeImageId(),
-			largeImageFile, largeImageBytes);
+			item.getCompanyId(), smallImage, item.getSmallImageId(),
+			smallImageFile, smallImageBytes, mediumImage,
+			item.getMediumImageId(), mediumImageFile, mediumImageBytes,
+			largeImage, item.getLargeImageId(), largeImageFile,
+			largeImageBytes);
 
 		// Item fields
 
@@ -587,17 +591,19 @@ public class ShoppingItemLocalServiceImpl
 	}
 
 	protected void saveImages(
-			boolean smallImage, long smallImageId, File smallImageFile,
-			byte[] smallImageBytes, boolean mediumImage, long mediumImageId,
-			File mediumImageFile, byte[] mediumImageBytes, boolean largeImage,
-			long largeImageId, File largeImageFile, byte[] largeImageBytes)
+			long companyId, boolean smallImage, long smallImageId,
+			File smallImageFile, byte[] smallImageBytes, boolean mediumImage,
+			long mediumImageId, File mediumImageFile, byte[] mediumImageBytes,
+			boolean largeImage, long largeImageId, File largeImageFile,
+			byte[] largeImageBytes)
 		throws PortalException {
 
 		// Small image
 
 		if (smallImage) {
 			if ((smallImageFile != null) && (smallImageBytes != null)) {
-				imageLocalService.updateImage(smallImageId, smallImageBytes);
+				imageLocalService.updateImage(
+					companyId, smallImageId, smallImageBytes);
 			}
 		}
 		else {
@@ -608,7 +614,8 @@ public class ShoppingItemLocalServiceImpl
 
 		if (mediumImage) {
 			if ((mediumImageFile != null) && (mediumImageBytes != null)) {
-				imageLocalService.updateImage(mediumImageId, mediumImageBytes);
+				imageLocalService.updateImage(
+					companyId, mediumImageId, mediumImageBytes);
 			}
 		}
 		else {
@@ -619,7 +626,8 @@ public class ShoppingItemLocalServiceImpl
 
 		if (largeImage) {
 			if ((largeImageFile != null) && (largeImageBytes != null)) {
-				imageLocalService.updateImage(largeImageId, largeImageBytes);
+				imageLocalService.updateImage(
+					companyId, largeImageId, largeImageBytes);
 			}
 		}
 		else {

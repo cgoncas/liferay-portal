@@ -30,6 +30,7 @@ import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.util.ClassLoaderUtil;
 import com.liferay.portal.kernel.workflow.WorkflowConstants;
 import com.liferay.portal.model.Group;
+import com.liferay.portal.model.User;
 import com.liferay.portlet.messageboards.model.MBStatsUser;
 import com.liferay.portlet.messageboards.model.MBThread;
 import com.liferay.portlet.messageboards.model.impl.MBStatsUserImpl;
@@ -52,6 +53,15 @@ public class MBStatsUserLocalServiceImpl
 
 		statsUser.setGroupId(groupId);
 		statsUser.setUserId(userId);
+
+		User user = userLocalService.fetchUser(userId);
+
+		if (user == null) {
+			throw new SystemException(
+				"The entity User with PK " + userId + " was not found");
+		}
+
+		statsUser.setCompanyId(user.getCompanyId());
 
 		try {
 			mbStatsUserPersistence.update(statsUser);

@@ -6950,8 +6950,9 @@ public class PortalImpl implements Portal {
 
 	@Override
 	public void updateImageId(
-			BaseModel<?> baseModel, boolean hasImage, byte[] bytes,
-			String fieldName, long maxSize, int maxHeight, int maxWidth)
+			long companyId, BaseModel<?> baseModel, boolean hasImage,
+			byte[] bytes, String fieldName, long maxSize, int maxHeight,
+			int maxWidth)
 		throws PortalException {
 
 		long imageId = BeanPropertiesUtil.getLong(baseModel, fieldName);
@@ -6995,7 +6996,8 @@ public class PortalImpl implements Portal {
 			}
 		}
 
-		Image image = ImageLocalServiceUtil.moveImage(imageId, bytes);
+		Image image = ImageLocalServiceUtil.moveImage(
+			companyId, imageId, bytes);
 
 		BeanPropertiesUtil.setProperty(
 			baseModel, fieldName, image.getImageId());

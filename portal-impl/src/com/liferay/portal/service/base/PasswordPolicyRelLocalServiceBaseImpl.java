@@ -39,6 +39,8 @@ import com.liferay.portal.service.BaseLocalServiceImpl;
 import com.liferay.portal.service.PasswordPolicyRelLocalService;
 import com.liferay.portal.service.PersistedModelLocalServiceRegistry;
 import com.liferay.portal.service.persistence.ClassNamePersistence;
+import com.liferay.portal.service.persistence.PasswordPolicyFinder;
+import com.liferay.portal.service.persistence.PasswordPolicyPersistence;
 import com.liferay.portal.service.persistence.PasswordPolicyRelPersistence;
 import com.liferay.portal.util.PortalUtil;
 
@@ -409,6 +411,63 @@ public abstract class PasswordPolicyRelLocalServiceBaseImpl
 		this.classNamePersistence = classNamePersistence;
 	}
 
+	/**
+	 * Returns the password policy local service.
+	 *
+	 * @return the password policy local service
+	 */
+	public com.liferay.portal.service.PasswordPolicyLocalService getPasswordPolicyLocalService() {
+		return passwordPolicyLocalService;
+	}
+
+	/**
+	 * Sets the password policy local service.
+	 *
+	 * @param passwordPolicyLocalService the password policy local service
+	 */
+	public void setPasswordPolicyLocalService(
+		com.liferay.portal.service.PasswordPolicyLocalService passwordPolicyLocalService) {
+		this.passwordPolicyLocalService = passwordPolicyLocalService;
+	}
+
+	/**
+	 * Returns the password policy persistence.
+	 *
+	 * @return the password policy persistence
+	 */
+	public PasswordPolicyPersistence getPasswordPolicyPersistence() {
+		return passwordPolicyPersistence;
+	}
+
+	/**
+	 * Sets the password policy persistence.
+	 *
+	 * @param passwordPolicyPersistence the password policy persistence
+	 */
+	public void setPasswordPolicyPersistence(
+		PasswordPolicyPersistence passwordPolicyPersistence) {
+		this.passwordPolicyPersistence = passwordPolicyPersistence;
+	}
+
+	/**
+	 * Returns the password policy finder.
+	 *
+	 * @return the password policy finder
+	 */
+	public PasswordPolicyFinder getPasswordPolicyFinder() {
+		return passwordPolicyFinder;
+	}
+
+	/**
+	 * Sets the password policy finder.
+	 *
+	 * @param passwordPolicyFinder the password policy finder
+	 */
+	public void setPasswordPolicyFinder(
+		PasswordPolicyFinder passwordPolicyFinder) {
+		this.passwordPolicyFinder = passwordPolicyFinder;
+	}
+
 	public void afterPropertiesSet() {
 		persistedModelLocalServiceRegistry.register("com.liferay.portal.model.PasswordPolicyRel",
 			passwordPolicyRelLocalService);
@@ -471,6 +530,12 @@ public abstract class PasswordPolicyRelLocalServiceBaseImpl
 	protected com.liferay.portal.service.ClassNameLocalService classNameLocalService;
 	@BeanReference(type = ClassNamePersistence.class)
 	protected ClassNamePersistence classNamePersistence;
+	@BeanReference(type = com.liferay.portal.service.PasswordPolicyLocalService.class)
+	protected com.liferay.portal.service.PasswordPolicyLocalService passwordPolicyLocalService;
+	@BeanReference(type = PasswordPolicyPersistence.class)
+	protected PasswordPolicyPersistence passwordPolicyPersistence;
+	@BeanReference(type = PasswordPolicyFinder.class)
+	protected PasswordPolicyFinder passwordPolicyFinder;
 	@BeanReference(type = PersistedModelLocalServiceRegistry.class)
 	protected PersistedModelLocalServiceRegistry persistedModelLocalServiceRegistry;
 }

@@ -325,6 +325,10 @@
 			<finder-column name="nodeId" />
 			<finder-column name="title" />
 		</finder>
+
+		<!-- References -->
+
+		<reference package-path="com.liferay.portal" entity="Group" />
 	</entity>
 	<exceptions>
 		<exception>DuplicateNodeName</exception>

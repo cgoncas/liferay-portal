@@ -15,6 +15,8 @@
 package com.liferay.portlet.announcements.service.impl;
 
 import com.liferay.portal.kernel.exception.PortalException;
+import com.liferay.portal.kernel.exception.SystemException;
+import com.liferay.portal.model.User;
 import com.liferay.portlet.announcements.model.AnnouncementsFlag;
 import com.liferay.portlet.announcements.service.base.AnnouncementsFlagLocalServiceBaseImpl;
 
@@ -38,6 +40,15 @@ public class AnnouncementsFlagLocalServiceImpl
 		flag.setCreateDate(new Date());
 		flag.setEntryId(entryId);
 		flag.setValue(value);
+
+		User user = userLocalService.fetchUser(userId);
+
+		if (user == null) {
+			throw new SystemException(
+				"The entity User with PK " + userId + " was not found");
+		}
+
+		flag.setCompanyId(user.getCompanyId());
 
 		announcementsFlagPersistence.update(flag);
 

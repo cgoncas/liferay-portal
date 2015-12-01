@@ -31,7 +31,9 @@ public class RatingsStatsLocalServiceImpl
 	extends RatingsStatsLocalServiceBaseImpl {
 
 	@Override
-	public RatingsStats addStats(long classNameId, long classPK) {
+	public RatingsStats addStats(
+		long companyId, long classNameId, long classPK) {
+
 		long statsId = counterLocalService.increment();
 
 		RatingsStats stats = ratingsStatsPersistence.create(statsId);
@@ -41,6 +43,7 @@ public class RatingsStatsLocalServiceImpl
 		stats.setTotalEntries(0);
 		stats.setTotalScore(0.0);
 		stats.setAverageScore(0.0);
+		stats.setCompanyId(companyId);
 
 		try {
 			ratingsStatsPersistence.update(stats);
@@ -95,24 +98,26 @@ public class RatingsStatsLocalServiceImpl
 	}
 
 	@Override
-	public List<RatingsStats> getStats(String className, List<Long> classPKs) {
-		long classNameId = classNameLocalService.getClassNameId(className);
+	public RatingsStats getStats(
+		long companyid, String className, long classPK) {
 
-		return ratingsStatsFinder.findByC_C(classNameId, classPKs);
-	}
-
-	@Override
-	public RatingsStats getStats(String className, long classPK) {
 		long classNameId = classNameLocalService.getClassNameId(className);
 
 		RatingsStats stats = ratingsStatsPersistence.fetchByC_C(
 			classNameId, classPK);
 
 		if (stats == null) {
-			stats = ratingsStatsLocalService.addStats(classNameId, classPK);
+			stats = addStats(companyid, classNameId, classPK);
 		}
 
 		return stats;
+	}
+
+	@Override
+	public List<RatingsStats> getStats(String className, List<Long> classPKs) {
+		long classNameId = classNameLocalService.getClassNameId(className);
+
+		return ratingsStatsFinder.findByC_C(classNameId, classPKs);
 	}
 
 	private static final Log _log = LogFactoryUtil.getLog(

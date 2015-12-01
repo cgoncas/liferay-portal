@@ -15,6 +15,8 @@
 package com.liferay.wiki.service.impl;
 
 import com.liferay.portal.kernel.exception.PortalException;
+import com.liferay.portal.kernel.exception.SystemException;
+import com.liferay.portal.model.Group;
 import com.liferay.wiki.model.WikiPageResource;
 import com.liferay.wiki.service.base.WikiPageResourceLocalServiceBaseImpl;
 
@@ -37,6 +39,15 @@ public class WikiPageResourceLocalServiceImpl
 		pageResource.setGroupId(groupId);
 		pageResource.setNodeId(nodeId);
 		pageResource.setTitle(title);
+
+		Group group = groupLocalService.fetchGroup(groupId);
+
+		if (group == null) {
+			throw new SystemException(
+				"The entity Group with PK " + groupId + " was not found");
+		}
+
+		pageResource.setCompanyId(group.getCompanyId());
 
 		wikiPageResourcePersistence.update(pageResource);
 

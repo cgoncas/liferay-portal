@@ -18,6 +18,7 @@ import com.liferay.portal.kernel.cache.CacheRegistryUtil;
 import com.liferay.portal.kernel.test.rule.AggregateTestRule;
 import com.liferay.portal.kernel.test.rule.DeleteAfterTestRun;
 import com.liferay.portal.kernel.test.util.RandomTestUtil;
+import com.liferay.portal.kernel.test.util.TestPropsValues;
 import com.liferay.portal.kernel.test.util.UserTestUtil;
 import com.liferay.portal.model.User;
 import com.liferay.portal.test.rule.LiferayIntegrationTestRule;
@@ -88,7 +89,7 @@ public class VerifyRatingsTest extends BaseVerifyProcessTestCase {
 		doVerify();
 
 		RatingsStats ratingStats = RatingsStatsLocalServiceUtil.getStats(
-			_CLASS_NAME, _CLASS_PK);
+			TestPropsValues.getCompanyId(), _CLASS_NAME, _CLASS_PK);
 
 		Assert.assertEquals(totalEntries, ratingStats.getTotalEntries());
 		Assert.assertEquals(totalScore, ratingStats.getTotalScore(), 0.0001);
@@ -101,7 +102,7 @@ public class VerifyRatingsTest extends BaseVerifyProcessTestCase {
 		doVerify();
 
 		RatingsStats ratingStats = RatingsStatsLocalServiceUtil.getStats(
-			_CLASS_NAME, _CLASS_PK);
+			TestPropsValues.getCompanyId(), _CLASS_NAME, _CLASS_PK);
 
 		Assert.assertEquals(0, ratingStats.getTotalEntries());
 		Assert.assertEquals(0.0, ratingStats.getTotalScore(), 0.0001);

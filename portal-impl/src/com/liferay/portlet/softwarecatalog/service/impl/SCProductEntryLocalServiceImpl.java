@@ -617,8 +617,10 @@ public class SCProductEntryLocalServiceImpl
 			}
 
 			imageLocalService.updateImage(
+				productScreenshot.getCompanyId(),
 				productScreenshot.getThumbnailId(), thumbnail);
 			imageLocalService.updateImage(
+				productScreenshot.getCompanyId(),
 				productScreenshot.getFullImageId(), fullImage);
 		}
 	}

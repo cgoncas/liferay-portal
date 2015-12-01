@@ -123,7 +123,7 @@ portletURL.setParameter("mbCategoryId", String.valueOf(categoryId));
 			<%
 			int answers = MBMessageServiceUtil.getThreadAnswersCount(scopeGroupId, categoryId, thread.getThreadId());
 
-			RatingsStats ratingsStats = RatingsStatsLocalServiceUtil.getStats(MBMessage.class.getName(), message.getMessageId());
+			RatingsStats ratingsStats = RatingsStatsLocalServiceUtil.getStats(thread.getCompanyId(), MBMessage.class.getName(), message.getMessageId());
 
 			int ratingScore = (int)ratingsStats.getTotalScore();
 			%>

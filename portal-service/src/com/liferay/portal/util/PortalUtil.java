@@ -2374,13 +2374,14 @@ public class PortalUtil {
 	}
 
 	public static void updateImageId(
-			BaseModel<?> baseModel, boolean hasImage, byte[] bytes,
-			String fieldName, long maxSize, int maxHeight, int maxWidth)
+			long companyId, BaseModel<?> baseModel, boolean hasImage,
+			byte[] bytes, String fieldName, long maxSize, int maxHeight,
+			int maxWidth)
 		throws PortalException {
 
 		getPortal().updateImageId(
-			baseModel, hasImage, bytes, fieldName, maxSize, maxHeight,
-			maxWidth);
+			companyId, baseModel, hasImage, bytes, fieldName, maxSize,
+			maxHeight, maxWidth);
 	}
 
 	public static PortletMode updatePortletMode(

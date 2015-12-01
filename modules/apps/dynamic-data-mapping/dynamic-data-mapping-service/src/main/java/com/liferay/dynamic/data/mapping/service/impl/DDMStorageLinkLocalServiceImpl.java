@@ -15,8 +15,10 @@
 package com.liferay.dynamic.data.mapping.service.impl;
 
 import com.liferay.dynamic.data.mapping.model.DDMStorageLink;
+import com.liferay.dynamic.data.mapping.model.DDMStructure;
 import com.liferay.dynamic.data.mapping.service.base.DDMStorageLinkLocalServiceBaseImpl;
 import com.liferay.portal.kernel.exception.PortalException;
+import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.service.ServiceContext;
 
 import java.util.List;
@@ -41,6 +43,17 @@ public class DDMStorageLinkLocalServiceImpl
 		storageLink.setClassNameId(classNameId);
 		storageLink.setClassPK(classPK);
 		storageLink.setStructureId(structureId);
+
+		DDMStructure ddmStructure = ddmStructureLocalService.fetchDDMStructure(
+			structureId);
+
+		if (ddmStructure == null) {
+			throw new SystemException(
+				"The entity Structure with PK " + structureId +
+					" was not found");
+		}
+
+		storageLink.setCompanyId(ddmStructure.getCompanyId());
 
 		ddmStorageLinkPersistence.update(storageLink);
 

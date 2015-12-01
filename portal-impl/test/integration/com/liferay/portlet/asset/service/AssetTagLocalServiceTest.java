@@ -27,9 +27,7 @@ import com.liferay.portal.model.Group;
 import com.liferay.portal.service.ServiceContext;
 import com.liferay.portal.test.rule.LiferayIntegrationTestRule;
 import com.liferay.portal.test.rule.MainServletTestRule;
-import com.liferay.portal.util.PortalUtil;
 import com.liferay.portlet.asset.model.AssetTag;
-import com.liferay.portlet.asset.model.AssetTagStats;
 import com.liferay.portlet.blogs.model.BlogsEntry;
 import com.liferay.portlet.blogs.service.BlogsEntryLocalServiceUtil;
 
@@ -67,6 +65,9 @@ public class AssetTagLocalServiceTest {
 
 	@Test
 	public void testDeleteTag() throws Exception {
+		int initialTagCount =
+			AssetTagStatsLocalServiceUtil.getAssetTagStatsesCount();
+
 		ServiceContext serviceContext =
 			ServiceContextTestUtil.getServiceContext(
 				_group.getGroupId(), TestPropsValues.getUserId());
@@ -93,12 +94,12 @@ public class AssetTagLocalServiceTest {
 		Assert.assertNull(
 			AssetTagLocalServiceUtil.fetchAssetTag(assetTag.getTagId()));
 
-		long classNameId = PortalUtil.getClassNameId(BlogsEntry.class);
+		AssetTagStatsLocalServiceUtil.getAssetTagStatsesCount();
 
-		AssetTagStats assetTagStats = AssetTagStatsLocalServiceUtil.getTagStats(
-			assetTag.getTagId(), classNameId);
+		int actualTagCount =
+			AssetTagStatsLocalServiceUtil.getAssetTagStatsesCount();
 
-		Assert.assertEquals(0, assetTagStats.getAssetCount());
+		Assert.assertEquals(initialTagCount, actualTagCount);
 	}
 
 	private Indexer<BlogsEntry> _blogsEntryIndexer;

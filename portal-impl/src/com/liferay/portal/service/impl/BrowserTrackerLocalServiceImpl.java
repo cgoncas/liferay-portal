@@ -18,6 +18,7 @@ import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.model.BrowserTracker;
+import com.liferay.portal.model.User;
 import com.liferay.portal.service.base.BrowserTrackerLocalServiceBaseImpl;
 
 /**
@@ -60,6 +61,15 @@ public class BrowserTrackerLocalServiceImpl
 			browserTracker = browserTrackerPersistence.create(browserTrackerId);
 
 			browserTracker.setUserId(userId);
+
+			User user = userLocalService.fetchUser(userId);
+
+			if (user == null) {
+				throw new SystemException(
+					"The entity User with PK " + userId + " was not found");
+			}
+
+			browserTracker.setCompanyId(user.getCompanyId());
 		}
 
 		browserTracker.setBrowserKey(browserKey);

@@ -32,7 +32,9 @@ public class DLSyncEventLocalServiceImpl
 	extends DLSyncEventLocalServiceBaseImpl {
 
 	@Override
-	public DLSyncEvent addDLSyncEvent(String event, String type, long typePK) {
+	public DLSyncEvent addDLSyncEvent(
+		long companyId, String event, String type, long typePK) {
+
 		DLSyncEvent dlSyncEvent = dlSyncEventPersistence.fetchByTypePK(typePK);
 
 		if (dlSyncEvent == null) {
@@ -42,6 +44,8 @@ public class DLSyncEventLocalServiceImpl
 
 			dlSyncEvent.setType(type);
 			dlSyncEvent.setTypePK(typePK);
+
+			dlSyncEvent.setCompanyId(companyId);
 		}
 
 		dlSyncEvent.setModifiedTime(System.currentTimeMillis());

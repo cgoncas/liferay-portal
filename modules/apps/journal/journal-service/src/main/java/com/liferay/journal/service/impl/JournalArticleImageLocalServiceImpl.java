@@ -18,8 +18,10 @@ import com.liferay.journal.exception.DuplicateArticleImageIdException;
 import com.liferay.journal.model.JournalArticleImage;
 import com.liferay.journal.service.base.JournalArticleImageLocalServiceBaseImpl;
 import com.liferay.portal.kernel.exception.PortalException;
+import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
+import com.liferay.portal.model.Group;
 
 import java.util.List;
 
@@ -54,6 +56,15 @@ public class JournalArticleImageLocalServiceImpl
 			articleImage.setElName(elName);
 			articleImage.setLanguageId(languageId);
 			articleImage.setTempImage(false);
+
+			Group group = groupLocalService.fetchGroup(groupId);
+
+			if (group == null) {
+				throw new SystemException(
+					"The entity Group with PK " + groupId + " was not found");
+			}
+
+			articleImage.setCompanyId(group.getCompanyId());
 
 			journalArticleImagePersistence.update(articleImage);
 		}

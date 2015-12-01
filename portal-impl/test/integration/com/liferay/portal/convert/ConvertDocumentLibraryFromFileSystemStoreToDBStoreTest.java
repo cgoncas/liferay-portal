@@ -196,7 +196,7 @@ public class ConvertDocumentLibraryFromFileSystemStoreToDBStoreTest {
 
 	protected Image addImage() throws Exception {
 		return ImageLocalServiceUtil.updateImage(
-			CounterLocalServiceUtil.increment(),
+			TestPropsValues.getCompanyId(), CounterLocalServiceUtil.increment(),
 			FileUtil.getBytes(getClass(), "dependencies/liferay.jpg"));
 	}
 

@@ -56,6 +56,8 @@ public class PortletPreferencesLocalServiceImpl
 		portletPreferences.setPlid(plid);
 		portletPreferences.setPortletId(portletId);
 
+		portletPreferences.setCompanyId(companyId);
+
 		if (Validator.isNull(defaultPreferences)) {
 			if (portlet == null) {
 				defaultPreferences = PortletConstants.DEFAULT_PREFERENCES;

@@ -19,6 +19,7 @@ import com.liferay.portal.kernel.json.JSONObject;
 import com.liferay.portal.kernel.util.MathUtil;
 import com.liferay.portal.kernel.util.ParamUtil;
 import com.liferay.portal.struts.JSONAction;
+import com.liferay.portal.util.PortalUtil;
 import com.liferay.portlet.ratings.model.RatingsStats;
 import com.liferay.portlet.ratings.service.RatingsEntryServiceUtil;
 import com.liferay.portlet.ratings.service.RatingsStatsLocalServiceUtil;
@@ -51,8 +52,10 @@ public class RateEntryAction extends JSONAction {
 			RatingsEntryServiceUtil.updateEntry(className, classPK, score);
 		}
 
+		long companyId = PortalUtil.getCompanyId(request);
+
 		RatingsStats stats = RatingsStatsLocalServiceUtil.getStats(
-			className, classPK);
+			companyId, className, classPK);
 
 		double averageScore = MathUtil.format(stats.getAverageScore(), 1, 1);
 
