@@ -671,6 +671,8 @@ public class AssetEntryLocalServiceImpl extends AssetEntryLocalServiceBaseImpl {
 			}
 
 			entry.setViewCount(0);
+
+			assetEntryPersistence.updateImpl(entry);
 		}
 
 		entry.setGroupId(groupId);

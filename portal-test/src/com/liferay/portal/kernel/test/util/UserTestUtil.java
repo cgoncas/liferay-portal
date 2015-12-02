@@ -47,11 +47,17 @@ import java.util.Locale;
 public class UserTestUtil {
 
 	public static User addCompanyAdminUser(Company company) throws Exception {
-		User user = addUser();
+		User defaultUser = company.getDefaultUser();
 
-		user.setCompanyId(company.getCompanyId());
+		Group group = GroupTestUtil.addGroup(
+			company.getCompanyId(), defaultUser.getUserId(), 0);
 
-		UserLocalServiceUtil.updateUser(user);
+		User user = addUser(
+			company.getCompanyId(), defaultUser.getUserId(),
+			RandomTestUtil.randomString(NumericStringRandomizerBumper.INSTANCE),
+			LocaleUtil.getDefault(), RandomTestUtil.randomString(),
+			RandomTestUtil.randomString(), new long[] {group.getGroupId()},
+			ServiceContextTestUtil.getServiceContext());
 
 		Role role = RoleLocalServiceUtil.getRole(
 			company.getCompanyId(), RoleConstants.ADMINISTRATOR);
