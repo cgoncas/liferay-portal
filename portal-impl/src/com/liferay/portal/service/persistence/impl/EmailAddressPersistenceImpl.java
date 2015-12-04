@@ -17,6 +17,7 @@ package com.liferay.portal.service.persistence.impl;
 import aQute.bnd.annotation.ProviderType;
 
 import com.liferay.portal.NoSuchEmailAddressException;
+import com.liferay.portal.kernel.bean.BeanReference;
 import com.liferay.portal.kernel.dao.orm.EntityCache;
 import com.liferay.portal.kernel.dao.orm.EntityCacheUtil;
 import com.liferay.portal.kernel.dao.orm.FinderCache;
@@ -4069,6 +4070,8 @@ public class EmailAddressPersistenceImpl extends BasePersistenceImpl<EmailAddres
 		emailAddress.setNew(true);
 		emailAddress.setPrimaryKey(emailAddressId);
 
+		emailAddress.setCompanyId(companyProvider.getCompanyId());
+
 		String uuid = PortalUUIDUtil.generate();
 
 		emailAddress.setUuid(uuid);
@@ -4803,6 +4806,8 @@ public class EmailAddressPersistenceImpl extends BasePersistenceImpl<EmailAddres
 		finderCache.removeCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
 	}
 
+	@BeanReference(type = CompanyProvider.class)
+	protected CompanyProvider companyProvider;
 	protected EntityCache entityCache = EntityCacheUtil.getEntityCache();
 	protected FinderCache finderCache = FinderCacheUtil.getFinderCache();
 	private static final String _SQL_SELECT_EMAILADDRESS = "SELECT emailAddress FROM EmailAddress emailAddress";

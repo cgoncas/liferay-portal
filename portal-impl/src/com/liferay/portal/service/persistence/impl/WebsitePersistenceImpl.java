@@ -17,6 +17,7 @@ package com.liferay.portal.service.persistence.impl;
 import aQute.bnd.annotation.ProviderType;
 
 import com.liferay.portal.NoSuchWebsiteException;
+import com.liferay.portal.kernel.bean.BeanReference;
 import com.liferay.portal.kernel.dao.orm.EntityCache;
 import com.liferay.portal.kernel.dao.orm.EntityCacheUtil;
 import com.liferay.portal.kernel.dao.orm.FinderCache;
@@ -4052,6 +4053,8 @@ public class WebsitePersistenceImpl extends BasePersistenceImpl<Website>
 		website.setNew(true);
 		website.setPrimaryKey(websiteId);
 
+		website.setCompanyId(companyProvider.getCompanyId());
+
 		String uuid = PortalUUIDUtil.generate();
 
 		website.setUuid(uuid);
@@ -4780,6 +4783,8 @@ public class WebsitePersistenceImpl extends BasePersistenceImpl<Website>
 		finderCache.removeCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
 	}
 
+	@BeanReference(type = CompanyProvider.class)
+	protected CompanyProvider companyProvider;
 	protected EntityCache entityCache = EntityCacheUtil.getEntityCache();
 	protected FinderCache finderCache = FinderCacheUtil.getFinderCache();
 	private static final String _SQL_SELECT_WEBSITE = "SELECT website FROM Website website";

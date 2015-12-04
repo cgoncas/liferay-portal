@@ -17,6 +17,7 @@ package com.liferay.portal.service.persistence.impl;
 import aQute.bnd.annotation.ProviderType;
 
 import com.liferay.portal.NoSuchSubscriptionException;
+import com.liferay.portal.kernel.bean.BeanReference;
 import com.liferay.portal.kernel.dao.orm.EntityCache;
 import com.liferay.portal.kernel.dao.orm.EntityCacheUtil;
 import com.liferay.portal.kernel.dao.orm.FinderCache;
@@ -3047,6 +3048,8 @@ public class SubscriptionPersistenceImpl extends BasePersistenceImpl<Subscriptio
 		subscription.setNew(true);
 		subscription.setPrimaryKey(subscriptionId);
 
+		subscription.setCompanyId(companyProvider.getCompanyId());
+
 		return subscription;
 	}
 
@@ -3733,6 +3736,8 @@ public class SubscriptionPersistenceImpl extends BasePersistenceImpl<Subscriptio
 		finderCache.removeCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
 	}
 
+	@BeanReference(type = CompanyProvider.class)
+	protected CompanyProvider companyProvider;
 	protected EntityCache entityCache = EntityCacheUtil.getEntityCache();
 	protected FinderCache finderCache = FinderCacheUtil.getFinderCache();
 	private static final String _SQL_SELECT_SUBSCRIPTION = "SELECT subscription FROM Subscription subscription";

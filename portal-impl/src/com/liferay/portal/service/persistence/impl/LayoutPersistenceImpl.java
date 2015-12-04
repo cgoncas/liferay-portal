@@ -17,6 +17,7 @@ package com.liferay.portal.service.persistence.impl;
 import aQute.bnd.annotation.ProviderType;
 
 import com.liferay.portal.NoSuchLayoutException;
+import com.liferay.portal.kernel.bean.BeanReference;
 import com.liferay.portal.kernel.dao.orm.EntityCache;
 import com.liferay.portal.kernel.dao.orm.EntityCacheUtil;
 import com.liferay.portal.kernel.dao.orm.FinderCache;
@@ -8348,6 +8349,8 @@ public class LayoutPersistenceImpl extends BasePersistenceImpl<Layout>
 		layout.setNew(true);
 		layout.setPrimaryKey(plid);
 
+		layout.setCompanyId(companyProvider.getCompanyId());
+
 		String uuid = PortalUUIDUtil.generate();
 
 		layout.setUuid(uuid);
@@ -9133,6 +9136,8 @@ public class LayoutPersistenceImpl extends BasePersistenceImpl<Layout>
 		finderCache.removeCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
 	}
 
+	@BeanReference(type = CompanyProvider.class)
+	protected CompanyProvider companyProvider;
 	protected EntityCache entityCache = EntityCacheUtil.getEntityCache();
 	protected FinderCache finderCache = FinderCacheUtil.getFinderCache();
 	private static final String _SQL_SELECT_LAYOUT = "SELECT layout FROM Layout layout";

@@ -12,22 +12,15 @@
  * details.
  */
 
-package com.liferay.portal.test.rule;
-
-import com.liferay.portal.kernel.test.rule.BaseTestRule;
-import com.liferay.portal.test.rule.callback.MainServletTestCallback;
+package com.liferay.portal.service.persistence.impl;
 
 /**
- * @author Miguel Pastor
- * @author Shuyang Zhou
+ * @author Manuel de la Peña
  */
-public class MainServletTestRule extends BaseTestRule<Long, Long> {
+public interface CompanyProvider {
 
-	public static final MainServletTestRule INSTANCE =
-		new MainServletTestRule();
+	public long getCompanyId();
 
-	protected MainServletTestRule() {
-		super(MainServletTestCallback.INSTANCE);
-	}
+	public String getCompanyIdName();
 
 }
