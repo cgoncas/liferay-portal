@@ -3251,6 +3251,8 @@ public class DDLRecordSetPersistenceImpl extends BasePersistenceImpl<DDLRecordSe
 		ddlRecordSet.setNew(true);
 		ddlRecordSet.setPrimaryKey(recordSetId);
 
+		ddlRecordSet.setCompanyId(companyProvider.getCompanyId());
+
 		String uuid = PortalUUIDUtil.generate();
 
 		ddlRecordSet.setUuid(uuid);

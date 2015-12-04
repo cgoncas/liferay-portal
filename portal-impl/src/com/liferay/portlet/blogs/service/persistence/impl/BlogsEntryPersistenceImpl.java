@@ -18368,6 +18368,8 @@ public class BlogsEntryPersistenceImpl extends BasePersistenceImpl<BlogsEntry>
 		blogsEntry.setNew(true);
 		blogsEntry.setPrimaryKey(entryId);
 
+		blogsEntry.setCompanyId(companyProvider.getCompanyId());
+
 		String uuid = PortalUUIDUtil.generate();
 
 		blogsEntry.setUuid(uuid);

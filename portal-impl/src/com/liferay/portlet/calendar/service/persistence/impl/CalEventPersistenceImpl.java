@@ -5539,6 +5539,8 @@ public class CalEventPersistenceImpl extends BasePersistenceImpl<CalEvent>
 		calEvent.setNew(true);
 		calEvent.setPrimaryKey(eventId);
 
+		calEvent.setCompanyId(companyProvider.getCompanyId());
+
 		String uuid = PortalUUIDUtil.generate();
 
 		calEvent.setUuid(uuid);

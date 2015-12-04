@@ -1763,6 +1763,8 @@ public class PortletItemPersistenceImpl extends BasePersistenceImpl<PortletItem>
 		portletItem.setNew(true);
 		portletItem.setPrimaryKey(portletItemId);
 
+		portletItem.setCompanyId(companyProvider.getCompanyId());
+
 		return portletItem;
 	}
 

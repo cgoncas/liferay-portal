@@ -9945,6 +9945,8 @@ public class MBCategoryPersistenceImpl extends BasePersistenceImpl<MBCategory>
 		mbCategory.setNew(true);
 		mbCategory.setPrimaryKey(categoryId);
 
+		mbCategory.setCompanyId(companyProvider.getCompanyId());
+
 		String uuid = PortalUUIDUtil.generate();
 
 		mbCategory.setUuid(uuid);

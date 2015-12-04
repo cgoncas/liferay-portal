@@ -2075,6 +2075,8 @@ public class DDMStorageLinkPersistenceImpl extends BasePersistenceImpl<DDMStorag
 		ddmStorageLink.setNew(true);
 		ddmStorageLink.setPrimaryKey(storageLinkId);
 
+		ddmStorageLink.setCompanyId(companyProvider.getCompanyId());
+
 		String uuid = PortalUUIDUtil.generate();
 
 		ddmStorageLink.setUuid(uuid);

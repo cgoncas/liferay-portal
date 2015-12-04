@@ -2636,6 +2636,8 @@ public class MBDiscussionPersistenceImpl extends BasePersistenceImpl<MBDiscussio
 		mbDiscussion.setNew(true);
 		mbDiscussion.setPrimaryKey(discussionId);
 
+		mbDiscussion.setCompanyId(companyProvider.getCompanyId());
+
 		String uuid = PortalUUIDUtil.generate();
 
 		mbDiscussion.setUuid(uuid);

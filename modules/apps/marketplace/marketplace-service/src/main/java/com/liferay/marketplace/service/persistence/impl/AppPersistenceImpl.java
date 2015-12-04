@@ -2580,6 +2580,8 @@ public class AppPersistenceImpl extends BasePersistenceImpl<App>
 		app.setNew(true);
 		app.setPrimaryKey(appId);
 
+		app.setCompanyId(companyProvider.getCompanyId());
+
 		String uuid = PortalUUIDUtil.generate();
 
 		app.setUuid(uuid);

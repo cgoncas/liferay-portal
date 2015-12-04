@@ -2896,6 +2896,8 @@ public class MBThreadFlagPersistenceImpl extends BasePersistenceImpl<MBThreadFla
 		mbThreadFlag.setNew(true);
 		mbThreadFlag.setPrimaryKey(threadFlagId);
 
+		mbThreadFlag.setCompanyId(companyProvider.getCompanyId());
+
 		String uuid = PortalUUIDUtil.generate();
 
 		mbThreadFlag.setUuid(uuid);

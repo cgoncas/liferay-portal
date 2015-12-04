@@ -6704,6 +6704,8 @@ public class CalendarResourcePersistenceImpl extends BasePersistenceImpl<Calenda
 		calendarResource.setNew(true);
 		calendarResource.setPrimaryKey(calendarResourceId);
 
+		calendarResource.setCompanyId(companyProvider.getCompanyId());
+
 		String uuid = PortalUUIDUtil.generate();
 
 		calendarResource.setUuid(uuid);

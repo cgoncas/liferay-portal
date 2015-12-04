@@ -2132,6 +2132,8 @@ public class MDRActionPersistenceImpl extends BasePersistenceImpl<MDRAction>
 		mdrAction.setNew(true);
 		mdrAction.setPrimaryKey(actionId);
 
+		mdrAction.setCompanyId(companyProvider.getCompanyId());
+
 		String uuid = PortalUUIDUtil.generate();
 
 		mdrAction.setUuid(uuid);

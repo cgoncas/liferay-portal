@@ -22096,6 +22096,8 @@ public class WikiPagePersistenceImpl extends BasePersistenceImpl<WikiPage>
 		wikiPage.setNew(true);
 		wikiPage.setPrimaryKey(pageId);
 
+		wikiPage.setCompanyId(companyProvider.getCompanyId());
+
 		String uuid = PortalUUIDUtil.generate();
 
 		wikiPage.setUuid(uuid);

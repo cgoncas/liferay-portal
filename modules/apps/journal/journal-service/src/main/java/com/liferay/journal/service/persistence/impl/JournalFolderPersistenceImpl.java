@@ -7500,6 +7500,8 @@ public class JournalFolderPersistenceImpl extends BasePersistenceImpl<JournalFol
 		journalFolder.setNew(true);
 		journalFolder.setPrimaryKey(folderId);
 
+		journalFolder.setCompanyId(companyProvider.getCompanyId());
+
 		String uuid = PortalUUIDUtil.generate();
 
 		journalFolder.setUuid(uuid);

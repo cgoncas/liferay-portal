@@ -3317,6 +3317,8 @@ public class LayoutSetBranchPersistenceImpl extends BasePersistenceImpl<LayoutSe
 		layoutSetBranch.setNew(true);
 		layoutSetBranch.setPrimaryKey(layoutSetBranchId);
 
+		layoutSetBranch.setCompanyId(companyProvider.getCompanyId());
+
 		return layoutSetBranch;
 	}
 

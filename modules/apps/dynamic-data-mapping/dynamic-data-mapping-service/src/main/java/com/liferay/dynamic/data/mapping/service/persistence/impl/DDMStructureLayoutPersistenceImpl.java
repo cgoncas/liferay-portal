@@ -1886,6 +1886,8 @@ public class DDMStructureLayoutPersistenceImpl extends BasePersistenceImpl<DDMSt
 		ddmStructureLayout.setNew(true);
 		ddmStructureLayout.setPrimaryKey(structureLayoutId);
 
+		ddmStructureLayout.setCompanyId(companyProvider.getCompanyId());
+
 		String uuid = PortalUUIDUtil.generate();
 
 		ddmStructureLayout.setUuid(uuid);

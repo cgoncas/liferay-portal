@@ -5092,6 +5092,8 @@ public class LayoutFriendlyURLPersistenceImpl extends BasePersistenceImpl<Layout
 		layoutFriendlyURL.setNew(true);
 		layoutFriendlyURL.setPrimaryKey(layoutFriendlyURLId);
 
+		layoutFriendlyURL.setCompanyId(companyProvider.getCompanyId());
+
 		String uuid = PortalUUIDUtil.generate();
 
 		layoutFriendlyURL.setUuid(uuid);

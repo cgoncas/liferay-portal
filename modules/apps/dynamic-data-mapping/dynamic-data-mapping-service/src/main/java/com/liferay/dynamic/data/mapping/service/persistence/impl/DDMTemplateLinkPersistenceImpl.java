@@ -1480,6 +1480,8 @@ public class DDMTemplateLinkPersistenceImpl extends BasePersistenceImpl<DDMTempl
 		ddmTemplateLink.setNew(true);
 		ddmTemplateLink.setPrimaryKey(templateLinkId);
 
+		ddmTemplateLink.setCompanyId(companyProvider.getCompanyId());
+
 		return ddmTemplateLink;
 	}
 

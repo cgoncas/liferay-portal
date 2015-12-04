@@ -2783,6 +2783,8 @@ public class JournalFeedPersistenceImpl extends BasePersistenceImpl<JournalFeed>
 		journalFeed.setNew(true);
 		journalFeed.setPrimaryKey(id);
 
+		journalFeed.setCompanyId(companyProvider.getCompanyId());
+
 		String uuid = PortalUUIDUtil.generate();
 
 		journalFeed.setUuid(uuid);

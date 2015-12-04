@@ -2624,6 +2624,8 @@ public class DDMContentPersistenceImpl extends BasePersistenceImpl<DDMContent>
 		ddmContent.setNew(true);
 		ddmContent.setPrimaryKey(contentId);
 
+		ddmContent.setCompanyId(companyProvider.getCompanyId());
+
 		String uuid = PortalUUIDUtil.generate();
 
 		ddmContent.setUuid(uuid);

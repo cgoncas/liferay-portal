@@ -30125,6 +30125,8 @@ public class JournalArticlePersistenceImpl extends BasePersistenceImpl<JournalAr
 		journalArticle.setNew(true);
 		journalArticle.setPrimaryKey(id);
 
+		journalArticle.setCompanyId(companyProvider.getCompanyId());
+
 		String uuid = PortalUUIDUtil.generate();
 
 		journalArticle.setUuid(uuid);

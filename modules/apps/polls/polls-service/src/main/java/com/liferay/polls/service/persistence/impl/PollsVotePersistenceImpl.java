@@ -2893,6 +2893,8 @@ public class PollsVotePersistenceImpl extends BasePersistenceImpl<PollsVote>
 		pollsVote.setNew(true);
 		pollsVote.setPrimaryKey(voteId);
 
+		pollsVote.setCompanyId(companyProvider.getCompanyId());
+
 		String uuid = PortalUUIDUtil.generate();
 
 		pollsVote.setUuid(uuid);

@@ -3359,6 +3359,8 @@ public class MBBanPersistenceImpl extends BasePersistenceImpl<MBBan>
 		mbBan.setNew(true);
 		mbBan.setPrimaryKey(banId);
 
+		mbBan.setCompanyId(companyProvider.getCompanyId());
+
 		String uuid = PortalUUIDUtil.generate();
 
 		mbBan.setUuid(uuid);

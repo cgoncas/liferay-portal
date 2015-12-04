@@ -4210,6 +4210,8 @@ public class SAPEntryPersistenceImpl extends BasePersistenceImpl<SAPEntry>
 		sapEntry.setNew(true);
 		sapEntry.setPrimaryKey(sapEntryId);
 
+		sapEntry.setCompanyId(companyProvider.getCompanyId());
+
 		String uuid = PortalUUIDUtil.generate();
 
 		sapEntry.setUuid(uuid);

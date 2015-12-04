@@ -2746,6 +2746,8 @@ public class RatingsEntryPersistenceImpl extends BasePersistenceImpl<RatingsEntr
 		ratingsEntry.setNew(true);
 		ratingsEntry.setPrimaryKey(entryId);
 
+		ratingsEntry.setCompanyId(companyProvider.getCompanyId());
+
 		String uuid = PortalUUIDUtil.generate();
 
 		ratingsEntry.setUuid(uuid);

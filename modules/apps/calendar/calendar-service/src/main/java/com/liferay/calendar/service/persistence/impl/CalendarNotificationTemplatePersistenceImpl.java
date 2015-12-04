@@ -2584,6 +2584,8 @@ public class CalendarNotificationTemplatePersistenceImpl
 		calendarNotificationTemplate.setNew(true);
 		calendarNotificationTemplate.setPrimaryKey(calendarNotificationTemplateId);
 
+		calendarNotificationTemplate.setCompanyId(companyProvider.getCompanyId());
+
 		String uuid = PortalUUIDUtil.generate();
 
 		calendarNotificationTemplate.setUuid(uuid);

@@ -8349,6 +8349,8 @@ public class LayoutPersistenceImpl extends BasePersistenceImpl<Layout>
 		layout.setNew(true);
 		layout.setPrimaryKey(plid);
 
+		layout.setCompanyId(companyProvider.getCompanyId());
+
 		String uuid = PortalUUIDUtil.generate();
 
 		layout.setUuid(uuid);

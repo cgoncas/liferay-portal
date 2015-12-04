@@ -987,6 +987,8 @@ public class PasswordPolicyRelPersistenceImpl extends BasePersistenceImpl<Passwo
 		passwordPolicyRel.setNew(true);
 		passwordPolicyRel.setPrimaryKey(passwordPolicyRelId);
 
+		passwordPolicyRel.setCompanyId(companyProvider.getCompanyId());
+
 		return passwordPolicyRel;
 	}
 

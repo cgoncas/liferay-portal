@@ -12089,6 +12089,8 @@ public class DDMTemplatePersistenceImpl extends BasePersistenceImpl<DDMTemplate>
 		ddmTemplate.setNew(true);
 		ddmTemplate.setPrimaryKey(templateId);
 
+		ddmTemplate.setCompanyId(companyProvider.getCompanyId());
+
 		String uuid = PortalUUIDUtil.generate();
 
 		ddmTemplate.setUuid(uuid);

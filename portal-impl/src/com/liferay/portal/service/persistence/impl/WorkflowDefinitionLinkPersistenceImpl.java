@@ -2336,6 +2336,8 @@ public class WorkflowDefinitionLinkPersistenceImpl extends BasePersistenceImpl<W
 		workflowDefinitionLink.setNew(true);
 		workflowDefinitionLink.setPrimaryKey(workflowDefinitionLinkId);
 
+		workflowDefinitionLink.setCompanyId(companyProvider.getCompanyId());
+
 		return workflowDefinitionLink;
 	}
 

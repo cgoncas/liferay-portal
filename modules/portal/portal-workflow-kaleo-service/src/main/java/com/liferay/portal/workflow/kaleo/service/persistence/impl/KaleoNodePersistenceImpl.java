@@ -1734,6 +1734,8 @@ public class KaleoNodePersistenceImpl extends BasePersistenceImpl<KaleoNode>
 		kaleoNode.setNew(true);
 		kaleoNode.setPrimaryKey(kaleoNodeId);
 
+		kaleoNode.setCompanyId(companyProvider.getCompanyId());
+
 		return kaleoNode;
 	}
 

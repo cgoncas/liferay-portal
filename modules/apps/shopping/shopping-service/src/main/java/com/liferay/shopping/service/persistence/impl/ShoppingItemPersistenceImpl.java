@@ -2152,6 +2152,8 @@ public class ShoppingItemPersistenceImpl extends BasePersistenceImpl<ShoppingIte
 		shoppingItem.setNew(true);
 		shoppingItem.setPrimaryKey(itemId);
 
+		shoppingItem.setCompanyId(companyProvider.getCompanyId());
+
 		return shoppingItem;
 	}
 

@@ -8900,6 +8900,8 @@ public class DDMStructurePersistenceImpl extends BasePersistenceImpl<DDMStructur
 		ddmStructure.setNew(true);
 		ddmStructure.setPrimaryKey(structureId);
 
+		ddmStructure.setCompanyId(companyProvider.getCompanyId());
+
 		String uuid = PortalUUIDUtil.generate();
 
 		ddmStructure.setUuid(uuid);

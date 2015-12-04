@@ -3935,6 +3935,8 @@ public class LayoutPrototypePersistenceImpl extends BasePersistenceImpl<LayoutPr
 		layoutPrototype.setNew(true);
 		layoutPrototype.setPrimaryKey(layoutPrototypeId);
 
+		layoutPrototype.setCompanyId(companyProvider.getCompanyId());
+
 		String uuid = PortalUUIDUtil.generate();
 
 		layoutPrototype.setUuid(uuid);

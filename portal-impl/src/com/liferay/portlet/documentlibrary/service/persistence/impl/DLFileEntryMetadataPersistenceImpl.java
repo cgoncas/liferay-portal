@@ -2643,6 +2643,8 @@ public class DLFileEntryMetadataPersistenceImpl extends BasePersistenceImpl<DLFi
 		dlFileEntryMetadata.setNew(true);
 		dlFileEntryMetadata.setPrimaryKey(fileEntryMetadataId);
 
+		dlFileEntryMetadata.setCompanyId(companyProvider.getCompanyId());
+
 		String uuid = PortalUUIDUtil.generate();
 
 		dlFileEntryMetadata.setUuid(uuid);

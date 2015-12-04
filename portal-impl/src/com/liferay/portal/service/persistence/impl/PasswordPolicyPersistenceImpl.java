@@ -3600,6 +3600,8 @@ public class PasswordPolicyPersistenceImpl extends BasePersistenceImpl<PasswordP
 		passwordPolicy.setNew(true);
 		passwordPolicy.setPrimaryKey(passwordPolicyId);
 
+		passwordPolicy.setCompanyId(companyProvider.getCompanyId());
+
 		String uuid = PortalUUIDUtil.generate();
 
 		passwordPolicy.setUuid(uuid);

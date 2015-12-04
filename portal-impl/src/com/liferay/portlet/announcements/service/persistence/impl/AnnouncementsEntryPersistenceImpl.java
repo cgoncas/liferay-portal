@@ -4946,6 +4946,8 @@ public class AnnouncementsEntryPersistenceImpl extends BasePersistenceImpl<Annou
 		announcementsEntry.setNew(true);
 		announcementsEntry.setPrimaryKey(entryId);
 
+		announcementsEntry.setCompanyId(companyProvider.getCompanyId());
+
 		String uuid = PortalUUIDUtil.generate();
 
 		announcementsEntry.setUuid(uuid);

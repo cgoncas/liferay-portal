@@ -4053,6 +4053,8 @@ public class WebsitePersistenceImpl extends BasePersistenceImpl<Website>
 		website.setNew(true);
 		website.setPrimaryKey(websiteId);
 
+		website.setCompanyId(companyProvider.getCompanyId());
+
 		String uuid = PortalUUIDUtil.generate();
 
 		website.setUuid(uuid);

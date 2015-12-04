@@ -4679,6 +4679,8 @@ public class AddressPersistenceImpl extends BasePersistenceImpl<Address>
 		address.setNew(true);
 		address.setPrimaryKey(addressId);
 
+		address.setCompanyId(companyProvider.getCompanyId());
+
 		String uuid = PortalUUIDUtil.generate();
 
 		address.setUuid(uuid);

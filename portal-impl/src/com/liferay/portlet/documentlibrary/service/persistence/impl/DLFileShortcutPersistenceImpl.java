@@ -6131,6 +6131,8 @@ public class DLFileShortcutPersistenceImpl extends BasePersistenceImpl<DLFileSho
 		dlFileShortcut.setNew(true);
 		dlFileShortcut.setPrimaryKey(fileShortcutId);
 
+		dlFileShortcut.setCompanyId(companyProvider.getCompanyId());
+
 		String uuid = PortalUUIDUtil.generate();
 
 		dlFileShortcut.setUuid(uuid);

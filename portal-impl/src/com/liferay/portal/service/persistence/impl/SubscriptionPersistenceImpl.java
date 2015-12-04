@@ -3048,6 +3048,8 @@ public class SubscriptionPersistenceImpl extends BasePersistenceImpl<Subscriptio
 		subscription.setNew(true);
 		subscription.setPrimaryKey(subscriptionId);
 
+		subscription.setCompanyId(companyProvider.getCompanyId());
+
 		return subscription;
 	}
 

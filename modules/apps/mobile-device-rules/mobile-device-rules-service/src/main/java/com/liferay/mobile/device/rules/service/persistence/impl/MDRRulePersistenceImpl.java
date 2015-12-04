@@ -2118,6 +2118,8 @@ public class MDRRulePersistenceImpl extends BasePersistenceImpl<MDRRule>
 		mdrRule.setNew(true);
 		mdrRule.setPrimaryKey(ruleId);
 
+		mdrRule.setCompanyId(companyProvider.getCompanyId());
+
 		String uuid = PortalUUIDUtil.generate();
 
 		mdrRule.setUuid(uuid);

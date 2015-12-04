@@ -12063,6 +12063,8 @@ public class DLFileEntryPersistenceImpl extends BasePersistenceImpl<DLFileEntry>
 		dlFileEntry.setNew(true);
 		dlFileEntry.setPrimaryKey(fileEntryId);
 
+		dlFileEntry.setCompanyId(companyProvider.getCompanyId());
+
 		String uuid = PortalUUIDUtil.generate();
 
 		dlFileEntry.setUuid(uuid);

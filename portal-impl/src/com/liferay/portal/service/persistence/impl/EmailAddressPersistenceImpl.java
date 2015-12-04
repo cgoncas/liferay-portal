@@ -4070,6 +4070,8 @@ public class EmailAddressPersistenceImpl extends BasePersistenceImpl<EmailAddres
 		emailAddress.setNew(true);
 		emailAddress.setPrimaryKey(emailAddressId);
 
+		emailAddress.setCompanyId(companyProvider.getCompanyId());
+
 		String uuid = PortalUUIDUtil.generate();
 
 		emailAddress.setUuid(uuid);

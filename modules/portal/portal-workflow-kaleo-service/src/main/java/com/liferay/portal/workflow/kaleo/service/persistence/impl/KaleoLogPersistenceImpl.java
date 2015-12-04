@@ -3540,6 +3540,8 @@ public class KaleoLogPersistenceImpl extends BasePersistenceImpl<KaleoLog>
 		kaleoLog.setNew(true);
 		kaleoLog.setPrimaryKey(kaleoLogId);
 
+		kaleoLog.setCompanyId(companyProvider.getCompanyId());
+
 		return kaleoLog;
 	}
 

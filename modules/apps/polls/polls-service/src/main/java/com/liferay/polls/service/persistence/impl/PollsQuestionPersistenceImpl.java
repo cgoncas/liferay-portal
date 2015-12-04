@@ -2495,6 +2495,8 @@ public class PollsQuestionPersistenceImpl extends BasePersistenceImpl<PollsQuest
 		pollsQuestion.setNew(true);
 		pollsQuestion.setPrimaryKey(questionId);
 
+		pollsQuestion.setCompanyId(companyProvider.getCompanyId());
+
 		String uuid = PortalUUIDUtil.generate();
 
 		pollsQuestion.setUuid(uuid);

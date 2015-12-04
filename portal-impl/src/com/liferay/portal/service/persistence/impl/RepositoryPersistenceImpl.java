@@ -2482,6 +2482,8 @@ public class RepositoryPersistenceImpl extends BasePersistenceImpl<Repository>
 		repository.setNew(true);
 		repository.setPrimaryKey(repositoryId);
 
+		repository.setCompanyId(companyProvider.getCompanyId());
+
 		String uuid = PortalUUIDUtil.generate();
 
 		repository.setUuid(uuid);

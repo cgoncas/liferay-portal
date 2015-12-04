@@ -1935,6 +1935,8 @@ public class WikiPageResourcePersistenceImpl extends BasePersistenceImpl<WikiPag
 		wikiPageResource.setNew(true);
 		wikiPageResource.setPrimaryKey(resourcePrimKey);
 
+		wikiPageResource.setCompanyId(companyProvider.getCompanyId());
+
 		String uuid = PortalUUIDUtil.generate();
 
 		wikiPageResource.setUuid(uuid);

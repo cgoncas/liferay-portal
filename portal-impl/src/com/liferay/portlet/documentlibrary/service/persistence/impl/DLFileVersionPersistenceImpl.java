@@ -5877,6 +5877,8 @@ public class DLFileVersionPersistenceImpl extends BasePersistenceImpl<DLFileVers
 		dlFileVersion.setNew(true);
 		dlFileVersion.setPrimaryKey(fileVersionId);
 
+		dlFileVersion.setCompanyId(companyProvider.getCompanyId());
+
 		String uuid = PortalUUIDUtil.generate();
 
 		dlFileVersion.setUuid(uuid);

@@ -8374,6 +8374,8 @@ public class UserNotificationEventPersistenceImpl extends BasePersistenceImpl<Us
 		userNotificationEvent.setNew(true);
 		userNotificationEvent.setPrimaryKey(userNotificationEventId);
 
+		userNotificationEvent.setCompanyId(companyProvider.getCompanyId());
+
 		String uuid = PortalUUIDUtil.generate();
 
 		userNotificationEvent.setUuid(uuid);

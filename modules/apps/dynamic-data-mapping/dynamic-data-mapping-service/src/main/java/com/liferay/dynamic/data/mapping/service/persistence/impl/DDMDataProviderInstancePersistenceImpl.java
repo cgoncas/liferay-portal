@@ -3518,6 +3518,8 @@ public class DDMDataProviderInstancePersistenceImpl extends BasePersistenceImpl<
 		ddmDataProviderInstance.setNew(true);
 		ddmDataProviderInstance.setPrimaryKey(dataProviderInstanceId);
 
+		ddmDataProviderInstance.setCompanyId(companyProvider.getCompanyId());
+
 		String uuid = PortalUUIDUtil.generate();
 
 		ddmDataProviderInstance.setUuid(uuid);

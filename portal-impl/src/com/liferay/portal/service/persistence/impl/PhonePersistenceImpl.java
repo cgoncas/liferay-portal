@@ -4031,6 +4031,8 @@ public class PhonePersistenceImpl extends BasePersistenceImpl<Phone>
 		phone.setNew(true);
 		phone.setPrimaryKey(phoneId);
 
+		phone.setCompanyId(companyProvider.getCompanyId());
+
 		String uuid = PortalUUIDUtil.generate();
 
 		phone.setUuid(uuid);

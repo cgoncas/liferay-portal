@@ -19005,6 +19005,8 @@ public class MBMessagePersistenceImpl extends BasePersistenceImpl<MBMessage>
 		mbMessage.setNew(true);
 		mbMessage.setPrimaryKey(messageId);
 
+		mbMessage.setCompanyId(companyProvider.getCompanyId());
+
 		String uuid = PortalUUIDUtil.generate();
 
 		mbMessage.setUuid(uuid);

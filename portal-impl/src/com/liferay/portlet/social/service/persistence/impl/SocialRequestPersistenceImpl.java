@@ -6470,6 +6470,8 @@ public class SocialRequestPersistenceImpl extends BasePersistenceImpl<SocialRequ
 		socialRequest.setNew(true);
 		socialRequest.setPrimaryKey(requestId);
 
+		socialRequest.setCompanyId(companyProvider.getCompanyId());
+
 		String uuid = PortalUUIDUtil.generate();
 
 		socialRequest.setUuid(uuid);

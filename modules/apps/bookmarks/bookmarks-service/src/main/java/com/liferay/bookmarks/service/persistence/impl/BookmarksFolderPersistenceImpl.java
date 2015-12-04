@@ -7153,6 +7153,8 @@ public class BookmarksFolderPersistenceImpl extends BasePersistenceImpl<Bookmark
 		bookmarksFolder.setNew(true);
 		bookmarksFolder.setPrimaryKey(folderId);
 
+		bookmarksFolder.setCompanyId(companyProvider.getCompanyId());
+
 		String uuid = PortalUUIDUtil.generate();
 
 		bookmarksFolder.setUuid(uuid);

@@ -2465,6 +2465,8 @@ public class JournalArticleResourcePersistenceImpl extends BasePersistenceImpl<J
 		journalArticleResource.setNew(true);
 		journalArticleResource.setPrimaryKey(resourcePrimKey);
 
+		journalArticleResource.setCompanyId(companyProvider.getCompanyId());
+
 		String uuid = PortalUUIDUtil.generate();
 
 		journalArticleResource.setUuid(uuid);

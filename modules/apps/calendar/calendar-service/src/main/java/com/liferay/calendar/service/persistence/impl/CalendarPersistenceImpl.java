@@ -3920,6 +3920,8 @@ public class CalendarPersistenceImpl extends BasePersistenceImpl<Calendar>
 		calendar.setNew(true);
 		calendar.setPrimaryKey(calendarId);
 
+		calendar.setCompanyId(companyProvider.getCompanyId());
+
 		String uuid = PortalUUIDUtil.generate();
 
 		calendar.setUuid(uuid);

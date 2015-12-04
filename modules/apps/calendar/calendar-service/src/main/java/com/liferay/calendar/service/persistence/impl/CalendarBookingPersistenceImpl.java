@@ -5680,6 +5680,8 @@ public class CalendarBookingPersistenceImpl extends BasePersistenceImpl<Calendar
 		calendarBooking.setNew(true);
 		calendarBooking.setPrimaryKey(calendarBookingId);
 
+		calendarBooking.setCompanyId(companyProvider.getCompanyId());
+
 		String uuid = PortalUUIDUtil.generate();
 
 		calendarBooking.setUuid(uuid);

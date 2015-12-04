@@ -4769,6 +4769,8 @@ public class AssetVocabularyPersistenceImpl extends BasePersistenceImpl<AssetVoc
 		assetVocabulary.setNew(true);
 		assetVocabulary.setPrimaryKey(vocabularyId);
 
+		assetVocabulary.setCompanyId(companyProvider.getCompanyId());
+
 		String uuid = PortalUUIDUtil.generate();
 
 		assetVocabulary.setUuid(uuid);

@@ -12438,6 +12438,8 @@ public class BookmarksEntryPersistenceImpl extends BasePersistenceImpl<Bookmarks
 		bookmarksEntry.setNew(true);
 		bookmarksEntry.setPrimaryKey(entryId);
 
+		bookmarksEntry.setCompanyId(companyProvider.getCompanyId());
+
 		String uuid = PortalUUIDUtil.generate();
 
 		bookmarksEntry.setUuid(uuid);

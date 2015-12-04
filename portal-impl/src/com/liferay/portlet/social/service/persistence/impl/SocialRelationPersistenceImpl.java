@@ -5818,6 +5818,8 @@ public class SocialRelationPersistenceImpl extends BasePersistenceImpl<SocialRel
 		socialRelation.setNew(true);
 		socialRelation.setPrimaryKey(relationId);
 
+		socialRelation.setCompanyId(companyProvider.getCompanyId());
+
 		String uuid = PortalUUIDUtil.generate();
 
 		socialRelation.setUuid(uuid);

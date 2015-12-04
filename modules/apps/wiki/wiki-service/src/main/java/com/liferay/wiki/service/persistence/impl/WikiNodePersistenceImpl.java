@@ -4721,6 +4721,8 @@ public class WikiNodePersistenceImpl extends BasePersistenceImpl<WikiNode>
 		wikiNode.setNew(true);
 		wikiNode.setPrimaryKey(nodeId);
 
+		wikiNode.setCompanyId(companyProvider.getCompanyId());
+
 		String uuid = PortalUUIDUtil.generate();
 
 		wikiNode.setUuid(uuid);

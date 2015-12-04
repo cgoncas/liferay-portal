@@ -2402,6 +2402,8 @@ public class MBMailingListPersistenceImpl extends BasePersistenceImpl<MBMailingL
 		mbMailingList.setNew(true);
 		mbMailingList.setPrimaryKey(mailingListId);
 
+		mbMailingList.setCompanyId(companyProvider.getCompanyId());
+
 		String uuid = PortalUUIDUtil.generate();
 
 		mbMailingList.setUuid(uuid);

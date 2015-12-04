@@ -1178,6 +1178,8 @@ public class OrgGroupRolePersistenceImpl extends BasePersistenceImpl<OrgGroupRol
 		orgGroupRole.setNew(true);
 		orgGroupRole.setPrimaryKey(orgGroupRolePK);
 
+		orgGroupRole.setCompanyId(companyProvider.getCompanyId());
+
 		return orgGroupRole;
 	}
 

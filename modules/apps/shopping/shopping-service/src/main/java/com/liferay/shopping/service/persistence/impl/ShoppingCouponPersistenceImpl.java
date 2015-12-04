@@ -968,6 +968,8 @@ public class ShoppingCouponPersistenceImpl extends BasePersistenceImpl<ShoppingC
 		shoppingCoupon.setNew(true);
 		shoppingCoupon.setPrimaryKey(couponId);
 
+		shoppingCoupon.setCompanyId(companyProvider.getCompanyId());
+
 		return shoppingCoupon;
 	}
 

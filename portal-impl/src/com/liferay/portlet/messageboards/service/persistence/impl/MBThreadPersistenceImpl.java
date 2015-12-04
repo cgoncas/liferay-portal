@@ -13069,6 +13069,8 @@ public class MBThreadPersistenceImpl extends BasePersistenceImpl<MBThread>
 		mbThread.setNew(true);
 		mbThread.setPrimaryKey(threadId);
 
+		mbThread.setCompanyId(companyProvider.getCompanyId());
+
 		String uuid = PortalUUIDUtil.generate();
 
 		mbThread.setUuid(uuid);

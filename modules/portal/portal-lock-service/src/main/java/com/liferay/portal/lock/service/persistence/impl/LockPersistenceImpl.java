@@ -2163,6 +2163,8 @@ public class LockPersistenceImpl extends BasePersistenceImpl<Lock>
 		lock.setNew(true);
 		lock.setPrimaryKey(lockId);
 
+		lock.setCompanyId(companyProvider.getCompanyId());
+
 		String uuid = PortalUUIDUtil.generate();
 
 		lock.setUuid(uuid);
