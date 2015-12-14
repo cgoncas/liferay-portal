@@ -19,8 +19,10 @@ import com.liferay.portal.kernel.upgrade.UpgradeProcess;
 import com.liferay.portal.kernel.util.StringBundler;
 import com.liferay.portal.model.ReleaseConstants;
 
+import java.io.IOException;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.sql.Timestamp;
 
 /**
@@ -30,6 +32,18 @@ public class UpgradeModules extends UpgradeProcess {
 
 	@Override
 	protected void doUpgrade() throws Exception {
+		_registerModulesExtractedFromCore();
+
+		_registerModulesConvertedFromLegacySDK();
+	}
+
+	private void _registerModulesExtractedFromCore() throws SQLException {
+		_registerStartVersion(_bundleSymbolicNames);
+	}
+
+	private void _registerStartVersion(String... bundleSymbolicNames)
+		throws SQLException {
+
 		PreparedStatement ps = null;
 		ResultSet rs = null;
 
@@ -48,7 +62,7 @@ public class UpgradeModules extends UpgradeProcess {
 
 			Timestamp timestamp = new Timestamp(System.currentTimeMillis());
 
-			for (String bundleSymbolicName : _bundleSymbolicNames) {
+			for (String bundleSymbolicName : bundleSymbolicNames) {
 				ps.setLong(1, 0);
 				ps.setLong(2, increment());
 				ps.setTimestamp(3, timestamp);
@@ -70,6 +84,43 @@ public class UpgradeModules extends UpgradeProcess {
 			DataAccess.cleanUp(ps, rs);
 		}
 	}
+
+	private void _registerModulesConvertedFromLegacySDK()
+		throws SQLException, IOException {
+
+		for (String convertedLegacyModule : _convertedLegacyModules) {
+
+			PreparedStatement ps = null;
+			ResultSet rs = null;
+
+			try {
+				ps = connection.prepareStatement(
+					"select servletContextName, buildNumber from Release_ " +
+						"where servletContextName = ?");
+
+				ps.setString(1, convertedLegacyModule);
+
+				rs = ps.executeQuery();
+
+				if (!rs.next()) {
+					// check it is been installed but never upgraded
+
+					_registerStartVersion(convertedLegacyModule);
+				} else {
+					// it's been installed, we just need to translate its servlet context name
+				}
+			} finally {
+				DataAccess.cleanUp(ps, rs);
+			}
+		}
+	}
+
+	private boolean isInstalledDefaultVersion() {
+		
+	}
+
+	private static final String[] _convertedLegacyModules = new String[] {
+		"calendar-portlet", "social-networking-portlet", "com.liferay.social.networking.service" };
 
 	private static final String[] _bundleSymbolicNames = new String[] {
 		"com.liferay.amazon.rankings.web", "com.liferay.announcements.web",
