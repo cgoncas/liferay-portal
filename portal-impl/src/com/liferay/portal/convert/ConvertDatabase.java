@@ -54,21 +54,21 @@ public class ConvertDatabase extends BaseConvertProcess {
 
 	@Override
 	protected void doConvert() throws Exception {
-		Collection<ConvertDatabaseProcess> convertDatabaseProcesses =
+		Collection<DatabaseConverter> databaseConverters =
 			getConvertDatabaseProcesses();
 
-		for (ConvertDatabaseProcess convertDatabaseProcess :
-				convertDatabaseProcesses) {
+		for (DatabaseConverter databaseConverter :
+				databaseConverters) {
 
-			convertDatabaseProcess.convert(getDataSource());
+			databaseConverter.convert(getDataSource());
 		}
 	}
 
-	protected Collection<ConvertDatabaseProcess> getConvertDatabaseProcesses() {
+	protected Collection<DatabaseConverter> getConvertDatabaseProcesses() {
 		try {
 			Registry registry = RegistryUtil.getRegistry();
 
-			return registry.getServices(ConvertDatabaseProcess.class, null);
+			return registry.getServices(DatabaseConverter.class, null);
 		}
 		catch (Exception e) {
 			throw new SystemException(e);

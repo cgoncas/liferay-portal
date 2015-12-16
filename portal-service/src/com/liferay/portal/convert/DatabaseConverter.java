@@ -12,23 +12,15 @@
  * details.
  */
 
-package com.liferay.portal.convert.bundle.customconvertdatabaseprocess;
-
-import com.liferay.portal.convert.ConvertDatabaseProcess;
+package com.liferay.portal.convert;
 
 import javax.sql.DataSource;
 
-import org.osgi.service.component.annotations.Component;
-
 /**
- * @author Peter Fellwock
+ * @author Cristina González
  */
-@Component(immediate = true, service = ConvertDatabaseProcess.class)
-public class TestCustomConvertDatabaseProcess
-	implements ConvertDatabaseProcess {
+public interface DatabaseConverter {
 
-	public void convert(DataSource dataSource) throws Exception {
-		//Nothing to do here
-	}
+	public void convert(DataSource dataSource) throws Exception;
 
 }

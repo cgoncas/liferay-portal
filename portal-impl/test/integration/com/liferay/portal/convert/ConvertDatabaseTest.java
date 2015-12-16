@@ -14,7 +14,7 @@
 
 package com.liferay.portal.convert;
 
-import com.liferay.portal.convert.bundle.customconvertdatabaseprocess.TestCustomConvertDatabaseProcess;
+import com.liferay.portal.convert.bundle.customconvertdatabaseprocess.TestCustomDatabaseConverter;
 import com.liferay.portal.kernel.test.rule.AggregateTestRule;
 import com.liferay.portal.test.rule.LiferayIntegrationTestRule;
 import com.liferay.portal.test.rule.MainServletTestRule;
@@ -51,28 +51,28 @@ public class ConvertDatabaseTest {
 	public void testGetCustomConvertDatabaseProcess() {
 		ConvertDatabase convertDatabase = _getConvertDatabase();
 
-		ConvertDatabaseProcess convertDatabaseProcess =
+		DatabaseConverter databaseConverter =
 			_getFirstConvertDataBaseProcess(
-				convertDatabase, TestCustomConvertDatabaseProcess.class);
+				convertDatabase, TestCustomDatabaseConverter.class);
 
 		Assert.assertNotNull(
 			"The TestCustomConvertDatabaseProcess has not being registered " +
 				"as a database converter",
-			convertDatabaseProcess);
+				databaseConverter);
 	}
 
 	@Test
 	public void testGetPortalConvertDatabaseProcess() {
 		ConvertDatabase convertDatabase = _getConvertDatabase();
 
-		ConvertDatabaseProcess portalConvertDatabaseProcess =
+		DatabaseConverter portalDatabaseConverter =
 			_getFirstConvertDataBaseProcess(
-				convertDatabase, PortalConvertDatabaseProcess.class);
+				convertDatabase, PortalDatabaseConverter.class);
 
 		Assert.assertNotNull(
 			"The PortalConvertDatabaseProcess has not being registered " +
 				"as a database converter",
-			portalConvertDatabaseProcess);
+				portalDatabaseConverter);
 	}
 
 	private ConvertDatabase _getConvertDatabase() {
@@ -88,16 +88,16 @@ public class ConvertDatabaseTest {
 		return null;
 	}
 
-	private ConvertDatabaseProcess _getFirstConvertDataBaseProcess(
+	private DatabaseConverter _getFirstConvertDataBaseProcess(
 		ConvertDatabase convertDatabase, Class<?> convertDataProcessClass) {
 
-		for (ConvertDatabaseProcess convertDatabaseProcess :
+		for (DatabaseConverter databaseConverter :
 				convertDatabase.getConvertDatabaseProcesses()) {
 
-			if (convertDatabaseProcess.getClass().getName().equals(
+			if (databaseConverter.getClass().getName().equals(
 					convertDataProcessClass.getName())) {
 
-				return convertDatabaseProcess;
+				return databaseConverter;
 			}
 		}
 
