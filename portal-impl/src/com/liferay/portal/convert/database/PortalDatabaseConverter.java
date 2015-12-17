@@ -16,15 +16,13 @@ package com.liferay.portal.convert.database;
 
 import com.liferay.portal.convert.DatabaseConverter;
 import com.liferay.portal.convert.util.ModelMigrator;
-import com.liferay.portal.kernel.log.Log;
-import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.servlet.ServletContextPool;
 import com.liferay.portal.kernel.util.ClassLoaderUtil;
-import com.liferay.portal.kernel.util.Tuple;
+import com.liferay.portal.model.BaseModel;
+import com.liferay.portal.model.ModelHintsUtil;
 
-import java.util.HashMap;
+import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 import javax.servlet.ServletContext;
 
@@ -37,43 +35,54 @@ public class PortalDatabaseConverter implements DatabaseConverter {
 
 	@Override
 	public void convert(DataSource dataSource) throws Exception {
-		List<String> modelClassesNames = _modelMigrator.getModelClassesName(
-			"portal", ".*");
-
-		Map<String, Tuple> modelTableDetails = new HashMap<>();
-
-		for (String modelClassesName : modelClassesNames) {
-			if (_log.isDebugEnabled()) {
-				_log.debug("Loading class " + modelClassesName);
-			}
-
-			Class<?> modelClass = getImplClass(modelClassesName);
-
-			if (modelClass == null) {
-				_log.error("Unable to load class " + modelClassesName);
-
-				continue;
-			}
-
-			modelTableDetails.putAll(
-				_modelMigrator.getModelTableDetails(modelClass));
-		}
-
-		_modelMigrator.migrate(dataSource, modelTableDetails);
+		_modelMigrator.migrate(dataSource, getModelClassesName("*"));
 	}
 
 	public void setModelMigrator(ModelMigrator modelMigrator) {
 		_modelMigrator = modelMigrator;
 	}
 
-	protected Class<?> getImplClass(String implClassName) throws Exception {
+	protected List<Class<? extends BaseModel<?>>> getModelClassesName(
+		String pattern) {
+
+		List<String> modelNames = ModelHintsUtil.getModels();
+
+		List<Class<? extends BaseModel<?>>> implClassesNames =
+			new ArrayList<>();
+
+		for (String modelName : modelNames) {
+			if (!modelName.contains(".model.")) {
+				continue;
+			}
+
+			String implClassName = modelName.replaceFirst(
+				"(\\.model\\.)(\\p{Upper}.*)", "$1impl.$2Impl");
+
+			if (implClassName.matches(pattern)) {
+				Class<? extends BaseModel<?>> implClass = getImplClass(
+					implClassName);
+
+				if (implClass != null) {
+					implClassesNames.add(implClass);
+				}
+			}
+		}
+
+		return implClassesNames;
+	}
+
+
+	protected Class<? extends BaseModel<?>> getImplClass(String implClassName) {
 		try {
 			ClassLoader classLoader = ClassLoaderUtil.getPortalClassLoader();
 
-			return classLoader.loadClass(implClassName);
+			return (Class<? extends BaseModel<?>>) classLoader.loadClass(
+				implClassName);
 		}
 		catch (Exception e) {
 		}
+
+		// Backward compatibility, so legacy plugins' tables get converted
 
 		for (String servletContextName : ServletContextPool.keySet()) {
 			try {
@@ -82,7 +91,8 @@ public class PortalDatabaseConverter implements DatabaseConverter {
 
 				ClassLoader classLoader = servletContext.getClassLoader();
 
-				return classLoader.loadClass(implClassName);
+				return (Class<? extends BaseModel<?>>) classLoader.loadClass(
+					implClassName);
 			}
 			catch (Exception e) {
 			}
@@ -90,9 +100,6 @@ public class PortalDatabaseConverter implements DatabaseConverter {
 
 		return null;
 	}
-
-	private static final Log _log = LogFactoryUtil.getLog(
-		PortalDatabaseConverter.class);
 
 	private ModelMigrator _modelMigrator;
 

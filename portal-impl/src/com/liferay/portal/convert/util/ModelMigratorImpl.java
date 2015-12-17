@@ -23,8 +23,9 @@ import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.Tuple;
-import com.liferay.portal.model.ModelHintsUtil;
+import com.liferay.portal.model.BaseModel;
 import com.liferay.portal.model.ServiceComponent;
+import com.liferay.portal.model.impl.BaseModelImpl;
 import com.liferay.portal.service.ServiceComponentLocalServiceUtil;
 import com.liferay.portal.spring.hibernate.DialectDetector;
 import com.liferay.portal.upgrade.util.Table;
@@ -37,7 +38,6 @@ import java.lang.reflect.Field;
 import java.sql.Connection;
 import java.sql.SQLException;
 
-import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -53,34 +53,7 @@ import org.hibernate.dialect.Dialect;
  */
 public class ModelMigratorImpl implements ModelMigrator {
 
-	@Override
-	public List<String> getModelClassesName(String moduleName, String pattern) {
-		List<String> modelNames = ModelHintsUtil.getModels();
-
-		MaintenanceUtil.appendStatus(
-			"Collecting information for " + moduleName + "" +
-				" tables to migration");
-
-		List<String> implClassesNames = new ArrayList<>();
-
-		for (String modelName : modelNames) {
-			if (!modelName.contains(".model.")) {
-				continue;
-			}
-
-			String implClassName = modelName.replaceFirst(
-				"(\\.model\\.)(\\p{Upper}.*)", "$1impl.$2Impl");
-
-			if (implClassName.matches(pattern)) {
-				implClassesNames.add(implClassName);
-			}
-		}
-
-		return implClassesNames;
-	}
-
-	@Override
-	public Map<String, Tuple> getModelTableDetails(Class<?> implClass) {
+	protected Map<String, Tuple> getModelTableDetails(Class<?> implClass) {
 		Map<String, Tuple> modelTableDetails = new LinkedHashMap<>();
 
 		Field[] fields = implClass.getFields();
@@ -109,12 +82,10 @@ public class ModelMigratorImpl implements ModelMigrator {
 
 	@Override
 	public void migrate(
-			DataSource dataSource, Map<String, Tuple> modelTableDetails )
+			DataSource dataSource, List<Class<? extends BaseModel<?>>> models)
 		throws IOException, SQLException {
 
 		Dialect dialect = DialectDetector.getDialect(dataSource);
-
-		DB db = DBManagerUtil.getDB(dialect, dataSource);
 
 		Connection connection = dataSource.getConnection();
 
@@ -123,45 +94,59 @@ public class ModelMigratorImpl implements ModelMigrator {
 				_log.debug("Migrating database tables");
 			}
 
-			int i = 0;
+			for (Class<? extends BaseModel<?>> model : models) {
+				Map<String, Tuple> modelTableDetails = getModelTableDetails(
+					model);
 
-			for (Tuple tuple : modelTableDetails.values()) {
-				if ((i > 0) && (i % (modelTableDetails.size() / 4) == 0)) {
-					MaintenanceUtil.appendStatus(
-						(i * 100 / modelTableDetails.size()) + "%");
-				}
-
-				String table = (String)tuple.getObject(0);
-				Object[][] columns = (Object[][])tuple.getObject(1);
-				String sqlCreate = (String)tuple.getObject(2);
-
-				migrateTable(db, connection, table, columns, sqlCreate);
-
-				i++;
+				migrateModel(
+					modelTableDetails, DBManagerUtil.getDB(dialect, dataSource),
+					connection);
 			}
 
-			if (_log.isDebugEnabled()) {
-				_log.debug("Migrating database indexes");
-			}
-
-			StartupHelperUtil.updateIndexes(db, connection, false);
-
-			List<ServiceComponent> serviceComponents =
-				ServiceComponentLocalServiceUtil.getLatestServiceComponents();
-
-			Set<String> validIndexNames = new HashSet<>();
-
-			for (ServiceComponent serviceComponent : serviceComponents) {
-				String indexesSQL = serviceComponent.getIndexesSQL();
-
-				db.addIndexes(connection, indexesSQL, validIndexNames);
-			}
 		}
 		finally {
 			DataAccess.cleanUp(connection);
 		}
 	}
 
+	protected void migrateModel(
+			Map<String, Tuple> modelTableDetails, DB db, Connection connection)
+		throws IOException {
+
+		int i = 0;
+
+		for (Tuple tuple : modelTableDetails.values()) {
+			if ((i > 0) && (i % (modelTableDetails.size() / 4) == 0)) {
+				MaintenanceUtil.appendStatus(
+					(i * 100 / modelTableDetails.size()) + "%");
+			}
+
+			String table = (String)tuple.getObject(0);
+			Object[][] columns = (Object[][])tuple.getObject(1);
+			String sqlCreate = (String)tuple.getObject(2);
+
+			migrateTable(db, connection, table, columns, sqlCreate);
+
+			i++;
+		}
+
+		if (_log.isDebugEnabled()) {
+			_log.debug("Migrating database indexes");
+		}
+
+		StartupHelperUtil.updateIndexes(db, connection, false);
+
+		List<ServiceComponent> serviceComponents =
+				ServiceComponentLocalServiceUtil.getLatestServiceComponents();
+
+		Set<String> validIndexNames = new HashSet<>();
+
+		for (ServiceComponent serviceComponent : serviceComponents) {
+			String indexesSQL = serviceComponent.getIndexesSQL();
+
+			db.addIndexes(connection, indexesSQL, validIndexNames);
+		}
+	}
 	protected Tuple getTableDetails(
 		Class<?> implClass, Field tableField, String tableFieldVar) {
 

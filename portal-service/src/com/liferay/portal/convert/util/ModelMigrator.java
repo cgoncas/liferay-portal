@@ -15,6 +15,7 @@
 package com.liferay.portal.convert.util;
 
 import com.liferay.portal.kernel.util.Tuple;
+import com.liferay.portal.model.BaseModel;
 
 import java.io.IOException;
 
@@ -30,12 +31,8 @@ import javax.sql.DataSource;
  */
 public interface ModelMigrator {
 
-	public List<String> getModelClassesName(String moduleName, String pattern);
-
-	public Map<String, Tuple> getModelTableDetails(Class<?> implClass);
-
 	public void migrate(
-			DataSource dataSource, Map<String, Tuple> modelTableDetails)
+			DataSource dataSource, List<Class<? extends BaseModel<?>>> models)
 		throws IOException, SQLException;
 
 }
