@@ -134,8 +134,7 @@ public class UpgradeJournal extends BaseUpgradePortletPreferences {
 				createDate, modifiedDate, parentDDMStructureId,
 				PortalUtil.getClassNameId(
 					"com.liferay.portlet.journal.model.JournalArticle"),
-				ddmStructureKey, name, description, xsd,
-				PropsUtil.get("journal.article.storage.type"),
+				ddmStructureKey, name, description, xsd, "xml",
 				_DDM_STRUCTURE_TYPE_DEFAULT);
 		}
 	}
