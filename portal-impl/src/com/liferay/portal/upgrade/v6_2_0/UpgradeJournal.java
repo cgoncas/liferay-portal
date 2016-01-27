@@ -28,7 +28,6 @@ import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.model.Company;
 import com.liferay.portal.upgrade.v6_2_0.util.JournalFeedTable;
 import com.liferay.portal.util.PortalUtil;
-import com.liferay.portal.util.PropsUtil;
 import com.liferay.portlet.PortletPreferencesFactoryUtil;
 
 import java.sql.Connection;
