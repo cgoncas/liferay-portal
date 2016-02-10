@@ -27,17 +27,35 @@ public class UpgradeClassNames extends UpgradeProcess {
 			String oldPackage = packageConversion[0];
 			String newPackage = packageConversion[1];
 
-			//Upgrade Counter
+			// Upgrade Counter
 
 			runSQL(
 				"update Counter set name = replace(name, '" + oldPackage +
 					"', '" + newPackage + "');");
 
-			//Upgrade ClassName
+			// Upgrade ClassName
 
 			runSQL(
 				"update ClassName_ set value = replace(value, '" + oldPackage +
 					"', '"+ newPackage + "');");
+
+			// Upgrade Lock
+
+			runSQL(
+				"update Lock_ set className = replace(className, '" +
+					oldPackage + "', '"+ newPackage + "')");
+
+			// Upgrade Kaleo
+
+			runSQL(
+				"update KaleoInstance set className = replace(className, '" +
+					oldPackage + "', '"+ newPackage + "')");
+			runSQL(
+				"update KaleoInstanceToken set className = replace(" +
+					"className, '" + oldPackage + "', '"+ newPackage + "')");
+			runSQL(
+				"update KaleoTaskInstanceToken set className = " + "replace(" +
+					"className, '" + oldPackage + "', '"+ newPackage + "')");
 		}
 	}
 
