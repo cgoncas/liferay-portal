@@ -42,39 +42,60 @@ public class UpgradeClassNames extends UpgradeProcess {
 	}
 
 	private static final String[][] _PACKAGE_CONVERSION = {
-		{"com.liferay.portal.model.ExportImportConfiguration",
+		{
+			"com.liferay.portal.model.ExportImportConfiguration",
 			"com.liferay.exportimport.kernel.model.ExportImportConfiguration"
 		},
-		{"com.liferay.portal.model", "com.liferay.portal.kernel.model"},
-		{"com.liferay.portlet.announcements.model",
+		{
+			"com.liferay.portal.model", "com.liferay.portal.kernel.model"
+		},
+		{
+			"com.liferay.portlet.announcements.model",
 			"com.liferay.announcements.kernel.model"
 		},
-		{"com.liferay.portlet.asset.model", "com.liferay.asset.kernel.model"},
-		{"com.liferay.portlet.blogs.model", "com.liferay.blogs.kernel.model"},
-		{"com.liferay.counter.model",
-			"com.liferay.counter.kernel.model"
+		{
+			"com.liferay.portlet.asset.model", "com.liferay.asset.kernel.model"
 		},
-		{"com.liferay.portlet.documentlibrary.model",
+		{
+			"com.liferay.portlet.blogs.model", "com.liferay.blogs.kernel.model"
+		},
+		{
+			"com.liferay.counter.model", "com.liferay.counter.kernel.model"
+		},
+		{
+			"com.liferay.portlet.documentlibrary.model",
 			"com.liferay.document.library.kernel.model"
 		},
-		{"com.liferay.portlet.documentlibrary.model",
+		{
+			"com.liferay.portlet.documentlibrary.model",
 			"com.liferay.document.library.kernel.model"
 		},
-		{"com.liferay.portlet.dynamicdatamapping.model",
+		{
+			"com.liferay.portlet.dynamicdatamapping.model",
 			"com.liferay.dynamic.data.mapping.kernel"
 		},
-		{"com.liferay.portlet.expando.model",
+		{
+			"com.liferay.portlet.expando.model",
 			"com.liferay.expando.kernel.model"
 		},
-		{"com.liferay.portal.kernel.mail", "com.liferay.mail.kernel.model"},
-		{"com.liferay.portlet.messageboards.model",
+		{
+			"com.liferay.portal.kernel.mail", "com.liferay.mail.kernel.model"
+		},
+		{
+			"com.liferay.portlet.messageboards.model",
 			"com.liferay.message.boards.kernel.model"
 		},
-		{"com.liferay.portlet.ratings.model",
+		{
+			"com.liferay.portlet.ratings.model",
 			"com.liferay.ratings.kernel.model"
 		},
-		{"com.liferay.portlet.social.model", "com.liferay.social.kernel.model"},
-		{"com.liferay.portlet.trash.model", "com.liferay.trash.kernel.model"}
+		{
+			"com.liferay.portlet.social.model",
+			"com.liferay.social.kernel.model"
+		},
+		{
+			"com.liferay.portlet.trash.model", "com.liferay.trash.kernel.model"
+		}
 	};
 
 }
