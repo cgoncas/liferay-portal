@@ -223,6 +223,19 @@ public class SQLTransformer {
 		return StringUtil.replace(sql, "LIKE ?", "LIKE ? ESCAPE '\\'");
 	}
 
+	private String _replaceInStr(String sql) {
+		Matcher matcher = _instrPattern.matcher(sql);
+
+		if (_vendorPostgreSQL) {
+			return matcher.replaceAll("POSITION($2 in $1)");
+		}
+		else if (_vendorSybase || _vendorSQLServer) {
+			return matcher.replaceAll("CHARINDEX($2, $1)");
+		}
+
+		return sql;
+	}
+
 	private String _replaceIntegerDivision(String sql) {
 		Matcher matcher = _integerDivisionPattern.matcher(sql);
 
@@ -278,6 +291,7 @@ public class SQLTransformer {
 		newSQL = _replaceCastText(newSQL);
 		newSQL = _replaceCrossJoin(newSQL);
 		newSQL = _replaceIntegerDivision(newSQL);
+		newSQL = _replaceInStr(newSQL);
 
 		if (_vendorDB2) {
 			newSQL = _replaceLike(newSQL);
@@ -407,6 +421,8 @@ public class SQLTransformer {
 		"CAST_LONG\\((.+?)\\)", Pattern.CASE_INSENSITIVE);
 	private static final Pattern _castTextPattern = Pattern.compile(
 		"CAST_TEXT\\((.+?)\\)", Pattern.CASE_INSENSITIVE);
+	private static final Pattern _instrPattern = Pattern.compile(
+		"INSTR\\((.+?),(.+?)\\)", Pattern.CASE_INSENSITIVE);
 	private static final Pattern _integerDivisionPattern = Pattern.compile(
 		"INTEGER_DIV\\((.+?),(.+?)\\)", Pattern.CASE_INSENSITIVE);
 	private static final Pattern _jpqlCountPattern = Pattern.compile(
