@@ -277,6 +277,16 @@ public class SQLTransformer {
 		return newSQL.replaceAll("(?i)replace\\(", "str_replace(");
 	}
 
+	private String _replaceSubstr(String sql) {
+		Matcher matcher = _substrPattern.matcher(sql);
+
+		if (_vendorSybase || _vendorSQLServer) {
+			return matcher.replaceAll("SUBSTRING($1, $2, $3)");
+		}
+
+		return sql;
+	}
+
 	private String _transform(String sql) {
 		if (sql == null) {
 			return sql;
@@ -292,6 +302,7 @@ public class SQLTransformer {
 		newSQL = _replaceCrossJoin(newSQL);
 		newSQL = _replaceIntegerDivision(newSQL);
 		newSQL = _replaceInStr(newSQL);
+		newSQL = _replaceSubstr(newSQL);
 
 		if (_vendorDB2) {
 			newSQL = _replaceLike(newSQL);
@@ -433,6 +444,8 @@ public class SQLTransformer {
 		"MOD\\((.+?),(.+?)\\)", Pattern.CASE_INSENSITIVE);
 	private static final Pattern _negativeComparisonPattern = Pattern.compile(
 		"(!?=)( -([0-9]+)?)", Pattern.CASE_INSENSITIVE);
+	private static final Pattern _substrPattern = Pattern.compile(
+		"SUBSTR\\((.+?),(.+?),(.+?)\\)", Pattern.CASE_INSENSITIVE);
 
 	private DB _db;
 	private Map<String, String> _transformedSqls;
