@@ -26,9 +26,9 @@ drop table CyrusVirtual;
 
 drop index IX_C803899D on DDMStructureLink;
 
-alter table DLFileEntryMetadata drop column fileEntryTypeId;
-
 drop index IX_F8E90438 on DLFileEntryMetadata;
+
+alter table DLFileEntryMetadata drop column fileEntryTypeId;
 
 alter table DLFolder add restrictionType INTEGER;
 
