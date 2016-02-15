@@ -32,7 +32,7 @@ drop index IX_F8E90438 on DLFileEntryMetadata;
 
 alter table DLFolder add restrictionType INTEGER;
 
-update DLFolder set restrictionType = 1 where overrideFileEntryTypes = 1;
+update DLFolder set restrictionType = 1 where overrideFileEntryTypes = TRUE;
 
 alter table DLFolder drop column overrideFileEntryTypes;
 
