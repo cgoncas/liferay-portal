@@ -493,18 +493,6 @@ public class UpgradeKernelPackage extends UpgradeProcess {
 			"com.liferay.document.library.kernel.model.DLSyncEvent"
 		},
 		{
-			"com.liferay.portlet.dynamicdatalists.model.DDLRecord",
-			"com.liferay.dynamic.data.lists.model.DDLRecord"
-		},
-		{
-			"com.liferay.portlet.dynamicdatalists.model.DDLRecordSet",
-			"com.liferay.dynamic.data.lists.model.DDLRecordSet"
-		},
-		{
-			"com.liferay.portlet.dynamicdatalists.model.DDLRecordVersion",
-			"com.liferay.dynamic.data.lists.model.DDLRecordVersion"
-		},
-		{
 			"com.liferay.portlet.dynamicdatamapping.model.DDMStructure",
 			"com.liferay.dynamic.data.mapping.kernel.model.DDMStructure"
 		},
@@ -723,10 +711,6 @@ public class UpgradeKernelPackage extends UpgradeProcess {
 		{
 			"com.liferay.portlet.documentlibrary",
 			"com.liferay.document.library"
-		},
-		{
-			"com.liferay.portlet.dynamicdatalists",
-			"com.liferay.dynamic.data.lists"
 		},
 		{
 			"com.liferay.portlet.dynamicdatamapping",
