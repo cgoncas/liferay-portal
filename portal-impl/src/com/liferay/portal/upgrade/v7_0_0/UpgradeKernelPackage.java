@@ -36,10 +36,14 @@ public class UpgradeKernelPackage extends UpgradeProcess {
 		upgradeTable(
 			"ClassName_", "value", _CLASS_NAMES, WildcardMode.SURROUND);
 		upgradeTable(
+			"ResourceAction", "value", _CLASS_NAMES, WildcardMode.SURROUND);
+		upgradeTable(
 			"ResourceBlock", "name", _CLASS_NAMES, WildcardMode.SURROUND);
 		upgradeTable(
 			"ResourcePermission", "name", _CLASS_NAMES, WildcardMode.SURROUND);
 
+		upgradeTable(
+			"ResourceAction", "name", _RESOURCE_NAMES, WildcardMode.LEADING);
 		upgradeTable(
 			"ResourceBlock", "name", _RESOURCE_NAMES, WildcardMode.LEADING);
 		upgradeTable(
