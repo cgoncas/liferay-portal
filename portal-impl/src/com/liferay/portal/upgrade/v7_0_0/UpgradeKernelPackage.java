@@ -557,30 +557,6 @@ public class UpgradeKernelPackage extends UpgradeProcess {
 			"com.liferay.expando.kernel.model.ExpandoValue"
 		},
 		{
-			"com.liferay.portlet.journal.model.JournalArticle",
-			"com.liferay.journal.model.JournalArticle"
-		},
-		{
-			"com.liferay.portlet.journal.model.JournalArticleImage",
-			"com.liferay.journal.model.JournalArticleImage"
-		},
-		{
-			"com.liferay.portlet.journal.model.JournalArticleResource",
-			"com.liferay.journal.model.JournalArticleResource"
-		},
-		{
-			"com.liferay.portlet.journal.model.JournalContentSearch",
-			"com.liferay.journal.model.JournalContentSearch"
-		},
-		{
-			"com.liferay.portlet.journal.model.JournalFeed",
-			"com.liferay.journal.model.JournalFeed"
-		},
-		{
-			"com.liferay.portlet.journal.model.JournalFolder",
-			"com.liferay.journal.model.JournalFolder"
-		},
-		{
 			"com.liferay.portlet.messageboards.model.MBBan",
 			"com.liferay.message.boards.kernel.model.MBBan"
 		},
@@ -766,9 +742,6 @@ public class UpgradeKernelPackage extends UpgradeProcess {
 		{
 			"com.liferay.portlet.dynamicdatamapping",
 			"com.liferay.dynamic.data.mapping"
-		},
-		{
-			"com.liferay.portlet.journal", "com.liferay.journal"
 		},
 		{
 			"com.liferay.portlet.messageboards", "com.liferay.message.boards"
