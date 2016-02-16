@@ -569,38 +569,6 @@ public class UpgradeKernelPackage extends UpgradeProcess {
 			"com.liferay.ratings.kernel.model.RatingsStats"
 		},
 		{
-			"com.liferay.portlet.shopping.model.ShoppingCart",
-			"com.liferay.shopping.model.ShoppingCart"
-		},
-		{
-			"com.liferay.portlet.shopping.model.ShoppingCategory",
-			"com.liferay.shopping.model.ShoppingCategory"
-		},
-		{
-			"com.liferay.portlet.shopping.model.ShoppingCoupon",
-			"com.liferay.shopping.model.ShoppingCoupon"
-		},
-		{
-			"com.liferay.portlet.shopping.model.ShoppingItem",
-			"com.liferay.shopping.model.ShoppingItem"
-		},
-		{
-			"com.liferay.portlet.shopping.model.ShoppingItemField",
-			"com.liferay.shopping.model.ShoppingItemField"
-		},
-		{
-			"com.liferay.portlet.shopping.model.ShoppingItemPrice",
-			"com.liferay.shopping.model.ShoppingItemPrice"
-		},
-		{
-			"com.liferay.portlet.shopping.model.ShoppingOrder",
-			"com.liferay.shopping.model.ShoppingOrder"
-		},
-		{
-			"com.liferay.portlet.shopping.model.ShoppingOrderItem",
-			"com.liferay.shopping.model.ShoppingOrderItem"
-		},
-		{
 			"com.liferay.portlet.social.model.SocialActivity",
 			"com.liferay.social.kernel.model.SocialActivity"
 		},
@@ -678,9 +646,6 @@ public class UpgradeKernelPackage extends UpgradeProcess {
 		},
 		{
 			"com.liferay.portlet.messageboards", "com.liferay.message.boards"
-		},
-		{
-			"com.liferay.portlet.shopping", "com.liferay.shopping"
 		},
 		{
 			"com.liferay.portlet.wiki", "com.liferay.wiki"
