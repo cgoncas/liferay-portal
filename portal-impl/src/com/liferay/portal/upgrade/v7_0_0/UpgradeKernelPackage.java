@@ -453,14 +453,6 @@ public class UpgradeKernelPackage extends UpgradeProcess {
 			"com.liferay.blogs.kernel.model.BlogsStatsUser"
 		},
 		{
-			"com.liferay.portlet.bookmarks.model.BookmarksEntry",
-			"com.liferay.bookmarks.model.BookmarksEntry"
-		},
-		{
-			"com.liferay.portlet.bookmarks.model.BookmarksFolder",
-			"com.liferay.bookmarks.model.BookmarksFolder"
-		},
-		{
 			"com.liferay.portlet.counter.model.Counter",
 			"com.liferay.counter.kernel.model.Counter"
 		},
@@ -724,9 +716,6 @@ public class UpgradeKernelPackage extends UpgradeProcess {
 		},
 		{
 			"com.liferay.portlet.blogs", "com.liferay.blogs"
-		},
-		{
-			"com.liferay.portlet.bookmarks", "com.liferay.bookmarks"
 		},
 		{
 			"com.liferay.portlet.calendar", "com.liferay.calendar"
