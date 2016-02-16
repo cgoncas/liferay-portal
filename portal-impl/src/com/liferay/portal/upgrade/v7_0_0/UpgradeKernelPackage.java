@@ -493,34 +493,6 @@ public class UpgradeKernelPackage extends UpgradeProcess {
 			"com.liferay.document.library.kernel.model.DLSyncEvent"
 		},
 		{
-			"com.liferay.portlet.dynamicdatamapping.model.DDMStructure",
-			"com.liferay.dynamic.data.mapping.kernel.model.DDMStructure"
-		},
-		{
-			"com.liferay.portlet.dynamicdatamapping.model.DDMTemplate",
-			"com.liferay.dynamic.data.mapping.kernel.model.DDMTemplate"
-		},
-		{
-			"com.liferay.portlet.dynamicdatamapping.model.DDMContent",
-			"com.liferay.dynamic.data.mapping.model.DDMContent"
-		},
-		{
-			"com.liferay.portlet.dynamicdatamapping.model.DDMStorageLink",
-			"com.liferay.dynamic.data.mapping.model.DDMStorageLink"
-		},
-		{
-			"com.liferay.portlet.dynamicdatamapping.model.DDMStructure",
-			"com.liferay.dynamic.data.mapping.model.DDMStructure"
-		},
-		{
-			"com.liferay.portlet.dynamicdatamapping.model.DDMStructureLink",
-			"com.liferay.dynamic.data.mapping.model.DDMStructureLink"
-		},
-		{
-			"com.liferay.portlet.dynamicdatamapping.model.DDMTemplate",
-			"com.liferay.dynamic.data.mapping.model.DDMTemplate"
-		},
-		{
 			"com.liferay.portlet.expando.model.ExpandoColumn",
 			"com.liferay.expando.kernel.model.ExpandoColumn"
 		},
@@ -711,10 +683,6 @@ public class UpgradeKernelPackage extends UpgradeProcess {
 		{
 			"com.liferay.portlet.documentlibrary",
 			"com.liferay.document.library"
-		},
-		{
-			"com.liferay.portlet.dynamicdatamapping",
-			"com.liferay.dynamic.data.mapping"
 		},
 		{
 			"com.liferay.portlet.messageboards", "com.liferay.message.boards"

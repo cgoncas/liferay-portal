@@ -15,76 +15,59 @@
 package com.liferay.dynamic.data.mapping.upgrade.v1_0_0;
 
 import com.liferay.dynamic.data.mapping.model.DDMContent;
+import com.liferay.dynamic.data.mapping.model.DDMStorageLink;
 import com.liferay.dynamic.data.mapping.model.DDMStructure;
+import com.liferay.dynamic.data.mapping.model.DDMStructureLink;
 import com.liferay.dynamic.data.mapping.model.DDMTemplate;
-import com.liferay.portal.kernel.upgrade.UpgradeProcess;
-import com.liferay.portal.upgrade.util.classname.ClassNameDependency;
-import com.liferay.portal.upgrade.util.classname.ClassNameDependencyUpgrader;
-import com.liferay.portal.upgrade.util.classname.dependency.ResourcePermissionClassNameDependency;
-
-import java.util.Collections;
-import java.util.List;
+import com.liferay.portal.upgrade.v7_0_0.UpgradeKernelPackage;
 
 /**
  * @author Marcellus Tavares
  */
-public class UpgradeClassNames extends UpgradeProcess {
+public class UpgradeClassNames extends UpgradeKernelPackage {
 
 	@Override
-	protected void doUpgrade() throws Exception {
-		List<ClassNameDependency> classNameDependencies =
-			Collections.singletonList(
-				(ClassNameDependency)(
-					new ResourcePermissionClassNameDependency()));
-
-		upgradeDDMClassName(classNameDependencies);
-		upgradeDDMContentClassName(classNameDependencies);
-		upgradeDDMStructureClassName(classNameDependencies);
-		upgradeDDMTemplateClassName(classNameDependencies);
+	protected String[][] getClassNames() {
+		return _CLASS_NAMES;
 	}
 
-	protected void upgradeDDMClassName(
-		List<ClassNameDependency> classNameDependencies) {
-
-		ClassNameDependencyUpgrader classNameDependencyUpgrader =
-			new ClassNameDependencyUpgrader(
-				"com.liferay.portlet.dynamicdatamapping",
-				"com.liferay.dynamic.data.mapping", classNameDependencies);
-
-		classNameDependencyUpgrader.upgrade();
+	@Override
+	protected String[][] getResourceNames() {
+		return _RESOURCE_NAMES;
 	}
 
-	protected void upgradeDDMContentClassName(
-		List<ClassNameDependency> classNameDependencies) {
+	private static final String[][] _CLASS_NAMES = new String[][] {
+		{
+			"com.liferay.portlet.dynamicdatamapping.model.DDMStructure",
+			DDMStructure.class.getName()
+		},
+		{
+			"com.liferay.portlet.dynamicdatamapping.model.DDMTemplate",
+			DDMTemplate.class.getName()
+		},
+		{
+			"com.liferay.portlet.dynamicdatamapping.model.DDMContent",
+			DDMContent.class.getName()
+		},
+		{
+			"com.liferay.portlet.dynamicdatamapping.model.DDMStorageLink",
+			DDMStorageLink.class.getName()
+		},
+		{
+			"com.liferay.portlet.dynamicdatamapping.model.DDMStructureLink",
+			DDMStructureLink.class.getName()
+		},
+		{
+			"com.liferay.portlet.dynamicdatamapping.model.DDMTemplate",
+			DDMTemplate.class.getName()
+		}
+	};
 
-		ClassNameDependencyUpgrader classNameDependencyUpgrader =
-			new ClassNameDependencyUpgrader(
-				"com.liferay.portlet.dynamicdatamapping.model.DDMContent",
-				DDMContent.class.getName(), classNameDependencies);
-
-		classNameDependencyUpgrader.upgrade();
-	}
-
-	protected void upgradeDDMStructureClassName(
-		List<ClassNameDependency> classNameDependencies) {
-
-		ClassNameDependencyUpgrader classNameDependencyUpgrader =
-			new ClassNameDependencyUpgrader(
-				"com.liferay.portlet.dynamicdatamapping.model.DDMStructure",
-				DDMStructure.class.getName(), classNameDependencies);
-
-		classNameDependencyUpgrader.upgrade();
-	}
-
-	protected void upgradeDDMTemplateClassName(
-		List<ClassNameDependency> classNameDependencies) {
-
-		ClassNameDependencyUpgrader classNameDependencyUpgrader =
-			new ClassNameDependencyUpgrader(
-				"com.liferay.portlet.dynamicdatamapping.model.DDMTemplate",
-				DDMTemplate.class.getName(), classNameDependencies);
-
-		classNameDependencyUpgrader.upgrade();
-	}
+	private static final String[][] _RESOURCE_NAMES = new String[][] {
+		{
+			"com.liferay.portlet.dynamicdatamapping",
+			"com.liferay.dynamic.data.mapping"
+		}
+	};
 
 }
