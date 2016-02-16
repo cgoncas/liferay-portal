@@ -605,18 +605,6 @@ public class UpgradeKernelPackage extends UpgradeProcess {
 			"com.liferay.trash.kernel.model.TrashVersion"
 		},
 		{
-			"com.liferay.portlet.wiki.model.WikiNode",
-			"com.liferay.wiki.model.WikiNode"
-		},
-		{
-			"com.liferay.portlet.wiki.model.WikiPage",
-			"com.liferay.wiki.model.WikiPage"
-		},
-		{
-			"com.liferay.portlet.wiki.model.WikiPageResource",
-			"com.liferay.wiki.model.WikiPageResource"
-		},
-		{
 			"com.liferay.socialnetworking.model.MeetupsEntry",
 			"com.liferay.social.networking.model.MeetupsEntry"
 		},
@@ -646,9 +634,6 @@ public class UpgradeKernelPackage extends UpgradeProcess {
 		},
 		{
 			"com.liferay.portlet.messageboards", "com.liferay.message.boards"
-		},
-		{
-			"com.liferay.portlet.wiki", "com.liferay.wiki"
 		}
 	};
 
