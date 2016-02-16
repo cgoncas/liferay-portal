@@ -561,18 +561,6 @@ public class UpgradeKernelPackage extends UpgradeProcess {
 			"com.liferay.mobile.device.rules.model.MDRRuleGroupInstance"
 		},
 		{
-			"com.liferay.portlet.polls.model.PollsChoice",
-			"com.liferay.polls.model.PollsChoice"
-		},
-		{
-			"com.liferay.portlet.polls.model.PollsQuestion",
-			"com.liferay.polls.model.PollsQuestion"
-		},
-		{
-			"com.liferay.portlet.polls.model.PollsVote",
-			"com.liferay.polls.model.PollsVote"
-		},
-		{
 			"com.liferay.portlet.ratings.model.RatingsEntry",
 			"com.liferay.ratings.kernel.model.RatingsEntry"
 		},
@@ -690,9 +678,6 @@ public class UpgradeKernelPackage extends UpgradeProcess {
 		},
 		{
 			"com.liferay.portlet.messageboards", "com.liferay.message.boards"
-		},
-		{
-			"com.liferay.portlet.polls", "com.liferay.polls"
 		},
 		{
 			"com.liferay.portlet.shopping", "com.liferay.shopping"
