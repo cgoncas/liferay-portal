@@ -43,39 +43,39 @@ public class UpgradeClassNames extends UpgradeKernelPackage {
 	private static final String[][] _CLASS_NAMES = new String[][] {
 		{
 			"com.liferay.portlet.shopping.model.ShoppingCart",
-			ShoppingCart.class.getName()
+			"com.liferay.shopping.model.ShoppingCart"
 		},
 		{
 			"com.liferay.portlet.shopping.model.ShoppingCartItem",
-			ShoppingCartItem.class.getName()
+			"com.liferay.shopping.model.ShoppingCartItem"
 		},
 		{
 			"com.liferay.portlet.shopping.model.ShoppingCategory",
-			ShoppingCategory.class.getName()
+			"com.liferay.shopping.model.ShoppingCategory"
 		},
 		{
 			"com.liferay.portlet.shopping.model.ShoppingCoupon",
-			ShoppingCoupon.class.getName()
+			"com.liferay.shopping.model.ShoppingCoupon"
 		},
 		{
 			"com.liferay.portlet.shopping.model.ShoppingItem",
-			ShoppingItem.class.getName()
+			"com.liferay.shopping.model.ShoppingItem"
 		},
 		{
 			"com.liferay.portlet.shopping.model.ShoppingItemField",
-			ShoppingItemField.class.getName()
+			"com.liferay.shopping.model.ShoppingItemField"
 		},
 		{
 			"com.liferay.portlet.shopping.model.ShoppingItemPrice",
-			ShoppingItemPrice.class.getName()
+			"com.liferay.shopping.model.ShoppingItemPrice"
 		},
 		{
 			"com.liferay.portlet.shopping.model.ShoppingOrder",
-			ShoppingOrder.class.getName()
+			"com.liferay.shopping.model.ShoppingOrder"
 		},
 		{
 			"com.liferay.portlet.shopping.model.ShoppingOrderItem",
-			ShoppingOrderItem.class.getSimpleName()
+			"com.liferay.shopping.model.ShoppingOrderItem"
 		}
 	};
 
