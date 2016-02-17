@@ -32,23 +32,32 @@ public class UpgradeKernelPackage extends UpgradeProcess {
 
 	@Override
 	protected void doUpgrade() throws SQLException {
-		upgradeTable("Counter", "name", _CLASS_NAMES, WildcardMode.SURROUND);
+		upgradeTable("Counter", "name", getClassNames(), WildcardMode.SURROUND);
 		upgradeTable(
-			"ClassName_", "value", _CLASS_NAMES, WildcardMode.SURROUND);
+			"ClassName_", "value", getClassNames(), WildcardMode.SURROUND);
 		upgradeTable(
-			"ResourceAction", "value", _CLASS_NAMES, WildcardMode.SURROUND);
+			"ResourceAction", "name", getClassNames(), WildcardMode.SURROUND);
 		upgradeTable(
-			"ResourceBlock", "name", _CLASS_NAMES, WildcardMode.SURROUND);
+			"ResourceBlock", "name", getClassNames(), WildcardMode.SURROUND);
 		upgradeTable(
-			"ResourcePermission", "name", _CLASS_NAMES, WildcardMode.SURROUND);
+			"ResourcePermission", "name", getClassNames(),
+			WildcardMode.SURROUND);
 
 		upgradeTable(
-			"ResourceAction", "name", _RESOURCE_NAMES, WildcardMode.LEADING);
+			"ResourceAction", "name", getResourceNames(), WildcardMode.LEADING);
 		upgradeTable(
-			"ResourceBlock", "name", _RESOURCE_NAMES, WildcardMode.LEADING);
+			"ResourceBlock", "name", getResourceNames(), WildcardMode.LEADING);
 		upgradeTable(
-			"ResourcePermission", "name", _RESOURCE_NAMES,
+			"ResourcePermission", "name", getResourceNames(),
 			WildcardMode.LEADING);
+	}
+
+	protected String[][] getClassNames() {
+		return _CLASS_NAMES;
+	}
+
+	protected String[][] getResourceNames() {
+		return _RESOURCE_NAMES;
 	}
 
 	protected void upgradeTable(
