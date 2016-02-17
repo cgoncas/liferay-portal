@@ -15,6 +15,7 @@
 package com.liferay.portal.upgrade.v7_0_0;
 
 import com.liferay.portal.kernel.dao.orm.WildcardMode;
+import com.liferay.portal.kernel.upgrade.UpgradeException;
 import com.liferay.portal.kernel.upgrade.UpgradeProcess;
 import com.liferay.portal.kernel.util.StringBundler;
 import com.liferay.portal.kernel.util.StringPool;
@@ -31,25 +32,35 @@ import java.sql.SQLException;
 public class UpgradeKernelPackage extends UpgradeProcess {
 
 	@Override
-	protected void doUpgrade() throws SQLException {
-		upgradeTable("Counter", "name", getClassNames(), WildcardMode.SURROUND);
-		upgradeTable(
-			"ClassName_", "value", getClassNames(), WildcardMode.SURROUND);
-		upgradeTable(
-			"ResourceAction", "name", getClassNames(), WildcardMode.SURROUND);
-		upgradeTable(
-			"ResourceBlock", "name", getClassNames(), WildcardMode.SURROUND);
-		upgradeTable(
-			"ResourcePermission", "name", getClassNames(),
-			WildcardMode.SURROUND);
+	protected void doUpgrade() throws UpgradeException {
+		try {
+			upgradeTable(
+				"Counter", "name", getClassNames(), WildcardMode.SURROUND);
+			upgradeTable(
+				"ClassName_", "value", getClassNames(), WildcardMode.SURROUND);
+			upgradeTable(
+				"ResourceAction", "name", getClassNames(),
+				WildcardMode.SURROUND);
+			upgradeTable(
+				"ResourceBlock", "name", getClassNames(),
+				WildcardMode.SURROUND);
+			upgradeTable(
+				"ResourcePermission", "name", getClassNames(),
+				WildcardMode.SURROUND);
 
-		upgradeTable(
-			"ResourceAction", "name", getResourceNames(), WildcardMode.LEADING);
-		upgradeTable(
-			"ResourceBlock", "name", getResourceNames(), WildcardMode.LEADING);
-		upgradeTable(
-			"ResourcePermission", "name", getResourceNames(),
-			WildcardMode.LEADING);
+			upgradeTable(
+				"ResourceAction", "name", getResourceNames(),
+				WildcardMode.LEADING);
+			upgradeTable(
+				"ResourceBlock", "name", getResourceNames(),
+				WildcardMode.LEADING);
+			upgradeTable(
+				"ResourcePermission", "name", getResourceNames(),
+				WildcardMode.LEADING);
+		}
+		catch (SQLException sqle) {
+			throw new UpgradeException(sqle);
+		}
 	}
 
 	protected String[][] getClassNames() {
