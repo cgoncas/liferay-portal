@@ -37,15 +37,15 @@ public class UpgradeClassNames extends UpgradeKernelPackage {
 	private static final String[][] _CLASS_NAMES = new String[][] {
 		{
 			"com.liferay.portlet.dynamicdatalists.model.DDLRecordSet",
-			DDLRecordSet.class.getName()
+			"com.liferay.dynamic.data.list.model.DDLRecordSet"
 		},
 		{
 			"com.liferay.portlet.dynamicdatalists.model.DDLRecordVersion",
-			DDLRecordVersion.class.getName()
+			"com.liferay.dynamic.data.list.model.DDLRecordVersion"
 		},
 		{
 			"com.liferay.portlet.dynamicdatalists.model.DDLRecord",
-			DDLRecord.class.getName()
+			"com.liferay.dynamic.data.list.model.DDLRecord"
 		}
 	};
 
