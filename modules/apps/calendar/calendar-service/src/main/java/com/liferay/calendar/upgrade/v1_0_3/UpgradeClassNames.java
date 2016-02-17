@@ -70,7 +70,7 @@ public class UpgradeClassNames extends UpgradeKernelPackage {
 
 	private void _cleanRepeatedResources() throws UpgradeException {
 		try {
-			String oldName = _RESOURCE_NAMES[0][1];
+			String oldName = _RESOURCE_NAMES[0][0];
 			String newName = _RESOURCE_NAMES[0][1];
 
 			runSQL(
