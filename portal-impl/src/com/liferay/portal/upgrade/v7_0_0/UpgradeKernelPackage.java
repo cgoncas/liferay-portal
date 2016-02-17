@@ -626,9 +626,6 @@ public class UpgradeKernelPackage extends UpgradeProcess {
 			"com.liferay.portlet.blogs", "com.liferay.blogs"
 		},
 		{
-			"com.liferay.portlet.calendar", "com.liferay.calendar"
-		},
-		{
 			"com.liferay.portlet.documentlibrary",
 			"com.liferay.document.library"
 		},
