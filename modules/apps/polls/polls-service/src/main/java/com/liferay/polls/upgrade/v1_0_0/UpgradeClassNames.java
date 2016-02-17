@@ -37,15 +37,15 @@ public class UpgradeClassNames extends UpgradeKernelPackage {
 	private static final String[][] _CLASS_NAMES = new String[][] {
 		{
 			"com.liferay.portlet.polls.model.PollsChoice",
-			PollsChoice.class.getName()
+			"com.liferay.polls.model.PollsChoice"
 		},
 		{
 			"com.liferay.portlet.polls.model.PollsQuestion",
-			PollsQuestion.class.getName()
+			"com.liferay.polls.model.PollsQuestion"
 		},
 		{
 			"com.liferay.portlet.polls.model.PollsVote",
-			PollsVote.class.getName()
+			"com.liferay.polls.model.PollsVote"
 		}
 	};
 
