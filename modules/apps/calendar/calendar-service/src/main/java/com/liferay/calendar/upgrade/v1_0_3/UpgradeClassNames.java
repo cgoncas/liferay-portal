@@ -26,6 +26,8 @@ public class UpgradeClassNames extends UpgradeKernelPackage {
 	public void doUpgrade() throws UpgradeException {
 		_cleanCalEventClassName();
 
+		_cleanRepeatedResources();
+
 		super.doUpgrade();
 	}
 
@@ -60,6 +62,21 @@ public class UpgradeClassNames extends UpgradeKernelPackage {
 			runSQL(
 				"delete from ResourcePermission where name like '" +
 					_CAL_EVENT_CLASS_NAME + "%'");
+		}
+		catch (Exception e) {
+			throw new UpgradeException(e);
+		}
+	}
+
+	private void _cleanRepeatedResources() throws UpgradeException {
+		try {
+			String oldName = _RESOURCE_NAMES[0][1];
+			String newName = _RESOURCE_NAMES[0][1];
+
+			runSQL(
+				"delete from ResourceAction where name = '" +
+					oldName + "' and actionId in (select actionId " +
+						"from ResourceAction where name = '" + newName + "')");
 		}
 		catch (Exception e) {
 			throw new UpgradeException(e);
