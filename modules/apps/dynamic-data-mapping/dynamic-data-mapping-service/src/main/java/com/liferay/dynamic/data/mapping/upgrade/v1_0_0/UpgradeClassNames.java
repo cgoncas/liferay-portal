@@ -39,27 +39,27 @@ public class UpgradeClassNames extends UpgradeKernelPackage {
 	private static final String[][] _CLASS_NAMES = new String[][] {
 		{
 			"com.liferay.portlet.dynamicdatamapping.model.DDMStructure",
-			DDMStructure.class.getName()
+			"com.liferay.dynamic.data.mapping.model.DDMStructure"
 		},
 		{
 			"com.liferay.portlet.dynamicdatamapping.model.DDMTemplate",
-			DDMTemplate.class.getName()
+			"com.liferay.dynamic.data.mapping.model.DDMTemplate"
 		},
 		{
 			"com.liferay.portlet.dynamicdatamapping.model.DDMContent",
-			DDMContent.class.getName()
+			"com.liferay.dynamic.data.mapping.model.DDMContent"
 		},
 		{
 			"com.liferay.portlet.dynamicdatamapping.model.DDMStorageLink",
-			DDMStorageLink.class.getName()
+			"com.liferay.dynamic.data.mapping.model.DDMStorageLink"
 		},
 		{
 			"com.liferay.portlet.dynamicdatamapping.model.DDMStructureLink",
-			DDMStructureLink.class.getName()
+			"com.liferay.dynamic.data.mapping.model.DDMStructureLink"
 		},
 		{
 			"com.liferay.portlet.dynamicdatamapping.model.DDMTemplate",
-			DDMTemplate.class.getName()
+			"com.liferay.dynamic.data.mapping.model.DDMTemplate"
 		}
 	};
 
