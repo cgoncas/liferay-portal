@@ -36,14 +36,16 @@ public class UpgradeClassNames extends UpgradeKernelPackage {
 
 	private static final String[][] _CLASS_NAMES = new String[][] {
 		{
-			"com.liferay.portlet.wiki.model.WikiNode", WikiNode.class.getName()
+			"com.liferay.portlet.wiki.model.WikiNode",
+			"com.liferay.wiki.model.WikiNode"
 		},
 		{
 			"com.liferay.portlet.wiki.model.WikiPageResource",
-			WikiPageResource.class.getName()
+			"com.liferay.wiki.model.WikiPageResource"
 		},
 		{
-			"com.liferay.portlet.wiki.model.WikiPage", WikiPage.class.getName()
+			"com.liferay.portlet.wiki.model.WikiPage",
+			"com.liferay.wiki.model.WikiPage"
 		}
 	};
 
