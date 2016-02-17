@@ -14,12 +14,20 @@
 
 package com.liferay.calendar.upgrade.v1_0_3;
 
+import com.liferay.portal.kernel.upgrade.UpgradeException;
 import com.liferay.portal.upgrade.v7_0_0.UpgradeKernelPackage;
 
 /**
  * @author Cristina González
  */
 public class UpgradeClassNames extends UpgradeKernelPackage {
+
+	@Override
+	public void doUpgrade() throws UpgradeException {
+		_cleanCalEventClassName();
+
+		super.doUpgrade();
+	}
 
 	@Override
 	protected String[][] getClassNames() {
@@ -30,6 +38,36 @@ public class UpgradeClassNames extends UpgradeKernelPackage {
 	protected String[][] getResourceNames() {
 		return _RESOURCE_NAMES;
 	}
+
+	private void _cleanCalEventClassName() throws UpgradeException {
+		try {
+			runSQL(
+				"delete from Counter where name like '" +
+					_CAL_EVENT_CLASS_NAME + "%'");
+
+			runSQL(
+				"delete from ClassName_ where value like '" +
+					_CAL_EVENT_CLASS_NAME + "%'");
+
+			runSQL(
+				"delete from ResourceAction where name like '" +
+					_CAL_EVENT_CLASS_NAME + "%'");
+
+			runSQL(
+				"delete from ResourceBlock where name like '" +
+					_CAL_EVENT_CLASS_NAME + "%'");
+
+			runSQL(
+				"delete from ResourcePermission where name like '" +
+					_CAL_EVENT_CLASS_NAME + "%'");
+		}
+		catch (Exception e) {
+			throw new UpgradeException(e);
+		}
+	}
+
+	private static final String _CAL_EVENT_CLASS_NAME =
+		"com.liferay.portlet.calendar.model.CalEvent";
 
 	private static final String[][] _RESOURCE_NAMES = new String[][] {
 		{
