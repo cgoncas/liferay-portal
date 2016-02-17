@@ -36,11 +36,11 @@ public class UpgradeClassNames extends UpgradeKernelPackage {
 	private static final String[][] _CLASS_NAMES = new String[][] {
 		{
 			"com.liferay.portlet.bookmarks.model.BookmarksEntry",
-			BookmarksEntry.class.getName()
+			"com.liferay.bookmarks.model.BookmarksEntry"
 		},
 		{
 			"com.liferay.portlet.bookmarks.model.BookmarksFolder",
-			BookmarksFolder.class.getName()
+			"com.liferay.bookmarks.model.BookmarksFolder"
 		}
 	};
 
