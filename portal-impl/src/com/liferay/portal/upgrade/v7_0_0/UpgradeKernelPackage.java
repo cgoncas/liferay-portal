@@ -493,6 +493,10 @@ public class UpgradeKernelPackage extends UpgradeProcess {
 			"com.liferay.document.library.kernel.model.DLSyncEvent"
 		},
 		{
+			"com.liferay.portlet.documentlibrary.util.RawMetadataProcessor",
+			"com.liferay.document.library.kernel.util.RawMetadataProcessor"
+		},
+		{
 			"com.liferay.portlet.expando.model.ExpandoColumn",
 			"com.liferay.expando.kernel.model.ExpandoColumn"
 		},
