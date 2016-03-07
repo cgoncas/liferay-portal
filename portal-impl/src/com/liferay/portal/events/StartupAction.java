@@ -158,13 +158,14 @@ public class StartupAction extends SimpleAction {
 			System.exit(1);
 		}
 
-		// Upgrade
+		// Check Schema Version
 
 		if (_log.isDebugEnabled()) {
-			_log.debug("Upgrade database");
+			_log.debug("Check Schema Version");
 		}
 
-		DBUpgrader.upgrade();
+		DBUpgrader.checkUpgradeSchemaVersion(
+			ReleaseInfo.getParentBuildNumber());
 
 		// Verify
 
