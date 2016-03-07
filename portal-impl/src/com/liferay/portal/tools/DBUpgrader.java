@@ -275,6 +275,12 @@ public class DBUpgrader {
 			release.getReleaseId(), ReleaseInfo.getParentBuildNumber(),
 			ReleaseInfo.getBuildDate(), verified);
 
+		//Update schema version
+
+		ReleaseLocalServiceUtil.updateRelease(
+			release.getServletContextName(), ReleaseInfo.getVersion(),
+			release.getSchemaVersion());
+
 		// Enable database caching after verify
 
 		CacheRegistryUtil.setActive(true);
