@@ -271,15 +271,12 @@ public class DBUpgrader {
 			verified = true;
 		}
 
-		release = ReleaseLocalServiceUtil.updateRelease(
-			release.getReleaseId(), ReleaseInfo.getParentBuildNumber(),
-			ReleaseInfo.getBuildDate(), verified);
+		release.setBuildNumber(ReleaseInfo.getParentBuildNumber());
+		release.setBuildDate(ReleaseInfo.getBuildDate());
+		release.setVerified(verified);
+		release.setSchemaVersion(ReleaseInfo.getVersion());
 
-		//Update schema version
-
-		ReleaseLocalServiceUtil.updateRelease(
-			release.getServletContextName(), ReleaseInfo.getVersion(),
-			release.getSchemaVersion());
+		ReleaseLocalServiceUtil.updateRelease(release);
 
 		// Enable database caching after verify
 
