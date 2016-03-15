@@ -12,29 +12,24 @@
  * details.
  */
 
-package com.liferay.license.manager.web.upgrade;
+package com.liferay.social.privatemessaging.web.upgrade;
 
-import com.liferay.license.manager.web.upgrade.v1_0_0.UpgradePortletId;
 import com.liferay.portal.kernel.upgrade.DummyUpgradeStep;
 import com.liferay.portal.upgrade.registry.UpgradeStepRegistrator;
 
 import org.osgi.service.component.annotations.Component;
 
 /**
- * @author Peter Fellwock
+ * @author Cristina González
  */
 @Component(immediate = true, service = UpgradeStepRegistrator.class)
-public class LicenseManagerWebUpgrade implements UpgradeStepRegistrator {
+public class PrivateMessagingWebUpgrade implements UpgradeStepRegistrator {
 
 	@Override
 	public void register(Registry registry) {
 		registry.register(
-			"com.liferay.license.manager.web", "0.0.0", "1.0.0",
+			"com.liferay.social.privatemessaging.web", "0.0.0", "1.0.0",
 			new DummyUpgradeStep());
-
-		registry.register(
-			"com.liferay.license.manager.web", "0.0.1", "1.0.0",
-			new UpgradePortletId());
 	}
 
 }
