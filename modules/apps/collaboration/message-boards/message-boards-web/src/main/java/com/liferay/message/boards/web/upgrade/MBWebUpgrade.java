@@ -37,7 +37,8 @@ public class MBWebUpgrade implements UpgradeStepRegistrator {
 			new DummyUpgradeStep());
 
 		registry.register(
-			"com.liferay.message.boards.web", "0.0.1", "1.0.0",
+			"com.liferay.message.boards.web", "0.0.1",
+			ReleaseBuilder.getReleaseVersion(getClass()),
 			new UpgradePortletSettings(_settingsFactory));
 	}
 

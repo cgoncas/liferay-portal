@@ -36,7 +36,8 @@ public class BookmarksWebUpgrade implements UpgradeStepRegistrator {
 			new DummyUpgradeStep());
 
 		registry.register(
-			"com.liferay.bookmarks.web", "0.0.1", "1.0.0",
+			"com.liferay.bookmarks.web", "0.0.1",
+			ReleaseBuilder.getReleaseVersion(getClass()),
 			new UpgradeAdminPortlets(), new UpgradePortletPreferences());
 	}
 

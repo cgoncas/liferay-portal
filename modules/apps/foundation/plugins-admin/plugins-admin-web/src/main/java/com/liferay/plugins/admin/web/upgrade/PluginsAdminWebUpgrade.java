@@ -37,7 +37,8 @@ public class PluginsAdminWebUpgrade implements UpgradeStepRegistrator {
 			new DummyUpgradeStep());
 
 		registry.register(
-			"com.liferay.plugins.admin.web", "0.0.1", "1.0.0",
+			"com.liferay.plugins.admin.web", "0.0.1",
+			ReleaseBuilder.getReleaseVersion(getClass()),
 			new UpgradePortletId() {
 
 				@Override

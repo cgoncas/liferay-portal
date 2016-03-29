@@ -36,7 +36,8 @@ public class MicroblogsWebUpgrade implements UpgradeStepRegistrator {
 			new DummyUpgradeStep());
 
 		registry.register(
-			"com.liferay.microblogs.web", "0.0.1", "1.0.0",
+			"com.liferay.microblogs.web", "0.0.1",
+			ReleaseBuilder.getReleaseVersion(getClass()),
 			new UpgradePortletId());
 	}
 

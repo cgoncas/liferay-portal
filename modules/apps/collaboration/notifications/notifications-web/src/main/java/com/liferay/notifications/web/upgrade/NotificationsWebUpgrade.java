@@ -42,7 +42,8 @@ public class NotificationsWebUpgrade implements UpgradeStepRegistrator {
 					_userNotificationEventLocalService));
 
 		registry.register(
-			"com.liferay.notifications.web", "1.0.0", "2.0.0",
+			"com.liferay.notifications.web", "1.0.0",
+			ReleaseBuilder.getReleaseVersion(getClass()),
 			new com.liferay.notifications.web.upgrade.v2_0_0.
 				UpgradeUserNotificationEvent(
 					_userNotificationEventLocalService));

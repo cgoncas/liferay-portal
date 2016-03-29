@@ -38,7 +38,8 @@ public class SiteNavigationLanguageWebUpgrade
 			new DummyUpgradeStep());
 
 		registry.register(
-			"com.liferay.site.navigation.language.web", "0.0.1", "1.0.0",
+			"com.liferay.site.navigation.language.web", "0.0.1",
+			ReleaseBuilder.getReleaseVersion(getClass()),
 			new UpgradePortletId(), new UpgradePortletPreferences());
 	}
 

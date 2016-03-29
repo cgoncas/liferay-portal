@@ -36,7 +36,8 @@ public class NetworkUtilitiesWebUpgrade implements UpgradeStepRegistrator {
 			new DummyUpgradeStep());
 
 		registry.register(
-			"com.liferay.network.utilities.web", "0.0.1", "1.0.0",
+			"com.liferay.network.utilities.web", "0.0.1",
+			ReleaseBuilder.getReleaseVersion(getClass()),
 			new UpgradePortletId() {
 
 				@Override

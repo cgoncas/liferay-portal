@@ -36,7 +36,8 @@ public class MyAccountWebUpgrade implements UpgradeStepRegistrator {
 			new DummyUpgradeStep());
 
 		registry.register(
-			"com.liferay.my.account.web", "0.0.1", "1.0.0",
+			"com.liferay.my.account.web", "0.0.1",
+			ReleaseBuilder.getReleaseVersion(getClass()),
 			new UpgradePortletId() {
 
 				@Override

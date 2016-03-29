@@ -35,7 +35,8 @@ public class DDMWebUpgrade implements UpgradeStepRegistrator {
 			new DummyUpgradeStep());
 
 		registry.register(
-			"com.liferay.dynamic.data.mapping.web", "0.0.1", "1.0.0",
+			"com.liferay.dynamic.data.mapping.web", "0.0.1",
+			ReleaseBuilder.getReleaseVersion(getClass()),
 			new UpgradePortletId());
 	}
 

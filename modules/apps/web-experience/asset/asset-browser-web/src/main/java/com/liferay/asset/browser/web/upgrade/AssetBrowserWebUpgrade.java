@@ -36,7 +36,8 @@ public class AssetBrowserWebUpgrade implements UpgradeStepRegistrator {
 			new DummyUpgradeStep());
 
 		registry.register(
-			"com.liferay.asset.browser.web", "0.0.1", "1.0.0",
+			"com.liferay.asset.browser.web", "0.0.1",
+			ReleaseBuilder.getReleaseVersion(getClass()),
 			new UpgradePortletId() {
 
 				@Override

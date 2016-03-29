@@ -39,7 +39,8 @@ public class BlogsWebUpgrade implements UpgradeStepRegistrator {
 			new DummyUpgradeStep());
 
 		registry.register(
-			"com.liferay.blogs.web", "0.0.1", "1.0.0",
+			"com.liferay.blogs.web", "0.0.1",
+			ReleaseBuilder.getReleaseVersion(getClass()),
 			new UpgradePortletPreferences(),
 			new UpgradePortletSettings(_settingsFactory));
 	}

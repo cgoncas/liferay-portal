@@ -35,7 +35,8 @@ public class MonitoringWebUpgrade implements UpgradeStepRegistrator {
 			new DummyUpgradeStep());
 
 		registry.register(
-			"com.liferay.monitoring.web", "0.0.1", "1.0.0",
+			"com.liferay.monitoring.web", "0.0.1",
+			ReleaseBuilder.getReleaseVersion(getClass()),
 			new UpgradePortletId());
 	}
 

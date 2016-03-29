@@ -35,7 +35,8 @@ public class DirectoryWebUpgrade implements UpgradeStepRegistrator {
 			new DummyUpgradeStep());
 
 		registry.register(
-			"com.liferay.directory.web", "0.0.1", "1.0.0",
+			"com.liferay.directory.web", "0.0.1",
+			ReleaseBuilder.getReleaseVersion(getClass()),
 			new UpgradePortletId());
 	}
 

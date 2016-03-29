@@ -37,8 +37,8 @@ public class LayoutAdminWebUpgrade implements UpgradeStepRegistrator {
 			new DummyUpgradeStep());
 
 		registry.register(
-			"com.liferay.layout.admin.web", "0.0.1", "1.0.0",
-			new UpgradeLayout());
+			"com.liferay.layout.admin.web", "0.0.1",
+			ReleaseBuilder.getReleaseVersion(getClass()), new UpgradeLayout());
 	}
 
 }

@@ -35,7 +35,8 @@ public class ImageUploaderWebUpgrade implements UpgradeStepRegistrator {
 			new DummyUpgradeStep());
 
 		registry.register(
-			"com.liferay.image.uploader.web", "0.0.1", "1.0.0",
+			"com.liferay.image.uploader.web", "0.0.1",
+			ReleaseBuilder.getReleaseVersion(getClass()),
 			new UpgradePortletId());
 	}
 

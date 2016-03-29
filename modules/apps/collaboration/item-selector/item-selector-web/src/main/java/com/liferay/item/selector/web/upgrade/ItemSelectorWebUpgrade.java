@@ -49,8 +49,8 @@ public class ItemSelectorWebUpgrade implements UpgradeStepRegistrator {
 		};
 
 		registry.register(
-			"com.liferay.item.selector.web", "0.0.1", "1.0.0",
-			upgradePortletId);
+			"com.liferay.item.selector.web", "0.0.1",
+			ReleaseBuilder.getReleaseVersion(getClass()), upgradePortletId);
 	}
 
 }

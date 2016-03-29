@@ -36,7 +36,8 @@ public class ServerAdminWebUpgrade implements UpgradeStepRegistrator {
 			new DummyUpgradeStep());
 
 		registry.register(
-			"com.liferay.server.admin.web", "0.0.1", "1.0.0",
+			"com.liferay.server.admin.web", "0.0.1",
+			ReleaseBuilder.getReleaseVersion(getClass()),
 			new UpgradePortletId());
 	}
 

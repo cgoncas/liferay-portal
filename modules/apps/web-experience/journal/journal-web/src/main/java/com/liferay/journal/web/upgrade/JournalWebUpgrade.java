@@ -36,7 +36,8 @@ public class JournalWebUpgrade implements UpgradeStepRegistrator {
 			new DummyUpgradeStep());
 
 		registry.register(
-			"com.liferay.journal.web", "0.0.1", "1.0.0",
+			"com.liferay.journal.web", "0.0.1",
+			ReleaseBuilder.getReleaseVersion(getClass()),
 			new UpgradePortletId() {
 
 				@Override

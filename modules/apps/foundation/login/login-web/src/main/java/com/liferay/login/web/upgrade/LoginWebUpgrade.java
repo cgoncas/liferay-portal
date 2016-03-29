@@ -36,7 +36,9 @@ public class LoginWebUpgrade implements UpgradeStepRegistrator {
 			new DummyUpgradeStep());
 
 		registry.register(
-			"com.liferay.login.web", "0.0.1", "1.0.0", new UpgradePortletId());
+			"com.liferay.login.web", "0.0.1",
+			ReleaseBuilder.getReleaseVersion(getClass()),
+			new UpgradePortletId());
 	}
 
 }

@@ -47,8 +47,8 @@ public class PageRatingsWebUpgrade implements UpgradeStepRegistrator {
 		};
 
 		registry.register(
-			"com.liferay.ratings.page.ratings.web", "0.0.1", "1.0.0",
-			upgradePortletId);
+			"com.liferay.ratings.page.ratings.web", "0.0.1",
+			ReleaseBuilder.getReleaseVersion(getClass()), upgradePortletId);
 	}
 
 }

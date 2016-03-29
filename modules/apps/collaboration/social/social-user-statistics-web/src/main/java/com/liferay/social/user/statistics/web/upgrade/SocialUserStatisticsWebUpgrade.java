@@ -35,7 +35,8 @@ public class SocialUserStatisticsWebUpgrade implements UpgradeStepRegistrator {
 			new DummyUpgradeStep());
 
 		registry.register(
-			"com.liferay.social.user.statistics.web", "0.0.1", "1.0.0",
+			"com.liferay.social.user.statistics.web", "0.0.1",
+			ReleaseBuilder.getReleaseVersion(getClass()),
 			new UpgradePortletId());
 	}
 

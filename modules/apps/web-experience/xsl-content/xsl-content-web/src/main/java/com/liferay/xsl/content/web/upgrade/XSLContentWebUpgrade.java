@@ -36,7 +36,8 @@ public class XSLContentWebUpgrade implements UpgradeStepRegistrator {
 			new DummyUpgradeStep());
 
 		registry.register(
-			"com.liferay.xsl.content.web", "0.0.1", "1.0.0",
+			"com.liferay.xsl.content.web", "0.0.1",
+			ReleaseBuilder.getReleaseVersion(getClass()),
 			new UpgradePortletId() {
 
 				@Override

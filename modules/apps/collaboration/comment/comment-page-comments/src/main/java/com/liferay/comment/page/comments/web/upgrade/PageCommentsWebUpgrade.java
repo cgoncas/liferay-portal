@@ -47,8 +47,8 @@ public class PageCommentsWebUpgrade implements UpgradeStepRegistrator {
 		};
 
 		registry.register(
-			"com.liferay.comment.page.comments.web", "0.0.1", "1.0.0",
-			upgradePortletId);
+			"com.liferay.comment.page.comments.web", "0.0.1",
+			ReleaseBuilder.getReleaseVersion(getClass()), upgradePortletId);
 	}
 
 }

@@ -37,7 +37,8 @@ public class SiteNavigationBreadcrumbWebUpgrade
 			new DummyUpgradeStep());
 
 		registry.register(
-			"com.liferay.site.navigation.breadcrumb.web", "0.0.1", "1.0.0",
+			"com.liferay.site.navigation.breadcrumb.web", "0.0.1",
+			ReleaseBuilder.getReleaseVersion(getClass()),
 			new UpgradePortletId(), new UpgradePortletPreferences());
 	}
 
