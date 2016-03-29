@@ -17,6 +17,7 @@ package com.liferay.password.generator.web.upgrade;
 import com.liferay.password.generator.web.constants.PasswordGeneratorPortletKeys;
 import com.liferay.portal.kernel.upgrade.DummyUpgradeStep;
 import com.liferay.portal.upgrade.registry.UpgradeStepRegistrator;
+import com.liferay.portal.upgrade.release.ReleaseBuilder;
 import com.liferay.portal.upgrade.util.UpgradePortletId;
 
 import org.osgi.service.component.annotations.Component;
@@ -31,7 +32,8 @@ public class PasswordGeneratorWebUpgrade implements UpgradeStepRegistrator {
 	@Override
 	public void register(Registry registry) {
 		registry.register(
-			"com.liferay.password.generator.web", "0.0.0", "1.0.0",
+			"com.liferay.password.generator.web", "0.0.0",
+			ReleaseBuilder.getReleaseVersion(getClass()),
 			new DummyUpgradeStep());
 
 		registry.register(

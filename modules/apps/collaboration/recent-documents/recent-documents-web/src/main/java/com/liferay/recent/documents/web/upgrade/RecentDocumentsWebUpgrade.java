@@ -16,6 +16,7 @@ package com.liferay.recent.documents.web.upgrade;
 
 import com.liferay.portal.kernel.upgrade.DummyUpgradeStep;
 import com.liferay.portal.upgrade.registry.UpgradeStepRegistrator;
+import com.liferay.portal.upgrade.release.ReleaseBuilder;
 import com.liferay.recent.documents.web.upgrade.v1_0_0.UpgradePortletId;
 
 import org.osgi.service.component.annotations.Component;
@@ -29,7 +30,8 @@ public class RecentDocumentsWebUpgrade implements UpgradeStepRegistrator {
 	@Override
 	public void register(Registry registry) {
 		registry.register(
-			"com.liferay.recent.documents.web", "0.0.0", "1.0.0",
+			"com.liferay.recent.documents.web", "0.0.0",
+			ReleaseBuilder.getReleaseVersion(getClass()),
 			new DummyUpgradeStep());
 
 		registry.register(
