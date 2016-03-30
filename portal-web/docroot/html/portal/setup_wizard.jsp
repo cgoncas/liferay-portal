@@ -158,57 +158,6 @@
 											</dl>
 										</c:otherwise>
 									</c:choose>
-
-									<c:if test="<%= Validator.isNull(PropsValues.JDBC_DEFAULT_JNDI_NAME) %>">
-										<a href="<%= HttpUtil.addParameter(themeDisplay.getPathMain() + "/portal/setup_wizard", "defaultDatabase", false) %>" id="customDatabaseOptionsLink">
-											(<liferay-ui:message key="change" />)
-										</a>
-									</c:if>
-								</div>
-
-								<div class="hide" id="customDatabaseOptions">
-									<div class="connection-messages" id="connectionMessages"></div>
-
-									<a class="database-options" href="<%= HttpUtil.addParameter(themeDisplay.getPathMain() + "/portal/setup_wizard", "defaultDatabase", true) %>" id="defaultDatabaseOptionsLink">
-										&laquo; <liferay-ui:message key='<%= defaultDatabase ? "use-default-database" : "use-configured-database" %>' />
-									</a>
-
-									<aui:select cssClass="database-type" name="databaseType">
-
-										<%
-										for (int i = 0; i < PropsValues.SETUP_DATABASE_TYPES.length; i++) {
-											String databaseType = PropsValues.SETUP_DATABASE_TYPES[i];
-
-											Map<String, Object> data = new HashMap<String, Object>();
-
-											String driverClassName = PropsUtil.get(PropsKeys.SETUP_DATABASE_DRIVER_CLASS_NAME, new Filter(databaseType));
-
-											data.put("driverClassName", driverClassName);
-
-											String url = PropsUtil.get(PropsKeys.SETUP_DATABASE_URL, new Filter(databaseType));
-
-											data.put("url", url);
-										%>
-
-											<aui:option data="<%= data %>" label='<%= "database." + databaseType %>' selected="<%= PropsValues.JDBC_DEFAULT_URL.contains(databaseType) %>" value="<%= databaseType %>" />
-
-										<%
-										}
-										%>
-
-									</aui:select>
-
-									<aui:input id="jdbcDefaultURL" label="jdbc-url" name='<%= "properties--" + PropsKeys.JDBC_DEFAULT_URL + "--" %>' value="<%= PropsValues.JDBC_DEFAULT_URL %>">
-										<aui:validator name="required" />
-									</aui:input>
-
-									<aui:input id="jdbcDefaultDriverName" label="jdbc-driver-class-name" name='<%= "properties--" + PropsKeys.JDBC_DEFAULT_DRIVER_CLASS_NAME + "--" %>' value="<%= PropsValues.JDBC_DEFAULT_DRIVER_CLASS_NAME %>">
-										<aui:validator name="required" />
-									</aui:input>
-
-									<aui:input id="jdbcDefaultUserName" label="user-name" name='<%= "properties--" + PropsKeys.JDBC_DEFAULT_USERNAME + "--" %>' value="<%= PropsValues.JDBC_DEFAULT_USERNAME %>" />
-
-									<aui:input id="jdbcDefaultPassword" label="password" name='<%= "properties--" + PropsKeys.JDBC_DEFAULT_PASSWORD + "--" %>' type="password" value="<%= PropsValues.JDBC_DEFAULT_PASSWORD %>" />
 								</div>
 							</aui:fieldset>
 						</div>
@@ -219,54 +168,8 @@
 					</aui:form>
 
 					<aui:script use="aui-base,aui-io-request,aui-loading-mask-deprecated">
-						var customDatabaseOptions = A.one('#customDatabaseOptions');
-						var customDatabaseOptionsLink = A.one('#customDatabaseOptionsLink');
-						var databaseSelector = A.one('#databaseType');
-						var defaultDatabase = A.one('#defaultDatabase');
-						var defaultDatabaseOptions = A.one('#defaultDatabaseOptions');
-						var defaultDatabaseOptionsLink = A.one('#defaultDatabaseOptionsLink');
-
-						var jdbcDefaultDriverClassName = A.one('#jdbcDefaultDriverName');
-						var jdbcDefaultURL = A.one('#jdbcDefaultURL');
-
 						var command = A.one('#<%= Constants.CMD %>');
 						var setupForm = A.one('#fm');
-
-						var connectionMessages = A.one('#connectionMessages');
-
-						var toggleDatabaseOptions = function(showDefault, event) {
-							if (event) {
-								event.preventDefault();
-							}
-
-							defaultDatabaseOptions.toggle(showDefault);
-
-							customDatabaseOptions.toggle(!showDefault);
-
-							defaultDatabase.val(showDefault);
-						};
-
-						if (customDatabaseOptionsLink) {
-							customDatabaseOptionsLink.on('click', A.bind(toggleDatabaseOptions, null, false));
-						}
-
-						if (defaultDatabaseOptionsLink) {
-							defaultDatabaseOptionsLink.on('click', A.bind(toggleDatabaseOptions, null, true));
-						}
-
-						var onChangeDatabaseSelector = function() {
-							var index = databaseSelector.get('selectedIndex');
-
-							var selectedOption = databaseSelector.get('options').item(index);
-
-							var databaseURL = selectedOption.attr('data-url');
-							var driverClassName = selectedOption.attr('data-driverClassName');
-
-							jdbcDefaultDriverClassName.val(driverClassName);
-							jdbcDefaultURL.val(databaseURL);
-						};
-
-						databaseSelector.on('change', onChangeDatabaseSelector);
 
 						A.one('#changeLanguageButton').on(
 							'click',
@@ -284,63 +187,18 @@
 							}
 						);
 
-						var updateMessage = function(message, type) {
-							connectionMessages.html('<span class="alert alert-' + type + '">' + message + '</span>');
-						};
-
 						var startInstall = function() {
-							connectionMessages.empty();
-
 							loadingMask.show();
 						};
 
 						A.one('#fm').on(
 							'submit',
 							function(event) {
-								if (defaultDatabase.val() == 'true') {
-									startInstall();
+								startInstall();
 
-									command.val('<%= Constants.UPDATE %>');
+								command.val('<%= Constants.UPDATE %>');
 
-									submitForm(document.fm);
-								}
-								else {
-									command.val('<%= Constants.TEST %>');
-
-									A.io.request(
-										setupForm.get('action'),
-										{
-											after: {
-												failure: function(event, id, obj) {
-													loadingMask.hide();
-
-													updateMessage('<%= UnicodeLanguageUtil.get(request, "an-unexpected-error-occurred-while-connecting-to-the-database") %>', 'error');
-												},
-												success: function(event, id, obj) {
-													command.val('<%= Constants.UPDATE %>');
-
-													var responseData = this.get('responseData');
-
-													if (!responseData.success) {
-														updateMessage(responseData.message, 'error');
-
-														loadingMask.hide();
-													}
-													else {
-														submitForm(document.fm);
-													}
-												}
-											},
-											dataType: 'JSON',
-											form: {
-												id: document.fm
-											},
-											on: {
-												start: startInstall
-											}
-										}
-									);
-								}
+								submitForm(document.fm);
 							}
 						);
 					</aui:script>

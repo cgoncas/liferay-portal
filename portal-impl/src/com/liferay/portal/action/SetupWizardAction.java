@@ -72,11 +72,6 @@ public class SetupWizardAction extends Action {
 
 				return actionMapping.findForward("portal.setup_wizard");
 			}
-			else if (cmd.equals(Constants.TEST)) {
-				testDatabase(request, response);
-
-				return null;
-			}
 			else if (cmd.equals(Constants.UPDATE)) {
 				SetupWizardUtil.updateSetup(request, response);
 
@@ -117,40 +112,6 @@ public class SetupWizardAction extends Action {
 		String message = themeDisplay.translate(key, arguments);
 
 		jsonObject.put("message", message);
-	}
-
-	protected void testDatabase(
-			HttpServletRequest request, HttpServletResponse response)
-		throws Exception {
-
-		JSONObject jsonObject = JSONFactoryUtil.createJSONObject();
-
-		try {
-			SetupWizardUtil.testDatabase(request);
-
-			jsonObject.put("success", true);
-
-			putMessage(
-				request, jsonObject,
-				"database-connection-was-established-successfully");
-		}
-		catch (ClassNotFoundException cnfe) {
-			putMessage(
-				request, jsonObject, "database-driver-x-is-not-present",
-				cnfe.getLocalizedMessage());
-		}
-		catch (SQLException sqle) {
-			putMessage(
-				request, jsonObject,
-				"database-connection-could-not-be-established");
-		}
-
-		response.setContentType(ContentTypes.APPLICATION_JSON);
-		response.setHeader(
-			HttpHeaders.CACHE_CONTROL,
-			HttpHeaders.CACHE_CONTROL_NO_CACHE_VALUE);
-
-		ServletResponseUtil.write(response, jsonObject.toString());
 	}
 
 }
