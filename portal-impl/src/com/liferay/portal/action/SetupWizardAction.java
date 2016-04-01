@@ -75,13 +75,11 @@ public class SetupWizardAction extends Action {
 			else if (cmd.equals(Constants.UPDATE)) {
 				SetupWizardUtil.updateSetup(request, response);
 
-				if (ParamUtil.getBoolean(request, "defaultDatabase")) {
-					PropsValues.SETUP_WIZARD_ENABLED = false;
+				PropsValues.SETUP_WIZARD_ENABLED = false;
 
-					HotDeployUtil.setCapturePrematureEvents(false);
+				HotDeployUtil.setCapturePrematureEvents(false);
 
-					PortalLifecycleUtil.flushInits();
-				}
+				PortalLifecycleUtil.flushInits();
 			}
 
 			response.sendRedirect(
