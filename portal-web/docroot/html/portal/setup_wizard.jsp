@@ -158,6 +158,12 @@
 											</dl>
 										</c:otherwise>
 									</c:choose>
+
+									<c:if test="<%= Validator.isNull(PropsValues.JDBC_DEFAULT_JNDI_NAME) %>">
+										<a href="<%="https://dev.liferay.com/discover/deployment/-/knowledge_base/7-0/installing-liferay-manually"%>" id="customDatabaseOptionsLink">
+											(<liferay-ui:message key="change" />)
+										</a>
+									</c:if>
 								</div>
 							</aui:fieldset>
 						</div>
