@@ -15,8 +15,6 @@
 package com.liferay.portal.setup;
 
 import com.liferay.portal.events.EventsProcessorUtil;
-import com.liferay.portal.kernel.dao.jdbc.DataAccess;
-import com.liferay.portal.kernel.dao.jdbc.DataSourceFactoryUtil;
 import com.liferay.portal.kernel.language.LanguageUtil;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
@@ -51,16 +49,12 @@ import com.liferay.portal.util.PropsValues;
 
 import java.io.IOException;
 
-import java.sql.Connection;
-
 import java.util.Calendar;
 import java.util.Locale;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-
-import javax.sql.DataSource;
 
 import org.apache.struts.Globals;
 
@@ -89,27 +83,6 @@ public class SetupWizardUtil {
 		boolean jndi = Validator.isNotNull(PropsValues.JDBC_DEFAULT_JNDI_NAME);
 
 		return hsqldb && !jndi;
-	}
-
-	public static void testDatabase(HttpServletRequest request)
-		throws Exception {
-
-		String driverClassName = _getParameter(
-			request, PropsKeys.JDBC_DEFAULT_DRIVER_CLASS_NAME,
-			PropsValues.JDBC_DEFAULT_DRIVER_CLASS_NAME);
-		String url = _getParameter(request, PropsKeys.JDBC_DEFAULT_URL, null);
-		String userName = _getParameter(
-			request, PropsKeys.JDBC_DEFAULT_USERNAME, null);
-		String password = _getParameter(
-			request, PropsKeys.JDBC_DEFAULT_PASSWORD, null);
-
-		String jndiName = StringPool.BLANK;
-
-		if (Validator.isNotNull(PropsValues.JDBC_DEFAULT_JNDI_NAME)) {
-			jndiName = PropsValues.JDBC_DEFAULT_JNDI_NAME;
-		}
-
-		_testConnection(driverClassName, url, userName, password, jndiName);
 	}
 
 	public static void updateLanguage(
@@ -149,11 +122,6 @@ public class SetupWizardUtil {
 			PropsKeys.LIFERAY_HOME,
 			SystemProperties.get(PropsKeys.LIFERAY_HOME));
 
-		boolean databaseConfigured = _isDatabaseConfigured(unicodeProperties);
-
-		_processDatabaseProperties(
-			request, unicodeProperties, databaseConfigured);
-
 		_processOtherProperties(request, unicodeProperties);
 
 		updateLanguage(request, response);
@@ -180,45 +148,6 @@ public class SetupWizardUtil {
 		name = _PROPERTIES_PREFIX.concat(name).concat(StringPool.DOUBLE_DASH);
 
 		return ParamUtil.getString(request, name, defaultValue);
-	}
-
-	private static boolean _isDatabaseConfigured(
-		UnicodeProperties unicodeProperties) {
-
-		String defaultDriverClassName = unicodeProperties.get(
-			PropsKeys.JDBC_DEFAULT_DRIVER_CLASS_NAME);
-		String defaultPassword = unicodeProperties.get(
-			PropsKeys.JDBC_DEFAULT_PASSWORD);
-		String defaultURL = unicodeProperties.get(PropsKeys.JDBC_DEFAULT_URL);
-		String defaultUsername = unicodeProperties.get(
-			PropsKeys.JDBC_DEFAULT_USERNAME);
-
-		if (PropsValues.JDBC_DEFAULT_DRIVER_CLASS_NAME.equals(
-				defaultDriverClassName) &&
-			PropsValues.JDBC_DEFAULT_PASSWORD.equals(defaultPassword) &&
-			PropsValues.JDBC_DEFAULT_URL.equals(defaultURL) &&
-			PropsValues.JDBC_DEFAULT_USERNAME.equals(defaultUsername)) {
-
-			return true;
-		}
-
-		return false;
-	}
-
-	private static void _processDatabaseProperties(
-			HttpServletRequest request, UnicodeProperties unicodeProperties,
-			boolean databaseConfigured)
-		throws Exception {
-
-		boolean defaultDatabase = ParamUtil.getBoolean(
-			request, "defaultDatabase", true);
-
-		if (defaultDatabase || databaseConfigured) {
-			unicodeProperties.remove(PropsKeys.JDBC_DEFAULT_URL);
-			unicodeProperties.remove(PropsKeys.JDBC_DEFAULT_DRIVER_CLASS_NAME);
-			unicodeProperties.remove(PropsKeys.JDBC_DEFAULT_USERNAME);
-			unicodeProperties.remove(PropsKeys.JDBC_DEFAULT_PASSWORD);
-		}
 	}
 
 	private static void _processOtherProperties(
@@ -248,30 +177,6 @@ public class SetupWizardUtil {
 
 		if (!value.equals(defaultValue)) {
 			unicodeProperties.put(propertyKey, value);
-		}
-	}
-
-	private static void _testConnection(
-			String driverClassName, String url, String userName,
-			String password, String jndiName)
-		throws Exception {
-
-		if (Validator.isNull(jndiName)) {
-			Class.forName(driverClassName);
-		}
-
-		DataSource dataSource = null;
-		Connection connection = null;
-
-		try {
-			dataSource = DataSourceFactoryUtil.initDataSource(
-				driverClassName, url, userName, password, jndiName);
-
-			connection = dataSource.getConnection();
-		}
-		finally {
-			DataAccess.cleanUp(connection);
-			DataSourceFactoryUtil.destroyDataSource(dataSource);
 		}
 	}
 
