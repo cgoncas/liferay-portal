@@ -12,7 +12,7 @@
  * details.
  */
 
-package com.liferay.invitation.invite.members.upgrade.v1_0_0;
+package com.liferay.invitation.invite.members.web.upgrade.v1_0_0;
 
 import com.liferay.invitation.invite.members.constants.InviteMembersPortletKeys;
 
