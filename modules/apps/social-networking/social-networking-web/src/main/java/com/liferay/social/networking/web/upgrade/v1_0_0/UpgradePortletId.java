@@ -12,7 +12,7 @@
  * details.
  */
 
-package com.liferay.social.networking.upgrade.v1_0_1;
+package com.liferay.social.networking.web.upgrade.v1_0_0;
 
 import com.liferay.social.networking.constants.SocialNetworkingPortletKeys;
 
