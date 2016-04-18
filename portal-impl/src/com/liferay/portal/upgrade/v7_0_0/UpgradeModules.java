@@ -212,7 +212,7 @@ public class UpgradeModules extends UpgradeProcess {
 		},
 		{
 			"notifications-portlet", "com.liferay.notifications.web",
-			"Notifications"
+			"Notification"
 		},
 		{
 			"so-portlet", "com.liferay.invitation.invite.members.service", "SO"
