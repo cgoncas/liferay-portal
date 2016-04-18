@@ -185,6 +185,7 @@ public class UpgradeModules extends UpgradeProcess {
 		"com.liferay.site.navigation.site.map.web",
 		"com.liferay.social.activities.web", "com.liferay.social.activity.web",
 		"com.liferay.social.group.statistics.web",
+		"com.liferay.social.privatemessaging.web",
 		"com.liferay.social.requests.web",
 		"com.liferay.social.user.statistics.web", "com.liferay.staging.bar.web",
 		"com.liferay.translator.web", "com.liferay.trash.web",
@@ -213,6 +214,10 @@ public class UpgradeModules extends UpgradeProcess {
 		{
 			"notifications-portlet", "com.liferay.notifications.web",
 			"Notification"
+		},
+		{
+			"private-messaging-portlet",
+			"com.liferay.social.privatemessaging.service", "PM"
 		},
 		{
 			"so-portlet", "com.liferay.invitation.invite.members.service", "SO"
