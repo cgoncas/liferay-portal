@@ -128,15 +128,18 @@ public class VerifyPermission extends VerifyProcess {
 
 	@Override
 	protected void doVerify() throws Exception {
-		runSQL("create index N on ResourcePermission (name)");
+		try {
+			runSQL("create index TempIndex on ResourcePermission (name)");
 
-		deleteDefaultPrivateLayoutPermissions();
+			deleteDefaultPrivateLayoutPermissions();
 
-		checkPermissions();
-		fixOrganizationRolePermissions();
-		fixUserDefaultRolePermissions();
-
-		runSQL("drop index N on ResourcePermission");
+			checkPermissions();
+			fixOrganizationRolePermissions();
+			fixUserDefaultRolePermissions();
+		}
+		finally {
+			runSQL("drop index TempIndex on ResourcePermission");
+		}
 	}
 
 	protected void fixOrganizationRolePermissions() throws Exception {
