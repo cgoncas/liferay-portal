@@ -102,7 +102,7 @@
 		<if>
 			<equals arg1="${addSampleData}" arg2="false" />
 			<then>
-				<execute function="Uncheck" locator1="Checkbox#ADD_SAMPLE_DATA" />
+				<execute function="Uncheck#uncheckToggleSwitch" locator1="Checkbox#ADD_SAMPLE_DATA" />
 			</then>
 		</if>
 	</command>
