@@ -135,15 +135,15 @@ public class ServiceComponentLocalServiceTest {
 		try {
 			ServiceComponentLocalServiceUtil.verifyDB();
 
-			try (Connection connection = DataAccess.getConnection()) {
-				DatabaseMetaData metadata = connection.getMetaData();
+			try (Connection conn = DataAccess.getConnection()) {
+				DatabaseMetaData metadata = conn.getMetaData();
 
 				tableName = normalizeTableName(metadata, _TEST_TABLE);
 
-				try (ResultSet verifyTable = metadata.getTables(
+				try (ResultSet rs = metadata.getTables(
 						null, null, tableName, new String[] {"TABLE"})) {
 
-					Assert.assertTrue(verifyTable.next());
+					Assert.assertTrue(rs.next());
 				}
 			}
 		}
@@ -243,7 +243,7 @@ public class ServiceComponentLocalServiceTest {
 		public void upgrade(DBProcessContext dbProcessContext) {
 			try {
 				_db.runSQL(
-					"create table " + _TEST_TABLE+ " (name VARCHAR(20))");
+					"create table " + _TEST_TABLE + " (name VARCHAR(20))");
 			}
 			catch (Exception e) {
 				new UpgradeException(e);
