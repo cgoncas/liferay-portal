@@ -77,6 +77,13 @@ public class ServiceComponentLocalServiceImpl
 	}
 
 	@Override
+	public void destroy() {
+		super.destroy();
+
+		_serviceTrackerList.close();
+	}
+
+	@Override
 	public void destroyServiceComponent(
 		ServiceComponentConfiguration serviceComponentConfiguration,
 		ClassLoader classLoader) {
