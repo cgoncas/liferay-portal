@@ -74,8 +74,6 @@ public class ServiceComponentLocalServiceImpl
 
 		_serviceTrackerList = ServiceTrackerCollections.openList(
 			UpgradeStep.class, filter);
-
-		_serviceTrackerList.open();
 	}
 
 	@Override
