@@ -37,10 +37,10 @@
 					</span>
 				</span>
 
-				<span class="configuration-title" title="<liferay-ui:message key="basic-configuration" />">
-					<i class="icon-cog"></i>
+				<span class="label label-default pull-right">
+					<i class="icon-cogs icon-monospaced"></i>
 
-					<liferay-ui:message key="basic-configuration" />
+					<strong class="h4"><liferay-ui:message key="basic-configuration" /></strong>
 				</span>
 			</h1>
 		</div>
@@ -87,7 +87,7 @@
 									<aui:button cssClass="change-language" name="changeLanguageButton" value="change" />
 								</aui:field-wrapper>
 
-								<aui:input label="add-sample-data" name='<%= "properties--" + PropsKeys.SETUP_WIZARD_ADD_SAMPLE_DATA + "--" %>' type="checkbox" value="<%= true %>" />
+								<aui:input label="add-sample-data" name='<%= "properties--" + PropsKeys.SETUP_WIZARD_ADD_SAMPLE_DATA + "--" %>' type="toggle-switch" value="<%= true %>" />
 							</aui:fieldset>
 
 							<aui:fieldset cssClass="col-md-6 column-last" label="administrator-user">
