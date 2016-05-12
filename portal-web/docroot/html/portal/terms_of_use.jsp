@@ -28,22 +28,26 @@ if (referer.equals(themeDisplay.getPathMain() + "/portal/update_terms_of_use")) 
 TermsOfUseContentProvider termsOfUseContentProvider = TermsOfUseContentProviderRegistryUtil.getTermsOfUseContentProvider();
 %>
 
-<aui:form action='<%= themeDisplay.getPathMain() + "/portal/update_terms_of_use" %>' name="fm">
+<aui:form action='<%= themeDisplay.getPathMain() + "/portal/update_terms_of_use" %>' cssClass="container-fluid-1280 row" name="fm">
 	<aui:input name="doAsUserId" type="hidden" value="<%= themeDisplay.getDoAsUserId() %>" />
 	<aui:input name="<%= WebKeys.REFERER %>" type="hidden" value="<%= referer %>" />
 
-	<c:choose>
-		<c:when test="<%= termsOfUseContentProvider != null %>">
+	<aui:fieldset-group markupView="lexicon">
+		<aui:fieldset>
+			<c:choose>
+				<c:when test="<%= termsOfUseContentProvider != null %>">
 
-			<%
-			termsOfUseContentProvider.includeView(request, new PipingServletResponse(pageContext));
-			%>
+					<%
+					termsOfUseContentProvider.includeView(request, new PipingServletResponse(pageContext));
+					%>
 
-		</c:when>
-		<c:otherwise>
-			<liferay-util:include page="/html/portal/terms_of_use_default.jsp" />
-		</c:otherwise>
-	</c:choose>
+				</c:when>
+				<c:otherwise>
+					<liferay-util:include page="/html/portal/terms_of_use_default.jsp" />
+				</c:otherwise>
+			</c:choose>
+		</aui:fieldset>
+	</aui:fieldset-group>
 
 	<c:if test="<%= !user.isAgreedToTermsOfUse() %>">
 		<aui:button-row>
