@@ -34,38 +34,35 @@ PasswordPolicy passwordPolicy = user.getPasswordPolicy();
 
 <c:choose>
 	<c:when test="<%= !themeDisplay.isSignedIn() && (ticket == null) %>">
-		<div class="alert alert-warning">
+		<p class="text-muted">
 			<liferay-ui:message key="your-password-reset-link-is-no-longer-valid" />
 
 			<%
 			PortletURL portletURL = new PortletURLImpl(request, PortletKeys.LOGIN, plid, PortletRequest.RENDER_PHASE);
-
 			portletURL.setParameter("mvcRenderCommandName", "/login/forgot_password");
 			portletURL.setWindowState(WindowState.MAXIMIZED);
 			%>
 
-			<div>
-				<aui:a href="<%= portletURL.toString() %>" label="request-a-new-password-reset-link"></aui:a>
-			</div>
-		</div>
+			<aui:a href="<%= portletURL.toString() %>" label="request-a-new-password-reset-link"></aui:a>
+		</p>
 	</c:when>
 	<c:when test="<%= SessionErrors.contains(request, UserLockoutException.LDAPLockout.class.getName()) %>">
-		<div class="alert alert-danger">
+		<p class="text-muted">
 			<liferay-ui:message key="this-account-is-locked" />
-		</div>
+		</p>
 	</c:when>
 	<c:when test="<%= SessionErrors.contains(request, UserLockoutException.PasswordPolicyLockout.class.getName()) %>">
-		<div class="alert alert-danger">
+		<p class="text-muted">
 
 			<%
 			UserLockoutException.PasswordPolicyLockout ule = (UserLockoutException.PasswordPolicyLockout)SessionErrors.get(request, UserLockoutException.PasswordPolicyLockout.class.getName());
 			%>
 
 			<liferay-ui:message arguments="<%= ule.user.getUnlockDate() %>" key="this-account-is-locked-until-x" translateArguments="<%= false %>" />
-		</div>
+		</p>
 	</c:when>
 	<c:otherwise>
-		<aui:form action='<%= themeDisplay.getPathMain() + "/portal/update_password" %>' method="post" name="fm">
+		<aui:form action='<%= themeDisplay.getPathMain() + "/portal/update_password" %>' cssClass="container-fluid-1280 row" method="post" name="fm">
 			<aui:input name="p_l_id" type="hidden" value="<%= layout.getPlid() %>" />
 			<aui:input name="p_auth" type="hidden" value="<%= AuthTokenUtil.getToken(request) %>" />
 			<aui:input name="doAsUserId" type="hidden" value="<%= themeDisplay.getDoAsUserId() %>" />
@@ -74,7 +71,7 @@ PasswordPolicy passwordPolicy = user.getPasswordPolicy();
 			<aui:input name="ticketKey" type="hidden" value="<%= ticketKey %>" />
 
 			<c:if test="<%= !SessionErrors.isEmpty(request) %>">
-				<div class="alert alert-danger">
+				<p class="text-muted">
 					<c:choose>
 						<c:when test="<%= SessionErrors.contains(request, UserPasswordException.MustBeLonger.class.getName()) %>">
 
@@ -126,22 +123,24 @@ PasswordPolicy passwordPolicy = user.getPasswordPolicy();
 							<liferay-ui:message key="your-request-failed-to-complete" />
 						</c:otherwise>
 					</c:choose>
-				</div>
+				</p>
 			</c:if>
 
-			<aui:fieldset>
-				<aui:input autoFocus="<%= true %>" class="lfr-input-text-container" label="password" name="password1" showRequiredLabel="<%= false %>" type="password">
-					<aui:validator name="required" />
-				</aui:input>
+			<aui:fieldset-group markupView="lexicon">
+				<aui:fieldset>
+					<aui:input autoFocus="<%= true %>" class="lfr-input-text-container" label="password" name="password1" showRequiredLabel="<%= false %>" type="password">
+						<aui:validator name="required" />
+					</aui:input>
 
-				<aui:input class="lfr-input-text-container" label="enter-again" name="password2" showRequiredLabel="<%= false %>" type="password">
-					<aui:validator name="equalTo">
-						'#<portlet:namespace />password1'
-					</aui:validator>
+					<aui:input class="lfr-input-text-container" label="enter-again" name="password2" showRequiredLabel="<%= false %>" type="password">
+						<aui:validator name="equalTo">
+							'#<portlet:namespace />password1'
+						</aui:validator>
 
-					<aui:validator name="required" />
-				</aui:input>
-			</aui:fieldset>
+						<aui:validator name="required" />
+					</aui:input>
+				</aui:fieldset>
+			</aui:fieldset-group>
 
 			<aui:button-row>
 				<aui:button cssClass="btn-lg" type="submit" />
