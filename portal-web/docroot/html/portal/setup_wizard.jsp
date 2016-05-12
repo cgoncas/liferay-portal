@@ -399,10 +399,4 @@
 			</c:choose>
 		</div>
 	</div>
-
-	<footer id="footer" role="contentinfo">
-		<p class="powered-by">
-			<liferay-ui:message key="powered-by" /> <a href="http://www.liferay.com" rel="external">Liferay</a>
-		</p>
-	</footer>
 </div>
