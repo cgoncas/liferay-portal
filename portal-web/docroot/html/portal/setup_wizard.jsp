@@ -65,9 +65,9 @@
 
 						<div class="row">
 							<aui:fieldset cssClass="col-md-6" label="portal">
-								<aui:input helpTextCssClass="help-inline" label="portal-name" name="companyName" suffix='<%= LanguageUtil.format(request, "for-example-x", "Liferay", false) %>' value="<%= PropsValues.COMPANY_DEFAULT_NAME %>" />
+								<aui:input helpTextCssClass="help-inline" label="portal-name" name="companyName" value="<%= PropsValues.COMPANY_DEFAULT_NAME %>" />
 
-								<aui:field-wrapper inlineLabel="default-language" label="default-language" name="companyLocale">
+								<aui:field-wrapper inlineLabel="" label="default-language" name="companyLocale">
 									<aui:select label="" name="companyLocale">
 
 										<%
