@@ -71,23 +71,27 @@
 									<aui:input helpTextCssClass="help-inline" label="portal-name" name="companyName" value="<%= PropsValues.COMPANY_DEFAULT_NAME %>" />
 
 									<aui:field-wrapper inlineLabel="" label="default-language" name="companyLocale">
-										<aui:select label="" name="companyLocale">
+										<div class="input-group">
+											<aui:select label="" name="companyLocale">
 
-											<%
-											String languageId = GetterUtil.getString((String)session.getAttribute(WebKeys.SETUP_WIZARD_DEFAULT_LOCALE), SetupWizardUtil.getDefaultLanguageId());
+												<%
+												String languageId = GetterUtil.getString((String)session.getAttribute(WebKeys.SETUP_WIZARD_DEFAULT_LOCALE), SetupWizardUtil.getDefaultLanguageId());
 
-											for (Locale curLocale : LanguageUtil.getAvailableLocales()) {
-											%>
+												for (Locale curLocale : LanguageUtil.getAvailableLocales()) {
+												%>
 
-												<aui:option label="<%= curLocale.getDisplayName(curLocale) %>" selected="<%= languageId.equals(LocaleUtil.toLanguageId(curLocale)) %>" value="<%= LocaleUtil.toLanguageId(curLocale) %>" />
+													<aui:option label="<%= curLocale.getDisplayName(curLocale) %>" selected="<%= languageId.equals(LocaleUtil.toLanguageId(curLocale)) %>" value="<%= LocaleUtil.toLanguageId(curLocale) %>" />
 
-											<%
-											}
-											%>
+												<%
+												}
+												%>
 
-										</aui:select>
+											</aui:select>
 
-										<aui:button cssClass="change-language" name="changeLanguageButton" value="change" />
+											<span class="input-group-btn">
+												<aui:button cssClass="change-language" name="changeLanguageButton" value="change" />
+											</span>
+										</div>
 									</aui:field-wrapper>
 
 									<aui:input label="add-sample-data" name='<%= "properties--" + PropsKeys.SETUP_WIZARD_ADD_SAMPLE_DATA + "--" %>' type="toggle-switch" value="<%= true %>" />
