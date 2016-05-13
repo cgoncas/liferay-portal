@@ -175,8 +175,14 @@
 	}
 }
 
-.field-wrapper .btn {
-	margin-top: 6px;
+.field-wrapper
+	.btn {
+		margin-top: 6px;
+	}
+
+	.input-group-btn .btn {
+		margin-top: 0;
+	}
 }
 
 @include respond-to(phone, tablet) {
