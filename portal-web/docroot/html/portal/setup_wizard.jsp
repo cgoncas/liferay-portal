@@ -96,7 +96,9 @@
 								<div class="col-md-6">
 									<h2><liferay-ui:message key="administrator-user" /></h2>
 
-									<%@ include file="/html/portal/setup_wizard_user_name.jspf" %>
+									<aui:input label="first-name" name="adminFirstName" value="<%= PropsValues.DEFAULT_ADMIN_FIRST_NAME %>" />
+
+									<aui:input label="last-name" name="adminLastName" value="<%= PropsValues.DEFAULT_ADMIN_LAST_NAME %>" />
 
 									<aui:input label="email" name="adminEmailAddress" value="<%= PropsValues.ADMIN_EMAIL_FROM_ADDRESS %>">
 										<aui:validator name="email" />
