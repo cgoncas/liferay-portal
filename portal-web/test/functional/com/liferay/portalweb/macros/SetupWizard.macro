@@ -10,6 +10,9 @@
 	</command>
 
 	<command name="configureDatabasePG">
+		<execute function="Click" locator1="SetupWizard#DATABASE_DROPDOWN" />
+		<execute function="AssertElementPresent" locator1="SetupWizard#DATABASE_DROPDOWN_EXPANDED" />
+
 		<if>
 			<condition function="IsElementNotPresent" locator1="SetupWizard#DATABASE_CHANGE_USE_CONFIGURED_DATABASE_LINK" />
 			<then>
@@ -180,6 +183,8 @@
 	</command>
 
 	<command name="viewDefaultDatabasePG">
+		<execute function="Click" locator1="SetupWizard#DATABASE_DROPDOWN" />
+
 		<if>
 			<condition function="IsElementPresent" locator1="Setupwizard#DATABASE_DEFAULT_LABEL" />
 			<then>

@@ -45,6 +45,21 @@
 	<td></td>
 </tr>
 <tr>
+	<td>DATABASE_DROPDOWN</td>
+	<td>//a[contains(.,'Database')]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>DATABASE_DROPDOWN_EXPANDED</td>
+	<td>//a[contains(.,'Database') and @aria-expanded="true"]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>DATABASE_DROPDOWN_COLLAPSED</td>
+	<td>//a[contains(.,'Database') and @aria-expanded="false"]</td>
+	<td></td>
+</tr>
+<tr>
 	<td></td>
 	<td></td>
 	<td></td>
