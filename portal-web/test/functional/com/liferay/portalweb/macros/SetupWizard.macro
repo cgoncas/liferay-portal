@@ -114,13 +114,6 @@
 		<execute function="AssertClick" locator1="Button#FINISH_CONFIGURATION" value1="Finish Configuration" />
 	</command>
 
-	<command name="populateDatabaseConfiguration">
-		<execute function="Type" locator1="SetupWizard#DATABASE_CHANGE_JDBC_URL_FIELD" value1="${jdbcURL}" />
-		<execute function="Type" locator1="SetupWizard#DATABASE_CHANGE_JDBC_DRIVER_CLASS_NAME_FIELD" value1="${jdbcDriverClassName}" />
-		<execute function="Type" locator1="SetupWizard#DATABASE_CHANGE_USER_NAME_FIELD" value1="${userName}" />
-		<execute function="Type" locator1="SetupWizard#DATABASE_CHANGE_PASSWORD_FIELD" value1="${password}" />
-	</command>
-
 	<command name="selectDatabase">
 		<execute function="Select" locator1="SetupWizard#DATABASE_CHANGE_DATABASE_TYPE_SELECT" value1="${databaseType}" />
 	</command>
