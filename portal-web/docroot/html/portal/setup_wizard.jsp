@@ -20,7 +20,7 @@
 	<%@ include file="/html/portal/setup_wizard_css.jspf" %>
 </style>
 
-<div id="wrapper">
+<div class="container-fluid-1280" id="wrapper">
 	<header id="banner" role="banner">
 		<div id="heading">
 			<h1 class="site-title">
@@ -37,10 +37,10 @@
 					</span>
 				</span>
 
-				<span class="configuration-title" title="<liferay-ui:message key="basic-configuration" />">
-					<i class="icon-cog"></i>
+				<span class="label label-default pull-right">
+					<i class="icon-cogs icon-monospaced"></i>
 
-					<liferay-ui:message key="basic-configuration" />
+					<strong class="h4"><liferay-ui:message key="basic-configuration" /></strong>
 				</span>
 			</h1>
 		</div>
@@ -63,45 +63,55 @@
 					<aui:form action='<%= themeDisplay.getPathMain() + "/portal/setup_wizard" %>' method="post" name="fm" onSubmit="event.preventDefault();">
 						<aui:input name="<%= Constants.CMD %>" type="hidden" value="<%= Constants.UPDATE %>" />
 
-						<div class="row">
-							<aui:fieldset cssClass="col-md-6" label="portal">
-								<aui:input helpTextCssClass="help-inline" label="portal-name" name="companyName" suffix='<%= LanguageUtil.format(request, "for-example-x", "Liferay", false) %>' value="<%= PropsValues.COMPANY_DEFAULT_NAME %>" />
+						<aui:fieldset-group markupView="lexicon">
+							<aui:fieldset>
+								<div class="col-md-6">
+									<h2><liferay-ui:message key="portal" /></h2>
 
-								<aui:field-wrapper inlineLabel="default-language" label="default-language" name="companyLocale">
-									<aui:select label="" name="companyLocale">
+									<aui:input helpTextCssClass="help-inline" label="portal-name" name="companyName" value="<%= PropsValues.COMPANY_DEFAULT_NAME %>" />
 
-										<%
-										String languageId = GetterUtil.getString((String)session.getAttribute(WebKeys.SETUP_WIZARD_DEFAULT_LOCALE), SetupWizardUtil.getDefaultLanguageId());
+									<aui:field-wrapper inlineLabel="" label="default-language" name="companyLocale">
+										<div class="input-group">
+											<aui:select label="" name="companyLocale">
 
-										for (Locale curLocale : LanguageUtil.getAvailableLocales()) {
-										%>
+												<%
+												String languageId = GetterUtil.getString((String)session.getAttribute(WebKeys.SETUP_WIZARD_DEFAULT_LOCALE), SetupWizardUtil.getDefaultLanguageId());
 
-											<aui:option label="<%= curLocale.getDisplayName(curLocale) %>" selected="<%= languageId.equals(LocaleUtil.toLanguageId(curLocale)) %>" value="<%= LocaleUtil.toLanguageId(curLocale) %>" />
+												for (Locale curLocale : LanguageUtil.getAvailableLocales()) {
+												%>
 
-										<%
-										}
-										%>
+													<aui:option label="<%= curLocale.getDisplayName(curLocale) %>" selected="<%= languageId.equals(LocaleUtil.toLanguageId(curLocale)) %>" value="<%= LocaleUtil.toLanguageId(curLocale) %>" />
 
-									</aui:select>
+												<%
+												}
+												%>
 
-									<aui:button cssClass="change-language" name="changeLanguageButton" value="change" />
-								</aui:field-wrapper>
+											</aui:select>
 
-								<aui:input label="add-sample-data" name='<%= "properties--" + PropsKeys.SETUP_WIZARD_ADD_SAMPLE_DATA + "--" %>' type="checkbox" value="<%= true %>" />
+											<span class="input-group-btn">
+												<aui:button cssClass="change-language" name="changeLanguageButton" value="change" />
+											</span>
+										</div>
+									</aui:field-wrapper>
+
+									<aui:input label="add-sample-data" name='<%= "properties--" + PropsKeys.SETUP_WIZARD_ADD_SAMPLE_DATA + "--" %>' type="toggle-switch" value="<%= true %>" />
+								</div>
+
+								<div class="col-md-6">
+									<h2><liferay-ui:message key="administrator-user" /></h2>
+
+									<aui:input label="first-name" name="adminFirstName" value="<%= PropsValues.DEFAULT_ADMIN_FIRST_NAME %>" />
+
+									<aui:input label="last-name" name="adminLastName" value="<%= PropsValues.DEFAULT_ADMIN_LAST_NAME %>" />
+
+									<aui:input label="email" name="adminEmailAddress" value="<%= PropsValues.ADMIN_EMAIL_FROM_ADDRESS %>">
+										<aui:validator name="email" />
+										<aui:validator name="required" />
+									</aui:input>
+								</div>
 							</aui:fieldset>
 
-							<aui:fieldset cssClass="col-md-6 column-last" label="administrator-user">
-								<%@ include file="/html/portal/setup_wizard_user_name.jspf" %>
-
-								<aui:input label="email" name="adminEmailAddress" value="<%= PropsValues.ADMIN_EMAIL_FROM_ADDRESS %>">
-									<aui:validator name="email" />
-									<aui:validator name="required" />
-								</aui:input>
-							</aui:fieldset>
-						</div>
-
-						<div class="row">
-							<aui:fieldset cssClass="col-md-12" label="database">
+							<aui:fieldset collapsed="<%= true %>" collapsible="<%= true %>" label="database">
 								<aui:input name="defaultDatabase" type="hidden" value="<%= defaultDatabase %>" />
 
 								<div id="defaultDatabaseOptions">
@@ -211,7 +221,7 @@
 									<aui:input id="jdbcDefaultPassword" label="password" name='<%= "properties--" + PropsKeys.JDBC_DEFAULT_PASSWORD + "--" %>' type="password" value="<%= PropsValues.JDBC_DEFAULT_PASSWORD %>" />
 								</div>
 							</aui:fieldset>
-						</div>
+						</aui:fieldset-group>
 
 						<aui:button-row>
 							<aui:button cssClass="btn-lg" name="finishButton" type="submit" value="finish-configuration" />
@@ -399,10 +409,4 @@
 			</c:choose>
 		</div>
 	</div>
-
-	<footer id="footer" role="contentinfo">
-		<p class="powered-by">
-			<liferay-ui:message key="powered-by" /> <a href="http://www.liferay.com" rel="external">Liferay</a>
-		</p>
-	</footer>
 </div>

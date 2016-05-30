@@ -10,6 +10,9 @@
 	</command>
 
 	<command name="configureDatabasePG">
+		<execute function="Click" locator1="SetupWizard#DATABASE_DROPDOWN" />
+		<execute function="AssertElementPresent" locator1="SetupWizard#DATABASE_DROPDOWN_EXPANDED" />
+
 		<if>
 			<condition function="IsElementNotPresent" locator1="SetupWizard#DATABASE_CHANGE_USE_CONFIGURED_DATABASE_LINK" />
 			<then>
@@ -102,20 +105,13 @@
 		<if>
 			<equals arg1="${addSampleData}" arg2="false" />
 			<then>
-				<execute function="Uncheck" locator1="Checkbox#ADD_SAMPLE_DATA" />
+				<execute function="Uncheck#uncheckToggleSwitch" locator1="Checkbox#ADD_SAMPLE_DATA" />
 			</then>
 		</if>
 	</command>
 
 	<command name="finishConfigurationPG">
 		<execute function="AssertClick" locator1="Button#FINISH_CONFIGURATION" value1="Finish Configuration" />
-	</command>
-
-	<command name="populateDatabaseConfiguration">
-		<execute function="Type" locator1="SetupWizard#DATABASE_CHANGE_JDBC_URL_FIELD" value1="${jdbcURL}" />
-		<execute function="Type" locator1="SetupWizard#DATABASE_CHANGE_JDBC_DRIVER_CLASS_NAME_FIELD" value1="${jdbcDriverClassName}" />
-		<execute function="Type" locator1="SetupWizard#DATABASE_CHANGE_USER_NAME_FIELD" value1="${userName}" />
-		<execute function="Type" locator1="SetupWizard#DATABASE_CHANGE_PASSWORD_FIELD" value1="${password}" />
 	</command>
 
 	<command name="selectDatabase">
@@ -180,6 +176,8 @@
 	</command>
 
 	<command name="viewDefaultDatabasePG">
+		<execute function="Click" locator1="SetupWizard#DATABASE_DROPDOWN" />
+
 		<if>
 			<condition function="IsElementPresent" locator1="Setupwizard#DATABASE_DEFAULT_LABEL" />
 			<then>
