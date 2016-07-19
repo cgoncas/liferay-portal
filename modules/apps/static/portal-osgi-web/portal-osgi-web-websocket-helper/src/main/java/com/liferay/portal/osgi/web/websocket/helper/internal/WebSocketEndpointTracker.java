@@ -43,6 +43,10 @@ public class WebSocketEndpointTracker
 		String webSocketPath = (String)serviceReference.getProperty(
 			"websocket.path");
 
+		if ((webSocketPath == null) || webSocketPath.isEmpty()) {
+			return null;
+		}
+
 		_webSocketEndpointRegistrations.put(webSocketPath, endpoint);
 
 		return endpoint;
