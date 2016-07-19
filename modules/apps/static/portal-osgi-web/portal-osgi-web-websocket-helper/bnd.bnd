@@ -1,5 +1,10 @@
 Bundle-Name: Liferay Portal OSGi Web WebSocket Helper
 Bundle-SymbolicName: com.liferay.portal.osgi.web.websocket.helper
 Bundle-Version: 1.0.0
+Export-Package: javax.websocket
+Import-Package:\
+	javax.websocket; version="[1.1,2.0)",\
+	*
 Liferay-Releng-Module-Group-Description:
 Liferay-Releng-Module-Group-Title:
+-includeresource: @javax.websocket-api-[0-9]*.jar
