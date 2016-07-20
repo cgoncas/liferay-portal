@@ -17,10 +17,13 @@ package com.liferay.portal.osgi.web.websocket.helper.internal;
 import com.liferay.osgi.util.ServiceTrackerFactory;
 import com.liferay.portal.osgi.web.websocket.helper.EndpointWrapper;
 
+import java.util.List;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 
+import javax.websocket.CloseReason;
 import javax.websocket.Endpoint;
+import javax.websocket.Session;
 
 import org.osgi.framework.BundleContext;
 import org.osgi.framework.ServiceReference;
@@ -73,6 +76,16 @@ public class WebSocketEndpointTracker
 
 		String webSocketPath = (String)serviceReference.getProperty(
 			"websocket.path");
+
+		List<Session> sessions = service.getSessions();
+
+		CloseReason closeReason = new CloseReason(
+			CloseReason.CloseCodes.GOING_AWAY,
+			"The WebSocket Connection has gone away");
+
+		for (Session session : sessions) {
+			service.onClose(session, closeReason);
+		}
 
 		_webSocketEndpointRegistrations.remove(webSocketPath);
 
