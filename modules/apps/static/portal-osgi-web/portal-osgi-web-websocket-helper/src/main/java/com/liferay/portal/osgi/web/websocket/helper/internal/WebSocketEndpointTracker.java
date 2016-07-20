@@ -15,6 +15,7 @@
 package com.liferay.portal.osgi.web.websocket.helper.internal;
 
 import com.liferay.osgi.util.ServiceTrackerFactory;
+import com.liferay.portal.osgi.web.websocket.helper.EndpointWrapper;
 
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
@@ -34,10 +35,12 @@ import org.osgi.util.tracker.ServiceTrackerCustomizer;
  */
 @Component(immediate = true, service = WebSocketEndpointTracker.class)
 public class WebSocketEndpointTracker
-	implements ServiceTrackerCustomizer<Endpoint, Endpoint> {
+	implements ServiceTrackerCustomizer<Endpoint, EndpointWrapper> {
 
 	@Override
-	public Endpoint addingService(ServiceReference<Endpoint> serviceReference) {
+	public EndpointWrapper addingService(
+		ServiceReference<Endpoint> serviceReference) {
+
 		Endpoint endpoint = _bundleContext.getService(serviceReference);
 
 		String webSocketPath = (String)serviceReference.getProperty(
@@ -47,23 +50,26 @@ public class WebSocketEndpointTracker
 			return null;
 		}
 
-		_webSocketEndpointRegistrations.put(webSocketPath, endpoint);
+		EndpointWrapper endpointWrapper = new EndpointWrapper(endpoint);
 
-		return endpoint;
+		_webSocketEndpointRegistrations.put(webSocketPath, endpointWrapper);
+
+		return endpointWrapper;
 	}
 
 	@Override
 	public void modifiedService(
-		ServiceReference<Endpoint> serviceReference, Endpoint endpoint) {
+		ServiceReference<Endpoint> serviceReference,
+		EndpointWrapper endpointWrapper) {
 
-		removedService(serviceReference, endpoint);
+		removedService(serviceReference, endpointWrapper);
 
 		addingService(serviceReference);
 	}
 
 	@Override
 	public void removedService(
-		ServiceReference<Endpoint> serviceReference, Endpoint service) {
+		ServiceReference<Endpoint> serviceReference, EndpointWrapper service) {
 
 		String webSocketPath = (String)serviceReference.getProperty(
 			"websocket.path");
@@ -95,8 +101,9 @@ public class WebSocketEndpointTracker
 	}
 
 	private BundleContext _bundleContext;
-	private final ConcurrentMap<String, Endpoint>
+	private final ConcurrentMap<String, EndpointWrapper>
 		_webSocketEndpointRegistrations = new ConcurrentHashMap<>();
-	private ServiceTracker<Endpoint, Endpoint> _webSocketEndpointServiceTracker;
+	private ServiceTracker<Endpoint, EndpointWrapper>
+		_webSocketEndpointServiceTracker;
 
 }
