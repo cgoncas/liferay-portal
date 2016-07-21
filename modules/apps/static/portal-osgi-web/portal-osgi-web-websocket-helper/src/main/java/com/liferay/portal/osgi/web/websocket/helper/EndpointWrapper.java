@@ -15,24 +15,71 @@
 package com.liferay.portal.osgi.web.websocket.helper;
 
 import java.util.List;
+import java.util.Map;
 import java.util.concurrent.CopyOnWriteArrayList;
 
 import javax.websocket.CloseReason;
+import javax.websocket.Decoder;
+import javax.websocket.Encoder;
 import javax.websocket.Endpoint;
 import javax.websocket.EndpointConfig;
+import javax.websocket.Extension;
 import javax.websocket.Session;
+import javax.websocket.server.ServerEndpointConfig;
 
 /**
  * @author Manuel de la Peña
  */
-public class EndpointWrapper {
+public class EndpointWrapper implements ServerEndpointConfig {
 
-	public EndpointWrapper(Endpoint endpoint) {
+	public EndpointWrapper(String path, Endpoint endpoint) {
+		_serverEndpointConfig = Builder.create(Endpoint.class, path).build();
+
 		_endpoint = endpoint;
+	}
+
+	@Override
+	public Configurator getConfigurator() {
+		return _serverEndpointConfig.getConfigurator();
+	}
+
+	@Override
+	public List<Class<? extends Decoder>> getDecoders() {
+		return _serverEndpointConfig.getDecoders();
+	}
+
+	@Override
+	public List<Class<? extends Encoder>> getEncoders() {
+		return _serverEndpointConfig.getEncoders();
+	}
+
+	@Override
+	public Class<?> getEndpointClass() {
+		return _serverEndpointConfig.getEndpointClass();
+	}
+
+	@Override
+	public List<Extension> getExtensions() {
+		return _serverEndpointConfig.getExtensions();
+	}
+
+	@Override
+	public String getPath() {
+		return _serverEndpointConfig.getPath();
 	}
 
 	public List<Session> getSessions() {
 		return _sessions;
+	}
+
+	@Override
+	public List<String> getSubprotocols() {
+		return _serverEndpointConfig.getSubprotocols();
+	}
+
+	@Override
+	public Map<String, Object> getUserProperties() {
+		return _serverEndpointConfig.getUserProperties();
 	}
 
 	public void onClose(Session session, CloseReason closeReason) {
@@ -48,6 +95,7 @@ public class EndpointWrapper {
 	}
 
 	private final Endpoint _endpoint;
+	private final ServerEndpointConfig _serverEndpointConfig;
 	private final List<Session> _sessions = new CopyOnWriteArrayList<>();
 
 }
