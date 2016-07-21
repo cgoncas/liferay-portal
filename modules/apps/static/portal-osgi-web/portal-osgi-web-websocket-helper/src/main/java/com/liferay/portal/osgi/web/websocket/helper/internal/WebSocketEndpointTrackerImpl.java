@@ -55,7 +55,8 @@ public class WebSocketEndpointTrackerImpl
 			return null;
 		}
 
-		EndpointWrapper endpointWrapper = new EndpointWrapper(endpoint);
+		EndpointWrapper endpointWrapper = new EndpointWrapper(
+			webSocketPath, endpoint);
 
 		_webSocketEndpointRegistrations.put(webSocketPath, endpointWrapper);
 
