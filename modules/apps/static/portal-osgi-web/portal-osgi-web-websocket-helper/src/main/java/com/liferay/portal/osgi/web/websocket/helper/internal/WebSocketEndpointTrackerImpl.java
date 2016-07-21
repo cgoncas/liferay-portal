@@ -16,6 +16,7 @@ package com.liferay.portal.osgi.web.websocket.helper.internal;
 
 import com.liferay.osgi.util.ServiceTrackerFactory;
 import com.liferay.portal.osgi.web.websocket.helper.EndpointWrapper;
+import com.liferay.portal.osgi.web.websocket.helper.WebSocketEndpointTracker;
 
 import java.util.List;
 import java.util.concurrent.ConcurrentHashMap;
@@ -37,8 +38,9 @@ import org.osgi.util.tracker.ServiceTrackerCustomizer;
  * @author Manuel de la Peña
  */
 @Component(immediate = true, service = WebSocketEndpointTracker.class)
-public class WebSocketEndpointTracker
-	implements ServiceTrackerCustomizer<Endpoint, EndpointWrapper> {
+public class WebSocketEndpointTrackerImpl
+	implements ServiceTrackerCustomizer<Endpoint, EndpointWrapper>,
+			   WebSocketEndpointTracker {
 
 	@Override
 	public EndpointWrapper addingService(
@@ -58,6 +60,11 @@ public class WebSocketEndpointTracker
 		_webSocketEndpointRegistrations.put(webSocketPath, endpointWrapper);
 
 		return endpointWrapper;
+	}
+
+	@Override
+	public EndpointWrapper getEndpoint(String path) {
+		return _webSocketEndpointRegistrations.get(path);
 	}
 
 	@Override
