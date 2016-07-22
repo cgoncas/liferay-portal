@@ -15,6 +15,7 @@
 package com.liferay.portal.osgi.web.websocket.tracker.internal;
 
 import com.liferay.osgi.util.ServiceTrackerFactory;
+import com.liferay.portal.osgi.web.websocket.tracker.Constants;
 import com.liferay.portal.osgi.web.websocket.tracker.EndpointWrapper;
 import com.liferay.portal.osgi.web.websocket.tracker.WebSocketEndpointTracker;
 
@@ -53,7 +54,7 @@ public class WebSocketEndpointTrackerImpl
 		Endpoint endpoint = _bundleContext.getService(serviceReference);
 
 		String webSocketPath = (String)serviceReference.getProperty(
-			"websocket.path");
+			Constants.WEBSOCKET_PATH);
 
 		if ((webSocketPath == null) || webSocketPath.isEmpty()) {
 			return null;
@@ -87,7 +88,7 @@ public class WebSocketEndpointTrackerImpl
 		ServiceReference<Endpoint> serviceReference, EndpointWrapper service) {
 
 		String webSocketPath = (String)serviceReference.getProperty(
-			"websocket.path");
+			Constants.WEBSOCKET_PATH);
 
 		List<Session> sessions = service.getSessions();
 
