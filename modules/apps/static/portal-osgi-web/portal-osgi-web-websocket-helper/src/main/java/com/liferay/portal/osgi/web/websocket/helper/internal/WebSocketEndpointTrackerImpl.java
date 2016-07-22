@@ -18,13 +18,17 @@ import com.liferay.osgi.util.ServiceTrackerFactory;
 import com.liferay.portal.osgi.web.websocket.helper.EndpointWrapper;
 import com.liferay.portal.osgi.web.websocket.helper.WebSocketEndpointTracker;
 
+import java.io.IOException;
+
 import java.util.List;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 
 import javax.websocket.CloseReason;
 import javax.websocket.Endpoint;
+import javax.websocket.EndpointConfig;
 import javax.websocket.Session;
+import javax.websocket.server.ServerEndpointConfig.Configurator;
 
 import org.osgi.framework.BundleContext;
 import org.osgi.framework.ServiceReference;
@@ -95,6 +99,8 @@ public class WebSocketEndpointTrackerImpl
 			service.onClose(session, closeReason);
 		}
 
+		service.setConfigurator(_NULL);
+
 		_webSocketEndpointRegistrations.remove(webSocketPath);
 
 		_bundleContext.ungetService(serviceReference);
@@ -121,10 +127,37 @@ public class WebSocketEndpointTrackerImpl
 		_bundleContext = null;
 	}
 
+	private static final Configurator _NULL = new Configurator() {
+
+		@SuppressWarnings("unchecked")
+		@Override
+		public <T> T getEndpointInstance(Class<T> endpointClass) {
+			return (T)new NullEndpoint();
+		}
+
+	};
+
 	private BundleContext _bundleContext;
 	private final ConcurrentMap<String, EndpointWrapper>
 		_webSocketEndpointRegistrations = new ConcurrentHashMap<>();
 	private ServiceTracker<Endpoint, EndpointWrapper>
 		_webSocketEndpointServiceTracker;
+
+	private static class NullEndpoint extends Endpoint {
+
+		@Override
+		public void onOpen(Session session, EndpointConfig config) {
+			try {
+				session.close(
+					new CloseReason(
+						CloseReason.CloseCodes.GOING_AWAY,
+						"Service has gone away"));
+			}
+			catch (IOException ioe) {
+				ioe.printStackTrace();
+			}
+		}
+
+	}
 
 }
