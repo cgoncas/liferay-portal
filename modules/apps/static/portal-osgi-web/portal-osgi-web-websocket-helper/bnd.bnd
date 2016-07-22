@@ -1,5 +1,0 @@
-Bundle-Name: Liferay Portal OSGi Web WebSocket Helper
-Bundle-SymbolicName: com.liferay.portal.osgi.web.websocket.helper
-Bundle-Version: 1.0.0
-Liferay-Releng-Module-Group-Description:
-Liferay-Releng-Module-Group-Title:

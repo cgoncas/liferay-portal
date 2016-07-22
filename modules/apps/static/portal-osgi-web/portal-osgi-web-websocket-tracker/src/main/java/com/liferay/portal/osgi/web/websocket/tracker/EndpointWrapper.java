@@ -12,7 +12,7 @@
  * details.
  */
 
-package com.liferay.portal.osgi.web.websocket.helper;
+package com.liferay.portal.osgi.web.websocket.tracker;
 
 import java.util.List;
 import java.util.Map;
