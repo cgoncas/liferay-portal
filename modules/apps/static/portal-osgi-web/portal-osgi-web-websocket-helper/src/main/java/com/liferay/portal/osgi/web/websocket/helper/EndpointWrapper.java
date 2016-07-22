@@ -35,12 +35,14 @@ public class EndpointWrapper implements ServerEndpointConfig {
 	public EndpointWrapper(String path, Endpoint endpoint) {
 		_serverEndpointConfig = Builder.create(Endpoint.class, path).build();
 
+		_configurator = _serverEndpointConfig.getConfigurator();
+
 		_endpoint = endpoint;
 	}
 
 	@Override
 	public Configurator getConfigurator() {
-		return _serverEndpointConfig.getConfigurator();
+		return _configurator;
 	}
 
 	@Override
@@ -94,6 +96,11 @@ public class EndpointWrapper implements ServerEndpointConfig {
 		_endpoint.onOpen(session, config);
 	}
 
+	public void setConfigurator(Configurator configurator) {
+		_configurator = configurator;
+	}
+
+	private Configurator _configurator;
 	private final Endpoint _endpoint;
 	private final ServerEndpointConfig _serverEndpointConfig;
 	private final List<Session> _sessions = new CopyOnWriteArrayList<>();
