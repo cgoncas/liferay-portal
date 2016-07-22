@@ -33,7 +33,8 @@ import javax.websocket.server.ServerEndpointConfig;
 public class EndpointWrapper implements ServerEndpointConfig {
 
 	public EndpointWrapper(String path, Endpoint endpoint) {
-		_serverEndpointConfig = Builder.create(Endpoint.class, path).build();
+		_serverEndpointConfig = Builder.create(
+			endpoint.getClass(), path).build();
 
 		_configurator = _serverEndpointConfig.getConfigurator();
 
