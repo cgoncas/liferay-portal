@@ -12,11 +12,11 @@
  * details.
  */
 
-package com.liferay.portal.osgi.web.websocket.helper.internal;
+package com.liferay.portal.osgi.web.websocket.tracker.internal;
 
 import com.liferay.osgi.util.ServiceTrackerFactory;
-import com.liferay.portal.osgi.web.websocket.helper.EndpointWrapper;
-import com.liferay.portal.osgi.web.websocket.helper.WebSocketEndpointTracker;
+import com.liferay.portal.osgi.web.websocket.tracker.EndpointWrapper;
+import com.liferay.portal.osgi.web.websocket.tracker.WebSocketEndpointTracker;
 
 import java.io.IOException;
 

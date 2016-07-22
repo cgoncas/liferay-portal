@@ -12,7 +12,7 @@
  * details.
  */
 
-package com.liferay.portal.osgi.web.websocket.helper;
+package com.liferay.portal.osgi.web.websocket.tracker;
 
 /**
  * @author Manuel de la Peña
