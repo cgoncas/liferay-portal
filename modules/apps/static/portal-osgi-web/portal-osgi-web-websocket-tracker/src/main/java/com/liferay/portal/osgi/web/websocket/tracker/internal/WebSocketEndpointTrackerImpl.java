@@ -30,6 +30,7 @@ import java.util.concurrent.ConcurrentMap;
 import javax.servlet.ServletContext;
 
 import javax.websocket.CloseReason;
+import javax.websocket.DeploymentException;
 import javax.websocket.Endpoint;
 import javax.websocket.EndpointConfig;
 import javax.websocket.Session;
@@ -89,6 +90,16 @@ public class WebSocketEndpointTrackerImpl
 					" there is not Websocket Server Container registered");
 
 			return null;
+		}
+
+		try {
+			serverContainer.addEndpoint(endpointWrapper);
+		}
+		catch (DeploymentException de) {
+			_log.error(
+				"Can't add websocket endpoint " + endpoint.getClass() +
+					" in the path " + webSocketPath,
+				de);
 		}
 
 		_webSocketEndpointRegistrations.put(webSocketPath, endpointWrapper);
