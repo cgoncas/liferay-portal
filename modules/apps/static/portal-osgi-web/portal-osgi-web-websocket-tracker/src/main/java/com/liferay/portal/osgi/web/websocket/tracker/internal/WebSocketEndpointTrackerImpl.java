@@ -15,6 +15,8 @@
 package com.liferay.portal.osgi.web.websocket.tracker.internal;
 
 import com.liferay.osgi.util.ServiceTrackerFactory;
+import com.liferay.portal.kernel.log.Log;
+import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.osgi.web.websocket.tracker.Constants;
 import com.liferay.portal.osgi.web.websocket.tracker.EndpointWrapper;
 import com.liferay.portal.osgi.web.websocket.tracker.WebSocketEndpointTracker;
@@ -25,10 +27,13 @@ import java.util.List;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 
+import javax.servlet.ServletContext;
+
 import javax.websocket.CloseReason;
 import javax.websocket.Endpoint;
 import javax.websocket.EndpointConfig;
 import javax.websocket.Session;
+import javax.websocket.server.ServerContainer;
 import javax.websocket.server.ServerEndpointConfig.Configurator;
 
 import org.osgi.framework.BundleContext;
@@ -62,6 +67,29 @@ public class WebSocketEndpointTrackerImpl
 
 		EndpointWrapper endpointWrapper = new EndpointWrapper(
 			webSocketPath, endpoint);
+
+		ServletContext servletContext =
+			_servletContextServiceTracker.getService();
+
+		if (servletContext == null) {
+			_log.error(
+				"Can't register the endpoint " + endpoint.getClass() +
+					" there is not Servlet Context registered");
+
+			return null;
+		}
+
+		ServerContainer serverContainer =
+			(ServerContainer)servletContext.getAttribute(
+				ServerContainer.class.getName());
+
+		if (serverContainer == null) {
+			_log.error(
+				"Can't register the endpoint " + endpoint.getClass() +
+					" there is not Websocket Server Container registered");
+
+			return null;
+		}
 
 		_webSocketEndpointRegistrations.put(webSocketPath, endpointWrapper);
 
@@ -117,6 +145,15 @@ public class WebSocketEndpointTrackerImpl
 
 		_webSocketEndpointServiceTracker = ServiceTrackerFactory.open(
 			_bundleContext, Endpoint.class, this);
+
+		if (_servletContextServiceTracker != null) {
+			_servletContextServiceTracker.close();
+		}
+
+		_servletContextServiceTracker = ServiceTrackerFactory.open(
+			_bundleContext,
+			"(&(objectClass=" + ServletContext.class.getName() +
+				")(original.bean=true))");
 	}
 
 	@Deactivate
@@ -126,19 +163,28 @@ public class WebSocketEndpointTrackerImpl
 		_webSocketEndpointServiceTracker = null;
 
 		_bundleContext = null;
+
+		_servletContextServiceTracker.close();
+
+		_servletContextServiceTracker = null;
 	}
 
 	private static final Configurator _NULL = new Configurator() {
 
-		@SuppressWarnings("unchecked")
 		@Override
+		@SuppressWarnings("unchecked")
 		public <T> T getEndpointInstance(Class<T> endpointClass) {
 			return (T)new NullEndpoint();
 		}
 
 	};
 
+	private static final Log _log = LogFactoryUtil.getLog(
+		WebSocketEndpointTrackerImpl.class);
+
 	private BundleContext _bundleContext;
+	private ServiceTracker<ServletContext, ServletContext>
+		_servletContextServiceTracker;
 	private final ConcurrentMap<String, EndpointWrapper>
 		_webSocketEndpointRegistrations = new ConcurrentHashMap<>();
 	private ServiceTracker<Endpoint, EndpointWrapper>
