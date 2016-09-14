@@ -19,6 +19,7 @@ import java.io.IOException;
 import javax.websocket.Endpoint;
 import javax.websocket.EndpointConfig;
 import javax.websocket.MessageHandler;
+import javax.websocket.OnOpen;
 import javax.websocket.Session;
 
 import org.osgi.service.component.annotations.Component;

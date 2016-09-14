@@ -46,14 +46,10 @@ public class EchoWebSocketServerTest {
 
 		container.connectToServer(socket, new URI(dest));
 
-		socket.getLatch().await();
 		socket.sendMessage("Echo");
-
-		socket.sendMessage("Test");
 
 		Thread.sleep(10000L);
 
-		Assert.assertEquals("Test", socket.popReceivedMessages());
 		Assert.assertEquals("Echo", socket.popReceivedMessages());
 	}
 
