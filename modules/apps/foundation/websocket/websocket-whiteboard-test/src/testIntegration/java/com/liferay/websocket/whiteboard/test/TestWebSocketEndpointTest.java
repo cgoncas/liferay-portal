@@ -39,22 +39,22 @@ public class TestWebSocketEndpointTest {
 	@RunAsClient
 	@Test
 	public void testSendMessageAndReceiveTheSame() throws Exception {
-		WebSocketContainer container =
+		WebSocketContainer webSocketContainer =
 			ContainerProvider.getWebSocketContainer();
 
 		StringBuilder sb = new StringBuilder(4);
 
 		sb.append("ws://");
-		sb.append(_liferayHttpURL.getHost());
+		sb.append(_url.getHost());
 		sb.append(":");
-		sb.append(_liferayHttpURL.getPort());
+		sb.append(_url.getPort());
 		sb.append("/o/websocket/test");
 
 		URI liferayWebsocketURI = new URI(sb.toString());
 
 		TestWebSocketClient socket = new TestWebSocketClient();
 
-		container.connectToServer(socket, liferayWebsocketURI);
+		webSocketContainer.connectToServer(socket, liferayWebsocketURI);
 
 		socket.sendText("echo");
 
@@ -64,6 +64,6 @@ public class TestWebSocketEndpointTest {
 	}
 
 	@ArquillianResource
-	private URL _liferayHttpURL;
+	private URL _url;
 
 }
