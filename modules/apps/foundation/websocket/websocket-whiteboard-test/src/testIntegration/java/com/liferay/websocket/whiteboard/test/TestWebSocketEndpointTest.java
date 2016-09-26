@@ -42,7 +42,7 @@ public class TestWebSocketEndpointTest {
 		WebSocketContainer webSocketContainer =
 			ContainerProvider.getWebSocketContainer();
 
-		StringBuilder sb = new StringBuilder(4);
+		StringBuilder sb = new StringBuilder();
 
 		sb.append("ws://");
 		sb.append(_url.getHost());
