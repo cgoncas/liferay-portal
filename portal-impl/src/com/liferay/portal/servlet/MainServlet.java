@@ -1308,12 +1308,6 @@ public class MainServlet extends ActionServlet {
 			ModuleServiceLifecycle.class, new ModuleServiceLifecycle() {},
 			properties);
 
-		properties = new HashMap<>();
-
-		properties.put("bean.id", ServletContext.class.getName());
-		properties.put("original.bean", Boolean.TRUE);
-		properties.put("service.vendor", ReleaseInfo.getVendor());
-
 		ServletContext servletContext = getServletContext();
 
 		Object serverContainer = servletContext.getAttribute(
@@ -1327,6 +1321,12 @@ public class MainServlet extends ActionServlet {
 				_log.info("There is no Websocket Server Container registered");
 			}
 		}
+
+		properties = new HashMap<>();
+
+		properties.put("bean.id", ServletContext.class.getName());
+		properties.put("original.bean", Boolean.TRUE);
+		properties.put("service.vendor", ReleaseInfo.getVendor());
 
 		_servletContextServiceRegistration = registry.registerService(
 			ServletContext.class, servletContext, properties);
