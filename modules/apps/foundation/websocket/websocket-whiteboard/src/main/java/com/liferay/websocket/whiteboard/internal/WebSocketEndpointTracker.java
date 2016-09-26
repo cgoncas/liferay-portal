@@ -46,7 +46,8 @@ public class WebSocketEndpointTracker
 	public ServerEndpointConfigWrapper addingService(
 		ServiceReference<Endpoint> serviceReference) {
 
-		String path = (String)serviceReference.getProperty(_WEBSOCKET_PATH);
+		String path = (String)serviceReference.getProperty(
+			"org.osgi.http.websocket.endpoint.path");
 
 		if ((path == null) || path.isEmpty()) {
 			return null;
@@ -55,20 +56,21 @@ public class WebSocketEndpointTracker
 		final ServiceObjects<Endpoint> serviceObjects =
 			_bundleContext.getServiceObjects(serviceReference);
 
-		ServerEndpointConfigWrapper serverEndpointConfig =
+		ServerEndpointConfigWrapper serverEndpointConfigWrapper =
 			_webSocketEndpointRegistrations.get(path);
 
 		boolean isNew = false;
 
-		if (serverEndpointConfig == null) {
-			serverEndpointConfig = new ServerEndpointConfigWrapper(path, _log);
+		if (serverEndpointConfigWrapper == null) {
+			serverEndpointConfigWrapper = new ServerEndpointConfigWrapper(
+				path, _logService);
 
 			isNew = true;
 		}
 
-		serverEndpointConfig.setConfigurator(
+		serverEndpointConfigWrapper.setConfigurator(
 			serviceReference,
-			new ServiceObjectsConfigurator(serviceObjects, _log));
+			new ServiceObjectsConfigurator(serviceObjects, _logService));
 
 		if (isNew) {
 			ServerContainer serverContainer =
@@ -76,32 +78,33 @@ public class WebSocketEndpointTracker
 					ServerContainer.class.getName());
 
 			try {
-				serverContainer.addEndpoint(serverEndpointConfig);
+				serverContainer.addEndpoint(serverEndpointConfigWrapper);
 			}
 			catch (DeploymentException de) {
 				Endpoint endpoint = serviceObjects.getService();
 
-				_log.log(
+				_logService.log(
 					LogService.LOG_ERROR,
-					"Can't register websocket endpoint " + endpoint.getClass() +
-						" for path " + path,
+					"Unable to register WebSocket endpoint " +
+						endpoint.getClass() + " for path " + path,
 					de);
 
 				return null;
 			}
 
-			_webSocketEndpointRegistrations.put(path, serverEndpointConfig);
+			_webSocketEndpointRegistrations.put(
+				path, serverEndpointConfigWrapper);
 		}
 
-		return serverEndpointConfig;
+		return serverEndpointConfigWrapper;
 	}
 
 	@Override
 	public void modifiedService(
 		ServiceReference<Endpoint> serviceReference,
-		ServerEndpointConfigWrapper endpointWrapper) {
+		ServerEndpointConfigWrapper serverEndpointConfigWrapper) {
 
-		removedService(serviceReference, endpointWrapper);
+		removedService(serviceReference, serverEndpointConfigWrapper);
 
 		addingService(serviceReference);
 	}
@@ -109,10 +112,10 @@ public class WebSocketEndpointTracker
 	@Override
 	public void removedService(
 		ServiceReference<Endpoint> serviceReference,
-		ServerEndpointConfigWrapper serverEndpointConfig) {
+		ServerEndpointConfigWrapper serverEndpointConfigWrapper) {
 
 		ServiceObjectsConfigurator serviceObjectsConfigurator =
-			serverEndpointConfig.removeConfigurator(serviceReference);
+			serverEndpointConfigWrapper.removeConfigurator(serviceReference);
 
 		serviceObjectsConfigurator.close();
 	}
@@ -132,13 +135,10 @@ public class WebSocketEndpointTracker
 		_webSocketEndpointServiceTracker.close();
 	}
 
-	private static final String _WEBSOCKET_PATH =
-		"org.osgi.http.websocket.endpoint.path";
-
 	private BundleContext _bundleContext;
 
 	@Reference
-	private LogService _log;
+	private LogService _logService;
 
 	@Reference(target = "(websocket.active=true)")
 	private ServletContext _servletContext;
