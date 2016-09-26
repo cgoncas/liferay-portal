@@ -42,6 +42,8 @@ public class TestWebSocketEndpointTest {
 		WebSocketContainer webSocketContainer =
 			ContainerProvider.getWebSocketContainer();
 
+		TestWebSocketClient testWebSocketClient = new TestWebSocketClient();
+
 		StringBuilder sb = new StringBuilder();
 
 		sb.append("ws://");
@@ -51,8 +53,6 @@ public class TestWebSocketEndpointTest {
 		sb.append("/o/websocket/test");
 
 		URI uri = new URI(sb.toString());
-
-		TestWebSocketClient testWebSocketClient = new TestWebSocketClient();
 
 		webSocketContainer.connectToServer(testWebSocketClient, uri);
 
