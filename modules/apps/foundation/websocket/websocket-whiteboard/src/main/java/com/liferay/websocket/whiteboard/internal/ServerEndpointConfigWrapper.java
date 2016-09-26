@@ -52,7 +52,7 @@ public class ServerEndpointConfigWrapper implements ServerEndpointConfig {
 			_endpoints.firstEntry();
 
 		if (entry == null) {
-			return _null;
+			return _configurator;
 		}
 
 		return entry.getValue();
@@ -100,27 +100,27 @@ public class ServerEndpointConfigWrapper implements ServerEndpointConfig {
 	}
 
 	public void setConfigurator(
-		ServiceReference<Endpoint> reference,
-		ServiceObjectsConfigurator configurator) {
+		ServiceReference<Endpoint> serviceReference,
+		ServiceObjectsConfigurator serviceObjectsConfigurator) {
 
-		_endpoints.put(reference, configurator);
+		_endpoints.put(serviceReference, serviceObjectsConfigurator);
 	}
 
-	private final Configurator _null = new ServerEndpointConfig.Configurator() {
+	private final Configurator _configurator =
+		new ServerEndpointConfig.Configurator() {
 
-		@Override
-		@SuppressWarnings("unchecked")
-		public <T> T getEndpointInstance(Class<T> endpointClass) {
-			return (T)new NullEndpoint();
-		}
-
-	};
+			@Override
+			public <T> T getEndpointInstance(Class<T> endpointClass) {
+				return (T)new NullEndpoint();
+			}
+	
+		};
 
 	private ServerEndpointConfig _serverEndpointConfig;
 	private ConcurrentNavigableMap<ServiceReference<Endpoint>,
 		ServiceObjectsConfigurator> _endpoints = new ConcurrentSkipListMap<>();
 
-	final class NullEndpoint extends Endpoint {
+	private final class NullEndpoint extends Endpoint {
 
 		@Override
 		public void onOpen(Session session, EndpointConfig config) {
@@ -128,12 +128,10 @@ public class ServerEndpointConfigWrapper implements ServerEndpointConfig {
 				session.close(
 					new CloseReason(
 						CloseReason.CloseCodes.GOING_AWAY,
-						"Service has gone away"));
+						"Service is gone away"));
 			}
 			catch (IOException ioe) {
-				_log.log(
-					LogService.LOG_ERROR,
-					"It is not possible close the session", ioe);
+				_log.log(LogService.LOG_ERROR, "Unable to close session", ioe);
 			}
 		}
 
