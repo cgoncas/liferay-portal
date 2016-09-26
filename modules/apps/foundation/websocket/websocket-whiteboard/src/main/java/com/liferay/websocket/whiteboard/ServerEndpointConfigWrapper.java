@@ -89,7 +89,7 @@ public class ServerEndpointConfigWrapper implements ServerEndpointConfig {
 	}
 
 	@Override
-	public List<String> getSubprotocols() {
+		public List<String> getSubprotocols() {
 		return _serverEndpointConfig.getSubprotocols();
 	}
 
