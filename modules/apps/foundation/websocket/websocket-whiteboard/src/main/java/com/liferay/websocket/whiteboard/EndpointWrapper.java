@@ -31,7 +31,7 @@ import org.osgi.service.log.LogService;
 /**
  * @author Cristina González Castellano
  */
-class EndpointWrapper extends Endpoint {
+public class EndpointWrapper extends Endpoint {
 
 	public EndpointWrapper(
 		ServiceObjects<Endpoint> serviceObjects, LogService log) {
