@@ -56,11 +56,11 @@ public class TestWebSocketEndpointTest {
 
 		container.connectToServer(socket, liferayWebsocketURI);
 
-		socket.sendMessage("echo");
+		socket.sendText("echo");
 
 		Thread.sleep(1000);
 
-		Assert.assertEquals("echo", socket.popReceivedMessages());
+		Assert.assertEquals("echo", socket.popReceivedTexts());
 	}
 
 	@ArquillianResource

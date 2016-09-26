@@ -21,6 +21,7 @@ import java.util.Stack;
 import javax.websocket.ClientEndpoint;
 import javax.websocket.OnMessage;
 import javax.websocket.OnOpen;
+import javax.websocket.RemoteEndpoint.Basic;
 import javax.websocket.Session;
 
 /**
@@ -35,24 +36,26 @@ public class TestWebSocketClient {
 	}
 
 	@OnMessage
-	public void onText(String message, Session session) {
-		_receivedMessages.add(message);
+	public void onText(String text, Session session) {
+		_texts.add(text);
 	}
 
-	public String popReceivedMessages() {
-		return _receivedMessages.pop();
+	public String popReceivedTexts() {
+		return _texts.pop();
 	}
 
-	public void sendMessage(String str) {
+	public void sendText(String text) {
 		try {
-			_session.getBasicRemote().sendText(str);
+			Basic basic = _session.getBasicRemote();
+			
+			basic.sendText(text);
 		}
 		catch (IOException ioe) {
 			throw new RuntimeException(ioe);
 		}
 	}
 
-	private final Stack<String> _receivedMessages = new Stack();
+	private final Stack<String> _texts = new Stack<>();
 	private Session _session;
 
 }

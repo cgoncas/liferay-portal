@@ -42,10 +42,9 @@ public class TestWebSocketEndpoint extends Endpoint {
 				@Override
 				public void onMessage(String text) {
 					try {
-						RemoteEndpoint.Basic remoteEndpoint =
-							session.getBasicRemote();
+						RemoteEndpoint.Basic basic = session.getBasicRemote();
 
-						remoteEndpoint.sendText(text);
+						basic.sendText(text);
 					}
 					catch (IOException ioe) {
 						throw new RuntimeException(ioe);
