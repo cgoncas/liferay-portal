@@ -50,17 +50,17 @@ public class TestWebSocketEndpointTest {
 		sb.append(_url.getPort());
 		sb.append("/o/websocket/test");
 
-		URI liferayWebsocketURI = new URI(sb.toString());
+		URI uri = new URI(sb.toString());
 
-		TestWebSocketClient socket = new TestWebSocketClient();
+		TestWebSocketClient testWebSocketClient = new TestWebSocketClient();
 
-		webSocketContainer.connectToServer(socket, liferayWebsocketURI);
+		webSocketContainer.connectToServer(testWebSocketClient, uri);
 
-		socket.sendText("echo");
+		testWebSocketClient.sendText("echo");
 
 		Thread.sleep(1000);
 
-		Assert.assertEquals("echo", socket.popReceivedTexts());
+		Assert.assertEquals("echo", testWebSocketClient.popReceivedTexts());
 	}
 
 	@ArquillianResource
