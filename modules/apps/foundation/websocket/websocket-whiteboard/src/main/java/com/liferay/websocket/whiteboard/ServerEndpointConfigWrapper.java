@@ -46,6 +46,7 @@ public class ServerEndpointConfigWrapper implements ServerEndpointConfig {
 		_log = log;
 	}
 
+	@Override
 	public Configurator getConfigurator() {
 		Entry<ServiceReference<Endpoint>, ServiceObjectsConfigurator> entry =
 			_endpoints.firstEntry();
@@ -57,30 +58,37 @@ public class ServerEndpointConfigWrapper implements ServerEndpointConfig {
 		return entry.getValue();
 	}
 
+	@Override
 	public List<Class<? extends Decoder>> getDecoders() {
 		return _serverEndpointConfig.getDecoders();
 	}
 
+	@Override
 	public Class<?> getEndpointClass() {
 		return _serverEndpointConfig.getEndpointClass();
 	}
 
+	@Override
 	public List<Class<? extends Encoder>> getEncoders() {
 		return _serverEndpointConfig.getEncoders();
 	}
 
+	@Override
 	public List<Extension> getExtensions() {
 		return _serverEndpointConfig.getExtensions();
 	}
 
+	@Override
 	public String getPath() {
 		return _serverEndpointConfig.getPath();
 	}
 
+	@Override
 	public Map<String, Object> getUserProperties() {
 		return _serverEndpointConfig.getUserProperties();
 	}
 
+	@Override
 	public List<String> getSubprotocols() {
 		return _serverEndpointConfig.getSubprotocols();
 	}

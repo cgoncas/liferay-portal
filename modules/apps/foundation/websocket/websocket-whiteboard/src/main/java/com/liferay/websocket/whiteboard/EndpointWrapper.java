@@ -34,11 +34,12 @@ import org.osgi.service.log.LogService;
 public class EndpointWrapper extends Endpoint {
 
 	public EndpointWrapper(
-		ServiceObjects<Endpoint> serviceObjects, LogService log) {
+		ServiceObjects<Endpoint> serviceObjects, LogService logService) {
 
 		_serviceObjects = serviceObjects;
+		_logService = logService;
+
 		_endpoint = serviceObjects.getService();
-		_log = log;
 	}
 
 	protected void close() {
@@ -48,21 +49,22 @@ public class EndpointWrapper extends Endpoint {
 
 		while (iterator.hasNext()) {
 			Session session = iterator.next();
+
 			iterator.remove();
 
 			try {
 				CloseReason closeReason = new CloseReason(
-					CloseReason.CloseCodes.GOING_AWAY, "Service has gone away");
+					CloseReason.CloseCodes.GOING_AWAY, "Service is going away");
 
 				session.close(closeReason);
+
 				_endpoint.onClose(session, closeReason);
 
 				_serviceObjects.ungetService(_endpoint);
 			}
 			catch (IOException ioe) {
-				_log.log(
-					LogService.LOG_ERROR,
-					"It is not possible close the session", ioe);
+				_logService.log(
+					LogService.LOG_ERROR, "Unable to close the session", ioe);
 			}
 		}
 	}
@@ -74,7 +76,9 @@ public class EndpointWrapper extends Endpoint {
 		}
 
 		_endpoint.onClose(session, closeReason);
+
 		_sessions.remove(session);
+
 		_serviceObjects.ungetService(_endpoint);
 	}
 
@@ -94,11 +98,12 @@ public class EndpointWrapper extends Endpoint {
 		}
 
 		_endpoint.onOpen(session, endpointConfig);
+
 		_sessions.add(session);
 	}
 
-	private final LogService _log;
-	private volatile boolean _closed = false;
+	private final LogService _logService;
+	private volatile boolean _closed;
 	private final Endpoint _endpoint;
 	private final ServiceObjects<Endpoint> _serviceObjects;
 	private final Set<Session> _sessions = new HashSet<>();
