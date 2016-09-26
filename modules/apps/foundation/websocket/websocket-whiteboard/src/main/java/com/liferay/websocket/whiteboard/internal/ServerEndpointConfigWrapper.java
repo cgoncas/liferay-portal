@@ -39,11 +39,13 @@ import org.osgi.service.log.LogService;
  */
 public class ServerEndpointConfigWrapper implements ServerEndpointConfig {
 
-	public ServerEndpointConfigWrapper(String path, LogService log) {
-		_serverEndpointConfig = ServerEndpointConfig.Builder.create(
-			Endpoint.class, path).build();
+	public ServerEndpointConfigWrapper(String path, LogService logService) {
+		_logService = logService;
 
-		_log = log;
+		ServerEndpointConfig.Builder builder =
+			ServerEndpointConfig.Builder.create(Endpoint.class, path);
+
+		_serverEndpointConfig = builder.build();
 	}
 
 	@Override
@@ -131,11 +133,11 @@ public class ServerEndpointConfigWrapper implements ServerEndpointConfig {
 						"Service is gone away"));
 			}
 			catch (IOException ioe) {
-				_log.log(LogService.LOG_ERROR, "Unable to close session", ioe);
+				_logService.log(LogService.LOG_ERROR, "Unable to close session", ioe);
 			}
 		}
 
 	}
 
-	private final LogService _log;
+	private final LogService _logService;
 }
