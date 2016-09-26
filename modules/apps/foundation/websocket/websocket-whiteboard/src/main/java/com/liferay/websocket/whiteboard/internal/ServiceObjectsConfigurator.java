@@ -31,14 +31,14 @@ public class ServiceObjectsConfigurator
 	extends ServerEndpointConfig.Configurator {
 
 	public ServiceObjectsConfigurator(
-		ServiceObjects<Endpoint> serviceObjects, LogService log) {
+		ServiceObjects<Endpoint> serviceObjects, LogService logService) {
 
 		_serviceObjects = serviceObjects;
-		_log = log;
+		_logService = logService;
 	}
 
 	public void close() {
-		Iterator<EndpointWrapper> iterator = _endpoints.iterator();
+		Iterator<EndpointWrapper> iterator = _endpointWrappers.iterator();
 
 		while (iterator.hasNext()) {
 			EndpointWrapper endpointWrapper = iterator.next();
@@ -55,16 +55,16 @@ public class ServiceObjectsConfigurator
 	}
 
 	private EndpointWrapper _wrapped() {
-		EndpointWrapper wrappedEndpoint = new EndpointWrapper(
-			_serviceObjects, _log);
+		EndpointWrapper endpointWrapper = new EndpointWrapper(
+			_serviceObjects, _logService);
 
-		_endpoints.add(wrappedEndpoint);
+		_endpointWrappers.add(endpointWrapper);
 
-		return wrappedEndpoint;
+		return endpointWrapper;
 	}
 
-	private final Set<EndpointWrapper> _endpoints = new HashSet<>();
-	private final LogService _log;
+	private final Set<EndpointWrapper> _endpointWrappers = new HashSet<>();
+	private final LogService _logService;
 	private final ServiceObjects<Endpoint> _serviceObjects;
 
 }
