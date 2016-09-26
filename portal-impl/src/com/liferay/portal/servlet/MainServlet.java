@@ -1318,7 +1318,7 @@ public class MainServlet extends ActionServlet {
 		}
 		else {
 			if (_log.isInfoEnabled()) {
-				_log.info("There is no Websocket Server Container registered");
+				_log.info("A WebSocket server container is not registered");
 			}
 		}
 
