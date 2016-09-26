@@ -133,7 +133,8 @@ public class ServerEndpointConfigWrapper implements ServerEndpointConfig {
 						"Service is gone away"));
 			}
 			catch (IOException ioe) {
-				_logService.log(LogService.LOG_ERROR, "Unable to close session", ioe);
+				_logService.log(
+					LogService.LOG_ERROR, "Unable to close session", ioe);
 			}
 		}
 
