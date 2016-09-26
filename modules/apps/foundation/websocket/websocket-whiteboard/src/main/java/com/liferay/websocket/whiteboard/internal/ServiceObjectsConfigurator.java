@@ -41,16 +41,15 @@ public class ServiceObjectsConfigurator
 		Iterator<EndpointWrapper> iterator = _endpoints.iterator();
 
 		while (iterator.hasNext()) {
-			EndpointWrapper wrappedEndpoint = iterator.next();
+			EndpointWrapper endpointWrapper = iterator.next();
 
 			iterator.remove();
 
-			wrappedEndpoint.close();
+			endpointWrapper.close();
 		}
 	}
 
 	@Override
-	@SuppressWarnings("unchecked")
 	public <T> T getEndpointInstance(Class<T> endpointClass) {
 		return (T) _wrapped();
 	}
