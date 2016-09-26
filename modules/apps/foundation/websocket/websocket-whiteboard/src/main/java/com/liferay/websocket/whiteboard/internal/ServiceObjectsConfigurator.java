@@ -51,7 +51,7 @@ public class ServiceObjectsConfigurator
 
 	@Override
 	public <T> T getEndpointInstance(Class<T> endpointClass) {
-		return (T) _wrapped();
+		return (T)_wrapped();
 	}
 
 	private EndpointWrapper _wrapped() {
