@@ -12,7 +12,7 @@
  * details.
  */
 
-package com.liferay.websocket.whiteboard;
+package com.liferay.websocket.whiteboard.internal;
 
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
