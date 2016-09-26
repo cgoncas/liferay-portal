@@ -57,7 +57,7 @@ public class WebSocketEndpointTracker
 			_bundleContext.getServiceObjects(serviceReference);
 
 		ServerEndpointConfigWrapper serverEndpointConfigWrapper =
-			_webSocketEndpointRegistrations.get(path);
+			_serverEndpointConfigWrappers.get(path);
 
 		boolean isNew = false;
 
@@ -92,7 +92,7 @@ public class WebSocketEndpointTracker
 				return null;
 			}
 
-			_webSocketEndpointRegistrations.put(
+			_serverEndpointConfigWrappers.put(
 				path, serverEndpointConfigWrapper);
 		}
 
@@ -124,15 +124,15 @@ public class WebSocketEndpointTracker
 	protected void activate(BundleContext bundleContext) {
 		_bundleContext = bundleContext;
 
-		_webSocketEndpointServiceTracker = new ServiceTracker<>(
+		_serverEndpointConfigWrapperServiceTracker = new ServiceTracker<>(
 			bundleContext, Endpoint.class, this);
 
-		_webSocketEndpointServiceTracker.open();
+		_serverEndpointConfigWrapperServiceTracker.open();
 	}
 
 	@Deactivate
 	protected void deactivate() {
-		_webSocketEndpointServiceTracker.close();
+		_serverEndpointConfigWrapperServiceTracker.close();
 	}
 
 	private BundleContext _bundleContext;
@@ -144,8 +144,8 @@ public class WebSocketEndpointTracker
 	private ServletContext _servletContext;
 
 	private final ConcurrentMap<String, ServerEndpointConfigWrapper>
-		_webSocketEndpointRegistrations = new ConcurrentHashMap<>();
+		_serverEndpointConfigWrappers = new ConcurrentHashMap<>();
 	private ServiceTracker<Endpoint, ServerEndpointConfigWrapper>
-		_webSocketEndpointServiceTracker;
+		_serverEndpointConfigWrapperServiceTracker;
 
 }
