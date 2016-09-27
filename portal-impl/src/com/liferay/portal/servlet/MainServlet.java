@@ -1308,6 +1308,20 @@ public class MainServlet extends ActionServlet {
 			ModuleServiceLifecycle.class, new ModuleServiceLifecycle() {},
 			properties);
 
+		ServletContext servletContext = getServletContext();
+
+		Object serverContainer = servletContext.getAttribute(
+			"javax.websocket.server.ServerContainer");
+
+		if (serverContainer != null) {
+			properties.put("websocket.active", Boolean.TRUE);
+		}
+		else {
+			if (_log.isInfoEnabled()) {
+				_log.info("A WebSocket server container is not registered");
+			}
+		}
+
 		properties = new HashMap<>();
 
 		properties.put("bean.id", ServletContext.class.getName());
@@ -1315,7 +1329,7 @@ public class MainServlet extends ActionServlet {
 		properties.put("service.vendor", ReleaseInfo.getVendor());
 
 		_servletContextServiceRegistration = registry.registerService(
-			ServletContext.class, getServletContext(), properties);
+			ServletContext.class, servletContext, properties);
 	}
 
 	protected void sendError(
