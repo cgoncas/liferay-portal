@@ -4,8 +4,8 @@ Bundle-Version: 1.0.0
 Fragment-Host: javax.websocket-api
 Require-Capability:\
 	osgi.serviceloader;\
-		filter:='(osgi.serviceloader=javax.websocket.server.ServerEndpointConfig$Configurator)';\
-		cardinality:=multiple,\
+		cardinality:=multiple;\
+		filter:='(osgi.serviceloader=javax.websocket.server.ServerEndpointConfig$Configurator)',\
 	osgi.extender;\
 		filter:='(osgi.extender=osgi.serviceloader.processor)'
 -resourceonly: true
