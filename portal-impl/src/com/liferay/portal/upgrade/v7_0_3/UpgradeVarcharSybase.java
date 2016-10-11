@@ -43,9 +43,7 @@ public class UpgradeVarcharSybase extends UpgradeProcess {
 		sb.append("and c.length = 1000");
 
 		try (LoggingTimer loggingTimer = new LoggingTimer();
-
 			PreparedStatement ps = connection.prepareStatement(sb.toString());
-
 			ResultSet rs = ps.executeQuery()) {
 
 			while (rs.next()) {
@@ -55,8 +53,8 @@ public class UpgradeVarcharSybase extends UpgradeProcess {
 
 				try {
 					runSQL(
-						"alter table " + tableName + " modify " +
-						columnName + " varchar(4000)");
+						"alter table " + tableName + " modify " + columnName +
+							" varchar(4000)");
 				}
 				catch (SQLException sqle) {
 					if (sqle.getErrorCode() == 1441) {
@@ -67,8 +65,8 @@ public class UpgradeVarcharSybase extends UpgradeProcess {
 							sb.append(columnName);
 							sb.append(" for table ");
 							sb.append(tableName);
-							sb.append(" because it contains values that are ");
-							sb.append("larger than the new column length");
+							sb.append(" because it contains values larger ");
+							sb.append("than the new column length");
 
 							_log.warn(sb.toString());
 						}

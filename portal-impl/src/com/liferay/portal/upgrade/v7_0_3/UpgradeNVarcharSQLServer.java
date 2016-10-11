@@ -41,20 +41,17 @@ public class UpgradeNVarcharSQLServer extends UpgradeProcess {
 		sb.append("and character_maximum_length = 2000");
 
 		try (LoggingTimer loggingTimer = new LoggingTimer();
-
 			PreparedStatement ps = connection.prepareStatement(sb.toString());
-
 			ResultSet rs = ps.executeQuery()) {
 
 			while (rs.next()) {
 				String tableName = rs.getString(1);
-
 				String columnName = rs.getString(2);
 
 				try {
 					runSQL(
 						"alter table " + tableName + " alter column " +
-						columnName + " nvarchar(4000)");
+							columnName + " nvarchar(4000)");
 				}
 				catch (SQLException sqle) {
 					if (sqle.getErrorCode() == 1441) {
@@ -65,8 +62,8 @@ public class UpgradeNVarcharSQLServer extends UpgradeProcess {
 							sb.append(columnName);
 							sb.append(" for table ");
 							sb.append(tableName);
-							sb.append(" because it contains values that are ");
-							sb.append("larger than the new column length");
+							sb.append(" because it contains values larger ");
+							sb.append("than the new column length");
 
 							_log.warn(sb.toString());
 						}
