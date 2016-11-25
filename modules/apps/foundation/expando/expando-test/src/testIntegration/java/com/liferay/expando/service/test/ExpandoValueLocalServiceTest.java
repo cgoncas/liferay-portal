@@ -12,8 +12,9 @@
  * details.
  */
 
-package com.liferay.portlet.expando.service;
+package com.liferay.expando.service.test;
 
+import com.liferay.arquillian.extension.junit.bridge.junit.Arquillian;
 import com.liferay.counter.kernel.service.CounterLocalServiceUtil;
 import com.liferay.document.library.kernel.model.DLFileEntry;
 import com.liferay.expando.kernel.exception.ValueDataException;
@@ -43,10 +44,12 @@ import org.junit.Before;
 import org.junit.ClassRule;
 import org.junit.Rule;
 import org.junit.Test;
+import org.junit.runner.RunWith;
 
 /**
  * @author Marcellus Tavares
  */
+@RunWith(Arquillian.class)
 public class ExpandoValueLocalServiceTest {
 
 	@ClassRule
