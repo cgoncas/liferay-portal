@@ -830,6 +830,17 @@ public class ExpandoValueLocalServiceImpl
 	@Override
 	public void deleteValue(ExpandoValue value) {
 		expandoValuePersistence.remove(value);
+
+		List<ExpandoValue> values =
+			expandoValuePersistence.findByRowId(value.getRowId());
+
+		if (values.isEmpty()) {
+			ExpandoRow row =
+				expandoRowPersistence.fetchByPrimaryKey(value.getRowId());
+
+			expandoRowPersistence.remove(row);
+		}
+
 	}
 
 	@Override
