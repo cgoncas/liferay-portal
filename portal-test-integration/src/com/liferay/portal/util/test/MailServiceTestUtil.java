@@ -142,17 +142,35 @@ public class MailServiceTestUtil {
 	}
 
 	public static void stop() throws Exception {
-		if ((_smtpServer != null) && _smtpServer.isStopped()) {
-			throw new IllegalStateException("Server is already stopped");
+		try {
+			System.out.println("[MailServiceTestUtil]: stopping");
+
+			if ((_smtpServer != null) && _smtpServer.isStopped()) {
+				throw new IllegalStateException("Server is already stopped");
+			}
+
+			System.out.println("[MailServiceTestUtil]: Stop the server");
+
+			_smtpServer.stop();
+
+			_smtpServer = null;
+
+			System.out.println("[MailServiceTestUtil]: Closing properties");
+
+			_prefsPropsTemporarySwapper.close();
+
+			System.out.println("[MailServiceTestUtil]: Restore");
+
+			MailServiceUtil.clearSession();
+
+			System.out.println("[MailServiceTestUtil]: Clearing Service");
 		}
+		catch (Exception e) {
+			System.out.println(
+				"[MailServiceTestUtil]: Exception" + e.getMessage());
 
-		_smtpServer.stop();
-
-		_smtpServer = null;
-
-		_prefsPropsTemporarySwapper.close();
-
-		MailServiceUtil.clearSession();
+			e.printStackTrace();
+		}
 	}
 
 	private static int _getFreePort() throws IOException {

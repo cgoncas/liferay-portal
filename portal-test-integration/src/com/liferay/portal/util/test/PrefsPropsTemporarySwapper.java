@@ -44,6 +44,9 @@ public class PrefsPropsTemporarySwapper implements AutoCloseable {
 			_setTemporaryValue(portletPreferences, key, value);
 		}
 
+		System.out.println(
+			"[PrefsPropsTemporarySwapper]: OLD VALUES" + _oldValues);
+
 		portletPreferences.store();
 	}
 
@@ -55,6 +58,10 @@ public class PrefsPropsTemporarySwapper implements AutoCloseable {
 		for (Map.Entry<String, String> entry : _oldValues.entrySet()) {
 			portletPreferences.setValue(entry.getKey(), entry.getValue());
 		}
+
+		System.out.println(
+			"[PrefsPropsTemporarySwapper]: restoring" +
+			portletPreferences.getMap());
 
 		portletPreferences.store();
 	}
