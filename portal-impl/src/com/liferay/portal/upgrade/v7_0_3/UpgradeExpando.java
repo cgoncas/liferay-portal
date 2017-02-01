@@ -35,8 +35,6 @@ public class UpgradeExpando extends UpgradeProcess {
 		sb.append("from  ExpandoRow inner join ExpandoValue on ");
 		sb.append("ExpandoRow.rowId_ = ExpandoValue.rowId_)");
 
-		System.out.println("HOL\n" + sb.toString());
-
 		try (PreparedStatement ps1 =
 				AutoBatchPreparedStatementUtil.concurrentAutoBatch(
 					connection, "delete from ExpandoRow where rowId_ = ?");
