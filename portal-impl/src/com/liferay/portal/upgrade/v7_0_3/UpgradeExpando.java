@@ -22,7 +22,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 
 /**
- * @author Adolfo Pérez
+ * @author Cristina González
  */
 public class UpgradeExpando extends UpgradeProcess {
 
