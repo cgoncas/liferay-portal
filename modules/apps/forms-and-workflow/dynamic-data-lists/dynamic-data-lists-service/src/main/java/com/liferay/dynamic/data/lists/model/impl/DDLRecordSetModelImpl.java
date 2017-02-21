@@ -920,7 +920,13 @@ public class DDLRecordSetModelImpl extends BaseModelImpl<DDLRecordSet>
 
 	@Override
 	public Object clone() {
-		DDLRecordSetImpl ddlRecordSetImpl = new DDLRecordSetImpl();
+		DDLRecordSetImpl ddlRecordSetImpl = null;
+
+		try {
+			ddlRecordSetImpl = (DDLRecordSetImpl)super.clone();
+		}
+		catch (CloneNotSupportedException e) {
+		}
 
 		ddlRecordSetImpl.setUuid(getUuid());
 		ddlRecordSetImpl.setRecordSetId(getRecordSetId());

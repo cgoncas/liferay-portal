@@ -292,7 +292,13 @@ public class ExpandoTableModelImpl extends BaseModelImpl<ExpandoTable>
 
 	@Override
 	public Object clone() {
-		ExpandoTableImpl expandoTableImpl = new ExpandoTableImpl();
+		ExpandoTableImpl expandoTableImpl = null;
+
+		try {
+			expandoTableImpl = (ExpandoTableImpl)super.clone();
+		}
+		catch (CloneNotSupportedException e) {
+		}
 
 		expandoTableImpl.setTableId(getTableId());
 		expandoTableImpl.setCompanyId(getCompanyId());

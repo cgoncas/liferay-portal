@@ -526,7 +526,13 @@ public class LayoutBranchModelImpl extends BaseModelImpl<LayoutBranch>
 
 	@Override
 	public Object clone() {
-		LayoutBranchImpl layoutBranchImpl = new LayoutBranchImpl();
+		LayoutBranchImpl layoutBranchImpl = null;
+
+		try {
+			layoutBranchImpl = (LayoutBranchImpl)super.clone();
+		}
+		catch (CloneNotSupportedException e) {
+		}
 
 		layoutBranchImpl.setMvccVersion(getMvccVersion());
 		layoutBranchImpl.setLayoutBranchId(getLayoutBranchId());

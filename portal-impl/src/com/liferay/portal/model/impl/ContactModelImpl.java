@@ -995,7 +995,13 @@ public class ContactModelImpl extends BaseModelImpl<Contact>
 
 	@Override
 	public Object clone() {
-		ContactImpl contactImpl = new ContactImpl();
+		ContactImpl contactImpl = null;
+
+		try {
+			contactImpl = (ContactImpl)super.clone();
+		}
+		catch (CloneNotSupportedException e) {
+		}
 
 		contactImpl.setMvccVersion(getMvccVersion());
 		contactImpl.setContactId(getContactId());

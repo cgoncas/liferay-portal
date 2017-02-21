@@ -409,7 +409,13 @@ public class ReleaseModelImpl extends BaseModelImpl<Release>
 
 	@Override
 	public Object clone() {
-		ReleaseImpl releaseImpl = new ReleaseImpl();
+		ReleaseImpl releaseImpl = null;
+
+		try {
+			releaseImpl = (ReleaseImpl)super.clone();
+		}
+		catch (CloneNotSupportedException e) {
+		}
 
 		releaseImpl.setMvccVersion(getMvccVersion());
 		releaseImpl.setReleaseId(getReleaseId());

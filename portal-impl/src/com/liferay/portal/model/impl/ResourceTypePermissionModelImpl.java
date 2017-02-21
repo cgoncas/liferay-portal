@@ -351,7 +351,13 @@ public class ResourceTypePermissionModelImpl extends BaseModelImpl<ResourceTypeP
 
 	@Override
 	public Object clone() {
-		ResourceTypePermissionImpl resourceTypePermissionImpl = new ResourceTypePermissionImpl();
+		ResourceTypePermissionImpl resourceTypePermissionImpl = null;
+
+		try {
+			resourceTypePermissionImpl = (ResourceTypePermissionImpl)super.clone();
+		}
+		catch (CloneNotSupportedException e) {
+		}
 
 		resourceTypePermissionImpl.setMvccVersion(getMvccVersion());
 		resourceTypePermissionImpl.setResourceTypePermissionId(getResourceTypePermissionId());

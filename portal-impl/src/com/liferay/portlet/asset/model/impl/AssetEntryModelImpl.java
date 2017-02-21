@@ -1367,7 +1367,13 @@ public class AssetEntryModelImpl extends BaseModelImpl<AssetEntry>
 
 	@Override
 	public Object clone() {
-		AssetEntryImpl assetEntryImpl = new AssetEntryImpl();
+		AssetEntryImpl assetEntryImpl = null;
+
+		try {
+			assetEntryImpl = (AssetEntryImpl)super.clone();
+		}
+		catch (CloneNotSupportedException e) {
+		}
 
 		assetEntryImpl.setEntryId(getEntryId());
 		assetEntryImpl.setGroupId(getGroupId());

@@ -934,7 +934,13 @@ public class MDRActionModelImpl extends BaseModelImpl<MDRAction>
 
 	@Override
 	public Object clone() {
-		MDRActionImpl mdrActionImpl = new MDRActionImpl();
+		MDRActionImpl mdrActionImpl = null;
+
+		try {
+			mdrActionImpl = (MDRActionImpl)super.clone();
+		}
+		catch (CloneNotSupportedException e) {
+		}
 
 		mdrActionImpl.setUuid(getUuid());
 		mdrActionImpl.setActionId(getActionId());

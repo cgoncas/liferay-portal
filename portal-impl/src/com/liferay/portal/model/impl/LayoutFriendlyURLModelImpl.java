@@ -571,7 +571,13 @@ public class LayoutFriendlyURLModelImpl extends BaseModelImpl<LayoutFriendlyURL>
 
 	@Override
 	public Object clone() {
-		LayoutFriendlyURLImpl layoutFriendlyURLImpl = new LayoutFriendlyURLImpl();
+		LayoutFriendlyURLImpl layoutFriendlyURLImpl = null;
+
+		try {
+			layoutFriendlyURLImpl = (LayoutFriendlyURLImpl)super.clone();
+		}
+		catch (CloneNotSupportedException e) {
+		}
 
 		layoutFriendlyURLImpl.setMvccVersion(getMvccVersion());
 		layoutFriendlyURLImpl.setUuid(getUuid());

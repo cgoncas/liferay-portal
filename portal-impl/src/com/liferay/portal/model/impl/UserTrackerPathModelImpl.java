@@ -295,7 +295,13 @@ public class UserTrackerPathModelImpl extends BaseModelImpl<UserTrackerPath>
 
 	@Override
 	public Object clone() {
-		UserTrackerPathImpl userTrackerPathImpl = new UserTrackerPathImpl();
+		UserTrackerPathImpl userTrackerPathImpl = null;
+
+		try {
+			userTrackerPathImpl = (UserTrackerPathImpl)super.clone();
+		}
+		catch (CloneNotSupportedException e) {
+		}
 
 		userTrackerPathImpl.setMvccVersion(getMvccVersion());
 		userTrackerPathImpl.setUserTrackerPathId(getUserTrackerPathId());

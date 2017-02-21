@@ -459,7 +459,13 @@ public class ExpandoValueModelImpl extends BaseModelImpl<ExpandoValue>
 
 	@Override
 	public Object clone() {
-		ExpandoValueImpl expandoValueImpl = new ExpandoValueImpl();
+		ExpandoValueImpl expandoValueImpl = null;
+
+		try {
+			expandoValueImpl = (ExpandoValueImpl)super.clone();
+		}
+		catch (CloneNotSupportedException e) {
+		}
 
 		expandoValueImpl.setValueId(getValueId());
 		expandoValueImpl.setCompanyId(getCompanyId());

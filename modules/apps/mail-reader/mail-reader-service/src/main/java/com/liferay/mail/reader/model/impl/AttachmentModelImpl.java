@@ -376,7 +376,13 @@ public class AttachmentModelImpl extends BaseModelImpl<Attachment>
 
 	@Override
 	public Object clone() {
-		AttachmentImpl attachmentImpl = new AttachmentImpl();
+		AttachmentImpl attachmentImpl = null;
+
+		try {
+			attachmentImpl = (AttachmentImpl)super.clone();
+		}
+		catch (CloneNotSupportedException e) {
+		}
 
 		attachmentImpl.setAttachmentId(getAttachmentId());
 		attachmentImpl.setCompanyId(getCompanyId());

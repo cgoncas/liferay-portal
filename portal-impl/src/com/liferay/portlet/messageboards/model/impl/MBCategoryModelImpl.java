@@ -1024,7 +1024,13 @@ public class MBCategoryModelImpl extends BaseModelImpl<MBCategory>
 
 	@Override
 	public Object clone() {
-		MBCategoryImpl mbCategoryImpl = new MBCategoryImpl();
+		MBCategoryImpl mbCategoryImpl = null;
+
+		try {
+			mbCategoryImpl = (MBCategoryImpl)super.clone();
+		}
+		catch (CloneNotSupportedException e) {
+		}
 
 		mbCategoryImpl.setUuid(getUuid());
 		mbCategoryImpl.setCategoryId(getCategoryId());

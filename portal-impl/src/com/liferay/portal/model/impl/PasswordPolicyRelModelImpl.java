@@ -337,7 +337,13 @@ public class PasswordPolicyRelModelImpl extends BaseModelImpl<PasswordPolicyRel>
 
 	@Override
 	public Object clone() {
-		PasswordPolicyRelImpl passwordPolicyRelImpl = new PasswordPolicyRelImpl();
+		PasswordPolicyRelImpl passwordPolicyRelImpl = null;
+
+		try {
+			passwordPolicyRelImpl = (PasswordPolicyRelImpl)super.clone();
+		}
+		catch (CloneNotSupportedException e) {
+		}
 
 		passwordPolicyRelImpl.setMvccVersion(getMvccVersion());
 		passwordPolicyRelImpl.setPasswordPolicyRelId(getPasswordPolicyRelId());

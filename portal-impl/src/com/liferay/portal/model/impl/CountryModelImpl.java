@@ -476,7 +476,13 @@ public class CountryModelImpl extends BaseModelImpl<Country>
 
 	@Override
 	public Object clone() {
-		CountryImpl countryImpl = new CountryImpl();
+		CountryImpl countryImpl = null;
+
+		try {
+			countryImpl = (CountryImpl)super.clone();
+		}
+		catch (CloneNotSupportedException e) {
+		}
 
 		countryImpl.setMvccVersion(getMvccVersion());
 		countryImpl.setCountryId(getCountryId());

@@ -347,7 +347,13 @@ public class SyncDLFileVersionDiffModelImpl extends BaseModelImpl<SyncDLFileVers
 
 	@Override
 	public Object clone() {
-		SyncDLFileVersionDiffImpl syncDLFileVersionDiffImpl = new SyncDLFileVersionDiffImpl();
+		SyncDLFileVersionDiffImpl syncDLFileVersionDiffImpl = null;
+
+		try {
+			syncDLFileVersionDiffImpl = (SyncDLFileVersionDiffImpl)super.clone();
+		}
+		catch (CloneNotSupportedException e) {
+		}
 
 		syncDLFileVersionDiffImpl.setSyncDLFileVersionDiffId(getSyncDLFileVersionDiffId());
 		syncDLFileVersionDiffImpl.setFileEntryId(getFileEntryId());

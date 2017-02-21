@@ -482,7 +482,13 @@ public class PortletItemModelImpl extends BaseModelImpl<PortletItem>
 
 	@Override
 	public Object clone() {
-		PortletItemImpl portletItemImpl = new PortletItemImpl();
+		PortletItemImpl portletItemImpl = null;
+
+		try {
+			portletItemImpl = (PortletItemImpl)super.clone();
+		}
+		catch (CloneNotSupportedException e) {
+		}
 
 		portletItemImpl.setMvccVersion(getMvccVersion());
 		portletItemImpl.setPortletItemId(getPortletItemId());

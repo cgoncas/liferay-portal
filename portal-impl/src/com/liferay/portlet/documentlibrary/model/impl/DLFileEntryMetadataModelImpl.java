@@ -362,7 +362,13 @@ public class DLFileEntryMetadataModelImpl extends BaseModelImpl<DLFileEntryMetad
 
 	@Override
 	public Object clone() {
-		DLFileEntryMetadataImpl dlFileEntryMetadataImpl = new DLFileEntryMetadataImpl();
+		DLFileEntryMetadataImpl dlFileEntryMetadataImpl = null;
+
+		try {
+			dlFileEntryMetadataImpl = (DLFileEntryMetadataImpl)super.clone();
+		}
+		catch (CloneNotSupportedException e) {
+		}
 
 		dlFileEntryMetadataImpl.setUuid(getUuid());
 		dlFileEntryMetadataImpl.setFileEntryMetadataId(getFileEntryMetadataId());

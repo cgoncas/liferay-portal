@@ -559,7 +559,13 @@ public class SyncDeviceModelImpl extends BaseModelImpl<SyncDevice>
 
 	@Override
 	public Object clone() {
-		SyncDeviceImpl syncDeviceImpl = new SyncDeviceImpl();
+		SyncDeviceImpl syncDeviceImpl = null;
+
+		try {
+			syncDeviceImpl = (SyncDeviceImpl)super.clone();
+		}
+		catch (CloneNotSupportedException e) {
+		}
 
 		syncDeviceImpl.setUuid(getUuid());
 		syncDeviceImpl.setSyncDeviceId(getSyncDeviceId());

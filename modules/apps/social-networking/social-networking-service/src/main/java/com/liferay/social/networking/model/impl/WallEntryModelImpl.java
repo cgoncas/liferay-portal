@@ -380,7 +380,13 @@ public class WallEntryModelImpl extends BaseModelImpl<WallEntry>
 
 	@Override
 	public Object clone() {
-		WallEntryImpl wallEntryImpl = new WallEntryImpl();
+		WallEntryImpl wallEntryImpl = null;
+
+		try {
+			wallEntryImpl = (WallEntryImpl)super.clone();
+		}
+		catch (CloneNotSupportedException e) {
+		}
 
 		wallEntryImpl.setWallEntryId(getWallEntryId());
 		wallEntryImpl.setGroupId(getGroupId());

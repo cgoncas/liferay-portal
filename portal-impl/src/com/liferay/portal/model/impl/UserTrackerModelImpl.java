@@ -410,7 +410,13 @@ public class UserTrackerModelImpl extends BaseModelImpl<UserTracker>
 
 	@Override
 	public Object clone() {
-		UserTrackerImpl userTrackerImpl = new UserTrackerImpl();
+		UserTrackerImpl userTrackerImpl = null;
+
+		try {
+			userTrackerImpl = (UserTrackerImpl)super.clone();
+		}
+		catch (CloneNotSupportedException e) {
+		}
 
 		userTrackerImpl.setMvccVersion(getMvccVersion());
 		userTrackerImpl.setUserTrackerId(getUserTrackerId());

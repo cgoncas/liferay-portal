@@ -495,7 +495,13 @@ public class SubscriptionModelImpl extends BaseModelImpl<Subscription>
 
 	@Override
 	public Object clone() {
-		SubscriptionImpl subscriptionImpl = new SubscriptionImpl();
+		SubscriptionImpl subscriptionImpl = null;
+
+		try {
+			subscriptionImpl = (SubscriptionImpl)super.clone();
+		}
+		catch (CloneNotSupportedException e) {
+		}
 
 		subscriptionImpl.setMvccVersion(getMvccVersion());
 		subscriptionImpl.setSubscriptionId(getSubscriptionId());

@@ -317,7 +317,13 @@ public class PasswordTrackerModelImpl extends BaseModelImpl<PasswordTracker>
 
 	@Override
 	public Object clone() {
-		PasswordTrackerImpl passwordTrackerImpl = new PasswordTrackerImpl();
+		PasswordTrackerImpl passwordTrackerImpl = null;
+
+		try {
+			passwordTrackerImpl = (PasswordTrackerImpl)super.clone();
+		}
+		catch (CloneNotSupportedException e) {
+		}
 
 		passwordTrackerImpl.setMvccVersion(getMvccVersion());
 		passwordTrackerImpl.setPasswordTrackerId(getPasswordTrackerId());

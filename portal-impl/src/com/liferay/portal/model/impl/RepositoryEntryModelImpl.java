@@ -524,7 +524,13 @@ public class RepositoryEntryModelImpl extends BaseModelImpl<RepositoryEntry>
 
 	@Override
 	public Object clone() {
-		RepositoryEntryImpl repositoryEntryImpl = new RepositoryEntryImpl();
+		RepositoryEntryImpl repositoryEntryImpl = null;
+
+		try {
+			repositoryEntryImpl = (RepositoryEntryImpl)super.clone();
+		}
+		catch (CloneNotSupportedException e) {
+		}
 
 		repositoryEntryImpl.setMvccVersion(getMvccVersion());
 		repositoryEntryImpl.setUuid(getUuid());

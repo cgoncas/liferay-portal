@@ -386,7 +386,13 @@ public class RegionModelImpl extends BaseModelImpl<Region>
 
 	@Override
 	public Object clone() {
-		RegionImpl regionImpl = new RegionImpl();
+		RegionImpl regionImpl = null;
+
+		try {
+			regionImpl = (RegionImpl)super.clone();
+		}
+		catch (CloneNotSupportedException e) {
+		}
 
 		regionImpl.setMvccVersion(getMvccVersion());
 		regionImpl.setRegionId(getRegionId());

@@ -574,7 +574,13 @@ public class TeamModelImpl extends BaseModelImpl<Team> implements TeamModel {
 
 	@Override
 	public Object clone() {
-		TeamImpl teamImpl = new TeamImpl();
+		TeamImpl teamImpl = null;
+
+		try {
+			teamImpl = (TeamImpl)super.clone();
+		}
+		catch (CloneNotSupportedException e) {
+		}
 
 		teamImpl.setMvccVersion(getMvccVersion());
 		teamImpl.setUuid(getUuid());

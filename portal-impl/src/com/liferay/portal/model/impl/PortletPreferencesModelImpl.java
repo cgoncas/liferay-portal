@@ -434,7 +434,13 @@ public class PortletPreferencesModelImpl extends BaseModelImpl<PortletPreference
 
 	@Override
 	public Object clone() {
-		PortletPreferencesImpl portletPreferencesImpl = new PortletPreferencesImpl();
+		PortletPreferencesImpl portletPreferencesImpl = null;
+
+		try {
+			portletPreferencesImpl = (PortletPreferencesImpl)super.clone();
+		}
+		catch (CloneNotSupportedException e) {
+		}
 
 		portletPreferencesImpl.setMvccVersion(getMvccVersion());
 		portletPreferencesImpl.setPortletPreferencesId(getPortletPreferencesId());

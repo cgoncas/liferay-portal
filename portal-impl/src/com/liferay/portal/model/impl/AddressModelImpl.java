@@ -818,7 +818,13 @@ public class AddressModelImpl extends BaseModelImpl<Address>
 
 	@Override
 	public Object clone() {
-		AddressImpl addressImpl = new AddressImpl();
+		AddressImpl addressImpl = null;
+
+		try {
+			addressImpl = (AddressImpl)super.clone();
+		}
+		catch (CloneNotSupportedException e) {
+		}
 
 		addressImpl.setMvccVersion(getMvccVersion());
 		addressImpl.setUuid(getUuid());

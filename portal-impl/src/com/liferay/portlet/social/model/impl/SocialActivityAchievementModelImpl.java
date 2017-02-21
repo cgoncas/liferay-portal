@@ -376,7 +376,13 @@ public class SocialActivityAchievementModelImpl extends BaseModelImpl<SocialActi
 
 	@Override
 	public Object clone() {
-		SocialActivityAchievementImpl socialActivityAchievementImpl = new SocialActivityAchievementImpl();
+		SocialActivityAchievementImpl socialActivityAchievementImpl = null;
+
+		try {
+			socialActivityAchievementImpl = (SocialActivityAchievementImpl)super.clone();
+		}
+		catch (CloneNotSupportedException e) {
+		}
 
 		socialActivityAchievementImpl.setActivityAchievementId(getActivityAchievementId());
 		socialActivityAchievementImpl.setGroupId(getGroupId());

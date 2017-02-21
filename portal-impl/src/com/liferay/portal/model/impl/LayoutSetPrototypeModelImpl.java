@@ -818,7 +818,13 @@ public class LayoutSetPrototypeModelImpl extends BaseModelImpl<LayoutSetPrototyp
 
 	@Override
 	public Object clone() {
-		LayoutSetPrototypeImpl layoutSetPrototypeImpl = new LayoutSetPrototypeImpl();
+		LayoutSetPrototypeImpl layoutSetPrototypeImpl = null;
+
+		try {
+			layoutSetPrototypeImpl = (LayoutSetPrototypeImpl)super.clone();
+		}
+		catch (CloneNotSupportedException e) {
+		}
 
 		layoutSetPrototypeImpl.setMvccVersion(getMvccVersion());
 		layoutSetPrototypeImpl.setUuid(getUuid());

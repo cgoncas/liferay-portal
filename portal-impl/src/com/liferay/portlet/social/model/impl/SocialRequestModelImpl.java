@@ -661,7 +661,13 @@ public class SocialRequestModelImpl extends BaseModelImpl<SocialRequest>
 
 	@Override
 	public Object clone() {
-		SocialRequestImpl socialRequestImpl = new SocialRequestImpl();
+		SocialRequestImpl socialRequestImpl = null;
+
+		try {
+			socialRequestImpl = (SocialRequestImpl)super.clone();
+		}
+		catch (CloneNotSupportedException e) {
+		}
 
 		socialRequestImpl.setUuid(getUuid());
 		socialRequestImpl.setRequestId(getRequestId());

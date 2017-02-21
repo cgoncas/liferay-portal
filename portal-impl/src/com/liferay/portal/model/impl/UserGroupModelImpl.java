@@ -590,7 +590,13 @@ public class UserGroupModelImpl extends BaseModelImpl<UserGroup>
 
 	@Override
 	public Object clone() {
-		UserGroupImpl userGroupImpl = new UserGroupImpl();
+		UserGroupImpl userGroupImpl = null;
+
+		try {
+			userGroupImpl = (UserGroupImpl)super.clone();
+		}
+		catch (CloneNotSupportedException e) {
+		}
 
 		userGroupImpl.setMvccVersion(getMvccVersion());
 		userGroupImpl.setUuid(getUuid());

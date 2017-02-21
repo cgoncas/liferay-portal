@@ -537,7 +537,13 @@ public class MBBanModelImpl extends BaseModelImpl<MBBan> implements MBBanModel {
 
 	@Override
 	public Object clone() {
-		MBBanImpl mbBanImpl = new MBBanImpl();
+		MBBanImpl mbBanImpl = null;
+
+		try {
+			mbBanImpl = (MBBanImpl)super.clone();
+		}
+		catch (CloneNotSupportedException e) {
+		}
 
 		mbBanImpl.setUuid(getUuid());
 		mbBanImpl.setBanId(getBanId());

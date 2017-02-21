@@ -291,7 +291,13 @@ public class ResourceActionModelImpl extends BaseModelImpl<ResourceAction>
 
 	@Override
 	public Object clone() {
-		ResourceActionImpl resourceActionImpl = new ResourceActionImpl();
+		ResourceActionImpl resourceActionImpl = null;
+
+		try {
+			resourceActionImpl = (ResourceActionImpl)super.clone();
+		}
+		catch (CloneNotSupportedException e) {
+		}
 
 		resourceActionImpl.setMvccVersion(getMvccVersion());
 		resourceActionImpl.setResourceActionId(getResourceActionId());

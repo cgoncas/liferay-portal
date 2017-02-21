@@ -395,7 +395,13 @@ public class AnnouncementsFlagModelImpl extends BaseModelImpl<AnnouncementsFlag>
 
 	@Override
 	public Object clone() {
-		AnnouncementsFlagImpl announcementsFlagImpl = new AnnouncementsFlagImpl();
+		AnnouncementsFlagImpl announcementsFlagImpl = null;
+
+		try {
+			announcementsFlagImpl = (AnnouncementsFlagImpl)super.clone();
+		}
+		catch (CloneNotSupportedException e) {
+		}
 
 		announcementsFlagImpl.setFlagId(getFlagId());
 		announcementsFlagImpl.setCompanyId(getCompanyId());

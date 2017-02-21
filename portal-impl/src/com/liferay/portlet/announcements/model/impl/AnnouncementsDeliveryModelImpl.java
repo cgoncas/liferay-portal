@@ -421,7 +421,13 @@ public class AnnouncementsDeliveryModelImpl extends BaseModelImpl<AnnouncementsD
 
 	@Override
 	public Object clone() {
-		AnnouncementsDeliveryImpl announcementsDeliveryImpl = new AnnouncementsDeliveryImpl();
+		AnnouncementsDeliveryImpl announcementsDeliveryImpl = null;
+
+		try {
+			announcementsDeliveryImpl = (AnnouncementsDeliveryImpl)super.clone();
+		}
+		catch (CloneNotSupportedException e) {
+		}
 
 		announcementsDeliveryImpl.setDeliveryId(getDeliveryId());
 		announcementsDeliveryImpl.setCompanyId(getCompanyId());

@@ -393,7 +393,13 @@ public class ImageModelImpl extends BaseModelImpl<Image> implements ImageModel {
 
 	@Override
 	public Object clone() {
-		ImageImpl imageImpl = new ImageImpl();
+		ImageImpl imageImpl = null;
+
+		try {
+			imageImpl = (ImageImpl)super.clone();
+		}
+		catch (CloneNotSupportedException e) {
+		}
 
 		imageImpl.setMvccVersion(getMvccVersion());
 		imageImpl.setImageId(getImageId());

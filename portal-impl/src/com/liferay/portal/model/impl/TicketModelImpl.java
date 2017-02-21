@@ -450,7 +450,13 @@ public class TicketModelImpl extends BaseModelImpl<Ticket>
 
 	@Override
 	public Object clone() {
-		TicketImpl ticketImpl = new TicketImpl();
+		TicketImpl ticketImpl = null;
+
+		try {
+			ticketImpl = (TicketImpl)super.clone();
+		}
+		catch (CloneNotSupportedException e) {
+		}
 
 		ticketImpl.setMvccVersion(getMvccVersion());
 		ticketImpl.setTicketId(getTicketId());

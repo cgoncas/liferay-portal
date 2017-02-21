@@ -362,7 +362,13 @@ public class TrashVersionModelImpl extends BaseModelImpl<TrashVersion>
 
 	@Override
 	public Object clone() {
-		TrashVersionImpl trashVersionImpl = new TrashVersionImpl();
+		TrashVersionImpl trashVersionImpl = null;
+
+		try {
+			trashVersionImpl = (TrashVersionImpl)super.clone();
+		}
+		catch (CloneNotSupportedException e) {
+		}
 
 		trashVersionImpl.setVersionId(getVersionId());
 		trashVersionImpl.setCompanyId(getCompanyId());

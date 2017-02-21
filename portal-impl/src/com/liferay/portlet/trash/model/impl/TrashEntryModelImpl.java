@@ -552,7 +552,13 @@ public class TrashEntryModelImpl extends BaseModelImpl<TrashEntry>
 
 	@Override
 	public Object clone() {
-		TrashEntryImpl trashEntryImpl = new TrashEntryImpl();
+		TrashEntryImpl trashEntryImpl = null;
+
+		try {
+			trashEntryImpl = (TrashEntryImpl)super.clone();
+		}
+		catch (CloneNotSupportedException e) {
+		}
 
 		trashEntryImpl.setEntryId(getEntryId());
 		trashEntryImpl.setGroupId(getGroupId());

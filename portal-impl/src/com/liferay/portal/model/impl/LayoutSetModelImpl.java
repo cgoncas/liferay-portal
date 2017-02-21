@@ -633,7 +633,13 @@ public class LayoutSetModelImpl extends BaseModelImpl<LayoutSet>
 
 	@Override
 	public Object clone() {
-		LayoutSetImpl layoutSetImpl = new LayoutSetImpl();
+		LayoutSetImpl layoutSetImpl = null;
+
+		try {
+			layoutSetImpl = (LayoutSetImpl)super.clone();
+		}
+		catch (CloneNotSupportedException e) {
+		}
 
 		layoutSetImpl.setMvccVersion(getMvccVersion());
 		layoutSetImpl.setLayoutSetId(getLayoutSetId());

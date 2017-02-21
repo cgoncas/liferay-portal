@@ -408,7 +408,13 @@ public class PluginSettingModelImpl extends BaseModelImpl<PluginSetting>
 
 	@Override
 	public Object clone() {
-		PluginSettingImpl pluginSettingImpl = new PluginSettingImpl();
+		PluginSettingImpl pluginSettingImpl = null;
+
+		try {
+			pluginSettingImpl = (PluginSettingImpl)super.clone();
+		}
+		catch (CloneNotSupportedException e) {
+		}
 
 		pluginSettingImpl.setMvccVersion(getMvccVersion());
 		pluginSettingImpl.setPluginSettingId(getPluginSettingId());

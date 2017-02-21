@@ -684,7 +684,13 @@ public class RepositoryModelImpl extends BaseModelImpl<Repository>
 
 	@Override
 	public Object clone() {
-		RepositoryImpl repositoryImpl = new RepositoryImpl();
+		RepositoryImpl repositoryImpl = null;
+
+		try {
+			repositoryImpl = (RepositoryImpl)super.clone();
+		}
+		catch (CloneNotSupportedException e) {
+		}
 
 		repositoryImpl.setMvccVersion(getMvccVersion());
 		repositoryImpl.setUuid(getUuid());

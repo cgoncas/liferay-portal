@@ -485,7 +485,13 @@ public class SocialActivitySetModelImpl extends BaseModelImpl<SocialActivitySet>
 
 	@Override
 	public Object clone() {
-		SocialActivitySetImpl socialActivitySetImpl = new SocialActivitySetImpl();
+		SocialActivitySetImpl socialActivitySetImpl = null;
+
+		try {
+			socialActivitySetImpl = (SocialActivitySetImpl)super.clone();
+		}
+		catch (CloneNotSupportedException e) {
+		}
 
 		socialActivitySetImpl.setActivitySetId(getActivitySetId());
 		socialActivitySetImpl.setGroupId(getGroupId());

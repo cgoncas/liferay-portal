@@ -384,7 +384,13 @@ public class ModuleModelImpl extends BaseModelImpl<Module>
 
 	@Override
 	public Object clone() {
-		ModuleImpl moduleImpl = new ModuleImpl();
+		ModuleImpl moduleImpl = null;
+
+		try {
+			moduleImpl = (ModuleImpl)super.clone();
+		}
+		catch (CloneNotSupportedException e) {
+		}
 
 		moduleImpl.setUuid(getUuid());
 		moduleImpl.setModuleId(getModuleId());

@@ -397,7 +397,13 @@ public class ShoppingItemPriceModelImpl extends BaseModelImpl<ShoppingItemPrice>
 
 	@Override
 	public Object clone() {
-		ShoppingItemPriceImpl shoppingItemPriceImpl = new ShoppingItemPriceImpl();
+		ShoppingItemPriceImpl shoppingItemPriceImpl = null;
+
+		try {
+			shoppingItemPriceImpl = (ShoppingItemPriceImpl)super.clone();
+		}
+		catch (CloneNotSupportedException e) {
+		}
 
 		shoppingItemPriceImpl.setItemPriceId(getItemPriceId());
 		shoppingItemPriceImpl.setCompanyId(getCompanyId());

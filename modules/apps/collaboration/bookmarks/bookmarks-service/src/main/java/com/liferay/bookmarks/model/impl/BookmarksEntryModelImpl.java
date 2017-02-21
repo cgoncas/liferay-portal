@@ -1038,7 +1038,13 @@ public class BookmarksEntryModelImpl extends BaseModelImpl<BookmarksEntry>
 
 	@Override
 	public Object clone() {
-		BookmarksEntryImpl bookmarksEntryImpl = new BookmarksEntryImpl();
+		BookmarksEntryImpl bookmarksEntryImpl = null;
+
+		try {
+			bookmarksEntryImpl = (BookmarksEntryImpl)super.clone();
+		}
+		catch (CloneNotSupportedException e) {
+		}
 
 		bookmarksEntryImpl.setUuid(getUuid());
 		bookmarksEntryImpl.setEntryId(getEntryId());

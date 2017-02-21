@@ -530,7 +530,13 @@ public class KBTemplateModelImpl extends BaseModelImpl<KBTemplate>
 
 	@Override
 	public Object clone() {
-		KBTemplateImpl kbTemplateImpl = new KBTemplateImpl();
+		KBTemplateImpl kbTemplateImpl = null;
+
+		try {
+			kbTemplateImpl = (KBTemplateImpl)super.clone();
+		}
+		catch (CloneNotSupportedException e) {
+		}
 
 		kbTemplateImpl.setUuid(getUuid());
 		kbTemplateImpl.setKbTemplateId(getKbTemplateId());

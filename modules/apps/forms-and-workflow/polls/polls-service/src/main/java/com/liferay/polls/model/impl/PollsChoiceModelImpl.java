@@ -727,7 +727,13 @@ public class PollsChoiceModelImpl extends BaseModelImpl<PollsChoice>
 
 	@Override
 	public Object clone() {
-		PollsChoiceImpl pollsChoiceImpl = new PollsChoiceImpl();
+		PollsChoiceImpl pollsChoiceImpl = null;
+
+		try {
+			pollsChoiceImpl = (PollsChoiceImpl)super.clone();
+		}
+		catch (CloneNotSupportedException e) {
+		}
 
 		pollsChoiceImpl.setUuid(getUuid());
 		pollsChoiceImpl.setChoiceId(getChoiceId());

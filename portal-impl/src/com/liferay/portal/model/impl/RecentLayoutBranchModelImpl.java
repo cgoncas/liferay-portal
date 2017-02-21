@@ -398,7 +398,13 @@ public class RecentLayoutBranchModelImpl extends BaseModelImpl<RecentLayoutBranc
 
 	@Override
 	public Object clone() {
-		RecentLayoutBranchImpl recentLayoutBranchImpl = new RecentLayoutBranchImpl();
+		RecentLayoutBranchImpl recentLayoutBranchImpl = null;
+
+		try {
+			recentLayoutBranchImpl = (RecentLayoutBranchImpl)super.clone();
+		}
+		catch (CloneNotSupportedException e) {
+		}
 
 		recentLayoutBranchImpl.setMvccVersion(getMvccVersion());
 		recentLayoutBranchImpl.setRecentLayoutBranchId(getRecentLayoutBranchId());

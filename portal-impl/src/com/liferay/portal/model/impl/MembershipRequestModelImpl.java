@@ -525,7 +525,13 @@ public class MembershipRequestModelImpl extends BaseModelImpl<MembershipRequest>
 
 	@Override
 	public Object clone() {
-		MembershipRequestImpl membershipRequestImpl = new MembershipRequestImpl();
+		MembershipRequestImpl membershipRequestImpl = null;
+
+		try {
+			membershipRequestImpl = (MembershipRequestImpl)super.clone();
+		}
+		catch (CloneNotSupportedException e) {
+		}
 
 		membershipRequestImpl.setMvccVersion(getMvccVersion());
 		membershipRequestImpl.setMembershipRequestId(getMembershipRequestId());

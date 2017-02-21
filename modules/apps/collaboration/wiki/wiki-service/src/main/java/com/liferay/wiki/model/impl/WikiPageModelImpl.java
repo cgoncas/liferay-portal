@@ -1219,7 +1219,13 @@ public class WikiPageModelImpl extends BaseModelImpl<WikiPage>
 
 	@Override
 	public Object clone() {
-		WikiPageImpl wikiPageImpl = new WikiPageImpl();
+		WikiPageImpl wikiPageImpl = null;
+
+		try {
+			wikiPageImpl = (WikiPageImpl)super.clone();
+		}
+		catch (CloneNotSupportedException e) {
+		}
 
 		wikiPageImpl.setUuid(getUuid());
 		wikiPageImpl.setPageId(getPageId());

@@ -499,7 +499,13 @@ public class MeetupsEntryModelImpl extends BaseModelImpl<MeetupsEntry>
 
 	@Override
 	public Object clone() {
-		MeetupsEntryImpl meetupsEntryImpl = new MeetupsEntryImpl();
+		MeetupsEntryImpl meetupsEntryImpl = null;
+
+		try {
+			meetupsEntryImpl = (MeetupsEntryImpl)super.clone();
+		}
+		catch (CloneNotSupportedException e) {
+		}
 
 		meetupsEntryImpl.setMeetupsEntryId(getMeetupsEntryId());
 		meetupsEntryImpl.setCompanyId(getCompanyId());

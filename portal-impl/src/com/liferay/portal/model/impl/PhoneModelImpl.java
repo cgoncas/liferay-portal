@@ -657,7 +657,13 @@ public class PhoneModelImpl extends BaseModelImpl<Phone> implements PhoneModel {
 
 	@Override
 	public Object clone() {
-		PhoneImpl phoneImpl = new PhoneImpl();
+		PhoneImpl phoneImpl = null;
+
+		try {
+			phoneImpl = (PhoneImpl)super.clone();
+		}
+		catch (CloneNotSupportedException e) {
+		}
 
 		phoneImpl.setMvccVersion(getMvccVersion());
 		phoneImpl.setUuid(getUuid());

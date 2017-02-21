@@ -288,7 +288,13 @@ public class PortalPreferencesModelImpl extends BaseModelImpl<PortalPreferences>
 
 	@Override
 	public Object clone() {
-		PortalPreferencesImpl portalPreferencesImpl = new PortalPreferencesImpl();
+		PortalPreferencesImpl portalPreferencesImpl = null;
+
+		try {
+			portalPreferencesImpl = (PortalPreferencesImpl)super.clone();
+		}
+		catch (CloneNotSupportedException e) {
+		}
 
 		portalPreferencesImpl.setMvccVersion(getMvccVersion());
 		portalPreferencesImpl.setPortalPreferencesId(getPortalPreferencesId());

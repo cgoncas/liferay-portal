@@ -426,7 +426,13 @@ public class WSRPProducerModelImpl extends BaseModelImpl<WSRPProducer>
 
 	@Override
 	public Object clone() {
-		WSRPProducerImpl wsrpProducerImpl = new WSRPProducerImpl();
+		WSRPProducerImpl wsrpProducerImpl = null;
+
+		try {
+			wsrpProducerImpl = (WSRPProducerImpl)super.clone();
+		}
+		catch (CloneNotSupportedException e) {
+		}
 
 		wsrpProducerImpl.setUuid(getUuid());
 		wsrpProducerImpl.setWsrpProducerId(getWsrpProducerId());

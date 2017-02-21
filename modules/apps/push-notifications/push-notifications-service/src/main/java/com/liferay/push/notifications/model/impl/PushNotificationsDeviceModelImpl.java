@@ -401,7 +401,13 @@ public class PushNotificationsDeviceModelImpl extends BaseModelImpl<PushNotifica
 
 	@Override
 	public Object clone() {
-		PushNotificationsDeviceImpl pushNotificationsDeviceImpl = new PushNotificationsDeviceImpl();
+		PushNotificationsDeviceImpl pushNotificationsDeviceImpl = null;
+
+		try {
+			pushNotificationsDeviceImpl = (PushNotificationsDeviceImpl)super.clone();
+		}
+		catch (CloneNotSupportedException e) {
+		}
 
 		pushNotificationsDeviceImpl.setPushNotificationsDeviceId(getPushNotificationsDeviceId());
 		pushNotificationsDeviceImpl.setCompanyId(getCompanyId());

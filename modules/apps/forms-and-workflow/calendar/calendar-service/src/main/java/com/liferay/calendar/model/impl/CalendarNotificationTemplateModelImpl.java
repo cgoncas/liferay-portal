@@ -668,7 +668,13 @@ public class CalendarNotificationTemplateModelImpl extends BaseModelImpl<Calenda
 
 	@Override
 	public Object clone() {
-		CalendarNotificationTemplateImpl calendarNotificationTemplateImpl = new CalendarNotificationTemplateImpl();
+		CalendarNotificationTemplateImpl calendarNotificationTemplateImpl = null;
+
+		try {
+			calendarNotificationTemplateImpl = (CalendarNotificationTemplateImpl)super.clone();
+		}
+		catch (CloneNotSupportedException e) {
+		}
 
 		calendarNotificationTemplateImpl.setUuid(getUuid());
 		calendarNotificationTemplateImpl.setCalendarNotificationTemplateId(getCalendarNotificationTemplateId());

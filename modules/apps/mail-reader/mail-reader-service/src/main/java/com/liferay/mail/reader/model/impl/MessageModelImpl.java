@@ -661,7 +661,13 @@ public class MessageModelImpl extends BaseModelImpl<Message>
 
 	@Override
 	public Object clone() {
-		MessageImpl messageImpl = new MessageImpl();
+		MessageImpl messageImpl = null;
+
+		try {
+			messageImpl = (MessageImpl)super.clone();
+		}
+		catch (CloneNotSupportedException e) {
+		}
 
 		messageImpl.setMessageId(getMessageId());
 		messageImpl.setCompanyId(getCompanyId());

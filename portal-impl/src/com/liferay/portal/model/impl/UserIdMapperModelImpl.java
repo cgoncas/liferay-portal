@@ -364,7 +364,13 @@ public class UserIdMapperModelImpl extends BaseModelImpl<UserIdMapper>
 
 	@Override
 	public Object clone() {
-		UserIdMapperImpl userIdMapperImpl = new UserIdMapperImpl();
+		UserIdMapperImpl userIdMapperImpl = null;
+
+		try {
+			userIdMapperImpl = (UserIdMapperImpl)super.clone();
+		}
+		catch (CloneNotSupportedException e) {
+		}
 
 		userIdMapperImpl.setMvccVersion(getMvccVersion());
 		userIdMapperImpl.setUserIdMapperId(getUserIdMapperId());

@@ -306,7 +306,13 @@ public class ClassNameModelImpl extends BaseModelImpl<ClassName>
 
 	@Override
 	public Object clone() {
-		ClassNameImpl classNameImpl = new ClassNameImpl();
+		ClassNameImpl classNameImpl = null;
+
+		try {
+			classNameImpl = (ClassNameImpl)super.clone();
+		}
+		catch (CloneNotSupportedException e) {
+		}
 
 		classNameImpl.setMvccVersion(getMvccVersion());
 		classNameImpl.setClassNameId(getClassNameId());

@@ -1232,7 +1232,13 @@ public class MBMessageModelImpl extends BaseModelImpl<MBMessage>
 
 	@Override
 	public Object clone() {
-		MBMessageImpl mbMessageImpl = new MBMessageImpl();
+		MBMessageImpl mbMessageImpl = null;
+
+		try {
+			mbMessageImpl = (MBMessageImpl)super.clone();
+		}
+		catch (CloneNotSupportedException e) {
+		}
 
 		mbMessageImpl.setUuid(getUuid());
 		mbMessageImpl.setMessageId(getMessageId());

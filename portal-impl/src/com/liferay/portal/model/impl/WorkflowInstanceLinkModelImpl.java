@@ -480,7 +480,13 @@ public class WorkflowInstanceLinkModelImpl extends BaseModelImpl<WorkflowInstanc
 
 	@Override
 	public Object clone() {
-		WorkflowInstanceLinkImpl workflowInstanceLinkImpl = new WorkflowInstanceLinkImpl();
+		WorkflowInstanceLinkImpl workflowInstanceLinkImpl = null;
+
+		try {
+			workflowInstanceLinkImpl = (WorkflowInstanceLinkImpl)super.clone();
+		}
+		catch (CloneNotSupportedException e) {
+		}
 
 		workflowInstanceLinkImpl.setMvccVersion(getMvccVersion());
 		workflowInstanceLinkImpl.setWorkflowInstanceLinkId(getWorkflowInstanceLinkId());

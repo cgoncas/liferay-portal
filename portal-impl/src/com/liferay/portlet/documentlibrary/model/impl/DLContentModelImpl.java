@@ -394,7 +394,13 @@ public class DLContentModelImpl extends BaseModelImpl<DLContent>
 
 	@Override
 	public Object clone() {
-		DLContentImpl dlContentImpl = new DLContentImpl();
+		DLContentImpl dlContentImpl = null;
+
+		try {
+			dlContentImpl = (DLContentImpl)super.clone();
+		}
+		catch (CloneNotSupportedException e) {
+		}
 
 		dlContentImpl.setContentId(getContentId());
 		dlContentImpl.setGroupId(getGroupId());

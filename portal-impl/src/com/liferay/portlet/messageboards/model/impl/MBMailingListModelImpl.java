@@ -833,7 +833,13 @@ public class MBMailingListModelImpl extends BaseModelImpl<MBMailingList>
 
 	@Override
 	public Object clone() {
-		MBMailingListImpl mbMailingListImpl = new MBMailingListImpl();
+		MBMailingListImpl mbMailingListImpl = null;
+
+		try {
+			mbMailingListImpl = (MBMailingListImpl)super.clone();
+		}
+		catch (CloneNotSupportedException e) {
+		}
 
 		mbMailingListImpl.setUuid(getUuid());
 		mbMailingListImpl.setMailingListId(getMailingListId());

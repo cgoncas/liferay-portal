@@ -496,7 +496,13 @@ public class MemberRequestModelImpl extends BaseModelImpl<MemberRequest>
 
 	@Override
 	public Object clone() {
-		MemberRequestImpl memberRequestImpl = new MemberRequestImpl();
+		MemberRequestImpl memberRequestImpl = null;
+
+		try {
+			memberRequestImpl = (MemberRequestImpl)super.clone();
+		}
+		catch (CloneNotSupportedException e) {
+		}
 
 		memberRequestImpl.setMemberRequestId(getMemberRequestId());
 		memberRequestImpl.setGroupId(getGroupId());

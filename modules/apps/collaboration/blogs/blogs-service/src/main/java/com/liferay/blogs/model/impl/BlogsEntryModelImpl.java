@@ -1248,7 +1248,13 @@ public class BlogsEntryModelImpl extends BaseModelImpl<BlogsEntry>
 
 	@Override
 	public Object clone() {
-		BlogsEntryImpl blogsEntryImpl = new BlogsEntryImpl();
+		BlogsEntryImpl blogsEntryImpl = null;
+
+		try {
+			blogsEntryImpl = (BlogsEntryImpl)super.clone();
+		}
+		catch (CloneNotSupportedException e) {
+		}
 
 		blogsEntryImpl.setUuid(getUuid());
 		blogsEntryImpl.setEntryId(getEntryId());

@@ -789,7 +789,13 @@ public class MDRRuleGroupModelImpl extends BaseModelImpl<MDRRuleGroup>
 
 	@Override
 	public Object clone() {
-		MDRRuleGroupImpl mdrRuleGroupImpl = new MDRRuleGroupImpl();
+		MDRRuleGroupImpl mdrRuleGroupImpl = null;
+
+		try {
+			mdrRuleGroupImpl = (MDRRuleGroupImpl)super.clone();
+		}
+		catch (CloneNotSupportedException e) {
+		}
 
 		mdrRuleGroupImpl.setUuid(getUuid());
 		mdrRuleGroupImpl.setRuleGroupId(getRuleGroupId());

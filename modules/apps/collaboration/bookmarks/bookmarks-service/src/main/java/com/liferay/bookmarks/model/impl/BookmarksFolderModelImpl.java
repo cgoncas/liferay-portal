@@ -996,7 +996,13 @@ public class BookmarksFolderModelImpl extends BaseModelImpl<BookmarksFolder>
 
 	@Override
 	public Object clone() {
-		BookmarksFolderImpl bookmarksFolderImpl = new BookmarksFolderImpl();
+		BookmarksFolderImpl bookmarksFolderImpl = null;
+
+		try {
+			bookmarksFolderImpl = (BookmarksFolderImpl)super.clone();
+		}
+		catch (CloneNotSupportedException e) {
+		}
 
 		bookmarksFolderImpl.setUuid(getUuid());
 		bookmarksFolderImpl.setFolderId(getFolderId());

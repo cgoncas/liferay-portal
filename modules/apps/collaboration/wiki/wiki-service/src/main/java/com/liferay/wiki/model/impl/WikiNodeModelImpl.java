@@ -916,7 +916,13 @@ public class WikiNodeModelImpl extends BaseModelImpl<WikiNode>
 
 	@Override
 	public Object clone() {
-		WikiNodeImpl wikiNodeImpl = new WikiNodeImpl();
+		WikiNodeImpl wikiNodeImpl = null;
+
+		try {
+			wikiNodeImpl = (WikiNodeImpl)super.clone();
+		}
+		catch (CloneNotSupportedException e) {
+		}
 
 		wikiNodeImpl.setUuid(getUuid());
 		wikiNodeImpl.setNodeId(getNodeId());

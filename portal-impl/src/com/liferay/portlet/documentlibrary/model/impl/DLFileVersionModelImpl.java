@@ -1101,7 +1101,13 @@ public class DLFileVersionModelImpl extends BaseModelImpl<DLFileVersion>
 
 	@Override
 	public Object clone() {
-		DLFileVersionImpl dlFileVersionImpl = new DLFileVersionImpl();
+		DLFileVersionImpl dlFileVersionImpl = null;
+
+		try {
+			dlFileVersionImpl = (DLFileVersionImpl)super.clone();
+		}
+		catch (CloneNotSupportedException e) {
+		}
 
 		dlFileVersionImpl.setUuid(getUuid());
 		dlFileVersionImpl.setFileVersionId(getFileVersionId());

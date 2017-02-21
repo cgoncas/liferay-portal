@@ -621,7 +621,13 @@ public class MDRRuleGroupInstanceModelImpl extends BaseModelImpl<MDRRuleGroupIns
 
 	@Override
 	public Object clone() {
-		MDRRuleGroupInstanceImpl mdrRuleGroupInstanceImpl = new MDRRuleGroupInstanceImpl();
+		MDRRuleGroupInstanceImpl mdrRuleGroupInstanceImpl = null;
+
+		try {
+			mdrRuleGroupInstanceImpl = (MDRRuleGroupInstanceImpl)super.clone();
+		}
+		catch (CloneNotSupportedException e) {
+		}
 
 		mdrRuleGroupInstanceImpl.setUuid(getUuid());
 		mdrRuleGroupInstanceImpl.setRuleGroupInstanceId(getRuleGroupInstanceId());

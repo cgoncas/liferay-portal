@@ -1137,7 +1137,13 @@ public class ShoppingItemModelImpl extends BaseModelImpl<ShoppingItem>
 
 	@Override
 	public Object clone() {
-		ShoppingItemImpl shoppingItemImpl = new ShoppingItemImpl();
+		ShoppingItemImpl shoppingItemImpl = null;
+
+		try {
+			shoppingItemImpl = (ShoppingItemImpl)super.clone();
+		}
+		catch (CloneNotSupportedException e) {
+		}
 
 		shoppingItemImpl.setItemId(getItemId());
 		shoppingItemImpl.setGroupId(getGroupId());
