@@ -870,7 +870,13 @@ public class ${entity.name}Clp extends BaseModelImpl<${entity.name}> implements 
 
 	@Override
 	public Object clone() {
-		${entity.name}Clp clone = new ${entity.name}Clp();
+		${entity.name}Clp ${entity.varName}Impl = clone;
+
+		try {
+			{entity.varName}Impl = (${entity.name}Clp)super.clone();
+		}
+		catch (CloneNotSupportedException e) {
+		}
 
 		<#list entity.regularColList as column>
 			clone.set${column.methodName}(

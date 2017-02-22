@@ -1682,7 +1682,13 @@ public class LayoutModelImpl extends BaseModelImpl<Layout>
 
 	@Override
 	public Object clone() {
-		LayoutImpl layoutImpl = new LayoutImpl();
+		LayoutImpl layoutImpl = null;
+
+		try {
+			layoutImpl = (LayoutImpl)super.clone();
+		}
+		catch (CloneNotSupportedException e) {
+		}
 
 		layoutImpl.setMvccVersion(getMvccVersion());
 		layoutImpl.setUuid(getUuid());

@@ -849,7 +849,13 @@ public class AssetVocabularyModelImpl extends BaseModelImpl<AssetVocabulary>
 
 	@Override
 	public Object clone() {
-		AssetVocabularyImpl assetVocabularyImpl = new AssetVocabularyImpl();
+		AssetVocabularyImpl assetVocabularyImpl = null;
+
+		try {
+			assetVocabularyImpl = (AssetVocabularyImpl)super.clone();
+		}
+		catch (CloneNotSupportedException e) {
+		}
 
 		assetVocabularyImpl.setUuid(getUuid());
 		assetVocabularyImpl.setVocabularyId(getVocabularyId());

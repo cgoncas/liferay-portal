@@ -487,7 +487,13 @@ public class EntryModelImpl extends BaseModelImpl<Entry> implements EntryModel {
 
 	@Override
 	public Object clone() {
-		EntryImpl entryImpl = new EntryImpl();
+		EntryImpl entryImpl = null;
+
+		try {
+			entryImpl = (EntryImpl)super.clone();
+		}
+		catch (CloneNotSupportedException e) {
+		}
 
 		entryImpl.setEntryId(getEntryId());
 		entryImpl.setGroupId(getGroupId());

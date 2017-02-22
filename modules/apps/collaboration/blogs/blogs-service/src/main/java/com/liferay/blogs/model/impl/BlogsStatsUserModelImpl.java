@@ -434,7 +434,13 @@ public class BlogsStatsUserModelImpl extends BaseModelImpl<BlogsStatsUser>
 
 	@Override
 	public Object clone() {
-		BlogsStatsUserImpl blogsStatsUserImpl = new BlogsStatsUserImpl();
+		BlogsStatsUserImpl blogsStatsUserImpl = null;
+
+		try {
+			blogsStatsUserImpl = (BlogsStatsUserImpl)super.clone();
+		}
+		catch (CloneNotSupportedException e) {
+		}
 
 		blogsStatsUserImpl.setStatsUserId(getStatsUserId());
 		blogsStatsUserImpl.setGroupId(getGroupId());

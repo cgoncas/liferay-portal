@@ -474,7 +474,13 @@ public class AssetCategoryPropertyModelImpl extends BaseModelImpl<AssetCategoryP
 
 	@Override
 	public Object clone() {
-		AssetCategoryPropertyImpl assetCategoryPropertyImpl = new AssetCategoryPropertyImpl();
+		AssetCategoryPropertyImpl assetCategoryPropertyImpl = null;
+
+		try {
+			assetCategoryPropertyImpl = (AssetCategoryPropertyImpl)super.clone();
+		}
+		catch (CloneNotSupportedException e) {
+		}
 
 		assetCategoryPropertyImpl.setCategoryPropertyId(getCategoryPropertyId());
 		assetCategoryPropertyImpl.setCompanyId(getCompanyId());

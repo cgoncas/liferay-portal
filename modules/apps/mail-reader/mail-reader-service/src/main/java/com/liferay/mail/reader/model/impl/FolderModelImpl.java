@@ -418,7 +418,13 @@ public class FolderModelImpl extends BaseModelImpl<Folder>
 
 	@Override
 	public Object clone() {
-		FolderImpl folderImpl = new FolderImpl();
+		FolderImpl folderImpl = null;
+
+		try {
+			folderImpl = (FolderImpl)super.clone();
+		}
+		catch (CloneNotSupportedException e) {
+		}
 
 		folderImpl.setFolderId(getFolderId());
 		folderImpl.setCompanyId(getCompanyId());

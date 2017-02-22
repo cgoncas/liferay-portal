@@ -964,7 +964,13 @@ public class DLFileShortcutModelImpl extends BaseModelImpl<DLFileShortcut>
 
 	@Override
 	public Object clone() {
-		DLFileShortcutImpl dlFileShortcutImpl = new DLFileShortcutImpl();
+		DLFileShortcutImpl dlFileShortcutImpl = null;
+
+		try {
+			dlFileShortcutImpl = (DLFileShortcutImpl)super.clone();
+		}
+		catch (CloneNotSupportedException e) {
+		}
 
 		dlFileShortcutImpl.setUuid(getUuid());
 		dlFileShortcutImpl.setFileShortcutId(getFileShortcutId());

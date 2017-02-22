@@ -609,7 +609,13 @@ public class KBFolderModelImpl extends BaseModelImpl<KBFolder>
 
 	@Override
 	public Object clone() {
-		KBFolderImpl kbFolderImpl = new KBFolderImpl();
+		KBFolderImpl kbFolderImpl = null;
+
+		try {
+			kbFolderImpl = (KBFolderImpl)super.clone();
+		}
+		catch (CloneNotSupportedException e) {
+		}
 
 		kbFolderImpl.setUuid(getUuid());
 		kbFolderImpl.setKbFolderId(getKbFolderId());

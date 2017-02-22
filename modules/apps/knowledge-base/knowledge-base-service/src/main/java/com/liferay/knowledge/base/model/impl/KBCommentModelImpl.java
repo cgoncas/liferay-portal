@@ -661,7 +661,13 @@ public class KBCommentModelImpl extends BaseModelImpl<KBComment>
 
 	@Override
 	public Object clone() {
-		KBCommentImpl kbCommentImpl = new KBCommentImpl();
+		KBCommentImpl kbCommentImpl = null;
+
+		try {
+			kbCommentImpl = (KBCommentImpl)super.clone();
+		}
+		catch (CloneNotSupportedException e) {
+		}
 
 		kbCommentImpl.setUuid(getUuid());
 		kbCommentImpl.setKbCommentId(getKbCommentId());

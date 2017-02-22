@@ -449,7 +449,13 @@ public class UserNotificationDeliveryModelImpl extends BaseModelImpl<UserNotific
 
 	@Override
 	public Object clone() {
-		UserNotificationDeliveryImpl userNotificationDeliveryImpl = new UserNotificationDeliveryImpl();
+		UserNotificationDeliveryImpl userNotificationDeliveryImpl = null;
+
+		try {
+			userNotificationDeliveryImpl = (UserNotificationDeliveryImpl)super.clone();
+		}
+		catch (CloneNotSupportedException e) {
+		}
 
 		userNotificationDeliveryImpl.setMvccVersion(getMvccVersion());
 		userNotificationDeliveryImpl.setUserNotificationDeliveryId(getUserNotificationDeliveryId());

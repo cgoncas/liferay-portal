@@ -346,7 +346,13 @@ public class WikiPageResourceModelImpl extends BaseModelImpl<WikiPageResource>
 
 	@Override
 	public Object clone() {
-		WikiPageResourceImpl wikiPageResourceImpl = new WikiPageResourceImpl();
+		WikiPageResourceImpl wikiPageResourceImpl = null;
+
+		try {
+			wikiPageResourceImpl = (WikiPageResourceImpl)super.clone();
+		}
+		catch (CloneNotSupportedException e) {
+		}
 
 		wikiPageResourceImpl.setUuid(getUuid());
 		wikiPageResourceImpl.setResourcePrimKey(getResourcePrimKey());

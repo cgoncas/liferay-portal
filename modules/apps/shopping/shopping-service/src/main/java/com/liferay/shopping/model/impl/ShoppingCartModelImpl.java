@@ -444,7 +444,13 @@ public class ShoppingCartModelImpl extends BaseModelImpl<ShoppingCart>
 
 	@Override
 	public Object clone() {
-		ShoppingCartImpl shoppingCartImpl = new ShoppingCartImpl();
+		ShoppingCartImpl shoppingCartImpl = null;
+
+		try {
+			shoppingCartImpl = (ShoppingCartImpl)super.clone();
+		}
+		catch (CloneNotSupportedException e) {
+		}
 
 		shoppingCartImpl.setCartId(getCartId());
 		shoppingCartImpl.setGroupId(getGroupId());

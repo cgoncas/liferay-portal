@@ -572,7 +572,13 @@ public class SystemEventModelImpl extends BaseModelImpl<SystemEvent>
 
 	@Override
 	public Object clone() {
-		SystemEventImpl systemEventImpl = new SystemEventImpl();
+		SystemEventImpl systemEventImpl = null;
+
+		try {
+			systemEventImpl = (SystemEventImpl)super.clone();
+		}
+		catch (CloneNotSupportedException e) {
+		}
 
 		systemEventImpl.setMvccVersion(getMvccVersion());
 		systemEventImpl.setSystemEventId(getSystemEventId());

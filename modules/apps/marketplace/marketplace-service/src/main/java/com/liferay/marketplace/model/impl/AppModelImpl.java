@@ -621,7 +621,13 @@ public class AppModelImpl extends BaseModelImpl<App> implements AppModel {
 
 	@Override
 	public Object clone() {
-		AppImpl appImpl = new AppImpl();
+		AppImpl appImpl = null;
+
+		try {
+			appImpl = (AppImpl)super.clone();
+		}
+		catch (CloneNotSupportedException e) {
+		}
 
 		appImpl.setUuid(getUuid());
 		appImpl.setAppId(getAppId());

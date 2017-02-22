@@ -320,7 +320,13 @@ public class ListTypeModelImpl extends BaseModelImpl<ListType>
 
 	@Override
 	public Object clone() {
-		ListTypeImpl listTypeImpl = new ListTypeImpl();
+		ListTypeImpl listTypeImpl = null;
+
+		try {
+			listTypeImpl = (ListTypeImpl)super.clone();
+		}
+		catch (CloneNotSupportedException e) {
+		}
 
 		listTypeImpl.setMvccVersion(getMvccVersion());
 		listTypeImpl.setListTypeId(getListTypeId());

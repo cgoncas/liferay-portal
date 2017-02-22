@@ -875,7 +875,13 @@ public class MDRRuleModelImpl extends BaseModelImpl<MDRRule>
 
 	@Override
 	public Object clone() {
-		MDRRuleImpl mdrRuleImpl = new MDRRuleImpl();
+		MDRRuleImpl mdrRuleImpl = null;
+
+		try {
+			mdrRuleImpl = (MDRRuleImpl)super.clone();
+		}
+		catch (CloneNotSupportedException e) {
+		}
 
 		mdrRuleImpl.setUuid(getUuid());
 		mdrRuleImpl.setRuleId(getRuleId());

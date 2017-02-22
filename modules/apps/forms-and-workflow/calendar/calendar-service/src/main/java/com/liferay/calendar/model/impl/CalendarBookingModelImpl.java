@@ -1550,7 +1550,13 @@ public class CalendarBookingModelImpl extends BaseModelImpl<CalendarBooking>
 
 	@Override
 	public Object clone() {
-		CalendarBookingImpl calendarBookingImpl = new CalendarBookingImpl();
+		CalendarBookingImpl calendarBookingImpl = null;
+
+		try {
+			calendarBookingImpl = (CalendarBookingImpl)super.clone();
+		}
+		catch (CloneNotSupportedException e) {
+		}
 
 		calendarBookingImpl.setUuid(getUuid());
 		calendarBookingImpl.setCalendarBookingId(getCalendarBookingId());

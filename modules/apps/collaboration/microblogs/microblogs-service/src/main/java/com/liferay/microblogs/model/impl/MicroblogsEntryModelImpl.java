@@ -599,7 +599,13 @@ public class MicroblogsEntryModelImpl extends BaseModelImpl<MicroblogsEntry>
 
 	@Override
 	public Object clone() {
-		MicroblogsEntryImpl microblogsEntryImpl = new MicroblogsEntryImpl();
+		MicroblogsEntryImpl microblogsEntryImpl = null;
+
+		try {
+			microblogsEntryImpl = (MicroblogsEntryImpl)super.clone();
+		}
+		catch (CloneNotSupportedException e) {
+		}
 
 		microblogsEntryImpl.setMicroblogsEntryId(getMicroblogsEntryId());
 		microblogsEntryImpl.setCompanyId(getCompanyId());

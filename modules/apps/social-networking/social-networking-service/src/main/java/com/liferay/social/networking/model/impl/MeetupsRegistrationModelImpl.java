@@ -413,7 +413,13 @@ public class MeetupsRegistrationModelImpl extends BaseModelImpl<MeetupsRegistrat
 
 	@Override
 	public Object clone() {
-		MeetupsRegistrationImpl meetupsRegistrationImpl = new MeetupsRegistrationImpl();
+		MeetupsRegistrationImpl meetupsRegistrationImpl = null;
+
+		try {
+			meetupsRegistrationImpl = (MeetupsRegistrationImpl)super.clone();
+		}
+		catch (CloneNotSupportedException e) {
+		}
 
 		meetupsRegistrationImpl.setMeetupsRegistrationId(getMeetupsRegistrationId());
 		meetupsRegistrationImpl.setCompanyId(getCompanyId());

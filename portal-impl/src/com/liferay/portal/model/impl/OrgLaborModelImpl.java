@@ -618,7 +618,13 @@ public class OrgLaborModelImpl extends BaseModelImpl<OrgLabor>
 
 	@Override
 	public Object clone() {
-		OrgLaborImpl orgLaborImpl = new OrgLaborImpl();
+		OrgLaborImpl orgLaborImpl = null;
+
+		try {
+			orgLaborImpl = (OrgLaborImpl)super.clone();
+		}
+		catch (CloneNotSupportedException e) {
+		}
 
 		orgLaborImpl.setMvccVersion(getMvccVersion());
 		orgLaborImpl.setOrgLaborId(getOrgLaborId());

@@ -414,7 +414,13 @@ public class WSRPConsumerPortletModelImpl extends BaseModelImpl<WSRPConsumerPort
 
 	@Override
 	public Object clone() {
-		WSRPConsumerPortletImpl wsrpConsumerPortletImpl = new WSRPConsumerPortletImpl();
+		WSRPConsumerPortletImpl wsrpConsumerPortletImpl = null;
+
+		try {
+			wsrpConsumerPortletImpl = (WSRPConsumerPortletImpl)super.clone();
+		}
+		catch (CloneNotSupportedException e) {
+		}
 
 		wsrpConsumerPortletImpl.setUuid(getUuid());
 		wsrpConsumerPortletImpl.setWsrpConsumerPortletId(getWsrpConsumerPortletId());

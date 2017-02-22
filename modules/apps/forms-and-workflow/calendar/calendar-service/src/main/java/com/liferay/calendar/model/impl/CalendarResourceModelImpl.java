@@ -1011,7 +1011,13 @@ public class CalendarResourceModelImpl extends BaseModelImpl<CalendarResource>
 
 	@Override
 	public Object clone() {
-		CalendarResourceImpl calendarResourceImpl = new CalendarResourceImpl();
+		CalendarResourceImpl calendarResourceImpl = null;
+
+		try {
+			calendarResourceImpl = (CalendarResourceImpl)super.clone();
+		}
+		catch (CloneNotSupportedException e) {
+		}
 
 		calendarResourceImpl.setUuid(getUuid());
 		calendarResourceImpl.setCalendarResourceId(getCalendarResourceId());

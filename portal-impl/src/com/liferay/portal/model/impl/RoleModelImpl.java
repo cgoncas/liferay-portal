@@ -963,7 +963,13 @@ public class RoleModelImpl extends BaseModelImpl<Role> implements RoleModel {
 
 	@Override
 	public Object clone() {
-		RoleImpl roleImpl = new RoleImpl();
+		RoleImpl roleImpl = null;
+
+		try {
+			roleImpl = (RoleImpl)super.clone();
+		}
+		catch (CloneNotSupportedException e) {
+		}
 
 		roleImpl.setMvccVersion(getMvccVersion());
 		roleImpl.setUuid(getUuid());

@@ -398,7 +398,13 @@ public class StatusModelImpl extends BaseModelImpl<Status>
 
 	@Override
 	public Object clone() {
-		StatusImpl statusImpl = new StatusImpl();
+		StatusImpl statusImpl = null;
+
+		try {
+			statusImpl = (StatusImpl)super.clone();
+		}
+		catch (CloneNotSupportedException e) {
+		}
 
 		statusImpl.setStatusId(getStatusId());
 		statusImpl.setUserId(getUserId());

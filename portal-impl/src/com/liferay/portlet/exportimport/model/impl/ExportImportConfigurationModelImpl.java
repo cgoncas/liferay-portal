@@ -884,7 +884,13 @@ public class ExportImportConfigurationModelImpl extends BaseModelImpl<ExportImpo
 
 	@Override
 	public Object clone() {
-		ExportImportConfigurationImpl exportImportConfigurationImpl = new ExportImportConfigurationImpl();
+		ExportImportConfigurationImpl exportImportConfigurationImpl = null;
+
+		try {
+			exportImportConfigurationImpl = (ExportImportConfigurationImpl)super.clone();
+		}
+		catch (CloneNotSupportedException e) {
+		}
 
 		exportImportConfigurationImpl.setMvccVersion(getMvccVersion());
 		exportImportConfigurationImpl.setExportImportConfigurationId(getExportImportConfigurationId());

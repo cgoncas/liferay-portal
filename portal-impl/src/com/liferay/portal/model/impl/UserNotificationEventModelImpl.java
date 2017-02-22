@@ -559,7 +559,13 @@ public class UserNotificationEventModelImpl extends BaseModelImpl<UserNotificati
 
 	@Override
 	public Object clone() {
-		UserNotificationEventImpl userNotificationEventImpl = new UserNotificationEventImpl();
+		UserNotificationEventImpl userNotificationEventImpl = null;
+
+		try {
+			userNotificationEventImpl = (UserNotificationEventImpl)super.clone();
+		}
+		catch (CloneNotSupportedException e) {
+		}
 
 		userNotificationEventImpl.setMvccVersion(getMvccVersion());
 		userNotificationEventImpl.setUuid(getUuid());

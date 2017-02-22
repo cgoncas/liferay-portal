@@ -353,7 +353,13 @@ public class UserGroupRoleModelImpl extends BaseModelImpl<UserGroupRole>
 
 	@Override
 	public Object clone() {
-		UserGroupRoleImpl userGroupRoleImpl = new UserGroupRoleImpl();
+		UserGroupRoleImpl userGroupRoleImpl = null;
+
+		try {
+			userGroupRoleImpl = (UserGroupRoleImpl)super.clone();
+		}
+		catch (CloneNotSupportedException e) {
+		}
 
 		userGroupRoleImpl.setMvccVersion(getMvccVersion());
 		userGroupRoleImpl.setUserId(getUserId());

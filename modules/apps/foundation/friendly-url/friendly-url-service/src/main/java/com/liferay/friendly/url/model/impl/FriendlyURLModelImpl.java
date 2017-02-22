@@ -490,7 +490,13 @@ public class FriendlyURLModelImpl extends BaseModelImpl<FriendlyURL>
 
 	@Override
 	public Object clone() {
-		FriendlyURLImpl friendlyURLImpl = new FriendlyURLImpl();
+		FriendlyURLImpl friendlyURLImpl = null;
+
+		try {
+			friendlyURLImpl = (FriendlyURLImpl)super.clone();
+		}
+		catch (CloneNotSupportedException e) {
+		}
 
 		friendlyURLImpl.setUuid(getUuid());
 		friendlyURLImpl.setFriendlyURLId(getFriendlyURLId());

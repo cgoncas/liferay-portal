@@ -308,7 +308,13 @@ public class AssetTagStatsModelImpl extends BaseModelImpl<AssetTagStats>
 
 	@Override
 	public Object clone() {
-		AssetTagStatsImpl assetTagStatsImpl = new AssetTagStatsImpl();
+		AssetTagStatsImpl assetTagStatsImpl = null;
+
+		try {
+			assetTagStatsImpl = (AssetTagStatsImpl)super.clone();
+		}
+		catch (CloneNotSupportedException e) {
+		}
 
 		assetTagStatsImpl.setTagStatsId(getTagStatsId());
 		assetTagStatsImpl.setCompanyId(getCompanyId());

@@ -1101,7 +1101,13 @@ public class PasswordPolicyModelImpl extends BaseModelImpl<PasswordPolicy>
 
 	@Override
 	public Object clone() {
-		PasswordPolicyImpl passwordPolicyImpl = new PasswordPolicyImpl();
+		PasswordPolicyImpl passwordPolicyImpl = null;
+
+		try {
+			passwordPolicyImpl = (PasswordPolicyImpl)super.clone();
+		}
+		catch (CloneNotSupportedException e) {
+		}
 
 		passwordPolicyImpl.setMvccVersion(getMvccVersion());
 		passwordPolicyImpl.setUuid(getUuid());

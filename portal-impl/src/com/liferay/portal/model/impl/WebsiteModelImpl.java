@@ -653,7 +653,13 @@ public class WebsiteModelImpl extends BaseModelImpl<Website>
 
 	@Override
 	public Object clone() {
-		WebsiteImpl websiteImpl = new WebsiteImpl();
+		WebsiteImpl websiteImpl = null;
+
+		try {
+			websiteImpl = (WebsiteImpl)super.clone();
+		}
+		catch (CloneNotSupportedException e) {
+		}
 
 		websiteImpl.setMvccVersion(getMvccVersion());
 		websiteImpl.setUuid(getUuid());

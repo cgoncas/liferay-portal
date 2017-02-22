@@ -268,7 +268,13 @@ public class OrgGroupRoleModelImpl extends BaseModelImpl<OrgGroupRole>
 
 	@Override
 	public Object clone() {
-		OrgGroupRoleImpl orgGroupRoleImpl = new OrgGroupRoleImpl();
+		OrgGroupRoleImpl orgGroupRoleImpl = null;
+
+		try {
+			orgGroupRoleImpl = (OrgGroupRoleImpl)super.clone();
+		}
+		catch (CloneNotSupportedException e) {
+		}
 
 		orgGroupRoleImpl.setMvccVersion(getMvccVersion());
 		orgGroupRoleImpl.setOrganizationId(getOrganizationId());

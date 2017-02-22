@@ -632,7 +632,13 @@ public class EmailAddressModelImpl extends BaseModelImpl<EmailAddress>
 
 	@Override
 	public Object clone() {
-		EmailAddressImpl emailAddressImpl = new EmailAddressImpl();
+		EmailAddressImpl emailAddressImpl = null;
+
+		try {
+			emailAddressImpl = (EmailAddressImpl)super.clone();
+		}
+		catch (CloneNotSupportedException e) {
+		}
 
 		emailAddressImpl.setMvccVersion(getMvccVersion());
 		emailAddressImpl.setUuid(getUuid());

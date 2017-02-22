@@ -303,7 +303,13 @@ public class ResourceBlockPermissionModelImpl extends BaseModelImpl<ResourceBloc
 
 	@Override
 	public Object clone() {
-		ResourceBlockPermissionImpl resourceBlockPermissionImpl = new ResourceBlockPermissionImpl();
+		ResourceBlockPermissionImpl resourceBlockPermissionImpl = null;
+
+		try {
+			resourceBlockPermissionImpl = (ResourceBlockPermissionImpl)super.clone();
+		}
+		catch (CloneNotSupportedException e) {
+		}
 
 		resourceBlockPermissionImpl.setMvccVersion(getMvccVersion());
 		resourceBlockPermissionImpl.setResourceBlockPermissionId(getResourceBlockPermissionId());

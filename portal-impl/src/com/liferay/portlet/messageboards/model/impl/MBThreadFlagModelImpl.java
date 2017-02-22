@@ -459,7 +459,13 @@ public class MBThreadFlagModelImpl extends BaseModelImpl<MBThreadFlag>
 
 	@Override
 	public Object clone() {
-		MBThreadFlagImpl mbThreadFlagImpl = new MBThreadFlagImpl();
+		MBThreadFlagImpl mbThreadFlagImpl = null;
+
+		try {
+			mbThreadFlagImpl = (MBThreadFlagImpl)super.clone();
+		}
+		catch (CloneNotSupportedException e) {
+		}
 
 		mbThreadFlagImpl.setUuid(getUuid());
 		mbThreadFlagImpl.setThreadFlagId(getThreadFlagId());

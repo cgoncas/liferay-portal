@@ -289,7 +289,13 @@ public class BrowserTrackerModelImpl extends BaseModelImpl<BrowserTracker>
 
 	@Override
 	public Object clone() {
-		BrowserTrackerImpl browserTrackerImpl = new BrowserTrackerImpl();
+		BrowserTrackerImpl browserTrackerImpl = null;
+
+		try {
+			browserTrackerImpl = (BrowserTrackerImpl)super.clone();
+		}
+		catch (CloneNotSupportedException e) {
+		}
 
 		browserTrackerImpl.setMvccVersion(getMvccVersion());
 		browserTrackerImpl.setBrowserTrackerId(getBrowserTrackerId());

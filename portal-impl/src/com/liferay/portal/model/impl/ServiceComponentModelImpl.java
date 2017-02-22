@@ -309,7 +309,13 @@ public class ServiceComponentModelImpl extends BaseModelImpl<ServiceComponent>
 
 	@Override
 	public Object clone() {
-		ServiceComponentImpl serviceComponentImpl = new ServiceComponentImpl();
+		ServiceComponentImpl serviceComponentImpl = null;
+
+		try {
+			serviceComponentImpl = (ServiceComponentImpl)super.clone();
+		}
+		catch (CloneNotSupportedException e) {
+		}
 
 		serviceComponentImpl.setMvccVersion(getMvccVersion());
 		serviceComponentImpl.setServiceComponentId(getServiceComponentId());

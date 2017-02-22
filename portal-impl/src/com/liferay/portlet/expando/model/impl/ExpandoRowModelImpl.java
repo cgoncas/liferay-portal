@@ -267,7 +267,13 @@ public class ExpandoRowModelImpl extends BaseModelImpl<ExpandoRow>
 
 	@Override
 	public Object clone() {
-		ExpandoRowImpl expandoRowImpl = new ExpandoRowImpl();
+		ExpandoRowImpl expandoRowImpl = null;
+
+		try {
+			expandoRowImpl = (ExpandoRowImpl)super.clone();
+		}
+		catch (CloneNotSupportedException e) {
+		}
 
 		expandoRowImpl.setRowId(getRowId());
 		expandoRowImpl.setCompanyId(getCompanyId());

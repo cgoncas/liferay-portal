@@ -542,7 +542,13 @@ public class AssetTagModelImpl extends BaseModelImpl<AssetTag>
 
 	@Override
 	public Object clone() {
-		AssetTagImpl assetTagImpl = new AssetTagImpl();
+		AssetTagImpl assetTagImpl = null;
+
+		try {
+			assetTagImpl = (AssetTagImpl)super.clone();
+		}
+		catch (CloneNotSupportedException e) {
+		}
 
 		assetTagImpl.setUuid(getUuid());
 		assetTagImpl.setTagId(getTagId());

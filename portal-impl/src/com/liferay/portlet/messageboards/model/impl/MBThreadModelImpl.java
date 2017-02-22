@@ -1111,7 +1111,13 @@ public class MBThreadModelImpl extends BaseModelImpl<MBThread>
 
 	@Override
 	public Object clone() {
-		MBThreadImpl mbThreadImpl = new MBThreadImpl();
+		MBThreadImpl mbThreadImpl = null;
+
+		try {
+			mbThreadImpl = (MBThreadImpl)super.clone();
+		}
+		catch (CloneNotSupportedException e) {
+		}
 
 		mbThreadImpl.setUuid(getUuid());
 		mbThreadImpl.setThreadId(getThreadId());

@@ -514,7 +514,13 @@ public class UserThreadModelImpl extends BaseModelImpl<UserThread>
 
 	@Override
 	public Object clone() {
-		UserThreadImpl userThreadImpl = new UserThreadImpl();
+		UserThreadImpl userThreadImpl = null;
+
+		try {
+			userThreadImpl = (UserThreadImpl)super.clone();
+		}
+		catch (CloneNotSupportedException e) {
+		}
 
 		userThreadImpl.setUserThreadId(getUserThreadId());
 		userThreadImpl.setCompanyId(getCompanyId());

@@ -312,7 +312,13 @@ public class DLSyncEventModelImpl extends BaseModelImpl<DLSyncEvent>
 
 	@Override
 	public Object clone() {
-		DLSyncEventImpl dlSyncEventImpl = new DLSyncEventImpl();
+		DLSyncEventImpl dlSyncEventImpl = null;
+
+		try {
+			dlSyncEventImpl = (DLSyncEventImpl)super.clone();
+		}
+		catch (CloneNotSupportedException e) {
+		}
 
 		dlSyncEventImpl.setSyncEventId(getSyncEventId());
 		dlSyncEventImpl.setCompanyId(getCompanyId());

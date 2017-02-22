@@ -691,7 +691,13 @@ public class DDLRecordVersionModelImpl extends BaseModelImpl<DDLRecordVersion>
 
 	@Override
 	public Object clone() {
-		DDLRecordVersionImpl ddlRecordVersionImpl = new DDLRecordVersionImpl();
+		DDLRecordVersionImpl ddlRecordVersionImpl = null;
+
+		try {
+			ddlRecordVersionImpl = (DDLRecordVersionImpl)super.clone();
+		}
+		catch (CloneNotSupportedException e) {
+		}
 
 		ddlRecordVersionImpl.setRecordVersionId(getRecordVersionId());
 		ddlRecordVersionImpl.setGroupId(getGroupId());

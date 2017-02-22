@@ -182,7 +182,13 @@ public class CounterModelImpl extends BaseModelImpl<Counter>
 
 	@Override
 	public Object clone() {
-		CounterImpl counterImpl = new CounterImpl();
+		CounterImpl counterImpl = null;
+
+		try {
+			counterImpl = (CounterImpl)super.clone();
+		}
+		catch (CloneNotSupportedException e) {
+		}
 
 		counterImpl.setName(getName());
 		counterImpl.setCurrentId(getCurrentId());

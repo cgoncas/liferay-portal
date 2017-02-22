@@ -1662,7 +1662,13 @@ public class LayoutRevisionModelImpl extends BaseModelImpl<LayoutRevision>
 
 	@Override
 	public Object clone() {
-		LayoutRevisionImpl layoutRevisionImpl = new LayoutRevisionImpl();
+		LayoutRevisionImpl layoutRevisionImpl = null;
+
+		try {
+			layoutRevisionImpl = (LayoutRevisionImpl)super.clone();
+		}
+		catch (CloneNotSupportedException e) {
+		}
 
 		layoutRevisionImpl.setMvccVersion(getMvccVersion());
 		layoutRevisionImpl.setLayoutRevisionId(getLayoutRevisionId());

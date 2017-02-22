@@ -736,7 +736,13 @@ public class AnnouncementsEntryModelImpl extends BaseModelImpl<AnnouncementsEntr
 
 	@Override
 	public Object clone() {
-		AnnouncementsEntryImpl announcementsEntryImpl = new AnnouncementsEntryImpl();
+		AnnouncementsEntryImpl announcementsEntryImpl = null;
+
+		try {
+			announcementsEntryImpl = (AnnouncementsEntryImpl)super.clone();
+		}
+		catch (CloneNotSupportedException e) {
+		}
 
 		announcementsEntryImpl.setUuid(getUuid());
 		announcementsEntryImpl.setEntryId(getEntryId());

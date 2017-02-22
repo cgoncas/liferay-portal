@@ -556,7 +556,13 @@ public class RatingsEntryModelImpl extends BaseModelImpl<RatingsEntry>
 
 	@Override
 	public Object clone() {
-		RatingsEntryImpl ratingsEntryImpl = new RatingsEntryImpl();
+		RatingsEntryImpl ratingsEntryImpl = null;
+
+		try {
+			ratingsEntryImpl = (RatingsEntryImpl)super.clone();
+		}
+		catch (CloneNotSupportedException e) {
+		}
 
 		ratingsEntryImpl.setUuid(getUuid());
 		ratingsEntryImpl.setEntryId(getEntryId());

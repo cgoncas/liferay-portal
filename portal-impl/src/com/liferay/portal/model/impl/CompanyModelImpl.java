@@ -538,7 +538,13 @@ public class CompanyModelImpl extends BaseModelImpl<Company>
 
 	@Override
 	public Object clone() {
-		CompanyImpl companyImpl = new CompanyImpl();
+		CompanyImpl companyImpl = null;
+
+		try {
+			companyImpl = (CompanyImpl)super.clone();
+		}
+		catch (CloneNotSupportedException e) {
+		}
 
 		companyImpl.setMvccVersion(getMvccVersion());
 		companyImpl.setCompanyId(getCompanyId());

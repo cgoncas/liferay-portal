@@ -1001,7 +1001,13 @@ public class SyncDLObjectModelImpl extends BaseModelImpl<SyncDLObject>
 
 	@Override
 	public Object clone() {
-		SyncDLObjectImpl syncDLObjectImpl = new SyncDLObjectImpl();
+		SyncDLObjectImpl syncDLObjectImpl = null;
+
+		try {
+			syncDLObjectImpl = (SyncDLObjectImpl)super.clone();
+		}
+		catch (CloneNotSupportedException e) {
+		}
 
 		syncDLObjectImpl.setSyncDLObjectId(getSyncDLObjectId());
 		syncDLObjectImpl.setCompanyId(getCompanyId());

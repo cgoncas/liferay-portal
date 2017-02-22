@@ -531,7 +531,13 @@ public class SocialActivityCounterModelImpl extends BaseModelImpl<SocialActivity
 
 	@Override
 	public Object clone() {
-		SocialActivityCounterImpl socialActivityCounterImpl = new SocialActivityCounterImpl();
+		SocialActivityCounterImpl socialActivityCounterImpl = null;
+
+		try {
+			socialActivityCounterImpl = (SocialActivityCounterImpl)super.clone();
+		}
+		catch (CloneNotSupportedException e) {
+		}
 
 		socialActivityCounterImpl.setActivityCounterId(getActivityCounterId());
 		socialActivityCounterImpl.setGroupId(getGroupId());

@@ -531,7 +531,13 @@ public class MBDiscussionModelImpl extends BaseModelImpl<MBDiscussion>
 
 	@Override
 	public Object clone() {
-		MBDiscussionImpl mbDiscussionImpl = new MBDiscussionImpl();
+		MBDiscussionImpl mbDiscussionImpl = null;
+
+		try {
+			mbDiscussionImpl = (MBDiscussionImpl)super.clone();
+		}
+		catch (CloneNotSupportedException e) {
+		}
 
 		mbDiscussionImpl.setUuid(getUuid());
 		mbDiscussionImpl.setDiscussionId(getDiscussionId());

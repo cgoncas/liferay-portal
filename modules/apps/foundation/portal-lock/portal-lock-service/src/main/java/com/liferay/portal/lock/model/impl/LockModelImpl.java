@@ -494,7 +494,13 @@ public class LockModelImpl extends BaseModelImpl<Lock> implements LockModel {
 
 	@Override
 	public Object clone() {
-		LockImpl lockImpl = new LockImpl();
+		LockImpl lockImpl = null;
+
+		try {
+			lockImpl = (LockImpl)super.clone();
+		}
+		catch (CloneNotSupportedException e) {
+		}
 
 		lockImpl.setMvccVersion(getMvccVersion());
 		lockImpl.setUuid(getUuid());

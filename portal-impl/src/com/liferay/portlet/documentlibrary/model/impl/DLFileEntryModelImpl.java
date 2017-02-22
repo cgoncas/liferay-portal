@@ -1276,7 +1276,13 @@ public class DLFileEntryModelImpl extends BaseModelImpl<DLFileEntry>
 
 	@Override
 	public Object clone() {
-		DLFileEntryImpl dlFileEntryImpl = new DLFileEntryImpl();
+		DLFileEntryImpl dlFileEntryImpl = null;
+
+		try {
+			dlFileEntryImpl = (DLFileEntryImpl)super.clone();
+		}
+		catch (CloneNotSupportedException e) {
+		}
 
 		dlFileEntryImpl.setUuid(getUuid());
 		dlFileEntryImpl.setFileEntryId(getFileEntryId());

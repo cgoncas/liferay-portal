@@ -389,7 +389,13 @@ public class DLFileRankModelImpl extends BaseModelImpl<DLFileRank>
 
 	@Override
 	public Object clone() {
-		DLFileRankImpl dlFileRankImpl = new DLFileRankImpl();
+		DLFileRankImpl dlFileRankImpl = null;
+
+		try {
+			dlFileRankImpl = (DLFileRankImpl)super.clone();
+		}
+		catch (CloneNotSupportedException e) {
+		}
 
 		dlFileRankImpl.setFileRankId(getFileRankId());
 		dlFileRankImpl.setGroupId(getGroupId());

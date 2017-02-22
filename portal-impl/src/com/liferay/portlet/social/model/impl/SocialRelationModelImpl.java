@@ -362,7 +362,13 @@ public class SocialRelationModelImpl extends BaseModelImpl<SocialRelation>
 
 	@Override
 	public Object clone() {
-		SocialRelationImpl socialRelationImpl = new SocialRelationImpl();
+		SocialRelationImpl socialRelationImpl = null;
+
+		try {
+			socialRelationImpl = (SocialRelationImpl)super.clone();
+		}
+		catch (CloneNotSupportedException e) {
+		}
 
 		socialRelationImpl.setUuid(getUuid());
 		socialRelationImpl.setRelationId(getRelationId());

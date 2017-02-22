@@ -410,7 +410,13 @@ public class ResourceBlockModelImpl extends BaseModelImpl<ResourceBlock>
 
 	@Override
 	public Object clone() {
-		ResourceBlockImpl resourceBlockImpl = new ResourceBlockImpl();
+		ResourceBlockImpl resourceBlockImpl = null;
+
+		try {
+			resourceBlockImpl = (ResourceBlockImpl)super.clone();
+		}
+		catch (CloneNotSupportedException e) {
+		}
 
 		resourceBlockImpl.setMvccVersion(getMvccVersion());
 		resourceBlockImpl.setResourceBlockId(getResourceBlockId());

@@ -997,7 +997,13 @@ public class CalendarModelImpl extends BaseModelImpl<Calendar>
 
 	@Override
 	public Object clone() {
-		CalendarImpl calendarImpl = new CalendarImpl();
+		CalendarImpl calendarImpl = null;
+
+		try {
+			calendarImpl = (CalendarImpl)super.clone();
+		}
+		catch (CloneNotSupportedException e) {
+		}
 
 		calendarImpl.setUuid(getUuid());
 		calendarImpl.setCalendarId(getCalendarId());

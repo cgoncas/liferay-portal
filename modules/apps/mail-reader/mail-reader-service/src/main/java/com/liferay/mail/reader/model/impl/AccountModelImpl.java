@@ -781,7 +781,13 @@ public class AccountModelImpl extends BaseModelImpl<Account>
 
 	@Override
 	public Object clone() {
-		AccountImpl accountImpl = new AccountImpl();
+		AccountImpl accountImpl = null;
+
+		try {
+			accountImpl = (AccountImpl)super.clone();
+		}
+		catch (CloneNotSupportedException e) {
+		}
 
 		accountImpl.setAccountId(getAccountId());
 		accountImpl.setCompanyId(getCompanyId());

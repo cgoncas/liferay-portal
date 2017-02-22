@@ -727,7 +727,13 @@ public class SAPEntryModelImpl extends BaseModelImpl<SAPEntry>
 
 	@Override
 	public Object clone() {
-		SAPEntryImpl sapEntryImpl = new SAPEntryImpl();
+		SAPEntryImpl sapEntryImpl = null;
+
+		try {
+			sapEntryImpl = (SAPEntryImpl)super.clone();
+		}
+		catch (CloneNotSupportedException e) {
+		}
 
 		sapEntryImpl.setUuid(getUuid());
 		sapEntryImpl.setSapEntryId(getSapEntryId());

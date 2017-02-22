@@ -741,7 +741,13 @@ public class OrganizationModelImpl extends BaseModelImpl<Organization>
 
 	@Override
 	public Object clone() {
-		OrganizationImpl organizationImpl = new OrganizationImpl();
+		OrganizationImpl organizationImpl = null;
+
+		try {
+			organizationImpl = (OrganizationImpl)super.clone();
+		}
+		catch (CloneNotSupportedException e) {
+		}
 
 		organizationImpl.setMvccVersion(getMvccVersion());
 		organizationImpl.setUuid(getUuid());

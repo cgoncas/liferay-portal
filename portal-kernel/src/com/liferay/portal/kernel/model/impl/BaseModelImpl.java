@@ -39,7 +39,15 @@ public abstract class BaseModelImpl<T> implements BaseModel<T> {
 	}
 
 	@Override
-	public abstract Object clone();
+	public Object clone() {
+		try {
+			return super.clone();
+		}
+		catch (CloneNotSupportedException e) {
+		}
+
+		return null;
+	}
 
 	@Override
 	public ExpandoBridge getExpandoBridge() {

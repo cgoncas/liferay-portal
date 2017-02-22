@@ -1163,7 +1163,13 @@ public class KBArticleModelImpl extends BaseModelImpl<KBArticle>
 
 	@Override
 	public Object clone() {
-		KBArticleImpl kbArticleImpl = new KBArticleImpl();
+		KBArticleImpl kbArticleImpl = null;
+
+		try {
+			kbArticleImpl = (KBArticleImpl)super.clone();
+		}
+		catch (CloneNotSupportedException e) {
+		}
 
 		kbArticleImpl.setUuid(getUuid());
 		kbArticleImpl.setKbArticleId(getKbArticleId());

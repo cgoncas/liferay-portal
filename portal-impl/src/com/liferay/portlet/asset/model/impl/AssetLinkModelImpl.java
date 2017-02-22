@@ -400,7 +400,13 @@ public class AssetLinkModelImpl extends BaseModelImpl<AssetLink>
 
 	@Override
 	public Object clone() {
-		AssetLinkImpl assetLinkImpl = new AssetLinkImpl();
+		AssetLinkImpl assetLinkImpl = null;
+
+		try {
+			assetLinkImpl = (AssetLinkImpl)super.clone();
+		}
+		catch (CloneNotSupportedException e) {
+		}
 
 		assetLinkImpl.setLinkId(getLinkId());
 		assetLinkImpl.setCompanyId(getCompanyId());

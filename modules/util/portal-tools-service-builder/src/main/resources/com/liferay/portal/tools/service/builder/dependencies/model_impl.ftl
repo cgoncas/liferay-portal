@@ -1146,7 +1146,13 @@ public class ${entity.name}ModelImpl extends BaseModelImpl<${entity.name}> imple
 
 	@Override
 	public Object clone() {
-		${entity.name}Impl ${entity.varName}Impl = new ${entity.name}Impl();
+		${entity.name}Impl ${entity.varName}Impl = null;
+
+		try {
+			${entity.varName}Impl = (${entity.name}Impl)super.clone();
+		}
+		catch (CloneNotSupportedException e) {
+		}
 
 		<#list entity.regularColList as column>
 			<#if !stringUtil.equals(column.type, "Blob")>

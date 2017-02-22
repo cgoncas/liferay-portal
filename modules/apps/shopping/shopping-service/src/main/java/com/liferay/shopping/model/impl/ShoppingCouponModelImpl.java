@@ -678,7 +678,13 @@ public class ShoppingCouponModelImpl extends BaseModelImpl<ShoppingCoupon>
 
 	@Override
 	public Object clone() {
-		ShoppingCouponImpl shoppingCouponImpl = new ShoppingCouponImpl();
+		ShoppingCouponImpl shoppingCouponImpl = null;
+
+		try {
+			shoppingCouponImpl = (ShoppingCouponImpl)super.clone();
+		}
+		catch (CloneNotSupportedException e) {
+		}
 
 		shoppingCouponImpl.setCouponId(getCouponId());
 		shoppingCouponImpl.setGroupId(getGroupId());

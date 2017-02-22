@@ -299,7 +299,13 @@ public class VirtualHostModelImpl extends BaseModelImpl<VirtualHost>
 
 	@Override
 	public Object clone() {
-		VirtualHostImpl virtualHostImpl = new VirtualHostImpl();
+		VirtualHostImpl virtualHostImpl = null;
+
+		try {
+			virtualHostImpl = (VirtualHostImpl)super.clone();
+		}
+		catch (CloneNotSupportedException e) {
+		}
 
 		virtualHostImpl.setMvccVersion(getMvccVersion());
 		virtualHostImpl.setVirtualHostId(getVirtualHostId());

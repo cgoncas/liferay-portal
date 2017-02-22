@@ -351,7 +351,13 @@ public class MBStatsUserModelImpl extends BaseModelImpl<MBStatsUser>
 
 	@Override
 	public Object clone() {
-		MBStatsUserImpl mbStatsUserImpl = new MBStatsUserImpl();
+		MBStatsUserImpl mbStatsUserImpl = null;
+
+		try {
+			mbStatsUserImpl = (MBStatsUserImpl)super.clone();
+		}
+		catch (CloneNotSupportedException e) {
+		}
 
 		mbStatsUserImpl.setStatsUserId(getStatsUserId());
 		mbStatsUserImpl.setGroupId(getGroupId());

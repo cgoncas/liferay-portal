@@ -831,7 +831,13 @@ public class PollsQuestionModelImpl extends BaseModelImpl<PollsQuestion>
 
 	@Override
 	public Object clone() {
-		PollsQuestionImpl pollsQuestionImpl = new PollsQuestionImpl();
+		PollsQuestionImpl pollsQuestionImpl = null;
+
+		try {
+			pollsQuestionImpl = (PollsQuestionImpl)super.clone();
+		}
+		catch (CloneNotSupportedException e) {
+		}
 
 		pollsQuestionImpl.setUuid(getUuid());
 		pollsQuestionImpl.setQuestionId(getQuestionId());

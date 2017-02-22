@@ -1170,7 +1170,13 @@ public class DLFolderModelImpl extends BaseModelImpl<DLFolder>
 
 	@Override
 	public Object clone() {
-		DLFolderImpl dlFolderImpl = new DLFolderImpl();
+		DLFolderImpl dlFolderImpl = null;
+
+		try {
+			dlFolderImpl = (DLFolderImpl)super.clone();
+		}
+		catch (CloneNotSupportedException e) {
+		}
 
 		dlFolderImpl.setUuid(getUuid());
 		dlFolderImpl.setFolderId(getFolderId());

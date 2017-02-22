@@ -344,7 +344,13 @@ public class RatingsStatsModelImpl extends BaseModelImpl<RatingsStats>
 
 	@Override
 	public Object clone() {
-		RatingsStatsImpl ratingsStatsImpl = new RatingsStatsImpl();
+		RatingsStatsImpl ratingsStatsImpl = null;
+
+		try {
+			ratingsStatsImpl = (RatingsStatsImpl)super.clone();
+		}
+		catch (CloneNotSupportedException e) {
+		}
 
 		ratingsStatsImpl.setStatsId(getStatsId());
 		ratingsStatsImpl.setCompanyId(getCompanyId());

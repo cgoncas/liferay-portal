@@ -374,7 +374,13 @@ public class ExpandoColumnModelImpl extends BaseModelImpl<ExpandoColumn>
 
 	@Override
 	public Object clone() {
-		ExpandoColumnImpl expandoColumnImpl = new ExpandoColumnImpl();
+		ExpandoColumnImpl expandoColumnImpl = null;
+
+		try {
+			expandoColumnImpl = (ExpandoColumnImpl)super.clone();
+		}
+		catch (CloneNotSupportedException e) {
+		}
 
 		expandoColumnImpl.setColumnId(getColumnId());
 		expandoColumnImpl.setCompanyId(getCompanyId());

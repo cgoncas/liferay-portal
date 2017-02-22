@@ -494,7 +494,13 @@ public class ShoppingCategoryModelImpl extends BaseModelImpl<ShoppingCategory>
 
 	@Override
 	public Object clone() {
-		ShoppingCategoryImpl shoppingCategoryImpl = new ShoppingCategoryImpl();
+		ShoppingCategoryImpl shoppingCategoryImpl = null;
+
+		try {
+			shoppingCategoryImpl = (ShoppingCategoryImpl)super.clone();
+		}
+		catch (CloneNotSupportedException e) {
+		}
 
 		shoppingCategoryImpl.setCategoryId(getCategoryId());
 		shoppingCategoryImpl.setGroupId(getGroupId());

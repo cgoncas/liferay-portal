@@ -1225,7 +1225,13 @@ public class GroupModelImpl extends BaseModelImpl<Group> implements GroupModel {
 
 	@Override
 	public Object clone() {
-		GroupImpl groupImpl = new GroupImpl();
+		GroupImpl groupImpl = null;
+
+		try {
+			groupImpl = (GroupImpl)super.clone();
+		}
+		catch (CloneNotSupportedException e) {
+		}
 
 		groupImpl.setMvccVersion(getMvccVersion());
 		groupImpl.setUuid(getUuid());

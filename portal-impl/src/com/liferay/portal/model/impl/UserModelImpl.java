@@ -1464,7 +1464,13 @@ public class UserModelImpl extends BaseModelImpl<User> implements UserModel {
 
 	@Override
 	public Object clone() {
-		UserImpl userImpl = new UserImpl();
+		UserImpl userImpl = null;
+
+		try {
+			userImpl = (UserImpl)super.clone();
+		}
+		catch (CloneNotSupportedException e) {
+		}
 
 		userImpl.setMvccVersion(getMvccVersion());
 		userImpl.setUuid(getUuid());

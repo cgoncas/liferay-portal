@@ -462,7 +462,13 @@ public class SocialActivityLimitModelImpl extends BaseModelImpl<SocialActivityLi
 
 	@Override
 	public Object clone() {
-		SocialActivityLimitImpl socialActivityLimitImpl = new SocialActivityLimitImpl();
+		SocialActivityLimitImpl socialActivityLimitImpl = null;
+
+		try {
+			socialActivityLimitImpl = (SocialActivityLimitImpl)super.clone();
+		}
+		catch (CloneNotSupportedException e) {
+		}
 
 		socialActivityLimitImpl.setActivityLimitId(getActivityLimitId());
 		socialActivityLimitImpl.setGroupId(getGroupId());

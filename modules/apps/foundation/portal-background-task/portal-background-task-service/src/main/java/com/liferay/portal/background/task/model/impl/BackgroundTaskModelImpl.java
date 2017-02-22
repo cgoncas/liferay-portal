@@ -678,7 +678,13 @@ public class BackgroundTaskModelImpl extends BaseModelImpl<BackgroundTask>
 
 	@Override
 	public Object clone() {
-		BackgroundTaskImpl backgroundTaskImpl = new BackgroundTaskImpl();
+		BackgroundTaskImpl backgroundTaskImpl = null;
+
+		try {
+			backgroundTaskImpl = (BackgroundTaskImpl)super.clone();
+		}
+		catch (CloneNotSupportedException e) {
+		}
 
 		backgroundTaskImpl.setMvccVersion(getMvccVersion());
 		backgroundTaskImpl.setBackgroundTaskId(getBackgroundTaskId());

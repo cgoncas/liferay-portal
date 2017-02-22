@@ -265,7 +265,13 @@ public class ClusterGroupModelImpl extends BaseModelImpl<ClusterGroup>
 
 	@Override
 	public Object clone() {
-		ClusterGroupImpl clusterGroupImpl = new ClusterGroupImpl();
+		ClusterGroupImpl clusterGroupImpl = null;
+
+		try {
+			clusterGroupImpl = (ClusterGroupImpl)super.clone();
+		}
+		catch (CloneNotSupportedException e) {
+		}
 
 		clusterGroupImpl.setMvccVersion(getMvccVersion());
 		clusterGroupImpl.setClusterGroupId(getClusterGroupId());

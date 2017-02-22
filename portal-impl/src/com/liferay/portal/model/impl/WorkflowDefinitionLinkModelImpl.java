@@ -559,7 +559,13 @@ public class WorkflowDefinitionLinkModelImpl extends BaseModelImpl<WorkflowDefin
 
 	@Override
 	public Object clone() {
-		WorkflowDefinitionLinkImpl workflowDefinitionLinkImpl = new WorkflowDefinitionLinkImpl();
+		WorkflowDefinitionLinkImpl workflowDefinitionLinkImpl = null;
+
+		try {
+			workflowDefinitionLinkImpl = (WorkflowDefinitionLinkImpl)super.clone();
+		}
+		catch (CloneNotSupportedException e) {
+		}
 
 		workflowDefinitionLinkImpl.setMvccVersion(getMvccVersion());
 		workflowDefinitionLinkImpl.setWorkflowDefinitionLinkId(getWorkflowDefinitionLinkId());

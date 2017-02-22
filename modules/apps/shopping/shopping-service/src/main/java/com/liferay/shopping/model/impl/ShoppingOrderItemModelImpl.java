@@ -416,7 +416,13 @@ public class ShoppingOrderItemModelImpl extends BaseModelImpl<ShoppingOrderItem>
 
 	@Override
 	public Object clone() {
-		ShoppingOrderItemImpl shoppingOrderItemImpl = new ShoppingOrderItemImpl();
+		ShoppingOrderItemImpl shoppingOrderItemImpl = null;
+
+		try {
+			shoppingOrderItemImpl = (ShoppingOrderItemImpl)super.clone();
+		}
+		catch (CloneNotSupportedException e) {
+		}
 
 		shoppingOrderItemImpl.setOrderItemId(getOrderItemId());
 		shoppingOrderItemImpl.setCompanyId(getCompanyId());

@@ -409,7 +409,13 @@ public class FeedModelImpl extends BaseModelImpl<Feed> implements FeedModel {
 
 	@Override
 	public Object clone() {
-		FeedImpl feedImpl = new FeedImpl();
+		FeedImpl feedImpl = null;
+
+		try {
+			feedImpl = (FeedImpl)super.clone();
+		}
+		catch (CloneNotSupportedException e) {
+		}
 
 		feedImpl.setFeedId(getFeedId());
 		feedImpl.setCompanyId(getCompanyId());

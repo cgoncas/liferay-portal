@@ -399,7 +399,13 @@ public class RecentLayoutRevisionModelImpl extends BaseModelImpl<RecentLayoutRev
 
 	@Override
 	public Object clone() {
-		RecentLayoutRevisionImpl recentLayoutRevisionImpl = new RecentLayoutRevisionImpl();
+		RecentLayoutRevisionImpl recentLayoutRevisionImpl = null;
+
+		try {
+			recentLayoutRevisionImpl = (RecentLayoutRevisionImpl)super.clone();
+		}
+		catch (CloneNotSupportedException e) {
+		}
 
 		recentLayoutRevisionImpl.setMvccVersion(getMvccVersion());
 		recentLayoutRevisionImpl.setRecentLayoutRevisionId(getRecentLayoutRevisionId());
