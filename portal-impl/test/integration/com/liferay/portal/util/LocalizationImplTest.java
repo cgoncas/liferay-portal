@@ -386,6 +386,25 @@ public class LocalizationImplTest {
 	}
 
 	@Test
+	public void testSpecialCharacters() {
+		StringBundler sb = new StringBundler();
+
+		sb.append("<?xml version=\"1.0\"?>");
+
+		sb.append("<root available-locales=\"en_US,es_ES\" ");
+		sb.append("default-locale=\"en_US\">");
+		sb.append("<static-content language-id=\"es_ES\">");
+		sb.append("A\u0008B");
+		sb.append("</static-content>");
+		sb.append("</root>");
+
+		String xml = sb.toString();
+
+		Assert.assertEquals(
+			"A\u0008B", LocalizationUtil.getLocalization(xml, "en_US"));
+	}
+
+	@Test
 	public void testUpdateLocalization() {
 		Map<Locale, String> localizationMap = new HashMap<>();
 
