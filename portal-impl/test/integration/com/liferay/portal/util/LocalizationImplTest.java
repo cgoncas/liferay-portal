@@ -386,25 +386,6 @@ public class LocalizationImplTest {
 	}
 
 	@Test
-	public void testSpecialCharacters() {
-		StringBundler sb = new StringBundler();
-
-		sb.append("<?xml version=\"1.0\"?>");
-
-		sb.append("<root available-locales=\"en_US,es_ES\" ");
-		sb.append("default-locale=\"en_US\">");
-		sb.append("<static-content language-id=\"es_ES\">");
-		sb.append("A\u0008B");
-		sb.append("</static-content>");
-		sb.append("</root>");
-
-		String xml = sb.toString();
-
-		Assert.assertEquals(
-			"A\u0008B", LocalizationUtil.getLocalization(xml, "en_US"));
-	}
-
-	@Test
 	public void testUpdateLocalization() {
 		Map<Locale, String> localizationMap = new HashMap<>();
 
@@ -458,6 +439,17 @@ public class LocalizationImplTest {
 			LocalizationUtil.getLocalization(xml, _ENGLISH_LANGUAGE_ID));
 	}
 
+	@Test
+	public void testUpdateLocalizationWithInvalidXmlCharacter() {
+		String xml = LocalizationUtil.updateLocalization(
+			StringPool.BLANK, "greeting", _INVALID_ENGLISH_HELLO,
+			_ENGLISH_LANGUAGE_ID, _ENGLISH_LANGUAGE_ID);
+
+		Assert.assertEquals(
+			_ENGLISH_HELLO,
+			LocalizationUtil.getLocalization(xml, _ENGLISH_LANGUAGE_ID));
+	}
+
 	private static final String _ENGLISH_HELLO = "Hello World";
 
 	private static final String _ENGLISH_LANGUAGE_ID = LocaleUtil.toLanguageId(
@@ -467,6 +459,8 @@ public class LocalizationImplTest {
 
 	private static final String _GERMAN_LANGUAGE_ID = LocaleUtil.toLanguageId(
 		LocaleUtil.GERMANY);
+
+	private static final String _INVALID_ENGLISH_HELLO = "Hello\u0008 World";
 
 	private static final String _SPANISH_LANGUAGE_ID = LocaleUtil.toLanguageId(
 		LocaleUtil.SPAIN);
