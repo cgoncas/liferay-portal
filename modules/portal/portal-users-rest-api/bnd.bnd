@@ -1,0 +1,4 @@
+Bundle-SymbolicName: com.liferay.portal.users.rest.api
+Bundle-Name: Liferay Users Rest API
+Bundle-Version: 1.0.0
+Include-Resource: classes
