@@ -26,9 +26,11 @@ import com.liferay.structured.content.apio.architect.controller.StructuredConten
 import com.liferay.structured.content.apio.architect.form.StructuredContentCreatorForm;
 import com.liferay.structured.content.apio.architect.form.StructuredContentUpdaterForm;
 import com.liferay.structured.content.apio.architect.model.JournalArticleWrapper;
+import com.liferay.structured.content.apio.architect.query.Query;
 
 import java.util.List;
 import java.util.Locale;
+import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -87,7 +89,7 @@ public class StructuredContentControllerImpl
 
 	@Override
 	public PageItems<JournalArticleWrapper> getPageItems(
-			Pagination pagination, long contentSpaceId,
+			Pagination pagination, long contentSpaceId, Query query,
 			ThemeDisplay themeDisplay)
 		throws PortalException {
 
