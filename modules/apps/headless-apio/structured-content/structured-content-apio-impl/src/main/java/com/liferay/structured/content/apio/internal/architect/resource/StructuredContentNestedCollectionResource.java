@@ -42,6 +42,7 @@ import com.liferay.journal.model.JournalArticle;
 import com.liferay.journal.model.JournalArticleDisplay;
 import com.liferay.journal.service.JournalArticleService;
 import com.liferay.journal.util.JournalContent;
+import com.liferay.journal.util.comparator.ArticleTitleComparator;
 import com.liferay.media.object.apio.architect.identifier.MediaObjectIdentifier;
 import com.liferay.person.apio.architect.identifier.PersonIdentifier;
 import com.liferay.portal.apio.identifier.ClassNameClassPK;
@@ -55,17 +56,21 @@ import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
 import com.liferay.portal.kernel.util.ListUtil;
 import com.liferay.portal.kernel.util.LocaleUtil;
+import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.kernel.workflow.WorkflowConstants;
 import com.liferay.structure.apio.architect.identifier.ContentStructureIdentifier;
 import com.liferay.structured.content.apio.architect.identifier.StructuredContentIdentifier;
+import com.liferay.structured.content.apio.architect.sort.Sort;
 import com.liferay.structured.content.apio.architect.util.StructuredContentUtil;
 import com.liferay.structured.content.apio.internal.architect.form.StructuredContentCreatorForm;
 import com.liferay.structured.content.apio.internal.architect.form.StructuredContentUpdaterForm;
+import com.liferay.structured.content.apio.internal.architect.sort.SortParser;
 import com.liferay.structured.content.apio.internal.model.JournalArticleWrapper;
 import com.liferay.structured.content.apio.internal.model.RenderedJournalArticle;
 
 import java.util.List;
 import java.util.Locale;
+import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -92,7 +97,7 @@ public class StructuredContentNestedCollectionResource
 				builder) {
 
 		return builder.addGetter(
-			this::_getPageItems, ThemeDisplay.class
+			this::_getPageItems, ThemeDisplay.class, Sort.class
 		).addCreator(
 			this::_addJournalArticle, ThemeDisplay.class,
 			_hasPermission.forAddingIn(ContentSpaceIdentifier.class),
@@ -328,6 +333,24 @@ public class StructuredContentNestedCollectionResource
 		);
 	}
 
+	private OrderByComparator<JournalArticle>
+		_getJournalArticleOrderByComparator(List<SortParser.SortKey> sortKeys) {
+
+		OrderByComparator<JournalArticle> orderByComparator = null;
+
+		for (SortParser.SortKey sortKey : sortKeys) {
+			String orderByCol = sortKey.getFieldName();
+
+			if (orderByCol.equals("title")) {
+				orderByComparator = new ArticleTitleComparator(sortKey.isAsc());
+
+				break;
+			}
+		}
+
+		return orderByComparator;
+	}
+
 	private Long _getJournalArticleStructureId(
 		JournalArticleWrapper journalArticleWrapper) {
 
@@ -393,14 +416,23 @@ public class StructuredContentNestedCollectionResource
 
 	private PageItems<JournalArticleWrapper> _getPageItems(
 			Pagination pagination, long contentSpaceId,
-			ThemeDisplay themeDisplay)
+			ThemeDisplay themeDisplay, Sort sort)
 		throws PortalException {
+
+		OrderByComparator<JournalArticle> orderByComparator = null;
+
+		if (sort.hasValue()) {
+			Optional<String> value = sort.getValue();
+
+			orderByComparator = _getJournalArticleOrderByComparator(
+				_sortParser.parse(value.get()));
+		}
 
 		List<JournalArticleWrapper> journalArticleWrappers = Stream.of(
 			_journalArticleService.getGroupArticles(
 				contentSpaceId, 0, 0, WorkflowConstants.STATUS_APPROVED,
 				pagination.getStartPosition(), pagination.getEndPosition(),
-				null)
+				orderByComparator)
 		).flatMap(
 			List::stream
 		).map(
@@ -514,5 +546,8 @@ public class StructuredContentNestedCollectionResource
 
 	@Reference
 	private LayoutLocalService _layoutLocalService;
+
+	@Reference
+	private SortParser _sortParser;
 
 }
