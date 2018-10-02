@@ -26,7 +26,6 @@ import com.liferay.portal.kernel.service.CompanyLocalService;
 import com.liferay.portal.kernel.service.GroupLocalService;
 import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.test.rule.AggregateTestRule;
-import com.liferay.portal.kernel.test.rule.DeleteAfterTestRun;
 import com.liferay.portal.kernel.test.util.GroupTestUtil;
 import com.liferay.portal.kernel.util.LocaleUtil;
 import com.liferay.portal.test.rule.Inject;
@@ -39,7 +38,6 @@ import java.util.List;
 import java.util.Locale;
 
 import org.junit.Assert;
-import org.junit.Before;
 import org.junit.ClassRule;
 import org.junit.Rule;
 import org.junit.Test;
@@ -58,37 +56,46 @@ public class ContentSpaceCollectionResourceTest {
 			new LiferayIntegrationTestRule(),
 			PermissionCheckerTestRule.INSTANCE);
 
-	@Before
-	public void setUp() throws Exception {
-		_group = GroupTestUtil.addGroup();
-	}
-
 	@Test
 	public void testGetActiveGroup() throws Throwable {
-		Company company = _companyLocalService.getCompany(
-			_group.getCompanyId());
+		Group group = GroupTestUtil.addGroup();
 
-		PageItems<Group> groupPageItems = _getPageItems(
-			PaginationRequest.of(10, 1), company, LocaleUtil.getDefault());
+		try {
+			Company company = _companyLocalService.getCompany(
+				group.getCompanyId());
 
-		List<Group> groups = (List<Group>)groupPageItems.getItems();
+			PageItems<Group> groupPageItems = _getPageItems(
+				PaginationRequest.of(10, 1), company, LocaleUtil.getDefault());
 
-		Assert.assertTrue(groups.contains(_group));
+			List<Group> groups = (List<Group>)groupPageItems.getItems();
+
+			Assert.assertTrue(groups.contains(group));
+		}
+		catch (Exception e) {
+			_groupLocalService.deleteGroup(group);
+		}
 	}
 
 	@Test
 	public void testGetInactiveGroup() throws Throwable {
-		_deactivateGroup(_group);
+		Group group = GroupTestUtil.addGroup();
 
-		Company company = _companyLocalService.getCompany(
-			_group.getCompanyId());
+		try {
+			_deactivateGroup(group);
 
-		PageItems<Group> groupPageItems = _getPageItems(
-			PaginationRequest.of(10, 1), company, LocaleUtil.getDefault());
+			Company company = _companyLocalService.getCompany(
+				group.getCompanyId());
 
-		List<Group> groups = (List<Group>)groupPageItems.getItems();
+			PageItems<Group> groupPageItems = _getPageItems(
+				PaginationRequest.of(10, 1), company, LocaleUtil.getDefault());
 
-		Assert.assertFalse(groups.contains(_group));
+			List<Group> groups = (List<Group>)groupPageItems.getItems();
+
+			Assert.assertFalse(groups.contains(group));
+		}
+		catch (Exception e) {
+			_groupLocalService.deleteGroup(group);
+		}
 	}
 
 	private Group _deactivateGroup(Group group) throws PortalException {
@@ -123,9 +130,6 @@ public class ContentSpaceCollectionResourceTest {
 
 	@Inject
 	private CompanyLocalService _companyLocalService;
-
-	@DeleteAfterTestRun
-	private Group _group;
 
 	@Inject
 	private GroupLocalService _groupLocalService;
