@@ -77,7 +77,7 @@ public class ContentSpaceCollectionResourceTest {
 	}
 
 	@Test
-	public void testGetInActiveGroup() throws Throwable {
+	public void testGetInactiveGroup() throws Throwable {
 		_deactivateGroup(_group);
 
 		Company company = _companyLocalService.getCompany(
