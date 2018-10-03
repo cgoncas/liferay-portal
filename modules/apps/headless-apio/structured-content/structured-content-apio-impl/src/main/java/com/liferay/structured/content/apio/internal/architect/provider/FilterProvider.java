@@ -46,7 +46,7 @@ public class FilterProvider implements Provider<Filter> {
 		catch (Exception e) {
 			throw new InvalidFilterException(
 				String.format(
-					"Invalid query computed from filter '%s': '%s'",
+					"Invalid query computed from filter '%s': %s",
 					filterString, e.getMessage()),
 				e);
 		}
