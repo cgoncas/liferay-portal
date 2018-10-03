@@ -65,12 +65,11 @@ public class Filter {
 
 	@Override
 	public String toString() {
-		final StringBuilder sb = new StringBuilder(3);
+		StringBuilder sb = new StringBuilder(3);
 
-		sb.append("Filter{");
-		sb.append("_expression=");
+		sb.append("{_expression=");
 		sb.append(_expression);
-		sb.append('}');
+		sb.append("}");
 
 		return sb.toString();
 	}
