@@ -46,11 +46,7 @@ public class ExpressionVisitorImpl implements ExpressionVisitor<Expression> {
 
 	@Override
 	public Expression visitAlias(String alias) {
-		throw new UnsupportedOperationException(
-			StringUtil.appendParentheticalSuffix(
-				"alias are not supported yet, please, avoid using the 'as' " +
-					"keyword",
-				alias));
+		throw new UnsupportedOperationException("Alias: " + alias);
 	}
 
 	@Override
@@ -68,18 +64,14 @@ public class ExpressionVisitorImpl implements ExpressionVisitor<Expression> {
 				rightBinaryOperationExpression)
 		).orElseThrow(
 			() -> new UnsupportedOperationException(
-				StringBundler.concat(
-					"operation '", binaryOperatorKind,
-					"' is not supported yet, please, avoid using it"))
+				"Binary operator: " + binaryOperatorKind)
 		);
 	}
 
 	@Override
 	public Expression visitEnum(EdmEnumType edmEnumType, List<String> list) {
 		throw new UnsupportedOperationException(
-			StringUtil.appendParentheticalSuffix(
-				"enums are not supported yet, please avoid using them",
-				StringUtil.merge(edmEnumType.getMemberNames())));
+			"Enum: " + StringUtil.merge(edmEnumType.getMemberNames()));
 	}
 
 	@Override
@@ -89,19 +81,13 @@ public class ExpressionVisitorImpl implements ExpressionVisitor<Expression> {
 			expression) {
 
 		throw new UnsupportedOperationException(
-			StringUtil.appendParentheticalSuffix(
-				"lambda expressions are not supported yet, please, avoid " +
-					"using them ",
-				lambdaFunction));
+			"Lambda expression: " + lambdaFunction);
 	}
 
 	@Override
 	public Expression visitLambdaReference(String lambdaReference) {
 		throw new UnsupportedOperationException(
-			StringUtil.appendParentheticalSuffix(
-				"lambda references are not supported yet, please, avoid " +
-					"using them",
-				lambdaReference));
+			"Lambda reference: " + lambdaReference);
 	}
 
 	@Override
@@ -120,9 +106,7 @@ public class ExpressionVisitorImpl implements ExpressionVisitor<Expression> {
 		}
 
 		throw new UnsupportedOperationException(
-			StringBundler.concat(
-				"liferal type '", edmType.getKind(),
-				"' is not supported yet, avoid using it"));
+			"Liferal: " + edmType.getKind());
 	}
 
 	@Override
@@ -146,18 +130,13 @@ public class ExpressionVisitorImpl implements ExpressionVisitor<Expression> {
 	public Expression visitMethodCall(
 		MethodKind methodKind, List<Expression> expressions) {
 
-		throw new UnsupportedOperationException(
-			StringBundler.concat(
-				"method '", methodKind,
-				"' is not supported yet, please, avoid using it"));
+		throw new UnsupportedOperationException("Method call: " + methodKind);
 	}
 
 	@Override
 	public Expression visitTypeLiteral(EdmType edmType) {
 		throw new UnsupportedOperationException(
-			StringBundler.concat(
-				"custom literal type ", edmType.getKind(),
-				" is not supported yet, please, avoid using it"));
+			"Type literal: " + edmType.getKind());
 	}
 
 	@Override
@@ -165,9 +144,7 @@ public class ExpressionVisitorImpl implements ExpressionVisitor<Expression> {
 		UnaryOperatorKind unaryOperatorKind, Expression expression) {
 
 		throw new UnsupportedOperationException(
-			StringBundler.concat(
-				"operation '", unaryOperatorKind,
-				"' is not supported yet, please, avoid using it"));
+			"Unary operator: " + unaryOperatorKind);
 	}
 
 	private Optional<BinaryExpression.Operation> _getOperationOptional(
