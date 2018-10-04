@@ -12,17 +12,27 @@
  * details.
  */
 
-package com.liferay.structured.content.apio.client.test;
+package com.liferay.structured.content.apio.client.test.activator;
 
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
+import com.liferay.portal.kernel.model.Company;
 import com.liferay.portal.kernel.model.Group;
 import com.liferay.portal.kernel.model.GroupConstants;
+import com.liferay.portal.kernel.model.User;
+import com.liferay.portal.kernel.security.auth.PrincipalThreadLocal;
+import com.liferay.portal.kernel.security.permission.PermissionChecker;
+import com.liferay.portal.kernel.security.permission.PermissionCheckerFactoryUtil;
+import com.liferay.portal.kernel.security.permission.PermissionThreadLocal;
+import com.liferay.portal.kernel.service.CompanyLocalServiceUtil;
 import com.liferay.portal.kernel.service.GroupLocalServiceUtil;
 import com.liferay.portal.kernel.service.ServiceContext;
+import com.liferay.portal.kernel.service.UserLocalServiceUtil;
 import com.liferay.portal.kernel.test.util.GroupTestUtil;
+import com.liferay.portal.kernel.test.util.UserTestUtil;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.ListIterator;
 
 import org.osgi.framework.BundleActivator;
@@ -31,7 +41,7 @@ import org.osgi.framework.BundleContext;
 /**
  * @author Ruben Pulido
  */
-public abstract class StructuredContentApioTestBundleActivator
+public class StructuredContentApioTestBundleActivator
 	implements BundleActivator {
 
 	public static final String SITE_NAME =
@@ -56,7 +66,22 @@ public abstract class StructuredContentApioTestBundleActivator
 		_cleanUp();
 	}
 
-	protected Group addGroup(String name) throws Exception {
+	private static Company _getDefaultCompany() {
+		List<Company> companies = CompanyLocalServiceUtil.getCompanies();
+
+		return companies.get(0);
+	}
+
+	private User _addAdminUser(Company company) throws Exception {
+		User user = UserTestUtil.addCompanyAdminUser(company);
+
+		_autoCloseables.add(
+			() -> UserLocalServiceUtil.deleteUser(user.getUserId()));
+
+		return user;
+	}
+
+	private Group _addGroup(String name) throws Exception {
 		Group group = GroupTestUtil.addGroup(
 			GroupConstants.DEFAULT_PARENT_GROUP_ID, name, new ServiceContext());
 
@@ -82,7 +107,22 @@ public abstract class StructuredContentApioTestBundleActivator
 	}
 
 	private void _prepareTest() throws Exception {
-		addGroup(SITE_NAME);
+		Company company = _getDefaultCompany();
+
+		User adminUser = _addAdminUser(company);
+
+		_setPermissionChecker(adminUser);
+
+		_addGroup(SITE_NAME);
+	}
+
+	private void _setPermissionChecker(User user) throws Exception {
+		PrincipalThreadLocal.setName(user.getUserId());
+
+		PermissionChecker permissionChecker =
+			PermissionCheckerFactoryUtil.create(user);
+
+		PermissionThreadLocal.setPermissionChecker(permissionChecker);
 	}
 
 	private static final Log _log = LogFactoryUtil.getLog(
