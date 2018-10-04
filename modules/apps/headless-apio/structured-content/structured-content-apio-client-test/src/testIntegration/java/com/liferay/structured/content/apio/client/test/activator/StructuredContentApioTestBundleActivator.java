@@ -12,18 +12,26 @@
  * details.
  */
 
-package com.liferay.structured.content.apio.client.test;
+package com.liferay.structured.content.apio.client.test.activator;
 
+import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.model.Group;
 import com.liferay.portal.kernel.model.GroupConstants;
+import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.service.GroupLocalServiceUtil;
-import com.liferay.portal.kernel.service.ServiceContext;
-import com.liferay.portal.kernel.test.util.GroupTestUtil;
+import com.liferay.portal.kernel.test.util.ServiceContextTestUtil;
+import com.liferay.portal.kernel.test.util.TestPropsValues;
+import com.liferay.portal.kernel.test.util.UserTestUtil;
+import com.liferay.portal.kernel.util.FriendlyURLNormalizerUtil;
+import com.liferay.portal.kernel.util.LocaleUtil;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.ListIterator;
+import java.util.Locale;
+import java.util.Map;
 
 import org.osgi.framework.BundleActivator;
 import org.osgi.framework.BundleContext;
@@ -31,7 +39,7 @@ import org.osgi.framework.BundleContext;
 /**
  * @author Ruben Pulido
  */
-public abstract class StructuredContentApioTestBundleActivator
+public class StructuredContentApioTestBundleActivator
 	implements BundleActivator {
 
 	public static final String SITE_NAME =
@@ -56,15 +64,6 @@ public abstract class StructuredContentApioTestBundleActivator
 		_cleanUp();
 	}
 
-	protected Group addGroup(String name) throws Exception {
-		Group group = GroupTestUtil.addGroup(
-			GroupConstants.DEFAULT_PARENT_GROUP_ID, name, new ServiceContext());
-
-		_autoCloseables.add(() -> GroupLocalServiceUtil.deleteGroup(group));
-
-		return group;
-	}
-
 	private void _cleanUp() {
 		ListIterator<AutoCloseable> listIterator = _autoCloseables.listIterator(
 			_autoCloseables.size());
@@ -82,7 +81,23 @@ public abstract class StructuredContentApioTestBundleActivator
 	}
 
 	private void _prepareTest() throws Exception {
-		addGroup(SITE_NAME);
+		User user = UserTestUtil.getAdminUser(TestPropsValues.getCompanyId());
+
+		Map<Locale, String> nameMap = new HashMap<Locale, String>() {
+			{
+				put(LocaleUtil.getDefault(), SITE_NAME);
+			}
+		};
+
+		Group group = GroupLocalServiceUtil.addGroup(
+			user.getUserId(), GroupConstants.DEFAULT_PARENT_GROUP_ID, null, 0,
+			GroupConstants.DEFAULT_LIVE_GROUP_ID, nameMap, nameMap,
+			GroupConstants.TYPE_SITE_OPEN, true,
+			GroupConstants.DEFAULT_MEMBERSHIP_RESTRICTION,
+			StringPool.SLASH + FriendlyURLNormalizerUtil.normalize(SITE_NAME),
+			true, true, ServiceContextTestUtil.getServiceContext());
+
+		_autoCloseables.add(() -> GroupLocalServiceUtil.deleteGroup(group));
 	}
 
 	private static final Log _log = LogFactoryUtil.getLog(
