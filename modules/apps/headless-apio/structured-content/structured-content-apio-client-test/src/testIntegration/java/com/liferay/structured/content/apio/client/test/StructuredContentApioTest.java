@@ -55,27 +55,180 @@ public class StructuredContentApioTest {
 
 	@Before
 	public void setUp() throws MalformedURLException {
-		_jsonWebServiceClient = new JSONWebServiceClientImpl();
-
 		_rootEndpointURL = new URL(_url, "/o/api");
+	}
 
-		_jsonWebServiceClient.setHostName(_rootEndpointURL.getHost());
-		_jsonWebServiceClient.setHostPort(_rootEndpointURL.getPort());
+	@Test
+	public void testAdminUserSeeAllStructuredContents() throws Exception {
+		JSONWebServiceClient jsonWebServiceClient = _getJSONWebServiceClient(
+			"test@liferay.com");
 
-		_jsonWebServiceClient.setLogin("test@liferay.com");
-		_jsonWebServiceClient.setPassword("test");
-		_jsonWebServiceClient.setProtocol(_rootEndpointURL.getProtocol());
+		List<String> hrefs = JsonPath.read(
+			_get(
+				JsonPath.read(
+					_get(
+						_rootEndpointURL.toExternalForm(),
+						jsonWebServiceClient),
+					"$._links.content-space.href"),
+				jsonWebServiceClient),
+			"$._embedded.ContentSpace[?(@.name == '" +
+				StructuredContentApioTestBundleActivator.SITE_NAME +
+					"')]._links.structuredContents.href");
+
+		List<String> titles = JsonPath.read(
+			_get(hrefs.get(0), jsonWebServiceClient),
+			"$._embedded.StructuredContent[*].title");
+
+		Assert.assertTrue(
+			titles.contains(
+				StructuredContentApioTestBundleActivator.
+					TITLE_NO_GUEST_NO_GROUP));
+		Assert.assertTrue(
+			titles.contains(
+				StructuredContentApioTestBundleActivator.
+					TITLE_NO_GUEST_YES_GROUP));
+		Assert.assertTrue(
+			titles.contains(
+				StructuredContentApioTestBundleActivator.
+					TITLE_YES_GUEST_YES_GROUP));
+	}
+
+	@Test
+	public void testGuestUserSeesRightStructuredContents() throws Exception {
+		JSONWebServiceClient jsonWebServiceClient = _getJSONWebServiceClient(
+			"test@liferay.com");
+
+		List<String> hrefs = JsonPath.read(
+			_get(
+				JsonPath.read(
+					_get(
+						_rootEndpointURL.toExternalForm(),
+						jsonWebServiceClient),
+					"$._links.content-space.href"),
+				jsonWebServiceClient),
+			"$._embedded.ContentSpace[?(@.name == '" +
+				StructuredContentApioTestBundleActivator.SITE_NAME +
+					"')]._links.structuredContents.href");
+
+		JSONWebServiceClient jsonWebServiceClientGuestLogin =
+			_getJSONWebServiceClient();
+
+		List<String> titles = JsonPath.read(
+			_get(hrefs.get(0), jsonWebServiceClientGuestLogin),
+			"$._embedded.StructuredContent[*].title");
+
+		Assert.assertFalse(
+			titles.contains(
+				StructuredContentApioTestBundleActivator.
+					TITLE_NO_GUEST_NO_GROUP));
+		Assert.assertFalse(
+			titles.contains(
+				StructuredContentApioTestBundleActivator.
+					TITLE_NO_GUEST_YES_GROUP));
+		Assert.assertTrue(
+			titles.contains(
+				StructuredContentApioTestBundleActivator.
+					TITLE_YES_GUEST_YES_GROUP));
+	}
+
+	@Test
+	public void testNotSiteMemberUserSeesRightStructuredContents()
+		throws Exception {
+
+		JSONWebServiceClient jsonWebServiceClient = _getJSONWebServiceClient(
+			"test@liferay.com");
+
+		List<String> hrefs = JsonPath.read(
+			_get(
+				JsonPath.read(
+					_get(
+						_rootEndpointURL.toExternalForm(),
+						jsonWebServiceClient),
+					"$._links.content-space.href"),
+				jsonWebServiceClient),
+			"$._embedded.ContentSpace[?(@.name == '" +
+				StructuredContentApioTestBundleActivator.SITE_NAME +
+					"')]._links.structuredContents.href");
+
+		JSONWebServiceClient jsonWebServiceClientNotSiteMemberLogin =
+			_getJSONWebServiceClient(
+				StructuredContentApioTestBundleActivator.
+					NOT_A_SITE_MEMBER_EMAIL_ADDRESS);
+
+		List<String> titles = JsonPath.read(
+			_get(hrefs.get(0), jsonWebServiceClientNotSiteMemberLogin),
+			"$._embedded.StructuredContent[*].title");
+
+		Assert.assertFalse(
+			titles.contains(
+				StructuredContentApioTestBundleActivator.
+					TITLE_NO_GUEST_NO_GROUP));
+		Assert.assertFalse(
+			titles.contains(
+				StructuredContentApioTestBundleActivator.
+					TITLE_NO_GUEST_YES_GROUP));
+		Assert.assertTrue(
+			titles.contains(
+				StructuredContentApioTestBundleActivator.
+					TITLE_YES_GUEST_YES_GROUP));
+	}
+
+	@Test
+	public void testSiteMemberUserSeesRightStructuredContents()
+		throws Exception {
+
+		JSONWebServiceClient jsonWebServiceClient = _getJSONWebServiceClient(
+			"test@liferay.com");
+
+		List<String> hrefs = JsonPath.read(
+			_get(
+				JsonPath.read(
+					_get(
+						_rootEndpointURL.toExternalForm(),
+						jsonWebServiceClient),
+					"$._links.content-space.href"),
+				jsonWebServiceClient),
+			"$._embedded.ContentSpace[?(@.name == '" +
+				StructuredContentApioTestBundleActivator.SITE_NAME +
+					"')]._links.structuredContents.href");
+
+		JSONWebServiceClient jsonWebServiceClientSiteMemberLogin =
+			_getJSONWebServiceClient(
+				StructuredContentApioTestBundleActivator.
+					SITE_MEMBER_EMAIL_ADDRESS);
+
+		List<String> titles = JsonPath.read(
+			_get(hrefs.get(0), jsonWebServiceClientSiteMemberLogin),
+			"$._embedded.StructuredContent[*].title");
+
+		Assert.assertFalse(
+			titles.contains(
+				StructuredContentApioTestBundleActivator.
+					TITLE_NO_GUEST_NO_GROUP));
+		Assert.assertTrue(
+			titles.contains(
+				StructuredContentApioTestBundleActivator.
+					TITLE_NO_GUEST_YES_GROUP));
+		Assert.assertTrue(
+			titles.contains(
+				StructuredContentApioTestBundleActivator.
+					TITLE_YES_GUEST_YES_GROUP));
 	}
 
 	@Test
 	public void testStructuredContentsExistsInContentSpaceEndpoint()
 		throws Exception {
 
+		JSONWebServiceClient jsonWebServiceClient = _getJSONWebServiceClient();
+
 		List<String> hrefs = JsonPath.read(
 			_get(
 				JsonPath.read(
-					_get(_rootEndpointURL.toExternalForm()),
-					"$._links.content-space.href")),
+					_get(
+						_rootEndpointURL.toExternalForm(),
+						jsonWebServiceClient),
+					"$._links.content-space.href"),
+				jsonWebServiceClient),
 			"$._embedded.ContentSpace[?(@.name == '" +
 				StructuredContentApioTestBundleActivator.SITE_NAME +
 					"')]._links.structuredContents.href");
@@ -85,30 +238,55 @@ public class StructuredContentApioTest {
 
 	@Test
 	public void testStructuredContentsMatchesSelfLink() throws Exception {
+		JSONWebServiceClient jsonWebServiceClient = _getJSONWebServiceClient();
+
 		List<String> hrefs = JsonPath.read(
 			_get(
 				JsonPath.read(
-					_get(_rootEndpointURL.toExternalForm()),
-					"$._links.content-space.href")),
+					_get(
+						_rootEndpointURL.toExternalForm(),
+						jsonWebServiceClient),
+					"$._links.content-space.href"),
+				jsonWebServiceClient),
 			"$._embedded.ContentSpace[?(@.name == '" +
 				StructuredContentApioTestBundleActivator.SITE_NAME +
 					"')]._links.structuredContents.href");
 
-		String href = JsonPath.read(_get(hrefs.get(0)), "$._links.self.href");
+		String href = JsonPath.read(
+			_get(hrefs.get(0), jsonWebServiceClient), "$._links.self.href");
 
 		Assert.assertTrue(href.startsWith(hrefs.get(0)));
 	}
 
-	private String _get(String url)
+	private String _get(String url, JSONWebServiceClient jsonWebServiceClient)
 		throws JSONWebServiceInvocationException,
 			   JSONWebServiceTransportException {
 
-		return _jsonWebServiceClient.doGet(
+		return jsonWebServiceClient.doGet(
 			url, Collections.emptyMap(),
 			Collections.singletonMap("Accept", "application/hal+json"));
 	}
 
-	private JSONWebServiceClient _jsonWebServiceClient;
+	private JSONWebServiceClient _getJSONWebServiceClient() {
+		JSONWebServiceClient jsonWebServiceClient =
+			new JSONWebServiceClientImpl();
+
+		jsonWebServiceClient.setHostName(_rootEndpointURL.getHost());
+		jsonWebServiceClient.setHostPort(_rootEndpointURL.getPort());
+		jsonWebServiceClient.setProtocol(_rootEndpointURL.getProtocol());
+
+		return jsonWebServiceClient;
+	}
+
+	private JSONWebServiceClient _getJSONWebServiceClient(String login) {
+		JSONWebServiceClient jsonWebServiceClient = _getJSONWebServiceClient();
+
+		jsonWebServiceClient.setLogin(login);
+		jsonWebServiceClient.setPassword("test");
+
+		return jsonWebServiceClient;
+	}
+
 	private URL _rootEndpointURL;
 
 	@ArquillianResource
