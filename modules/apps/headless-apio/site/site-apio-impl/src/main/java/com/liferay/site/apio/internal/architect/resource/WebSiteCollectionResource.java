@@ -86,8 +86,6 @@ public class WebSiteCollectionResource
 		).addBidirectionalModel(
 			"webSite", "webSites", WebSiteIdentifier.class,
 			this::_getParentGroupId
-		).addBoolean(
-			"active", Group::isActive
 		).addLinkedModel(
 			"contentSpace", ContentSpaceIdentifier.class, Group::getGroupId
 		).addLinkedModel(
