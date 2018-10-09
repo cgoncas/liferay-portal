@@ -19,9 +19,12 @@ import javax.ws.rs.BadRequestException;
 /**
  * This exception is used to model errors when handling {@link Sort}.
  *
- * @author Cristina González
+ * @author     Cristina González
+ * @deprecated As of Judson (7.1.x), replaced by {@link
+ *             com.liferay.parser.apio.architect.sort.InvalidSortException}
  * @review
  */
+@Deprecated
 public class InvalidSortException extends BadRequestException {
 
 	/**
