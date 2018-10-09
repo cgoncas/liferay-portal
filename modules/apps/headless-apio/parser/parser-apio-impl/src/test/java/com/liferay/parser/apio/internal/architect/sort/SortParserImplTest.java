@@ -12,12 +12,12 @@
  * details.
  */
 
-package com.liferay.structured.content.apio.internal.architect.sort;
+package com.liferay.parser.apio.internal.architect.sort;
 
-import com.liferay.structured.content.apio.architect.entity.EntityField;
-import com.liferay.structured.content.apio.architect.entity.EntityModel;
-import com.liferay.structured.content.apio.architect.sort.InvalidSortException;
-import com.liferay.structured.content.apio.architect.sort.SortField;
+import com.liferay.parser.apio.architect.entity.EntityField;
+import com.liferay.parser.apio.architect.entity.EntityModel;
+import com.liferay.parser.apio.architect.sort.InvalidSortException;
+import com.liferay.parser.apio.architect.sort.SortField;
 
 import java.util.List;
 import java.util.Locale;

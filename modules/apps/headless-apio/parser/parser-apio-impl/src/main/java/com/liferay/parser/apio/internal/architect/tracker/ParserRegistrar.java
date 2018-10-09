@@ -12,15 +12,15 @@
  * details.
  */
 
-package com.liferay.structured.content.apio.internal.architect.tracker;
+package com.liferay.parser.apio.internal.architect.tracker;
 
 import com.liferay.osgi.util.ServiceTrackerFactory;
+import com.liferay.parser.apio.architect.entity.EntityModel;
+import com.liferay.parser.apio.architect.filter.FilterParser;
+import com.liferay.parser.apio.architect.sort.SortParser;
+import com.liferay.parser.apio.internal.architect.filter.FilterParserImpl;
+import com.liferay.parser.apio.internal.architect.sort.SortParserImpl;
 import com.liferay.portal.kernel.util.HashMapDictionary;
-import com.liferay.structured.content.apio.architect.entity.EntityModel;
-import com.liferay.structured.content.apio.architect.filter.FilterParser;
-import com.liferay.structured.content.apio.architect.sort.SortParser;
-import com.liferay.structured.content.apio.internal.architect.filter.FilterParserImpl;
-import com.liferay.structured.content.apio.internal.architect.sort.SortParserImpl;
 
 import java.util.ArrayList;
 import java.util.List;

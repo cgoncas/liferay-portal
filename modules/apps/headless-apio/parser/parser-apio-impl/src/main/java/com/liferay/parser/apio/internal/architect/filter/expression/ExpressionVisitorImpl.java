@@ -12,12 +12,12 @@
  * details.
  */
 
-package com.liferay.structured.content.apio.internal.architect.filter.expression;
+package com.liferay.parser.apio.internal.architect.filter.expression;
 
+import com.liferay.parser.apio.architect.filter.expression.BinaryExpression;
+import com.liferay.parser.apio.architect.filter.expression.Expression;
+import com.liferay.parser.apio.architect.filter.expression.LiteralExpression;
 import com.liferay.portal.kernel.util.StringUtil;
-import com.liferay.structured.content.apio.architect.filter.expression.BinaryExpression;
-import com.liferay.structured.content.apio.architect.filter.expression.Expression;
-import com.liferay.structured.content.apio.architect.filter.expression.LiteralExpression;
 
 import java.util.List;
 import java.util.Optional;

@@ -12,16 +12,16 @@
  * details.
  */
 
-package com.liferay.structured.content.apio.internal.architect.filter;
+package com.liferay.parser.apio.internal.architect.filter;
 
+import com.liferay.parser.apio.architect.entity.EntityModel;
+import com.liferay.parser.apio.architect.filter.FilterParser;
+import com.liferay.parser.apio.architect.filter.expression.Expression;
+import com.liferay.parser.apio.architect.filter.expression.ExpressionVisitException;
+import com.liferay.parser.apio.internal.architect.filter.expression.ExpressionVisitorImpl;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.util.Validator;
-import com.liferay.structured.content.apio.architect.entity.EntityModel;
-import com.liferay.structured.content.apio.architect.filter.FilterParser;
-import com.liferay.structured.content.apio.architect.filter.expression.Expression;
-import com.liferay.structured.content.apio.architect.filter.expression.ExpressionVisitException;
-import com.liferay.structured.content.apio.internal.architect.filter.expression.ExpressionVisitorImpl;
 
 import org.apache.olingo.commons.api.ex.ODataException;
 import org.apache.olingo.commons.core.Encoder;

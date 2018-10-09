@@ -12,10 +12,10 @@
  * details.
  */
 
-package com.liferay.structured.content.apio.internal.architect.filter;
+package com.liferay.parser.apio.internal.architect.filter;
 
-import com.liferay.structured.content.apio.architect.entity.EntityField;
-import com.liferay.structured.content.apio.architect.entity.EntityModel;
+import com.liferay.parser.apio.architect.entity.EntityField;
+import com.liferay.parser.apio.architect.entity.EntityModel;
 
 import java.util.HashMap;
 import java.util.List;

@@ -12,10 +12,17 @@
  * details.
  */
 
-package com.liferay.structured.content.apio.internal.architect.filter;
+package com.liferay.parser.apio.internal.architect.filter;
 
 import com.fasterxml.jackson.databind.util.ISO8601Utils;
 
+import com.liferay.parser.apio.architect.entity.EntityField;
+import com.liferay.parser.apio.architect.entity.EntityModel;
+import com.liferay.parser.apio.architect.filter.InvalidFilterException;
+import com.liferay.parser.apio.architect.filter.expression.BinaryExpression;
+import com.liferay.parser.apio.architect.filter.expression.ExpressionVisitor;
+import com.liferay.parser.apio.architect.filter.expression.LiteralExpression;
+import com.liferay.parser.apio.architect.filter.expression.MemberExpression;
 import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.search.BooleanClauseOccur;
 import com.liferay.portal.kernel.search.filter.BooleanFilter;
@@ -23,13 +30,6 @@ import com.liferay.portal.kernel.search.filter.Filter;
 import com.liferay.portal.kernel.search.filter.RangeTermFilter;
 import com.liferay.portal.kernel.search.filter.TermFilter;
 import com.liferay.portal.kernel.util.StringUtil;
-import com.liferay.structured.content.apio.architect.entity.EntityField;
-import com.liferay.structured.content.apio.architect.entity.EntityModel;
-import com.liferay.structured.content.apio.architect.filter.InvalidFilterException;
-import com.liferay.structured.content.apio.architect.filter.expression.BinaryExpression;
-import com.liferay.structured.content.apio.architect.filter.expression.ExpressionVisitor;
-import com.liferay.structured.content.apio.architect.filter.expression.LiteralExpression;
-import com.liferay.structured.content.apio.architect.filter.expression.MemberExpression;
 
 import java.text.Format;
 import java.text.ParseException;

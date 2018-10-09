@@ -12,8 +12,13 @@
  * details.
  */
 
-package com.liferay.structured.content.apio.internal.architect.filter;
+package com.liferay.parser.apio.internal.architect.filter;
 
+import com.liferay.parser.apio.architect.entity.EntityField;
+import com.liferay.parser.apio.architect.entity.EntityModel;
+import com.liferay.parser.apio.architect.filter.expression.BinaryExpression;
+import com.liferay.parser.apio.architect.filter.expression.LiteralExpression;
+import com.liferay.parser.apio.internal.architect.filter.expression.LiteralExpressionImpl;
 import com.liferay.portal.kernel.search.BooleanClause;
 import com.liferay.portal.kernel.search.BooleanClauseOccur;
 import com.liferay.portal.kernel.search.filter.BooleanFilter;
@@ -21,11 +26,6 @@ import com.liferay.portal.kernel.search.filter.Filter;
 import com.liferay.portal.kernel.search.filter.RangeTermFilter;
 import com.liferay.portal.kernel.search.filter.TermFilter;
 import com.liferay.portal.kernel.util.LocaleUtil;
-import com.liferay.structured.content.apio.architect.entity.EntityField;
-import com.liferay.structured.content.apio.architect.entity.EntityModel;
-import com.liferay.structured.content.apio.architect.filter.expression.BinaryExpression;
-import com.liferay.structured.content.apio.architect.filter.expression.LiteralExpression;
-import com.liferay.structured.content.apio.internal.architect.filter.expression.LiteralExpressionImpl;
 
 import java.text.SimpleDateFormat;
 

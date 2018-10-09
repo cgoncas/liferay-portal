@@ -12,11 +12,11 @@
  * details.
  */
 
-package com.liferay.structured.content.apio.internal.architect.filter.expression;
+package com.liferay.parser.apio.internal.architect.filter.expression;
 
-import com.liferay.structured.content.apio.architect.filter.expression.ExpressionVisitException;
-import com.liferay.structured.content.apio.architect.filter.expression.ExpressionVisitor;
-import com.liferay.structured.content.apio.architect.filter.expression.MemberExpression;
+import com.liferay.parser.apio.architect.filter.expression.ExpressionVisitException;
+import com.liferay.parser.apio.architect.filter.expression.ExpressionVisitor;
+import com.liferay.parser.apio.architect.filter.expression.MemberExpression;
 
 import java.util.Collections;
 import java.util.List;

@@ -12,13 +12,13 @@
  * details.
  */
 
-package com.liferay.structured.content.apio.internal.architect.filter.expression;
+package com.liferay.parser.apio.internal.architect.filter.expression;
 
+import com.liferay.parser.apio.architect.filter.expression.BinaryExpression;
+import com.liferay.parser.apio.architect.filter.expression.Expression;
+import com.liferay.parser.apio.architect.filter.expression.ExpressionVisitException;
+import com.liferay.parser.apio.architect.filter.expression.ExpressionVisitor;
 import com.liferay.petra.string.StringBundler;
-import com.liferay.structured.content.apio.architect.filter.expression.BinaryExpression;
-import com.liferay.structured.content.apio.architect.filter.expression.Expression;
-import com.liferay.structured.content.apio.architect.filter.expression.ExpressionVisitException;
-import com.liferay.structured.content.apio.architect.filter.expression.ExpressionVisitor;
 
 /**
  * @author Cristina González
