@@ -12,7 +12,7 @@
  * details.
  */
 
-package com.liferay.structured.content.apio.architect.entity;
+package com.liferay.parser.apio.architect.entity;
 
 import com.liferay.portal.kernel.util.Validator;
 
@@ -22,12 +22,9 @@ import java.util.function.Function;
 /**
  * Models a <code>EntityField</code>.
  *
- * @author     Cristina González
- * @deprecated As of Judson (7.1.x), replaced by {@link
- *             com.liferay.parser.apio.architect.entity.EntityField}
+ * @author Cristina González
  * @review
  */
-@Deprecated
 public class EntityField {
 
 	/**

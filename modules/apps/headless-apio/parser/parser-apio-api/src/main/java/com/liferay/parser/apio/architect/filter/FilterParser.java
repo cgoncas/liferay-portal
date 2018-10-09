@@ -12,28 +12,28 @@
  * details.
  */
 
-package com.liferay.structured.content.apio.architect.sort;
+package com.liferay.parser.apio.architect.filter;
 
-import java.util.List;
+import com.liferay.parser.apio.architect.filter.expression.Expression;
+import com.liferay.parser.apio.architect.filter.expression.ExpressionVisitException;
 
 /**
- * Models a Parser from String to Sort Fields.
+ * <code>FilterParser</code> transforms a String containing an oData filter in a
+ * manageable expression {@link Expression}.
  *
- * @author     Cristina González
- * @deprecated As of Judson (7.1.x), replaced by {@link
- *             com.liferay.parser.apio.architect.sort.SortParser}
+ * @author David Arques
  * @review
  */
-@Deprecated
-public interface SortParser {
+public interface FilterParser {
 
 	/**
-	 * Returns a List of {@link SortField} obtained from a String.
+	 * Returns a {@link Expression} obtained from a String.
 	 *
-	 * @param  sortString - String to be parsed
-	 * @return a List of  {@link SortField}
+	 * @param  filterString - the filterString
+	 * @return A {@link Expression}
 	 * @review
 	 */
-	public List<SortField> parse(String sortString);
+	public Expression parse(String filterString)
+		throws ExpressionVisitException;
 
 }

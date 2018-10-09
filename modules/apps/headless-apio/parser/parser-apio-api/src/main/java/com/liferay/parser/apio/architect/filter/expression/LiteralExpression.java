@@ -12,28 +12,37 @@
  * details.
  */
 
-package com.liferay.structured.content.apio.architect.sort;
-
-import java.util.List;
+package com.liferay.parser.apio.architect.filter.expression;
 
 /**
- * Models a Parser from String to Sort Fields.
+ * Represents a literal expression node in the expression tree. <code
+ * LiteralExpression></code> is not validated by default
  *
- * @author     Cristina González
- * @deprecated As of Judson (7.1.x), replaced by {@link
- *             com.liferay.parser.apio.architect.sort.SortParser}
+ * @author Cristina González
  * @review
  */
-@Deprecated
-public interface SortParser {
+public interface LiteralExpression extends Expression {
 
 	/**
-	 * Returns a List of {@link SortField} obtained from a String.
+	 * Returns the text value of the literal expression.
 	 *
-	 * @param  sortString - String to be parsed
-	 * @return a List of  {@link SortField}
+	 * @return the text value of the literal expression
 	 * @review
 	 */
-	public List<SortField> parse(String sortString);
+	public String getText();
+
+	/**
+	 * Returns the <code>Type</code> of the LiteralExpression.
+	 *
+	 * @return the text value of the literal expression
+	 * @review
+	 */
+	public Type getType();
+
+	public static enum Type {
+
+		DATE, STRING
+
+	}
 
 }

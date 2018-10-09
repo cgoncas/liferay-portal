@@ -12,18 +12,15 @@
  * details.
  */
 
-package com.liferay.structured.content.apio.architect.filter.expression;
+package com.liferay.parser.apio.architect.filter.expression;
 
 /**
  * <code>Expression</code> provides a common abstraction for expression
  * evaluation
  *
- * @author     Cristina González
- * @deprecated As of Judson (7.1.x), replaced by {@link
- *             com.liferay.parser.apio.architect.filter.expression.Expression}
+ * @author Cristina González
  * @review
  */
-@Deprecated
 public interface Expression {
 
 	/**

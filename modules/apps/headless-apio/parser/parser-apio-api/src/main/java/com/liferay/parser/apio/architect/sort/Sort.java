@@ -12,7 +12,7 @@
  * details.
  */
 
-package com.liferay.structured.content.apio.architect.sort;
+package com.liferay.parser.apio.architect.sort;
 
 import com.liferay.portal.kernel.util.ListUtil;
 
@@ -23,12 +23,9 @@ import java.util.List;
  * Models a Sort param for sorting structured content by different fields and
  * sort directives.
  *
- * @author     Cristina González
- * @deprecated As of Judson (7.1.x), replaced by {@link
- *             com.liferay.parser.apio.architect.sort.Sort}
+ * @author Cristina González
  * @review
  */
-@Deprecated
 public class Sort {
 
 	public static final Sort EMPTY_SORT = new Sort();

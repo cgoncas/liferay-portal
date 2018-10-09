@@ -12,40 +12,37 @@
  * details.
  */
 
-package com.liferay.structured.content.apio.architect.filter;
+package com.liferay.parser.apio.architect.sort;
 
 import javax.ws.rs.BadRequestException;
 
 /**
- * This exception is used to model errors when handling {@link Filter}.
+ * This exception is used to model errors when handling {@link Sort}.
  *
- * @author     David Arques
- * @deprecated As of Judson (7.1.x), replaced by {@link
- *             com.liferay.parser.apio.architect.filter.InvalidFilterException}
+ * @author Cristina González
  * @review
  */
-@Deprecated
-public class InvalidFilterException extends BadRequestException {
+public class InvalidSortException extends BadRequestException {
 
 	/**
-	 * Creates a new <code>InvalidFilterException</code> with a message
+	 * Creates a new <code>InvalidSortException</code> with a message
 	 *
 	 * @param  msg - message of the Exception
 	 * @review
 	 */
-	public InvalidFilterException(String msg) {
+	public InvalidSortException(String msg) {
 		super(msg);
 	}
 
 	/**
-	 * Creates a new <code>InvalidFilterException</code> with a message and a
+	 * Creates a new <code>InvalidSortException</code> with a message and a
 	 * cause
 	 *
 	 * @param  msg - message of the Exception
 	 * @param  cause - cause of the Exception
 	 * @review
 	 */
-	public InvalidFilterException(String msg, Throwable cause) {
+	public InvalidSortException(String msg, Throwable cause) {
 		super(msg, cause);
 	}
 

@@ -12,9 +12,9 @@
  * details.
  */
 
-package com.liferay.structured.content.apio.architect.sort;
+package com.liferay.parser.apio.architect.sort;
 
-import com.liferay.structured.content.apio.architect.entity.EntityField;
+import com.liferay.parser.apio.architect.entity.EntityField;
 
 import java.io.Serializable;
 
@@ -23,12 +23,9 @@ import java.util.Locale;
 /**
  * Models a Sort Field.
  *
- * @author     Cristina González
- * @deprecated As of Judson (7.1.x), replaced by {@link
- *             com.liferay.parser.apio.architect.sort.SortField}
+ * @author Cristina González
  * @review
  */
-@Deprecated
 public class SortField implements Serializable {
 
 	/**
@@ -45,27 +42,6 @@ public class SortField implements Serializable {
 
 		_asc = asc;
 		_entityField = entityField;
-	}
-
-	/**
-	 * @deprecated As of Judson (7.1.x), replaced by {@link
-	 *             #SortField(EntityField, boolean)}
-	 */
-	@Deprecated
-	public SortField(String fieldName, boolean asc) {
-		throw new UnsupportedOperationException(
-			"This constructor is deprecated and replaced by #SortField(" +
-				"EntityField, boolean)");
-	}
-
-	/**
-	 * @deprecated As of Judson (7.1.x), replaced by {@link
-	 *             #getSortableFieldName}
-	 */
-	@Deprecated
-	public String getFieldName() {
-		throw new UnsupportedOperationException(
-			"This method is deprecated and replaced by #getSortableFieldName");
 	}
 
 	/**

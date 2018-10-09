@@ -12,40 +12,37 @@
  * details.
  */
 
-package com.liferay.structured.content.apio.architect.filter;
-
-import javax.ws.rs.BadRequestException;
+package com.liferay.parser.apio.architect.filter.expression;
 
 /**
- * This exception is used to model errors when handling {@link Filter}.
+ * Exception class used by the <code>ExpressionVisitor</code> to throw
+ * exceptions while traversing the expression tree
  *
- * @author     David Arques
- * @deprecated As of Judson (7.1.x), replaced by {@link
- *             com.liferay.parser.apio.architect.filter.InvalidFilterException}
+ * @author Cristina González
  * @review
  */
-@Deprecated
-public class InvalidFilterException extends BadRequestException {
+public class ExpressionVisitException extends Exception {
 
 	/**
-	 * Creates a new <code>InvalidFilterException</code> with a message
+	 * Creates a new <code>ExpressionVisitException</code> with a message and a
+	 * cause
 	 *
 	 * @param  msg - message of the Exception
 	 * @review
 	 */
-	public InvalidFilterException(String msg) {
+	public ExpressionVisitException(String msg) {
 		super(msg);
 	}
 
 	/**
-	 * Creates a new <code>InvalidFilterException</code> with a message and a
+	 * Creates a new <code>ExpressionVisitException</code> with a message and a
 	 * cause
 	 *
 	 * @param  msg - message of the Exception
 	 * @param  cause - cause of the Exception
 	 * @review
 	 */
-	public InvalidFilterException(String msg, Throwable cause) {
+	public ExpressionVisitException(String msg, Throwable cause) {
 		super(msg, cause);
 	}
 

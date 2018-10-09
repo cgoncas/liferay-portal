@@ -12,19 +12,16 @@
  * details.
  */
 
-package com.liferay.structured.content.apio.architect.filter;
+package com.liferay.parser.apio.architect.filter;
 
 import javax.ws.rs.BadRequestException;
 
 /**
  * This exception is used to model errors when handling {@link Filter}.
  *
- * @author     David Arques
- * @deprecated As of Judson (7.1.x), replaced by {@link
- *             com.liferay.parser.apio.architect.filter.InvalidFilterException}
+ * @author David Arques
  * @review
  */
-@Deprecated
 public class InvalidFilterException extends BadRequestException {
 
 	/**

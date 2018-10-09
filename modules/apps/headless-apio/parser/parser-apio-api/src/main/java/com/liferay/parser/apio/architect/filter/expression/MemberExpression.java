@@ -12,28 +12,25 @@
  * details.
  */
 
-package com.liferay.structured.content.apio.architect.sort;
+package com.liferay.parser.apio.architect.filter.expression;
 
 import java.util.List;
 
 /**
- * Models a Parser from String to Sort Fields.
+ * Represents a member expression node in the expression tree. This expression
+ * is used to describe access paths to properties.
  *
- * @author     Cristina González
- * @deprecated As of Judson (7.1.x), replaced by {@link
- *             com.liferay.parser.apio.architect.sort.SortParser}
+ * @author Cristina González
  * @review
  */
-@Deprecated
-public interface SortParser {
+public interface MemberExpression extends Expression {
 
 	/**
-	 * Returns a List of {@link SortField} obtained from a String.
+	 * Returns the resource path of the Member Expression
 	 *
-	 * @param  sortString - String to be parsed
-	 * @return a List of  {@link SortField}
+	 * @return the resource path of the Member Expression
 	 * @review
 	 */
-	public List<SortField> parse(String sortString);
+	public List<String> getResourcePath();
 
 }
