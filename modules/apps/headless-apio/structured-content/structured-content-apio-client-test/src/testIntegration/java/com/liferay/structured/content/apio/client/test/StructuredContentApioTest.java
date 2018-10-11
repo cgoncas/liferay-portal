@@ -115,6 +115,8 @@ public class StructuredContentApioTest {
 				StructuredContentApioTestBundleActivator.
 					TITLE1_LOCALE_DEFAULT));
 	}
+
+	@Test
 	public void testGuestUserSeesRightStructuredContents() throws Exception {
 		List<String> hrefs = JsonPath.read(
 			_toStringAsAdmin(
@@ -144,6 +146,31 @@ public class StructuredContentApioTest {
 	}
 
 	@Test
+	public void testLocalizedTitleIsDisplayedWhenLocaleDERequestedIsAvailable()
+		throws Exception {
+
+		List<String> hrefs = JsonPath.read(
+			_toStringAsAdmin(
+				JsonPath.read(
+					_toStringAsAdmin(_rootEndpointURL.toExternalForm()),
+					"$._links.content-space.href")),
+			"$._embedded.ContentSpace[?(@.name == '" +
+				StructuredContentApioTestBundleActivator.SITE_NAME +
+					"')]._links.structuredContents.href");
+
+		Map<String, String> headersMap = _getDefaultHeadersMap();
+
+		headersMap.put("Accept-Language", "de-DE");
+
+		List<String> titles = JsonPath.read(
+			_toStringAsGuest(hrefs.get(0), headersMap),
+			"$._embedded.StructuredContent[*].title");
+
+		Assert.assertTrue(
+			titles.contains(
+				StructuredContentApioTestBundleActivator.TITLE3_LOCALE_DE));
+	}
+
 	@Test
 	public void testLocalizedTitleIsDisplayedWhenLocaleFRRequestedIsAvailable()
 		throws Exception {
