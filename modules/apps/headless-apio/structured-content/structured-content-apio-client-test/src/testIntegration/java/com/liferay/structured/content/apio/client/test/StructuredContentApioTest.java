@@ -219,6 +219,14 @@ public class StructuredContentApioTest {
 		Assert.assertTrue(href.startsWith(hrefs.get(0)));
 	}
 
+	private Map<String, String> _getDefaultHeadersMap() {
+		return new HashMap<String, String>() {
+			{
+				put("Accept", "application/hal+json");
+			}
+		};
+	}
+
 	private JSONWebServiceClient _getGuestJSONWebServiceClient() {
 		JSONWebServiceClient jsonWebServiceClient =
 			new JSONWebServiceClientImpl();
