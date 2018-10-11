@@ -77,6 +77,30 @@ public class StructuredContentApioTestBundleActivator
 		StructuredContentApioTestBundleActivator.class.getSimpleName() +
 			"YesGuestYesGroupTitle";
 
+	public static final String TITLE1_LOCALE_DEFAULT =
+		StructuredContentApioTestBundleActivator.class.getSimpleName() +
+			"Title1_DefaultLocale";
+
+	public static final String TITLE2_LOCALE_DEFAULT =
+		StructuredContentApioTestBundleActivator.class.getSimpleName() +
+			"Title2_DefaultLocale";
+
+	public static final String TITLE2_LOCALE_FR =
+		StructuredContentApioTestBundleActivator.class.getSimpleName() +
+			"Title2_fr";
+
+	public static final String TITLE3_LOCALE_DE =
+		StructuredContentApioTestBundleActivator.class.getSimpleName() +
+			"Title3_de";
+
+	public static final String TITLE3_LOCALE_DEFAULT =
+		StructuredContentApioTestBundleActivator.class.getSimpleName() +
+			"Title3_DefaultLocale";
+
+	public static final String TITLE3_LOCALE_FR =
+		StructuredContentApioTestBundleActivator.class.getSimpleName() +
+			"Title3_fr";
+
 	@Override
 	public void start(BundleContext bundleContext) {
 		_autoCloseables = new ArrayList<>();
@@ -174,6 +198,35 @@ public class StructuredContentApioTestBundleActivator
 		}
 	}
 
+	private void _prepareDataForLocalizationTests(User user, Group group)
+		throws Exception {
+
+		_addJournalArticle(
+			TITLE1_LOCALE_DEFAULT, user.getUserId(), group.getGroupId(), true,
+			true);
+
+		Map<Locale, String> titleMap2 = new HashMap<Locale, String>() {
+			{
+				put(LocaleUtil.getDefault(), TITLE2_LOCALE_DEFAULT);
+				put(Locale.FRANCE, TITLE2_LOCALE_FR);
+			}
+		};
+
+		_addJournalArticle(
+			titleMap2, user.getUserId(), group.getGroupId(), true, true);
+
+		Map<Locale, String> titleMap3 = new HashMap<Locale, String>() {
+			{
+				put(LocaleUtil.getDefault(), TITLE3_LOCALE_DEFAULT);
+				put(Locale.FRANCE, TITLE3_LOCALE_FR);
+				put(Locale.GERMANY, TITLE3_LOCALE_DE);
+			}
+		};
+
+		_addJournalArticle(
+			titleMap3, user.getUserId(), group.getGroupId(), true, true);
+	}
+
 	private void _prepareTest() throws Exception {
 		User user = UserTestUtil.getAdminUser(TestPropsValues.getCompanyId());
 		Map<Locale, String> nameMap = Collections.singletonMap(
@@ -208,6 +261,8 @@ public class StructuredContentApioTestBundleActivator
 		_addJournalArticle(
 			TITLE_YES_GUEST_YES_GROUP, user.getUserId(), group.getGroupId(),
 			true, true);
+
+		_prepareDataForLocalizationTests(user, group);
 	}
 
 	private static final Log _log = LogFactoryUtil.getLog(
