@@ -117,6 +117,35 @@ public class StructuredContentApioTest {
 	}
 
 	@Test
+	@Test
+	public void testLocalizedTitleIsDisplayedWhenLocaleFRRequestedIsAvailable()
+		throws Exception {
+
+		List<String> hrefs = JsonPath.read(
+			_toStringAsAdmin(
+				JsonPath.read(
+					_toStringAsAdmin(_rootEndpointURL.toExternalForm()),
+					"$._links.content-space.href")),
+			"$._embedded.ContentSpace[?(@.name == '" +
+				StructuredContentApioTestBundleActivator.SITE_NAME +
+					"')]._links.structuredContents.href");
+
+		Map<String, String> headersMap = _getDefaultHeadersMap();
+
+		headersMap.put("Accept-Language", "fr-FR");
+
+		List<String> titles = JsonPath.read(
+			_toStringAsGuest(hrefs.get(0), headersMap),
+			"$._embedded.StructuredContent[*].title");
+
+		Assert.assertTrue(
+			titles.contains(
+				StructuredContentApioTestBundleActivator.TITLE2_LOCALE_FR));
+
+		Assert.assertTrue(
+			titles.contains(
+				StructuredContentApioTestBundleActivator.TITLE3_LOCALE_FR));
+	}
 	public void testNotSiteMemberUserSeesRightStructuredContents()
 		throws Exception {
 
