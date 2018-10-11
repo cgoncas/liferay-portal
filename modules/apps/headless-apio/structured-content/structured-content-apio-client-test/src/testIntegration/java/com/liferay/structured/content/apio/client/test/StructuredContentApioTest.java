@@ -252,9 +252,18 @@ public class StructuredContentApioTest {
 			JSONWebServiceClient jsonWebServiceClient, String url)
 		throws Exception {
 
-		return jsonWebServiceClient.doGet(
-			url, Collections.emptyMap(),
+		return _toString(
+			jsonWebServiceClient, url,
 			Collections.singletonMap("Accept", "application/hal+json"));
+	}
+
+	private String _toString(
+			JSONWebServiceClient jsonWebServiceClient, String url,
+			Map<String, String> headersMap)
+		throws Exception {
+
+		return jsonWebServiceClient.doGet(
+			url, Collections.emptyMap(), headersMap);
 	}
 
 	private String _toStringAsAdmin(String url) throws Exception {
@@ -262,7 +271,13 @@ public class StructuredContentApioTest {
 	}
 
 	private String _toStringAsGuest(String url) throws Exception {
-		return _toString(_getGuestJSONWebServiceClient(), url);
+		return _toStringAsGuest(url, _getDefaultHeadersMap());
+	}
+
+	private String _toStringAsGuest(String url, Map<String, String> headersMap)
+		throws Exception {
+
+		return _toString(_getGuestJSONWebServiceClient(), url, headersMap);
 	}
 
 	private String _toStringAsUser(String url, String login, String password)
