@@ -19,6 +19,7 @@ import static com.liferay.dynamic.data.mapping.test.util.DDMFormTestUtil.addDDMF
 import com.liferay.dynamic.data.mapping.model.DDMForm;
 import com.liferay.dynamic.data.mapping.model.DDMFormField;
 import com.liferay.dynamic.data.mapping.model.DDMStructure;
+import com.liferay.dynamic.data.mapping.model.DDMTemplate;
 import com.liferay.dynamic.data.mapping.model.LocalizedValue;
 import com.liferay.dynamic.data.mapping.model.Value;
 import com.liferay.dynamic.data.mapping.storage.DDMFormFieldValue;
@@ -26,6 +27,7 @@ import com.liferay.dynamic.data.mapping.storage.DDMFormValues;
 import com.liferay.dynamic.data.mapping.test.util.DDMFormTestUtil;
 import com.liferay.dynamic.data.mapping.test.util.DDMFormValuesTestUtil;
 import com.liferay.dynamic.data.mapping.test.util.DDMStructureTestUtil;
+import com.liferay.dynamic.data.mapping.test.util.DDMTemplateTestUtil;
 import com.liferay.journal.model.JournalArticle;
 import com.liferay.journal.model.JournalArticleConstants;
 import com.liferay.journal.model.JournalFolderConstants;
@@ -41,6 +43,7 @@ import com.liferay.portal.kernel.model.UserConstants;
 import com.liferay.portal.kernel.service.GroupLocalServiceUtil;
 import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.service.UserLocalServiceUtil;
+import com.liferay.portal.kernel.template.TemplateConstants;
 import com.liferay.portal.kernel.test.util.ServiceContextTestUtil;
 import com.liferay.portal.kernel.test.util.TestPropsValues;
 import com.liferay.portal.kernel.test.util.UserTestUtil;
@@ -50,6 +53,8 @@ import com.liferay.portal.kernel.util.LocaleUtil;
 import com.liferay.portal.kernel.util.PortalUtil;
 import com.liferay.portal.kernel.util.SetUtil;
 import com.liferay.portal.kernel.util.StringUtil;
+
+import java.io.InputStream;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -319,6 +324,36 @@ public class StructuredContentApioTestBundleActivator
 			LocaleUtil.getDefault(), true, true);
 	}
 
+	private void _prepareDataForNestedValuesTests(User user, Group group)
+		throws Exception {
+
+		Map<Locale, String> titleMap = new HashMap<Locale, String>() {
+			{
+				put(LocaleUtil.getDefault(), StringUtil.randomString(20));
+			}
+		};
+
+		String content = _read("test-journal-content-nested-fields.xml");
+
+		Locale[] availableLocales = {LocaleUtil.US, LocaleUtil.SPAIN};
+
+		DDMStructure ddmStructure = _getDDMStructureWithNestedField(
+			group.getGroupId(), availableLocales, TEXT_FIELD_NAME,
+			TEXT_FIELD_VALUE, NESTED_TEXT_FIELD_NAME, NESTED_TEXT_FIELD_VALUE);
+
+		DDMTemplate ddmTemplate = DDMTemplateTestUtil.addTemplate(
+			group.getGroupId(), ddmStructure.getStructureId(),
+			PortalUtil.getClassNameId(JournalArticle.class),
+			TemplateConstants.LANG_TYPE_VM,
+			DDMTemplateTestUtil.getSampleTemplateXSL(
+				TEXT_FIELD_NAME, NESTED_TEXT_FIELD_NAME),
+			LocaleUtil.US);
+
+		_addJournalArticle(
+			titleMap, user.getUserId(), group.getGroupId(), content,
+			ddmStructure, ddmTemplate);
+	}
+
 	private void _prepareTest() throws Exception {
 		User user = UserTestUtil.getAdminUser(TestPropsValues.getCompanyId());
 		Map<Locale, String> nameMap = Collections.singletonMap(
@@ -355,6 +390,20 @@ public class StructuredContentApioTestBundleActivator
 			true, true);
 
 		_prepareDataForLocalizationTests(user, group);
+
+		_prepareDataForNestedValuesTests(user, group);
+	}
+
+	private String _read(String fileName) throws Exception {
+		Class<?> clazz = getClass();
+
+		ClassLoader classLoader = clazz.getClassLoader();
+
+		InputStream inputStream = classLoader.getResourceAsStream(
+			"/com/liferay/structured/content/apio/client/test/activator/" +
+				fileName);
+
+		return StringUtil.read(inputStream);
 	}
 
 	private static final Log _log = LogFactoryUtil.getLog(
