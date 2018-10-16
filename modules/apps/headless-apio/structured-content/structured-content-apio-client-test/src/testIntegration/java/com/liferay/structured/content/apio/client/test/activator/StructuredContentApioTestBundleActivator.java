@@ -14,7 +14,15 @@
 
 package com.liferay.structured.content.apio.client.test.activator;
 
+import com.liferay.dynamic.data.mapping.model.DDMForm;
+import com.liferay.dynamic.data.mapping.model.DDMStructure;
+import com.liferay.dynamic.data.mapping.model.DDMTemplate;
 import com.liferay.dynamic.data.mapping.model.LocalizedValue;
+import com.liferay.dynamic.data.mapping.model.Value;
+import com.liferay.dynamic.data.mapping.test.util.DDMFormTestUtil;
+import com.liferay.dynamic.data.mapping.test.util.DDMFormValuesTestUtil;
+import com.liferay.dynamic.data.mapping.test.util.DDMStructureTestUtil;
+import com.liferay.dynamic.data.mapping.test.util.DDMTemplateTestUtil;
 import com.liferay.journal.model.JournalArticle;
 import com.liferay.journal.model.JournalArticleConstants;
 import com.liferay.journal.model.JournalFolderConstants;
@@ -209,6 +217,26 @@ public class StructuredContentApioTestBundleActivator
 				_log.error(e, e);
 			}
 		}
+	}
+
+	private DDMStructure _getDDMStructureWithNestedField(
+			long groupId, Locale[] availableLocales, String textFieldName,
+			Value textFieldValue, String nestedTextFieldName,
+			Value nestedTextFieldValue)
+		throws Exception {
+
+		DDMForm ddmForm =
+			DDMFormTestUtil.
+				getDDMFormWithTextDDMFormFieldAndNestedTextDDMFormField(
+					textFieldName, nestedTextFieldName, availableLocales,
+					LocaleUtil.getDefault());
+
+		DDMFormValuesTestUtil.addDDMFormFieldValueWithNestedDDMFormFieldValue(
+			ddmForm, textFieldName, textFieldValue, nestedTextFieldName,
+			nestedTextFieldValue);
+
+		return DDMStructureTestUtil.addStructure(
+			groupId, JournalArticle.class.getName(), ddmForm);
 	}
 
 	private void _prepareDataForLocalizationTests(User user, Group group)
