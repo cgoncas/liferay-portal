@@ -88,6 +88,39 @@ public class StructuredContentApioTest {
 	}
 
 	@Test
+	public void testDefaultStructuredFieldValueIsDisplayedWhenAcceptLanguageIsSpecifiedAndDoesNotMatch()
+		throws Exception {
+
+		List<String> hrefs = JsonPath.read(
+			_toStringAsAdmin(
+				JsonPath.read(
+					_toStringAsAdmin(_rootEndpointURL.toExternalForm()),
+					"$._links.content-space.href")),
+			"$._embedded.ContentSpace[?(@.name == '" +
+				StructuredContentApioTestBundleActivator.SITE_NAME +
+					"')]._links.structuredContents.href");
+
+		Map<String, String> headers = _getHeaders();
+
+		headers.put("Accept-Language", "de-DE");
+
+		List<String> values = JsonPath.read(
+			_toStringAsGuest(hrefs.get(0), headers),
+			"$._embedded.StructuredContent[*]._embedded.values._embedded[*]." +
+				"value");
+
+		Assert.assertTrue(
+			values.contains(
+				StructuredContentApioTestBundleActivator.
+					TEXT_FIELD_VALUE_LOCALE_US));
+
+		Assert.assertTrue(
+			values.contains(
+				StructuredContentApioTestBundleActivator.
+					NESTED_TEXT_FIELD_VALUE_LOCALE_US));
+	}
+
+	@Test
 	public void testDefaultTitleIsDisplayedWhenAcceptLanguageIsNotSpecified()
 		throws Exception {
 
@@ -166,6 +199,39 @@ public class StructuredContentApioTest {
 			titles.contains(
 				StructuredContentApioTestBundleActivator.
 					TITLE_YES_GUEST_YES_GROUP));
+	}
+
+	@Test
+	public void testLocalizedStructuredFieldValueIsDisplayedWhenAcceptLanguageIsSpecifiedAndMatches()
+		throws Exception {
+
+		List<String> hrefs = JsonPath.read(
+			_toStringAsAdmin(
+				JsonPath.read(
+					_toStringAsAdmin(_rootEndpointURL.toExternalForm()),
+					"$._links.content-space.href")),
+			"$._embedded.ContentSpace[?(@.name == '" +
+				StructuredContentApioTestBundleActivator.SITE_NAME +
+					"')]._links.structuredContents.href");
+
+		Map<String, String> headers = _getHeaders();
+
+		headers.put("Accept-Language", "es-ES");
+
+		List<String> values = JsonPath.read(
+			_toStringAsGuest(hrefs.get(0), headers),
+			"$._embedded.StructuredContent[*]._embedded.values._embedded[*]." +
+				"value");
+
+		Assert.assertTrue(
+			values.contains(
+				StructuredContentApioTestBundleActivator.
+					TEXT_FIELD_VALUE_LOCALE_ES));
+
+		Assert.assertTrue(
+			values.contains(
+				StructuredContentApioTestBundleActivator.
+					NESTED_TEXT_FIELD_VALUE_LOCALE_ES));
 	}
 
 	@Test
