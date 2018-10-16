@@ -171,6 +171,32 @@ public class StructuredContentApioTestBundleActivator
 	}
 
 	private JournalArticle _addJournalArticle(
+			Map<Locale, String> stringMap, long userId, long groupId,
+			String content, DDMStructure ddmStructure, DDMTemplate ddmTemplate)
+		throws Exception {
+
+		ServiceContext serviceContext = new ServiceContext();
+
+		serviceContext.setAddGroupPermissions(true);
+		serviceContext.setAddGuestPermissions(true);
+		serviceContext.setCompanyId(PortalUtil.getDefaultCompanyId());
+		serviceContext.setScopeGroupId(groupId);
+		serviceContext.setUserId(userId);
+
+		JournalArticle journalArticle =
+			JournalArticleLocalServiceUtil.addArticle(
+				userId, groupId,
+				JournalFolderConstants.DEFAULT_PARENT_FOLDER_ID, stringMap,
+				null, content, ddmStructure.getStructureKey(),
+				ddmTemplate.getTemplateKey(), serviceContext);
+
+		_autoCloseables.add(
+			() -> JournalArticleLocalServiceUtil.deleteArticle(journalArticle));
+
+		return journalArticle;
+	}
+
+	private JournalArticle _addJournalArticle(
 			String title, long userId, long groupId,
 			boolean addGuestPermissions, boolean addGroupPermissions)
 		throws Exception {
