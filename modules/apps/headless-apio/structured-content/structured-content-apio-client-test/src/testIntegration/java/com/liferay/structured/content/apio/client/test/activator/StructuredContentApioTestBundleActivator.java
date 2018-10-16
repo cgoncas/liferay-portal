@@ -14,7 +14,18 @@
 
 package com.liferay.structured.content.apio.client.test.activator;
 
+import static com.liferay.dynamic.data.mapping.test.util.DDMFormTestUtil.addDDMFormFields;
+
+import com.liferay.dynamic.data.mapping.model.DDMForm;
+import com.liferay.dynamic.data.mapping.model.DDMFormField;
+import com.liferay.dynamic.data.mapping.model.DDMStructure;
 import com.liferay.dynamic.data.mapping.model.LocalizedValue;
+import com.liferay.dynamic.data.mapping.model.Value;
+import com.liferay.dynamic.data.mapping.storage.DDMFormFieldValue;
+import com.liferay.dynamic.data.mapping.storage.DDMFormValues;
+import com.liferay.dynamic.data.mapping.test.util.DDMFormTestUtil;
+import com.liferay.dynamic.data.mapping.test.util.DDMFormValuesTestUtil;
+import com.liferay.dynamic.data.mapping.test.util.DDMStructureTestUtil;
 import com.liferay.journal.model.JournalArticle;
 import com.liferay.journal.model.JournalArticleConstants;
 import com.liferay.journal.model.JournalFolderConstants;
@@ -37,6 +48,7 @@ import com.liferay.portal.kernel.util.Constants;
 import com.liferay.portal.kernel.util.FriendlyURLNormalizerUtil;
 import com.liferay.portal.kernel.util.LocaleUtil;
 import com.liferay.portal.kernel.util.PortalUtil;
+import com.liferay.portal.kernel.util.SetUtil;
 import com.liferay.portal.kernel.util.StringUtil;
 
 import java.util.ArrayList;
@@ -209,6 +221,51 @@ public class StructuredContentApioTestBundleActivator
 				_log.error(e, e);
 			}
 		}
+	}
+
+	private DDMStructure _getDDMStructureWithNestedField(
+			long groupId, Locale[] availableLocales, String textFieldName,
+			Value textFieldValue, String nestedTextFieldName,
+			Value nestedTextFieldValue)
+		throws Exception {
+
+		DDMForm ddmForm = DDMFormTestUtil.createDDMForm(
+			SetUtil.fromArray(availableLocales), LocaleUtil.getDefault());
+
+		DDMFormField ddmFormField = DDMFormTestUtil.createTextDDMFormField(
+			textFieldName, true, false, false);
+
+		DDMFormField nestedDDMFormField =
+			DDMFormTestUtil.createTextDDMFormField(
+				nestedTextFieldName, true, false, false);
+
+		List<DDMFormField> nestedDDMFormFields =
+			ddmFormField.getNestedDDMFormFields();
+
+		nestedDDMFormFields.add(nestedDDMFormField);
+
+		addDDMFormFields(ddmForm, ddmFormField);
+
+		DDMFormValues ddmFormValues = DDMFormValuesTestUtil.createDDMFormValues(
+			ddmForm);
+
+		DDMFormFieldValue ddmFormFieldValue =
+			DDMFormValuesTestUtil.createDDMFormFieldValue(
+				textFieldName, textFieldValue);
+
+		DDMFormFieldValue nestedDDMFormFieldValue =
+			DDMFormValuesTestUtil.createDDMFormFieldValue(
+				nestedTextFieldName, nestedTextFieldValue);
+
+		List<DDMFormFieldValue> nestedDDMFormFieldValues =
+			ddmFormFieldValue.getNestedDDMFormFieldValues();
+
+		nestedDDMFormFieldValues.add(nestedDDMFormFieldValue);
+
+		ddmFormValues.addDDMFormFieldValue(ddmFormFieldValue);
+
+		return DDMStructureTestUtil.addStructure(
+			groupId, JournalArticle.class.getName(), ddmForm);
 	}
 
 	private void _prepareDataForLocalizationTests(User user, Group group)
