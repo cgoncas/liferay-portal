@@ -323,6 +323,32 @@ public class StructuredContentApioTestBundleActivator
 	}
 
 	private JournalArticle _addJournalArticle(
+			Map<Locale, String> stringMap, long userId, long groupId,
+			String content, DDMStructure ddmStructure, DDMTemplate ddmTemplate)
+		throws Exception {
+
+		ServiceContext serviceContext = new ServiceContext();
+
+		serviceContext.setAddGroupPermissions(true);
+		serviceContext.setAddGuestPermissions(true);
+		serviceContext.setCompanyId(PortalUtil.getDefaultCompanyId());
+		serviceContext.setScopeGroupId(groupId);
+		serviceContext.setUserId(userId);
+
+		JournalArticle journalArticle =
+			JournalArticleLocalServiceUtil.addArticle(
+				userId, groupId,
+				JournalFolderConstants.DEFAULT_PARENT_FOLDER_ID, stringMap,
+				null, content, ddmStructure.getStructureKey(),
+				ddmTemplate.getTemplateKey(), serviceContext);
+
+		_autoCloseables.add(
+			() -> JournalArticleLocalServiceUtil.deleteArticle(journalArticle));
+
+		return journalArticle;
+	}
+
+	private JournalArticle _addJournalArticle(
 			String title, long userId, long groupId,
 			boolean addGuestPermissions, boolean addGroupPermissions)
 		throws Exception {
@@ -460,6 +486,33 @@ public class StructuredContentApioTestBundleActivator
 			LocaleUtil.getDefault(), true, true);
 	}
 
+	private void _prepareDataForNestedValuesTests(User user, Group group)
+		throws Exception {
+
+		DDMStructure ddmStructure = _createDDMStructure(group.getGroupId());
+
+		Map<Locale, String> titleMap = new HashMap<Locale, String>() {
+			{
+				put(LocaleUtil.getDefault(), StringUtil.randomString(20));
+			}
+		};
+
+		String content = _getSampleStructuredContent(
+			TEXT_FIELD_NAME, TEXT_FIELD_VALUE_LOCALE_US,
+			TEXT_FIELD_VALUE_LOCALE_ES, NESTED_TEXT_FIELD_NAME,
+			NESTED_TEXT_FIELD_VALUE_LOCALE_US,
+			NESTED_TEXT_FIELD_VALUE_LOCALE_ES);
+
+		DDMTemplate ddmTemplate = DDMTemplateTestUtil.addTemplate(
+			group.getGroupId(), ddmStructure.getStructureId(),
+			PortalUtil.getClassNameId(JournalArticle.class),
+			TemplateConstants.LANG_TYPE_VM, _getScript(), LocaleUtil.US);
+
+		_addJournalArticle(
+			titleMap, user.getUserId(), group.getGroupId(), content,
+			ddmStructure, ddmTemplate);
+	}
+
 	private void _prepareTest() throws Exception {
 		User user = UserTestUtil.getAdminUser(TestPropsValues.getCompanyId());
 		Map<Locale, String> nameMap = Collections.singletonMap(
@@ -496,6 +549,8 @@ public class StructuredContentApioTestBundleActivator
 			true, true);
 
 		_prepareDataForLocalizationTests(user, group);
+
+		_prepareDataForNestedValuesTests(user, group);
 	}
 
 	private static final Log _log = LogFactoryUtil.getLog(
