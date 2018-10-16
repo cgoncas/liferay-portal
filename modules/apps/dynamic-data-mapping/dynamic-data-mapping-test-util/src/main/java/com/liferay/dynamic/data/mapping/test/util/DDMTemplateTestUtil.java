@@ -18,6 +18,8 @@ import com.liferay.dynamic.data.mapping.model.DDMStructure;
 import com.liferay.dynamic.data.mapping.model.DDMTemplate;
 import com.liferay.dynamic.data.mapping.model.DDMTemplateConstants;
 import com.liferay.dynamic.data.mapping.service.DDMTemplateLocalServiceUtil;
+import com.liferay.petra.string.StringBundler;
+import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.template.TemplateConstants;
 import com.liferay.portal.kernel.test.util.TestPropsValues;
@@ -175,6 +177,21 @@ public class DDMTemplateTestUtil {
 
 	public static String getSampleTemplateXSL() {
 		return "$name.getData()";
+	}
+
+	public static String getSampleTemplateXSL(String... names) {
+		StringBundler sb = new StringBundler();
+
+		for (String name : names) {
+			sb.append("$");
+			sb.append(name);
+			sb.append(".getData()");
+			sb.append(StringPool.COMMA);
+		}
+
+		sb.setIndex(sb.index() - 1);
+
+		return sb.toString();
 	}
 
 }
