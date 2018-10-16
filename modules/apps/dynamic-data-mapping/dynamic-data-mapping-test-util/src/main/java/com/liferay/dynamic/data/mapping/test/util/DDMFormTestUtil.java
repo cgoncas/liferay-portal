@@ -19,6 +19,7 @@ import com.liferay.dynamic.data.mapping.model.DDMFormField;
 import com.liferay.dynamic.data.mapping.model.DDMFormFieldOptions;
 import com.liferay.dynamic.data.mapping.model.LocalizedValue;
 import com.liferay.portal.kernel.util.LocaleUtil;
+import com.liferay.portal.kernel.util.SetUtil;
 
 import java.util.LinkedHashSet;
 import java.util.List;
@@ -249,6 +250,30 @@ public class DDMFormTestUtil {
 
 		return createDDMFormField(
 			name, label, "text", "string", localizable, repeatable, required);
+	}
+
+	public static DDMForm
+		getDDMFormWithTextDDMFormFieldAndNestedTextDDMFormField(
+			String textFieldName, String nestedTextFieldName,
+			Locale[] availableLocales, Locale defaultLocale) {
+
+		DDMForm ddmForm = createDDMForm(
+			SetUtil.fromArray(availableLocales), defaultLocale);
+
+		DDMFormField ddmFormField = createTextDDMFormField(
+			textFieldName, true, false, false);
+
+		DDMFormField nestedDDMFormField = createTextDDMFormField(
+			nestedTextFieldName, true, false, false);
+
+		List<DDMFormField> nestedDDMFormFields =
+			ddmFormField.getNestedDDMFormFields();
+
+		nestedDDMFormFields.add(nestedDDMFormField);
+
+		addDDMFormFields(ddmForm, ddmFormField);
+
+		return ddmForm;
 	}
 
 }
