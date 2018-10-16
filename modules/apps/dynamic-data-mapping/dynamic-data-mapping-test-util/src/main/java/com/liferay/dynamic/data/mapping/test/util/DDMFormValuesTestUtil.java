@@ -35,6 +35,26 @@ import java.util.Set;
  */
 public class DDMFormValuesTestUtil {
 
+	public static void addDDMFormFieldValueWithNestedDDMFormFieldValue(
+		DDMForm ddmForm, String fieldName, Value value, String nestedFieldName,
+		Value nestedValue) {
+
+		DDMFormValues ddmFormValues = createDDMFormValues(ddmForm);
+
+		DDMFormFieldValue ddmFormFieldValue = createDDMFormFieldValue(
+			fieldName, value);
+
+		DDMFormFieldValue nestedDDMFormFieldValue = createDDMFormFieldValue(
+			nestedFieldName, nestedValue);
+
+		List<DDMFormFieldValue> nestedDDMFormFieldValues =
+			ddmFormFieldValue.getNestedDDMFormFieldValues();
+
+		nestedDDMFormFieldValues.add(nestedDDMFormFieldValue);
+
+		ddmFormValues.addDDMFormFieldValue(ddmFormFieldValue);
+	}
+
 	public static Set<Locale> createAvailableLocales(Locale... locales) {
 		Set<Locale> availableLocales = new LinkedHashSet<>();
 

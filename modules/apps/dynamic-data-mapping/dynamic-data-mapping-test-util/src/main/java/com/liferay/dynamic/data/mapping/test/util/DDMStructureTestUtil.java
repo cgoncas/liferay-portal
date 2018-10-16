@@ -244,18 +244,10 @@ public class DDMStructureTestUtil {
 	public static String getSampleStructuredContent(
 		String name, List<Map<Locale, String>> contents, String defaultLocale) {
 
-		StringBundler sb = new StringBundler();
+		String availableLocales = _getAvailableLocales(contents);
 
-		for (Map<Locale, String> map : contents) {
-			for (Locale locale : map.keySet()) {
-				sb.append(LocaleUtil.toLanguageId(locale));
-				sb.append(StringPool.COMMA);
-			}
-
-			sb.setIndex(sb.index() - 1);
-		}
-
-		Document document = createDocumentContent(sb.toString(), defaultLocale);
+		Document document = createDocumentContent(
+			availableLocales, defaultLocale);
 
 		Element rootElement = document.getRootElement();
 
@@ -267,14 +259,7 @@ public class DDMStructureTestUtil {
 			dynamicElementElement.addAttribute("name", name);
 			dynamicElementElement.addAttribute("type", "text");
 
-			for (Map.Entry<Locale, String> entry : map.entrySet()) {
-				Element element = dynamicElementElement.addElement(
-					"dynamic-content");
-
-				element.addAttribute(
-					"language-id", LocaleUtil.toLanguageId(entry.getKey()));
-				element.addCDATA(entry.getValue());
-			}
+			_addDynamicContentsToDynamicElement(dynamicElementElement, map);
 		}
 
 		return document.asXML();
@@ -289,6 +274,41 @@ public class DDMStructureTestUtil {
 
 		return getSampleStructuredContent(
 			name, Collections.singletonList(contents), "en_US");
+	}
+
+	public static String getStructuredContentWithNestedField(
+		String name, LocalizedValue localizedValue, String defaultLocale,
+		String nestedName, LocalizedValue nestedLocalizedValue) {
+
+		List<Map<Locale, String>> contentsList = _toContentsList(
+			localizedValue);
+
+		String availableLocales = _getAvailableLocales(contentsList);
+
+		Document document = DDMTemplateTestUtil.createDocument(
+			availableLocales, defaultLocale);
+
+		Element rootElement = document.getRootElement();
+
+		Element dynamicElementElement = _addDynamicElementToElement(
+			rootElement, name);
+
+		for (Map<Locale, String> map : contentsList) {
+			_addDynamicContentsToDynamicElement(dynamicElementElement, map);
+		}
+
+		Element nestedDynamicElementElement = _addDynamicElementToElement(
+			dynamicElementElement, nestedName);
+
+		List<Map<Locale, String>> nestedContentsList = _toContentsList(
+			nestedLocalizedValue);
+
+		for (Map<Locale, String> map : nestedContentsList) {
+			_addDynamicContentsToDynamicElement(
+				nestedDynamicElementElement, map);
+		}
+
+		return document.asXML();
 	}
 
 	public static Map<String, Map<String, String>> getXSDMap(String xsd)
@@ -399,6 +419,60 @@ public class DDMStructureTestUtil {
 		}
 
 		return sb.toString();
+	}
+
+	private static void _addDynamicContentsToDynamicElement(
+		Element dynamicElementElement, Map<Locale, String> map) {
+
+		for (Map.Entry<Locale, String> entry : map.entrySet()) {
+			Element element = dynamicElementElement.addElement(
+				"dynamic-content");
+
+			element.addAttribute(
+				"language-id", LocaleUtil.toLanguageId(entry.getKey()));
+			element.addCDATA(entry.getValue());
+		}
+	}
+
+	private static Element _addDynamicElementToElement(
+		Element element, String name) {
+
+		Element dynamicElementElement = element.addElement("dynamic-element");
+
+		dynamicElementElement.addAttribute("index-type", "keyword");
+		dynamicElementElement.addAttribute("name", name);
+		dynamicElementElement.addAttribute("type", "text");
+
+		return dynamicElementElement;
+	}
+
+	private static String _getAvailableLocales(
+		List<Map<Locale, String>> contents) {
+
+		StringBundler sb = new StringBundler();
+
+		for (Map<Locale, String> map : contents) {
+			for (Locale locale : map.keySet()) {
+				sb.append(LocaleUtil.toLanguageId(locale));
+				sb.append(StringPool.COMMA);
+			}
+
+			sb.setIndex(sb.index() - 1);
+		}
+
+		return sb.toString();
+	}
+
+	private static List<Map<Locale, String>> _toContentsList(
+		LocalizedValue localizedValue) {
+
+		Map<Locale, String> contents = new HashMap<>();
+
+		for (Locale locale : localizedValue.getAvailableLocales()) {
+			contents.put(locale, localizedValue.getString(locale));
+		}
+
+		return Collections.singletonList(contents);
 	}
 
 }

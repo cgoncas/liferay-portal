@@ -14,6 +14,15 @@
 
 package com.liferay.structured.content.apio.client.test.activator;
 
+import com.liferay.dynamic.data.mapping.model.DDMForm;
+import com.liferay.dynamic.data.mapping.model.DDMStructure;
+import com.liferay.dynamic.data.mapping.model.DDMTemplate;
+import com.liferay.dynamic.data.mapping.model.LocalizedValue;
+import com.liferay.dynamic.data.mapping.model.Value;
+import com.liferay.dynamic.data.mapping.test.util.DDMFormTestUtil;
+import com.liferay.dynamic.data.mapping.test.util.DDMFormValuesTestUtil;
+import com.liferay.dynamic.data.mapping.test.util.DDMStructureTestUtil;
+import com.liferay.dynamic.data.mapping.test.util.DDMTemplateTestUtil;
 import com.liferay.journal.model.JournalArticle;
 import com.liferay.journal.model.JournalArticleConstants;
 import com.liferay.journal.model.JournalFolderConstants;
@@ -29,6 +38,7 @@ import com.liferay.portal.kernel.model.UserConstants;
 import com.liferay.portal.kernel.service.GroupLocalServiceUtil;
 import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.service.UserLocalServiceUtil;
+import com.liferay.portal.kernel.template.TemplateConstants;
 import com.liferay.portal.kernel.test.util.ServiceContextTestUtil;
 import com.liferay.portal.kernel.test.util.TestPropsValues;
 import com.liferay.portal.kernel.test.util.UserTestUtil;
@@ -54,6 +64,18 @@ import org.osgi.framework.BundleContext;
 public class StructuredContentApioTestBundleActivator
 	implements BundleActivator {
 
+	public static final String NESTED_TEXT_FIELD_NAME =
+		StructuredContentApioTestBundleActivator.class.getSimpleName() +
+			"NestedTextFieldName";
+
+	public static final LocalizedValue NESTED_TEXT_FIELD_VALUE =
+		new LocalizedValue() {
+			{
+				addString(LocaleUtil.US, "NestedTextFieldValue_us");
+				addString(LocaleUtil.SPAIN, "NestedTextFieldValue_es");
+			}
+		};
+
 	public static final String NOT_A_SITE_MEMBER_EMAIL_ADDRESS =
 		StructuredContentApioTestBundleActivator.class.getSimpleName() +
 			"NotASiteMemberUser@liferay.com";
@@ -64,6 +86,17 @@ public class StructuredContentApioTestBundleActivator
 
 	public static final String SITE_NAME =
 		StructuredContentApioTestBundleActivator.class.getSimpleName() + "Site";
+
+	public static final String TEXT_FIELD_NAME =
+		StructuredContentApioTestBundleActivator.class.getSimpleName() +
+			"TextFieldName";
+
+	public static final LocalizedValue TEXT_FIELD_VALUE = new LocalizedValue() {
+		{
+			addString(LocaleUtil.US, "TextFieldValue_us");
+			addString(LocaleUtil.SPAIN, "TextFieldValue_es");
+		}
+	};
 
 	public static final String TITLE_1_LOCALE_ES =
 		StructuredContentApioTestBundleActivator.class.getSimpleName() +
@@ -135,6 +168,32 @@ public class StructuredContentApioTestBundleActivator
 	}
 
 	private JournalArticle _addJournalArticle(
+			Map<Locale, String> stringMap, long userId, long groupId,
+			String content, DDMStructure ddmStructure, DDMTemplate ddmTemplate)
+		throws Exception {
+
+		ServiceContext serviceContext = new ServiceContext();
+
+		serviceContext.setAddGroupPermissions(true);
+		serviceContext.setAddGuestPermissions(true);
+		serviceContext.setCompanyId(PortalUtil.getDefaultCompanyId());
+		serviceContext.setScopeGroupId(groupId);
+		serviceContext.setUserId(userId);
+
+		JournalArticle journalArticle =
+			JournalArticleLocalServiceUtil.addArticle(
+				userId, groupId,
+				JournalFolderConstants.DEFAULT_PARENT_FOLDER_ID, stringMap,
+				null, content, ddmStructure.getStructureKey(),
+				ddmTemplate.getTemplateKey(), serviceContext);
+
+		_autoCloseables.add(
+			() -> JournalArticleLocalServiceUtil.deleteArticle(journalArticle));
+
+		return journalArticle;
+	}
+
+	private JournalArticle _addJournalArticle(
 			String title, long userId, long groupId,
 			boolean addGuestPermissions, boolean addGroupPermissions)
 		throws Exception {
@@ -187,6 +246,26 @@ public class StructuredContentApioTestBundleActivator
 		}
 	}
 
+	private DDMStructure _getDDMStructureWithNestedField(
+			long groupId, Locale[] availableLocales, String textFieldName,
+			Value textFieldValue, String nestedTextFieldName,
+			Value nestedTextFieldValue)
+		throws Exception {
+
+		DDMForm ddmForm =
+			DDMFormTestUtil.
+				getDDMFormWithTextDDMFormFieldAndNestedTextDDMFormField(
+					textFieldName, nestedTextFieldName, availableLocales,
+					LocaleUtil.getDefault());
+
+		DDMFormValuesTestUtil.addDDMFormFieldValueWithNestedDDMFormFieldValue(
+			ddmForm, textFieldName, textFieldValue, nestedTextFieldName,
+			nestedTextFieldValue);
+
+		return DDMStructureTestUtil.addStructure(
+			groupId, JournalArticle.class.getName(), ddmForm);
+	}
+
 	private void _prepareDataForLocalizationTests(User user, Group group)
 		throws Exception {
 
@@ -210,6 +289,39 @@ public class StructuredContentApioTestBundleActivator
 		_addJournalArticle(
 			titleMap2, user.getUserId(), group.getGroupId(),
 			LocaleUtil.getDefault(), true, true);
+	}
+
+	private void _prepareDataForNestedValuesTests(User user, Group group)
+		throws Exception {
+
+		Map<Locale, String> titleMap = new HashMap<Locale, String>() {
+			{
+				put(LocaleUtil.getDefault(), StringUtil.randomString(20));
+			}
+		};
+
+		String content =
+			DDMStructureTestUtil.getStructuredContentWithNestedField(
+				TEXT_FIELD_NAME, TEXT_FIELD_VALUE, "en_US",
+				NESTED_TEXT_FIELD_NAME, NESTED_TEXT_FIELD_VALUE);
+
+		Locale[] availableLocales = {LocaleUtil.US, LocaleUtil.SPAIN};
+
+		DDMStructure ddmStructure = _getDDMStructureWithNestedField(
+			group.getGroupId(), availableLocales, TEXT_FIELD_NAME,
+			TEXT_FIELD_VALUE, NESTED_TEXT_FIELD_NAME, NESTED_TEXT_FIELD_VALUE);
+
+		DDMTemplate ddmTemplate = DDMTemplateTestUtil.addTemplate(
+			group.getGroupId(), ddmStructure.getStructureId(),
+			PortalUtil.getClassNameId(JournalArticle.class),
+			TemplateConstants.LANG_TYPE_VM,
+			DDMTemplateTestUtil.getSampleTemplateXSL(
+				TEXT_FIELD_NAME, NESTED_TEXT_FIELD_NAME),
+			LocaleUtil.US);
+
+		_addJournalArticle(
+			titleMap, user.getUserId(), group.getGroupId(), content,
+			ddmStructure, ddmTemplate);
 	}
 
 	private void _prepareTest() throws Exception {
@@ -248,6 +360,8 @@ public class StructuredContentApioTestBundleActivator
 			true, true);
 
 		_prepareDataForLocalizationTests(user, group);
+
+		_prepareDataForNestedValuesTests(user, group);
 	}
 
 	private static final Log _log = LogFactoryUtil.getLog(
