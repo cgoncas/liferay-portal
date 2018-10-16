@@ -14,6 +14,7 @@
 
 package com.liferay.structured.content.apio.client.test.activator;
 
+import com.liferay.dynamic.data.mapping.model.LocalizedValue;
 import com.liferay.journal.model.JournalArticle;
 import com.liferay.journal.model.JournalArticleConstants;
 import com.liferay.journal.model.JournalFolderConstants;
@@ -54,6 +55,18 @@ import org.osgi.framework.BundleContext;
 public class StructuredContentApioTestBundleActivator
 	implements BundleActivator {
 
+	public static final String NESTED_TEXT_FIELD_NAME =
+		StructuredContentApioTestBundleActivator.class.getSimpleName() +
+			"NestedTextFieldName";
+
+	public static final LocalizedValue NESTED_TEXT_FIELD_VALUE =
+		new LocalizedValue() {
+			{
+				addString(LocaleUtil.US, "NestedTextFieldValue_us");
+				addString(LocaleUtil.SPAIN, "NestedTextFieldValue_es");
+			}
+		};
+
 	public static final String NOT_A_SITE_MEMBER_EMAIL_ADDRESS =
 		StructuredContentApioTestBundleActivator.class.getSimpleName() +
 			"NotASiteMemberUser@liferay.com";
@@ -64,6 +77,17 @@ public class StructuredContentApioTestBundleActivator
 
 	public static final String SITE_NAME =
 		StructuredContentApioTestBundleActivator.class.getSimpleName() + "Site";
+
+	public static final String TEXT_FIELD_NAME =
+		StructuredContentApioTestBundleActivator.class.getSimpleName() +
+			"TextFieldName";
+
+	public static final LocalizedValue TEXT_FIELD_VALUE = new LocalizedValue() {
+		{
+			addString(LocaleUtil.US, "TextFieldValue_us");
+			addString(LocaleUtil.SPAIN, "TextFieldValue_es");
+		}
+	};
 
 	public static final String TITLE_1_LOCALE_ES =
 		StructuredContentApioTestBundleActivator.class.getSimpleName() +
