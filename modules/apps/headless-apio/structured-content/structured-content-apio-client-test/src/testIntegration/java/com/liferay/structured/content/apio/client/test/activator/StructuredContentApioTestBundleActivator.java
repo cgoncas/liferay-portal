@@ -54,6 +54,26 @@ import org.osgi.framework.BundleContext;
 public class StructuredContentApioTestBundleActivator
 	implements BundleActivator {
 
+	public static final String NESTED_TEXT_FIELD_LABEL_LOCALE_ES =
+		StructuredContentApioTestBundleActivator.class.getSimpleName() +
+			"NestedTextFieldLabel_es";
+
+	public static final String NESTED_TEXT_FIELD_LABEL_LOCALE_US =
+		StructuredContentApioTestBundleActivator.class.getSimpleName() +
+			"NestedTextFieldLabel_us";
+
+	public static final String NESTED_TEXT_FIELD_NAME =
+		StructuredContentApioTestBundleActivator.class.getSimpleName() +
+			"NestedTextFieldName";
+
+	public static final String NESTED_TEXT_FIELD_VALUE_LOCALE_ES =
+		StructuredContentApioTestBundleActivator.class.getSimpleName() +
+			"NestedTextFieldValue_es";
+
+	public static final String NESTED_TEXT_FIELD_VALUE_LOCALE_US =
+		StructuredContentApioTestBundleActivator.class.getSimpleName() +
+			"NestedTextFieldValue_us";
+
 	public static final String NOT_A_SITE_MEMBER_EMAIL_ADDRESS =
 		StructuredContentApioTestBundleActivator.class.getSimpleName() +
 			"NotASiteMemberUser@liferay.com";
@@ -64,6 +84,26 @@ public class StructuredContentApioTestBundleActivator
 
 	public static final String SITE_NAME =
 		StructuredContentApioTestBundleActivator.class.getSimpleName() + "Site";
+
+	public static final String TEXT_FIELD_LABEL_LOCALE_ES =
+		StructuredContentApioTestBundleActivator.class.getSimpleName() +
+			"TextFieldLabel_es";
+
+	public static final String TEXT_FIELD_LABEL_LOCALE_US =
+		StructuredContentApioTestBundleActivator.class.getSimpleName() +
+			"TextFieldLabel_us";
+
+	public static final String TEXT_FIELD_NAME =
+		StructuredContentApioTestBundleActivator.class.getSimpleName() +
+			"TextFieldName";
+
+	public static final String TEXT_FIELD_VALUE_LOCALE_ES =
+		StructuredContentApioTestBundleActivator.class.getSimpleName() +
+			"TextFieldValue_es";
+
+	public static final String TEXT_FIELD_VALUE_LOCALE_US =
+		StructuredContentApioTestBundleActivator.class.getSimpleName() +
+			"TextFieldValue_us";
 
 	public static final String TITLE_1_LOCALE_ES =
 		StructuredContentApioTestBundleActivator.class.getSimpleName() +
