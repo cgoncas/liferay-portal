@@ -19,6 +19,7 @@ import com.jayway.jsonpath.JsonPath;
 import com.liferay.oauth2.provider.test.util.OAuth2ProviderTestUtil;
 import com.liferay.petra.json.web.service.client.JSONWebServiceClient;
 import com.liferay.petra.json.web.service.client.internal.JSONWebServiceClientImpl;
+import com.liferay.portal.kernel.util.LocaleUtil;
 import com.liferay.structured.content.apio.client.test.activator.StructuredContentApioTestBundleActivator;
 
 import java.net.MalformedURLException;
@@ -85,6 +86,32 @@ public class StructuredContentApioTest {
 			titles.contains(
 				StructuredContentApioTestBundleActivator.
 					TITLE_YES_GUEST_YES_GROUP));
+	}
+
+	@Test
+	public void testDefaultStructuredFieldValueIsDisplayedWhenAcceptLanguageIsSpecifiedAndDoesNotMatch()
+		throws Exception {
+
+		List<String> hrefs = JsonPath.read(
+			_toStringAsAdmin(
+				JsonPath.read(
+					_toStringAsAdmin(_rootEndpointURL.toExternalForm()),
+					"$._links.content-space.href")),
+			"$._embedded.ContentSpace[?(@.name == '" +
+				StructuredContentApioTestBundleActivator.SITE_NAME +
+					"')]._links.structuredContents.href");
+
+		Map<String, String> headers = _getHeaders();
+
+		headers.put("Accept-Language", "de-DE");
+
+		List<String> values = JsonPath.read(
+			_toStringAsGuest(hrefs.get(0), headers),
+			"$._embedded.StructuredContent[*]._embedded.values._embedded[*]." +
+				"value");
+
+		Assert.assertTrue(values.contains("TextFieldValue_us"));
+		Assert.assertTrue(values.contains("NestedTextFieldValue_us"));
 	}
 
 	@Test
@@ -166,6 +193,32 @@ public class StructuredContentApioTest {
 			titles.contains(
 				StructuredContentApioTestBundleActivator.
 					TITLE_YES_GUEST_YES_GROUP));
+	}
+
+	@Test
+	public void testLocalizedStructuredFieldValueIsDisplayedWhenAcceptLanguageIsSpecifiedAndMatches()
+		throws Exception {
+
+		List<String> hrefs = JsonPath.read(
+			_toStringAsAdmin(
+				JsonPath.read(
+					_toStringAsAdmin(_rootEndpointURL.toExternalForm()),
+					"$._links.content-space.href")),
+			"$._embedded.ContentSpace[?(@.name == '" +
+				StructuredContentApioTestBundleActivator.SITE_NAME +
+					"')]._links.structuredContents.href");
+
+		Map<String, String> headers = _getHeaders();
+
+		headers.put("Accept-Language", "es-ES");
+
+		List<String> values = JsonPath.read(
+			_toStringAsGuest(hrefs.get(0), headers),
+			"$._embedded.StructuredContent[*]._embedded.values._embedded[*]." +
+				"value");
+
+		Assert.assertTrue(values.contains("TextFieldValue_es"));
+		Assert.assertTrue(values.contains("NestedTextFieldValue_es"));
 	}
 
 	@Test
