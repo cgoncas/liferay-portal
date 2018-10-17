@@ -1,0 +1,52 @@
+<?xml version="1.0"?>
+
+<root available-locales="es_ES,en_US" default-locale="en_US">
+	<dynamic-element index-type="text" localizable="true" name="TextFieldName" repeatable="false" type="text">
+		<dynamic-element index-type="text" name="NestedTextFieldName" repeatable="false" type="text">
+			<meta-data locale="en_US">
+				<entry name="label">
+					<![CDATA[NestedTextFieldNameLabel_en]]>
+				</entry>
+				<entry name="predefinedValue">
+					<![CDATA[]]>
+				</entry>
+				<entry name="tip">
+					<![CDATA[]]>
+				</entry>
+			</meta-data>
+			<meta-data locale="es_ES">
+				<entry name="label">
+					<![CDATA[NestedTextFieldNameLabel_en]]>
+				</entry>
+				<entry name="predefinedValue">
+					<![CDATA[]]>
+				</entry>
+				<entry name="tip">
+					<![CDATA[]]>
+				</entry>
+			</meta-data>
+		</dynamic-element>
+		<meta-data locale="en_US">
+			<entry name="label">
+				<![CDATA[TextFieldNameLabel_en]]>
+			</entry>
+			<entry name="predefinedValue">
+				<![CDATA[]]>
+			</entry>
+			<entry name="tip">
+				<![CDATA[]]>
+			</entry>
+		</meta-data>
+		<meta-data locale="es_ES">
+			<entry name="label">
+				<![CDATA[TextFieldNameLabel_en]]>
+			</entry>
+			<entry name="predefinedValue">
+				<![CDATA[]]>
+			</entry>
+			<entry name="tip">
+				<![CDATA[]]>
+			</entry>
+		</meta-data>
+	</dynamic-element>
+</root>

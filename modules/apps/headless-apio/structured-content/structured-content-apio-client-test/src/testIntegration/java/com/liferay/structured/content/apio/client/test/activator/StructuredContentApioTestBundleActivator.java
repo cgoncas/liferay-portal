@@ -14,18 +14,13 @@
 
 package com.liferay.structured.content.apio.client.test.activator;
 
-import static com.liferay.dynamic.data.mapping.test.util.DDMFormTestUtil.addDDMFormFields;
-
+import com.liferay.dynamic.data.mapping.io.DDMFormDeserializer;
+import com.liferay.dynamic.data.mapping.io.DDMFormDeserializerDeserializeRequest;
+import com.liferay.dynamic.data.mapping.io.DDMFormDeserializerDeserializeResponse;
+import com.liferay.dynamic.data.mapping.io.DDMFormDeserializerTracker;
 import com.liferay.dynamic.data.mapping.model.DDMForm;
-import com.liferay.dynamic.data.mapping.model.DDMFormField;
 import com.liferay.dynamic.data.mapping.model.DDMStructure;
 import com.liferay.dynamic.data.mapping.model.DDMTemplate;
-import com.liferay.dynamic.data.mapping.model.LocalizedValue;
-import com.liferay.dynamic.data.mapping.model.Value;
-import com.liferay.dynamic.data.mapping.storage.DDMFormFieldValue;
-import com.liferay.dynamic.data.mapping.storage.DDMFormValues;
-import com.liferay.dynamic.data.mapping.test.util.DDMFormTestUtil;
-import com.liferay.dynamic.data.mapping.test.util.DDMFormValuesTestUtil;
 import com.liferay.dynamic.data.mapping.test.util.DDMStructureTestUtil;
 import com.liferay.dynamic.data.mapping.test.util.DDMTemplateTestUtil;
 import com.liferay.journal.model.JournalArticle;
@@ -72,18 +67,6 @@ import org.osgi.framework.BundleContext;
 public class StructuredContentApioTestBundleActivator
 	implements BundleActivator {
 
-	public static final String NESTED_TEXT_FIELD_NAME =
-		StructuredContentApioTestBundleActivator.class.getSimpleName() +
-			"NestedTextFieldName";
-
-	public static final LocalizedValue NESTED_TEXT_FIELD_VALUE =
-		new LocalizedValue() {
-			{
-				addString(LocaleUtil.US, "NestedTextFieldValue_us");
-				addString(LocaleUtil.SPAIN, "NestedTextFieldValue_es");
-			}
-		};
-
 	public static final String NOT_A_SITE_MEMBER_EMAIL_ADDRESS =
 		StructuredContentApioTestBundleActivator.class.getSimpleName() +
 			"NotASiteMemberUser@liferay.com";
@@ -94,17 +77,6 @@ public class StructuredContentApioTestBundleActivator
 
 	public static final String SITE_NAME =
 		StructuredContentApioTestBundleActivator.class.getSimpleName() + "Site";
-
-	public static final String TEXT_FIELD_NAME =
-		StructuredContentApioTestBundleActivator.class.getSimpleName() +
-			"TextFieldName";
-
-	public static final LocalizedValue TEXT_FIELD_VALUE = new LocalizedValue() {
-		{
-			addString(LocaleUtil.US, "TextFieldValue_us");
-			addString(LocaleUtil.SPAIN, "TextFieldValue_es");
-		}
-	};
 
 	public static final String TITLE_1_LOCALE_ES =
 		StructuredContentApioTestBundleActivator.class.getSimpleName() +
@@ -133,6 +105,10 @@ public class StructuredContentApioTestBundleActivator
 	@Override
 	public void start(BundleContext bundleContext) {
 		_autoCloseables = new ArrayList<>();
+
+		_ddmFormDeserializerTracker = bundleContext.getService(
+			bundleContext.getServiceReference(DDMFormDeserializerTracker.class)
+		);
 
 		try {
 			_prepareTest();
@@ -254,49 +230,28 @@ public class StructuredContentApioTestBundleActivator
 		}
 	}
 
-	private DDMStructure _getDDMStructureWithNestedField(
-			long groupId, Locale[] availableLocales, String textFieldName,
-			Value textFieldValue, String nestedTextFieldName,
-			Value nestedTextFieldValue)
+	private DDMStructure _getDDMStructureWithNestedField(long groupId)
 		throws Exception {
 
-		DDMForm ddmForm = DDMFormTestUtil.createDDMForm(
-			SetUtil.fromArray(availableLocales), LocaleUtil.getDefault());
-
-		DDMFormField ddmFormField = DDMFormTestUtil.createTextDDMFormField(
-			textFieldName, true, false, false);
-
-		DDMFormField nestedDDMFormField =
-			DDMFormTestUtil.createTextDDMFormField(
-				nestedTextFieldName, true, false, false);
-
-		List<DDMFormField> nestedDDMFormFields =
-			ddmFormField.getNestedDDMFormFields();
-
-		nestedDDMFormFields.add(nestedDDMFormField);
-
-		addDDMFormFields(ddmForm, ddmFormField);
-
-		DDMFormValues ddmFormValues = DDMFormValuesTestUtil.createDDMFormValues(
-			ddmForm);
-
-		DDMFormFieldValue ddmFormFieldValue =
-			DDMFormValuesTestUtil.createDDMFormFieldValue(
-				textFieldName, textFieldValue);
-
-		DDMFormFieldValue nestedDDMFormFieldValue =
-			DDMFormValuesTestUtil.createDDMFormFieldValue(
-				nestedTextFieldName, nestedTextFieldValue);
-
-		List<DDMFormFieldValue> nestedDDMFormFieldValues =
-			ddmFormFieldValue.getNestedDDMFormFieldValues();
-
-		nestedDDMFormFieldValues.add(nestedDDMFormFieldValue);
-
-		ddmFormValues.addDDMFormFieldValue(ddmFormFieldValue);
+		DDMForm ddmForm = deserialize(
+			_read("test-journal-structured-nested-fields.xml"));
 
 		return DDMStructureTestUtil.addStructure(
 			groupId, JournalArticle.class.getName(), ddmForm);
+	}
+
+	protected DDMForm deserialize(String content) {
+		DDMFormDeserializer ddmFormDeserializer =
+			_ddmFormDeserializerTracker.getDDMFormDeserializer("xsd");
+
+		DDMFormDeserializerDeserializeRequest.Builder builder =
+			DDMFormDeserializerDeserializeRequest.Builder.newBuilder(content);
+
+		DDMFormDeserializerDeserializeResponse
+			ddmFormDeserializerDeserializeResponse =
+			ddmFormDeserializer.deserialize(builder.build());
+
+		return ddmFormDeserializerDeserializeResponse.getDDMForm();
 	}
 
 	private void _prepareDataForLocalizationTests(User user, Group group)
@@ -312,6 +267,18 @@ public class StructuredContentApioTestBundleActivator
 			titleMap1, user.getUserId(), group.getGroupId(), LocaleUtil.SPAIN,
 			true, true);
 
+
+		DDMStructure ddmStructure = _getDDMStructureWithNestedField(
+			group.getGroupId());
+
+		DDMTemplate ddmTemplate = DDMTemplateTestUtil.addTemplate(
+			group.getGroupId(), ddmStructure.getStructureId(),
+			PortalUtil.getClassNameId(JournalArticle.class),
+			TemplateConstants.LANG_TYPE_VM,
+			DDMTemplateTestUtil.getSampleTemplateXSL(
+				"TextFieldValue", "NestedTextFieldValue"),
+			LocaleUtil.US);
+
 		Map<Locale, String> titleMap2 = new HashMap<Locale, String>() {
 			{
 				put(LocaleUtil.getDefault(), TITLE_2_LOCALE_DEFAULT);
@@ -321,36 +288,7 @@ public class StructuredContentApioTestBundleActivator
 
 		_addJournalArticle(
 			titleMap2, user.getUserId(), group.getGroupId(),
-			LocaleUtil.getDefault(), true, true);
-	}
-
-	private void _prepareDataForNestedValuesTests(User user, Group group)
-		throws Exception {
-
-		Map<Locale, String> titleMap = new HashMap<Locale, String>() {
-			{
-				put(LocaleUtil.getDefault(), StringUtil.randomString(20));
-			}
-		};
-
-		String content = _read("test-journal-content-nested-fields.xml");
-
-		Locale[] availableLocales = {LocaleUtil.US, LocaleUtil.SPAIN};
-
-		DDMStructure ddmStructure = _getDDMStructureWithNestedField(
-			group.getGroupId(), availableLocales, TEXT_FIELD_NAME,
-			TEXT_FIELD_VALUE, NESTED_TEXT_FIELD_NAME, NESTED_TEXT_FIELD_VALUE);
-
-		DDMTemplate ddmTemplate = DDMTemplateTestUtil.addTemplate(
-			group.getGroupId(), ddmStructure.getStructureId(),
-			PortalUtil.getClassNameId(JournalArticle.class),
-			TemplateConstants.LANG_TYPE_VM,
-			DDMTemplateTestUtil.getSampleTemplateXSL(
-				TEXT_FIELD_NAME, NESTED_TEXT_FIELD_NAME),
-			LocaleUtil.US);
-
-		_addJournalArticle(
-			titleMap, user.getUserId(), group.getGroupId(), content,
+			_read("test-journal-content-nested-fields-2.xml"),
 			ddmStructure, ddmTemplate);
 	}
 
@@ -390,8 +328,6 @@ public class StructuredContentApioTestBundleActivator
 			true, true);
 
 		_prepareDataForLocalizationTests(user, group);
-
-		_prepareDataForNestedValuesTests(user, group);
 	}
 
 	private String _read(String fileName) throws Exception {
@@ -410,5 +346,8 @@ public class StructuredContentApioTestBundleActivator
 		StructuredContentApioTestBundleActivator.class);
 
 	private List<AutoCloseable> _autoCloseables;
+
+	private DDMFormDeserializerTracker _ddmFormDeserializerTracker;
+
 
 }
