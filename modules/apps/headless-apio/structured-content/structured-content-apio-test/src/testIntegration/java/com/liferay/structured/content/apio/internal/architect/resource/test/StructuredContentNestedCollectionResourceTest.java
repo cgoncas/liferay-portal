@@ -86,7 +86,7 @@ public class StructuredContentNestedCollectionResourceTest
 
 		String title = RandomTestUtil.randomString();
 
-		stringMap.put(LocaleUtil.getDefault(), title);
+		stringMap.put(LocaleUtil.US, title);
 
 		ServiceContext serviceContext =
 			ServiceContextTestUtil.getServiceContext(_group.getGroupId());
@@ -95,15 +95,15 @@ public class StructuredContentNestedCollectionResourceTest
 			_group.getGroupId(),
 			JournalFolderConstants.DEFAULT_PARENT_FOLDER_ID,
 			JournalArticleConstants.CLASSNAME_ID_DEFAULT, title, false,
-			stringMap, stringMap, stringMap, null, LocaleUtil.getDefault(),
+			stringMap, stringMap, stringMap, null, LocaleUtil.US,
 			null, true, true, serviceContext);
 
 		JournalArticleWrapper journalArticleWrapper = getJournalArticleWrapper(
 			journalArticle.getResourcePrimKey(),
-			getThemeDisplay(_group, LocaleUtil.getDefault()));
+			getThemeDisplay(_group, LocaleUtil.US));
 
 		Assert.assertEquals(
-			title, journalArticleWrapper.getTitle(LocaleUtil.getDefault()));
+			title, journalArticleWrapper.getTitle(LocaleUtil.US));
 	}
 
 	@Test
@@ -114,7 +114,7 @@ public class StructuredContentNestedCollectionResourceTest
 
 		String title = RandomTestUtil.randomString();
 
-		stringMap.put(LocaleUtil.getDefault(), title);
+		stringMap.put(LocaleUtil.US, title);
 
 		ServiceContext serviceContext =
 			ServiceContextTestUtil.getServiceContext(_group.getGroupId());
@@ -126,7 +126,7 @@ public class StructuredContentNestedCollectionResourceTest
 			_group.getGroupId(),
 			JournalFolderConstants.DEFAULT_PARENT_FOLDER_ID,
 			JournalArticleConstants.CLASSNAME_ID_DEFAULT, title, false,
-			stringMap, stringMap, stringMap, null, LocaleUtil.getDefault(),
+			stringMap, stringMap, stringMap, null, LocaleUtil.US,
 			null, true, true, serviceContext);
 
 		User user = UserTestUtil.addUser();
@@ -140,7 +140,7 @@ public class StructuredContentNestedCollectionResourceTest
 			Assertions.assertThatThrownBy(
 				() -> getJournalArticleWrapper(
 					journalArticle.getId(),
-					getThemeDisplay(_group, LocaleUtil.getDefault()))
+					getThemeDisplay(_group, LocaleUtil.US))
 			).isInstanceOf(
 				PrincipalException.MustHavePermission.class
 			);
@@ -154,7 +154,7 @@ public class StructuredContentNestedCollectionResourceTest
 	public void testGetPageItems() throws Exception {
 		Map<Locale, String> stringMap = new HashMap<>();
 
-		stringMap.put(LocaleUtil.getDefault(), RandomTestUtil.randomString());
+		stringMap.put(LocaleUtil.US, RandomTestUtil.randomString());
 		stringMap.put(LocaleUtil.GERMANY, RandomTestUtil.randomString());
 		stringMap.put(LocaleUtil.SPAIN, RandomTestUtil.randomString());
 
@@ -166,12 +166,12 @@ public class StructuredContentNestedCollectionResourceTest
 			JournalFolderConstants.DEFAULT_PARENT_FOLDER_ID,
 			JournalArticleConstants.CLASSNAME_ID_DEFAULT,
 			RandomTestUtil.randomString(), false, stringMap, stringMap,
-			stringMap, null, LocaleUtil.getDefault(), null, true, true,
+			stringMap, null, LocaleUtil.US, null, true, true,
 			serviceContext);
 
 		PageItems<JournalArticle> pageItems = getPageItems(
 			PaginationRequest.of(10, 1), _group.getGroupId(), _acceptLanguage,
-			getThemeDisplay(_group, LocaleUtil.getDefault()),
+			getThemeDisplay(_group, LocaleUtil.US),
 			Filter.emptyFilter(), Sort.emptySort());
 
 		Assert.assertEquals(1, pageItems.getTotalCount());
@@ -188,7 +188,7 @@ public class StructuredContentNestedCollectionResourceTest
 	public void testGetPageItemsFilterByPermission() throws Exception {
 		Map<Locale, String> stringMap = new HashMap<>();
 
-		stringMap.put(LocaleUtil.getDefault(), RandomTestUtil.randomString());
+		stringMap.put(LocaleUtil.US, RandomTestUtil.randomString());
 
 		ServiceContext serviceContext =
 			ServiceContextTestUtil.getServiceContext(_group.getGroupId());
@@ -201,7 +201,7 @@ public class StructuredContentNestedCollectionResourceTest
 			JournalFolderConstants.DEFAULT_PARENT_FOLDER_ID,
 			JournalArticleConstants.CLASSNAME_ID_DEFAULT,
 			RandomTestUtil.randomString(), false, stringMap, stringMap,
-			stringMap, null, LocaleUtil.getDefault(), null, true, true,
+			stringMap, null, LocaleUtil.US, null, true, true,
 			serviceContext);
 
 		User user = UserTestUtil.addUser();
@@ -215,7 +215,7 @@ public class StructuredContentNestedCollectionResourceTest
 			PageItems<JournalArticle> pageItems = getPageItems(
 				PaginationRequest.of(10, 1), _group.getGroupId(),
 				_acceptLanguage,
-				getThemeDisplay(_group, LocaleUtil.getDefault()),
+				getThemeDisplay(_group, LocaleUtil.US),
 				Filter.emptyFilter(), Sort.emptySort());
 
 			Assert.assertEquals(0, pageItems.getTotalCount());
@@ -229,7 +229,7 @@ public class StructuredContentNestedCollectionResourceTest
 	public void testGetPageItemsWith2VersionsAnd1Scheduled() throws Exception {
 		Map<Locale, String> stringMap = new HashMap<>();
 
-		stringMap.put(LocaleUtil.getDefault(), "Version 1");
+		stringMap.put(LocaleUtil.US, "Version 1");
 		stringMap.put(LocaleUtil.GERMANY, RandomTestUtil.randomString());
 		stringMap.put(LocaleUtil.SPAIN, RandomTestUtil.randomString());
 
@@ -241,12 +241,12 @@ public class StructuredContentNestedCollectionResourceTest
 			JournalFolderConstants.DEFAULT_PARENT_FOLDER_ID,
 			JournalArticleConstants.CLASSNAME_ID_DEFAULT,
 			RandomTestUtil.randomString(), false, stringMap, stringMap,
-			stringMap, null, LocaleUtil.getDefault(), null, null, true, true,
+			stringMap, null, LocaleUtil.US, null, null, true, true,
 			serviceContext);
 
 		// Create new version scheduled for tomorrow
 
-		stringMap.put(LocaleUtil.getDefault(), "Version 2");
+		stringMap.put(LocaleUtil.US, "Version 2");
 
 		Date displayDate = new Date(
 			System.currentTimeMillis() + 24 * 60 * 60 * 1000);
@@ -263,7 +263,7 @@ public class StructuredContentNestedCollectionResourceTest
 
 		PageItems<JournalArticle> pageItems = getPageItems(
 			PaginationRequest.of(10, 1), _group.getGroupId(), _acceptLanguage,
-			getThemeDisplay(_group, LocaleUtil.getDefault()),
+			getThemeDisplay(_group, LocaleUtil.US),
 			Filter.emptyFilter(), Sort.emptySort());
 
 		Assert.assertEquals(1, pageItems.getTotalCount());
@@ -278,7 +278,7 @@ public class StructuredContentNestedCollectionResourceTest
 		JournalArticle foundJournalArticle = journalArticles.get(0);
 
 		Assert.assertEquals(
-			"Version 1", foundJournalArticle.getTitle(LocaleUtil.getDefault()));
+			"Version 1", foundJournalArticle.getTitle(LocaleUtil.US));
 	}
 
 	@Test
@@ -287,7 +287,7 @@ public class StructuredContentNestedCollectionResourceTest
 
 		Map<Locale, String> stringMap = new HashMap<>();
 
-		stringMap.put(LocaleUtil.getDefault(), "Version 1");
+		stringMap.put(LocaleUtil.US, "Version 1");
 		stringMap.put(LocaleUtil.GERMANY, RandomTestUtil.randomString());
 		stringMap.put(LocaleUtil.SPAIN, RandomTestUtil.randomString());
 
@@ -299,7 +299,7 @@ public class StructuredContentNestedCollectionResourceTest
 			JournalFolderConstants.DEFAULT_PARENT_FOLDER_ID,
 			JournalArticleConstants.CLASSNAME_ID_DEFAULT,
 			RandomTestUtil.randomString(), false, stringMap, stringMap,
-			stringMap, null, LocaleUtil.getDefault(), null, true, true,
+			stringMap, null, LocaleUtil.US, null, true, true,
 			serviceContext);
 
 		// Create new version as a draft
@@ -315,7 +315,7 @@ public class StructuredContentNestedCollectionResourceTest
 
 		PageItems<JournalArticle> pageItems = getPageItems(
 			PaginationRequest.of(10, 1), _group.getGroupId(), _acceptLanguage,
-			getThemeDisplay(_group, LocaleUtil.getDefault()),
+			getThemeDisplay(_group, LocaleUtil.US),
 			Filter.emptyFilter(), Sort.emptySort());
 
 		Assert.assertEquals(1, pageItems.getTotalCount());
@@ -330,14 +330,14 @@ public class StructuredContentNestedCollectionResourceTest
 		JournalArticle foundJournalArticle = journalArticles.get(0);
 
 		Assert.assertEquals(
-			"Version 1", foundJournalArticle.getTitle(LocaleUtil.getDefault()));
+			"Version 1", foundJournalArticle.getTitle(LocaleUtil.US));
 	}
 
 	@Test
 	public void testGetPageItemsWith2VersionsApproved() throws Exception {
 		Map<Locale, String> stringMap = new HashMap<>();
 
-		stringMap.put(LocaleUtil.getDefault(), RandomTestUtil.randomString());
+		stringMap.put(LocaleUtil.US, RandomTestUtil.randomString());
 		stringMap.put(LocaleUtil.GERMANY, RandomTestUtil.randomString());
 		stringMap.put(LocaleUtil.SPAIN, RandomTestUtil.randomString());
 
@@ -349,7 +349,7 @@ public class StructuredContentNestedCollectionResourceTest
 			JournalFolderConstants.DEFAULT_PARENT_FOLDER_ID,
 			JournalArticleConstants.CLASSNAME_ID_DEFAULT,
 			RandomTestUtil.randomString(), false, stringMap, stringMap,
-			stringMap, null, LocaleUtil.getDefault(), null, null, true, true,
+			stringMap, null, LocaleUtil.US, null, null, true, true,
 			serviceContext);
 
 		journalArticle = JournalTestUtil.updateArticle(
@@ -363,7 +363,7 @@ public class StructuredContentNestedCollectionResourceTest
 
 		PageItems<JournalArticle> pageItems = getPageItems(
 			PaginationRequest.of(10, 1), _group.getGroupId(), _acceptLanguage,
-			getThemeDisplay(_group, LocaleUtil.getDefault()),
+			getThemeDisplay(_group, LocaleUtil.US),
 			Filter.emptyFilter(), Sort.emptySort());
 
 		Assert.assertEquals(1, pageItems.getTotalCount());
@@ -378,14 +378,14 @@ public class StructuredContentNestedCollectionResourceTest
 		JournalArticle foundJournalArticle = journalArticles.get(0);
 
 		Assert.assertEquals(
-			"Version 2", foundJournalArticle.getTitle(LocaleUtil.getDefault()));
+			"Version 2", foundJournalArticle.getTitle(LocaleUtil.US));
 	}
 
 	@Test
 	public void testGetPageItemsWithOnlyOneDraftVersion() throws Exception {
 		Map<Locale, String> stringMap = new HashMap<>();
 
-		stringMap.put(LocaleUtil.getDefault(), "Version 1");
+		stringMap.put(LocaleUtil.US, "Version 1");
 		stringMap.put(LocaleUtil.GERMANY, RandomTestUtil.randomString());
 		stringMap.put(LocaleUtil.SPAIN, RandomTestUtil.randomString());
 
@@ -397,7 +397,7 @@ public class StructuredContentNestedCollectionResourceTest
 			JournalFolderConstants.DEFAULT_PARENT_FOLDER_ID,
 			JournalArticleConstants.CLASSNAME_ID_DEFAULT,
 			RandomTestUtil.randomString(), false, stringMap, stringMap,
-			stringMap, null, LocaleUtil.getDefault(), null, null, true, false,
+			stringMap, null, LocaleUtil.US, null, null, true, false,
 			serviceContext);
 
 		int journalArticlesCount = _journalArticleLocalService.getArticlesCount(
@@ -407,7 +407,7 @@ public class StructuredContentNestedCollectionResourceTest
 
 		PageItems<JournalArticle> pageItems = getPageItems(
 			PaginationRequest.of(10, 1), _group.getGroupId(), _acceptLanguage,
-			getThemeDisplay(_group, LocaleUtil.getDefault()),
+			getThemeDisplay(_group, LocaleUtil.US),
 			Filter.emptyFilter(), Sort.emptySort());
 
 		Assert.assertEquals(0, pageItems.getTotalCount());
@@ -417,7 +417,7 @@ public class StructuredContentNestedCollectionResourceTest
 	public void testGetPageItemsWithOnlyOneExpiredVersion() throws Exception {
 		Map<Locale, String> stringMap = new HashMap<>();
 
-		stringMap.put(LocaleUtil.getDefault(), "Version 1");
+		stringMap.put(LocaleUtil.US, "Version 1");
 		stringMap.put(LocaleUtil.GERMANY, RandomTestUtil.randomString());
 		stringMap.put(LocaleUtil.SPAIN, RandomTestUtil.randomString());
 
@@ -429,7 +429,7 @@ public class StructuredContentNestedCollectionResourceTest
 			JournalFolderConstants.DEFAULT_PARENT_FOLDER_ID,
 			JournalArticleConstants.CLASSNAME_ID_DEFAULT,
 			RandomTestUtil.randomString(), false, stringMap, stringMap,
-			stringMap, null, LocaleUtil.getDefault(), null, null, true, true,
+			stringMap, null, LocaleUtil.US, null, null, true, true,
 			serviceContext);
 
 		_journalArticleLocalService.updateStatus(
@@ -444,7 +444,7 @@ public class StructuredContentNestedCollectionResourceTest
 
 		PageItems<JournalArticle> pageItems = getPageItems(
 			PaginationRequest.of(10, 1), _group.getGroupId(), _acceptLanguage,
-			getThemeDisplay(_group, LocaleUtil.getDefault()),
+			getThemeDisplay(_group, LocaleUtil.US),
 			Filter.emptyFilter(), Sort.emptySort());
 
 		Assert.assertEquals(0, pageItems.getTotalCount());
@@ -454,7 +454,7 @@ public class StructuredContentNestedCollectionResourceTest
 	public void testGetPageItemsWithOnlyOneSheduledVersion() throws Exception {
 		Map<Locale, String> stringMap = new HashMap<>();
 
-		stringMap.put(LocaleUtil.getDefault(), "Version 1");
+		stringMap.put(LocaleUtil.US, "Version 1");
 		stringMap.put(LocaleUtil.GERMANY, RandomTestUtil.randomString());
 		stringMap.put(LocaleUtil.SPAIN, RandomTestUtil.randomString());
 
@@ -469,7 +469,7 @@ public class StructuredContentNestedCollectionResourceTest
 			JournalFolderConstants.DEFAULT_PARENT_FOLDER_ID,
 			JournalArticleConstants.CLASSNAME_ID_DEFAULT,
 			RandomTestUtil.randomString(), false, stringMap, stringMap,
-			stringMap, null, LocaleUtil.getDefault(), displayDate, null, true,
+			stringMap, null, LocaleUtil.US, displayDate, null, true,
 			true, serviceContext);
 
 		int journalArticlesCount = _journalArticleLocalService.getArticlesCount(
@@ -479,14 +479,14 @@ public class StructuredContentNestedCollectionResourceTest
 
 		PageItems<JournalArticle> pageItems = getPageItems(
 			PaginationRequest.of(10, 1), _group.getGroupId(), _acceptLanguage,
-			getThemeDisplay(_group, LocaleUtil.getDefault()),
+			getThemeDisplay(_group, LocaleUtil.US),
 			Filter.emptyFilter(), Sort.emptySort());
 
 		Assert.assertEquals(0, pageItems.getTotalCount());
 	}
 
 	private static final AcceptLanguage _acceptLanguage =
-		() -> LocaleUtil.getDefault();
+		() -> LocaleUtil.US;
 
 	@DeleteAfterTestRun
 	private Group _group;
