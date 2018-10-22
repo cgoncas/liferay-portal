@@ -114,8 +114,7 @@ public abstract class BaseStructuredContentNestedCollectionResourceTestCase {
 		return themeDisplay;
 	}
 
-	private static final AcceptLanguage _acceptLanguage =
-		() -> LocaleUtil.US;
+	private static final AcceptLanguage _acceptLanguage = () -> LocaleUtil.US;
 
 	@Inject(
 		filter = "component.name=com.liferay.structured.content.apio.internal.architect.resource.StructuredContentNestedCollectionResource"

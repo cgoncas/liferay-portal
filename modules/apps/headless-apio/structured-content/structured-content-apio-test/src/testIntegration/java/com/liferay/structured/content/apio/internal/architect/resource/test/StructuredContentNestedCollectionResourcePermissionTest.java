@@ -96,8 +96,8 @@ public class StructuredContentNestedCollectionResourcePermissionTest
 			_group.getGroupId(),
 			JournalFolderConstants.DEFAULT_PARENT_FOLDER_ID,
 			JournalArticleConstants.CLASSNAME_ID_DEFAULT, title, false,
-			stringMap, stringMap, stringMap, null, LocaleUtil.US,
-			null, true, true, serviceContext);
+			stringMap, stringMap, stringMap, null, LocaleUtil.US, null, true,
+			true, serviceContext);
 
 		User user = UserTestUtil.addUser();
 
@@ -137,8 +137,7 @@ public class StructuredContentNestedCollectionResourcePermissionTest
 			JournalFolderConstants.DEFAULT_PARENT_FOLDER_ID,
 			JournalArticleConstants.CLASSNAME_ID_DEFAULT,
 			RandomTestUtil.randomString(), false, stringMap, stringMap,
-			stringMap, null, LocaleUtil.US, null, true, true,
-			serviceContext);
+			stringMap, null, LocaleUtil.US, null, true, true, serviceContext);
 
 		User user = UserTestUtil.addUser();
 
@@ -150,8 +149,7 @@ public class StructuredContentNestedCollectionResourcePermissionTest
 
 			PageItems<JournalArticle> pageItems = getPageItems(
 				PaginationRequest.of(10, 1), _group.getGroupId(),
-				_acceptLanguage,
-				getThemeDisplay(_group, LocaleUtil.US),
+				_acceptLanguage, getThemeDisplay(_group, LocaleUtil.US),
 				Filter.emptyFilter(), Sort.emptySort());
 
 			Assert.assertEquals(0, pageItems.getTotalCount());
@@ -161,8 +159,7 @@ public class StructuredContentNestedCollectionResourcePermissionTest
 		}
 	}
 
-	private static final AcceptLanguage _acceptLanguage =
-		() -> LocaleUtil.US;
+	private static final AcceptLanguage _acceptLanguage = () -> LocaleUtil.US;
 
 	@DeleteAfterTestRun
 	private Group _group;

@@ -95,8 +95,8 @@ public class StructuredContentNestedCollectionResourceTest
 			_group.getGroupId(),
 			JournalFolderConstants.DEFAULT_PARENT_FOLDER_ID,
 			JournalArticleConstants.CLASSNAME_ID_DEFAULT, title, false,
-			stringMap, stringMap, stringMap, null, LocaleUtil.US,
-			null, true, true, serviceContext);
+			stringMap, stringMap, stringMap, null, LocaleUtil.US, null, true,
+			true, serviceContext);
 
 		JournalArticleWrapper journalArticleWrapper = getJournalArticleWrapper(
 			journalArticle.getResourcePrimKey(),
@@ -126,8 +126,8 @@ public class StructuredContentNestedCollectionResourceTest
 			_group.getGroupId(),
 			JournalFolderConstants.DEFAULT_PARENT_FOLDER_ID,
 			JournalArticleConstants.CLASSNAME_ID_DEFAULT, title, false,
-			stringMap, stringMap, stringMap, null, LocaleUtil.US,
-			null, true, true, serviceContext);
+			stringMap, stringMap, stringMap, null, LocaleUtil.US, null, true,
+			true, serviceContext);
 
 		User user = UserTestUtil.addUser();
 
@@ -166,13 +166,12 @@ public class StructuredContentNestedCollectionResourceTest
 			JournalFolderConstants.DEFAULT_PARENT_FOLDER_ID,
 			JournalArticleConstants.CLASSNAME_ID_DEFAULT,
 			RandomTestUtil.randomString(), false, stringMap, stringMap,
-			stringMap, null, LocaleUtil.US, null, true, true,
-			serviceContext);
+			stringMap, null, LocaleUtil.US, null, true, true, serviceContext);
 
 		PageItems<JournalArticle> pageItems = getPageItems(
 			PaginationRequest.of(10, 1), _group.getGroupId(), _acceptLanguage,
-			getThemeDisplay(_group, LocaleUtil.US),
-			Filter.emptyFilter(), Sort.emptySort());
+			getThemeDisplay(_group, LocaleUtil.US), Filter.emptyFilter(),
+			Sort.emptySort());
 
 		Assert.assertEquals(1, pageItems.getTotalCount());
 
@@ -201,8 +200,7 @@ public class StructuredContentNestedCollectionResourceTest
 			JournalFolderConstants.DEFAULT_PARENT_FOLDER_ID,
 			JournalArticleConstants.CLASSNAME_ID_DEFAULT,
 			RandomTestUtil.randomString(), false, stringMap, stringMap,
-			stringMap, null, LocaleUtil.US, null, true, true,
-			serviceContext);
+			stringMap, null, LocaleUtil.US, null, true, true, serviceContext);
 
 		User user = UserTestUtil.addUser();
 
@@ -214,8 +212,7 @@ public class StructuredContentNestedCollectionResourceTest
 
 			PageItems<JournalArticle> pageItems = getPageItems(
 				PaginationRequest.of(10, 1), _group.getGroupId(),
-				_acceptLanguage,
-				getThemeDisplay(_group, LocaleUtil.US),
+				_acceptLanguage, getThemeDisplay(_group, LocaleUtil.US),
 				Filter.emptyFilter(), Sort.emptySort());
 
 			Assert.assertEquals(0, pageItems.getTotalCount());
@@ -263,8 +260,8 @@ public class StructuredContentNestedCollectionResourceTest
 
 		PageItems<JournalArticle> pageItems = getPageItems(
 			PaginationRequest.of(10, 1), _group.getGroupId(), _acceptLanguage,
-			getThemeDisplay(_group, LocaleUtil.US),
-			Filter.emptyFilter(), Sort.emptySort());
+			getThemeDisplay(_group, LocaleUtil.US), Filter.emptyFilter(),
+			Sort.emptySort());
 
 		Assert.assertEquals(1, pageItems.getTotalCount());
 
@@ -299,8 +296,7 @@ public class StructuredContentNestedCollectionResourceTest
 			JournalFolderConstants.DEFAULT_PARENT_FOLDER_ID,
 			JournalArticleConstants.CLASSNAME_ID_DEFAULT,
 			RandomTestUtil.randomString(), false, stringMap, stringMap,
-			stringMap, null, LocaleUtil.US, null, true, true,
-			serviceContext);
+			stringMap, null, LocaleUtil.US, null, true, true, serviceContext);
 
 		// Create new version as a draft
 
@@ -315,8 +311,8 @@ public class StructuredContentNestedCollectionResourceTest
 
 		PageItems<JournalArticle> pageItems = getPageItems(
 			PaginationRequest.of(10, 1), _group.getGroupId(), _acceptLanguage,
-			getThemeDisplay(_group, LocaleUtil.US),
-			Filter.emptyFilter(), Sort.emptySort());
+			getThemeDisplay(_group, LocaleUtil.US), Filter.emptyFilter(),
+			Sort.emptySort());
 
 		Assert.assertEquals(1, pageItems.getTotalCount());
 
@@ -363,8 +359,8 @@ public class StructuredContentNestedCollectionResourceTest
 
 		PageItems<JournalArticle> pageItems = getPageItems(
 			PaginationRequest.of(10, 1), _group.getGroupId(), _acceptLanguage,
-			getThemeDisplay(_group, LocaleUtil.US),
-			Filter.emptyFilter(), Sort.emptySort());
+			getThemeDisplay(_group, LocaleUtil.US), Filter.emptyFilter(),
+			Sort.emptySort());
 
 		Assert.assertEquals(1, pageItems.getTotalCount());
 
@@ -407,8 +403,8 @@ public class StructuredContentNestedCollectionResourceTest
 
 		PageItems<JournalArticle> pageItems = getPageItems(
 			PaginationRequest.of(10, 1), _group.getGroupId(), _acceptLanguage,
-			getThemeDisplay(_group, LocaleUtil.US),
-			Filter.emptyFilter(), Sort.emptySort());
+			getThemeDisplay(_group, LocaleUtil.US), Filter.emptyFilter(),
+			Sort.emptySort());
 
 		Assert.assertEquals(0, pageItems.getTotalCount());
 	}
@@ -444,8 +440,8 @@ public class StructuredContentNestedCollectionResourceTest
 
 		PageItems<JournalArticle> pageItems = getPageItems(
 			PaginationRequest.of(10, 1), _group.getGroupId(), _acceptLanguage,
-			getThemeDisplay(_group, LocaleUtil.US),
-			Filter.emptyFilter(), Sort.emptySort());
+			getThemeDisplay(_group, LocaleUtil.US), Filter.emptyFilter(),
+			Sort.emptySort());
 
 		Assert.assertEquals(0, pageItems.getTotalCount());
 	}
@@ -469,8 +465,8 @@ public class StructuredContentNestedCollectionResourceTest
 			JournalFolderConstants.DEFAULT_PARENT_FOLDER_ID,
 			JournalArticleConstants.CLASSNAME_ID_DEFAULT,
 			RandomTestUtil.randomString(), false, stringMap, stringMap,
-			stringMap, null, LocaleUtil.US, displayDate, null, true,
-			true, serviceContext);
+			stringMap, null, LocaleUtil.US, displayDate, null, true, true,
+			serviceContext);
 
 		int journalArticlesCount = _journalArticleLocalService.getArticlesCount(
 			journalArticle.getGroupId(), journalArticle.getArticleId());
@@ -479,14 +475,13 @@ public class StructuredContentNestedCollectionResourceTest
 
 		PageItems<JournalArticle> pageItems = getPageItems(
 			PaginationRequest.of(10, 1), _group.getGroupId(), _acceptLanguage,
-			getThemeDisplay(_group, LocaleUtil.US),
-			Filter.emptyFilter(), Sort.emptySort());
+			getThemeDisplay(_group, LocaleUtil.US), Filter.emptyFilter(),
+			Sort.emptySort());
 
 		Assert.assertEquals(0, pageItems.getTotalCount());
 	}
 
-	private static final AcceptLanguage _acceptLanguage =
-		() -> LocaleUtil.US;
+	private static final AcceptLanguage _acceptLanguage = () -> LocaleUtil.US;
 
 	@DeleteAfterTestRun
 	private Group _group;
