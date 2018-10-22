@@ -217,7 +217,7 @@ public class StructuredContentNestedCollectionResource
 				"structuredContent", StructuredContentIdentifier.class,
 				this::_getStructuredContentId
 			).addLocalizedStringByLocale(
-				"value", this::_getLocalizedString
+				"value", StructuredContentField::getLocalizedValue
 			).addNested(
 				"geo", this::_getGeoJSONObject,
 				geoBuilder -> geoBuilder.types(
@@ -510,20 +510,6 @@ public class StructuredContentNestedCollectionResource
 			JSONFactoryUtil::createJSONObject
 		).map(
 			this::_getLayoutLink
-		).orElse(
-			null
-		);
-	}
-
-	private String _getLocalizedString(
-		DDMFormFieldValue ddmFormFieldValue, Locale locale) {
-
-		return Try.fromFallible(
-			ddmFormFieldValue::getValue
-		).map(
-			value -> value.getString(locale)
-		).filter(
-			valueString -> !StructuredContentUtil.isJSONObject(valueString)
 		).orElse(
 			null
 		);
