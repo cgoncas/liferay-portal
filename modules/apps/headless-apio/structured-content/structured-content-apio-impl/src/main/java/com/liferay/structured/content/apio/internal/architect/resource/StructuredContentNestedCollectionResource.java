@@ -37,6 +37,7 @@ import com.liferay.content.space.apio.architect.identifier.ContentSpaceIdentifie
 import com.liferay.document.library.kernel.service.DLAppService;
 import com.liferay.dynamic.data.mapping.kernel.DDMFormFieldValue;
 import com.liferay.dynamic.data.mapping.kernel.DDMFormValues;
+import com.liferay.dynamic.data.mapping.kernel.Value;
 import com.liferay.dynamic.data.mapping.model.DDMStructure;
 import com.liferay.dynamic.data.mapping.model.DDMTemplate;
 import com.liferay.dynamic.data.mapping.service.DDMStructureService;
@@ -48,11 +49,14 @@ import com.liferay.journal.util.JournalContent;
 import com.liferay.journal.util.JournalHelper;
 import com.liferay.media.object.apio.architect.identifier.MediaObjectIdentifier;
 import com.liferay.person.apio.architect.identifier.PersonIdentifier;
+import com.liferay.petra.string.StringBundler;
 import com.liferay.portal.apio.identifier.ClassNameClassPK;
 import com.liferay.portal.apio.permission.HasPermission;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.json.JSONFactoryUtil;
 import com.liferay.portal.kernel.json.JSONObject;
+import com.liferay.portal.kernel.log.Log;
+import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.model.Layout;
 import com.liferay.portal.kernel.search.BooleanClauseOccur;
 import com.liferay.portal.kernel.search.BooleanQuery;
@@ -729,6 +733,9 @@ public class StructuredContentNestedCollectionResource
 			updatedJournalArticle, locale, themeDisplay);
 	}
 
+	private static final Log _log = LogFactoryUtil.getLog(
+		StructuredContentNestedCollectionResource.class);
+
 	@Reference
 	private AssetTagLocalService _assetTagLocalService;
 
@@ -775,5 +782,70 @@ public class StructuredContentNestedCollectionResource
 	@Reference
 	private SearchResultPermissionFilterFactory
 		_searchResultPermissionFilterFactory;
+
+	private static class StructuredContentField {
+
+		public StructuredContentField(
+			DDMFormFieldValue value, DDMStructure ddmStructure) {
+
+			_value = value;
+			_ddmStructure = ddmStructure;
+		}
+
+		public DDMFormFieldValue getDDMFormFieldValue() {
+			return _value;
+		}
+
+		public String getLocalizedLabel(Locale locale) {
+			try {
+				return _ddmStructure.getFieldLabel(_value.getName(), locale);
+			}
+			catch (PortalException pe) {
+				if (_log.isWarnEnabled()) {
+					_log.warn(
+						StringBundler.concat(
+							"Cannot get localized label for value name ",
+							_value.getName(), " and locale ", locale),
+						pe);
+				}
+
+				return null;
+			}
+		}
+
+		public String getLocalizedValue(Locale locale) {
+			Value value = _value.getValue();
+
+			String localizedValue = value.getString(locale);
+
+			if (!StructuredContentUtil.isJSONObject(localizedValue)) {
+				return localizedValue;
+			}
+
+			return null;
+		}
+
+		public String getName() {
+			return _value.getName();
+		}
+
+		public List<StructuredContentField> getNestedFields() {
+			List<DDMFormFieldValue> ddmFormFieldValues =
+				_value.getNestedDDMFormFieldValues();
+
+			Stream<DDMFormFieldValue> stream = ddmFormFieldValues.stream();
+
+			return stream.map(
+				ddmFormFieldValue ->
+					new StructuredContentField(ddmFormFieldValue, _ddmStructure)
+			).collect(
+				Collectors.toList()
+			);
+		}
+
+		private final DDMStructure _ddmStructure;
+		private final DDMFormFieldValue _value;
+
+	}
 
 }
