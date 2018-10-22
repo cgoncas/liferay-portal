@@ -198,13 +198,15 @@ public class StructuredContentNestedCollectionResource
 				"renderedContent", RenderedJournalArticle::getRenderedContent
 			).build()
 		).addNestedList(
-			"values", this::_getJournalArticleDDMFormFieldValues,
+			"values", this::_getStructuredContentFields,
 			fieldValuesBuilder -> fieldValuesBuilder.types(
 				"ContentFieldValue"
 			).addLinkedModel(
 				"document", MediaObjectIdentifier.class,
-				ddmFormFieldValue -> Try.fromFallible(
-					ddmFormFieldValue::getValue
+				ddmFormFieldWrapper -> Try.fromFallible(
+					ddmFormFieldWrapper::getDDMFormFieldValue
+				).map(
+					DDMFormFieldValue::getValue
 				).map(
 					value -> value.getString(LocaleUtil.getDefault())
 				).map(
@@ -230,7 +232,7 @@ public class StructuredContentNestedCollectionResource
 			).addRelativeURL(
 				"link", this::_getLink
 			).addString(
-				"name", DDMFormFieldValue::getName
+				"name", StructuredContentField::getName
 			).build()
 		).addRelatedCollection(
 			"category", CategoryIdentifier.class
@@ -365,16 +367,16 @@ public class StructuredContentNestedCollectionResource
 		return optional.orElse(defaultValue);
 	}
 
-	private List<DDMFormFieldValue> _getFormFieldValues(
-		List<DDMFormFieldValue> ddmFormFieldValues) {
+	private List<StructuredContentField> _getFormFieldValues(
+		List<StructuredContentField> ddmFormFieldValues) {
 
-		Stream<DDMFormFieldValue> ddmFormFieldValueStream =
+		Stream<StructuredContentField> ddmFormFieldValueStream =
 			ddmFormFieldValues.stream();
 
-		List<DDMFormFieldValue> nestedDDMFormFieldValues =
+		List<StructuredContentField> nestedDDMFormFieldValues =
 			ddmFormFieldValueStream.flatMap(
 				ddmFormFieldValue -> _getFormFieldValues(
-					ddmFormFieldValue.getNestedDDMFormFieldValues()
+					ddmFormFieldValue.getNestedFields()
 				).stream()
 			).collect(
 				Collectors.toList()
@@ -406,9 +408,13 @@ public class StructuredContentNestedCollectionResource
 		return booleanQuery;
 	}
 
-	private JSONObject _getGeoJSONObject(DDMFormFieldValue ddmFormFieldValue) {
+	private JSONObject _getGeoJSONObject(
+		StructuredContentField structuredContentField) {
+
 		return Try.fromFallible(
-			ddmFormFieldValue::getValue
+			structuredContentField::getDDMFormFieldValue
+		).map(
+			DDMFormFieldValue::getValue
 		).map(
 			value -> value.getString(LocaleUtil.getDefault())
 		).filter(
@@ -440,7 +446,7 @@ public class StructuredContentNestedCollectionResource
 		return ListUtil.toList(assetTags, AssetTag::getName);
 	}
 
-	private List<DDMFormFieldValue> _getJournalArticleDDMFormFieldValues(
+	private List<StructuredContentField> _getStructuredContentFields(
 		JournalArticleWrapper journalArticleWrapper) {
 
 		return Try.fromFallible(
@@ -457,6 +463,19 @@ public class StructuredContentNestedCollectionResource
 			DDMFormValuesReader::getDDMFormValues
 		).map(
 			DDMFormValues::getDDMFormFieldValues
+		).map(
+			ddmFormFieldValueList -> {
+				Stream<DDMFormFieldValue> stream =
+					ddmFormFieldValueList.stream();
+
+				return stream.map(
+					ddmFormFieldValue -> new StructuredContentField(
+						ddmFormFieldValue,
+						journalArticleWrapper.getDDMStructure())
+				).collect(
+					Collectors.toList()
+				);
+			}
 		).map(
 			this::_getFormFieldValues
 		).orElse(
@@ -497,9 +516,11 @@ public class StructuredContentNestedCollectionResource
 		return layoutByUuidAndGroupId.getFriendlyURL();
 	}
 
-	private String _getLink(DDMFormFieldValue ddmFormFieldValue) {
+	private String _getLink(StructuredContentField structuredContentField) {
 		return Try.fromFallible(
-			ddmFormFieldValue::getValue
+			structuredContentField::getDDMFormFieldValue
+		).map(
+			DDMFormFieldValue::getValue
 		).map(
 			value -> value.getString(LocaleUtil.getDefault())
 		).filter(
@@ -637,9 +658,13 @@ public class StructuredContentNestedCollectionResource
 		);
 	}
 
-	private Long _getStructuredContentId(DDMFormFieldValue ddmFormFieldValue) {
+	private Long _getStructuredContentId(
+		StructuredContentField structuredContentField) {
+
 		return Try.fromFallible(
-			ddmFormFieldValue::getValue
+			structuredContentField::getDDMFormFieldValue
+		).map(
+			ddmFormFieldValue -> ddmFormFieldValue.getValue()
 		).map(
 			value -> value.getString(LocaleUtil.getDefault())
 		).filter(
