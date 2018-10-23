@@ -94,6 +94,11 @@ public class StructuredContentApioTestBundleActivator
 	public static final String TITLE_BOOLEAN_FIELD_LOCALE_US =
 		StructuredContentApioTestBundleActivator.class.getSimpleName() +
 			"TitleBooleanField_us";
+
+	public static final String TITLE_COLOR_FIELD_LOCALE_US =
+		StructuredContentApioTestBundleActivator.class.getSimpleName() +
+			"TitleColorField_us";
+
 	public static final String TITLE_NO_GUEST_NO_GROUP =
 		StructuredContentApioTestBundleActivator.class.getSimpleName() +
 			"NoGuestNoGroupTitle";
@@ -292,6 +297,10 @@ public class StructuredContentApioTestBundleActivator
 		_addJournalArticle(
 			user, group, "test-journal-boolean-field",
 			TITLE_BOOLEAN_FIELD_LOCALE_US);
+
+		_addJournalArticle(
+			user, group, "test-journal-color-field",
+			TITLE_COLOR_FIELD_LOCALE_US);
 	}
 
 	private void _prepareDataForLocalizationTests(User user, Group group)
