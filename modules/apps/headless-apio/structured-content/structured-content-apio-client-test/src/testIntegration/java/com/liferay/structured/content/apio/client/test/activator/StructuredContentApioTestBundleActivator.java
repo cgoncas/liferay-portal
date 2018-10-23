@@ -143,6 +143,10 @@ public class StructuredContentApioTestBundleActivator
 		StructuredContentApioTestBundleActivator.class.getSimpleName() +
 			"TitleNumberField_us";
 
+	public static final String TITLE_RADIO_FIELD_LOCALE_US =
+		StructuredContentApioTestBundleActivator.class.getSimpleName() +
+			"TitleRadioField_us";
+
 	public static final String TITLE_YES_GUEST_YES_GROUP =
 		StructuredContentApioTestBundleActivator.class.getSimpleName() +
 			"YesGuestYesGroupTitle";
@@ -371,6 +375,10 @@ public class StructuredContentApioTestBundleActivator
 		_addJournalArticle(
 			user, group, "test-journal-number-field",
 			TITLE_NUMBER_FIELD_LOCALE_US);
+
+		_addJournalArticle(
+			user, group, "test-journal-radio-field",
+			TITLE_RADIO_FIELD_LOCALE_US);
 	}
 
 	private void _prepareDataForLocalizationTests(User user, Group group)
