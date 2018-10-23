@@ -107,6 +107,10 @@ public class StructuredContentApioTestBundleActivator
 		StructuredContentApioTestBundleActivator.class.getSimpleName() +
 			"TitleDecimalField_us";
 
+	public static final String TITLE_DOCUMENTS_AND_MEDIA_FIELD_LOCALE_US =
+		StructuredContentApioTestBundleActivator.class.getSimpleName() +
+			"TitleDocumentsAndMediaField_us";
+
 	public static final String TITLE_NO_GUEST_NO_GROUP =
 		StructuredContentApioTestBundleActivator.class.getSimpleName() +
 			"NoGuestNoGroupTitle";
@@ -316,6 +320,10 @@ public class StructuredContentApioTestBundleActivator
 		_addJournalArticle(
 			user, group, "test-journal-decimal-field",
 			TITLE_DECIMAL_FIELD_LOCALE_US);
+
+		_addJournalArticle(
+			user, group, "test-journal-documents-and-media-field",
+			TITLE_DOCUMENTS_AND_MEDIA_FIELD_LOCALE_US);
 	}
 
 	private void _prepareDataForLocalizationTests(User user, Group group)
