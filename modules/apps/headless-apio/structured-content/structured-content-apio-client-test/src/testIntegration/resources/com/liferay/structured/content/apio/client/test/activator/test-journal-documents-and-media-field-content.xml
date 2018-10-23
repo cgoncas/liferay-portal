@@ -1,0 +1,8 @@
+<?xml version="1.0"?>
+
+<root available-locales="en_US" default-locale="en_US">
+	<dynamic-element index-type="keyword" instance-id="usms" name="MyDocumentsAndMedia" type="document_library">
+		<dynamic-content language-id="en_US">
+		<![CDATA[{}]]></dynamic-content>
+	</dynamic-element>
+</root>
