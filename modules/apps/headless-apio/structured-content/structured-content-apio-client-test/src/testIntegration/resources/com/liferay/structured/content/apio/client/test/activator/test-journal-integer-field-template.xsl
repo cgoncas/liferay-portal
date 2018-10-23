@@ -1,0 +1,1 @@
+${MyInteger.getData()}
