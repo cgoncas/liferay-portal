@@ -429,6 +429,34 @@ public class StructuredContentApioTest {
 	}
 
 	@Test
+	public void testIntegerDataTypeIsDisplayed() throws Exception {
+		List<String> hrefs = JsonPath.read(
+			_toStringAsAdmin(
+				JsonPath.read(
+					_toStringAsAdmin(_rootEndpointURL.toExternalForm()),
+					"$._links.content-space.href")),
+			"$._embedded.ContentSpace[?(@.name == '" +
+				StructuredContentApioTestBundleActivator.SITE_NAME +
+					"')]._links.structuredContents.href");
+
+		Map<String, String> headers = _getHeaders();
+
+		headers.put("Accept-Language", "en-US");
+
+		List<String> dataTypes = JsonPath.read(
+			_toStringAsGuest(
+				_getURLWithFilterByTitle(
+					hrefs.get(0),
+					StructuredContentApioTestBundleActivator.
+						TITLE_INTEGER_FIELD_LOCALE_US),
+				headers),
+			"$._embedded.StructuredContent[*]._embedded.values._embedded[*]." +
+				"dataType");
+
+		Assert.assertTrue(dataTypes.contains("integer"));
+	}
+
+	@Test
 	public void testLocalizedStructuredFieldLabelIsDisplayedWhenAcceptLanguageIsSpecifiedAndMatches()
 		throws Exception {
 
