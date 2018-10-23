@@ -1,0 +1,1 @@
+<#if getterUtil.getBoolean(myBoolean.getData())>  </#if>
