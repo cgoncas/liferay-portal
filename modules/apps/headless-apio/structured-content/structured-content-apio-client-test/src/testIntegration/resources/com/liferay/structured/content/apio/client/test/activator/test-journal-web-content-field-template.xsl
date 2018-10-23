@@ -1,0 +1,1 @@
+${MyWebContent.getData()}
