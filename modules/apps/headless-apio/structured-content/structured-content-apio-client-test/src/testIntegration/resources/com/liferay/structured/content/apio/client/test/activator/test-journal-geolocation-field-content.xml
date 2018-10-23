@@ -1,0 +1,8 @@
+<?xml version="1.0"?>
+
+<root available-locales="en_US" default-locale="en_US">
+	<dynamic-element index-type="keyword" instance-id="nyle" name="MyGeolocation" type="ddm-geolocation">
+		<dynamic-content language-id="en_US">
+		<![CDATA[{"latitude":40.4764774,"longitude":-3.6858469}]]></dynamic-content>
+	</dynamic-element>
+</root>
