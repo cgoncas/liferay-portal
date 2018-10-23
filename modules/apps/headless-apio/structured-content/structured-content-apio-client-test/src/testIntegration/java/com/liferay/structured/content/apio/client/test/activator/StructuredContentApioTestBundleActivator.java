@@ -208,6 +208,30 @@ public class StructuredContentApioTestBundleActivator
 			addGuestPermissions, addGroupPermissions);
 	}
 
+	private void _addJournalArticle(
+			User user, Group group, String filePrefix, String titleUS)
+		throws Exception {
+
+		DDMStructure ddmStructure = _getDDMStructure(
+			group, filePrefix + "-structure.json");
+
+		DDMTemplate ddmTemplate = DDMTemplateTestUtil.addTemplate(
+			group.getGroupId(), ddmStructure.getStructureId(),
+			PortalUtil.getClassNameId(JournalArticle.class),
+			TemplateConstants.LANG_TYPE_VM, _read(filePrefix + "-template.xsl"),
+			LocaleUtil.US);
+
+		Map<Locale, String> titleMap = new HashMap<Locale, String>() {
+			{
+				put(LocaleUtil.US, titleUS);
+			}
+		};
+
+		_addJournalArticle(
+			titleMap, user.getUserId(), group.getGroupId(),
+			_read(filePrefix + "-content.xml"), ddmStructure, ddmTemplate);
+	}
+
 	private User _addUser(String emailAddress, long companyId, long groupId)
 		throws Exception {
 
