@@ -119,6 +119,10 @@ public class StructuredContentApioTestBundleActivator
 		StructuredContentApioTestBundleActivator.class.getSimpleName() +
 			"TitleHtmlField_us";
 
+	public static final String TITLE_IMAGE_FIELD_LOCALE_US =
+		StructuredContentApioTestBundleActivator.class.getSimpleName() +
+			"TitleImageField_us";
+
 	public static final String TITLE_NO_GUEST_NO_GROUP =
 		StructuredContentApioTestBundleActivator.class.getSimpleName() +
 			"NoGuestNoGroupTitle";
@@ -339,6 +343,10 @@ public class StructuredContentApioTestBundleActivator
 
 		_addJournalArticle(
 			user, group, "test-journal-html-field", TITLE_HTML_FIELD_LOCALE_US);
+
+		_addJournalArticle(
+			user, group, "test-journal-image-field",
+			TITLE_IMAGE_FIELD_LOCALE_US);
 	}
 
 	private void _prepareDataForLocalizationTests(User user, Group group)
