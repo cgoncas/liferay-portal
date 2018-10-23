@@ -111,6 +111,10 @@ public class StructuredContentApioTestBundleActivator
 		StructuredContentApioTestBundleActivator.class.getSimpleName() +
 			"TitleDocumentsAndMediaField_us";
 
+	public static final String TITLE_GEOLOCATION_FIELD_LOCALE_US =
+		StructuredContentApioTestBundleActivator.class.getSimpleName() +
+			"TitleGeolocationField_us";
+
 	public static final String TITLE_NO_GUEST_NO_GROUP =
 		StructuredContentApioTestBundleActivator.class.getSimpleName() +
 			"NoGuestNoGroupTitle";
@@ -324,6 +328,10 @@ public class StructuredContentApioTestBundleActivator
 		_addJournalArticle(
 			user, group, "test-journal-documents-and-media-field",
 			TITLE_DOCUMENTS_AND_MEDIA_FIELD_LOCALE_US);
+
+		_addJournalArticle(
+			user, group, "test-journal-geolocation-field",
+			TITLE_GEOLOCATION_FIELD_LOCALE_US);
 	}
 
 	private void _prepareDataForLocalizationTests(User user, Group group)
