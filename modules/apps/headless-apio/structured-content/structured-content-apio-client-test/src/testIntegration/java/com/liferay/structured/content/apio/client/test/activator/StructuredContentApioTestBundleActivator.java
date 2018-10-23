@@ -91,6 +91,9 @@ public class StructuredContentApioTestBundleActivator
 		StructuredContentApioTestBundleActivator.class.getSimpleName() +
 			"Title2_es";
 
+	public static final String TITLE_BOOLEAN_FIELD_LOCALE_US =
+		StructuredContentApioTestBundleActivator.class.getSimpleName() +
+			"TitleBooleanField_us";
 	public static final String TITLE_NO_GUEST_NO_GROUP =
 		StructuredContentApioTestBundleActivator.class.getSimpleName() +
 			"NoGuestNoGroupTitle";
@@ -283,6 +286,14 @@ public class StructuredContentApioTestBundleActivator
 			DDMStructureConstants.TYPE_DEFAULT);
 	}
 
+	private void _prepareDataForDataTypesTests(User user, Group group)
+		throws Exception {
+
+		_addJournalArticle(
+			user, group, "test-journal-boolean-field",
+			TITLE_BOOLEAN_FIELD_LOCALE_US);
+	}
+
 	private void _prepareDataForLocalizationTests(User user, Group group)
 		throws Exception {
 
@@ -353,6 +364,7 @@ public class StructuredContentApioTestBundleActivator
 			TITLE_YES_GUEST_YES_GROUP, user.getUserId(), group.getGroupId(),
 			true, true);
 
+		_prepareDataForDataTypesTests(user, group);
 		_prepareDataForLocalizationTests(user, group);
 	}
 
