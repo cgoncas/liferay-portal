@@ -71,8 +71,9 @@ public interface ExpressionVisitor<T> {
 	/**
 	 * Called for each traversed {@link MethodExpression} expression
 	 *
-	 * @param expressions List of return values created by visiting each method expression
-	 * @param type Method.Type
+	 * @param  expressions List of return values created by visiting each method
+	 *         expression
+	 * @param  type Method.Type
 	 * @return T the object of type {@code T}
 	 * @throws ExpressionVisitException if an expression visit exception
 	 *         occurred

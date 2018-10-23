@@ -25,7 +25,8 @@ import java.util.List;
 public interface MethodExpression extends Expression {
 
 	/**
-	 * @return The list of expression tree which form the actual method parameters
+	 * @return The list of expression tree which form the actual method
+	 *         parameters
 	 * @review
 	 */
 	public List<Expression> getExpressions();
