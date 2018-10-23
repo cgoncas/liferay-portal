@@ -151,6 +151,10 @@ public class StructuredContentApioTestBundleActivator
 		StructuredContentApioTestBundleActivator.class.getSimpleName() +
 			"TitleSelectField_us";
 
+	public static final String TITLE_TEXT_BOX_FIELD_LOCALE_US =
+		StructuredContentApioTestBundleActivator.class.getSimpleName() +
+			"TitleTextBoxField_us";
+
 	public static final String TITLE_TEXT_FIELD_LOCALE_US =
 		StructuredContentApioTestBundleActivator.class.getSimpleName() +
 			"TitleTextField_us";
@@ -394,6 +398,10 @@ public class StructuredContentApioTestBundleActivator
 
 		_addJournalArticle(
 			user, group, "test-journal-text-field", TITLE_TEXT_FIELD_LOCALE_US);
+
+		_addJournalArticle(
+			user, group, "test-journal-text-box-field",
+			TITLE_TEXT_BOX_FIELD_LOCALE_US);
 	}
 
 	private void _prepareDataForLocalizationTests(User user, Group group)
