@@ -1,0 +1,8 @@
+<?xml version="1.0"?>
+
+<root available-locales="en_US" default-locale="en_US">
+	<dynamic-element index-type="text" instance-id="kczg" name="MyTextBox" type="text_box">
+		<dynamic-content language-id="en_US">
+			<![CDATA[abcdef]]></dynamic-content>
+	</dynamic-element>
+</root>
