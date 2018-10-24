@@ -243,6 +243,30 @@
 				"es_ES": ""
 			},
 			"type": "ddm-image"
+		},
+		{
+			"dataType": "integer",
+			"fieldNamespace": "ddm",
+			"indexType": "keyword",
+			"label": {
+				"en_US": "Integer",
+				"es_ES": "Integer"
+			},
+			"localizable": true,
+			"name": "MyInteger",
+			"predefinedValue": {
+				"en_US": "",
+				"es_ES": ""
+			},
+			"readOnly": false,
+			"repeatable": false,
+			"required": false,
+			"showLabel": true,
+			"tip": {
+				"en_US": "",
+				"es_ES": ""
+			},
+			"type": "ddm-integer"
 		}
 	]
 }
