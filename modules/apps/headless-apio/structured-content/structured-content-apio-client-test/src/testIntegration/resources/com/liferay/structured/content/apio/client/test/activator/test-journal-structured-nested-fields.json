@@ -52,6 +52,29 @@
 				"es_ES": ""
 			},
 			"type": "text"
+		},
+		{
+			"dataType": "boolean",
+			"indexType": "keyword",
+			"label": {
+				"en_US": "Boolean",
+				"es_ES": "Booleano"
+			},
+			"localizable": true,
+			"name": "MyBoolean",
+			"predefinedValue": {
+				"en_US": "false",
+				"es_ES": "falso"
+			},
+			"readOnly": false,
+			"repeatable": false,
+			"required": false,
+			"showLabel": true,
+			"tip": {
+				"en_US": "",
+				"es_ES": ""
+			},
+			"type": "checkbox"
 		}
 	]
 }
