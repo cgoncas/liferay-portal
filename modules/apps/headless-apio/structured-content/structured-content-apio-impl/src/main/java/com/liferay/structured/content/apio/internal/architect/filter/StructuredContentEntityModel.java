@@ -17,8 +17,11 @@ package com.liferay.structured.content.apio.internal.architect.filter;
 import com.liferay.petra.string.StringUtil;
 import com.liferay.portal.kernel.search.Field;
 import com.liferay.portal.kernel.util.LocaleUtil;
+import com.liferay.portal.odata.entity.DateEntityField;
 import com.liferay.portal.odata.entity.EntityField;
 import com.liferay.portal.odata.entity.EntityModel;
+import com.liferay.portal.odata.entity.IdEntityField;
+import com.liferay.portal.odata.entity.StringEntityField;
 
 import java.util.List;
 import java.util.Map;
@@ -54,41 +57,39 @@ public class StructuredContentEntityModel implements EntityModel {
 	}
 
 	private static final Map<String, EntityField> _entityFieldsMap = Stream.of(
-		new EntityField(
-			"contentStructure", EntityField.Type.ID,
-			locale -> Field.CLASS_TYPE_ID, locale -> Field.CLASS_TYPE_ID,
+		new IdEntityField(
+			"contentStructure", locale -> Field.CLASS_TYPE_ID,
 			contentStructureLink -> {
 				List<String> parts = StringUtil.split(
 					String.valueOf(contentStructureLink), '/');
 
 				return parts.get(parts.size() - 1);
 			}),
-		new EntityField(
-			"creator", EntityField.Type.ID,
-			locale -> Field.USER_ID, locale -> Field.USER_ID,
+		new IdEntityField(
+			"creator", locale -> Field.USER_ID,
 			creatorLink -> {
 				List<String> parts = StringUtil.split(
 					String.valueOf(creatorLink), '/');
 
 				return parts.get(parts.size() - 1);
 			}),
-		new EntityField(
-			"dateCreated", EntityField.Type.DATE,
+		new DateEntityField(
+			"dateCreated",
 			locale -> Field.getSortableFieldName(Field.CREATE_DATE),
 			locale -> Field.CREATE_DATE),
-		new EntityField(
-			"dateModified", EntityField.Type.DATE,
+		new DateEntityField(
+			"dateModified",
 			locale -> Field.getSortableFieldName(Field.MODIFIED_DATE),
 			locale -> Field.MODIFIED_DATE),
-		new EntityField(
-			"datePublished", EntityField.Type.DATE,
+		new DateEntityField(
+			"datePublished",
 			locale -> Field.getSortableFieldName(Field.DISPLAY_DATE),
 			locale -> Field.DISPLAY_DATE),
-		new EntityField(
-			"description", EntityField.Type.STRING,
+		new StringEntityField(
+			"description",
 			locale -> "description_".concat(LocaleUtil.toLanguageId(locale))),
-		new EntityField(
-			"title", EntityField.Type.STRING,
+		new StringEntityField(
+			"title",
 			locale -> Field.getSortableFieldName(
 				"localized_title_".concat(LocaleUtil.toLanguageId(locale))))
 	).collect(
