@@ -431,6 +431,30 @@
 				"es_ES": ""
 			},
 			"type": "textarea"
+		},
+		{
+			"dataType": "journal-article",
+			"fieldNamespace": "ddm",
+			"indexType": "keyword",
+			"label": {
+				"en_US": "Web Content",
+				"es_ES": "Web Content"
+			},
+			"localizable": true,
+			"name": "MyWebContent",
+			"predefinedValue": {
+				"en_US": "",
+				"es_ES": ""
+			},
+			"readOnly": false,
+			"repeatable": false,
+			"required": false,
+			"showLabel": true,
+			"tip": {
+				"en_US": "",
+				"es_ES": ""
+			},
+			"type": "ddm-journal-article"
 		}
 	]
 }
