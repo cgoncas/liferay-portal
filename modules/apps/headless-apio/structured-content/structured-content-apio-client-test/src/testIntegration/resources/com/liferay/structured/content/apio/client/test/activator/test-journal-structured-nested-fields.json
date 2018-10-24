@@ -408,6 +408,29 @@
 				"es_ES": ""
 			},
 			"type": "select"
+		},
+		{
+			"dataType": "string",
+			"indexType": "text",
+			"label": {
+				"en_US": "Text Box",
+				"es_ES": "Text Box"
+			},
+			"localizable": true,
+			"name": "MyTextBox",
+			"predefinedValue": {
+				"en_US": "",
+				"es_ES": ""
+			},
+			"readOnly": false,
+			"repeatable": false,
+			"required": false,
+			"showLabel": true,
+			"tip": {
+				"en_US": "",
+				"es_ES": ""
+			},
+			"type": "textarea"
 		}
 	]
 }

@@ -30,3 +30,5 @@ ${MyRadio.getData()}
 
 
 ${MySelect.getData()}
+
+${MyTextBox.getData()}

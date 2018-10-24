@@ -66,4 +66,8 @@
 		<dynamic-content language-id="en_US"><![CDATA[value 1]]></dynamic-content>
 		<dynamic-content language-id="es_ES"><![CDATA[value 1]]></dynamic-content>
 	</dynamic-element>
+	<dynamic-element index-type="text" name="MyTextBox" type="text_box">
+		<dynamic-content language-id="en_US"><![CDATA[abcdef]]></dynamic-content>
+		<dynamic-content language-id="es_ES"><![CDATA[abcdef]]></dynamic-content>
+	</dynamic-element>
 </root>
