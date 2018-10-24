@@ -14,6 +14,7 @@
 
 package com.liferay.portal.odata.entity;
 
+import com.liferay.portal.kernel.util.StringBundler;
 import com.liferay.portal.kernel.util.Validator;
 
 import java.util.Locale;
@@ -169,6 +170,12 @@ public class EntityField {
 	 */
 	public Type getType() {
 		return _type;
+	}
+
+	@Override
+	public String toString() {
+		return StringBundler.concat(
+			"{ type:", _type.name(), ",name:", _name, "}");
 	}
 
 	public enum Type {
