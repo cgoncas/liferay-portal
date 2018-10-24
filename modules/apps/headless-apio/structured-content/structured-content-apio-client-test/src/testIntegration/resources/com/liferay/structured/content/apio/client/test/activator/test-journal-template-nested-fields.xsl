@@ -9,3 +9,6 @@ ${MyColor.getData()}
 ${MyDecimal.getData()}
 
 <a href="${MyDocumentsAndMedia.getData()}"> ${languageUtil.format(locale, "download-x", "Documents and Media", false)} </a>
+
+
+<#assign latitude = 0> <#assign longitude = 0> <#if (MyGeolocation.getData() != "")> <#assign geolocationJSONObject = jsonFactoryUtil.createJSONObject(MyGeolocation.getData())> <#assign latitude = geolocationJSONObject.getDouble("latitude")> <#assign longitude = geolocationJSONObject.getDouble("longitude")> <@liferay_map["map-display"] geolocation=true latitude=latitude longitude=longitude name="MyGeolocation${randomizer.nextInt()}" /> </#if>

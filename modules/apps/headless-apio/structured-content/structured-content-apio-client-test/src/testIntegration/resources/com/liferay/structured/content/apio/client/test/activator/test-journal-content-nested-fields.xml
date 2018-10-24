@@ -30,4 +30,10 @@
 		<dynamic-content language-id="en_US"><![CDATA[{}]]></dynamic-content>
 		<dynamic-content language-id="es_ES"><![CDATA[{}]]></dynamic-content>
 	</dynamic-element>
+	<dynamic-element index-type="keyword" name="MyGeolocation" type="ddm-geolocation">
+		<dynamic-content language-id="en_US">
+			<![CDATA[{"latitude":40.4764774,"longitude":-3.6858469}]]></dynamic-content>
+		<dynamic-content language-id="es_ES">
+			<![CDATA[{"latitude":40.4764774,"longitude":-3.6858469}]]></dynamic-content>
+	</dynamic-element>
 </root>
