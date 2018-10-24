@@ -27,3 +27,6 @@ ${MyNumber.getData()}
 
 
 ${MyRadio.getData()}
+
+
+${MySelect.getData()}

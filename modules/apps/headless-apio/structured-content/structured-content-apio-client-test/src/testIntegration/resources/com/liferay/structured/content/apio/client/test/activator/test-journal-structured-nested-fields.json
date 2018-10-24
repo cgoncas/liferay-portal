@@ -361,6 +361,53 @@
 				"es_ES": ""
 			},
 			"type": "radio"
+		},
+		{
+			"dataType": "string",
+			"indexType": "keyword",
+			"label": {
+				"en_US": "Select",
+				"es_ES": "Select"
+			},
+			"localizable": true,
+			"multiple": false,
+			"name": "MySelect",
+			"options": [
+				{
+					"label": {
+						"en_US": "option 1",
+						"es_ES": "option 1"
+					},
+					"value": "value 1"
+				},
+				{
+					"label": {
+						"en_US": "option 2",
+						"es_ES": "option 2"
+					},
+					"value": "value 2"
+				},
+				{
+					"label": {
+						"en_US": "option 3",
+						"es_ES": "option 3"
+					},
+					"value": "value 3"
+				}
+			],
+			"predefinedValue": {
+				"en_US": "[\"\"]",
+				"es_ES": "[\"\"]"
+			},
+			"readOnly": false,
+			"repeatable": false,
+			"required": false,
+			"showLabel": true,
+			"tip": {
+				"en_US": "",
+				"es_ES": ""
+			},
+			"type": "select"
 		}
 	]
 }
