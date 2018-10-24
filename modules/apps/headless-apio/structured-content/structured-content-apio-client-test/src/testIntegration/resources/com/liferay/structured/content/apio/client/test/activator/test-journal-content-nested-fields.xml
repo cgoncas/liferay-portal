@@ -42,4 +42,8 @@
 		<dynamic-content language-id="es_ES">
 			<![CDATA[<p>MiPárrafo</p>]]></dynamic-content>
 	</dynamic-element>
+	<dynamic-element index-type="text" name="MyImage" type="image">
+		<dynamic-content language-id="en_US"><![CDATA[]]></dynamic-content>
+		<dynamic-content language-id="es_ES"><![CDATA[]]></dynamic-content>
+	</dynamic-element>
 </root>
