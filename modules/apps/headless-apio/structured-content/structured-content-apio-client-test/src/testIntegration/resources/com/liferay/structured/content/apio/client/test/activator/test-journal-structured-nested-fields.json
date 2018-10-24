@@ -291,6 +291,30 @@
 				"es_ES": ""
 			},
 			"type": "ddm-link-to-page"
+		},
+		{
+			"dataType": "number",
+			"fieldNamespace": "ddm",
+			"indexType": "keyword",
+			"label": {
+				"en_US": "Number",
+				"es_ES": "Number"
+			},
+			"localizable": true,
+			"name": "MyNumber",
+			"predefinedValue": {
+				"en_US": "",
+				"es_ES": ""
+			},
+			"readOnly": false,
+			"repeatable": false,
+			"required": false,
+			"showLabel": true,
+			"tip": {
+				"en_US": "",
+				"es_ES": ""
+			},
+			"type": "ddm-number"
 		}
 	]
 }

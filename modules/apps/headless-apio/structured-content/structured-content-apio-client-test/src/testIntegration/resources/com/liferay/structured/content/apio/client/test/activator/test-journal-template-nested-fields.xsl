@@ -21,3 +21,6 @@ ${MyHTML.getData()}
 ${MyInteger.getData()}
 
 <a href="${MyLinkToPage.getFriendlyUrl()}"> Link to Page </a>
+
+
+${MyNumber.getData()}
