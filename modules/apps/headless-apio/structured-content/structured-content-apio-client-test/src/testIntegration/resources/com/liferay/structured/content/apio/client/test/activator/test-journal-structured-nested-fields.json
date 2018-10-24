@@ -123,6 +123,30 @@
 				"es_ES": ""
 			},
 			"type": "ddm-date"
+		},
+		{
+			"dataType": "double",
+			"fieldNamespace": "ddm",
+			"indexType": "keyword",
+			"label": {
+				"en_US": "Decimal",
+				"es_ES": "Decimal"
+			},
+			"localizable": true,
+			"name": "MyDecimal",
+			"predefinedValue": {
+				"en_US": "",
+				"es_ES": ""
+			},
+			"readOnly": false,
+			"repeatable": false,
+			"required": false,
+			"showLabel": true,
+			"tip": {
+				"en_US": "",
+				"es_ES": ""
+			},
+			"type": "ddm-decimal"
 		}
 	]
 }
