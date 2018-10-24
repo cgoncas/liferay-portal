@@ -24,3 +24,6 @@ ${MyInteger.getData()}
 
 
 ${MyNumber.getData()}
+
+
+${MyRadio.getData()}

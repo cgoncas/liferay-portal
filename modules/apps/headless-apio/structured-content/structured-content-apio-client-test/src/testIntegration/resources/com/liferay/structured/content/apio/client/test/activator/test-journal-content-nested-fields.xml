@@ -58,4 +58,8 @@
 		<dynamic-content language-id="en_US"><![CDATA[-1.2]]></dynamic-content>
 		<dynamic-content language-id="es_ES"><![CDATA[-1.2]]></dynamic-content>
 	</dynamic-element>
+	<dynamic-element index-type="keyword" name="MyRadio" type="radio">
+		<dynamic-content language-id="en_US"><![CDATA[value 1]]></dynamic-content>
+		<dynamic-content language-id="es_ES"><![CDATA[value 1]]></dynamic-content>
+	</dynamic-element>
 </root>
