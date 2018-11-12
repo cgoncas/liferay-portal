@@ -181,8 +181,9 @@ public class DDMStructureModelListener extends BaseModelListener<DDMStructure> {
 		if (Objects.equals(ddmFormField.getDataType(), FieldConstants.STRING)) {
 			return Optional.of(
 				new StringEntityField(
-					StructuredContentNestedCollectionResource.encodeKey(
-						ddmStructure, ddmFormField.getName()),
+					StructuredContentNestedCollectionResource.
+						encodeFilterAndSortIdentifier(
+							ddmStructure, ddmFormField.getName()),
 					locale -> encodeName(
 						ddmStructure.getStructureId(), ddmFormField.getName(),
 						locale, indexType))

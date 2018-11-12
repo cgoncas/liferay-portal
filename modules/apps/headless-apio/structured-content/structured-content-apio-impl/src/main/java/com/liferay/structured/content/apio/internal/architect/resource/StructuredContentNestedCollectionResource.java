@@ -124,7 +124,9 @@ public class StructuredContentNestedCollectionResource
 		<JournalArticleWrapper, Long, StructuredContentIdentifier, Long,
 		 ContentSpaceIdentifier> {
 
-	public static String encodeKey(DDMStructure ddmStructure, String name) {
+	public static String encodeFilterAndSortIdentifier(
+		DDMStructure ddmStructure, String name) {
+
 		return StringBundler.concat(
 			StringPool.UNDERLINE, ddmStructure.getStructureId(),
 			StringPool.UNDERLINE, name);
@@ -251,7 +253,8 @@ public class StructuredContentNestedCollectionResource
 			).addString(
 				"name", StructuredContentField::getName
 			).addString(
-				"key", StructuredContentField::getKey
+				"filterAndSortIdentifier",
+				StructuredContentField::getFilterAndSortIdentifier
 			).build()
 		).addRelatedCollection(
 			"category", CategoryIdentifier.class
@@ -887,8 +890,9 @@ public class StructuredContentNestedCollectionResource
 			return _ddmFormFieldValue;
 		}
 
-		public String getKey() {
-			return encodeKey(_ddmStructure, _ddmFormFieldValue.getName());
+		public String getFilterAndSortIdentifier() {
+			return encodeFilterAndSortIdentifier(
+				_ddmStructure, _ddmFormFieldValue.getName());
 		}
 
 		public String getLocalizedLabel(Locale locale) {
