@@ -674,7 +674,7 @@ public class StructuredContentNestedCollectionResource
 		Stream<StructuredContentField> stream =
 			structuredContentFields.stream();
 
-		List<StructuredContentField> nestedStructureContentField =
+		List<StructuredContentField> nestedStructureContentFields =
 			stream.flatMap(
 				structuredContentField -> _getStructuredContentFields(
 					structuredContentField.getNestedFields()
@@ -683,9 +683,9 @@ public class StructuredContentNestedCollectionResource
 				Collectors.toList()
 			);
 
-		nestedStructureContentField.addAll(structuredContentFields);
+		nestedStructureContentFields.addAll(structuredContentFields);
 
-		return nestedStructureContentField;
+		return nestedStructureContentFields;
 	}
 
 	private Long _getStructuredContentId(
