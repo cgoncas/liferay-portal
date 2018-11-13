@@ -54,7 +54,7 @@ public interface StructuredContentField {
 
 	/**
 	 * Returns the label of the structured content given a locale.
-	 * @param  locale the locale.*
+	 * @param  locale the locale.
 	 * @return the input control.
 	 *
 	 * @review
