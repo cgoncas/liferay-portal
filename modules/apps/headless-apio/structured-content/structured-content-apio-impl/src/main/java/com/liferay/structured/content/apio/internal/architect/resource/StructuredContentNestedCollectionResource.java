@@ -411,26 +411,6 @@ public class StructuredContentNestedCollectionResource
 		return optional.orElse(defaultValue);
 	}
 
-	private List<StructuredContentField> _getFormFieldValues(
-		List<StructuredContentField> ddmFormFieldValues) {
-
-		Stream<StructuredContentField> ddmFormFieldValueStream =
-			ddmFormFieldValues.stream();
-
-		List<StructuredContentField> nestedDDMFormFieldValues =
-			ddmFormFieldValueStream.flatMap(
-				ddmFormFieldValue -> _getFormFieldValues(
-					ddmFormFieldValue.getNestedFields()
-				).stream()
-			).collect(
-				Collectors.toList()
-			);
-
-		nestedDDMFormFieldValues.addAll(ddmFormFieldValues);
-
-		return nestedDDMFormFieldValues;
-	}
-
 	private Query _getFullQuery(
 			Filter filter, Locale locale, SearchContext searchContext)
 		throws SearchException {
@@ -696,10 +676,30 @@ public class StructuredContentNestedCollectionResource
 				);
 			}
 		).map(
-			this::_getFormFieldValues
+			this::_getStructuredContentFields
 		).orElse(
 			null
 		);
+	}
+
+	private List<StructuredContentField> _getStructuredContentFields(
+		List<StructuredContentField> ddmFormFieldValues) {
+
+		Stream<StructuredContentField> ddmFormFieldValueStream =
+			ddmFormFieldValues.stream();
+
+		List<StructuredContentField> nestedDDMFormFieldValues =
+			ddmFormFieldValueStream.flatMap(
+				ddmFormFieldValue -> _getStructuredContentFields(
+					ddmFormFieldValue.getNestedFields()
+				).stream()
+			).collect(
+				Collectors.toList()
+			);
+
+		nestedDDMFormFieldValues.addAll(ddmFormFieldValues);
+
+		return nestedDDMFormFieldValues;
 	}
 
 	private Long _getStructuredContentId(
