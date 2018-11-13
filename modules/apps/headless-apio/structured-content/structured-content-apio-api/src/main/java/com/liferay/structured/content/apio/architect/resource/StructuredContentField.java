@@ -21,6 +21,7 @@ import java.util.Locale;
  * Holds information about a structured content field.
  *
  * @author Cristina González
+ * @review
  */
 public interface StructuredContentField {
 
