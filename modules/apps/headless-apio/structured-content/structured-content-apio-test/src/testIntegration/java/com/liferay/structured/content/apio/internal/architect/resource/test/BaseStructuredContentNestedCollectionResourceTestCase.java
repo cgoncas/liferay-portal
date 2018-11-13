@@ -55,6 +55,33 @@ import java.util.Locale;
  */
 public abstract class BaseStructuredContentNestedCollectionResourceTestCase {
 
+	protected StructuredContentField createStructuredContentField(
+			DDMFormFieldValue ddmFormFieldValue, DDMStructure ddmStructure)
+		throws Exception {
+
+		NestedCollectionResource nestedCollectionResource =
+			_getNestedCollectionResource();
+
+		Class<? extends NestedCollectionResource> clazz =
+			nestedCollectionResource.getClass();
+
+		Class<?>[] declaredClasses = clazz.getDeclaredClasses();
+
+		Class<StructuredContentField> innerClass =
+			(Class<StructuredContentField>)declaredClasses[0];
+
+		Constructor<StructuredContentField>[] constructors =
+			(Constructor<StructuredContentField>[])
+				innerClass.getDeclaredConstructors();
+
+		Constructor constructor = constructors[0];
+
+		constructor.setAccessible(true);
+
+		return (StructuredContentField)constructor.newInstance(
+			nestedCollectionResource, ddmFormFieldValue, ddmStructure);
+	}
+
 	protected DDMForm deserialize(
 		DDMFormDeserializerTracker ddmFormDeserializerTracker, String content) {
 
@@ -69,66 +96,6 @@ public abstract class BaseStructuredContentNestedCollectionResourceTestCase {
 				ddmFormDeserializer.deserialize(builder.build());
 
 		return ddmFormDeserializerDeserializeResponse.getDDMForm();
-	}
-
-	protected String getDataType(
-			DDMFormFieldValue ddmFormFieldValue, DDMStructure ddmStructure)
-		throws Exception {
-
-		NestedCollectionResource nestedCollectionResource =
-			_getNestedCollectionResource();
-
-		Class<? extends NestedCollectionResource> clazz =
-			nestedCollectionResource.getClass();
-
-		Class<?>[] declaredClasses = clazz.getDeclaredClasses();
-
-		Class<?> innerClass = declaredClasses[0];
-
-		Constructor<?>[] constructors = innerClass.getDeclaredConstructors();
-
-		Constructor constructor = constructors[0];
-
-		constructor.setAccessible(true);
-
-		Object object = constructor.newInstance(
-			nestedCollectionResource, ddmFormFieldValue, ddmStructure);
-
-		Method method = innerClass.getMethod("getDataType");
-
-		method.setAccessible(true);
-
-		return (String)method.invoke(object);
-	}
-
-	protected String getInputControl(
-			DDMFormFieldValue ddmFormFieldValue, DDMStructure ddmStructure)
-		throws Exception {
-
-		NestedCollectionResource nestedCollectionResource =
-			_getNestedCollectionResource();
-
-		Class<? extends NestedCollectionResource> clazz =
-			nestedCollectionResource.getClass();
-
-		Class<?>[] declaredClasses = clazz.getDeclaredClasses();
-
-		Class<?> innerClass = declaredClasses[0];
-
-		Constructor<?>[] constructors = innerClass.getDeclaredConstructors();
-
-		Constructor constructor = constructors[0];
-
-		constructor.setAccessible(true);
-
-		Object object = constructor.newInstance(
-			nestedCollectionResource, ddmFormFieldValue, ddmStructure);
-
-		Method method = innerClass.getMethod("getInputControl");
-
-		method.setAccessible(true);
-
-		return (String)method.invoke(object);
 	}
 
 	protected JournalArticleWrapper getJournalArticleWrapper(

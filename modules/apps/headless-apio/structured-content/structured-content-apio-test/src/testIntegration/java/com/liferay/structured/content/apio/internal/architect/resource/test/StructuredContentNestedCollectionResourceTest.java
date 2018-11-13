@@ -119,9 +119,10 @@ public class StructuredContentNestedCollectionResourceTest
 
 		ddmFormFieldValue.setName("MyBoolean");
 
-		String dataType = getDataType(ddmFormFieldValue, ddmStructure);
+		StructuredContentField structuredContentField =
+			createStructuredContentField(ddmFormFieldValue, ddmStructure);
 
-		Assert.assertEquals("boolean", dataType);
+		Assert.assertEquals("boolean", structuredContentField.getDataType());
 	}
 
 	@Test
@@ -148,9 +149,10 @@ public class StructuredContentNestedCollectionResourceTest
 
 		ddmFormFieldValue.setName("MyLinkToPage");
 
-		String dataType = getDataType(ddmFormFieldValue, ddmStructure);
+		StructuredContentField structuredContentField =
+			createStructuredContentField(ddmFormFieldValue, ddmStructure);
 
-		Assert.assertEquals("url", dataType);
+		Assert.assertEquals("url", structuredContentField.getDataType());
 	}
 
 	@Test
@@ -177,9 +179,11 @@ public class StructuredContentNestedCollectionResourceTest
 
 		ddmFormFieldValue.setName("MyBoolean");
 
-		String inputControl = getInputControl(ddmFormFieldValue, ddmStructure);
+		StructuredContentField structuredContentField =
+			createStructuredContentField(ddmFormFieldValue, ddmStructure);
 
-		Assert.assertEquals("checkbox", inputControl);
+		Assert.assertEquals(
+			"checkbox", structuredContentField.getInputControl());
 	}
 
 	@Test
@@ -206,9 +210,10 @@ public class StructuredContentNestedCollectionResourceTest
 
 		ddmFormFieldValue.setName("MyInteger");
 
-		String inputControl = getInputControl(ddmFormFieldValue, ddmStructure);
+		StructuredContentField structuredContentField =
+			createStructuredContentField(ddmFormFieldValue, ddmStructure);
 
-		Assert.assertNull(inputControl);
+		Assert.assertNull(structuredContentField.getInputControl());
 	}
 
 	@Test
