@@ -683,23 +683,23 @@ public class StructuredContentNestedCollectionResource
 	}
 
 	private List<StructuredContentField> _getStructuredContentFields(
-		List<StructuredContentField> ddmFormFieldValues) {
+		List<StructuredContentField> structuredContentFields) {
 
-		Stream<StructuredContentField> ddmFormFieldValueStream =
-			ddmFormFieldValues.stream();
+		Stream<StructuredContentField> stream =
+			structuredContentFields.stream();
 
-		List<StructuredContentField> nestedDDMFormFieldValues =
-			ddmFormFieldValueStream.flatMap(
-				ddmFormFieldValue -> _getStructuredContentFields(
-					ddmFormFieldValue.getNestedFields()
+		List<StructuredContentField> nestedStructureContentField =
+			stream.flatMap(
+				structuredContentField -> _getStructuredContentFields(
+					structuredContentField.getNestedFields()
 				).stream()
 			).collect(
 				Collectors.toList()
 			);
 
-		nestedDDMFormFieldValues.addAll(ddmFormFieldValues);
+		nestedStructureContentField.addAll(structuredContentFields);
 
-		return nestedDDMFormFieldValues;
+		return nestedStructureContentField;
 	}
 
 	private Long _getStructuredContentId(
