@@ -215,15 +215,12 @@ public class StructuredContentNestedCollectionResource
 				"ContentFieldValue"
 			).addLinkedModel(
 				"document", MediaObjectIdentifier.class,
-				ddmFormFieldWrapper -> Try.fromFallible(
-					ddmFormFieldWrapper::getDDMFormFieldValue
+				structuredContentField -> Try.fromFallible(
+					() -> structuredContentField.getLocalizedValue(
+						LocaleUtil.getDefault())
 				).map(
-					DDMFormFieldValue::getValue
-				).map(
-					value -> value.getString(LocaleUtil.getDefault())
-				).map(
-					string -> StructuredContentUtil.getFileEntryId(
-						string, _dlAppService)
+					value -> StructuredContentUtil.getFileEntryId(
+						value, _dlAppService)
 				).orElse(
 					null
 				)
@@ -435,11 +432,8 @@ public class StructuredContentNestedCollectionResource
 		StructuredContentField structuredContentField) {
 
 		return Try.fromFallible(
-			structuredContentField::getDDMFormFieldValue
-		).map(
-			DDMFormFieldValue::getValue
-		).map(
-			value -> value.getString(LocaleUtil.getDefault())
+			() -> structuredContentField.getLocalizedValue(
+				LocaleUtil.getDefault())
 		).filter(
 			StructuredContentUtil::isJSONObject
 		).filter(
@@ -504,11 +498,8 @@ public class StructuredContentNestedCollectionResource
 
 	private String _getLink(StructuredContentField structuredContentField) {
 		return Try.fromFallible(
-			structuredContentField::getDDMFormFieldValue
-		).map(
-			DDMFormFieldValue::getValue
-		).map(
-			value -> value.getString(LocaleUtil.getDefault())
+			() -> structuredContentField.getLocalizedValue(
+				LocaleUtil.getDefault())
 		).filter(
 			StructuredContentUtil::isJSONObject
 		).filter(
@@ -705,11 +696,8 @@ public class StructuredContentNestedCollectionResource
 		StructuredContentField structuredContentField) {
 
 		return Try.fromFallible(
-			structuredContentField::getDDMFormFieldValue
-		).map(
-			ddmFormFieldValue -> ddmFormFieldValue.getValue()
-		).map(
-			value -> value.getString(LocaleUtil.getDefault())
+			() -> structuredContentField.getLocalizedValue(
+				LocaleUtil.getDefault())
 		).filter(
 			StructuredContentUtil::isJSONObject
 		).map(
@@ -863,10 +851,6 @@ public class StructuredContentNestedCollectionResource
 
 				return null;
 			}
-		}
-
-		public DDMFormFieldValue getDDMFormFieldValue() {
-			return _ddmFormFieldValue;
 		}
 
 		public String getFilterAndSortIdentifier() {
