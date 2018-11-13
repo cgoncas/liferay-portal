@@ -90,6 +90,7 @@ import com.liferay.portal.odata.sort.SortField;
 import com.liferay.structure.apio.architect.identifier.ContentStructureIdentifier;
 import com.liferay.structure.apio.architect.util.StructureFieldConverter;
 import com.liferay.structured.content.apio.architect.identifier.StructuredContentIdentifier;
+import com.liferay.structured.content.apio.architect.resource.StructuredContentField;
 import com.liferay.structured.content.apio.architect.util.StructuredContentUtil;
 import com.liferay.structured.content.apio.internal.architect.filter.StructuredContentEntityModel;
 import com.liferay.structured.content.apio.internal.architect.form.StructuredContentCreatorForm;
@@ -658,9 +659,10 @@ public class StructuredContentNestedCollectionResource
 					ddmFormFieldValueList.stream();
 
 				return stream.map(
-					ddmFormFieldValue -> new StructuredContentField(
-						ddmFormFieldValue,
-						journalArticleWrapper.getDDMStructure())
+					ddmFormFieldValue -> (StructuredContentField)
+						new StructuredContentFieldImpl(
+							ddmFormFieldValue,
+							journalArticleWrapper.getDDMStructure())
 				).collect(
 					Collectors.toList()
 				);
@@ -825,15 +827,16 @@ public class StructuredContentNestedCollectionResource
 	@Reference
 	private StructureFieldConverter _structureFieldConverter;
 
-	private class StructuredContentField {
+	private class StructuredContentFieldImpl implements StructuredContentField {
 
-		public StructuredContentField(
+		public StructuredContentFieldImpl(
 			DDMFormFieldValue ddmFormFieldValue, DDMStructure ddmStructure) {
 
 			_ddmFormFieldValue = ddmFormFieldValue;
 			_ddmStructure = ddmStructure;
 		}
 
+		@Override
 		public String getDataType() {
 			try {
 				String dataType = _ddmStructure.getFieldDataType(
@@ -853,11 +856,13 @@ public class StructuredContentNestedCollectionResource
 			}
 		}
 
+		@Override
 		public String getFilterAndSortIdentifier() {
 			return encodeFilterAndSortIdentifier(
 				_ddmStructure, _ddmFormFieldValue.getName());
 		}
 
+		@Override
 		public String getInputControl() {
 			return Try.fromFallible(
 				() -> _ddmStructure.getFieldType(_ddmFormFieldValue.getName())
@@ -878,6 +883,7 @@ public class StructuredContentNestedCollectionResource
 			);
 		}
 
+		@Override
 		public String getLocalizedLabel(Locale locale) {
 			try {
 				return _ddmStructure.getFieldLabel(
@@ -897,6 +903,7 @@ public class StructuredContentNestedCollectionResource
 			}
 		}
 
+		@Override
 		public String getLocalizedValue(Locale locale) {
 			Value value = _ddmFormFieldValue.getValue();
 
@@ -909,10 +916,12 @@ public class StructuredContentNestedCollectionResource
 			return null;
 		}
 
+		@Override
 		public String getName() {
 			return _ddmFormFieldValue.getName();
 		}
 
+		@Override
 		public List<StructuredContentField> getNestedFields() {
 			List<DDMFormFieldValue> ddmFormFieldValues =
 				_ddmFormFieldValue.getNestedDDMFormFieldValues();
@@ -920,8 +929,8 @@ public class StructuredContentNestedCollectionResource
 			Stream<DDMFormFieldValue> stream = ddmFormFieldValues.stream();
 
 			return stream.map(
-				ddmFormFieldValue ->
-					new StructuredContentField(ddmFormFieldValue, _ddmStructure)
+				ddmFormFieldValue -> new StructuredContentFieldImpl(
+					ddmFormFieldValue, _ddmStructure)
 			).collect(
 				Collectors.toList()
 			);
