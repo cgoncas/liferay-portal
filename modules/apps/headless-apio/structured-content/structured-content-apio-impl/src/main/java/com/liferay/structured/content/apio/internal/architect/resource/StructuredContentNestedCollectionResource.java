@@ -655,12 +655,8 @@ public class StructuredContentNestedCollectionResource
 		).map(
 			DDMFormValues::getDDMFormFieldValues
 		).map(
-			ddmFormFieldValueList -> {
-				return (List<StructuredContentField>)
-					_toStructuredContentFields(
-						ddmFormFieldValueList,
-						journalArticle.getDDMStructure());
-			}
+			ddmFormFieldValueList -> _toStructuredContentFields(
+				ddmFormFieldValueList, journalArticle.getDDMStructure())
 		).map(
 			this::_getStructuredContentFields
 		).orElse(
