@@ -45,7 +45,7 @@ import java.util.Locale;
  */
 public abstract class BaseStructuredContentNestedCollectionResourceTestCase {
 
-	protected String getDDMFormFieldDataType(
+	protected String getDataType(
 			DDMFormFieldValue ddmFormFieldValue, DDMStructure ddmStructure)
 		throws Exception {
 
@@ -68,14 +68,14 @@ public abstract class BaseStructuredContentNestedCollectionResourceTestCase {
 		Object object = constructor.newInstance(
 			nestedCollectionResource, ddmFormFieldValue, ddmStructure);
 
-		Method method = innerClass.getMethod("getDDMFormFieldDataType");
+		Method method = innerClass.getMethod("getDataType");
 
 		method.setAccessible(true);
 
 		return (String)method.invoke(object);
 	}
 
-	protected String getDDMFormFieldInputControl(
+	protected String getInputControl(
 			DDMFormFieldValue ddmFormFieldValue, DDMStructure ddmStructure)
 		throws Exception {
 
@@ -98,7 +98,7 @@ public abstract class BaseStructuredContentNestedCollectionResourceTestCase {
 		Object object = constructor.newInstance(
 			nestedCollectionResource, ddmFormFieldValue, ddmStructure);
 
-		Method method = innerClass.getMethod("getDDMFormFieldInputControl");
+		Method method = innerClass.getMethod("getInputControl");
 
 		method.setAccessible(true);
 

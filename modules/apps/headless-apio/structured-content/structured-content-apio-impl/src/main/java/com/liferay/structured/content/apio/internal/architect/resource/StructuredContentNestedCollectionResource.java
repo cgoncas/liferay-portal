@@ -246,13 +246,12 @@ public class StructuredContentNestedCollectionResource
 			).addRelativeURL(
 				"link", this::_getLink
 			).addString(
-				"dataType", StructuredContentField::getDDMFormFieldDataType
+				"dataType", StructuredContentField::getDataType
 			).addString(
 				"filterAndSortIdentifier",
 				StructuredContentField::getFilterAndSortIdentifier
 			).addString(
-				"inputControl",
-				StructuredContentField::getDDMFormFieldInputControl
+				"inputControl", StructuredContentField::getInputControl
 			).addString(
 				"name", StructuredContentField::getName
 			).build()
@@ -847,7 +846,7 @@ public class StructuredContentNestedCollectionResource
 			_ddmStructure = ddmStructure;
 		}
 
-		public String getDDMFormFieldDataType() {
+		public String getDataType() {
 			try {
 				String dataType = _ddmStructure.getFieldDataType(
 					_ddmFormFieldValue.getName());
@@ -866,7 +865,16 @@ public class StructuredContentNestedCollectionResource
 			}
 		}
 
-		public String getDDMFormFieldInputControl() {
+		public DDMFormFieldValue getDDMFormFieldValue() {
+			return _ddmFormFieldValue;
+		}
+
+		public String getFilterAndSortIdentifier() {
+			return encodeFilterAndSortIdentifier(
+				_ddmStructure, _ddmFormFieldValue.getName());
+		}
+
+		public String getInputControl() {
 			return Try.fromFallible(
 				() -> _ddmStructure.getFieldType(_ddmFormFieldValue.getName())
 			).map(
@@ -884,15 +892,6 @@ public class StructuredContentNestedCollectionResource
 					return null;
 				}
 			);
-		}
-
-		public DDMFormFieldValue getDDMFormFieldValue() {
-			return _ddmFormFieldValue;
-		}
-
-		public String getFilterAndSortIdentifier() {
-			return encodeFilterAndSortIdentifier(
-				_ddmStructure, _ddmFormFieldValue.getName());
 		}
 
 		public String getLocalizedLabel(Locale locale) {

@@ -135,27 +135,47 @@ public class StructuredContentNestedCollectionResourceFilteringTest
 	}
 
 	@Test
-	public void testBooleanFieldDataType() throws Exception {
+	public void testGetDataTypeWithBoolean() throws Exception {
 		DDMFormFieldValue ddmFormFieldValue = new DDMFormFieldValue();
 
 		ddmFormFieldValue.setName("MyBoolean");
 
-		String dataType = getDDMFormFieldDataType(
-			ddmFormFieldValue, _ddmStructure);
+		String dataType = getDataType(ddmFormFieldValue, _ddmStructure);
 
 		Assert.assertEquals("boolean", dataType);
 	}
 
 	@Test
-	public void testBooleanFieldInputControl() throws Exception {
+	public void testGetDataTypeWithURL() throws Exception {
+		DDMFormFieldValue ddmFormFieldValue = new DDMFormFieldValue();
+
+		ddmFormFieldValue.setName("MyLinkToPage");
+
+		String dataType = getDataType(ddmFormFieldValue, _ddmStructure);
+
+		Assert.assertEquals("url", dataType);
+	}
+
+	@Test
+	public void testGetInputControlWithCheckBox() throws Exception {
 		DDMFormFieldValue ddmFormFieldValue = new DDMFormFieldValue();
 
 		ddmFormFieldValue.setName("MyBoolean");
 
-		String inputControl = getDDMFormFieldInputControl(
-			ddmFormFieldValue, _ddmStructure);
+		String inputControl = getInputControl(ddmFormFieldValue, _ddmStructure);
 
 		Assert.assertEquals("checkbox", inputControl);
+	}
+
+	@Test
+	public void testGetInputControlWithNullInteger() throws Exception {
+		DDMFormFieldValue ddmFormFieldValue = new DDMFormFieldValue();
+
+		ddmFormFieldValue.setName("MyInteger");
+
+		String inputControl = getInputControl(ddmFormFieldValue, _ddmStructure);
+
+		Assert.assertNull(inputControl);
 	}
 
 	@Test
@@ -1677,30 +1697,6 @@ public class StructuredContentNestedCollectionResourceFilteringTest
 		Assert.assertEquals(
 			"localized_title_en_US_sortable", termQuery.getField());
 		Assert.assertEquals("title value", termQuery.getValue());
-	}
-
-	@Test
-	public void testIntegerFieldInputControlIsNull() throws Exception {
-		DDMFormFieldValue ddmFormFieldValue = new DDMFormFieldValue();
-
-		ddmFormFieldValue.setName("MyInteger");
-
-		String inputControl = getDDMFormFieldInputControl(
-			ddmFormFieldValue, _ddmStructure);
-
-		Assert.assertNull(inputControl);
-	}
-
-	@Test
-	public void testLinkToPageFieldDataType() throws Exception {
-		DDMFormFieldValue ddmFormFieldValue = new DDMFormFieldValue();
-
-		ddmFormFieldValue.setName("MyLinkToPage");
-
-		String dataType = getDDMFormFieldDataType(
-			ddmFormFieldValue, _ddmStructure);
-
-		Assert.assertEquals("url", dataType);
 	}
 
 	protected DDMForm deserialize(String content) {
