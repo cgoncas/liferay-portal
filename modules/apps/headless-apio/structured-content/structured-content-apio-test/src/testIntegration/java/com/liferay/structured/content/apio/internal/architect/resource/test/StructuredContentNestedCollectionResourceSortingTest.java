@@ -414,7 +414,7 @@ public class StructuredContentNestedCollectionResourceSortingTest
 	}
 
 	@Test
-	public void testGetPageItemsSortByIntegerStructureFieldAsc()
+	public void testGetPageItemsSortByDecimalStructureFieldAsc()
 		throws Exception {
 
 		DDMStructureTestHelper ddmStructureTestHelper =
@@ -465,7 +465,7 @@ public class StructuredContentNestedCollectionResourceSortingTest
 				sortParser.parse(
 					StringBundler.concat(
 						"values/_", ddmStructure.getStructureId(),
-						StringPool.UNDERLINE, "MyInteger:asc"))));
+						StringPool.UNDERLINE, "MyDecimal:asc"))));
 
 		Assert.assertEquals(2, pageItems.getTotalCount());
 
@@ -474,6 +474,69 @@ public class StructuredContentNestedCollectionResourceSortingTest
 
 		Assert.assertEquals(journalArticle1, journalArticles.get(0));
 		Assert.assertEquals(journalArticle2, journalArticles.get(1));
+	}
+
+	@Test
+	public void testGetPageItemsSortByDecimalStructureFieldDesc()
+		throws Exception {
+
+		DDMStructureTestHelper ddmStructureTestHelper =
+			new DDMStructureTestHelper(
+				PortalUtil.getClassNameId(JournalArticle.class), _group);
+
+		DDMStructure ddmStructure = ddmStructureTestHelper.addStructure(
+			PortalUtil.getClassNameId(JournalArticle.class),
+			RandomTestUtil.randomString(), RandomTestUtil.randomString(),
+			deserialize(
+				_ddmFormDeserializerTracker,
+				read("test-journal-all-fields-structure.json")),
+			StorageType.JSON.getValue(), DDMStructureConstants.TYPE_DEFAULT);
+
+		DDMTemplate ddmTemplate = DDMTemplateTestUtil.addTemplate(
+			_group.getGroupId(), ddmStructure.getStructureId(),
+			PortalUtil.getClassNameId(JournalArticle.class),
+			TemplateConstants.LANG_TYPE_VM,
+			read("test-journal-all-fields-template.xsl"), LocaleUtil.US);
+
+		Map<Locale, String> stringMap1 = new HashMap<>();
+
+		stringMap1.put(LocaleUtil.getDefault(), RandomTestUtil.randomString());
+
+		JournalArticle journalArticle1 =
+			JournalArticleLocalServiceUtil.addArticle(
+				TestPropsValues.getUser().getUserId(), _group.getGroupId(),
+				JournalFolderConstants.DEFAULT_PARENT_FOLDER_ID, stringMap1,
+				null, read("test-journal-all-fields-content-1.xml"),
+				ddmStructure.getStructureKey(), ddmTemplate.getTemplateKey(),
+				ServiceContextTestUtil.getServiceContext(_group.getGroupId()));
+
+		JournalArticle journalArticle2 =
+			JournalArticleLocalServiceUtil.addArticle(
+				TestPropsValues.getUser().getUserId(), _group.getGroupId(),
+				JournalFolderConstants.DEFAULT_PARENT_FOLDER_ID, stringMap1,
+				null, read("test-journal-all-fields-content-2.xml"),
+				ddmStructure.getStructureKey(), ddmTemplate.getTemplateKey(),
+				ServiceContextTestUtil.getServiceContext(_group.getGroupId()));
+
+		SortParser sortParser = _getSortParser();
+
+		PageItems<JournalArticle> pageItems = getPageItems(
+			PaginationRequest.of(10, 1), _group.getGroupId(), _acceptLanguage,
+			getThemeDisplay(_group, LocaleUtil.getDefault()),
+			Filter.emptyFilter(),
+			new Sort(
+				sortParser.parse(
+					StringBundler.concat(
+						"values/_", ddmStructure.getStructureId(),
+						StringPool.UNDERLINE, "MyDecimal:desc"))));
+
+		Assert.assertEquals(2, pageItems.getTotalCount());
+
+		List<JournalArticle> journalArticles =
+			(List<JournalArticle>)pageItems.getItems();
+
+		Assert.assertEquals(journalArticle1, journalArticles.get(1));
+		Assert.assertEquals(journalArticle2, journalArticles.get(0));
 	}
 
 	@Test
@@ -537,6 +600,69 @@ public class StructuredContentNestedCollectionResourceSortingTest
 
 		Assert.assertEquals(journalArticle1, journalArticles.get(1));
 		Assert.assertEquals(journalArticle2, journalArticles.get(0));
+	}
+
+	@Test
+	public void testGetPageItemsSortByStringStructureFieldAsc()
+		throws Exception {
+
+		DDMStructureTestHelper ddmStructureTestHelper =
+			new DDMStructureTestHelper(
+				PortalUtil.getClassNameId(JournalArticle.class), _group);
+
+		DDMStructure ddmStructure = ddmStructureTestHelper.addStructure(
+			PortalUtil.getClassNameId(JournalArticle.class),
+			RandomTestUtil.randomString(), RandomTestUtil.randomString(),
+			deserialize(
+				_ddmFormDeserializerTracker,
+				read("test-journal-all-fields-structure.json")),
+			StorageType.JSON.getValue(), DDMStructureConstants.TYPE_DEFAULT);
+
+		DDMTemplate ddmTemplate = DDMTemplateTestUtil.addTemplate(
+			_group.getGroupId(), ddmStructure.getStructureId(),
+			PortalUtil.getClassNameId(JournalArticle.class),
+			TemplateConstants.LANG_TYPE_VM,
+			read("test-journal-all-fields-template.xsl"), LocaleUtil.US);
+
+		Map<Locale, String> stringMap1 = new HashMap<>();
+
+		stringMap1.put(LocaleUtil.getDefault(), RandomTestUtil.randomString());
+
+		JournalArticle journalArticle1 =
+			JournalArticleLocalServiceUtil.addArticle(
+				TestPropsValues.getUser().getUserId(), _group.getGroupId(),
+				JournalFolderConstants.DEFAULT_PARENT_FOLDER_ID, stringMap1,
+				null, read("test-journal-all-fields-content-1.xml"),
+				ddmStructure.getStructureKey(), ddmTemplate.getTemplateKey(),
+				ServiceContextTestUtil.getServiceContext(_group.getGroupId()));
+
+		JournalArticle journalArticle2 =
+			JournalArticleLocalServiceUtil.addArticle(
+				TestPropsValues.getUser().getUserId(), _group.getGroupId(),
+				JournalFolderConstants.DEFAULT_PARENT_FOLDER_ID, stringMap1,
+				null, read("test-journal-all-fields-content-2.xml"),
+				ddmStructure.getStructureKey(), ddmTemplate.getTemplateKey(),
+				ServiceContextTestUtil.getServiceContext(_group.getGroupId()));
+
+		SortParser sortParser = _getSortParser();
+
+		PageItems<JournalArticle> pageItems = getPageItems(
+			PaginationRequest.of(10, 1), _group.getGroupId(), _acceptLanguage,
+			getThemeDisplay(_group, LocaleUtil.getDefault()),
+			Filter.emptyFilter(),
+			new Sort(
+				sortParser.parse(
+					StringBundler.concat(
+						"values/_", ddmStructure.getStructureId(),
+						StringPool.UNDERLINE, "MyInteger:asc"))));
+
+		Assert.assertEquals(2, pageItems.getTotalCount());
+
+		List<JournalArticle> journalArticles =
+			(List<JournalArticle>)pageItems.getItems();
+
+		Assert.assertEquals(journalArticle1, journalArticles.get(0));
+		Assert.assertEquals(journalArticle2, journalArticles.get(1));
 	}
 
 	@Test
