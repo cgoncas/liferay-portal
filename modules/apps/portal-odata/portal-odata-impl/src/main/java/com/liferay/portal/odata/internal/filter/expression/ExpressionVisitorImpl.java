@@ -27,8 +27,13 @@ import java.util.stream.Stream;
 
 import org.apache.olingo.commons.api.edm.EdmEnumType;
 import org.apache.olingo.commons.api.edm.EdmType;
+import org.apache.olingo.commons.core.edm.primitivetype.EdmByte;
 import org.apache.olingo.commons.core.edm.primitivetype.EdmDate;
 import org.apache.olingo.commons.core.edm.primitivetype.EdmDateTimeOffset;
+import org.apache.olingo.commons.core.edm.primitivetype.EdmInt16;
+import org.apache.olingo.commons.core.edm.primitivetype.EdmInt32;
+import org.apache.olingo.commons.core.edm.primitivetype.EdmInt64;
+import org.apache.olingo.commons.core.edm.primitivetype.EdmSByte;
 import org.apache.olingo.commons.core.edm.primitivetype.EdmString;
 import org.apache.olingo.server.api.uri.UriInfoResource;
 import org.apache.olingo.server.api.uri.UriResource;
@@ -104,9 +109,16 @@ public class ExpressionVisitorImpl implements ExpressionVisitor<Expression> {
 			return new LiteralExpressionImpl(
 				literal.getText(), LiteralExpression.Type.STRING);
 		}
+		else if (edmType instanceof EdmByte || edmType instanceof EdmInt16 ||
+				 edmType instanceof EdmInt32 || edmType instanceof EdmInt64 ||
+				 edmType instanceof EdmSByte) {
+
+			return new LiteralExpressionImpl(
+				literal.getText(), LiteralExpression.Type.INTEGER);
+		}
 
 		throw new UnsupportedOperationException(
-			"Liferal: " + edmType.getKind());
+			"Literal: " + edmType.getFullQualifiedName());
 	}
 
 	@Override

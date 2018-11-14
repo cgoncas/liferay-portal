@@ -37,6 +37,7 @@ import com.liferay.portal.kernel.util.StringBundler;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.odata.entity.EntityField;
 import com.liferay.portal.odata.entity.EntityModel;
+import com.liferay.portal.odata.entity.IntegerEntityField;
 import com.liferay.portal.odata.entity.StringEntityField;
 import com.liferay.structured.content.apio.internal.architect.filter.StructuredContentEntityModel;
 import com.liferay.structured.content.apio.internal.architect.resource.StructuredContentNestedCollectionResource;
@@ -167,6 +168,21 @@ public class DDMStructureModelListener extends BaseModelListener<DDMStructure> {
 					locale -> encodeName(
 						ddmStructure.getStructureId(), ddmFormField.getName(),
 						locale, "String"))
+			);
+		}
+
+		if (Objects.equals(ddmFormField.getDataType(), FieldConstants.LONG) ||
+			Objects.equals(
+				ddmFormField.getDataType(), FieldConstants.INTEGER)) {
+
+			return Optional.of(
+				new IntegerEntityField(
+					StructuredContentNestedCollectionResource.
+						encodeFilterAndSortIdentifier(
+							ddmStructure, ddmFormField.getName()),
+					locale -> encodeName(
+						ddmStructure.getStructureId(), ddmFormField.getName(),
+						locale, "Number"))
 			);
 		}
 
