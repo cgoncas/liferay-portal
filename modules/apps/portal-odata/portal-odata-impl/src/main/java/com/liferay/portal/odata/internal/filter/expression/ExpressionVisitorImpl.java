@@ -30,6 +30,8 @@ import org.apache.olingo.commons.api.edm.EdmType;
 import org.apache.olingo.commons.core.edm.primitivetype.EdmByte;
 import org.apache.olingo.commons.core.edm.primitivetype.EdmDate;
 import org.apache.olingo.commons.core.edm.primitivetype.EdmDateTimeOffset;
+import org.apache.olingo.commons.core.edm.primitivetype.EdmDecimal;
+import org.apache.olingo.commons.core.edm.primitivetype.EdmDouble;
 import org.apache.olingo.commons.core.edm.primitivetype.EdmInt16;
 import org.apache.olingo.commons.core.edm.primitivetype.EdmInt32;
 import org.apache.olingo.commons.core.edm.primitivetype.EdmInt64;
@@ -115,6 +117,12 @@ public class ExpressionVisitorImpl implements ExpressionVisitor<Expression> {
 
 			return new LiteralExpressionImpl(
 				literal.getText(), LiteralExpression.Type.INTEGER);
+		}
+		else if (edmType instanceof EdmDecimal ||
+				 edmType instanceof EdmDouble) {
+
+			return new LiteralExpressionImpl(
+				literal.getText(), LiteralExpression.Type.DOUBLE);
 		}
 
 		throw new UnsupportedOperationException(

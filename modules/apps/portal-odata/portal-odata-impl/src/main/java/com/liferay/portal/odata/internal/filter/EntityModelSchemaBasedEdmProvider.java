@@ -183,6 +183,15 @@ public class EntityModelSchemaBasedEdmProvider extends SchemaBasedEdmProvider {
 					EdmPrimitiveTypeKind.DateTimeOffset.getFullQualifiedName())
 			);
 		}
+		else if (Objects.equals(
+					entityField.getType(), EntityField.Type.DOUBLE)) {
+
+			return Optional.of(
+				_createPrimitiveCsdlProperty(
+					entityField,
+					EdmPrimitiveTypeKind.Double.getFullQualifiedName())
+			);
+		}
 		else if (Objects.equals(entityField.getType(), EntityField.Type.ID) ||
 				 Objects.equals(
 					 entityField.getType(), EntityField.Type.STRING)) {
