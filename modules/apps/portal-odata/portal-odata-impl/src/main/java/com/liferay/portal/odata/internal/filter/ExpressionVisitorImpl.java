@@ -199,6 +199,7 @@ public class ExpressionVisitorImpl implements ExpressionVisitor<Object> {
 		EntityField entityField, Object fieldValue, Locale locale) {
 
 		if (Objects.equals(entityField.getType(), EntityField.Type.DATE) ||
+			Objects.equals(entityField.getType(), EntityField.Type.DOUBLE) ||
 			Objects.equals(entityField.getType(), EntityField.Type.INTEGER) ||
 			Objects.equals(entityField.getType(), EntityField.Type.STRING)) {
 
@@ -216,6 +217,7 @@ public class ExpressionVisitorImpl implements ExpressionVisitor<Object> {
 		EntityField entityField, Object fieldValue, Locale locale) {
 
 		if (Objects.equals(entityField.getType(), EntityField.Type.DATE) ||
+			Objects.equals(entityField.getType(), EntityField.Type.DOUBLE) ||
 			Objects.equals(entityField.getType(), EntityField.Type.INTEGER) ||
 			Objects.equals(entityField.getType(), EntityField.Type.STRING)) {
 
@@ -233,6 +235,7 @@ public class ExpressionVisitorImpl implements ExpressionVisitor<Object> {
 		EntityField entityField, Object fieldValue, Locale locale) {
 
 		if (Objects.equals(entityField.getType(), EntityField.Type.DATE) ||
+			Objects.equals(entityField.getType(), EntityField.Type.DOUBLE) ||
 			Objects.equals(entityField.getType(), EntityField.Type.INTEGER) ||
 			Objects.equals(entityField.getType(), EntityField.Type.STRING)) {
 
@@ -250,6 +253,7 @@ public class ExpressionVisitorImpl implements ExpressionVisitor<Object> {
 		EntityField entityField, Object fieldValue, Locale locale) {
 
 		if (Objects.equals(entityField.getType(), EntityField.Type.DATE) ||
+			Objects.equals(entityField.getType(), EntityField.Type.DOUBLE) ||
 			Objects.equals(entityField.getType(), EntityField.Type.INTEGER) ||
 			Objects.equals(entityField.getType(), EntityField.Type.STRING)) {
 
