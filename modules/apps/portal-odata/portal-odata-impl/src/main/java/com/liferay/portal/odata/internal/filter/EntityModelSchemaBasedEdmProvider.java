@@ -194,6 +194,15 @@ public class EntityModelSchemaBasedEdmProvider extends SchemaBasedEdmProvider {
 			);
 		}
 		else if (Objects.equals(
+					entityField.getType(), EntityField.Type.INTEGER)) {
+
+			return Optional.of(
+				_createPrimitiveCsdlProperty(
+					entityField,
+					EdmPrimitiveTypeKind.Int64.getFullQualifiedName())
+			);
+		}
+		else if (Objects.equals(
 					entityField.getType(), EntityField.Type.COMPLEX)) {
 
 			CsdlProperty csdlProperty = new CsdlProperty();
