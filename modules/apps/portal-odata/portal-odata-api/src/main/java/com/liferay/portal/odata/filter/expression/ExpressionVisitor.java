@@ -45,6 +45,46 @@ public interface ExpressionVisitor<T> {
 		throws ExpressionVisitException;
 
 	/**
+	 * Called for each traversed {@link ComplexPropertyExpression} expression
+	 *
+	 * @param  complexPropertyExpression the complex property expression
+	 * @return T the object of type {@code T}
+	 * @throws ExpressionVisitException the expression visit exception
+	 * @review
+	 */
+	public T visitComplexPropertyExpression(
+			ComplexPropertyExpression complexPropertyExpression)
+		throws ExpressionVisitException;
+
+	/**
+	 * Called for each traversed {@link LambdaFunctionExpression} expression
+	 *
+	 * @param  type       the type of the lambda function expression
+	 * @param  variableName the name of the lambda variable
+	 * @param  expression the expression
+	 * @return T the object of type {@code T}
+	 * @throws ExpressionVisitException the expression visit exception
+	 * @review
+	 */
+	public T visitLambdaFunctionExpression(
+			LambdaFunctionExpression.Type type, String variableName,
+			Expression expression)
+		throws ExpressionVisitException;
+
+	/**
+	 * Called for each traversed {@link LambdaVariableExpression} expression
+	 *
+	 * @param  lambdaVariableExpression the lambda variable expression
+	 * @return the t
+	 * @throws ExpressionVisitException if an expression visit exception
+	 *                                  occurred
+	 * @review
+	 */
+	public T visitLambdaVariableExpression(
+			LambdaVariableExpression lambdaVariableExpression)
+		throws ExpressionVisitException;
+
+	/**
 	 * Called for each {@link LiteralExpression}.
 	 *
 	 * @param  literalExpression the literal expression
@@ -81,6 +121,18 @@ public interface ExpressionVisitor<T> {
 	 */
 	public T visitMethodExpression(
 			List<T> expressions, MethodExpression.Type type)
+		throws ExpressionVisitException;
+
+	/**
+	 * Called for each traversed {@link PrimitivePropertyExpression} expression.
+	 *
+	 * @param primitivePropertyExpression the primitive property expression
+	 * @return T the object of type {@code T}
+	 * @throws ExpressionVisitException if an expression visit exception
+	 *         occurred
+	 */
+	public T visitPrimitivePropertyExpression(
+			PrimitivePropertyExpression primitivePropertyExpression)
 		throws ExpressionVisitException;
 
 }
