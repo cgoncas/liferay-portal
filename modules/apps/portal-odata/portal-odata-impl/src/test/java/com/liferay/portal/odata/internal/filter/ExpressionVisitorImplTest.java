@@ -21,14 +21,29 @@ import com.liferay.portal.kernel.search.filter.Filter;
 import com.liferay.portal.kernel.search.filter.RangeTermFilter;
 import com.liferay.portal.kernel.search.filter.TermFilter;
 import com.liferay.portal.kernel.util.LocaleUtil;
+import com.liferay.portal.odata.entity.ComplexEntityField;
 import com.liferay.portal.odata.entity.EntityField;
 import com.liferay.portal.odata.entity.EntityModel;
+import com.liferay.portal.odata.entity.StringEntityField;
 import com.liferay.portal.odata.filter.expression.BinaryExpression;
+import com.liferay.portal.odata.filter.expression.ExpressionVisitException;
+import com.liferay.portal.odata.filter.expression.ExpressionVisitor;
+import com.liferay.portal.odata.filter.expression.LambdaFunctionExpression;
 import com.liferay.portal.odata.filter.expression.LiteralExpression;
+import com.liferay.portal.odata.filter.expression.MemberExpression;
+import com.liferay.portal.odata.internal.filter.expression.BinaryExpressionImpl;
+import com.liferay.portal.odata.internal.filter.expression.ComplexPropertyExpressionImpl;
+import com.liferay.portal.odata.internal.filter.expression.LambdaFunctionExpressionImpl;
+import com.liferay.portal.odata.internal.filter.expression.LambdaVariableExpressionImpl;
 import com.liferay.portal.odata.internal.filter.expression.LiteralExpressionImpl;
+import com.liferay.portal.odata.internal.filter.expression.MemberExpressionImpl;
+import com.liferay.portal.odata.internal.filter.expression.PrimitivePropertyExpressionImpl;
 
 import java.text.SimpleDateFormat;
 
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.function.Function;
@@ -93,6 +108,25 @@ public class ExpressionVisitorImplTest {
 				BinaryExpression.Operation.EQ, entityField, value);
 
 		Assert.assertEquals(entityField.getName(), termFilter.getField());
+		Assert.assertEquals(value, termFilter.getValue());
+	}
+
+	@Test
+	public void testVisitBinaryExpressionOperationWithEqualOperationOnCollectionField() {
+		Map<String, EntityField> entityFieldsMap =
+			_entityModel.getEntityFieldsMap();
+
+		EntityField entityField = entityFieldsMap.get("keywords");
+
+		String value = "keyword1";
+
+		TermFilter termFilter =
+			(TermFilter)_expressionVisitorImpl.visitBinaryExpressionOperation(
+				BinaryExpression.Operation.EQ, entityField, value);
+
+		Assert.assertEquals(
+			entityField.getFilterableValue("keywords.raw"),
+			termFilter.getField());
 		Assert.assertEquals(value, termFilter.getValue());
 	}
 
@@ -248,6 +282,155 @@ public class ExpressionVisitorImplTest {
 	}
 
 	@Test
+	public void testVisitLambdaFunctionExpressionAny()
+		throws ExpressionVisitException {
+
+		LambdaFunctionExpression lambdaFunctionExpression =
+			new LambdaFunctionExpressionImpl(
+				LambdaFunctionExpression.Type.ANY, "k",
+				new BinaryExpressionImpl(
+					new MemberExpressionImpl(
+						Collections.singletonList(
+							new LambdaVariableExpressionImpl("k"))),
+					BinaryExpression.Operation.EQ,
+					new LiteralExpressionImpl(
+						"keyword1", LiteralExpression.Type.STRING)));
+
+		TermFilter termFilter =
+			(TermFilter)_expressionVisitorImpl.visitLambdaFunctionExpression(
+				lambdaFunctionExpression.getType(),
+				lambdaFunctionExpression.getVariableName(),
+				lambdaFunctionExpression.getExpression());
+
+		Assert.assertNotNull(termFilter);
+		Assert.assertEquals("keywords.raw", termFilter.getField());
+		Assert.assertEquals("keyword1", termFilter.getValue());
+	}
+
+	@Test
+	public void testVisitMemberExpressionComplexField()
+		throws ExpressionVisitException {
+
+		MemberExpression memberExpression = new MemberExpressionImpl(
+			Arrays.asList(
+				new ComplexPropertyExpressionImpl("values"),
+				new PrimitivePropertyExpressionImpl("value1")));
+
+		EntityField entityField =
+			(EntityField)_expressionVisitorImpl.visitMemberExpression(
+				memberExpression);
+
+		Assert.assertNotNull(entityField);
+		Assert.assertEquals("value1", entityField.getName());
+		Assert.assertEquals(EntityField.Type.STRING, entityField.getType());
+	}
+
+	@Test
+	public void testVisitMemberExpressionLambdaAnyOnCollectionField()
+		throws ExpressionVisitException {
+
+		MemberExpression memberExpression = new MemberExpressionImpl(
+			Arrays.asList(
+				new PrimitivePropertyExpressionImpl("keywords"),
+				new LambdaFunctionExpressionImpl(
+					LambdaFunctionExpression.Type.ANY, "k",
+					new BinaryExpressionImpl(
+						new MemberExpressionImpl(
+							Collections.singletonList(
+								new LambdaVariableExpressionImpl("k"))),
+						BinaryExpression.Operation.EQ,
+						new LiteralExpressionImpl(
+							"'keyword1'", LiteralExpression.Type.STRING)))));
+
+		TermFilter termFilter =
+			(TermFilter)_expressionVisitorImpl.visitMemberExpression(
+				memberExpression);
+
+		Assert.assertNotNull(termFilter);
+		Assert.assertEquals("keywords.raw", termFilter.getField());
+		Assert.assertEquals("keyword1", termFilter.getValue());
+	}
+
+	@Test
+	public void testVisitMemberExpressionLambdaAnyOnNoncollectionField()
+		throws ExpressionVisitException {
+
+		MemberExpression memberExpression = new MemberExpressionImpl(
+			Arrays.asList(
+				new PrimitivePropertyExpressionImpl("title"),
+				new LambdaFunctionExpressionImpl(
+					LambdaFunctionExpression.Type.ANY, "k",
+					new BinaryExpressionImpl(
+						new MemberExpressionImpl(
+							Collections.singletonList(
+								new LambdaVariableExpressionImpl("k"))),
+						BinaryExpression.Operation.EQ,
+						new LiteralExpressionImpl(
+							"'keyword1'", LiteralExpression.Type.STRING)))));
+
+		try {
+			_expressionVisitorImpl.visitMemberExpression(memberExpression);
+			Assert.fail(
+				"Expected UnsupportedOperationException was not thrown");
+		}
+		catch (UnsupportedOperationException uoe) {
+			String message = uoe.getMessage();
+
+			Assert.assertTrue(
+				message.startsWith(
+					"Unsupported lambda function expression on " +
+						"primitiveEntityField which is not a collection"));
+		}
+	}
+
+	@Test
+	public void testVisitMemberExpressionStringEntityField()
+		throws ExpressionVisitException {
+
+		MemberExpression memberExpression = new MemberExpressionImpl(
+			Collections.singletonList(
+				new PrimitivePropertyExpressionImpl("title")));
+
+		EntityField entityField =
+			(EntityField)_expressionVisitorImpl.visitMemberExpression(
+				memberExpression);
+
+		Assert.assertNotNull(entityField);
+		Assert.assertEquals("title", entityField.getName());
+		Assert.assertEquals(EntityField.Type.STRING, entityField.getType());
+	}
+
+	@Test
+	public void testVisitMemberExpressionStringEntityFieldInLambda()
+		throws ExpressionVisitException {
+
+		Map<String, EntityField> entityFieldsMap =
+			_entityModel.getEntityFieldsMap();
+
+		EntityField entityField = entityFieldsMap.get("keywords");
+
+		Map<String, EntityField> lambdaVariableToEntityFieldMap =
+			new HashMap<>();
+
+		lambdaVariableToEntityFieldMap.put("k", entityField);
+
+		ExpressionVisitor expressionVisitor = new ExpressionVisitorImpl(
+			new SimpleDateFormat("yyyyMMddHHmmss"), LocaleUtil.getDefault(),
+			_entityModel, lambdaVariableToEntityFieldMap);
+
+		MemberExpression memberExpression = new MemberExpressionImpl(
+			Collections.singletonList(new LambdaVariableExpressionImpl("k")));
+
+		EntityField entityField2 =
+			(EntityField)expressionVisitor.visitMemberExpression(
+				memberExpression);
+
+		Assert.assertNotNull(entityField2);
+		Assert.assertEquals("keywords", entityField2.getName());
+		Assert.assertEquals(EntityField.Type.STRING, entityField2.getType());
+	}
+
+	@Test
 	public void testVisitStringLiteralExpressionWithDoubleSingleQuotes() {
 		LiteralExpression literalExpression = new LiteralExpressionImpl(
 			"'L''Oreal'", LiteralExpression.Type.STRING);
@@ -292,8 +475,17 @@ public class ExpressionVisitorImplTest {
 		@Override
 		public Map<String, EntityField> getEntityFieldsMap() {
 			return Stream.of(
-				new EntityField(
-					"title", EntityField.Type.STRING, locale -> "title")
+				new StringEntityField("title", false, locale -> "title"),
+				new StringEntityField(
+					"keywords", true, locale -> "keywords.raw"),
+				new ComplexEntityField(
+					"values",
+					Stream.of(
+						new StringEntityField(
+							"value1", false, locale -> "value1")
+					).collect(
+						Collectors.toList()
+					))
 			).collect(
 				Collectors.toMap(EntityField::getName, Function.identity())
 			);

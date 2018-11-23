@@ -21,13 +21,20 @@ import com.liferay.portal.kernel.util.Props;
 import com.liferay.portal.kernel.util.PropsUtil;
 import com.liferay.portal.odata.entity.EntityField;
 import com.liferay.portal.odata.entity.EntityModel;
+import com.liferay.portal.odata.entity.StringEntityField;
 import com.liferay.portal.odata.filter.expression.BinaryExpression;
 import com.liferay.portal.odata.filter.expression.ExpressionVisitException;
+import com.liferay.portal.odata.filter.expression.LambdaFunctionExpression;
 import com.liferay.portal.odata.filter.expression.LiteralExpression;
+import com.liferay.portal.odata.filter.expression.MemberExpression;
 import com.liferay.portal.odata.internal.filter.expression.BinaryExpressionImpl;
+import com.liferay.portal.odata.internal.filter.expression.LambdaFunctionExpressionImpl;
+import com.liferay.portal.odata.internal.filter.expression.LambdaVariableExpressionImpl;
 import com.liferay.portal.odata.internal.filter.expression.LiteralExpressionImpl;
 import com.liferay.portal.odata.internal.filter.expression.MemberExpressionImpl;
+import com.liferay.portal.odata.internal.filter.expression.PrimitivePropertyExpressionImpl;
 
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.Locale;
 import java.util.Map;
@@ -58,9 +65,13 @@ public class ExpressionConvertImplTest {
 	}
 
 	@Test
-	public void testConvert() throws ExpressionVisitException {
+	public void testConvertBinaryExpressionWithEqOnPrimitiveField()
+		throws ExpressionVisitException {
+
 		BinaryExpression binaryExpression = new BinaryExpressionImpl(
-			new MemberExpressionImpl(Collections.singletonList("title")),
+			new MemberExpressionImpl(
+				Collections.singletonList(
+					new PrimitivePropertyExpressionImpl("title"))),
 			BinaryExpression.Operation.EQ,
 			new LiteralExpressionImpl("test", LiteralExpression.Type.STRING));
 
@@ -71,13 +82,40 @@ public class ExpressionConvertImplTest {
 		Assert.assertEquals("test", termFilter.getValue());
 	}
 
+	@Test
+	public void testConvertMemberExpressionWithLambdaAnyEqOnCollectionField()
+		throws ExpressionVisitException {
+
+		MemberExpression memberExpression = new MemberExpressionImpl(
+			Arrays.asList(
+				new PrimitivePropertyExpressionImpl("keywords"),
+				new LambdaFunctionExpressionImpl(
+					LambdaFunctionExpression.Type.ANY, "k",
+					new BinaryExpressionImpl(
+						new MemberExpressionImpl(
+							Collections.singletonList(
+								new LambdaVariableExpressionImpl("k"))),
+						BinaryExpression.Operation.EQ,
+						new LiteralExpressionImpl(
+							"'keyword1'", LiteralExpression.Type.STRING)))));
+
+		TermFilter termFilter = (TermFilter)_expressionConvert.convert(
+			memberExpression, Locale.getDefault(), _entityModel);
+
+		Assert.assertNotNull(termFilter);
+		Assert.assertEquals("keywords.raw", termFilter.getField());
+		Assert.assertEquals("keyword1", termFilter.getValue());
+	}
+
 	private static final EntityModel _entityModel = new EntityModel() {
 
 		@Override
 		public Map<String, EntityField> getEntityFieldsMap() {
 			return Stream.of(
 				new EntityField(
-					"title", EntityField.Type.STRING, locale -> "title")
+					"title", EntityField.Type.STRING, locale -> "title"),
+				new StringEntityField(
+					"keywords", true, locale -> "keywords.raw")
 			).collect(
 				Collectors.toMap(EntityField::getName, Function.identity())
 			);
