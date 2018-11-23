@@ -17,61 +17,62 @@ package com.liferay.portal.odata.internal.filter.expression;
 import com.liferay.portal.odata.filter.expression.Expression;
 import com.liferay.portal.odata.filter.expression.ExpressionVisitException;
 import com.liferay.portal.odata.filter.expression.ExpressionVisitor;
-import com.liferay.portal.odata.filter.expression.MemberExpression;
-
-import java.util.Collections;
-import java.util.List;
+import com.liferay.portal.odata.filter.expression.LambdaFunctionExpression;
 
 /**
- * @author Cristina González
+ * @author Ruben Pulido
  */
-public class MemberExpressionImpl implements MemberExpression {
+public class LambdaFunctionExpressionImpl implements LambdaFunctionExpression {
 
-	public MemberExpressionImpl(List<Expression> expressions) {
-		this(null, expressions);
-	}
+	public LambdaFunctionExpressionImpl(
+		Type type, String variableName, Expression expression) {
 
-	public MemberExpressionImpl(
-		List<String> resourcePath, List<Expression> expressions) {
-
-		if (resourcePath == null) {
-			_resourcePath = Collections.emptyList();
-		}
-		else {
-			_resourcePath = Collections.unmodifiableList(resourcePath);
-		}
-
-		if (expressions == null) {
-			_expressions = Collections.emptyList();
-		}
-		else {
-			_expressions = Collections.unmodifiableList(expressions);
-		}
+		_type = type;
+		_variableName = variableName;
+		_expression = expression;
 	}
 
 	@Override
 	public <T> T accept(ExpressionVisitor<T> expressionVisitor)
 		throws ExpressionVisitException {
 
-		return expressionVisitor.visitMemberExpression(this);
+		return expressionVisitor.visitLambdaFunctionExpression(
+			_type, _variableName, _expression);
 	}
 
 	@Override
-	public List<Expression> getExpressions() {
-		return _expressions;
+	public Expression getExpression() {
+		return _expression;
 	}
 
 	@Override
-	public List<String> getResourcePath() {
-		return _resourcePath;
+	public Type getType() {
+		return _type;
+	}
+
+	@Override
+	public String getVariableName() {
+		return _variableName;
 	}
 
 	@Override
 	public String toString() {
-		return _resourcePath.toString();
+		final StringBuilder sb = new StringBuilder(8);
+
+		sb.append("LambdaFunctionExpressionImpl{");
+		sb.append("_type='");
+		sb.append(_type);
+		sb.append("', _variable='");
+		sb.append(_variableName);
+		sb.append("', _expression='");
+		sb.append(_expression);
+		sb.append("}");
+
+		return sb.toString();
 	}
 
-	private final List<Expression> _expressions;
-	private final List<String> _resourcePath;
+	private final Expression _expression;
+	private final Type _type;
+	private final String _variableName;
 
 }
