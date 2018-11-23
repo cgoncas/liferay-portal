@@ -16,6 +16,8 @@ package com.liferay.portal.odata.filter.expression;
 
 import aQute.bnd.annotation.ProviderType;
 
+import com.liferay.portal.kernel.util.StringBundler;
+
 import java.util.List;
 
 /**
@@ -52,9 +54,14 @@ public interface ExpressionVisitor<T> {
 	 * @throws ExpressionVisitException the expression visit exception
 	 * @review
 	 */
-	public T visitComplexPropertyExpression(
+	public default T visitComplexPropertyExpression(
 			ComplexPropertyExpression complexPropertyExpression)
-		throws ExpressionVisitException;
+		throws ExpressionVisitException {
+
+		throw new UnsupportedOperationException(
+			"Unsupported method visitComplexPropertyExpression with complex " +
+				"property expression " + complexPropertyExpression);
+	}
 
 	/**
 	 * Called for each traversed {@link LambdaFunctionExpression} expression
@@ -66,10 +73,17 @@ public interface ExpressionVisitor<T> {
 	 * @throws ExpressionVisitException the expression visit exception
 	 * @review
 	 */
-	public T visitLambdaFunctionExpression(
+	public default T visitLambdaFunctionExpression(
 			LambdaFunctionExpression.Type type, String variableName,
 			Expression expression)
-		throws ExpressionVisitException;
+		throws ExpressionVisitException {
+
+		throw new UnsupportedOperationException(
+			StringBundler.concat(
+				"Unsupported method visitLambdaFunctionExpression with type ",
+				type.name(), " variableName ", variableName, " and expression ",
+				expression.toString()));
+	}
 
 	/**
 	 * Called for each traversed {@link LambdaVariableExpression} expression
@@ -80,9 +94,14 @@ public interface ExpressionVisitor<T> {
 	 *                                  occurred
 	 * @review
 	 */
-	public T visitLambdaVariableExpression(
+	public default T visitLambdaVariableExpression(
 			LambdaVariableExpression lambdaVariableExpression)
-		throws ExpressionVisitException;
+		throws ExpressionVisitException {
+
+		throw new UnsupportedOperationException(
+			"Unsupported method lambdaVariableExpression with lambda " +
+				"variable expression " + lambdaVariableExpression);
+	}
 
 	/**
 	 * Called for each {@link LiteralExpression}.
@@ -130,9 +149,15 @@ public interface ExpressionVisitor<T> {
 	 * @return T the object of type {@code T}
 	 * @throws ExpressionVisitException if an expression visit exception
 	 *         occurred
+	 *  @review
 	 */
-	public T visitPrimitivePropertyExpression(
+	public default T visitPrimitivePropertyExpression(
 			PrimitivePropertyExpression primitivePropertyExpression)
-		throws ExpressionVisitException;
+		throws ExpressionVisitException {
+
+		throw new UnsupportedOperationException(
+			"Unsupported method visitPrimitivePropertyExpression with " +
+				"primitive property expression " + primitivePropertyExpression);
+	}
 
 }
