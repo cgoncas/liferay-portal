@@ -26,11 +26,21 @@ import java.util.List;
 public interface MemberExpression extends Expression {
 
 	/**
+	 * Returns the list of expressions which form this MemberExpression.
+	 *
+	 * @return the list of expressionss.
+	 * @review
+	 */
+	public List<Expression> getExpressions();
+
+	/**
 	 * Returns the member expression's resource path.
 	 *
 	 * @return the resource path
+	 * @deprecated As of Judson (7.1.x)
 	 * @review
 	 */
+	@Deprecated
 	public List<String> getResourcePath();
 
 }
