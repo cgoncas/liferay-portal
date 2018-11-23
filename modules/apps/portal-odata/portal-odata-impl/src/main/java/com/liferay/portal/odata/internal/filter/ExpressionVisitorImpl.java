@@ -26,21 +26,29 @@ import com.liferay.portal.kernel.search.filter.RangeTermFilter;
 import com.liferay.portal.kernel.search.filter.TermFilter;
 import com.liferay.portal.kernel.search.generic.WildcardQueryImpl;
 import com.liferay.portal.kernel.util.StringUtil;
+import com.liferay.portal.odata.entity.CollectionEntityField;
 import com.liferay.portal.odata.entity.ComplexEntityField;
 import com.liferay.portal.odata.entity.EntityField;
 import com.liferay.portal.odata.entity.EntityModel;
 import com.liferay.portal.odata.filter.InvalidFilterException;
 import com.liferay.portal.odata.filter.expression.BinaryExpression;
+import com.liferay.portal.odata.filter.expression.ComplexPropertyExpression;
+import com.liferay.portal.odata.filter.expression.Expression;
+import com.liferay.portal.odata.filter.expression.ExpressionVisitException;
 import com.liferay.portal.odata.filter.expression.ExpressionVisitor;
+import com.liferay.portal.odata.filter.expression.LambdaFunctionExpression;
+import com.liferay.portal.odata.filter.expression.LambdaVariableExpression;
 import com.liferay.portal.odata.filter.expression.LiteralExpression;
 import com.liferay.portal.odata.filter.expression.MemberExpression;
 import com.liferay.portal.odata.filter.expression.MethodExpression;
+import com.liferay.portal.odata.filter.expression.PrimitivePropertyExpression;
 
 import java.text.Format;
 import java.text.ParseException;
 import java.text.ParsePosition;
 
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
@@ -74,6 +82,47 @@ public class ExpressionVisitorImpl implements ExpressionVisitor<Object> {
 	}
 
 	@Override
+	public Object visitComplexPropertyExpression(
+		ComplexPropertyExpression complexPropertyExpression) {
+
+		return complexPropertyExpression.getName();
+	}
+
+	@Override
+	public Object visitLambdaFunctionExpression(
+			LambdaFunctionExpression.Type type, String variable,
+			Expression expression)
+		throws ExpressionVisitException {
+
+		if (type == LambdaFunctionExpression.Type.ANY) {
+			return _any(expression);
+		}
+
+		throw new UnsupportedOperationException(
+			"Unsupported type visitLambdaFunctionExpression with type " + type);
+	}
+
+	@Override
+	public EntityField visitLambdaVariableExpression(
+		LambdaVariableExpression lambdaVariableExpression) {
+
+		Map<String, EntityField> entityFieldsMap =
+			_entityModel.getEntityFieldsMap();
+
+		EntityField entityField = entityFieldsMap.get(
+			lambdaVariableExpression.getVariableName());
+
+		if (entityField == null) {
+			throw new IllegalStateException(
+				"VisitLambdaVariableExpression invoked when no entity field " +
+					"is stored for lambda variable name " +
+						lambdaVariableExpression.getVariableName());
+		}
+
+		return entityField;
+	}
+
+	@Override
 	public Object visitLiteralExpression(LiteralExpression literalExpression) {
 		if (Objects.equals(
 				LiteralExpression.Type.DATE, literalExpression.getType())) {
@@ -91,27 +140,113 @@ public class ExpressionVisitorImpl implements ExpressionVisitor<Object> {
 	}
 
 	@Override
-	public Object visitMemberExpression(MemberExpression memberExpression) {
-		List<String> resourcePath = memberExpression.getResourcePath();
+	public Object visitMemberExpression(MemberExpression memberExpression)
+		throws ExpressionVisitException {
 
 		Map<String, EntityField> entityFieldsMap =
 			_entityModel.getEntityFieldsMap();
 
-		EntityField entityField = entityFieldsMap.get(resourcePath.get(0));
+		List<Expression> expressions = memberExpression.getExpressions();
 
-		if ((resourcePath.size() == 2) &&
-			Objects.equals(entityField.getType(), EntityField.Type.COMPLEX)) {
+		Optional<ComplexEntityField> complexEntityFieldOptional =
+			Optional.empty();
 
-			ComplexEntityField complexEntityField =
-				(ComplexEntityField)entityField;
+		Optional<EntityField> primitiveEntityFieldOptional = Optional.empty();
 
-			Map<String, EntityField> entityFieldMap =
-				complexEntityField.getEntityFieldsMap();
+		for (Expression expression : expressions) {
+			if (expression instanceof ComplexPropertyExpression) {
+				complexEntityFieldOptional = Optional.of(
+					(ComplexEntityField)entityFieldsMap.get(
+						((ComplexPropertyExpression)expression).getName()));
+			}
+			else if (expression instanceof PrimitivePropertyExpression) {
+				PrimitivePropertyExpression primitivePropertyExpression =
+					(PrimitivePropertyExpression)expression;
 
-			return entityFieldMap.get(resourcePath.get(1));
+				if (complexEntityFieldOptional.isPresent()) {
+					ComplexEntityField complexEntityField =
+						complexEntityFieldOptional.get();
+
+					Map<String, EntityField> primitiveEntityFieldsMap =
+						complexEntityField.getEntityFieldsMap();
+
+					EntityField primitiveEntityField =
+						primitiveEntityFieldsMap.get(
+							primitivePropertyExpression.getName());
+
+					primitiveEntityFieldOptional = Optional.of(
+						primitiveEntityField);
+				}
+				else {
+					primitiveEntityFieldOptional = Optional.of(
+						entityFieldsMap.get(
+							primitivePropertyExpression.getName()));
+				}
+			}
+			else if (expression instanceof LambdaVariableExpression) {
+				return expression.accept(this);
+			}
+			else if (expression instanceof LambdaFunctionExpression) {
+				if (!primitiveEntityFieldOptional.isPresent()) {
+					throw new UnsupportedOperationException(
+						"Unsupported empty primitive property in member " +
+							"expression " + memberExpression);
+				}
+
+				EntityField primitiveEntityField =
+					primitiveEntityFieldOptional.get();
+
+				if (!Objects.equals(
+						EntityField.Type.COLLECTION,
+						primitiveEntityField.getType())) {
+
+					throw new UnsupportedOperationException(
+						"Unsupported lambda function expression on " +
+							"primitiveEntityField which is not a collection " +
+								primitiveEntityField);
+				}
+
+				CollectionEntityField collectionEntityField =
+					(CollectionEntityField)primitiveEntityField;
+
+				LambdaFunctionExpression lambdaFunctionExpression =
+					(LambdaFunctionExpression)expression;
+
+				EntityModel lambdaEntityModel = new EntityModel() {
+
+					@Override
+					public Map<String, EntityField> getEntityFieldsMap() {
+						return new HashMap<String, EntityField>() {
+							{
+								put(
+									lambdaFunctionExpression.getVariableName(),
+									collectionEntityField.getEntityField());
+							}
+						};
+					}
+
+					@Override
+					public String getName() {
+						return collectionEntityField.getName();
+					}
+
+				};
+
+				return expression.accept(
+					new ExpressionVisitorImpl(
+						_format, _locale, lambdaEntityModel));
+			}
+			else {
+				throw new UnsupportedOperationException(
+					"Unsupported member expression with expression " +
+						expression.getClass());
+			}
 		}
 
-		return entityField;
+		return primitiveEntityFieldOptional.orElseThrow(
+			() -> new UnsupportedOperationException(
+				"Unsupported member expression " + memberExpression)
+		);
 	}
 
 	@Override
@@ -133,6 +268,17 @@ public class ExpressionVisitorImpl implements ExpressionVisitor<Object> {
 		throw new UnsupportedOperationException(
 			"Unsupported method visitMethodExpression with method type " +
 				type);
+	}
+
+	@Override
+	public Object visitPrimitivePropertyExpression(
+		PrimitivePropertyExpression primitivePropertyExpression) {
+
+		return primitivePropertyExpression.getName();
+	}
+
+	private Object _any(Expression expression) throws ExpressionVisitException {
+		return expression.accept(this);
 	}
 
 	private Filter _contains(
