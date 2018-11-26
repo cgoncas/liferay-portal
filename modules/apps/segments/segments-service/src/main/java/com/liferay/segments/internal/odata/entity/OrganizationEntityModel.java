@@ -16,7 +16,7 @@ package com.liferay.segments.internal.odata.entity;
 
 import com.liferay.portal.kernel.search.Field;
 import com.liferay.portal.odata.entity.ComplexEntityField;
-import com.liferay.portal.odata.entity.DateEntityField;
+import com.liferay.portal.odata.entity.DateTimeEntityField;
 import com.liferay.portal.odata.entity.EntityField;
 import com.liferay.portal.odata.entity.EntityModel;
 import com.liferay.portal.odata.entity.StringEntityField;
@@ -40,7 +40,7 @@ public class OrganizationEntityModel implements EntityModel {
 	public OrganizationEntityModel(List<EntityField> customEntityFields) {
 		_entityFieldsMap = Stream.of(
 			new ComplexEntityField("customField", customEntityFields),
-			new DateEntityField(
+			new DateTimeEntityField(
 				"dateModified",
 				locale -> Field.getSortableFieldName(Field.MODIFIED_DATE),
 				locale -> Field.MODIFIED_DATE),

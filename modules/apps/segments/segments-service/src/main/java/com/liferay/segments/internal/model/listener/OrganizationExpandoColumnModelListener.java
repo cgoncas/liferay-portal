@@ -41,7 +41,7 @@ import com.liferay.portal.kernel.util.FriendlyURLNormalizerUtil;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.HashMapDictionary;
 import com.liferay.portal.kernel.util.UnicodeProperties;
-import com.liferay.portal.odata.entity.DateEntityField;
+import com.liferay.portal.odata.entity.DateTimeEntityField;
 import com.liferay.portal.odata.entity.EntityField;
 import com.liferay.portal.odata.entity.EntityModel;
 import com.liferay.portal.odata.entity.StringEntityField;
@@ -175,7 +175,7 @@ public class OrganizationExpandoColumnModelListener
 		EntityField entityField = null;
 
 		if (expandoColumn.getType() == ExpandoColumnConstants.DATE) {
-			entityField = new DateEntityField(
+			entityField = new DateTimeEntityField(
 				encodedName,
 				locale -> Field.getSortableFieldName(encodedIndexedFieldName),
 				locale -> encodedIndexedFieldName);
