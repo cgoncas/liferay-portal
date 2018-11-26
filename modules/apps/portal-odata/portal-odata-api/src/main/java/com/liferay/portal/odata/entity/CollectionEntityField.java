@@ -14,9 +14,6 @@
 
 package com.liferay.portal.odata.entity;
 
-import java.util.Locale;
-import java.util.function.Function;
-
 /**
  * Models a collection entity field.
  *
@@ -25,32 +22,13 @@ import java.util.function.Function;
  */
 public class CollectionEntityField extends EntityField {
 
-//	/**
-//	 * Creates a new {@code CollectionEntityField} with separate functions for
-//	 * converting the entity field's name to a sortable and filterable field
-//	 * name for a locale.
-//	 *
-//	 * @param  name the entity field's name
-//	 * @param  type the type
-//	 * @param  sortableFieldNameFunction the sortable field name {@code
-//	 *         Function}
-//	 * @param  filterableFieldNameFunction the filterable field name {@code
-//	 *         Function}
-//	 * @param  filterableFieldValueFunction the filterable field value {@code
-//	 *         Function}
-//	 * @review
-//	 */
-//	public CollectionEntityField(
-////		String name, Type type,
-////		Function<Locale, String> sortableFieldNameFunction,
-////		Function<Locale, String> filterableFieldNameFunction,
-////		Function<Object, String> filterableFieldValueFunction) {
-////		super(name, type, sortableFieldNameFunction,
-////			filterableFieldNameFunction, filterableFieldValueFunction);
-////	}
-
+	/**
+	 * Creates a new {@code EntityField} of type COLLECTION.
+	 *
+	 * @param  entityField the entity field
+	 * @review
+	 */
 	public CollectionEntityField(EntityField entityField) {
-
 		super(
 			entityField.getName(), Type.COLLECTION,
 			locale -> entityField.getName(), locale -> entityField.getName(),
@@ -59,15 +37,15 @@ public class CollectionEntityField extends EntityField {
 		_entityField = entityField;
 	}
 
+	public EntityField getEntityField() {
+		return _entityField;
+	}
+
 	@Override
 	public String toString() {
 		return super.toString();
 	}
 
+	private final EntityField _entityField;
 
-	private EntityField _entityField;
-
-	public EntityField getEntityField() {
-		return _entityField;
-	}
 }
