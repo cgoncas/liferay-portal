@@ -27,6 +27,7 @@ import java.util.stream.Stream;
 
 import org.apache.olingo.commons.api.edm.EdmEnumType;
 import org.apache.olingo.commons.api.edm.EdmType;
+import org.apache.olingo.commons.core.edm.primitivetype.EdmBoolean;
 import org.apache.olingo.commons.core.edm.primitivetype.EdmByte;
 import org.apache.olingo.commons.core.edm.primitivetype.EdmDate;
 import org.apache.olingo.commons.core.edm.primitivetype.EdmDateTimeOffset;
@@ -101,9 +102,13 @@ public class ExpressionVisitorImpl implements ExpressionVisitor<Expression> {
 	public Expression visitLiteral(Literal literal) {
 		EdmType edmType = literal.getType();
 
-		if (edmType instanceof EdmByte || edmType instanceof EdmInt16 ||
-			edmType instanceof EdmInt32 || edmType instanceof EdmInt64 ||
-			edmType instanceof EdmSByte) {
+		if (edmType instanceof EdmBoolean) {
+			return new LiteralExpressionImpl(
+				literal.getText(), LiteralExpression.Type.BOOLEAN);
+		}
+		else if (edmType instanceof EdmByte || edmType instanceof EdmInt16 ||
+				 edmType instanceof EdmInt32 || edmType instanceof EdmInt64 ||
+				 edmType instanceof EdmSByte) {
 
 			return new LiteralExpressionImpl(
 				literal.getText(), LiteralExpression.Type.INTEGER);

@@ -176,7 +176,16 @@ public class EntityModelSchemaBasedEdmProvider extends SchemaBasedEdmProvider {
 	private Optional<CsdlProperty> _createCsdlProperty(
 		String namespace, EntityField entityField) {
 
-		if (Objects.equals(entityField.getType(), EntityField.Type.COMPLEX)) {
+		if (Objects.equals(entityField.getType(), EntityField.Type.BOOLEAN)) {
+			return Optional.of(
+				_createPrimitiveCsdlProperty(
+					entityField,
+					EdmPrimitiveTypeKind.Boolean.getFullQualifiedName())
+			);
+		}
+		else if (Objects.equals(
+					entityField.getType(), EntityField.Type.COMPLEX)) {
+
 			CsdlProperty csdlProperty = new CsdlProperty();
 
 			csdlProperty.setName(entityField.getName());

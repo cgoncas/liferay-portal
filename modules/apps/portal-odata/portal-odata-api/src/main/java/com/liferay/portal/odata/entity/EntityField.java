@@ -184,7 +184,7 @@ public class EntityField {
 
 	public enum Type {
 
-		COMPLEX, DATE, DOUBLE, ID, INTEGER, STRING
+		BOOLEAN, COMPLEX, DATE, DOUBLE, ID, INTEGER, STRING
 
 	}
 

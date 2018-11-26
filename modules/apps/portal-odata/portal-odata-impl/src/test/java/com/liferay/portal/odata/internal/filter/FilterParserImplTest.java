@@ -14,6 +14,7 @@
 
 package com.liferay.portal.odata.internal.filter;
 
+import com.liferay.portal.odata.entity.BooleanEntityField;
 import com.liferay.portal.odata.entity.DateEntityField;
 import com.liferay.portal.odata.entity.DoubleEntityField;
 import com.liferay.portal.odata.entity.EntityField;
@@ -84,6 +85,17 @@ public class FilterParserImplTest {
 	}
 
 	@Test
+	public void testParseWithContainsMethodAndBooleanType() {
+		AbstractThrowableAssert exception = Assertions.assertThatThrownBy(
+			() -> _filterParserImpl.parse("contains(booleanExternal, 7)")
+		).isInstanceOf(
+			ExpressionVisitException.class
+		);
+
+		exception.hasMessage("Incompatible types.");
+	}
+
+	@Test
 	public void testParseWithContainsMethodAndDateType() {
 		AbstractThrowableAssert exception = Assertions.assertThatThrownBy(
 			() -> _filterParserImpl.parse(
@@ -115,6 +127,57 @@ public class FilterParserImplTest {
 		);
 
 		exception.hasMessage("Filter is null");
+	}
+
+	@Test
+	public void testParseWithEqBinaryExpressionWithBooleanFalse()
+		throws ExpressionVisitException {
+
+		Expression expression = _filterParserImpl.parse(
+			"booleanExternal eq false");
+
+		Assert.assertNotNull(expression);
+
+		BinaryExpression binaryExpression = (BinaryExpression)expression;
+
+		Assert.assertEquals(
+			BinaryExpression.Operation.EQ, binaryExpression.getOperation());
+		Assert.assertEquals(
+			"[booleanExternal]",
+			binaryExpression.getLeftOperationExpression().toString());
+		Assert.assertEquals(
+			"false", binaryExpression.getRightOperationExpression().toString());
+	}
+
+	@Test
+	public void testParseWithEqBinaryExpressionWithBooleanInvalid() {
+		AbstractThrowableAssert exception = Assertions.assertThatThrownBy(
+			() -> _filterParserImpl.parse("booleanExternal eq 'invalid'")
+		).isInstanceOf(
+			ExpressionVisitException.class
+		);
+
+		exception.hasMessage("Incompatible types.");
+	}
+
+	@Test
+	public void testParseWithEqBinaryExpressionWithBooleanTrue()
+		throws ExpressionVisitException {
+
+		Expression expression = _filterParserImpl.parse(
+			"booleanExternal eq true");
+
+		Assert.assertNotNull(expression);
+
+		BinaryExpression binaryExpression = (BinaryExpression)expression;
+
+		Assert.assertEquals(
+			BinaryExpression.Operation.EQ, binaryExpression.getOperation());
+		Assert.assertEquals(
+			"[booleanExternal]",
+			binaryExpression.getLeftOperationExpression().toString());
+		Assert.assertEquals(
+			"true", binaryExpression.getRightOperationExpression().toString());
 	}
 
 	@Test
@@ -264,6 +327,8 @@ public class FilterParserImplTest {
 				@Override
 				public Map<String, EntityField> getEntityFieldsMap() {
 					return Stream.of(
+						new BooleanEntityField(
+							"booleanExternal", locale -> "booleanInternal"),
 						new DateEntityField(
 							"dateExternal", locale -> "dateInternal",
 							locale -> "dateInternal"),
