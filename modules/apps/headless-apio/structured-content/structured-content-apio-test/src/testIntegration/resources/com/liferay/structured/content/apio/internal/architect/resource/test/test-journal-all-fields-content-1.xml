@@ -20,7 +20,7 @@
 	</dynamic-element>
 	<dynamic-element index-type="keyword" name="MyDate" type="ddm-date">
 		<dynamic-content language-id="en_US"><![CDATA[2018-10-13]]></dynamic-content>
-		<dynamic-content language-id="es_ES"><![CDATA[13-10-2018]]></dynamic-content>
+		<dynamic-content language-id="es_ES"><![CDATA[2018-10-14]]></dynamic-content>
 	</dynamic-element>
 	<dynamic-element index-type="keyword" name="MyDecimal" type="ddm-decimal">
 		<dynamic-content language-id="en_US"><![CDATA[1.2]]></dynamic-content>
