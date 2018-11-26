@@ -33,10 +33,14 @@ import com.liferay.portal.kernel.model.BaseModelListener;
 import com.liferay.portal.kernel.model.ModelListener;
 import com.liferay.portal.kernel.search.Field;
 import com.liferay.portal.kernel.service.ClassNameLocalService;
+import com.liferay.portal.kernel.util.DateFormatFactoryUtil;
 import com.liferay.portal.kernel.util.HashMapDictionary;
+import com.liferay.portal.kernel.util.PropsKeys;
+import com.liferay.portal.kernel.util.PropsUtil;
 import com.liferay.portal.kernel.util.StringBundler;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.odata.entity.BooleanEntityField;
+import com.liferay.portal.odata.entity.DateEntityField;
 import com.liferay.portal.odata.entity.DoubleEntityField;
 import com.liferay.portal.odata.entity.EntityField;
 import com.liferay.portal.odata.entity.EntityModel;
@@ -45,9 +49,13 @@ import com.liferay.portal.odata.entity.StringEntityField;
 import com.liferay.structured.content.apio.internal.architect.filter.StructuredContentEntityModel;
 import com.liferay.structured.content.apio.internal.architect.resource.StructuredContentNestedCollectionResource;
 
+import java.text.DateFormat;
+import java.text.ParseException;
+
 import java.util.AbstractMap;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
@@ -174,6 +182,23 @@ public class DDMStructureModelListener extends BaseModelListener<DDMStructure> {
 			);
 		}
 		else if (Objects.equals(
+					ddmFormField.getDataType(), FieldConstants.DATE)) {
+
+			return Optional.of(
+				new DateEntityField(
+					StructuredContentNestedCollectionResource.
+						encodeFilterAndSortIdentifier(
+							ddmStructure, ddmFormField.getName()),
+					locale -> encodeName(
+						ddmStructure.getStructureId(), ddmFormField.getName(),
+						locale, "String"),
+					locale -> encodeName(
+						ddmStructure.getStructureId(), ddmFormField.getName(),
+						locale, "String"),
+					this::_ddmDateFieldValue)
+			);
+		}
+		else if (Objects.equals(
 					ddmFormField.getDataType(), FieldConstants.DOUBLE) ||
 				 Objects.equals(
 					 ddmFormField.getDataType(), FieldConstants.NUMBER)) {
@@ -220,6 +245,23 @@ public class DDMStructureModelListener extends BaseModelListener<DDMStructure> {
 		}
 
 		return Optional.empty();
+	}
+
+	private String _ddmDateFieldValue(Object fieldValue) {
+		DateFormat indexDateFormat = DateFormatFactoryUtil.getSimpleDateFormat(
+			PropsUtil.get(PropsKeys.INDEX_DATE_FORMAT_PATTERN));
+
+		try {
+			Date date = indexDateFormat.parse(String.valueOf(fieldValue));
+
+			DateFormat searchDateFormat =
+				DateFormatFactoryUtil.getSimpleDateFormat("yyyy-MM-dd");
+
+			return searchDateFormat.format(date);
+		}
+		catch (ParseException pe) {
+			throw new RuntimeException(pe);
+		}
 	}
 
 	private Map<Long, List<EntityField>> _getEntityFieldsMap()
