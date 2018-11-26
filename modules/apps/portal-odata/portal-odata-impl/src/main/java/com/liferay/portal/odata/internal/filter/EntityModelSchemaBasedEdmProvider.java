@@ -199,6 +199,14 @@ public class EntityModelSchemaBasedEdmProvider extends SchemaBasedEdmProvider {
 			return Optional.of(
 				_createPrimitiveCsdlProperty(
 					entityField,
+					EdmPrimitiveTypeKind.Date.getFullQualifiedName()));
+		}
+		else if (Objects.equals(
+					entityField.getType(), EntityField.Type.DATETIME)) {
+
+			return Optional.of(
+				_createPrimitiveCsdlProperty(
+					entityField,
 					EdmPrimitiveTypeKind.DateTimeOffset.
 						getFullQualifiedName()));
 		}
