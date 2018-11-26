@@ -36,6 +36,7 @@ import com.liferay.portal.kernel.service.ClassNameLocalService;
 import com.liferay.portal.kernel.util.HashMapDictionary;
 import com.liferay.portal.kernel.util.StringBundler;
 import com.liferay.portal.kernel.util.Validator;
+import com.liferay.portal.odata.entity.BooleanEntityField;
 import com.liferay.portal.odata.entity.DoubleEntityField;
 import com.liferay.portal.odata.entity.EntityField;
 import com.liferay.portal.odata.entity.EntityModel;
@@ -161,8 +162,21 @@ public class DDMStructureModelListener extends BaseModelListener<DDMStructure> {
 			return Optional.empty();
 		}
 
-		if (Objects.equals(ddmFormField.getDataType(), FieldConstants.DOUBLE) ||
-			Objects.equals(ddmFormField.getDataType(), FieldConstants.NUMBER)) {
+		if (Objects.equals(ddmFormField.getType(), DDMFormFieldType.CHECKBOX)) {
+			return Optional.of(
+				new BooleanEntityField(
+					StructuredContentNestedCollectionResource.
+						encodeFilterAndSortIdentifier(
+							ddmStructure, ddmFormField.getName()),
+					locale -> encodeName(
+						ddmStructure.getStructureId(), ddmFormField.getName(),
+						locale, "String"))
+			);
+		}
+		else if (Objects.equals(
+					ddmFormField.getDataType(), FieldConstants.DOUBLE) ||
+				 Objects.equals(
+					 ddmFormField.getDataType(), FieldConstants.NUMBER)) {
 
 			return Optional.of(
 				new DoubleEntityField(
@@ -192,7 +206,7 @@ public class DDMStructureModelListener extends BaseModelListener<DDMStructure> {
 		else if (Objects.equals(
 					ddmFormField.getDataType(), DDMFormFieldType.RADIO) ||
 				 Objects.equals(
-					ddmFormField.getType(), FieldConstants.STRING)) {
+					 ddmFormField.getDataType(), FieldConstants.STRING)) {
 
 			return Optional.of(
 				new StringEntityField(
