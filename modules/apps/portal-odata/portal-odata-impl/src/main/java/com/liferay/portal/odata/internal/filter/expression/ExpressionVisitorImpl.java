@@ -21,10 +21,11 @@ import com.liferay.portal.odata.filter.expression.LambdaFunctionExpression;
 import com.liferay.portal.odata.filter.expression.LiteralExpression;
 import com.liferay.portal.odata.filter.expression.MethodExpression;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import org.apache.olingo.commons.api.edm.EdmEnumType;
 import org.apache.olingo.commons.api.edm.EdmType;
@@ -155,64 +156,72 @@ public class ExpressionVisitorImpl implements ExpressionVisitor<Expression> {
 	}
 
 	@Override
-	public Expression visitMember(Member member)
-		throws ExpressionVisitException, ODataApplicationException {
-
+	public Expression visitMember(Member member) {
 		UriInfoResource uriInfoResource = member.getResourcePath();
 
 		List<UriResource> uriResources = uriInfoResource.getUriResourceParts();
 
-		List<Expression> expressions = new ArrayList<>();
+		Stream<UriResource> stream = uriResources.stream();
 
-		for (UriResource uriResource : uriResources) {
-			if (uriResource instanceof UriResourceLambdaAny) {
-				UriResourceLambdaAny uriResourceLambdaAny =
-					(UriResourceLambdaAny)uriResource;
+		List<Expression> expressions = stream.map(
+			uriResource -> {
+				if (uriResource instanceof UriResourceLambdaAny) {
+					UriResourceLambdaAny uriResourceLambdaAny =
+						(UriResourceLambdaAny)uriResource;
 
-				Expression lambdaExpression = visitLambdaExpression(
-					LambdaFunctionExpression.Type.ANY.name(),
-					uriResourceLambdaAny.getLambdaVariable(),
-					uriResourceLambdaAny.getExpression());
+					try {
+						return visitLambdaExpression(
+							LambdaFunctionExpression.Type.ANY.name(),
+							uriResourceLambdaAny.getLambdaVariable(),
+							uriResourceLambdaAny.getExpression());
+					}
+					catch (ExpressionVisitException |
+						   ODataApplicationException e) {
 
-				expressions.add(lambdaExpression);
-			}
-			else if (uriResource instanceof UriResourceLambdaAll) {
-				throw new UnsupportedOperationException(
-					"UriResource of type UriResourceLambdaAll is not " +
-						"supported");
-			}
-			else if (uriResource instanceof UriResourcePartTyped) {
-				UriResourcePartTyped uriResourcePartTyped =
-					(UriResourcePartTyped)uriResource;
-
-				if (Objects.equals(
-						uriResourcePartTyped.getKind(),
-						UriResourceKind.lambdaVariable)) {
-
-					expressions.add(
-						new LambdaVariableExpressionImpl(
-							uriResource.getSegmentValue()));
+						throw new UnsupportedOperationException(
+							"UriResource in Member: " + uriResource, e);
+					}
 				}
-				else if (uriResource instanceof UriResourceComplexProperty) {
-					expressions.add(
-						new ComplexPropertyExpressionImpl(
-							uriResource.getSegmentValue()));
+				else if (uriResource instanceof UriResourcePartTyped) {
+					UriResourcePartTyped uriResourcePartTyped =
+						(UriResourcePartTyped)uriResource;
+
+					if (Objects.equals(
+							uriResourcePartTyped.getKind(),
+							UriResourceKind.lambdaVariable)) {
+
+						return new LambdaVariableExpressionImpl(
+							uriResource.getSegmentValue());
+					}
+					else if (uriResource instanceof
+								UriResourceComplexProperty) {
+
+						return new ComplexPropertyExpressionImpl(
+							uriResource.getSegmentValue());
+					}
+					else if (uriResource instanceof
+								UriResourcePrimitiveProperty) {
+
+						return new PrimitivePropertyExpressionImpl(
+							uriResource.getSegmentValue());
+					}
+					else if (uriResource instanceof UriResourceLambdaAll) {
+						throw new UnsupportedOperationException(
+							"UriResource of type UriResourceLambdaAll is not " +
+								"supported");
+					}
+					else {
+						throw new UnsupportedOperationException(
+							"UriResource in Member: " + uriResource.getClass());
+					}
 				}
-				else if (uriResource instanceof UriResourcePrimitiveProperty) {
-					expressions.add(
-						new PrimitivePropertyExpressionImpl(
-							uriResource.getSegmentValue()));
-				}
-				else {
-					throw new UnsupportedOperationException(
-						"UriResource in Member: " + uriResource.getClass());
-				}
-			}
-			else {
+
 				throw new UnsupportedOperationException(
 					"UriResource in Member: " + uriResource.getClass());
 			}
-		}
+		).collect(
+			Collectors.toList()
+		);
 
 		return new MemberExpressionImpl(expressions);
 	}

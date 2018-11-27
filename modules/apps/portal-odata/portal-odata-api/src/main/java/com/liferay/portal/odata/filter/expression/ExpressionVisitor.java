@@ -149,6 +149,7 @@ public interface ExpressionVisitor<T> {
 	 * @return T the object of type {@code T}
 	 * @throws ExpressionVisitException if an expression visit exception
 	 *         occurred
+	 *  @review
 	 */
 	public default T visitPrimitivePropertyExpression(
 			PrimitivePropertyExpression primitivePropertyExpression)
