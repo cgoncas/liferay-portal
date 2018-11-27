@@ -41,8 +41,7 @@ public class DoubleEntityField extends EntityField {
 
 		super(
 			name, Type.DOUBLE, filterableAndSortableFieldNameFunction,
-			filterableAndSortableFieldNameFunction,
-			fieldValue -> String.valueOf(fieldValue));
+			filterableAndSortableFieldNameFunction, String::valueOf);
 	}
 
 }

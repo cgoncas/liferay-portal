@@ -41,8 +41,7 @@ public class BooleanEntityField extends EntityField {
 
 		super(
 			name, Type.BOOLEAN, filterableAndSortableFieldNameFunction,
-			filterableAndSortableFieldNameFunction,
-			fieldValue -> String.valueOf(fieldValue));
+			filterableAndSortableFieldNameFunction, String::valueOf);
 	}
 
 }

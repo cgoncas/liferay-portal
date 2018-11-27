@@ -41,8 +41,7 @@ public class StringEntityField extends EntityField {
 
 		super(
 			name, Type.STRING, filterableAndSortableFieldNameFunction,
-			filterableAndSortableFieldNameFunction,
-			fieldValue -> String.valueOf(fieldValue));
+			filterableAndSortableFieldNameFunction, String::valueOf);
 	}
 
 }

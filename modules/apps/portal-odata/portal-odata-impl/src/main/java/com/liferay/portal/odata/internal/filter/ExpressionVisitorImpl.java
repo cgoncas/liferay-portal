@@ -208,7 +208,7 @@ public class ExpressionVisitorImpl implements ExpressionVisitor<Object> {
 
 			return new RangeTermFilter(
 				entityField.getFilterableName(locale), true, true,
-				String.valueOf(fieldValue), null);
+				entityField.getFilterableValue(fieldValue), null);
 		}
 
 		throw new UnsupportedOperationException(
@@ -227,7 +227,7 @@ public class ExpressionVisitorImpl implements ExpressionVisitor<Object> {
 
 			return new RangeTermFilter(
 				entityField.getFilterableName(locale), false, true,
-				String.valueOf(fieldValue), null);
+				entityField.getFilterableValue(fieldValue), null);
 		}
 
 		throw new UnsupportedOperationException(
@@ -246,7 +246,7 @@ public class ExpressionVisitorImpl implements ExpressionVisitor<Object> {
 
 			return new RangeTermFilter(
 				entityField.getFilterableName(locale), false, true, null,
-				String.valueOf(fieldValue));
+				entityField.getFilterableValue(fieldValue));
 		}
 
 		throw new UnsupportedOperationException(
@@ -265,7 +265,7 @@ public class ExpressionVisitorImpl implements ExpressionVisitor<Object> {
 
 			return new RangeTermFilter(
 				entityField.getFilterableName(locale), false, false, null,
-				String.valueOf(fieldValue));
+				entityField.getFilterableValue(fieldValue));
 		}
 
 		throw new UnsupportedOperationException(
