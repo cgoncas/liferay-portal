@@ -31,6 +31,7 @@ import com.liferay.journal.model.JournalFolderConstants;
 import com.liferay.journal.service.JournalArticleLocalServiceUtil;
 import com.liferay.journal.test.util.JournalTestUtil;
 import com.liferay.petra.string.StringPool;
+import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.model.Group;
@@ -67,6 +68,12 @@ import org.osgi.framework.BundleContext;
  */
 public class StructuredContentApioTestBundleActivator
 	implements BundleActivator {
+
+	public static final String KEYWORD_1 = "keyword1";
+
+	public static final String KEYWORD_2 = "keyword2";
+
+	public static final String KEYWORD_3 = "keyword3";
 
 	public static final String NOT_A_SITE_MEMBER_EMAIL_ADDRESS =
 		StructuredContentApioTestBundleActivator.class.getSimpleName() +
@@ -138,6 +145,14 @@ public class StructuredContentApioTestBundleActivator
 				ddmFormDeserializer.deserialize(builder.build());
 
 		return ddmFormDeserializerDeserializeResponse.getDDMForm();
+	}
+
+	private void _addAssetTagNames(
+			long userId, JournalArticle journalArticle, String[] assetTagNames)
+		throws PortalException {
+
+		JournalArticleLocalServiceUtil.updateAsset(
+			userId, journalArticle, null, assetTagNames, null, null);
 	}
 
 	private JournalArticle _addJournalArticle(
@@ -268,9 +283,13 @@ public class StructuredContentApioTestBundleActivator
 			}
 		};
 
-		_addJournalArticle(
+		JournalArticle journalArticle1 = _addJournalArticle(
 			titleMap1, user.getUserId(), group.getGroupId(), LocaleUtil.SPAIN,
 			true, true);
+
+		_addAssetTagNames(
+			user.getUserId(), journalArticle1,
+			new String[] {KEYWORD_1, KEYWORD_2});
 
 		DDMStructure ddmStructure = _getDDMStructure(
 			group, "test-journal-all-fields-structure.json");
@@ -288,10 +307,14 @@ public class StructuredContentApioTestBundleActivator
 			}
 		};
 
-		_addJournalArticle(
+		JournalArticle journalArticle2 = _addJournalArticle(
 			titleMap2, user.getUserId(), group.getGroupId(),
 			_read("test-journal-all-fields-content.xml"), ddmStructure,
 			ddmTemplate);
+
+		_addAssetTagNames(
+			user.getUserId(), journalArticle2,
+			new String[] {KEYWORD_2, KEYWORD_3});
 	}
 
 	private void _prepareTest() throws Exception {

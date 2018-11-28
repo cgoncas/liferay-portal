@@ -288,6 +288,41 @@ public class StructuredContentApioTest {
 	}
 
 	@Test
+	public void testFilterByLambdaAnyKeywordEq() throws Exception {
+		List<String> hrefs = JsonPath.read(
+			_toStringAsAdmin(
+				JsonPath.read(
+					_toStringAsAdmin(_rootEndpointURL.toExternalForm()),
+					"$._links.content-space.href")),
+			"$._embedded.ContentSpace[?(@.name == '" +
+				StructuredContentApioTestBundleActivator.SITE_NAME +
+					"')]._links.structuredContents.href");
+
+		Map<String, String> headers = _getHeaders();
+
+		headers.put("Accept-Language", "en-US");
+
+		List<List<String>> keywordsList = JsonPath.read(
+			_toStringAsGuest(
+				_getURLWithFilterByLambdaAnyKeywordEq(
+					hrefs.get(0),
+					StructuredContentApioTestBundleActivator.KEYWORD_1),
+				headers),
+			"$._embedded.StructuredContent[*].keywords");
+
+		Assert.assertEquals(keywordsList.toString(), 1, keywordsList.size());
+
+		List<String> keywords = keywordsList.get(0);
+
+		Assert.assertTrue(
+			keywords.contains(
+				StructuredContentApioTestBundleActivator.KEYWORD_1));
+		Assert.assertFalse(
+			keywords.contains(
+				StructuredContentApioTestBundleActivator.KEYWORD_3));
+	}
+
+	@Test
 	public void testGuestUserSeesRightStructuredContents() throws Exception {
 		List<String> hrefs = JsonPath.read(
 			_toStringAsAdmin(
@@ -560,6 +595,17 @@ public class StructuredContentApioTest {
 		}
 
 		return jsonWebServiceClient;
+	}
+
+	private String _getURLWithFilterByLambdaAnyKeywordEq(
+			String url, String keyword)
+		throws UnsupportedEncodingException {
+
+		return StringBundler.concat(
+			url, "?filter=(",
+			URLEncoder.encode(
+				"keywords/any(k:k eq '" + keyword, StringPool.UTF8),
+			"'))");
 	}
 
 	private String _getURLWithFilterByTitle(String url, String title)
