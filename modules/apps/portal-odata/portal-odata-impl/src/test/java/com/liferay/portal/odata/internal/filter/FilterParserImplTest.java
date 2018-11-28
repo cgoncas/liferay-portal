@@ -15,17 +15,24 @@
 package com.liferay.portal.odata.internal.filter;
 
 import com.liferay.portal.odata.entity.BooleanEntityField;
+import com.liferay.portal.odata.entity.CollectionEntityField;
+import com.liferay.portal.odata.entity.ComplexEntityField;
 import com.liferay.portal.odata.entity.DateEntityField;
 import com.liferay.portal.odata.entity.DoubleEntityField;
 import com.liferay.portal.odata.entity.EntityField;
 import com.liferay.portal.odata.entity.EntityModel;
 import com.liferay.portal.odata.entity.StringEntityField;
 import com.liferay.portal.odata.filter.expression.BinaryExpression;
+import com.liferay.portal.odata.filter.expression.CollectionPropertyExpression;
+import com.liferay.portal.odata.filter.expression.ComplexPropertyExpression;
 import com.liferay.portal.odata.filter.expression.Expression;
 import com.liferay.portal.odata.filter.expression.ExpressionVisitException;
+import com.liferay.portal.odata.filter.expression.LambdaFunctionExpression;
+import com.liferay.portal.odata.filter.expression.LambdaVariableExpression;
 import com.liferay.portal.odata.filter.expression.LiteralExpression;
 import com.liferay.portal.odata.filter.expression.MemberExpression;
 import com.liferay.portal.odata.filter.expression.MethodExpression;
+import com.liferay.portal.odata.filter.expression.PrimitivePropertyExpression;
 
 import java.util.List;
 import java.util.Map;
@@ -71,12 +78,14 @@ public class FilterParserImplTest {
 
 		List<Expression> expressions = methodExpression.getExpressions();
 
-		MemberExpression memberExpression1 = (MemberExpression)expressions.get(
+		MemberExpression memberExpression = (MemberExpression)expressions.get(
 			0);
 
-		List<String> resourcePath = memberExpression1.getResourcePath();
+		PrimitivePropertyExpression primitivePropertyExpression =
+			(PrimitivePropertyExpression)memberExpression.getExpression();
 
-		Assert.assertEquals("fieldExternal", resourcePath.get(0));
+		Assert.assertEquals(
+			"fieldExternal", primitivePropertyExpression.getName());
 
 		LiteralExpression literalExpression =
 			(LiteralExpression)expressions.get(1);
@@ -130,6 +139,17 @@ public class FilterParserImplTest {
 	}
 
 	@Test
+	public void testParseWithEqBinaryExpressionOnCollectionField() {
+		try {
+			_filterParserImpl.parse("collectionFieldExternal eq 'value'");
+			Assert.fail("Expected ExpressionVisitException was not thrown");
+		}
+		catch (ExpressionVisitException eve) {
+			Assert.assertEquals("Collection not allowed.", eve.getMessage());
+		}
+	}
+
+	@Test
 	public void testParseWithEqBinaryExpressionWithBooleanFalse()
 		throws ExpressionVisitException {
 
@@ -140,13 +160,23 @@ public class FilterParserImplTest {
 
 		BinaryExpression binaryExpression = (BinaryExpression)expression;
 
+		MemberExpression memberExpression =
+			(MemberExpression)binaryExpression.getLeftOperationExpression();
+
+		PrimitivePropertyExpression primitivePropertyExpression =
+			(PrimitivePropertyExpression)memberExpression.getExpression();
+
 		Assert.assertEquals(
 			BinaryExpression.Operation.EQ, binaryExpression.getOperation());
 		Assert.assertEquals(
-			"[booleanExternal]",
-			binaryExpression.getLeftOperationExpression().toString());
+			"booleanExternal", primitivePropertyExpression.getName());
+
+		LiteralExpression literalExpression =
+			(LiteralExpression)binaryExpression.getRightOperationExpression();
+
+		Assert.assertEquals("false", literalExpression.getText());
 		Assert.assertEquals(
-			"false", binaryExpression.getRightOperationExpression().toString());
+			LiteralExpression.Type.BOOLEAN, literalExpression.getType());
 	}
 
 	@Test
@@ -171,13 +201,23 @@ public class FilterParserImplTest {
 
 		BinaryExpression binaryExpression = (BinaryExpression)expression;
 
+		MemberExpression memberExpression =
+			(MemberExpression)binaryExpression.getLeftOperationExpression();
+
+		PrimitivePropertyExpression primitivePropertyExpression =
+			(PrimitivePropertyExpression)memberExpression.getExpression();
+
 		Assert.assertEquals(
 			BinaryExpression.Operation.EQ, binaryExpression.getOperation());
 		Assert.assertEquals(
-			"[booleanExternal]",
-			binaryExpression.getLeftOperationExpression().toString());
+			"booleanExternal", primitivePropertyExpression.getName());
+
+		LiteralExpression literalExpression =
+			(LiteralExpression)binaryExpression.getRightOperationExpression();
+
+		Assert.assertEquals("true", literalExpression.getText());
 		Assert.assertEquals(
-			"true", binaryExpression.getRightOperationExpression().toString());
+			LiteralExpression.Type.BOOLEAN, literalExpression.getType());
 	}
 
 	@Test
@@ -204,12 +244,58 @@ public class FilterParserImplTest {
 
 		Assert.assertEquals(
 			BinaryExpression.Operation.GE, binaryExpression.getOperation());
+
+		MemberExpression memberExpression =
+			(MemberExpression)binaryExpression.getLeftOperationExpression();
+
+		PrimitivePropertyExpression primitivePropertyExpression =
+			(PrimitivePropertyExpression)memberExpression.getExpression();
+
 		Assert.assertEquals(
-			"[dateExternal]",
-			binaryExpression.getLeftOperationExpression().toString());
+			"dateExternal", primitivePropertyExpression.getName());
+
+		LiteralExpression literalExpression =
+			(LiteralExpression)binaryExpression.getRightOperationExpression();
+
 		Assert.assertEquals(
-			"2012-05-29T09:13:28Z",
-			binaryExpression.getRightOperationExpression().toString());
+			"2012-05-29T09:13:28Z", literalExpression.getText());
+		Assert.assertEquals(
+			LiteralExpression.Type.DATE, literalExpression.getType());
+	}
+
+	@Test
+	public void testParseWithEqBinaryExpressionWithMemberWithComplexProperty()
+		throws ExpressionVisitException {
+
+		Expression expression = _filterParserImpl.parse(
+			"complexField/primitiveField eq 'value'");
+
+		Assert.assertNotNull(expression);
+
+		BinaryExpression binaryExpression = (BinaryExpression)expression;
+
+		MemberExpression memberExpression =
+			(MemberExpression)binaryExpression.getLeftOperationExpression();
+
+		ComplexPropertyExpression complexPropertyExpression =
+			(ComplexPropertyExpression)memberExpression.getExpression();
+
+		Assert.assertEquals(
+			"complexField", complexPropertyExpression.getName());
+
+		PrimitivePropertyExpression primitivePropertyExpression =
+			(PrimitivePropertyExpression)
+				complexPropertyExpression.getPropertyExpression();
+
+		Assert.assertEquals(
+			"primitiveField", primitivePropertyExpression.getName());
+
+		LiteralExpression literalExpression =
+			(LiteralExpression)binaryExpression.getRightOperationExpression();
+
+		Assert.assertEquals("'value'", literalExpression.getText());
+		Assert.assertEquals(
+			LiteralExpression.Type.STRING, literalExpression.getType());
 	}
 
 	@Test
@@ -238,12 +324,22 @@ public class FilterParserImplTest {
 
 		Assert.assertEquals(
 			BinaryExpression.Operation.EQ, binaryExpression.getOperation());
+
+		MemberExpression memberExpression =
+			(MemberExpression)binaryExpression.getLeftOperationExpression();
+
+		PrimitivePropertyExpression primitivePropertyExpression =
+			(PrimitivePropertyExpression)memberExpression.getExpression();
+
 		Assert.assertEquals(
-			"[fieldExternal]",
-			binaryExpression.getLeftOperationExpression().toString());
+			"fieldExternal", primitivePropertyExpression.getName());
+
+		LiteralExpression literalExpression =
+			(LiteralExpression)binaryExpression.getRightOperationExpression();
+
+		Assert.assertEquals("'value'", literalExpression.getText());
 		Assert.assertEquals(
-			"'value'",
-			binaryExpression.getRightOperationExpression().toString());
+			LiteralExpression.Type.STRING, literalExpression.getType());
 	}
 
 	@Test
@@ -259,12 +355,22 @@ public class FilterParserImplTest {
 
 		Assert.assertEquals(
 			BinaryExpression.Operation.EQ, binaryExpression.getOperation());
+
+		MemberExpression memberExpression =
+			(MemberExpression)binaryExpression.getLeftOperationExpression();
+
+		PrimitivePropertyExpression primitivePropertyExpression =
+			(PrimitivePropertyExpression)memberExpression.getExpression();
+
 		Assert.assertEquals(
-			"[fieldExternal]",
-			binaryExpression.getLeftOperationExpression().toString());
+			"fieldExternal", primitivePropertyExpression.getName());
+
+		LiteralExpression literalExpression =
+			(LiteralExpression)binaryExpression.getRightOperationExpression();
+
+		Assert.assertEquals("'value'", literalExpression.getText());
 		Assert.assertEquals(
-			"'value'",
-			binaryExpression.getRightOperationExpression().toString());
+			LiteralExpression.Type.STRING, literalExpression.getType());
 	}
 
 	@Test
@@ -278,14 +384,117 @@ public class FilterParserImplTest {
 
 		BinaryExpression binaryExpression = (BinaryExpression)expression;
 
+		MemberExpression memberExpression =
+			(MemberExpression)binaryExpression.getLeftOperationExpression();
+
+		PrimitivePropertyExpression primitivePropertyExpression =
+			(PrimitivePropertyExpression)memberExpression.getExpression();
+
 		Assert.assertEquals(
 			BinaryExpression.Operation.GE, binaryExpression.getOperation());
 		Assert.assertEquals(
-			"[fieldExternal]",
-			binaryExpression.getLeftOperationExpression().toString());
+			"fieldExternal", primitivePropertyExpression.getName());
+
+		LiteralExpression literalExpression =
+			(LiteralExpression)binaryExpression.getRightOperationExpression();
+
+		Assert.assertEquals("'value'", literalExpression.getText());
 		Assert.assertEquals(
-			"'value'",
-			binaryExpression.getRightOperationExpression().toString());
+			LiteralExpression.Type.STRING, literalExpression.getType());
+	}
+
+	@Test
+	public void testParseWithLambdaAllOnCollectionField() {
+		AbstractThrowableAssert exception = Assertions.assertThatThrownBy(
+			() -> _filterParserImpl.parse(
+				"collectionFieldExternal/all(f:contains(f,'alu'))")
+		).isInstanceOf(
+			ExpressionVisitException.class
+		);
+
+		exception.hasMessage(
+			"An expression cannot be obtained from uri resources " +
+				"[collectionFieldExternal, all]");
+	}
+
+	@Test
+	public void testParseWithLambdaAnyContainsOnCollectionField()
+		throws ExpressionVisitException {
+
+		Expression expression = _filterParserImpl.parse(
+			"collectionFieldExternal/any(f:contains(f,'alu'))");
+
+		Assert.assertNotNull(expression);
+
+		MemberExpression memberExpression = (MemberExpression)expression;
+
+		CollectionPropertyExpression collectionPropertyExpression =
+			(CollectionPropertyExpression)memberExpression.getExpression();
+
+		Assert.assertEquals(
+			"collectionFieldExternal", collectionPropertyExpression.getName());
+
+		LambdaFunctionExpression lambdaFunctionExpression =
+			collectionPropertyExpression.getLambdaFunctionExpression();
+
+		Assert.assertEquals(
+			LambdaFunctionExpression.Type.ANY,
+			lambdaFunctionExpression.getType());
+		Assert.assertEquals("f", lambdaFunctionExpression.getVariableName());
+
+		MethodExpression methodExpression =
+			(MethodExpression)lambdaFunctionExpression.getExpression();
+
+		Assert.assertEquals(
+			MethodExpression.Type.CONTAINS, methodExpression.getType());
+
+		List<Expression> methodExpressionExpressions =
+			methodExpression.getExpressions();
+
+		Assert.assertNotNull(methodExpressionExpressions);
+		Assert.assertEquals(
+			methodExpressionExpressions.toString(), 2,
+			methodExpressionExpressions.size());
+
+		MemberExpression methodExpressionMemberExpression =
+			(MemberExpression)methodExpressionExpressions.get(0);
+
+		LambdaVariableExpression lambdaVariableExpression =
+			(LambdaVariableExpression)
+				methodExpressionMemberExpression.getExpression();
+
+		Assert.assertNotNull(lambdaVariableExpression);
+		Assert.assertEquals("f", lambdaVariableExpression.getVariableName());
+
+		LiteralExpression literalExpression =
+			(LiteralExpression)methodExpressionExpressions.get(1);
+
+		Assert.assertNotNull(literalExpression);
+		Assert.assertEquals("'alu'", literalExpression.getText());
+		Assert.assertEquals(
+			LiteralExpression.Type.STRING, literalExpression.getType());
+	}
+
+	@Test
+	public void testParseWithLambdaAnyContainsOnNoncollectionField() {
+		try {
+			_filterParserImpl.parse("fieldExternal/any(f:contains(f,'alu'))");
+			Assert.fail("Expected ExpressionVisitException was not thrown");
+		}
+		catch (ExpressionVisitException eve) {
+			Assert.assertEquals(
+				"Expected token 'QualifiedName' not found.", eve.getMessage());
+		}
+	}
+
+	@Test
+	public void testParseWithLambdaAnyEqOnCollectionFieldInComplexField()
+		throws ExpressionVisitException {
+
+		Expression expression = _filterParserImpl.parse(
+			"complexField/collectionField/any(f:contains(f,'alu'))");
+
+		Assert.assertNotNull(expression);
 	}
 
 	@Test
@@ -301,12 +510,22 @@ public class FilterParserImplTest {
 
 		Assert.assertEquals(
 			BinaryExpression.Operation.LE, binaryExpression.getOperation());
+
+		MemberExpression memberExpression =
+			(MemberExpression)binaryExpression.getLeftOperationExpression();
+
+		PrimitivePropertyExpression primitivePropertyExpression =
+			(PrimitivePropertyExpression)memberExpression.getExpression();
+
 		Assert.assertEquals(
-			"[fieldExternal]",
-			binaryExpression.getLeftOperationExpression().toString());
+			"fieldExternal", primitivePropertyExpression.getName());
+
+		LiteralExpression literalExpression =
+			(LiteralExpression)binaryExpression.getRightOperationExpression();
+
+		Assert.assertEquals("'value'", literalExpression.getText());
 		Assert.assertEquals(
-			"'value'",
-			binaryExpression.getRightOperationExpression().toString());
+			LiteralExpression.Type.STRING, literalExpression.getType());
 	}
 
 	@Test
@@ -329,6 +548,23 @@ public class FilterParserImplTest {
 					return Stream.of(
 						new BooleanEntityField(
 							"booleanExternal", locale -> "booleanInternal"),
+						new CollectionEntityField(
+							new StringEntityField(
+								"collectionFieldExternal",
+								locale -> "collectionFieldInternal")),
+						new ComplexEntityField(
+							"complexField",
+							Stream.of(
+								new CollectionEntityField(
+									new StringEntityField(
+										"collectionField",
+										locale -> "collectionFieldInternal")),
+								new StringEntityField(
+									"primitiveField",
+									locale -> "primitiveFieldInternal")
+							).collect(
+								Collectors.toList()
+							)),
 						new DateEntityField(
 							"dateExternal", locale -> "dateInternal",
 							locale -> "dateInternal"),
