@@ -126,10 +126,6 @@ public class StructuredContentApioTestBundleActivator
 		}
 	}
 
-	private BundleContext _bundleContext;
-
-	private ServiceReference<DDMFormDeserializerTracker> _serviceReference;
-
 	@Override
 	public void stop(BundleContext bundleContext) {
 		_cleanUp();
@@ -359,6 +355,8 @@ public class StructuredContentApioTestBundleActivator
 		StructuredContentApioTestBundleActivator.class);
 
 	private List<AutoCloseable> _autoCloseables;
+	private BundleContext _bundleContext;
 	private DDMFormDeserializerTracker _ddmFormDeserializerTracker;
+	private ServiceReference<DDMFormDeserializerTracker> _serviceReference;
 
 }

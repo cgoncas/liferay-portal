@@ -14,6 +14,9 @@
 
 package com.liferay.content.space.apio.client.test;
 
+import com.liferay.content.space.apio.client.test.activator.ContentSpaceTestActivator;
+import com.liferay.oauth2.provider.test.util.OAuth2ProviderTestUtil;
+
 import io.restassured.RestAssured;
 
 import java.net.MalformedURLException;
@@ -21,9 +24,11 @@ import java.net.URL;
 
 import org.hamcrest.core.IsNull;
 
+import org.jboss.arquillian.container.test.api.Deployment;
 import org.jboss.arquillian.container.test.api.RunAsClient;
 import org.jboss.arquillian.junit.Arquillian;
 import org.jboss.arquillian.test.api.ArquillianResource;
+import org.jboss.shrinkwrap.api.Archive;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -35,6 +40,12 @@ import org.junit.runner.RunWith;
 @RunAsClient
 @RunWith(Arquillian.class)
 public class ContetSpaceApioTest {
+
+	@Deployment
+	public static Archive<?> getArchive() throws Exception {
+		return OAuth2ProviderTestUtil.getArchive(
+			ContentSpaceTestActivator.class);
+	}
 
 	@Before
 	public void setUp() throws MalformedURLException {
@@ -69,7 +80,8 @@ public class ContetSpaceApioTest {
 			)
 		).then(
 		).body(
-			"_embedded.ContentSpace.find { it.name == 'Liferay' }",
+			"_embedded.ContentSpace.find { it.name == '" +
+				ContentSpaceTestActivator.CONTENT_SPACE_NAME + "' }",
 			IsNull.notNullValue()
 		).log(
 		).ifError();
