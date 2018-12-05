@@ -12,7 +12,7 @@
  * details.
  */
 
-package com.liferay.content.space.apio.internal.architect.resource.test;
+package com.liferay.content.space.apio.client.test;
 
 import io.restassured.RestAssured;
 
