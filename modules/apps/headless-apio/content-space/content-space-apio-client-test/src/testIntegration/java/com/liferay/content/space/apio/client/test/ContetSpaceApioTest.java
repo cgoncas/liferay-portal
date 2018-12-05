@@ -22,6 +22,8 @@ import io.restassured.RestAssured;
 import java.net.MalformedURLException;
 import java.net.URL;
 
+import org.hamcrest.Matchers;
+import org.hamcrest.core.IsEqual;
 import org.hamcrest.core.IsNull;
 
 import org.jboss.arquillian.container.test.api.Deployment;
@@ -53,7 +55,7 @@ public class ContetSpaceApioTest {
 	}
 
 	@Test
-	public void testContentSpaceLiferayExists() {
+	public void testContentSpaceIsInContentSpaceCollections() {
 		RestAssured.given(
 		).auth(
 		).basic(
@@ -79,6 +81,8 @@ public class ContetSpaceApioTest {
 				"_links.content-space.href"
 			)
 		).then(
+		).statusCode(
+			200
 		).body(
 			"_embedded.ContentSpace.find { it.name == '" +
 				ContentSpaceTestActivator.CONTENT_SPACE_NAME + "' }",
@@ -103,6 +107,70 @@ public class ContetSpaceApioTest {
 			200
 		).body(
 			"_links.content-space.href", IsNull.notNullValue()
+		).log(
+		).ifError();
+	}
+
+	@Test
+	public void testGetContentSpace() {
+		RestAssured.given(
+		).auth(
+		).basic(
+			"test@liferay.com", "test"
+		).header(
+			"Accept", "application/hal+json"
+		).when(
+		).get(
+			(String)RestAssured.given(
+			).auth(
+			).basic(
+				"test@liferay.com", "test"
+			).header(
+				"Accept", "application/hal+json"
+			).when(
+			).get(
+				(String)RestAssured.given(
+				).auth(
+				).basic(
+					"test@liferay.com", "test"
+				).header(
+					"Accept", "application/hal+json"
+				).when(
+				).get(
+					_rootEndpointURL.toExternalForm()
+				).then(
+				).log(
+				).ifError(
+				).extract(
+				).path(
+					"_links.content-space.href"
+				)
+			).then(
+			).log(
+			).ifError(
+			).extract(
+			).path(
+				"_embedded.ContentSpace.find { it.name == '" +
+					ContentSpaceTestActivator.CONTENT_SPACE_NAME +
+						"' }._links.self.href"
+			)
+		).then(
+		).statusCode(
+			200
+		).body(
+			"name",
+			IsEqual.equalTo(ContentSpaceTestActivator.CONTENT_SPACE_NAME),
+			"availableLanguages", Matchers.hasItem("en-US"), "_links.self.href",
+			IsNull.notNullValue(), "_links.creator.href", IsNull.notNullValue(),
+			"_links.documentsRepository.href", IsNull.notNullValue(),
+			"_links.webSite.href", IsNull.notNullValue(), "_links.forms.href",
+			IsNull.notNullValue(), "_links.vocabularies.href",
+			IsNull.notNullValue(), "_links.structuredContents.href",
+			IsNull.notNullValue(), "_links.contentStructures.href",
+			IsNull.notNullValue(), "_links.keywords.href",
+			IsNull.notNullValue(), "_links.formStructures.href",
+			IsNull.notNullValue(), "_links.blogPosts.href",
+			IsNull.notNullValue()
 		).log(
 		).ifError();
 	}
