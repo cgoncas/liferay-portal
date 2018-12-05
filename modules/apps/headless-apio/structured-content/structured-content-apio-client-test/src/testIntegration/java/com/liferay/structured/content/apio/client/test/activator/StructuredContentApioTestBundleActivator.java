@@ -61,6 +61,7 @@ import java.util.Map;
 
 import org.osgi.framework.BundleActivator;
 import org.osgi.framework.BundleContext;
+import org.osgi.framework.ServiceReference;
 
 /**
  * @author Ruben Pulido
@@ -105,11 +106,15 @@ public class StructuredContentApioTestBundleActivator
 
 	@Override
 	public void start(BundleContext bundleContext) {
+		_bundleContext = bundleContext;
+
 		_autoCloseables = new ArrayList<>();
 
+		_serviceReference = bundleContext.getServiceReference(
+			DDMFormDeserializerTracker.class);
+
 		_ddmFormDeserializerTracker = bundleContext.getService(
-			bundleContext.getServiceReference(
-				DDMFormDeserializerTracker.class));
+			_serviceReference);
 
 		try {
 			_prepareTest();
@@ -121,9 +126,15 @@ public class StructuredContentApioTestBundleActivator
 		}
 	}
 
+	private BundleContext _bundleContext;
+
+	private ServiceReference<DDMFormDeserializerTracker> _serviceReference;
+
 	@Override
 	public void stop(BundleContext bundleContext) {
 		_cleanUp();
+
+		_bundleContext.ungetService(_serviceReference);
 	}
 
 	protected DDMForm deserialize(String content) {
