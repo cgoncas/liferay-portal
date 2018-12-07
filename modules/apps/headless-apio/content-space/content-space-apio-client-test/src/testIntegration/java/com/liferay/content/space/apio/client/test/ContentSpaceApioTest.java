@@ -15,9 +15,8 @@
 package com.liferay.content.space.apio.client.test;
 
 import com.liferay.content.space.apio.client.test.activator.ContentSpaceTestActivator;
+import com.liferay.content.space.apio.client.test.util.ApioClientBuilder;
 import com.liferay.oauth2.provider.test.util.OAuth2ProviderTestUtil;
-
-import io.restassured.RestAssured;
 
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -41,7 +40,7 @@ import org.junit.runner.RunWith;
  */
 @RunAsClient
 @RunWith(Arquillian.class)
-public class ContetSpaceApioTest {
+public class ContentSpaceApioTest {
 
 	@Deployment
 	public static Archive<?> getArchive() throws Exception {
@@ -56,30 +55,16 @@ public class ContetSpaceApioTest {
 
 	@Test
 	public void testContentSpaceIsInContentSpaceCollections() {
-		RestAssured.given(
-		).auth(
-		).basic(
+		ApioClientBuilder.given(
+		).basicAuth(
 			"test@liferay.com", "test"
 		).header(
 			"Accept", "application/hal+json"
 		).when(
 		).get(
-			(String)RestAssured.given(
-			).auth(
-			).basic(
-				"test@liferay.com", "test"
-			).header(
-				"Accept", "application/hal+json"
-			).when(
-			).get(
-				_rootEndpointURL.toExternalForm()
-			).then(
-			).log(
-			).ifError(
-			).extract(
-			).path(
-				"_links.content-space.href"
-			)
+			_rootEndpointURL.toExternalForm()
+		).follow(
+			"_links.content-space.href"
 		).then(
 		).statusCode(
 			200
@@ -87,15 +72,13 @@ public class ContetSpaceApioTest {
 			"_embedded.ContentSpace.find { it.name == '" +
 				ContentSpaceTestActivator.CONTENT_SPACE_NAME + "' }",
 			IsNull.notNullValue()
-		).log(
-		).ifError();
+		);
 	}
 
 	@Test
 	public void testContentSpaceLinkExistsInRootEndpoint() {
-		RestAssured.given(
-		).auth(
-		).basic(
+		ApioClientBuilder.given(
+		).basicAuth(
 			"test@liferay.com", "test"
 		).header(
 			"Accept", "application/hal+json"
@@ -107,72 +90,56 @@ public class ContetSpaceApioTest {
 			200
 		).body(
 			"_links.content-space.href", IsNull.notNullValue()
-		).log(
-		).ifError();
+		);
 	}
 
 	@Test
 	public void testGetContentSpace() {
-		RestAssured.given(
-		).auth(
-		).basic(
+		ApioClientBuilder.given(
+		).basicAuth(
 			"test@liferay.com", "test"
 		).header(
 			"Accept", "application/hal+json"
 		).when(
 		).get(
-			(String)RestAssured.given(
-			).auth(
-			).basic(
-				"test@liferay.com", "test"
-			).header(
-				"Accept", "application/hal+json"
-			).when(
-			).get(
-				(String)RestAssured.given(
-				).auth(
-				).basic(
-					"test@liferay.com", "test"
-				).header(
-					"Accept", "application/hal+json"
-				).when(
-				).get(
-					_rootEndpointURL.toExternalForm()
-				).then(
-				).log(
-				).ifError(
-				).extract(
-				).path(
-					"_links.content-space.href"
-				)
-			).then(
-			).log(
-			).ifError(
-			).extract(
-			).path(
-				"_embedded.ContentSpace.find { it.name == '" +
-					ContentSpaceTestActivator.CONTENT_SPACE_NAME +
-						"' }._links.self.href"
-			)
+			_rootEndpointURL.toExternalForm()
+		).follow(
+			"_links.content-space.href"
+		).follow(
+			"_embedded.ContentSpace.find { it.name == '" +
+				ContentSpaceTestActivator.CONTENT_SPACE_NAME +
+					"' }._links.self.href"
 		).then(
 		).statusCode(
 			200
 		).body(
 			"name",
-			IsEqual.equalTo(ContentSpaceTestActivator.CONTENT_SPACE_NAME),
-			"availableLanguages", Matchers.hasItem("en-US"), "_links.self.href",
-			IsNull.notNullValue(), "_links.creator.href", IsNull.notNullValue(),
-			"_links.documentsRepository.href", IsNull.notNullValue(),
-			"_links.webSite.href", IsNull.notNullValue(), "_links.forms.href",
-			IsNull.notNullValue(), "_links.vocabularies.href",
-			IsNull.notNullValue(), "_links.structuredContents.href",
-			IsNull.notNullValue(), "_links.contentStructures.href",
-			IsNull.notNullValue(), "_links.keywords.href",
-			IsNull.notNullValue(), "_links.formStructures.href",
-			IsNull.notNullValue(), "_links.blogPosts.href",
-			IsNull.notNullValue()
-		).log(
-		).ifError();
+			IsEqual.equalTo(ContentSpaceTestActivator.CONTENT_SPACE_NAME)
+		).body(
+			"availableLanguages", Matchers.hasItem("en-US")
+		).body(
+			"_links.self.href", IsNull.notNullValue()
+		).body(
+			"_links.creator.href", IsNull.notNullValue()
+		).body(
+			"_links.documentsRepository.href", IsNull.notNullValue()
+		).body(
+			"_links.webSite.href", IsNull.notNullValue()
+		).body(
+			"_links.forms.href", IsNull.notNullValue()
+		).body(
+			"_links.vocabularies.href", IsNull.notNullValue()
+		).body(
+			"_links.structuredContents.href", IsNull.notNullValue()
+		).body(
+			"_links.contentStructures.href", IsNull.notNullValue()
+		).body(
+			"_links.keywords.href", IsNull.notNullValue()
+		).body(
+			"_links.formStructures.href", IsNull.notNullValue()
+		).body(
+			"_links.blogPosts.href", IsNull.notNullValue()
+		);
 	}
 
 	private URL _rootEndpointURL;
