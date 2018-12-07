@@ -77,6 +77,22 @@ public class ContentSpaceCollectionResourceTest {
 	}
 
 	@Test
+	public void testGetGroup() throws Throwable {
+		Group group = GroupTestUtil.addGroup();
+
+		try {
+			Group finalGroup = _getGroup(group.getGroupId());
+
+			Assert.assertNotNull(finalGroup);
+
+			Assert.assertEquals(group.getName(), finalGroup.getName());
+		}
+		finally {
+			_groupLocalService.deleteGroup(group);
+		}
+	}
+
+	@Test
 	public void testGetInactiveGroup() throws Throwable {
 		Group group = GroupTestUtil.addGroup();
 
@@ -105,6 +121,17 @@ public class ContentSpaceCollectionResourceTest {
 			group.isManualMembership(), group.getMembershipRestriction(),
 			group.getFriendlyURL(), group.isInheritContent(), false,
 			new ServiceContext());
+	}
+
+	private Group _getGroup(long groupId) throws Exception {
+		Class<? extends CollectionResource> clazz =
+			_collectionResource.getClass();
+
+		Method method = clazz.getDeclaredMethod("_getGroup", long.class);
+
+		method.setAccessible(true);
+
+		return (Group)method.invoke(_collectionResource, groupId);
 	}
 
 	private PageItems<Group> _getPageItems(
