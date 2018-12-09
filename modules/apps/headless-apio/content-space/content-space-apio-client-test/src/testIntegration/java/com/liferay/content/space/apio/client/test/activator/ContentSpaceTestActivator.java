@@ -14,6 +14,7 @@
 
 package com.liferay.content.space.apio.client.test.activator;
 
+import com.liferay.portal.apio.test.util.AuthConfigurationTestUtil;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.model.Group;
@@ -35,6 +36,8 @@ public class ContentSpaceTestActivator implements BundleActivator {
 
 	@Override
 	public void start(BundleContext bundleContext) {
+		_bundleContext = bundleContext;
+
 		_createDemoData();
 	}
 
@@ -45,6 +48,8 @@ public class ContentSpaceTestActivator implements BundleActivator {
 
 	private void _createDemoData() {
 		try {
+			AuthConfigurationTestUtil.deployOAuthConfiguration(_bundleContext);
+
 			_permissionCheckerTestCallback.beforeMethod(null, null);
 
 			_group = GroupTestUtil.addGroup(
@@ -73,6 +78,7 @@ public class ContentSpaceTestActivator implements BundleActivator {
 	private static final PermissionCheckerTestCallback
 		_permissionCheckerTestCallback = PermissionCheckerTestCallback.INSTANCE;
 
+	private BundleContext _bundleContext;
 	private Group _group;
 
 }
