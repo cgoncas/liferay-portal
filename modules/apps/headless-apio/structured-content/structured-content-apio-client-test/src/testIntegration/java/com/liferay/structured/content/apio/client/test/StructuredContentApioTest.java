@@ -357,7 +357,7 @@ public class StructuredContentApioTest {
 
 		Map<String, String> headers = _getHeaders();
 
-		headers.put("Accept-Language", "es-ES");
+		headers.put("Accept-Language", "en-US;q=0.8,es-ES;q=0.9");
 
 		List<String> values = JsonPath.read(
 			_toStringAsGuest(
