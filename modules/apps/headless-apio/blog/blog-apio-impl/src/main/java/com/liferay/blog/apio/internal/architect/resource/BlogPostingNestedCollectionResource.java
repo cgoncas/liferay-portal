@@ -34,8 +34,10 @@ import com.liferay.category.apio.architect.identifier.CategoryIdentifier;
 import com.liferay.comment.apio.architect.identifier.CommentIdentifier;
 import com.liferay.content.space.apio.architect.identifier.ContentSpaceIdentifier;
 import com.liferay.document.library.kernel.service.DLAppLocalService;
+import com.liferay.friendly.url.exception.DuplicateFriendlyURLEntryException;
 import com.liferay.media.object.apio.architect.identifier.MediaObjectIdentifier;
 import com.liferay.person.apio.architect.identifier.PersonIdentifier;
+import com.liferay.portal.apio.exception.ValidationException;
 import com.liferay.portal.apio.identifier.ClassNameClassPK;
 import com.liferay.portal.apio.permission.HasPermission;
 import com.liferay.portal.apio.user.CurrentUser;
@@ -159,14 +161,20 @@ public class BlogPostingNestedCollectionResource
 		ServiceContext serviceContext = blogPostingForm.getServiceContext(
 			groupId);
 
-		return _blogsEntryLocalService.addEntry(
-			userId, blogPostingForm.getHeadline(),
-			blogPostingForm.getAlternativeHeadline(),
-			blogPostingForm.getFriendlyURLPath(),
-			blogPostingForm.getDescription(), blogPostingForm.getArticleBody(),
-			blogPostingForm.getDisplayDate(), true, true, new String[0],
-			blogPostingForm.getImageCaption(), imageSelector, null,
-			serviceContext);
+		try {
+			return _blogsEntryLocalService.addEntry(
+				userId, blogPostingForm.getHeadline(),
+				blogPostingForm.getAlternativeHeadline(),
+				blogPostingForm.getFriendlyURLPath(),
+				blogPostingForm.getDescription(),
+				blogPostingForm.getArticleBody(),
+				blogPostingForm.getDisplayDate(), true, true, new String[0],
+				blogPostingForm.getImageCaption(), imageSelector, null,
+				serviceContext);
+		}
+		catch (DuplicateFriendlyURLEntryException dfurlee) {
+			throw new ValidationException("Duplicate Friendly URL", dfurlee);
+		}
 	}
 
 	private List<String> _getBlogsEntryAssetTags(BlogsEntry blogsEntry) {
