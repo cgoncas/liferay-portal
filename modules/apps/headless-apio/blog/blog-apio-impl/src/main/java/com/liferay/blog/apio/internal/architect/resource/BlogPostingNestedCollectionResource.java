@@ -185,13 +185,13 @@ public class BlogPostingNestedCollectionResource
 	}
 
 	private PageItems<BlogsEntry> _getPageItems(
-		Pagination pagination, long groupId) {
+		Pagination pagination, long contentSpaceId) {
 
 		List<BlogsEntry> blogsEntries = _blogsEntryService.getGroupEntries(
-			groupId, WorkflowConstants.STATUS_APPROVED,
+			contentSpaceId, WorkflowConstants.STATUS_APPROVED,
 			pagination.getStartPosition(), pagination.getEndPosition());
 		int count = _blogsEntryService.getGroupEntriesCount(
-			groupId, WorkflowConstants.STATUS_APPROVED);
+			contentSpaceId, WorkflowConstants.STATUS_APPROVED);
 
 		return new PageItems<>(blogsEntries, count);
 	}
