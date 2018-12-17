@@ -17,10 +17,12 @@ package com.liferay.folder.apio.client.test;
 import com.liferay.folder.apio.client.test.internal.activator.FolderTestActivator;
 import com.liferay.oauth2.provider.test.util.OAuth2ProviderTestUtil;
 import com.liferay.portal.apio.test.util.ApioClientBuilder;
+import com.liferay.portal.kernel.util.StringUtil;
 
 import java.net.MalformedURLException;
 import java.net.URL;
 
+import org.hamcrest.core.IsEqual;
 import org.hamcrest.core.IsNull;
 
 import org.jboss.arquillian.container.test.api.Deployment;
@@ -48,6 +50,102 @@ public class FolderApioTest {
 	@Before
 	public void setUp() throws MalformedURLException {
 		_rootEndpointURL = new URL(_url, "/o/api");
+	}
+
+	@Test
+	public void testCreateFolder() {
+		String folderName = StringUtil.randomString(20);
+
+		String folderDescription = StringUtil.randomString(20);
+
+		String path = ApioClientBuilder.given(
+		).basicAuth(
+			"test@liferay.com", "test"
+		).header(
+			"Accept", "application/hal+json"
+		).when(
+		).get(
+			_rootEndpointURL.toExternalForm()
+		).follow(
+			"_links.content-space.href"
+		).follow(
+			"_embedded.ContentSpace.find {it.name == '" +
+				FolderTestActivator.CONTENT_SPACE_NAME +
+					"'}._links.documentsRepository.href"
+		).then(
+		).extract(
+		).path(
+			"_links.folders.href"
+		);
+
+		ApioClientBuilder.given(
+		).basicAuth(
+			"test@liferay.com", "test"
+		).header(
+			"Accept", "application/hal+json"
+		).header(
+			"Content-Type", "application/json"
+		).body(
+			"{\"description\":\"" + folderDescription + "\",\"name\":\"" +
+				folderName + "\"}"
+		).when(
+		).post(
+			path
+		).then(
+		).statusCode(
+			200
+		).body(
+			"dateCreated", IsNull.notNullValue()
+		).body(
+			"dateModified", IsNull.notNullValue()
+		).body(
+			"description", IsEqual.equalTo(folderDescription)
+		).body(
+			"name", IsEqual.equalTo(folderName)
+		).body(
+			"_links.self.href", IsNull.notNullValue()
+		);
+
+		ApioClientBuilder.given(
+		).basicAuth(
+			"test@liferay.com", "test"
+		).header(
+			"Accept", "application/hal+json"
+		).when(
+		).get(
+			_rootEndpointURL.toExternalForm()
+		).follow(
+			"_links.content-space.href"
+		).follow(
+			"_embedded.ContentSpace.find {it.name == '" +
+				FolderTestActivator.CONTENT_SPACE_NAME +
+					"'}._links.documentsRepository.href"
+		).follow(
+			"_links.folders.href"
+		).then(
+		).statusCode(
+			200
+		).body(
+			"_embedded.Folder.find {it.name == '" + folderName +
+				"'}.dateCreated",
+			IsNull.notNullValue()
+		).body(
+			"_embedded.Folder.find {it.name == '" + folderName +
+				"'}.dateModified",
+			IsNull.notNullValue()
+		).body(
+			"_embedded.Folder.find {it.name == '" + folderName +
+				"'}._links.documents",
+			IsNull.notNullValue()
+		).body(
+			"_embedded.Folder.find {it.name == '" + folderName +
+				"'}._links.self.href",
+			IsNull.notNullValue()
+		).body(
+			"_embedded.Folder.find {it.name == '" + folderName +
+				"'}._links.subFolders",
+			IsNull.notNullValue()
+		);
 	}
 
 	@Test
