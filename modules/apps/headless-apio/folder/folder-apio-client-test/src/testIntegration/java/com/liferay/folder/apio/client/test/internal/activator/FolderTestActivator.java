@@ -18,7 +18,6 @@ import com.liferay.document.library.kernel.exception.NoSuchFolderException;
 import com.liferay.document.library.kernel.model.DLFolder;
 import com.liferay.document.library.kernel.model.DLFolderConstants;
 import com.liferay.document.library.kernel.service.DLFolderLocalServiceUtil;
-import com.liferay.petra.string.StringPool;
 import com.liferay.portal.apio.test.util.AuthConfigurationTestUtil;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
@@ -41,8 +40,14 @@ public class FolderTestActivator implements BundleActivator {
 	public static final String CONTENT_SPACE_NAME =
 		FolderTestActivator.class.getSimpleName() + "ContentSpaceName";
 
+	public static final String FOLDER_DESCRIPTION =
+		FolderTestActivator.class.getSimpleName() + "FolderDescription";
+
 	public static final String FOLDER_NAME =
 		FolderTestActivator.class.getSimpleName() + "FolderName";
+
+	public static final String SUBFOLDER_DESCRIPTION =
+		FolderTestActivator.class.getSimpleName() + "SubfolderDescription";
 
 	public static final String SUBFOLDER_NAME =
 		FolderTestActivator.class.getSimpleName() + "SubfolderName";
@@ -58,7 +63,7 @@ public class FolderTestActivator implements BundleActivator {
 	}
 
 	private static DLFolder _addDLFolder(
-			long groupId, long parentFolderId, String name)
+			long groupId, long parentFolderId, String name, String description)
 		throws Exception {
 
 		try {
@@ -72,7 +77,7 @@ public class FolderTestActivator implements BundleActivator {
 
 		return DLFolderLocalServiceUtil.addFolder(
 			TestPropsValues.getUserId(), groupId, groupId, false,
-			parentFolderId, name, StringPool.BLANK, false,
+			parentFolderId, name, description, false,
 			ServiceContextTestUtil.getServiceContext(groupId));
 	}
 
@@ -99,10 +104,11 @@ public class FolderTestActivator implements BundleActivator {
 
 			DLFolder dlFolder = _addDLFolder(
 				_group.getGroupId(), DLFolderConstants.DEFAULT_PARENT_FOLDER_ID,
-				FOLDER_NAME);
+				FOLDER_NAME, FOLDER_DESCRIPTION);
 
 			_addDLFolder(
-				_group.getGroupId(), dlFolder.getFolderId(), SUBFOLDER_NAME);
+				_group.getGroupId(), dlFolder.getFolderId(), SUBFOLDER_NAME,
+				SUBFOLDER_DESCRIPTION);
 		}
 		catch (Exception e) {
 			_log.error(e, e);
