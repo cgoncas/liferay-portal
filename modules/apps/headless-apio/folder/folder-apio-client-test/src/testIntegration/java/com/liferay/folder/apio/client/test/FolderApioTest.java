@@ -102,6 +102,63 @@ public class FolderApioTest {
 	}
 
 	@Test
+	public void testCreateSubfolder() {
+		String subfoldersPath = ApioClientBuilder.given(
+		).basicAuth(
+			"test@liferay.com", "test"
+		).header(
+			"Accept", "application/hal+json"
+		).when(
+		).get(
+			_rootEndpointURL.toExternalForm()
+		).follow(
+			"_links.content-space.href"
+		).follow(
+			"_embedded.ContentSpace.find {it.name == '" +
+				FolderTestActivator.CONTENT_SPACE_NAME +
+					"'}._links.documentsRepository.href"
+		).follow(
+			"_links.folders.href"
+		).then(
+		).statusCode(
+			200
+		).extract(
+		).path(
+			"_embedded.Folder.find {it.name == '" +
+				FolderTestActivator.FOLDER_NAME +
+					"'}._links.subFolders.href"
+		);
+
+		ApioClientBuilder.given(
+		).basicAuth(
+			"test@liferay.com", "test"
+		).header(
+			"Accept", "application/hal+json"
+		).header(
+			"Content-Type", "application/json"
+		).body(
+			"{\"description\":\"My subfolder description\",\"name\":\"My " +
+				"subfolder\"}"
+		).when(
+		).post(
+			subfoldersPath
+		).then(
+		).statusCode(
+			200
+		).body(
+			"dateCreated", IsNull.notNullValue()
+		).body(
+			"dateModified", IsNull.notNullValue()
+		).body(
+			"description", Matchers.equalTo("My subfolder description")
+		).body(
+			"name", Matchers.equalTo("My subfolder")
+		).body(
+			"_links.self.href", IsNull.notNullValue()
+		);
+	}
+
+	@Test
 	public void testDocumentsRepositoryContainsLinksToFoldersAndDocuments() {
 		ApioClientBuilder.given(
 		).basicAuth(
@@ -186,6 +243,11 @@ public class FolderApioTest {
 		).body(
 			"_embedded.Folder.find {it.name == '" +
 				FolderTestActivator.FOLDER_NAME +
+					"'}.description",
+			Matchers.equalTo(FolderTestActivator.FOLDER_DESCRIPTION)
+		).body(
+			"_embedded.Folder.find {it.name == '" +
+				FolderTestActivator.FOLDER_NAME +
 					"'}._links.documents",
 			IsNull.notNullValue()
 		).body(
@@ -197,6 +259,57 @@ public class FolderApioTest {
 			"_embedded.Folder.find {it.name == '" +
 				FolderTestActivator.FOLDER_NAME +
 					"'}._links.subFolders",
+			IsNull.notNullValue()
+		);
+	}
+
+	@Test
+	public void testGetSubfolders() {
+		ApioClientBuilder.given(
+		).basicAuth(
+			"test@liferay.com", "test"
+		).header(
+			"Accept", "application/hal+json"
+		).when(
+		).get(
+			_rootEndpointURL.toExternalForm()
+		).follow(
+			"_links.content-space.href"
+		).follow(
+			"_embedded.ContentSpace.find {it.name == '" +
+				FolderTestActivator.CONTENT_SPACE_NAME +
+					"'}._links.documentsRepository.href"
+		).follow(
+			"_links.folders.href"
+		).follow(
+			"_embedded.Folder.find {it.name == '" +
+				FolderTestActivator.FOLDER_NAME + "'}._links.subFolders.href"
+		).then(
+		).statusCode(
+			200
+		).body(
+			"_embedded.Folder.find {it.name == '" +
+				FolderTestActivator.SUBFOLDER_NAME + "'}.dateCreated",
+			IsNull.notNullValue()
+		).body(
+			"_embedded.Folder.find {it.name == '" +
+				FolderTestActivator.SUBFOLDER_NAME + "'}.dateModified",
+			IsNull.notNullValue()
+		).body(
+			"_embedded.Folder.find {it.name == '" +
+				FolderTestActivator.SUBFOLDER_NAME + "'}.description",
+			Matchers.equalTo(FolderTestActivator.SUBFOLDER_DESCRIPTION)
+		).body(
+			"_embedded.Folder.find {it.name == '" +
+				FolderTestActivator.SUBFOLDER_NAME + "'}._links.documents",
+			IsNull.notNullValue()
+		).body(
+			"_embedded.Folder.find {it.name == '" +
+				FolderTestActivator.SUBFOLDER_NAME + "'}._links.self.href",
+			IsNull.notNullValue()
+		).body(
+			"_embedded.Folder.find {it.name == '" +
+				FolderTestActivator.SUBFOLDER_NAME + "'}._links.subFolders",
 			IsNull.notNullValue()
 		);
 	}
