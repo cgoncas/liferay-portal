@@ -159,6 +159,63 @@ public class FolderApioTest {
 	}
 
 	@Test
+	public void testDeleteFolder() {
+		String foldersHref = ApioClientBuilder.given(
+		).basicAuth(
+			"test@liferay.com", "test"
+		).header(
+			"Accept", "application/hal+json"
+		).when(
+		).get(
+			_rootEndpointURL.toExternalForm()
+		).follow(
+			"_links.content-space.href"
+		).follow(
+			"_embedded.ContentSpace.find {it.name == '" +
+				FolderTestActivator.CONTENT_SPACE_NAME +
+					"'}._links.documentsRepository.href"
+		).then(
+		).extract(
+		).path(
+			"_links.folders.href"
+		);
+
+		String folderHref = ApioClientBuilder.given(
+		).basicAuth(
+			"test@liferay.com", "test"
+		).header(
+			"Accept", "application/hal+json"
+		).header(
+			"Content-Type", "application/json"
+		).body(
+			"{\"description\":\"Example description\",\"name\":\"Example " +
+				"folder\"}"
+		).when(
+		).post(
+			foldersHref
+		).then(
+		).extract(
+		).path(
+			"_links.self.href"
+		);
+
+		ApioClientBuilder.given(
+		).basicAuth(
+			"test@liferay.com", "test"
+		).header(
+			"Accept", "application/hal+json"
+		).header(
+			"Content-Type", "application/json"
+		).when(
+		).delete(
+			folderHref
+		).then(
+		).statusCode(
+			200
+		);
+	}
+
+	@Test
 	public void testDocumentsRepositoryContainsLinksToFoldersAndDocuments() {
 		ApioClientBuilder.given(
 		).basicAuth(
@@ -311,6 +368,68 @@ public class FolderApioTest {
 			"_embedded.Folder.find {it.name == '" +
 				FolderTestActivator.SUBFOLDER_NAME + "'}._links.subFolders",
 			IsNull.notNullValue()
+		);
+	}
+
+	@Test
+	public void testUpdateFolder() {
+		String foldersHref = ApioClientBuilder.given(
+		).basicAuth(
+			"test@liferay.com", "test"
+		).header(
+			"Accept", "application/hal+json"
+		).when(
+		).get(
+			_rootEndpointURL.toExternalForm()
+		).follow(
+			"_links.content-space.href"
+		).follow(
+			"_embedded.ContentSpace.find {it.name == '" +
+				FolderTestActivator.CONTENT_SPACE_NAME +
+					"'}._links.documentsRepository.href"
+		).then(
+		).extract(
+		).path(
+			"_links.folders.href"
+		);
+
+		String folderHref = ApioClientBuilder.given(
+		).basicAuth(
+			"test@liferay.com", "test"
+		).header(
+			"Accept", "application/hal+json"
+		).header(
+			"Content-Type", "application/json"
+		).body(
+			"{\"description\":\"Example description 2\",\"name\":\"Example " +
+				"folder 2\"}"
+		).when(
+		).post(
+			foldersHref
+		).then(
+		).extract(
+		).path(
+			"_links.self.href"
+		);
+
+		ApioClientBuilder.given(
+		).basicAuth(
+			"test@liferay.com", "test"
+		).header(
+			"Accept", "application/hal+json"
+		).header(
+			"Content-Type", "application/json"
+		).body(
+			"{\"description\":\"Example description 2 modified\",\"name\":\"" +
+				"Example folder 2 modified\"}"
+		).when(
+		).put(
+			folderHref
+		).then(
+		).body(
+			"description", Matchers.equalTo("Example description 2 modified")
+		).body(
+			"name", Matchers.equalTo("Example folder 2 modified")
 		);
 	}
 
