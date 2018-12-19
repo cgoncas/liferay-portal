@@ -14,10 +14,6 @@
 
 package com.liferay.folder.apio.client.test.internal.activator;
 
-import com.liferay.document.library.kernel.exception.NoSuchFolderException;
-import com.liferay.document.library.kernel.model.DLFolder;
-import com.liferay.document.library.kernel.model.DLFolderConstants;
-import com.liferay.document.library.kernel.service.DLFolderLocalServiceUtil;
 import com.liferay.portal.apio.test.util.AuthConfigurationTestUtil;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
@@ -25,8 +21,6 @@ import com.liferay.portal.kernel.model.Group;
 import com.liferay.portal.kernel.model.GroupConstants;
 import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.test.util.GroupTestUtil;
-import com.liferay.portal.kernel.test.util.ServiceContextTestUtil;
-import com.liferay.portal.kernel.test.util.TestPropsValues;
 import com.liferay.portal.test.rule.callback.PermissionCheckerTestCallback;
 
 import org.osgi.framework.BundleActivator;
@@ -62,25 +56,6 @@ public class FolderTestActivator implements BundleActivator {
 		_cleanUp();
 	}
 
-	private static DLFolder _addDLFolder(
-			long groupId, long parentFolderId, String name, String description)
-		throws Exception {
-
-		try {
-			DLFolder folder = DLFolderLocalServiceUtil.getFolder(
-				groupId, parentFolderId, name);
-
-			DLFolderLocalServiceUtil.deleteFolder(folder.getFolderId());
-		}
-		catch (NoSuchFolderException nsfe) {
-		}
-
-		return DLFolderLocalServiceUtil.addFolder(
-			TestPropsValues.getUserId(), groupId, groupId, false,
-			parentFolderId, name, description, false,
-			ServiceContextTestUtil.getServiceContext(groupId));
-	}
-
 	private void _cleanUp() {
 		try {
 			GroupTestUtil.deleteGroup(_group);
@@ -101,14 +76,6 @@ public class FolderTestActivator implements BundleActivator {
 				new ServiceContext());
 
 			AuthConfigurationTestUtil.deployOAuthConfiguration(bundleContext);
-
-			DLFolder dlFolder = _addDLFolder(
-				_group.getGroupId(), DLFolderConstants.DEFAULT_PARENT_FOLDER_ID,
-				FOLDER_NAME, FOLDER_DESCRIPTION);
-
-			_addDLFolder(
-				_group.getGroupId(), dlFolder.getFolderId(), SUBFOLDER_NAME,
-				SUBFOLDER_DESCRIPTION);
 		}
 		catch (Exception e) {
 			_log.error(e, e);
