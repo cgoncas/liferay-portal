@@ -377,7 +377,7 @@ public class BlogPostingNestedCollectionResourceTest
 		}
 
 		@Override
-		public Date getDatePublished() {
+		public Date getPublishedDate() {
 			return _datePublished;
 		}
 

@@ -100,7 +100,7 @@ public interface BlogPosting {
 	 * @return the modification date
 	 * @review
 	 */
-	public Date getDatePublished();
+	public Date getPublishedDate();
 
 	/**
 	 * Returns the blog posting's description. See <a
