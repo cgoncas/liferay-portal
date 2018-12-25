@@ -63,7 +63,7 @@ public class StructuredContentApioTest {
 				rootEndpointURL.toExternalForm(),
 				StructuredContentApioTestBundleActivator.SITE_NAME));
 
-		_contentStructuresEndpointURL = new URL(
+		URL contentStructuresEndpointURL = new URL(
 			ApioClientBuilder.given(
 			).basicAuth(
 				"test@liferay.com", "test"
@@ -76,6 +76,23 @@ public class StructuredContentApioTest {
 			).extract(
 			).path(
 				"_links.contentStructures.href"
+			));
+
+		_contentStructureHrefURL = new URL(
+			ApioClientBuilder.given(
+			).basicAuth(
+				"test@liferay.com", "test"
+			).header(
+				"Accept", "application/hal+json"
+			).when(
+			).get(
+				contentStructuresEndpointURL.toExternalForm()
+			).then(
+			).extract(
+			).path(
+				"_embedded.Structure.find {it.name == '" +
+					StructuredContentApioTestBundleActivator.SITE_NAME +
+						"'}._links.self.href"
 			));
 
 		_structuredContentEndpointURL = new URL(
@@ -96,22 +113,6 @@ public class StructuredContentApioTest {
 
 	@Test
 	public void testCreateStructuredContent() throws Exception {
-		String contentStructureId = ApioClientBuilder.given(
-		).basicAuth(
-			"test@liferay.com", "test"
-		).header(
-			"Accept", "application/hal+json"
-		).when(
-		).get(
-			_contentStructuresEndpointURL.toExternalForm()
-		).then(
-		).extract(
-		).path(
-			"_embedded.Structure.find {it.name == '" +
-				StructuredContentApioTestBundleActivator.SITE_NAME +
-					"'}._links.self.href"
-		);
-
 		ApioClientBuilder.given(
 		).basicAuth(
 			"test@liferay.com", "test"
@@ -122,7 +123,8 @@ public class StructuredContentApioTest {
 		).body(
 			_read(
 				"test-create-structured-content.json",
-				Collections.singletonList(contentStructureId))
+				Collections.singletonList(
+					_contentStructureHrefURL.toExternalForm()))
 		).when(
 		).post(
 			_structuredContentEndpointURL.toExternalForm()
@@ -139,22 +141,6 @@ public class StructuredContentApioTest {
 
 	@Test
 	public void testDeleteStructuredContent() throws Exception {
-		String contentStructureId = ApioClientBuilder.given(
-		).basicAuth(
-			"test@liferay.com", "test"
-		).header(
-			"Accept", "application/hal+json"
-		).when(
-		).get(
-			_contentStructuresEndpointURL.toExternalForm()
-		).then(
-		).extract(
-		).path(
-			"_embedded.Structure.find {it.name == '" +
-				StructuredContentApioTestBundleActivator.SITE_NAME +
-					"'}._links.self.href"
-		);
-
 		String structuredContentHref = ApioClientBuilder.given(
 		).basicAuth(
 			"test@liferay.com", "test"
@@ -165,7 +151,8 @@ public class StructuredContentApioTest {
 		).body(
 			_read(
 				"test-create-structured-content.json",
-				Collections.singletonList(contentStructureId))
+				Collections.singletonList(
+					_contentStructureHrefURL.toExternalForm()))
 		).when(
 		).post(
 			_structuredContentEndpointURL.toExternalForm()
@@ -430,22 +417,6 @@ public class StructuredContentApioTest {
 
 	@Test
 	public void testUpdateStructuredContent() throws Exception {
-		String contentStructureId = ApioClientBuilder.given(
-		).basicAuth(
-			"test@liferay.com", "test"
-		).header(
-			"Accept", "application/hal+json"
-		).when(
-		).get(
-			_contentStructuresEndpointURL.toExternalForm()
-		).then(
-		).extract(
-		).path(
-			"_embedded.Structure.find {it.name == '" +
-				StructuredContentApioTestBundleActivator.SITE_NAME +
-					"'}._links.self.href"
-		);
-
 		String structuredContentHref = ApioClientBuilder.given(
 		).basicAuth(
 			"test@liferay.com", "test"
@@ -456,7 +427,8 @@ public class StructuredContentApioTest {
 		).body(
 			_read(
 				"test-create-structured-content.json",
-				Collections.singletonList(contentStructureId))
+				Collections.singletonList(
+					_contentStructureHrefURL.toExternalForm()))
 		).when(
 		).post(
 			_structuredContentEndpointURL.toExternalForm()
@@ -476,7 +448,8 @@ public class StructuredContentApioTest {
 		).body(
 			_read(
 				"test-update-structured-content.json",
-				Collections.singletonList(contentStructureId))
+				Collections.singletonList(
+					_contentStructureHrefURL.toExternalForm()))
 		).when(
 		).put(
 			structuredContentHref
@@ -497,7 +470,7 @@ public class StructuredContentApioTest {
 		return String.format(StringUtil.read(url.openStream()), vars.toArray());
 	}
 
-	private URL _contentStructuresEndpointURL;
+	private URL _contentStructureHrefURL;
 	private URL _structuredContentEndpointURL;
 
 	@ArquillianResource
