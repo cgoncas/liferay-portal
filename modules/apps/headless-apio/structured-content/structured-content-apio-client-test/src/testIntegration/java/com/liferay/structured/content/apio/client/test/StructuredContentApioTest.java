@@ -141,26 +141,10 @@ public class StructuredContentApioTest {
 
 	@Test
 	public void testDeleteStructuredContent() throws Exception {
-		String structuredContentHref = ApioClientBuilder.given(
-		).basicAuth(
-			"test@liferay.com", "test"
-		).header(
-			"Accept", "application/hal+json"
-		).header(
-			"Content-Type", "application/json"
-		).body(
-			_read(
-				"test-create-structured-content.json",
-				Collections.singletonList(
-					_contentStructureHrefURL.toExternalForm()))
-		).when(
-		).post(
-			_structuredContentEndpointURL.toExternalForm()
-		).then(
-		).extract(
-		).path(
-			"_links.self.href"
-		);
+		URL structuredContentIdURL = _createStructuredContent(
+			"test-create-structured-content.json",
+			Collections.singletonList(
+				_contentStructureHrefURL.toExternalForm()));
 
 		ApioClientBuilder.given(
 		).basicAuth(
@@ -171,7 +155,7 @@ public class StructuredContentApioTest {
 			"Content-Type", "application/json"
 		).when(
 		).delete(
-			structuredContentHref
+			structuredContentIdURL.toExternalForm()
 		).then(
 		).statusCode(
 			Matchers.isOneOf(200, 204)
@@ -417,26 +401,10 @@ public class StructuredContentApioTest {
 
 	@Test
 	public void testUpdateStructuredContent() throws Exception {
-		String structuredContentHref = ApioClientBuilder.given(
-		).basicAuth(
-			"test@liferay.com", "test"
-		).header(
-			"Accept", "application/hal+json"
-		).header(
-			"Content-Type", "application/json"
-		).body(
-			_read(
-				"test-create-structured-content.json",
-				Collections.singletonList(
-					_contentStructureHrefURL.toExternalForm()))
-		).when(
-		).post(
-			_structuredContentEndpointURL.toExternalForm()
-		).then(
-		).extract(
-		).path(
-			"_links.self.href"
-		);
+		URL structuredContentIdURL = _createStructuredContent(
+			"test-create-structured-content.json",
+			Collections.singletonList(
+				_contentStructureHrefURL.toExternalForm()));
 
 		ApioClientBuilder.given(
 		).basicAuth(
@@ -452,7 +420,7 @@ public class StructuredContentApioTest {
 					_contentStructureHrefURL.toExternalForm()))
 		).when(
 		).put(
-			structuredContentHref
+			structuredContentIdURL.toExternalForm()
 		).then(
 		).body(
 			"title", Matchers.equalTo("Example Structured Content Modified")
@@ -460,6 +428,29 @@ public class StructuredContentApioTest {
 			"_embedded.values._embedded.find {it.name == 'MyDecimal'}.value",
 			Matchers.equalTo("2.0")
 		);
+	}
+
+	private URL _createStructuredContent(String fileName, List<String> vars)
+		throws Exception {
+
+		return new URL(
+			ApioClientBuilder.given(
+			).basicAuth(
+				"test@liferay.com", "test"
+			).header(
+				"Accept", "application/hal+json"
+			).header(
+				"Content-Type", "application/json"
+			).body(
+				_read(fileName, vars)
+			).when(
+			).post(
+				_structuredContentEndpointURL.toExternalForm()
+			).then(
+			).extract(
+			).path(
+				"_links.self.href"
+			));
 	}
 
 	private String _read(String fileName, List<String> vars) throws Exception {
