@@ -107,7 +107,7 @@ public class ResourceSortingStructuredContentNestedCollectionResourceTest
 
 	@Test
 	public void testGetPageItemsSortByCheckboxStructureFieldAsc()
-		throws Exception {
+		throws Throwable {
 
 		DDMStructureTestHelper ddmStructureTestHelper =
 			new DDMStructureTestHelper(
@@ -170,7 +170,7 @@ public class ResourceSortingStructuredContentNestedCollectionResourceTest
 
 	@Test
 	public void testGetPageItemsSortByCheckboxStructureFieldDesc()
-		throws Exception {
+		throws Throwable {
 
 		DDMStructureTestHelper ddmStructureTestHelper =
 			new DDMStructureTestHelper(
@@ -232,7 +232,7 @@ public class ResourceSortingStructuredContentNestedCollectionResourceTest
 	}
 
 	@Test
-	public void testGetPageItemsSortByDateCreatedAsc() throws Exception {
+	public void testGetPageItemsSortByDateCreatedAsc() throws Throwable {
 		Map<Locale, String> stringMap1 = new HashMap<>();
 
 		stringMap1.put(LocaleUtil.getDefault(), RandomTestUtil.randomString());
@@ -280,7 +280,7 @@ public class ResourceSortingStructuredContentNestedCollectionResourceTest
 	}
 
 	@Test
-	public void testGetPageItemsSortByDateCreatedDesc() throws Exception {
+	public void testGetPageItemsSortByDateCreatedDesc() throws Throwable {
 		Map<Locale, String> stringMap1 = new HashMap<>();
 
 		stringMap1.put(LocaleUtil.getDefault(), RandomTestUtil.randomString());
@@ -328,7 +328,7 @@ public class ResourceSortingStructuredContentNestedCollectionResourceTest
 	}
 
 	@Test
-	public void testGetPageItemsSortByDateModifiedAsc() throws Exception {
+	public void testGetPageItemsSortByDateModifiedAsc() throws Throwable {
 		Map<Locale, String> stringMap1 = new HashMap<>();
 
 		stringMap1.put(LocaleUtil.getDefault(), RandomTestUtil.randomString());
@@ -376,7 +376,7 @@ public class ResourceSortingStructuredContentNestedCollectionResourceTest
 	}
 
 	@Test
-	public void testGetPageItemsSortByDateModifiedDesc() throws Exception {
+	public void testGetPageItemsSortByDateModifiedDesc() throws Throwable {
 		Map<Locale, String> stringMap1 = new HashMap<>();
 
 		stringMap1.put(LocaleUtil.getDefault(), RandomTestUtil.randomString());
@@ -424,7 +424,7 @@ public class ResourceSortingStructuredContentNestedCollectionResourceTest
 	}
 
 	@Test
-	public void testGetPageItemsSortByDatePublishedAsc() throws Exception {
+	public void testGetPageItemsSortByDatePublishedAsc() throws Throwable {
 		Map<Locale, String> stringMap1 = new HashMap<>();
 
 		stringMap1.put(LocaleUtil.getDefault(), RandomTestUtil.randomString());
@@ -482,7 +482,7 @@ public class ResourceSortingStructuredContentNestedCollectionResourceTest
 	}
 
 	@Test
-	public void testGetPageItemsSortByDatePublishedDesc() throws Exception {
+	public void testGetPageItemsSortByDatePublishedDesc() throws Throwable {
 		Map<Locale, String> stringMap1 = new HashMap<>();
 
 		stringMap1.put(LocaleUtil.getDefault(), RandomTestUtil.randomString());
@@ -540,7 +540,7 @@ public class ResourceSortingStructuredContentNestedCollectionResourceTest
 	}
 
 	@Test
-	public void testGetPageItemsSortByDateStructureFieldAsc() throws Exception {
+	public void testGetPageItemsSortByDateStructureFieldAsc() throws Throwable {
 		DDMStructureTestHelper ddmStructureTestHelper =
 			new DDMStructureTestHelper(
 				PortalUtil.getClassNameId(JournalArticle.class), _group);
@@ -602,7 +602,7 @@ public class ResourceSortingStructuredContentNestedCollectionResourceTest
 
 	@Test
 	public void testGetPageItemsSortByDateStructureFieldDesc()
-		throws Exception {
+		throws Throwable {
 
 		DDMStructureTestHelper ddmStructureTestHelper =
 			new DDMStructureTestHelper(
@@ -665,7 +665,7 @@ public class ResourceSortingStructuredContentNestedCollectionResourceTest
 
 	@Test
 	public void testGetPageItemsSortByDecimalStructureFieldAsc()
-		throws Exception {
+		throws Throwable {
 
 		DDMStructureTestHelper ddmStructureTestHelper =
 			new DDMStructureTestHelper(
@@ -728,7 +728,7 @@ public class ResourceSortingStructuredContentNestedCollectionResourceTest
 
 	@Test
 	public void testGetPageItemsSortByDecimalStructureFieldDesc()
-		throws Exception {
+		throws Throwable {
 
 		DDMStructureTestHelper ddmStructureTestHelper =
 			new DDMStructureTestHelper(
@@ -791,7 +791,7 @@ public class ResourceSortingStructuredContentNestedCollectionResourceTest
 
 	@Test
 	public void testGetPageItemsSortByIntegerStructureFieldDesc()
-		throws Exception {
+		throws Throwable {
 
 		DDMStructureTestHelper ddmStructureTestHelper =
 			new DDMStructureTestHelper(
@@ -854,7 +854,7 @@ public class ResourceSortingStructuredContentNestedCollectionResourceTest
 
 	@Test
 	public void testGetPageItemsSortByRadioStructureFieldAsc()
-		throws Exception {
+		throws Throwable {
 
 		DDMStructureTestHelper ddmStructureTestHelper =
 			new DDMStructureTestHelper(
@@ -917,7 +917,7 @@ public class ResourceSortingStructuredContentNestedCollectionResourceTest
 
 	@Test
 	public void testGetPageItemsSortByRadioStructureFieldDesc()
-		throws Exception {
+		throws Throwable {
 
 		DDMStructureTestHelper ddmStructureTestHelper =
 			new DDMStructureTestHelper(
@@ -980,7 +980,7 @@ public class ResourceSortingStructuredContentNestedCollectionResourceTest
 
 	@Test
 	public void testGetPageItemsSortByStringStructureFieldAsc()
-		throws Exception {
+		throws Throwable {
 
 		DDMStructureTestHelper ddmStructureTestHelper =
 			new DDMStructureTestHelper(
@@ -1043,7 +1043,7 @@ public class ResourceSortingStructuredContentNestedCollectionResourceTest
 
 	@Test
 	public void testGetPageItemsSortByStringStructureFieldDesc()
-		throws Exception {
+		throws Throwable {
 
 		DDMStructureTestHelper ddmStructureTestHelper =
 			new DDMStructureTestHelper(
@@ -1105,7 +1105,7 @@ public class ResourceSortingStructuredContentNestedCollectionResourceTest
 	}
 
 	@Test
-	public void testGetPageItemsSortByTitleAsc() throws Exception {
+	public void testGetPageItemsSortByTitleAsc() throws Throwable {
 		Map<Locale, String> stringMap1 = new HashMap<>();
 
 		stringMap1.put(LocaleUtil.getDefault(), "title1");
@@ -1151,7 +1151,7 @@ public class ResourceSortingStructuredContentNestedCollectionResourceTest
 
 	@Test
 	public void testGetPageItemsSortByTitleAscWithDifferentDefaultLocale()
-		throws Exception {
+		throws Throwable {
 
 		Map<Locale, String> stringMap1 = new HashMap<>();
 
@@ -1199,7 +1199,7 @@ public class ResourceSortingStructuredContentNestedCollectionResourceTest
 
 	@Test
 	public void testGetPageItemsSortByTitleAscWithNonedefaultLocale()
-		throws Exception {
+		throws Throwable {
 
 		Map<Locale, String> stringMap1 = new HashMap<>();
 
@@ -1247,7 +1247,7 @@ public class ResourceSortingStructuredContentNestedCollectionResourceTest
 	}
 
 	@Test
-	public void testGetPageItemsSortByTitleDefault() throws Exception {
+	public void testGetPageItemsSortByTitleDefault() throws Throwable {
 		Map<Locale, String> stringMap1 = new HashMap<>();
 
 		stringMap1.put(LocaleUtil.getDefault(), "title B");
@@ -1292,7 +1292,7 @@ public class ResourceSortingStructuredContentNestedCollectionResourceTest
 	}
 
 	@Test
-	public void testGetPageItemsSortByTitleDesc() throws Exception {
+	public void testGetPageItemsSortByTitleDesc() throws Throwable {
 		Map<Locale, String> stringMap1 = new HashMap<>();
 
 		stringMap1.put(LocaleUtil.getDefault(), "title A");

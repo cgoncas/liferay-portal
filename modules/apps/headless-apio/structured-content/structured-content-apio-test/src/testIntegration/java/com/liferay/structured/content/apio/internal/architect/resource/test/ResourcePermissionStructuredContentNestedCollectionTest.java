@@ -78,13 +78,13 @@ public class ResourcePermissionStructuredContentNestedCollectionTest
 
 	@Test
 	public void testGetJournalArticleWrapperFilterByPermission()
-		throws Exception {
+		throws Throwable {
 
 		Map<Locale, String> stringMap = new HashMap<>();
 
 		String title = RandomTestUtil.randomString();
 
-		stringMap.put(LocaleUtil.getDefault(), title);
+		stringMap.put(LocaleUtil.US, title);
 
 		ServiceContext serviceContext =
 			ServiceContextTestUtil.getServiceContext(_group.getGroupId());
@@ -96,8 +96,8 @@ public class ResourcePermissionStructuredContentNestedCollectionTest
 			_group.getGroupId(),
 			JournalFolderConstants.DEFAULT_PARENT_FOLDER_ID,
 			JournalArticleConstants.CLASSNAME_ID_DEFAULT, title, false,
-			stringMap, stringMap, stringMap, null, LocaleUtil.getDefault(),
-			null, true, true, serviceContext);
+			stringMap, stringMap, stringMap, null, LocaleUtil.US, null, true,
+			true, serviceContext);
 
 		User user = UserTestUtil.addUser();
 
@@ -110,7 +110,7 @@ public class ResourcePermissionStructuredContentNestedCollectionTest
 			Assertions.assertThatThrownBy(
 				() -> getJournalArticleWrapper(
 					journalArticle.getId(),
-					getThemeDisplay(_group, LocaleUtil.getDefault()))
+					getThemeDisplay(_group, LocaleUtil.US))
 			).isInstanceOf(
 				PrincipalException.MustHavePermission.class
 			);
@@ -122,11 +122,11 @@ public class ResourcePermissionStructuredContentNestedCollectionTest
 
 	@Test
 	public void testGetPageItemsWithGuestPermissionAndGroupPermissionAndAdminUser()
-		throws Exception {
+		throws Throwable {
 
 		Map<Locale, String> stringMap = new HashMap<>();
 
-		stringMap.put(LocaleUtil.getDefault(), RandomTestUtil.randomString());
+		stringMap.put(LocaleUtil.US, RandomTestUtil.randomString());
 
 		ServiceContext serviceContext =
 			ServiceContextTestUtil.getServiceContext(_group.getGroupId());
@@ -139,8 +139,7 @@ public class ResourcePermissionStructuredContentNestedCollectionTest
 			JournalFolderConstants.DEFAULT_PARENT_FOLDER_ID,
 			JournalArticleConstants.CLASSNAME_ID_DEFAULT,
 			RandomTestUtil.randomString(), false, stringMap, stringMap,
-			stringMap, null, LocaleUtil.getDefault(), null, true, true,
-			serviceContext);
+			stringMap, null, LocaleUtil.US, null, true, true, serviceContext);
 
 		User user = UserTestUtil.addGroupAdminUser(_group);
 
@@ -152,8 +151,7 @@ public class ResourcePermissionStructuredContentNestedCollectionTest
 
 			PageItems<JournalArticle> pageItems = getPageItems(
 				PaginationRequest.of(10, 1), _group.getGroupId(),
-				_acceptLanguage,
-				getThemeDisplay(_group, LocaleUtil.getDefault()),
+				_acceptLanguage, getThemeDisplay(_group, LocaleUtil.US),
 				Filter.emptyFilter(), Sort.emptySort());
 
 			Assert.assertEquals(1, pageItems.getTotalCount());
@@ -165,11 +163,11 @@ public class ResourcePermissionStructuredContentNestedCollectionTest
 
 	@Test
 	public void testGetPageItemsWithGuestPermissionAndGroupPermissionAndGuestUser()
-		throws Exception {
+		throws Throwable {
 
 		Map<Locale, String> stringMap = new HashMap<>();
 
-		stringMap.put(LocaleUtil.getDefault(), RandomTestUtil.randomString());
+		stringMap.put(LocaleUtil.US, RandomTestUtil.randomString());
 
 		ServiceContext serviceContext =
 			ServiceContextTestUtil.getServiceContext(_group.getGroupId());
@@ -182,8 +180,7 @@ public class ResourcePermissionStructuredContentNestedCollectionTest
 			JournalFolderConstants.DEFAULT_PARENT_FOLDER_ID,
 			JournalArticleConstants.CLASSNAME_ID_DEFAULT,
 			RandomTestUtil.randomString(), false, stringMap, stringMap,
-			stringMap, null, LocaleUtil.getDefault(), null, true, true,
-			serviceContext);
+			stringMap, null, LocaleUtil.US, null, true, true, serviceContext);
 
 		User user = _userLocalService.getDefaultUser(
 			TestPropsValues.getCompanyId());
@@ -196,8 +193,7 @@ public class ResourcePermissionStructuredContentNestedCollectionTest
 
 			PageItems<JournalArticle> pageItems = getPageItems(
 				PaginationRequest.of(10, 1), _group.getGroupId(),
-				_acceptLanguage,
-				getThemeDisplay(_group, LocaleUtil.getDefault()),
+				_acceptLanguage, getThemeDisplay(_group, LocaleUtil.US),
 				Filter.emptyFilter(), Sort.emptySort());
 
 			Assert.assertEquals(1, pageItems.getTotalCount());
@@ -206,11 +202,11 @@ public class ResourcePermissionStructuredContentNestedCollectionTest
 
 	@Test
 	public void testGetPageItemsWithGuestPermissionAndGroupPermissionAndNoSiteUser()
-		throws Exception {
+		throws Throwable {
 
 		Map<Locale, String> stringMap = new HashMap<>();
 
-		stringMap.put(LocaleUtil.getDefault(), RandomTestUtil.randomString());
+		stringMap.put(LocaleUtil.US, RandomTestUtil.randomString());
 
 		ServiceContext serviceContext =
 			ServiceContextTestUtil.getServiceContext(_group.getGroupId());
@@ -223,8 +219,7 @@ public class ResourcePermissionStructuredContentNestedCollectionTest
 			JournalFolderConstants.DEFAULT_PARENT_FOLDER_ID,
 			JournalArticleConstants.CLASSNAME_ID_DEFAULT,
 			RandomTestUtil.randomString(), false, stringMap, stringMap,
-			stringMap, null, LocaleUtil.getDefault(), null, true, true,
-			serviceContext);
+			stringMap, null, LocaleUtil.US, null, true, true, serviceContext);
 
 		User user = UserTestUtil.addUser();
 
@@ -236,8 +231,7 @@ public class ResourcePermissionStructuredContentNestedCollectionTest
 
 			PageItems<JournalArticle> pageItems = getPageItems(
 				PaginationRequest.of(10, 1), _group.getGroupId(),
-				_acceptLanguage,
-				getThemeDisplay(_group, LocaleUtil.getDefault()),
+				_acceptLanguage, getThemeDisplay(_group, LocaleUtil.US),
 				Filter.emptyFilter(), Sort.emptySort());
 
 			Assert.assertEquals(1, pageItems.getTotalCount());
@@ -249,11 +243,11 @@ public class ResourcePermissionStructuredContentNestedCollectionTest
 
 	@Test
 	public void testGetPageItemsWithGuestPermissionAndGroupPermissionAndSiteUser()
-		throws Exception {
+		throws Throwable {
 
 		Map<Locale, String> stringMap = new HashMap<>();
 
-		stringMap.put(LocaleUtil.getDefault(), RandomTestUtil.randomString());
+		stringMap.put(LocaleUtil.US, RandomTestUtil.randomString());
 
 		ServiceContext serviceContext =
 			ServiceContextTestUtil.getServiceContext(_group.getGroupId());
@@ -266,8 +260,7 @@ public class ResourcePermissionStructuredContentNestedCollectionTest
 			JournalFolderConstants.DEFAULT_PARENT_FOLDER_ID,
 			JournalArticleConstants.CLASSNAME_ID_DEFAULT,
 			RandomTestUtil.randomString(), false, stringMap, stringMap,
-			stringMap, null, LocaleUtil.getDefault(), null, true, true,
-			serviceContext);
+			stringMap, null, LocaleUtil.US, null, true, true, serviceContext);
 
 		User user = UserTestUtil.addUser(_group.getGroupId());
 
@@ -279,8 +272,7 @@ public class ResourcePermissionStructuredContentNestedCollectionTest
 
 			PageItems<JournalArticle> pageItems = getPageItems(
 				PaginationRequest.of(10, 1), _group.getGroupId(),
-				_acceptLanguage,
-				getThemeDisplay(_group, LocaleUtil.getDefault()),
+				_acceptLanguage, getThemeDisplay(_group, LocaleUtil.US),
 				Filter.emptyFilter(), Sort.emptySort());
 
 			Assert.assertEquals(1, pageItems.getTotalCount());
@@ -292,11 +284,11 @@ public class ResourcePermissionStructuredContentNestedCollectionTest
 
 	@Test
 	public void testGetPageItemsWithGuestPermissionAndNoGroupPermissionAndAdminUser()
-		throws Exception {
+		throws Throwable {
 
 		Map<Locale, String> stringMap = new HashMap<>();
 
-		stringMap.put(LocaleUtil.getDefault(), RandomTestUtil.randomString());
+		stringMap.put(LocaleUtil.US, RandomTestUtil.randomString());
 
 		ServiceContext serviceContext =
 			ServiceContextTestUtil.getServiceContext(_group.getGroupId());
@@ -309,8 +301,7 @@ public class ResourcePermissionStructuredContentNestedCollectionTest
 			JournalFolderConstants.DEFAULT_PARENT_FOLDER_ID,
 			JournalArticleConstants.CLASSNAME_ID_DEFAULT,
 			RandomTestUtil.randomString(), false, stringMap, stringMap,
-			stringMap, null, LocaleUtil.getDefault(), null, true, true,
-			serviceContext);
+			stringMap, null, LocaleUtil.US, null, true, true, serviceContext);
 
 		User user = UserTestUtil.addGroupAdminUser(_group);
 
@@ -322,8 +313,7 @@ public class ResourcePermissionStructuredContentNestedCollectionTest
 
 			PageItems<JournalArticle> pageItems = getPageItems(
 				PaginationRequest.of(10, 1), _group.getGroupId(),
-				_acceptLanguage,
-				getThemeDisplay(_group, LocaleUtil.getDefault()),
+				_acceptLanguage, getThemeDisplay(_group, LocaleUtil.US),
 				Filter.emptyFilter(), Sort.emptySort());
 
 			Assert.assertEquals(1, pageItems.getTotalCount());
@@ -335,11 +325,11 @@ public class ResourcePermissionStructuredContentNestedCollectionTest
 
 	@Test
 	public void testGetPageItemsWithGuestPermissionAndNoGroupPermissionAndGuestUser()
-		throws Exception {
+		throws Throwable {
 
 		Map<Locale, String> stringMap = new HashMap<>();
 
-		stringMap.put(LocaleUtil.getDefault(), RandomTestUtil.randomString());
+		stringMap.put(LocaleUtil.US, RandomTestUtil.randomString());
 
 		ServiceContext serviceContext =
 			ServiceContextTestUtil.getServiceContext(_group.getGroupId());
@@ -352,8 +342,7 @@ public class ResourcePermissionStructuredContentNestedCollectionTest
 			JournalFolderConstants.DEFAULT_PARENT_FOLDER_ID,
 			JournalArticleConstants.CLASSNAME_ID_DEFAULT,
 			RandomTestUtil.randomString(), false, stringMap, stringMap,
-			stringMap, null, LocaleUtil.getDefault(), null, true, true,
-			serviceContext);
+			stringMap, null, LocaleUtil.US, null, true, true, serviceContext);
 
 		User user = _userLocalService.getDefaultUser(
 			TestPropsValues.getCompanyId());
@@ -366,8 +355,7 @@ public class ResourcePermissionStructuredContentNestedCollectionTest
 
 			PageItems<JournalArticle> pageItems = getPageItems(
 				PaginationRequest.of(10, 1), _group.getGroupId(),
-				_acceptLanguage,
-				getThemeDisplay(_group, LocaleUtil.getDefault()),
+				_acceptLanguage, getThemeDisplay(_group, LocaleUtil.US),
 				Filter.emptyFilter(), Sort.emptySort());
 
 			Assert.assertEquals(1, pageItems.getTotalCount());
@@ -376,11 +364,11 @@ public class ResourcePermissionStructuredContentNestedCollectionTest
 
 	@Test
 	public void testGetPageItemsWithGuestPermissionAndNoGroupPermissionAndNoSiteUser()
-		throws Exception {
+		throws Throwable {
 
 		Map<Locale, String> stringMap = new HashMap<>();
 
-		stringMap.put(LocaleUtil.getDefault(), RandomTestUtil.randomString());
+		stringMap.put(LocaleUtil.US, RandomTestUtil.randomString());
 
 		ServiceContext serviceContext =
 			ServiceContextTestUtil.getServiceContext(_group.getGroupId());
@@ -393,8 +381,7 @@ public class ResourcePermissionStructuredContentNestedCollectionTest
 			JournalFolderConstants.DEFAULT_PARENT_FOLDER_ID,
 			JournalArticleConstants.CLASSNAME_ID_DEFAULT,
 			RandomTestUtil.randomString(), false, stringMap, stringMap,
-			stringMap, null, LocaleUtil.getDefault(), null, true, true,
-			serviceContext);
+			stringMap, null, LocaleUtil.US, null, true, true, serviceContext);
 
 		User user = UserTestUtil.addUser();
 
@@ -406,8 +393,7 @@ public class ResourcePermissionStructuredContentNestedCollectionTest
 
 			PageItems<JournalArticle> pageItems = getPageItems(
 				PaginationRequest.of(10, 1), _group.getGroupId(),
-				_acceptLanguage,
-				getThemeDisplay(_group, LocaleUtil.getDefault()),
+				_acceptLanguage, getThemeDisplay(_group, LocaleUtil.US),
 				Filter.emptyFilter(), Sort.emptySort());
 
 			Assert.assertEquals(1, pageItems.getTotalCount());
@@ -419,11 +405,11 @@ public class ResourcePermissionStructuredContentNestedCollectionTest
 
 	@Test
 	public void testGetPageItemsWithGuestPermissionAndNoGroupPermissionAndSiteUser()
-		throws Exception {
+		throws Throwable {
 
 		Map<Locale, String> stringMap = new HashMap<>();
 
-		stringMap.put(LocaleUtil.getDefault(), RandomTestUtil.randomString());
+		stringMap.put(LocaleUtil.US, RandomTestUtil.randomString());
 
 		ServiceContext serviceContext =
 			ServiceContextTestUtil.getServiceContext(_group.getGroupId());
@@ -436,8 +422,7 @@ public class ResourcePermissionStructuredContentNestedCollectionTest
 			JournalFolderConstants.DEFAULT_PARENT_FOLDER_ID,
 			JournalArticleConstants.CLASSNAME_ID_DEFAULT,
 			RandomTestUtil.randomString(), false, stringMap, stringMap,
-			stringMap, null, LocaleUtil.getDefault(), null, true, true,
-			serviceContext);
+			stringMap, null, LocaleUtil.US, null, true, true, serviceContext);
 
 		User user = UserTestUtil.addUser(_group.getGroupId());
 
@@ -449,8 +434,7 @@ public class ResourcePermissionStructuredContentNestedCollectionTest
 
 			PageItems<JournalArticle> pageItems = getPageItems(
 				PaginationRequest.of(10, 1), _group.getGroupId(),
-				_acceptLanguage,
-				getThemeDisplay(_group, LocaleUtil.getDefault()),
+				_acceptLanguage, getThemeDisplay(_group, LocaleUtil.US),
 				Filter.emptyFilter(), Sort.emptySort());
 
 			Assert.assertEquals(1, pageItems.getTotalCount());
@@ -462,11 +446,11 @@ public class ResourcePermissionStructuredContentNestedCollectionTest
 
 	@Test
 	public void testGetPageItemsWithNoGuestPermissionAndGroupPermissionAndAdminUser()
-		throws Exception {
+		throws Throwable {
 
 		Map<Locale, String> stringMap = new HashMap<>();
 
-		stringMap.put(LocaleUtil.getDefault(), RandomTestUtil.randomString());
+		stringMap.put(LocaleUtil.US, RandomTestUtil.randomString());
 
 		ServiceContext serviceContext =
 			ServiceContextTestUtil.getServiceContext(_group.getGroupId());
@@ -479,8 +463,7 @@ public class ResourcePermissionStructuredContentNestedCollectionTest
 			JournalFolderConstants.DEFAULT_PARENT_FOLDER_ID,
 			JournalArticleConstants.CLASSNAME_ID_DEFAULT,
 			RandomTestUtil.randomString(), false, stringMap, stringMap,
-			stringMap, null, LocaleUtil.getDefault(), null, true, true,
-			serviceContext);
+			stringMap, null, LocaleUtil.US, null, true, true, serviceContext);
 
 		User user = UserTestUtil.addGroupAdminUser(_group);
 
@@ -492,8 +475,7 @@ public class ResourcePermissionStructuredContentNestedCollectionTest
 
 			PageItems<JournalArticle> pageItems = getPageItems(
 				PaginationRequest.of(10, 1), _group.getGroupId(),
-				_acceptLanguage,
-				getThemeDisplay(_group, LocaleUtil.getDefault()),
+				_acceptLanguage, getThemeDisplay(_group, LocaleUtil.US),
 				Filter.emptyFilter(), Sort.emptySort());
 
 			Assert.assertEquals(1, pageItems.getTotalCount());
@@ -505,11 +487,11 @@ public class ResourcePermissionStructuredContentNestedCollectionTest
 
 	@Test
 	public void testGetPageItemsWithNoGuestPermissionAndGroupPermissionAndGuestUser()
-		throws Exception {
+		throws Throwable {
 
 		Map<Locale, String> stringMap = new HashMap<>();
 
-		stringMap.put(LocaleUtil.getDefault(), RandomTestUtil.randomString());
+		stringMap.put(LocaleUtil.US, RandomTestUtil.randomString());
 
 		ServiceContext serviceContext =
 			ServiceContextTestUtil.getServiceContext(_group.getGroupId());
@@ -522,8 +504,7 @@ public class ResourcePermissionStructuredContentNestedCollectionTest
 			JournalFolderConstants.DEFAULT_PARENT_FOLDER_ID,
 			JournalArticleConstants.CLASSNAME_ID_DEFAULT,
 			RandomTestUtil.randomString(), false, stringMap, stringMap,
-			stringMap, null, LocaleUtil.getDefault(), null, true, true,
-			serviceContext);
+			stringMap, null, LocaleUtil.US, null, true, true, serviceContext);
 
 		User user = _userLocalService.getDefaultUser(
 			TestPropsValues.getCompanyId());
@@ -536,8 +517,7 @@ public class ResourcePermissionStructuredContentNestedCollectionTest
 
 			PageItems<JournalArticle> pageItems = getPageItems(
 				PaginationRequest.of(10, 1), _group.getGroupId(),
-				_acceptLanguage,
-				getThemeDisplay(_group, LocaleUtil.getDefault()),
+				_acceptLanguage, getThemeDisplay(_group, LocaleUtil.US),
 				Filter.emptyFilter(), Sort.emptySort());
 
 			Assert.assertEquals(0, pageItems.getTotalCount());
@@ -546,11 +526,11 @@ public class ResourcePermissionStructuredContentNestedCollectionTest
 
 	@Test
 	public void testGetPageItemsWithNoGuestPermissionAndGroupPermissionAndNoSiteUser()
-		throws Exception {
+		throws Throwable {
 
 		Map<Locale, String> stringMap = new HashMap<>();
 
-		stringMap.put(LocaleUtil.getDefault(), RandomTestUtil.randomString());
+		stringMap.put(LocaleUtil.US, RandomTestUtil.randomString());
 
 		ServiceContext serviceContext =
 			ServiceContextTestUtil.getServiceContext(_group.getGroupId());
@@ -563,8 +543,7 @@ public class ResourcePermissionStructuredContentNestedCollectionTest
 			JournalFolderConstants.DEFAULT_PARENT_FOLDER_ID,
 			JournalArticleConstants.CLASSNAME_ID_DEFAULT,
 			RandomTestUtil.randomString(), false, stringMap, stringMap,
-			stringMap, null, LocaleUtil.getDefault(), null, true, true,
-			serviceContext);
+			stringMap, null, LocaleUtil.US, null, true, true, serviceContext);
 
 		User user = UserTestUtil.addUser();
 
@@ -576,8 +555,7 @@ public class ResourcePermissionStructuredContentNestedCollectionTest
 
 			PageItems<JournalArticle> pageItems = getPageItems(
 				PaginationRequest.of(10, 1), _group.getGroupId(),
-				_acceptLanguage,
-				getThemeDisplay(_group, LocaleUtil.getDefault()),
+				_acceptLanguage, getThemeDisplay(_group, LocaleUtil.US),
 				Filter.emptyFilter(), Sort.emptySort());
 
 			Assert.assertEquals(0, pageItems.getTotalCount());
@@ -589,11 +567,11 @@ public class ResourcePermissionStructuredContentNestedCollectionTest
 
 	@Test
 	public void testGetPageItemsWithNoGuestPermissionAndGroupPermissionAndSiteUser()
-		throws Exception {
+		throws Throwable {
 
 		Map<Locale, String> stringMap = new HashMap<>();
 
-		stringMap.put(LocaleUtil.getDefault(), RandomTestUtil.randomString());
+		stringMap.put(LocaleUtil.US, RandomTestUtil.randomString());
 
 		ServiceContext serviceContext =
 			ServiceContextTestUtil.getServiceContext(_group.getGroupId());
@@ -606,8 +584,7 @@ public class ResourcePermissionStructuredContentNestedCollectionTest
 			JournalFolderConstants.DEFAULT_PARENT_FOLDER_ID,
 			JournalArticleConstants.CLASSNAME_ID_DEFAULT,
 			RandomTestUtil.randomString(), false, stringMap, stringMap,
-			stringMap, null, LocaleUtil.getDefault(), null, true, true,
-			serviceContext);
+			stringMap, null, LocaleUtil.US, null, true, true, serviceContext);
 
 		User user = UserTestUtil.addUser(_group.getGroupId());
 
@@ -619,8 +596,7 @@ public class ResourcePermissionStructuredContentNestedCollectionTest
 
 			PageItems<JournalArticle> pageItems = getPageItems(
 				PaginationRequest.of(10, 1), _group.getGroupId(),
-				_acceptLanguage,
-				getThemeDisplay(_group, LocaleUtil.getDefault()),
+				_acceptLanguage, getThemeDisplay(_group, LocaleUtil.US),
 				Filter.emptyFilter(), Sort.emptySort());
 
 			Assert.assertEquals(1, pageItems.getTotalCount());
@@ -632,11 +608,11 @@ public class ResourcePermissionStructuredContentNestedCollectionTest
 
 	@Test
 	public void testGetPageItemsWithNoGuestPermissionAndNoGroupPermissionAndAdminUser()
-		throws Exception {
+		throws Throwable {
 
 		Map<Locale, String> stringMap = new HashMap<>();
 
-		stringMap.put(LocaleUtil.getDefault(), RandomTestUtil.randomString());
+		stringMap.put(LocaleUtil.US, RandomTestUtil.randomString());
 
 		ServiceContext serviceContext =
 			ServiceContextTestUtil.getServiceContext(_group.getGroupId());
@@ -649,8 +625,7 @@ public class ResourcePermissionStructuredContentNestedCollectionTest
 			JournalFolderConstants.DEFAULT_PARENT_FOLDER_ID,
 			JournalArticleConstants.CLASSNAME_ID_DEFAULT,
 			RandomTestUtil.randomString(), false, stringMap, stringMap,
-			stringMap, null, LocaleUtil.getDefault(), null, true, true,
-			serviceContext);
+			stringMap, null, LocaleUtil.US, null, true, true, serviceContext);
 
 		User user = UserTestUtil.addGroupAdminUser(_group);
 
@@ -662,8 +637,7 @@ public class ResourcePermissionStructuredContentNestedCollectionTest
 
 			PageItems<JournalArticle> pageItems = getPageItems(
 				PaginationRequest.of(10, 1), _group.getGroupId(),
-				_acceptLanguage,
-				getThemeDisplay(_group, LocaleUtil.getDefault()),
+				_acceptLanguage, getThemeDisplay(_group, LocaleUtil.US),
 				Filter.emptyFilter(), Sort.emptySort());
 
 			Assert.assertEquals(1, pageItems.getTotalCount());
@@ -675,11 +649,11 @@ public class ResourcePermissionStructuredContentNestedCollectionTest
 
 	@Test
 	public void testGetPageItemsWithNoGuestPermissionAndNoGroupPermissionAndGuestUser()
-		throws Exception {
+		throws Throwable {
 
 		Map<Locale, String> stringMap = new HashMap<>();
 
-		stringMap.put(LocaleUtil.getDefault(), RandomTestUtil.randomString());
+		stringMap.put(LocaleUtil.US, RandomTestUtil.randomString());
 
 		ServiceContext serviceContext =
 			ServiceContextTestUtil.getServiceContext(_group.getGroupId());
@@ -692,8 +666,7 @@ public class ResourcePermissionStructuredContentNestedCollectionTest
 			JournalFolderConstants.DEFAULT_PARENT_FOLDER_ID,
 			JournalArticleConstants.CLASSNAME_ID_DEFAULT,
 			RandomTestUtil.randomString(), false, stringMap, stringMap,
-			stringMap, null, LocaleUtil.getDefault(), null, true, true,
-			serviceContext);
+			stringMap, null, LocaleUtil.US, null, true, true, serviceContext);
 
 		User user = _userLocalService.getDefaultUser(
 			TestPropsValues.getCompanyId());
@@ -706,8 +679,7 @@ public class ResourcePermissionStructuredContentNestedCollectionTest
 
 			PageItems<JournalArticle> pageItems = getPageItems(
 				PaginationRequest.of(10, 1), _group.getGroupId(),
-				_acceptLanguage,
-				getThemeDisplay(_group, LocaleUtil.getDefault()),
+				_acceptLanguage, getThemeDisplay(_group, LocaleUtil.US),
 				Filter.emptyFilter(), Sort.emptySort());
 
 			Assert.assertEquals(0, pageItems.getTotalCount());
@@ -716,11 +688,11 @@ public class ResourcePermissionStructuredContentNestedCollectionTest
 
 	@Test
 	public void testGetPageItemsWithNoGuestPermissionAndNoGroupPermissionAndNoSiteUser()
-		throws Exception {
+		throws Throwable {
 
 		Map<Locale, String> stringMap = new HashMap<>();
 
-		stringMap.put(LocaleUtil.getDefault(), RandomTestUtil.randomString());
+		stringMap.put(LocaleUtil.US, RandomTestUtil.randomString());
 
 		ServiceContext serviceContext =
 			ServiceContextTestUtil.getServiceContext(_group.getGroupId());
@@ -733,8 +705,7 @@ public class ResourcePermissionStructuredContentNestedCollectionTest
 			JournalFolderConstants.DEFAULT_PARENT_FOLDER_ID,
 			JournalArticleConstants.CLASSNAME_ID_DEFAULT,
 			RandomTestUtil.randomString(), false, stringMap, stringMap,
-			stringMap, null, LocaleUtil.getDefault(), null, true, true,
-			serviceContext);
+			stringMap, null, LocaleUtil.US, null, true, true, serviceContext);
 
 		User user = UserTestUtil.addUser();
 
@@ -746,8 +717,7 @@ public class ResourcePermissionStructuredContentNestedCollectionTest
 
 			PageItems<JournalArticle> pageItems = getPageItems(
 				PaginationRequest.of(10, 1), _group.getGroupId(),
-				_acceptLanguage,
-				getThemeDisplay(_group, LocaleUtil.getDefault()),
+				_acceptLanguage, getThemeDisplay(_group, LocaleUtil.US),
 				Filter.emptyFilter(), Sort.emptySort());
 
 			Assert.assertEquals(0, pageItems.getTotalCount());
@@ -759,11 +729,11 @@ public class ResourcePermissionStructuredContentNestedCollectionTest
 
 	@Test
 	public void testGetPageItemsWithNoGuestPermissionAndNoGroupPermissionAndSiteUser()
-		throws Exception {
+		throws Throwable {
 
 		Map<Locale, String> stringMap = new HashMap<>();
 
-		stringMap.put(LocaleUtil.getDefault(), RandomTestUtil.randomString());
+		stringMap.put(LocaleUtil.US, RandomTestUtil.randomString());
 
 		ServiceContext serviceContext =
 			ServiceContextTestUtil.getServiceContext(_group.getGroupId());
@@ -776,8 +746,7 @@ public class ResourcePermissionStructuredContentNestedCollectionTest
 			JournalFolderConstants.DEFAULT_PARENT_FOLDER_ID,
 			JournalArticleConstants.CLASSNAME_ID_DEFAULT,
 			RandomTestUtil.randomString(), false, stringMap, stringMap,
-			stringMap, null, LocaleUtil.getDefault(), null, true, true,
-			serviceContext);
+			stringMap, null, LocaleUtil.US, null, true, true, serviceContext);
 
 		User user = UserTestUtil.addUser(_group.getGroupId());
 
@@ -789,8 +758,7 @@ public class ResourcePermissionStructuredContentNestedCollectionTest
 
 			PageItems<JournalArticle> pageItems = getPageItems(
 				PaginationRequest.of(10, 1), _group.getGroupId(),
-				_acceptLanguage,
-				getThemeDisplay(_group, LocaleUtil.getDefault()),
+				_acceptLanguage, getThemeDisplay(_group, LocaleUtil.US),
 				Filter.emptyFilter(), Sort.emptySort());
 
 			Assert.assertEquals(0, pageItems.getTotalCount());
@@ -800,8 +768,7 @@ public class ResourcePermissionStructuredContentNestedCollectionTest
 		}
 	}
 
-	private static final AcceptLanguage _acceptLanguage =
-		() -> LocaleUtil.getDefault();
+	private static final AcceptLanguage _acceptLanguage = () -> LocaleUtil.US;
 
 	@DeleteAfterTestRun
 	private Group _group;
