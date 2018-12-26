@@ -15,13 +15,14 @@
 package com.liferay.folder.apio.internal.architect.form;
 
 import com.liferay.apio.architect.form.Form;
+import com.liferay.folder.apio.architect.model.Folder;
 
 /**
  * Represents the values extracted from a folder form.
  *
  * @author Alejandro Hernández
  */
-public class FolderForm {
+public class FolderForm implements Folder {
 
 	/**
 	 * Builds a {@code Form} that generates a {@code FolderForm} that depends on
@@ -46,20 +47,12 @@ public class FolderForm {
 		).build();
 	}
 
-	/**
-	 * Returns the folder's description.
-	 *
-	 * @return the folder's description
-	 */
+	@Override
 	public String getDescription() {
 		return _description;
 	}
 
-	/**
-	 * Returns the folder's name.
-	 *
-	 * @return the folder's name
-	 */
+	@Override
 	public String getName() {
 		return _name;
 	}

@@ -103,14 +103,15 @@ public class FolderNestedCollectionResource
 		).build();
 	}
 
-	private Folder _addFolder(long groupId, FolderForm folderForm)
+	private Folder _addFolder(
+			long groupId, com.liferay.folder.apio.architect.model.Folder folder)
 		throws PortalException {
 
 		long parentFolderId = 0;
 
 		return _dlAppService.addFolder(
-			groupId, parentFolderId, folderForm.getName(),
-			folderForm.getDescription(), new ServiceContext());
+			groupId, parentFolderId, folder.getName(), folder.getDescription(),
+			new ServiceContext());
 	}
 
 	private PageItems<Folder> _getPageItems(Pagination pagination, long groupId)
@@ -124,11 +125,13 @@ public class FolderNestedCollectionResource
 		return new PageItems<>(folders, count);
 	}
 
-	private Folder _updateFolder(long folderId, FolderForm folderForm)
+	private Folder _updateFolder(
+			long folderId,
+			com.liferay.folder.apio.architect.model.Folder folder)
 		throws PortalException {
 
 		return _dlAppService.updateFolder(
-			folderId, folderForm.getName(), folderForm.getDescription(),
+			folderId, folder.getName(), folder.getDescription(),
 			new ServiceContext());
 	}
 
