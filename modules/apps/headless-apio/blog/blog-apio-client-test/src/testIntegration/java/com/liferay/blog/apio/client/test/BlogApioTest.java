@@ -20,6 +20,8 @@ import com.liferay.portal.apio.test.util.ApioClientBuilder;
 import com.liferay.portal.apio.test.util.ContentSpaceApioTestUtil;
 import com.liferay.portal.kernel.util.StringUtil;
 
+import java.io.File;
+
 import java.net.MalformedURLException;
 import java.net.URL;
 
@@ -160,6 +162,87 @@ public class BlogApioTest {
 		).body(
 			"keywords",
 			IsEqual.equalTo(Arrays.asList("keyword1", "keyword2", "keyword3"))
+		).extract(
+		).path(
+			"_links.self.href"
+		);
+	}
+
+	@Test
+	public void testCreateBlogPostWithImage() throws Exception {
+		String documentsHref = ApioClientBuilder.given(
+		).basicAuth(
+			"test@liferay.com", "test"
+		).header(
+			"Accept", "application/hal+json"
+		).when(
+		).get(
+			_contentSpaceHref.toExternalForm()
+		).follow(
+			"_links.documentsRepository.href"
+		).then(
+		).extract(
+		).path(
+			"_links.documents.href"
+		);
+
+		String documentHref = ApioClientBuilder.given(
+		).basicAuth(
+			"test@liferay.com", "test"
+		).header(
+			"Accept", "application/hal+json"
+		).multipart(
+			"binaryFile", _readFile("image.png")
+		).when(
+		).post(
+			documentsHref
+		).then(
+		).extract(
+		).path(
+			"_links.self.href"
+		);
+
+		ApioClientBuilder.given(
+		).basicAuth(
+			"test@liferay.com", "test"
+		).header(
+			"Accept", "application/hal+json"
+		).header(
+			"Content-Type", "application/json"
+		).body(
+			_readFormatted(
+				"test-create-blog-posting-with-image.json", documentHref)
+		).when(
+		).post(
+			_blogPostsHref
+		).then(
+		).statusCode(
+			200
+		).body(
+			"alternativeHeadline", IsEqual.equalTo("alternativeHeadline")
+		).body(
+			"articleBody", IsEqual.equalTo("articleBody")
+		).body(
+			"caption", IsEqual.equalTo("caption")
+		).body(
+			"dateCreated", IsNull.notNullValue()
+		).body(
+			"dateModified", IsNull.notNullValue()
+		).body(
+			"datePublished", IsNull.notNullValue()
+		).body(
+			"description", IsEqual.equalTo("description")
+		).body(
+			"encodingFormat", IsEqual.equalTo("text/html")
+		).body(
+			"friendlyUrlPath", IsEqual.equalTo("friendlyurlpath")
+		).body(
+			"headline", IsEqual.equalTo("headline")
+		).body(
+			"keywords",
+			IsEqual.equalTo(Arrays.asList("keyword1", "keyword2", "keyword3"))
+		).body(
+			"_links.image", IsNull.notNullValue()
 		).extract(
 		).path(
 			"_links.self.href"
@@ -329,6 +412,24 @@ public class BlogApioTest {
 		URL url = clazz.getResource(fileName);
 
 		return StringUtil.read(url.openStream());
+	}
+
+	private File _readFile(String fileName) {
+		Class<?> clazz = getClass();
+
+		URL url = clazz.getResource(fileName);
+
+		String file = url.getFile();
+
+		return new File(file);
+	}
+
+	private String _readFormatted(String fileName, String var)
+		throws Exception {
+
+		String content = _read(fileName);
+
+		return String.format(content, var);
 	}
 
 	private String _blogPostsHref;
