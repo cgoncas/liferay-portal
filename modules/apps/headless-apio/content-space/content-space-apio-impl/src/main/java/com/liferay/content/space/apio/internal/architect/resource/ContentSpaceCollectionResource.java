@@ -30,7 +30,6 @@ import com.liferay.portal.kernel.model.Group;
 import com.liferay.portal.kernel.service.GroupLocalService;
 import com.liferay.portal.kernel.util.LocaleUtil;
 import com.liferay.portal.kernel.util.comparator.GroupIdComparator;
-import com.liferay.site.apio.architect.identifier.WebSiteIdentifier;
 
 import java.util.Arrays;
 import java.util.List;
@@ -83,8 +82,6 @@ public class ContentSpaceCollectionResource
 			"creator", PersonIdentifier.class, Group::getCreatorUserId
 		).addLinkedModel(
 			"documentsRepository", RootFolderIdentifier.class, Group::getGroupId
-		).addLinkedModel(
-			"webSite", WebSiteIdentifier.class, Group::getGroupId
 		).addLocalizedStringByLocale(
 			"description", Group::getDescription
 		).addLocalizedStringByLocale(
