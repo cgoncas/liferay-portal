@@ -203,6 +203,19 @@ public class BlogApioTest {
 		).body(
 			"_embedded.BlogPosting[0].keywords",
 			IsEqual.equalTo(Arrays.asList("keyword1", "keyword2", "keyword3"))
+		).body(
+			"_embedded.BlogPosting[0]._links",
+			Matchers.not(Matchers.hasKey("image"))
+		).body(
+			"_embedded.BlogPosting[0]._links.aggregateRating",
+			IsNull.notNullValue()
+		).body(
+			"_embedded.BlogPosting[0]._links.comment", IsNull.notNullValue()
+		).body(
+			"_embedded.BlogPosting[0]._links.contentSpace",
+			IsNull.notNullValue()
+		).body(
+			"_embedded.BlogPosting[0]._links.creator", IsNull.notNullValue()
 		);
 
 		_deleteBlog(blogHref);
