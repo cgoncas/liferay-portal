@@ -24,6 +24,8 @@ import java.net.MalformedURLException;
 import java.net.URL;
 
 import java.util.Arrays;
+import java.util.List;
+import java.util.stream.Stream;
 
 import org.hamcrest.Matchers;
 import org.hamcrest.core.IsEqual;
@@ -35,6 +37,7 @@ import org.jboss.arquillian.junit.Arquillian;
 import org.jboss.arquillian.test.api.ArquillianResource;
 import org.jboss.shrinkwrap.api.Archive;
 
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -76,6 +79,29 @@ public class BlogApioTest {
 		);
 	}
 
+	@After
+	public void tearDown() {
+		List<String> blogHrefs = ApioClientBuilder.given(
+		).basicAuth(
+			"test@liferay.com", "test"
+		).header(
+			"Accept", "application/hal+json"
+		).when(
+		).get(
+			_blogPostsHref
+		).then(
+		).extract(
+		).path(
+			"_embedded.BlogPosting._links.self.href"
+		);
+
+		if (blogHrefs != null) {
+			Stream<String> blogHrefsStream = blogHrefs.stream();
+
+			blogHrefsStream.forEach(this::_deleteBlog);
+		}
+	}
+
 	@Test
 	public void testBlogPostsLinkExistsInContentSpace() {
 		ApioClientBuilder.given(
@@ -96,7 +122,7 @@ public class BlogApioTest {
 
 	@Test
 	public void testCreateBlog() throws Exception {
-		String blogHref = ApioClientBuilder.given(
+		ApioClientBuilder.given(
 		).basicAuth(
 			"test@liferay.com", "test"
 		).header(
@@ -138,8 +164,6 @@ public class BlogApioTest {
 		).path(
 			"_links.self.href"
 		);
-
-		_deleteBlog(blogHref);
 	}
 
 	@Test
@@ -162,7 +186,7 @@ public class BlogApioTest {
 
 	@Test
 	public void testGetBlogPosts() throws Exception {
-		String blogHref = _createBlog();
+		_createBlog();
 
 		ApioClientBuilder.given(
 		).basicAuth(
@@ -217,8 +241,6 @@ public class BlogApioTest {
 		).body(
 			"_embedded.BlogPosting[0]._links.creator", IsNull.notNullValue()
 		);
-
-		_deleteBlog(blogHref);
 	}
 
 	@Test
@@ -264,8 +286,6 @@ public class BlogApioTest {
 			"keywords",
 			IsEqual.equalTo(Arrays.asList("keyword1", "keyword2", "keyword3"))
 		);
-
-		_deleteBlog(blogHref);
 	}
 
 	private String _createBlog() throws Exception {
