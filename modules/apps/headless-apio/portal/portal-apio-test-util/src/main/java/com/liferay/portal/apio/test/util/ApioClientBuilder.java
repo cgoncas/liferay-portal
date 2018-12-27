@@ -20,6 +20,8 @@ import io.restassured.response.ValidatableResponse;
 import io.restassured.specification.AuthenticationSpecification;
 import io.restassured.specification.PreemptiveAuthSpec;
 
+import java.io.File;
+
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
@@ -46,6 +48,13 @@ public class ApioClientBuilder {
 			Authentication authentication, Map<String, String> headers,
 			Body body) {
 
+			this(authentication, headers, body, Multipart.EMPTY);
+		}
+
+		public RequestSpecification(
+			Authentication authentication, Map<String, String> headers,
+			Body body, Multipart multipart) {
+
 			_authentication = authentication;
 
 			if (headers == null) {
@@ -61,6 +70,20 @@ public class ApioClientBuilder {
 			else {
 				_body = body;
 			}
+
+			if (multipart == null) {
+				_multipart = Multipart.EMPTY;
+			}
+			else {
+				_multipart = multipart;
+			}
+		}
+
+		public RequestSpecification(
+			Authentication authentication, Map<String, String> headers,
+			Multipart multipart) {
+
+			this(authentication, headers, Body.EMPTY, multipart);
 		}
 
 		public RequestSpecification basicAuth(String user, String password) {
@@ -81,6 +104,11 @@ public class ApioClientBuilder {
 			return new RequestSpecification(_authentication, headers, _body);
 		}
 
+		public RequestSpecification multipart(String key, File file) {
+			return new RequestSpecification(
+				_authentication, _headers, new MultipartImpl(key, file));
+		}
+
 		public Response when() {
 			return new Response(null, this);
 		}
@@ -89,8 +117,8 @@ public class ApioClientBuilder {
 			getRestAssuredRequestSpecification() {
 
 			io.restassured.specification.RequestSpecification
-				requestSpecification = _body.body(
-					_authentication.auth(RestAssured.given()));
+				requestSpecification = _multipart.multipart(
+					_body.body(_authentication.auth(RestAssured.given())));
 
 			return requestSpecification.headers(_headers);
 		}
@@ -98,6 +126,7 @@ public class ApioClientBuilder {
 		private final Authentication _authentication;
 		private final Body _body;
 		private final Map<String, String> _headers;
+		private final Multipart _multipart;
 
 	}
 
@@ -192,6 +221,17 @@ public class ApioClientBuilder {
 
 	}
 
+	public interface Multipart {
+
+		public static Multipart EMPTY =
+			requestSpecification -> requestSpecification;
+
+		public io.restassured.specification.RequestSpecification multipart(
+			io.restassured.specification.RequestSpecification
+				requestSpecification);
+
+	}
+
 	protected static class BasicAuthentication implements Authentication {
 
 		@Override
@@ -233,6 +273,26 @@ public class ApioClientBuilder {
 		}
 
 		private String _body;
+
+	}
+
+	protected static class MultipartImpl implements Multipart {
+
+		@Override
+		public io.restassured.specification.RequestSpecification multipart(
+			io.restassured.specification.RequestSpecification
+				requestSpecification) {
+
+			return requestSpecification.multiPart(_key, _file);
+		}
+
+		protected MultipartImpl(String key, File file) {
+			_key = key;
+			_file = file;
+		}
+
+		private final File _file;
+		private final String _key;
 
 	}
 
