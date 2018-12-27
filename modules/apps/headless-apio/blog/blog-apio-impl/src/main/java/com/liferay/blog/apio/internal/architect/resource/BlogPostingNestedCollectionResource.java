@@ -132,7 +132,7 @@ public class BlogPostingNestedCollectionResource
 			"creator", PersonIdentifier.class, BlogsEntry::getUserId
 		).addLinkedModel(
 			"image", MediaObjectIdentifier.class,
-			BlogsEntry::getCoverImageFileEntryId
+			this::_getCoverImageFileEntryId
 		).addRelatedCollection(
 			"category", CategoryIdentifier.class
 		).addRelatedCollection(
@@ -180,6 +180,16 @@ public class BlogPostingNestedCollectionResource
 			BlogsEntry.class.getName(), blogsEntry.getEntryId());
 
 		return ListUtil.toList(assetTags, AssetTag::getName);
+	}
+
+	private Long _getCoverImageFileEntryId(BlogsEntry blogsEntry) {
+		long coverImageFileEntryId = blogsEntry.getCoverImageFileEntryId();
+
+		if (coverImageFileEntryId == 0L) {
+			return null;
+		}
+
+		return coverImageFileEntryId;
 	}
 
 	private ImageSelector _getImageSelector(BlogPosting blogPosting) {
