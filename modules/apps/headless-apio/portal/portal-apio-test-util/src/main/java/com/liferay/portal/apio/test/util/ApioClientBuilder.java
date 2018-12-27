@@ -19,6 +19,9 @@ import io.restassured.response.ExtractableResponse;
 import io.restassured.response.ValidatableResponse;
 import io.restassured.specification.AuthenticationSpecification;
 import io.restassured.specification.PreemptiveAuthSpec;
+import io.restassured.specification.RequestSpecification;
+
+import java.io.File;
 
 import java.util.Collections;
 import java.util.HashMap;
@@ -46,6 +49,13 @@ public class ApioClientBuilder {
 			Authentication authentication, Map<String, String> headers,
 			Body body) {
 
+			this(authentication, headers, body, Multipart.EMPTY);
+		}
+
+		public RequestSpecification(
+			Authentication authentication, Map<String, String> headers,
+			Body body, Multipart multipart) {
+
 			_authentication = authentication;
 
 			if (headers == null) {
@@ -61,6 +71,20 @@ public class ApioClientBuilder {
 			else {
 				_body = body;
 			}
+
+			if (multipart == null) {
+				_multipart = Multipart.EMPTY;
+			}
+			else {
+				_multipart = multipart;
+			}
+		}
+
+		public RequestSpecification(
+			Authentication authentication, Map<String, String> headers,
+			Multipart multipart) {
+
+			this(authentication, headers, Body.EMPTY, multipart);
 		}
 
 		public RequestSpecification basicAuth(String user, String password) {
@@ -81,16 +105,18 @@ public class ApioClientBuilder {
 			return new RequestSpecification(_authentication, headers, _body);
 		}
 
+		public RequestSpecification multipart(String key, File value) {
+			return new RequestSpecification(
+				_authentication, _headers, new MultipartImpl(key, value));
+		}
+
 		public Response when() {
 			return new Response(null, this);
 		}
 
-		protected io.restassured.specification.RequestSpecification
-			getRestAssuredRequestSpecification() {
-
-			io.restassured.specification.RequestSpecification
-				requestSpecification = _body.body(
-					_authentication.auth(RestAssured.given()));
+		protected RequestSpecification getRestAssuredRequestSpecification() {
+			RequestSpecification requestSpecification = _multipart.multipart(
+				_body.body(_authentication.auth(RestAssured.given())));
 
 			return requestSpecification.headers(_headers);
 		}
@@ -98,6 +124,7 @@ public class ApioClientBuilder {
 		private final Authentication _authentication;
 		private final Body _body;
 		private final Map<String, String> _headers;
+		private final Multipart _multipart;
 
 	}
 
@@ -112,9 +139,8 @@ public class ApioClientBuilder {
 		}
 
 		public Response delete(String url) {
-			io.restassured.specification.RequestSpecification
-				requestSpecification =
-					_requestSpecification.getRestAssuredRequestSpecification();
+			RequestSpecification requestSpecification =
+				_requestSpecification.getRestAssuredRequestSpecification();
 
 			io.restassured.response.Response response =
 				requestSpecification.delete(url);
@@ -130,9 +156,8 @@ public class ApioClientBuilder {
 		}
 
 		public Response get(String url) {
-			io.restassured.specification.RequestSpecification
-				requestSpecification =
-					_requestSpecification.getRestAssuredRequestSpecification();
+			RequestSpecification requestSpecification =
+				_requestSpecification.getRestAssuredRequestSpecification();
 
 			io.restassured.response.Response response =
 				requestSpecification.get(url);
@@ -141,9 +166,8 @@ public class ApioClientBuilder {
 		}
 
 		public Response post(String url) {
-			io.restassured.specification.RequestSpecification
-				requestSpecification =
-					_requestSpecification.getRestAssuredRequestSpecification();
+			RequestSpecification requestSpecification =
+				_requestSpecification.getRestAssuredRequestSpecification();
 
 			io.restassured.response.Response response =
 				requestSpecification.post(url);
@@ -152,9 +176,8 @@ public class ApioClientBuilder {
 		}
 
 		public Response put(String url) {
-			io.restassured.specification.RequestSpecification
-				requestSpecification =
-					_requestSpecification.getRestAssuredRequestSpecification();
+			RequestSpecification requestSpecification =
+				_requestSpecification.getRestAssuredRequestSpecification();
 
 			io.restassured.response.Response response =
 				requestSpecification.put(url);
@@ -176,9 +199,8 @@ public class ApioClientBuilder {
 		public static Authentication EMPTY =
 			requestSpecification -> requestSpecification;
 
-		public io.restassured.specification.RequestSpecification auth(
-			io.restassured.specification.RequestSpecification
-				requestSpecification);
+		public RequestSpecification auth(
+			RequestSpecification requestSpecification);
 
 	}
 
@@ -186,18 +208,26 @@ public class ApioClientBuilder {
 
 		public static Body EMPTY = requestSpecification -> requestSpecification;
 
-		public io.restassured.specification.RequestSpecification body(
-			io.restassured.specification.RequestSpecification
-				requestSpecification);
+		public RequestSpecification body(
+			RequestSpecification requestSpecification);
+
+	}
+
+	public interface Multipart {
+
+		public static Multipart EMPTY =
+			requestSpecification -> requestSpecification;
+
+		public RequestSpecification multipart(
+			RequestSpecification requestSpecification);
 
 	}
 
 	protected static class BasicAuthentication implements Authentication {
 
 		@Override
-		public io.restassured.specification.RequestSpecification auth(
-			io.restassured.specification.RequestSpecification
-				requestSpecification) {
+		public RequestSpecification auth(
+			RequestSpecification requestSpecification) {
 
 			AuthenticationSpecification authenticationSpecification =
 				requestSpecification.auth();
@@ -221,9 +251,8 @@ public class ApioClientBuilder {
 	protected static class BodyImpl implements Body {
 
 		@Override
-		public io.restassured.specification.RequestSpecification body(
-			io.restassured.specification.RequestSpecification
-				requestSpecification) {
+		public RequestSpecification body(
+			RequestSpecification requestSpecification) {
 
 			return requestSpecification.body(_body);
 		}
@@ -233,6 +262,25 @@ public class ApioClientBuilder {
 		}
 
 		private String _body;
+
+	}
+
+	protected static class MultipartImpl implements Multipart {
+
+		@Override
+		public RequestSpecification multipart(
+			RequestSpecification requestSpecification) {
+
+			return requestSpecification.multiPart(_key, _value);
+		}
+
+		protected MultipartImpl(String key, File value) {
+			_key = key;
+			_value = value;
+		}
+
+		private final String _key;
+		private final File _value;
 
 	}
 
