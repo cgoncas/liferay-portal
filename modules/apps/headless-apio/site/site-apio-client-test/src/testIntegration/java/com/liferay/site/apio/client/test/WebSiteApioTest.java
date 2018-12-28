@@ -16,6 +16,7 @@ package com.liferay.site.apio.client.test;
 
 import com.liferay.oauth2.provider.test.util.OAuth2ProviderTestUtil;
 import com.liferay.portal.apio.test.util.ApioClientBuilder;
+import com.liferay.portal.apio.test.util.ContentSpaceApioTestUtil;
 import com.liferay.site.apio.client.test.internal.activator.WebSiteApioTestBundleActivator;
 
 import java.net.MalformedURLException;
@@ -164,6 +165,49 @@ public class WebSiteApioTest {
 			"_links.self.href", IsNull.notNullValue()
 		).body(
 			"_links.webSites.href", IsNull.notNullValue()
+		);
+	}
+
+	@Test
+	public void testWebSiteHrefIsInContenSpaceCollection() {
+		ApioClientBuilder.given(
+		).basicAuth(
+			"test@liferay.com", "test"
+		).header(
+			"Accept", "application/hal+json"
+		).when(
+		).get(
+			_rootEndpointURL.toExternalForm()
+		).follow(
+			"_links.content-space.href"
+		).then(
+		).body(
+			"_embedded.ContentSpace.find {it.name == '" +
+				WebSiteApioTestBundleActivator.WEB_SITE_NAME +
+					"'}._links.webSite.href",
+			IsNull.notNullValue()
+		);
+	}
+
+	@Test
+	public void testWebSiteHrefIsInContentSpace() {
+		String contentSpaceHref = ContentSpaceApioTestUtil.getContentSpaceHref(
+			_rootEndpointURL.toExternalForm(),
+			WebSiteApioTestBundleActivator.WEB_SITE_NAME);
+
+		ApioClientBuilder.given(
+		).basicAuth(
+			"test@liferay.com", "test"
+		).header(
+			"Accept", "application/hal+json"
+		).when(
+		).get(
+			contentSpaceHref
+		).then(
+		).statusCode(
+			200
+		).body(
+			"_links.webSite.href", IsNull.notNullValue()
 		);
 	}
 

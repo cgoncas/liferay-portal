@@ -87,10 +87,11 @@ public class WebSiteCollectionResource
 		).identifier(
 			Group::getGroupId
 		).addBidirectionalModel(
+			"contentSpace", "webSite", ContentSpaceIdentifier.class,
+			Group::getGroupId
+		).addBidirectionalModel(
 			"webSite", "webSites", WebSiteIdentifier.class,
 			this::_getParentGroupId
-		).addLinkedModel(
-			"contentSpace", ContentSpaceIdentifier.class, Group::getGroupId
 		).addLinkedModel(
 			"creator", PersonIdentifier.class, Group::getCreatorUserId
 		).addLocalizedStringByLocale(

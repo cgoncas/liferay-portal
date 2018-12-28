@@ -132,11 +132,6 @@ public class ContentSpaceApioTest {
 				ContentSpaceTestActivator.CONTENT_SPACE_NAME +
 					"'}._links.vocabularies",
 			IsNull.notNullValue()
-		).body(
-			"_embedded.ContentSpace.find {it.name == '" +
-				ContentSpaceTestActivator.CONTENT_SPACE_NAME +
-					"'}._links.webSite",
-			IsNull.notNullValue()
 		);
 	}
 
@@ -200,8 +195,6 @@ public class ContentSpaceApioTest {
 			"_links.structuredContents.href", IsNull.notNullValue()
 		).body(
 			"_links.vocabularies.href", IsNull.notNullValue()
-		).body(
-			"_links.webSite.href", IsNull.notNullValue()
 		);
 	}
 
