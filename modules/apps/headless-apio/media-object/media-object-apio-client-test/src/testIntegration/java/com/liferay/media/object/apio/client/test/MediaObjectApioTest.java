@@ -17,8 +17,11 @@ package com.liferay.media.object.apio.client.test;
 import com.liferay.media.object.apio.client.test.internal.activator.MediaObjectTestActivator;
 import com.liferay.oauth2.provider.test.util.OAuth2ProviderTestUtil;
 import com.liferay.portal.apio.test.util.ApioClientBuilder;
+import com.liferay.portal.apio.test.util.ContentSpaceApioTestUtil;
+import com.liferay.portal.apio.test.util.FileTestUtil;
+import com.liferay.portal.apio.test.util.MediaObjectTestUtil;
 
-import java.io.File;
+import io.restassured.response.Response;
 
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -52,47 +55,30 @@ public class MediaObjectApioTest {
 
 	@Before
 	public void setUp() throws MalformedURLException {
-		_rootEndpointURL = new URL(_url, "/o/api");
+		URL rootEndpointURL = new URL(_url, "/o/api");
 
-		_foldersHref = ApioClientBuilder.given(
+		_contentSpaceHref = new URL(
+			ContentSpaceApioTestUtil.getContentSpaceHref(
+				rootEndpointURL.toExternalForm(),
+				MediaObjectTestActivator.CONTENT_SPACE_NAME));
+
+		Response response = ApioClientBuilder.given(
 		).basicAuth(
 			"test@liferay.com", "test"
 		).header(
 			"Accept", "application/hal+json"
 		).when(
 		).get(
-			_rootEndpointURL.toExternalForm()
+			_contentSpaceHref.toExternalForm()
 		).follow(
-			"_links.content-space.href"
-		).follow(
-			"_embedded.ContentSpace.find {it.name == '" +
-				MediaObjectTestActivator.CONTENT_SPACE_NAME +
-					"'}._links.documentsRepository.href"
+			"_links.documentsRepository.href"
 		).then(
 		).extract(
-		).path(
-			"_links.folders.href"
-		);
+		).response();
 
-		_documentsHref = ApioClientBuilder.given(
-		).basicAuth(
-			"test@liferay.com", "test"
-		).header(
-			"Accept", "application/hal+json"
-		).when(
-		).get(
-			_rootEndpointURL.toExternalForm()
-		).follow(
-			"_links.content-space.href"
-		).follow(
-			"_embedded.ContentSpace.find {it.name == '" +
-				MediaObjectTestActivator.CONTENT_SPACE_NAME +
-					"'}._links.documentsRepository.href"
-		).then(
-		).extract(
-		).path(
-			"_links.documents.href"
-		);
+		_foldersHref = response.path("_links.folders.href");
+
+		_documentsHref = response.path("_links.documents.href");
 	}
 
 	@After
@@ -116,7 +102,7 @@ public class MediaObjectApioTest {
 		).header(
 			"Content-Type", "multipart/form-data"
 		).multipart(
-			"binaryFile", _readFile("document.pdf")
+			"binaryFile", FileTestUtil.getFile("document.pdf", getClass())
 		).when(
 		).post(
 			_documentsHref
@@ -163,7 +149,7 @@ public class MediaObjectApioTest {
 		).header(
 			"Content-Type", "multipart/form-data"
 		).multipart(
-			"binaryFile", _readFile("document.pdf")
+			"binaryFile", FileTestUtil.getFile("document.pdf", getClass())
 		).when(
 		).post(
 			documentsHref
@@ -196,7 +182,9 @@ public class MediaObjectApioTest {
 
 	@Test
 	public void testDeleteDocument() {
-		String documentHref = _createDocument(_documentsHref);
+		String documentHref = MediaObjectTestUtil.createDocumentInRootFolder(
+			_contentSpaceHref.toExternalForm(),
+			FileTestUtil.getFile("document.pdf", getClass()));
 
 		ApioClientBuilder.given(
 		).basicAuth(
@@ -216,7 +204,9 @@ public class MediaObjectApioTest {
 
 	@Test
 	public void testGetDocumentsInDocumentsRepository() {
-		_documentHref = _createDocument(_documentsHref);
+		_documentHref = MediaObjectTestUtil.createDocumentInRootFolder(
+			_contentSpaceHref.toExternalForm(),
+			FileTestUtil.getFile("document.pdf", getClass()));
 
 		ApioClientBuilder.given(
 		).basicAuth(
@@ -225,15 +215,7 @@ public class MediaObjectApioTest {
 			"Accept", "application/hal+json"
 		).when(
 		).get(
-			_rootEndpointURL.toExternalForm()
-		).follow(
-			"_links.content-space.href"
-		).follow(
-			"_embedded.ContentSpace.find {it.name == '" +
-				MediaObjectTestActivator.CONTENT_SPACE_NAME +
-					"'}._links.documentsRepository.href"
-		).follow(
-			"_links.documents.href"
+			_documentsHref
 		).then(
 		).statusCode(
 			200
@@ -296,7 +278,8 @@ public class MediaObjectApioTest {
 
 		String documentsHref = _getDocumentsHref(folderName);
 
-		_documentHref = _createDocument(documentsHref);
+		_documentHref = MediaObjectTestUtil.createDocumentInFolder(
+			documentsHref, FileTestUtil.getFile("document.pdf", getClass()));
 
 		ApioClientBuilder.given(
 		).basicAuth(
@@ -360,28 +343,6 @@ public class MediaObjectApioTest {
 		);
 	}
 
-	private String _createDocument(String documentsHref) {
-		return ApioClientBuilder.given(
-		).basicAuth(
-			"test@liferay.com", "test"
-		).header(
-			"Accept", "application/hal+json"
-		).header(
-			"Content-Type", "multipart/form-data"
-		).multipart(
-			"binaryFile", _readFile("document.pdf")
-		).when(
-		).post(
-			documentsHref
-		).then(
-		).statusCode(
-			200
-		).extract(
-		).path(
-			"_links.self.href"
-		);
-	}
-
 	private String _createFolder(String foldersHref, String folderName) {
 		return ApioClientBuilder.given(
 		).basicAuth(
@@ -422,15 +383,7 @@ public class MediaObjectApioTest {
 			"Accept", "application/hal+json"
 		).when(
 		).get(
-			_rootEndpointURL.toExternalForm()
-		).follow(
-			"_links.content-space.href"
-		).follow(
-			"_embedded.ContentSpace.find {it.name == '" +
-				MediaObjectTestActivator.CONTENT_SPACE_NAME +
-					"'}._links.documentsRepository.href"
-		).follow(
-			"_links.folders.href"
+			_foldersHref
 		).then(
 		).statusCode(
 			200
@@ -441,19 +394,11 @@ public class MediaObjectApioTest {
 		);
 	}
 
-	private File _readFile(String fileName) {
-		Class<?> clazz = getClass();
-
-		URL url = clazz.getResource(fileName);
-
-		return new File(url.getFile());
-	}
-
+	private URL _contentSpaceHref;
 	private String _documentHref;
 	private String _documentsHref;
 	private String _folderHref;
 	private String _foldersHref;
-	private URL _rootEndpointURL;
 
 	@ArquillianResource
 	private URL _url;
