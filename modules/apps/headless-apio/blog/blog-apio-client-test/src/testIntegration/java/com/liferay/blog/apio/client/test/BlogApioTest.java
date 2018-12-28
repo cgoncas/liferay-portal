@@ -18,14 +18,14 @@ import com.liferay.blog.apio.client.test.internal.activator.BlogApioTestBundleAc
 import com.liferay.oauth2.provider.test.util.OAuth2ProviderTestUtil;
 import com.liferay.portal.apio.test.util.ApioClientBuilder;
 import com.liferay.portal.apio.test.util.ContentSpaceApioTestUtil;
-import com.liferay.portal.kernel.util.StringUtil;
-
-import java.io.File;
+import com.liferay.portal.apio.test.util.FileTestUtil;
+import com.liferay.portal.apio.test.util.MediaObjectTestUtil;
 
 import java.net.MalformedURLException;
 import java.net.URL;
 
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import java.util.stream.Stream;
 
@@ -132,7 +132,7 @@ public class BlogApioTest {
 		).header(
 			"Content-Type", "application/json"
 		).body(
-			_read("test-create-blog-posting.json")
+			FileTestUtil.readFile("test-create-blog-posting.json", getClass())
 		).when(
 		).post(
 			_blogPostsHref
@@ -170,37 +170,9 @@ public class BlogApioTest {
 
 	@Test
 	public void testCreateBlogPostWithImage() throws Exception {
-		String documentsHref = ApioClientBuilder.given(
-		).basicAuth(
-			"test@liferay.com", "test"
-		).header(
-			"Accept", "application/hal+json"
-		).when(
-		).get(
-			_contentSpaceHref.toExternalForm()
-		).follow(
-			"_links.documentsRepository.href"
-		).then(
-		).extract(
-		).path(
-			"_links.documents.href"
-		);
-
-		String documentHref = ApioClientBuilder.given(
-		).basicAuth(
-			"test@liferay.com", "test"
-		).header(
-			"Accept", "application/hal+json"
-		).multipart(
-			"binaryFile", _readFile("image.png")
-		).when(
-		).post(
-			documentsHref
-		).then(
-		).extract(
-		).path(
-			"_links.self.href"
-		);
+		String documentHref = MediaObjectTestUtil.createDocumentInRootFolder(
+			_contentSpaceHref.toExternalForm(),
+			FileTestUtil.getFile("image.png", getClass()));
 
 		ApioClientBuilder.given(
 		).basicAuth(
@@ -210,8 +182,9 @@ public class BlogApioTest {
 		).header(
 			"Content-Type", "application/json"
 		).body(
-			_readFormatted(
-				"test-create-blog-posting-with-image.json", documentHref)
+			FileTestUtil.readFile(
+				"test-create-blog-posting-with-image.json", getClass(),
+				Collections.singletonList(documentHref))
 		).when(
 		).post(
 			_blogPostsHref
@@ -338,7 +311,7 @@ public class BlogApioTest {
 		).header(
 			"Content-Type", "application/json"
 		).body(
-			_read("test-update-blog-posting.json")
+			FileTestUtil.readFile("test-update-blog-posting.json", getClass())
 		).when(
 		).put(
 			blogHref
@@ -380,7 +353,7 @@ public class BlogApioTest {
 		).header(
 			"Content-Type", "application/json"
 		).body(
-			_read("test-create-blog-posting.json")
+			FileTestUtil.readFile("test-create-blog-posting.json", getClass())
 		).when(
 		).post(
 			_blogPostsHref
@@ -404,32 +377,6 @@ public class BlogApioTest {
 		).statusCode(
 			Matchers.isOneOf(200, 204)
 		);
-	}
-
-	private String _read(String fileName) throws Exception {
-		Class<?> clazz = getClass();
-
-		URL url = clazz.getResource(fileName);
-
-		return StringUtil.read(url.openStream());
-	}
-
-	private File _readFile(String fileName) {
-		Class<?> clazz = getClass();
-
-		URL url = clazz.getResource(fileName);
-
-		String file = url.getFile();
-
-		return new File(file);
-	}
-
-	private String _readFormatted(String fileName, String var)
-		throws Exception {
-
-		String content = _read(fileName);
-
-		return String.format(content, var);
 	}
 
 	private String _blogPostsHref;
