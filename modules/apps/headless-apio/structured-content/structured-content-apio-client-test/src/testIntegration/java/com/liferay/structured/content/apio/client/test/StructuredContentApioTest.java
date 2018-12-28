@@ -17,8 +17,8 @@ package com.liferay.structured.content.apio.client.test;
 import com.liferay.oauth2.provider.test.util.OAuth2ProviderTestUtil;
 import com.liferay.portal.apio.test.util.ApioClientBuilder;
 import com.liferay.portal.apio.test.util.ContentSpaceApioTestUtil;
+import com.liferay.portal.apio.test.util.FileTestUtil;
 import com.liferay.portal.kernel.util.LocaleUtil;
-import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.structured.content.apio.client.test.internal.activator.StructuredContentApioTestBundleActivator;
 
 import java.net.MalformedURLException;
@@ -129,8 +129,8 @@ public class StructuredContentApioTest {
 		).header(
 			"Content-Type", "application/json"
 		).body(
-			_read(
-				"test-create-structured-content.json",
+			FileTestUtil.readFile(
+				"test-create-structured-content.json", getClass(),
 				Collections.singletonList(
 					_contentStructureHrefURL.toExternalForm()))
 		).when(
@@ -446,8 +446,8 @@ public class StructuredContentApioTest {
 		).header(
 			"Content-Type", "application/json"
 		).body(
-			_read(
-				"test-update-structured-content.json",
+			FileTestUtil.readFile(
+				"test-update-structured-content.json", getClass(),
 				Collections.singletonList(
 					_contentStructureHrefURL.toExternalForm()))
 		).when(
@@ -477,7 +477,7 @@ public class StructuredContentApioTest {
 			).header(
 				"Content-Type", "application/json"
 			).body(
-				_read(fileName, vars)
+				FileTestUtil.readFile(fileName, getClass(), vars)
 			).when(
 			).post(
 				_structuredContentEndpointURL.toExternalForm()
@@ -486,14 +486,6 @@ public class StructuredContentApioTest {
 			).path(
 				"_links.self.href"
 			));
-	}
-
-	private String _read(String fileName, List<String> vars) throws Exception {
-		Class<?> clazz = getClass();
-
-		URL url = clazz.getResource(fileName);
-
-		return String.format(StringUtil.read(url.openStream()), vars.toArray());
 	}
 
 	private URL _updateStructuredContent(
@@ -512,7 +504,7 @@ public class StructuredContentApioTest {
 			).header(
 				"Content-Type", "application/json"
 			).body(
-				_read(fileName, vars)
+				FileTestUtil.readFile(fileName, getClass(), vars)
 			).when(
 			).put(
 				structuredContentIdURL.toExternalForm()
