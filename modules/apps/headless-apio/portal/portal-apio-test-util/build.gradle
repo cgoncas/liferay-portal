@@ -1,4 +1,5 @@
 dependencies {
+	compileInclude group: "com.liferay.portal", name: "com.liferay.portal.kernel", version: "default"
 	compileInclude group: "io.rest-assured", name: "rest-assured", version: "3.2.0"
 	compileInclude group: "io.rest-assured", name: "rest-assured-common", version: "3.2.0"
 
