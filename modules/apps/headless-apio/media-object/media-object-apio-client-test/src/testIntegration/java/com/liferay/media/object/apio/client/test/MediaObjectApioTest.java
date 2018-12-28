@@ -42,7 +42,7 @@ import org.junit.runner.RunWith;
  */
 @RunAsClient
 @RunWith(Arquillian.class)
-public class MediaOjectApioTest {
+public class MediaObjectApioTest {
 
 	@Deployment
 	public static Archive<?> getArchive() throws Exception {
