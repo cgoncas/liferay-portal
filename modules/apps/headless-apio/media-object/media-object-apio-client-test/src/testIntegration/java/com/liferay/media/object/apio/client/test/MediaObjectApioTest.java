@@ -57,7 +57,7 @@ public class MediaObjectApioTest {
 	public void setUp() throws MalformedURLException {
 		URL rootEndpointURL = new URL(_url, "/o/api");
 
-		_contentSpaceHref = new URL(
+		_contentSpaceHrefURL = new URL(
 			ContentSpaceApioTestUtil.getContentSpaceHref(
 				rootEndpointURL.toExternalForm(),
 				MediaObjectTestActivator.CONTENT_SPACE_NAME));
@@ -69,7 +69,7 @@ public class MediaObjectApioTest {
 			"Accept", "application/hal+json"
 		).when(
 		).get(
-			_contentSpaceHref.toExternalForm()
+			_contentSpaceHrefURL.toExternalForm()
 		).follow(
 			"_links.documentsRepository.href"
 		).then(
@@ -183,7 +183,7 @@ public class MediaObjectApioTest {
 	@Test
 	public void testDeleteDocument() {
 		String documentHref = MediaObjectTestUtil.createDocumentInRootFolder(
-			_contentSpaceHref.toExternalForm(),
+			_contentSpaceHrefURL.toExternalForm(),
 			FileTestUtil.getFile("document.pdf", getClass()));
 
 		ApioClientBuilder.given(
@@ -205,7 +205,7 @@ public class MediaObjectApioTest {
 	@Test
 	public void testGetDocumentsInDocumentsRepository() {
 		_documentHref = MediaObjectTestUtil.createDocumentInRootFolder(
-			_contentSpaceHref.toExternalForm(),
+			_contentSpaceHrefURL.toExternalForm(),
 			FileTestUtil.getFile("document.pdf", getClass()));
 
 		ApioClientBuilder.given(
@@ -394,7 +394,7 @@ public class MediaObjectApioTest {
 		);
 	}
 
-	private URL _contentSpaceHref;
+	private URL _contentSpaceHrefURL;
 	private String _documentHref;
 	private String _documentsHref;
 	private String _folderHref;

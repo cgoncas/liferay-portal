@@ -61,7 +61,7 @@ public class BlogApioTest {
 	public void setUp() throws MalformedURLException {
 		URL rootEndpointURL = new URL(_url, "/o/api");
 
-		_contentSpaceHref = new URL(
+		_contentSpaceHrefURL = new URL(
 			ContentSpaceApioTestUtil.getContentSpaceHref(
 				rootEndpointURL.toExternalForm(),
 				BlogApioTestBundleActivator.CONTENT_SPACE_NAME));
@@ -73,7 +73,7 @@ public class BlogApioTest {
 			"Accept", "application/hal+json"
 		).when(
 		).get(
-			_contentSpaceHref.toExternalForm()
+			_contentSpaceHrefURL.toExternalForm()
 		).then(
 		).extract(
 		).path(
@@ -113,7 +113,7 @@ public class BlogApioTest {
 			"Accept", "application/hal+json"
 		).when(
 		).get(
-			_contentSpaceHref.toExternalForm()
+			_contentSpaceHrefURL.toExternalForm()
 		).then(
 		).statusCode(
 			200
@@ -171,7 +171,7 @@ public class BlogApioTest {
 	@Test
 	public void testCreateBlogPostWithImage() throws Exception {
 		String documentHref = MediaObjectTestUtil.createDocumentInRootFolder(
-			_contentSpaceHref.toExternalForm(),
+			_contentSpaceHrefURL.toExternalForm(),
 			FileTestUtil.getFile("image.png", getClass()));
 
 		ApioClientBuilder.given(
@@ -380,7 +380,7 @@ public class BlogApioTest {
 	}
 
 	private String _blogPostsHref;
-	private URL _contentSpaceHref;
+	private URL _contentSpaceHrefURL;
 
 	@ArquillianResource
 	private URL _url;
