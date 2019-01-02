@@ -16,10 +16,12 @@ package com.liferay.media.object.apio.internal.helper;
 
 import com.liferay.apio.architect.file.BinaryFile;
 import com.liferay.document.library.kernel.service.DLAppService;
-import com.liferay.media.object.apio.internal.architect.form.MediaObjectCreatorForm;
+import com.liferay.media.object.apio.architect.model.MediaObject;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.repository.model.FileEntry;
 import com.liferay.portal.kernel.service.ServiceContext;
+import com.liferay.portal.kernel.util.ArrayUtil;
+import com.liferay.portal.kernel.util.ListUtil;
 
 import java.util.Optional;
 
@@ -36,36 +38,63 @@ public class MediaObjectHelper {
 
 	/**
 	 * Adds a file entry and associated metadata, based on a {@link
-	 * MediaObjectCreatorForm}.
+	 * MediaObject}.
 	 *
 	 * @param  repositoryId the ID of the repository in which to add the file
 	 *         entry
 	 * @param  folderId the ID of the folder in which to add the file entry
-	 * @param  mediaObjectCreatorForm the form with the new file entry data
+	 * @param  mediaObject the form with the new file entry data
 	 * @return the new file entry
 	 * @throws PortalException if an error occurred while adding the file entry
 	 */
 	public FileEntry addFileEntry(
-			long repositoryId, long folderId,
-			MediaObjectCreatorForm mediaObjectCreatorForm)
+			long repositoryId, long folderId, MediaObject mediaObject)
 		throws PortalException {
 
-		BinaryFile binaryFile = mediaObjectCreatorForm.getBinaryFile();
+		BinaryFile binaryFile = mediaObject.getBinaryFile();
 
 		String binaryFileName = binaryFile.getName();
 
-		Optional<String> titleOptional =
-			mediaObjectCreatorForm.getTitleOptional();
-
-		String title = titleOptional.orElse(binaryFileName);
-
-		ServiceContext serviceContext =
-			mediaObjectCreatorForm.getServiceContext(repositoryId);
+		String title = Optional.ofNullable(
+			mediaObject.getTitle()
+		).orElse(
+			binaryFileName
+		);
 
 		return _dlAppService.addFileEntry(
 			repositoryId, folderId, binaryFileName, binaryFile.getMimeType(),
-			title, mediaObjectCreatorForm.getDescription(), null,
-			binaryFile.getInputStream(), binaryFile.getSize(), serviceContext);
+			title, mediaObject.getDescription(), null,
+			binaryFile.getInputStream(), binaryFile.getSize(),
+			_getServiceContext(repositoryId, mediaObject));
+	}
+
+	/**
+	 * Returns the service context related with this form
+	 *
+	 * @param  groupId the group ID
+	 * @return the service context
+	 */
+	private ServiceContext _getServiceContext(
+		long groupId, MediaObject mediaObject) {
+
+		ServiceContext serviceContext = new ServiceContext();
+
+		serviceContext.setAddGroupPermissions(true);
+		serviceContext.setAddGuestPermissions(true);
+
+		if (ListUtil.isNotEmpty(mediaObject.getCategories())) {
+			serviceContext.setAssetCategoryIds(
+				ArrayUtil.toLongArray(mediaObject.getCategories()));
+		}
+
+		if (ListUtil.isNotEmpty(mediaObject.getKeywords())) {
+			serviceContext.setAssetTagNames(
+				ArrayUtil.toStringArray(mediaObject.getKeywords()));
+		}
+
+		serviceContext.setScopeGroupId(groupId);
+
+		return serviceContext;
 	}
 
 	@Reference
