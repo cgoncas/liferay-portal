@@ -40,6 +40,7 @@ import com.liferay.document.library.kernel.util.DLUtil;
 import com.liferay.folder.apio.architect.identifier.FolderIdentifier;
 import com.liferay.folder.apio.architect.identifier.RootFolderIdentifier;
 import com.liferay.media.object.apio.architect.identifier.MediaObjectIdentifier;
+import com.liferay.media.object.apio.architect.model.MediaObject;
 import com.liferay.media.object.apio.internal.architect.form.MediaObjectCreatorForm;
 import com.liferay.media.object.apio.internal.helper.MediaObjectHelper;
 import com.liferay.person.apio.architect.identifier.PersonIdentifier;
@@ -74,7 +75,7 @@ public class MediaObjectNestedCollectionResource
 		return builder.addGetter(
 			this::_getPageItems
 		).addCreator(
-			this::_getFileEntry,
+			this::_addFileEntry,
 			_hasPermission.forAddingIn(RootFolderIdentifier.class),
 			MediaObjectCreatorForm::buildForm
 		).build();
@@ -136,6 +137,12 @@ public class MediaObjectNestedCollectionResource
 		).build();
 	}
 
+	private FileEntry _addFileEntry(long groupId, MediaObject mediaObject)
+		throws PortalException {
+
+		return _mediaObjectHelper.addFileEntry(groupId, 0L, mediaObject);
+	}
+
 	private NestedRepresentor<AdaptiveMedia<AMImageProcessor>>
 		_getAdaptiveMediaNestedRepresentor(
 			NestedRepresentor.Builder<AdaptiveMedia<AMImageProcessor>>
@@ -194,14 +201,6 @@ public class MediaObjectNestedCollectionResource
 		Optional<V> valueOptional = adaptiveMedia.getValueOptional(amAttribute);
 
 		return valueOptional.orElse(null);
-	}
-
-	private FileEntry _getFileEntry(
-			long groupId, MediaObjectCreatorForm mediaObjectCreatorForm)
-		throws PortalException {
-
-		return _mediaObjectHelper.addFileEntry(
-			groupId, 0L, mediaObjectCreatorForm);
 	}
 
 	private String _getFileEntryPreviewURL(FileEntry fileEntry) {

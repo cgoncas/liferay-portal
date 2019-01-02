@@ -17,19 +17,16 @@ package com.liferay.media.object.apio.internal.architect.form;
 import com.liferay.apio.architect.file.BinaryFile;
 import com.liferay.apio.architect.form.Form;
 import com.liferay.category.apio.architect.identifier.CategoryIdentifier;
-import com.liferay.portal.kernel.service.ServiceContext;
-import com.liferay.portal.kernel.util.ArrayUtil;
-import com.liferay.portal.kernel.util.ListUtil;
+import com.liferay.media.object.apio.architect.model.MediaObject;
 
 import java.util.List;
-import java.util.Optional;
 
 /**
  * Represents the values extracted from a media object form.
  *
  * @author Javier Gamarra
  */
-public class MediaObjectCreatorForm {
+public class MediaObjectCreatorForm implements MediaObject {
 
 	/**
 	 * Builds a {@code Form} that generates a {@code MediaObjectCreatorForm}
@@ -88,38 +85,12 @@ public class MediaObjectCreatorForm {
 	}
 
 	/**
-	 * Returns the service context related with this form
-	 *
-	 * @param  groupId the group ID
-	 * @return the service context
-	 */
-	public ServiceContext getServiceContext(long groupId) {
-		ServiceContext serviceContext = new ServiceContext();
-
-		serviceContext.setAddGroupPermissions(true);
-		serviceContext.setAddGuestPermissions(true);
-
-		if (ListUtil.isNotEmpty(_categories)) {
-			serviceContext.setAssetCategoryIds(
-				ArrayUtil.toLongArray(_categories));
-		}
-
-		if (ListUtil.isNotEmpty(_keywords)) {
-			serviceContext.setAssetTagNames(ArrayUtil.toStringArray(_keywords));
-		}
-
-		serviceContext.setScopeGroupId(groupId);
-
-		return serviceContext;
-	}
-
-	/**
 	 * Returns the media object's title.
 	 *
 	 * @return the title
 	 */
-	public Optional<String> getTitleOptional() {
-		return Optional.ofNullable(_title);
+	public String getTitle() {
+		return _title;
 	}
 
 	public void setBinaryFile(BinaryFile binaryFile) {
