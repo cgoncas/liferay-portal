@@ -17,19 +17,19 @@ package com.liferay.media.object.apio.internal.architect.form;
 import com.liferay.apio.architect.file.BinaryFile;
 import com.liferay.apio.architect.form.Form;
 import com.liferay.category.apio.architect.identifier.CategoryIdentifier;
+import com.liferay.media.object.apio.architect.model.MediaObject;
 import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.ListUtil;
 
 import java.util.List;
-import java.util.Optional;
 
 /**
  * Represents the values extracted from a media object form.
  *
  * @author Javier Gamarra
  */
-public class MediaObjectCreatorForm {
+public class MediaObjectCreatorForm implements MediaObject {
 
 	/**
 	 * Builds a {@code Form} that generates a {@code MediaObjectCreatorForm}
@@ -118,8 +118,8 @@ public class MediaObjectCreatorForm {
 	 *
 	 * @return the title
 	 */
-	public Optional<String> getTitleOptional() {
-		return Optional.ofNullable(_title);
+	public String getTitle() {
+		return _title;
 	}
 
 	public void setBinaryFile(BinaryFile binaryFile) {
