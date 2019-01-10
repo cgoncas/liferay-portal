@@ -16,6 +16,7 @@ package com.liferay.structured.content.apio.internal.architect.form;
 
 import com.liferay.apio.architect.form.Form;
 import com.liferay.category.apio.architect.identifier.CategoryIdentifier;
+import com.liferay.structure.apio.architect.identifier.ContentStructureIdentifier;
 import com.liferay.structured.content.apio.architect.model.StructuredContent;
 import com.liferay.structured.content.apio.architect.model.StructuredContentValue;
 
@@ -33,38 +34,41 @@ import java.util.Optional;
  *
  * @author Alejandro Hernández
  */
-public class StructuredContentUpdaterForm implements StructuredContent {
+public class StructuredContentForm implements StructuredContent {
 
 	/**
-	 * Builds a {@code Form} that generates a {@code
-	 * StructuredContentUpdaterForm} that depends on the HTTP body.
+	 * Builds a {@code Form} that generates a {@code StructuredContentForm}
+	 * that depends on the HTTP body.
 	 *
 	 * @param  formBuilder the form builder
 	 * @return the form
 	 */
-	public static Form<StructuredContentUpdaterForm> buildForm(
-		Form.Builder<StructuredContentUpdaterForm> formBuilder) {
+	public static Form<StructuredContentForm> buildForm(
+		Form.Builder<StructuredContentForm> formBuilder) {
 
 		return formBuilder.title(
-			__ -> "The structured content updater form"
+			__ -> "The structured content creator/update form"
 		).description(
-			__ -> "This form can be used to update a structured content"
+			__ -> "This form can be used to create/update a structured content"
 		).constructor(
-			StructuredContentUpdaterForm::new
+			StructuredContentForm::new
 		).addOptionalDate(
-			"datePublished", StructuredContentUpdaterForm::setPublishedDate
+			"datePublished", StructuredContentForm::setPublishedDate
 		).addOptionalLinkedModelList(
-			"category", CategoryIdentifier .class,
-			StructuredContentUpdaterForm::setCategories
+			"category", CategoryIdentifier.class,
+			StructuredContentForm::setCategories
 		).addOptionalNestedModelList(
 			"values", StructuredContentValueForm::buildForm,
-			StructuredContentUpdaterForm::setStructuredContentValues
+			StructuredContentForm::setStructuredContentValues
 		).addOptionalString(
-			"description", StructuredContentUpdaterForm::setDescription
-		).addOptionalString(
-			"title", StructuredContentUpdaterForm::setTitle
+			"description", StructuredContentForm::setDescription
 		).addOptionalStringList(
-			"keywords", StructuredContentUpdaterForm::setKeywords
+			"keywords", StructuredContentForm::setKeywords
+		).addRequiredLinkedModel(
+			"contentStructure", ContentStructureIdentifier.class,
+			StructuredContentForm::setContentStructureId
+		).addRequiredString(
+			"title", StructuredContentForm::setTitle
 		).build();
 	}
 
@@ -75,7 +79,7 @@ public class StructuredContentUpdaterForm implements StructuredContent {
 
 	@Override
 	public Long getContentStructureId() {
-		return null;
+		return _contentStructureId;
 	}
 
 	@Override
@@ -122,15 +126,19 @@ public class StructuredContentUpdaterForm implements StructuredContent {
 
 	@Override
 	public Map<Locale, String> getTitleMap(Locale locale) {
-		Map<Locale, String> map = new HashMap<>();
+		Map<Locale, String> titleMap = new HashMap<>();
 
-		map.put(locale, _title);
+		titleMap.put(locale, _title);
 
-		return map;
+		return titleMap;
 	}
 
 	public void setCategories(List<Long> categories) {
 		_categories = categories;
+	}
+
+	public void setContentStructureId(Long contentStructureId) {
+		_contentStructureId = contentStructureId;
 	}
 
 	public void setDescription(String description) {
@@ -180,6 +188,7 @@ public class StructuredContentUpdaterForm implements StructuredContent {
 	}
 
 	private List<Long> _categories;
+	private Long _contentStructureId;
 	private String _description;
 	private List<String> _keywords;
 	private Integer _publishedDateDay;
