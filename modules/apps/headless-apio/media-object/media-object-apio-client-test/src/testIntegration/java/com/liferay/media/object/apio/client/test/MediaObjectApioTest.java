@@ -23,8 +23,16 @@ import com.liferay.portal.apio.test.util.MediaObjectTestUtil;
 
 import io.restassured.response.Response;
 
+import java.io.IOException;
+
 import java.net.MalformedURLException;
 import java.net.URL;
+
+import java.util.concurrent.TimeUnit;
+
+import org.apache.commons.io.IOUtils;
+
+import org.awaitility.Awaitility;
 
 import org.hamcrest.Matchers;
 import org.hamcrest.core.IsNull;
@@ -36,6 +44,7 @@ import org.jboss.arquillian.test.api.ArquillianResource;
 import org.jboss.shrinkwrap.api.Archive;
 
 import org.junit.After;
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -205,6 +214,43 @@ public class MediaObjectApioTest {
 	}
 
 	@Test
+	public void testCreateImageInDocumentRepository() {
+		_documentHref = ApioClientBuilder.given(
+		).basicAuth(
+			"test@liferay.com", "test"
+		).header(
+			"Accept", "application/hal+json"
+		).header(
+			"Content-Type", "multipart/form-data"
+		).multipart(
+			"binaryFile", FileTestUtil.getFile("image.png", getClass())
+		).when(
+		).post(
+			_documentsHref
+		).then(
+		).statusCode(
+			200
+		).body(
+			"contentUrl", IsNull.notNullValue()
+		).body(
+			"dateCreated", IsNull.notNullValue()
+		).body(
+			"dateModified", IsNull.notNullValue()
+		).body(
+			"encodingFormat", Matchers.equalTo("image/png")
+		).body(
+			"fileExtension", Matchers.equalTo("png")
+		).body(
+			"sizeInBytes", Matchers.greaterThan(0)
+		).body(
+			"_links.self.href", IsNull.notNullValue()
+		).extract(
+		).path(
+			"_links.self.href"
+		);
+	}
+
+	@Test
 	public void testDeleteDocument() {
 		String documentHref = MediaObjectTestUtil.createDocumentInRootFolder(
 			_contentSpaceHrefURL.toExternalForm(),
@@ -223,6 +269,212 @@ public class MediaObjectApioTest {
 		).then(
 		).statusCode(
 			Matchers.isOneOf(200, 204)
+		);
+	}
+
+	@Test
+	public void testGetAdaptiveMediaFileFromImageInDocumentRepository()
+		throws IOException {
+
+		String imageFileName = "image.png";
+
+		_documentHref = ApioClientBuilder.given(
+		).basicAuth(
+			"test@liferay.com", "test"
+		).header(
+			"Accept", "application/hal+json"
+		).header(
+			"Content-Type", "multipart/form-data"
+		).multipart(
+			"binaryFile", FileTestUtil.getFile(imageFileName, getClass())
+		).when(
+		).post(
+			_documentsHref
+		).then(
+		).extract(
+		).path(
+			"_links.self.href"
+		);
+
+		Awaitility.reset();
+		Awaitility.setDefaultPollInterval(100, TimeUnit.MILLISECONDS);
+
+		Awaitility.await(
+		).atMost(
+			2, TimeUnit.SECONDS
+		).until(
+			() -> {
+				Object adaptiveMedia = ApioClientBuilder.given(
+				).basicAuth(
+					"test@liferay.com", "test"
+				).header(
+					"Accept", "application/hal+json"
+				).when(
+				).get(
+					_documentsHref
+				).then(
+				).extract(
+				).path(
+					"_embedded.'Liferay:Document'.find {it.title == '" +
+						imageFileName + "'}._embedded.adaptedMedia._embedded"
+				);
+
+				return adaptiveMedia != null;
+			}
+		);
+
+		String adaptiveMedia1ContentHref = ApioClientBuilder.given(
+		).basicAuth(
+			"test@liferay.com", "test"
+		).header(
+			"Accept", "application/hal+json"
+		).when(
+		).get(
+			_documentsHref
+		).then(
+		).extract(
+		).path(
+			"_embedded.'Liferay:Document'.find {it.title == '" + imageFileName +
+				"'}._embedded.adaptedMedia._embedded.find {it.resolutionName " +
+					"== 'Preview-1000x0'}.contentUrl"
+		);
+
+		URL adaptiveMedia1ContentURL = new URL(adaptiveMedia1ContentHref);
+
+		byte[] contentBytes1 = IOUtils.toByteArray(
+			adaptiveMedia1ContentURL.openStream());
+
+		Assert.assertTrue(contentBytes1.length > 0);
+
+		String adaptiveMedia2ContentHref = ApioClientBuilder.given(
+		).basicAuth(
+			"test@liferay.com", "test"
+		).header(
+			"Accept", "application/hal+json"
+		).when(
+		).get(
+			_documentsHref
+		).then(
+		).extract(
+		).path(
+			"_embedded.'Liferay:Document'.find {it.title == '" + imageFileName +
+				"'}._embedded.adaptedMedia._embedded.find {it.resolutionName " +
+					"== 'Thumbnail-300x300'}.contentUrl"
+		);
+
+		URL adaptiveMedia2ContentURL = new URL(adaptiveMedia2ContentHref);
+
+		byte[] contentBytes2 = IOUtils.toByteArray(
+			adaptiveMedia2ContentURL.openStream());
+
+		Assert.assertTrue(contentBytes2.length > 0);
+	}
+
+	@Test
+	public void testGetAdaptiveMediaFromImageInDocumentRepository() {
+		String imageFileName = "image.png";
+
+		_documentHref = ApioClientBuilder.given(
+		).basicAuth(
+			"test@liferay.com", "test"
+		).header(
+			"Accept", "application/hal+json"
+		).header(
+			"Content-Type", "multipart/form-data"
+		).multipart(
+			"binaryFile", FileTestUtil.getFile(imageFileName, getClass())
+		).when(
+		).post(
+			_documentsHref
+		).then(
+		).extract(
+		).path(
+			"_links.self.href"
+		);
+
+		Awaitility.reset();
+		Awaitility.setDefaultPollInterval(100, TimeUnit.MILLISECONDS);
+
+		Awaitility.await(
+		).atMost(
+			2, TimeUnit.SECONDS
+		).until(
+			() -> {
+				Object adaptiveMedia = ApioClientBuilder.given(
+				).basicAuth(
+					"test@liferay.com", "test"
+				).header(
+					"Accept", "application/hal+json"
+				).when(
+				).get(
+					_documentsHref
+				).then(
+				).extract(
+				).path(
+					"_embedded.'Liferay:Document'.find {it.title == '" +
+						imageFileName + "'}._embedded.adaptedMedia._embedded"
+				);
+
+				return adaptiveMedia != null;
+			}
+		);
+
+		ApioClientBuilder.given(
+		).basicAuth(
+			"test@liferay.com", "test"
+		).header(
+			"Accept", "application/hal+json"
+		).when(
+		).get(
+			_documentsHref
+		).then(
+		).statusCode(
+			200
+		).body(
+			"_embedded.'Liferay:Document'.find {it.title == '" + imageFileName +
+				"'}._embedded.adaptedMedia._embedded.find {it.resolutionName " +
+					"== 'Preview-1000x0'}.contentUrl",
+			IsNull.notNullValue()
+		).body(
+			"_embedded.'Liferay:Document'.find {it.title == '" + imageFileName +
+				"'}._embedded.adaptedMedia._embedded.find {it.resolutionName " +
+					"== 'Preview-1000x0'}.height",
+			Matchers.greaterThan(0)
+		).body(
+			"_embedded.'Liferay:Document'.find {it.title == '" + imageFileName +
+				"'}._embedded.adaptedMedia._embedded.find {it.resolutionName " +
+					"== 'Preview-1000x0'}.sizeInBytes",
+			Matchers.greaterThan(0)
+		).body(
+			"_embedded.'Liferay:Document'.find {it.title == '" + imageFileName +
+				"'}._embedded.adaptedMedia._embedded.find {it.resolutionName " +
+					"== 'Preview-1000x0'}.width",
+			Matchers.greaterThan(0)
+		).body(
+			"_embedded.'Liferay:Document'.find {it.title == '" + imageFileName +
+				"'}._embedded.adaptedMedia._embedded.find {it.resolutionName " +
+					"== 'Thumbnail-300x300'}.contentUrl",
+			IsNull.notNullValue()
+		).body(
+			"_embedded.'Liferay:Document'.find {it.title == '" + imageFileName +
+				"'}._embedded.adaptedMedia._embedded.find {it.resolutionName " +
+					"== 'Thumbnail-300x300'}.height",
+			Matchers.greaterThan(0)
+		).body(
+			"_embedded.'Liferay:Document'.find {it.title == '" + imageFileName +
+				"'}._embedded.adaptedMedia._embedded.find {it.resolutionName " +
+					"== 'Thumbnail-300x300'}.sizeInBytes",
+			Matchers.greaterThan(0)
+		).body(
+			"_embedded.'Liferay:Document'.find {it.title == '" + imageFileName +
+				"'}._embedded.adaptedMedia._embedded.find {it.resolutionName " +
+					"== 'Thumbnail-300x300'}.width",
+			Matchers.greaterThan(0)
+		).body(
+			"_links.self.href", IsNull.notNullValue()
+		).extract(
+		).path(
+			"_links.self.href"
 		);
 	}
 
@@ -365,6 +617,52 @@ public class MediaObjectApioTest {
 				"_links.self",
 			IsNull.notNullValue()
 		);
+	}
+
+	@Test
+	public void testGetImageFileFromImageInDocumentRepository()
+		throws IOException {
+
+		String imageFileName = "image.png";
+
+		_documentHref = ApioClientBuilder.given(
+		).basicAuth(
+			"test@liferay.com", "test"
+		).header(
+			"Accept", "application/hal+json"
+		).header(
+			"Content-Type", "multipart/form-data"
+		).multipart(
+			"binaryFile", FileTestUtil.getFile(imageFileName, getClass())
+		).when(
+		).post(
+			_documentsHref
+		).then(
+		).extract(
+		).path(
+			"_links.self.href"
+		);
+
+		String contentHref = ApioClientBuilder.given(
+		).basicAuth(
+			"test@liferay.com", "test"
+		).header(
+			"Accept", "application/hal+json"
+		).when(
+		).get(
+			_documentsHref
+		).then(
+		).extract(
+		).path(
+			"_embedded.'Liferay:Document'.find {it.title == '" + imageFileName +
+				"'}.contentUrl"
+		);
+
+		URL contentURL = new URL(contentHref);
+
+		byte[] contentBytes = IOUtils.toByteArray(contentURL.openStream());
+
+		Assert.assertTrue(contentBytes.length > 0);
 	}
 
 	private String _createFolder(String foldersHref, String folderName) {
