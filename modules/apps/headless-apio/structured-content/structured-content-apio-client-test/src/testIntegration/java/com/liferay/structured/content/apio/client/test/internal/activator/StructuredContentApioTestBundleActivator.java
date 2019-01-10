@@ -44,8 +44,6 @@ import com.liferay.portal.kernel.util.StringUtil;
 
 import java.io.InputStream;
 
-import java.net.URL;
-
 import java.util.Collections;
 import java.util.Locale;
 import java.util.Map;
@@ -83,8 +81,6 @@ public class StructuredContentApioTestBundleActivator
 			_prepareTest();
 		}
 		catch (Exception e) {
-			_cleanUp();
-
 			_log.error(e, e);
 		}
 	}
@@ -161,10 +157,6 @@ public class StructuredContentApioTestBundleActivator
 		Class<?> clazz = getClass();
 
 		ClassLoader classLoader = clazz.getClassLoader();
-
-		URL url = clazz.getResource(".");
-
-		System.out.println(url);
 
 		InputStream inputStream = classLoader.getResourceAsStream(
 			"/com/liferay/structured/content/apio/client/test/internal" +
