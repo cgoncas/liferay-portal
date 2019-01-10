@@ -20,8 +20,10 @@ import com.liferay.structure.apio.architect.identifier.ContentStructureIdentifie
 import com.liferay.structured.content.apio.architect.model.StructuredContent;
 import com.liferay.structured.content.apio.architect.model.StructuredContentValue;
 
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -95,28 +97,13 @@ public class StructuredContentForm implements StructuredContent {
 	}
 
 	@Override
-	public Optional<Integer> getPublishedDateDayOptional() {
-		return Optional.ofNullable(_publishedDateDay);
-	}
-
-	@Override
-	public Optional<Integer> getPublishedDateHourOptional() {
-		return Optional.ofNullable(_publishedDateHour);
-	}
-
-	@Override
-	public Optional<Integer> getPublishedDateMinuteOptional() {
-		return Optional.ofNullable(_publishedDateMinute);
-	}
-
-	@Override
-	public Optional<Integer> getPublishedDateMonthOptional() {
-		return Optional.ofNullable(_publishedDateMonth);
-	}
-
-	@Override
-	public Optional<Integer> getPublishedDateYearOptional() {
-		return Optional.ofNullable(_publishedDateYear);
+	public Optional<LocalDateTime> getPublishedDateOptional() {
+		return Optional.ofNullable(
+			_publishedDate
+		).map(
+			date -> LocalDateTime.ofInstant(
+				date.toInstant(), ZoneId.systemDefault())
+		);
 	}
 
 	@Override
@@ -150,15 +137,12 @@ public class StructuredContentForm implements StructuredContent {
 	}
 
 	public void setPublishedDate(Date publishedDate) {
-		Calendar calendar = Calendar.getInstance();
-
-		calendar.setTime(publishedDate);
-
-		_publishedDateDay = calendar.get(Calendar.DATE);
-		_publishedDateHour = calendar.get(Calendar.HOUR);
-		_publishedDateMinute = calendar.get(Calendar.MINUTE);
-		_publishedDateMonth = calendar.get(Calendar.MONTH);
-		_publishedDateYear = calendar.get(Calendar.YEAR);
+		if (publishedDate != null) {
+			_publishedDate = new Date(publishedDate.getTime());
+		}
+		else {
+			_publishedDate = null;
+		}
 	}
 
 	public void setStructuredContentValues(
@@ -191,11 +175,7 @@ public class StructuredContentForm implements StructuredContent {
 	private Long _contentStructureId;
 	private String _description;
 	private List<String> _keywords;
-	private Integer _publishedDateDay;
-	private Integer _publishedDateHour;
-	private Integer _publishedDateMinute;
-	private Integer _publishedDateMonth;
-	private Integer _publishedDateYear;
+	private Date _publishedDate;
 	private List<? extends StructuredContentValue> _structuredContentValues =
 		new ArrayList<>();
 	private String _title;

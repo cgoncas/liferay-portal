@@ -14,6 +14,8 @@
 
 package com.liferay.structured.content.apio.architect.model;
 
+import java.time.LocalDateTime;
+
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
@@ -62,44 +64,12 @@ public interface StructuredContent {
 	public List<String> getKeywords();
 
 	/**
-	 * Returns the day from the structured content's publication date.
+	 * Returns the structured content's publication date.
 	 *
-	 * @return the publication date's day
+	 * @return the publication date
 	 * @review
 	 */
-	public Optional<Integer> getPublishedDateDayOptional();
-
-	/**
-	 * Returns the hour from the structured content's publication date.
-	 *
-	 * @return the publication date's hour
-	 * @review
-	 */
-	public Optional<Integer> getPublishedDateHourOptional();
-
-	/**
-	 * Returns the minute from the structured content's publication date.
-	 *
-	 * @return the publication date's minute
-	 * @review
-	 */
-	public Optional<Integer> getPublishedDateMinuteOptional();
-
-	/**
-	 * Returns the month from the structured content's publication date.
-	 *
-	 * @return the publication date's month
-	 * @review
-	 */
-	public Optional<Integer> getPublishedDateMonthOptional();
-
-	/**
-	 * Returns the year from the structured content's publication date.
-	 *
-	 * @return the publication date's year
-	 * @review
-	 */
-	public Optional<Integer> getPublishedDateYearOptional();
+	public Optional<LocalDateTime> getPublishedDateOptional();
 
 	/**
 	 * Returns the structured content's structured content values.

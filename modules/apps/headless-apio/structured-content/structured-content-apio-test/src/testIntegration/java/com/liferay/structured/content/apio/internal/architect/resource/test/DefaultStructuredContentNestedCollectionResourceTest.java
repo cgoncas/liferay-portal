@@ -57,6 +57,8 @@ import com.liferay.structured.content.apio.architect.model.StructuredContentLoca
 import com.liferay.structured.content.apio.architect.model.StructuredContentValue;
 import com.liferay.structured.content.apio.architect.resource.StructuredContentField;
 
+import java.time.LocalDateTime;
+
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -1242,27 +1244,7 @@ public class DefaultStructuredContentNestedCollectionResourceTest
 			}
 
 			@Override
-			public Optional<Integer> getPublishedDateDayOptional() {
-				return Optional.empty();
-			}
-
-			@Override
-			public Optional<Integer> getPublishedDateHourOptional() {
-				return Optional.empty();
-			}
-
-			@Override
-			public Optional<Integer> getPublishedDateMinuteOptional() {
-				return Optional.empty();
-			}
-
-			@Override
-			public Optional<Integer> getPublishedDateMonthOptional() {
-				return Optional.empty();
-			}
-
-			@Override
-			public Optional<Integer> getPublishedDateYearOptional() {
+			public Optional<LocalDateTime> getPublishedDateOptional() {
 				return Optional.empty();
 			}
 

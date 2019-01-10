@@ -104,9 +104,11 @@ import com.liferay.structured.content.apio.internal.model.JournalArticleWrapper;
 import com.liferay.structured.content.apio.internal.model.RenderedJournalArticle;
 import com.liferay.structured.content.apio.internal.util.JournalArticleContentHelper;
 
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Calendar;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Date;
@@ -344,10 +346,15 @@ public class StructuredContentNestedCollectionResource
 
 		String ddmStructureKey = ddmStructure.getStructureKey();
 		String ddmTemplateKey = _getDDMTemplateKey(ddmStructure);
-		Calendar calendar = Calendar.getInstance();
 
 		ServiceContext serviceContext = getServiceContext(
 			contentSpaceId, structuredContent);
+
+		Optional<LocalDateTime> publishedDateOptional =
+			structuredContent.getPublishedDateOptional();
+
+		LocalDateTime localDateTime = publishedDateOptional.orElseGet(
+			() -> LocalDateTime.now());
 
 		JournalArticle journalArticle = _journalArticleService.addArticle(
 			contentSpaceId, 0, 0, 0, null, true,
@@ -356,23 +363,10 @@ public class StructuredContentNestedCollectionResource
 				structuredContent.getDescriptionMapOptional(locale),
 				Collections.emptyMap()),
 			content, ddmStructureKey, ddmTemplateKey, null,
-			_getDefaultValue(
-				structuredContent.getPublishedDateMonthOptional(),
-				calendar.get(Calendar.MONTH)),
-			_getDefaultValue(
-				structuredContent.getPublishedDateDayOptional(),
-				calendar.get(Calendar.DATE)),
-			_getDefaultValue(
-				structuredContent.getPublishedDateYearOptional(),
-				calendar.get(Calendar.YEAR)),
-			_getDefaultValue(
-				structuredContent.getPublishedDateHourOptional(),
-				calendar.get(Calendar.HOUR)),
-			_getDefaultValue(
-				structuredContent.getPublishedDateMinuteOptional(),
-				calendar.get(Calendar.MINUTE)),
-			0, 0, 0, 0, 0, true, 0, 0, 0, 0, 0, true, true, null,
-			serviceContext);
+			localDateTime.getMonthValue() - 1, localDateTime.getDayOfMonth(),
+			localDateTime.getYear(), localDateTime.getHour(),
+			localDateTime.getMinute(), 0, 0, 0, 0, 0, true, 0, 0, 0, 0, 0, true,
+			true, null, serviceContext);
 
 		return new JournalArticleWrapper(journalArticle, locale, themeDisplay);
 	}
@@ -821,6 +815,13 @@ public class StructuredContentNestedCollectionResource
 				(journalTitle, structuredContentTitle) -> journalTitle)
 		);
 
+		Optional<LocalDateTime> publishedDateOptional =
+			structuredContent.getPublishedDateOptional();
+
+		LocalDateTime localDateTime = publishedDateOptional.orElseGet(
+			() -> LocalDateTime.ofInstant(
+				displayDate.toInstant(), ZoneId.systemDefault()));
+
 		JournalArticle updatedJournalArticle =
 			_journalArticleService.updateArticle(
 				journalArticle.getGroupId(), journalArticle.getFolderId(),
@@ -831,23 +832,11 @@ public class StructuredContentNestedCollectionResource
 					journalArticle.getDescriptionMap()),
 				friendlyURLMap, content, journalArticle.getDDMStructureKey(),
 				ddmTemplateKey, journalArticle.getLayoutUuid(),
-				_getDefaultValue(
-					structuredContent.getPublishedDateMonthOptional(),
-					displayDate.getMonth()),
-				_getDefaultValue(
-					structuredContent.getPublishedDateDayOptional(),
-					displayDate.getDate()),
-				_getDefaultValue(
-					structuredContent.getPublishedDateYearOptional(),
-					displayDate.getYear()),
-				_getDefaultValue(
-					structuredContent.getPublishedDateHourOptional(),
-					displayDate.getHours()),
-				_getDefaultValue(
-					structuredContent.getPublishedDateMinuteOptional(),
-					displayDate.getMinutes()),
-				0, 0, 0, 0, 0, true, 0, 0, 0, 0, 0, true, true, false, null,
-				null, null, null, serviceContext);
+				localDateTime.getMonthValue() - 1,
+				localDateTime.getDayOfMonth(), localDateTime.getYear(),
+				localDateTime.getHour(), localDateTime.getMinute(), 0, 0, 0, 0,
+				0, true, 0, 0, 0, 0, 0, true, true, false, null, null, null,
+				null, serviceContext);
 
 		return new JournalArticleWrapper(
 			updatedJournalArticle, locale, themeDisplay);
