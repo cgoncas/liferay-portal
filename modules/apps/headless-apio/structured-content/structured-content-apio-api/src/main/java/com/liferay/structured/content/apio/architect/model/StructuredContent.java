@@ -17,8 +17,6 @@ package com.liferay.structured.content.apio.architect.model;
 import java.time.LocalDateTime;
 
 import java.util.List;
-import java.util.Locale;
-import java.util.Map;
 import java.util.Optional;
 
 /**
@@ -47,13 +45,12 @@ public interface StructuredContent {
 	public Long getContentStructureId();
 
 	/**
-	 * Returns the structured content's description map for the supplied locale.
+	 * Returns the structured content's description.
 	 *
-	 * @return the description map
+	 * @return the description
 	 * @review
 	 */
-	public Optional<Map<Locale, String>> getDescriptionMapOptional(
-		Locale locale);
+	public Optional<String> getDescriptionOptional();
 
 	/**
 	 * Returns the structured content's keywords.
@@ -80,11 +77,11 @@ public interface StructuredContent {
 	public List<? extends StructuredContentValue> getStructuredContentValues();
 
 	/**
-	 * Returns the structured content's title map.
+	 * Returns the structured content's title.
 	 *
-	 * @return the title map
+	 * @return the title
 	 * @review
 	 */
-	public Map<Locale, String> getTitleMap(Locale locale);
+	public String getTitle();
 
 }

@@ -25,10 +25,7 @@ import java.time.ZoneId;
 
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Locale;
-import java.util.Map;
 import java.util.Optional;
 
 /**
@@ -85,10 +82,8 @@ public class StructuredContentForm implements StructuredContent {
 	}
 
 	@Override
-	public Optional<Map<Locale, String>> getDescriptionMapOptional(
-		Locale locale) {
-
-		return _getStringMapOptional(locale, _description);
+	public Optional<String> getDescriptionOptional() {
+		return Optional.ofNullable(_description);
 	}
 
 	@Override
@@ -112,12 +107,8 @@ public class StructuredContentForm implements StructuredContent {
 	}
 
 	@Override
-	public Map<Locale, String> getTitleMap(Locale locale) {
-		Map<Locale, String> titleMap = new HashMap<>();
-
-		titleMap.put(locale, _title);
-
-		return titleMap;
+	public String getTitle() {
+		return _title;
 	}
 
 	public void setCategories(List<Long> categories) {
@@ -153,22 +144,6 @@ public class StructuredContentForm implements StructuredContent {
 
 	public void setTitle(String title) {
 		_title = title;
-	}
-
-	private Optional<Map<Locale, String>> _getStringMapOptional(
-		Locale locale, String value) {
-
-		return Optional.ofNullable(
-			value
-		).map(
-			description -> {
-				Map<Locale, String> map = new HashMap<>();
-
-				map.put(locale, value);
-
-				return map;
-			}
-		);
 	}
 
 	private List<Long> _categories;

@@ -109,7 +109,6 @@ import java.time.ZoneId;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
@@ -117,6 +116,7 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -350,6 +350,15 @@ public class StructuredContentNestedCollectionResource
 		ServiceContext serviceContext = getServiceContext(
 			contentSpaceId, structuredContent);
 
+		Optional<String> descriptionOptional =
+			structuredContent.getDescriptionOptional();
+
+		Map<Locale, String> descriptionMap = descriptionOptional.map(
+			description -> Collections.singletonMap(locale, description)
+		).orElseGet(
+			Collections::emptyMap
+		);
+
 		Optional<LocalDateTime> publishedDateOptional =
 			structuredContent.getPublishedDateOptional();
 
@@ -358,11 +367,8 @@ public class StructuredContentNestedCollectionResource
 
 		JournalArticle journalArticle = _journalArticleService.addArticle(
 			contentSpaceId, 0, 0, 0, null, true,
-			structuredContent.getTitleMap(locale),
-			_getDefaultValue(
-				structuredContent.getDescriptionMapOptional(locale),
-				Collections.emptyMap()),
-			content, ddmStructureKey, ddmTemplateKey, null,
+			Collections.singletonMap(locale, structuredContent.getTitle()),
+			descriptionMap, content, ddmStructureKey, ddmTemplateKey, null,
 			localDateTime.getMonthValue() - 1, localDateTime.getDayOfMonth(),
 			localDateTime.getYear(), localDateTime.getHour(),
 			localDateTime.getMinute(), 0, 0, 0, 0, 0, true, 0, 0, 0, 0, 0, true,
@@ -431,10 +437,6 @@ public class StructuredContentNestedCollectionResource
 		DDMTemplate ddmTemplate = ddmTemplates.get(0);
 
 		return ddmTemplate.getTemplateKey();
-	}
-
-	private <T> T _getDefaultValue(Optional<T> optional, T defaultValue) {
-		return optional.orElse(defaultValue);
 	}
 
 	private Query _getFullQuery(
@@ -745,6 +747,29 @@ public class StructuredContentNestedCollectionResource
 		);
 	}
 
+	private Map<Locale, String> _merge(
+		Map<Locale, String> map1, Map<Locale, String> map2) {
+
+		if ((map1 == null) || map1.isEmpty()) {
+			return map2;
+		}
+
+		if ((map2 == null) || map2.isEmpty()) {
+			return map1;
+		}
+
+		Set<Map.Entry<Locale, String>> map1Entries = map1.entrySet();
+		Set<Map.Entry<Locale, String>> map2Entries = map2.entrySet();
+
+		return Stream.concat(
+			map1Entries.stream(), map2Entries.stream()
+		).collect(
+			Collectors.toMap(
+				Map.Entry::getKey, Map.Entry::getValue,
+				(value1, value2) -> value2)
+		);
+	}
+
 	private List<StructuredContentField> _toStructuredContentFields(
 		List<DDMFormFieldValue> ddmFormFieldValues, DDMStructure ddmStructure) {
 
@@ -789,31 +814,24 @@ public class StructuredContentNestedCollectionResource
 
 		Date displayDate = journalArticle.getDisplayDate();
 
-		Map<Locale, String> titleMap = Stream.of(
-			journalArticle.getTitleMap(), structuredContent.getTitleMap(locale)
-		).map(
-			Map::entrySet
-		).flatMap(
-			Collection::stream
-		).collect(
-			Collectors.toMap(
-				Map.Entry::getKey, Map.Entry::getValue,
-				(journalTitle, structuredContentTitle) ->
-					structuredContentTitle)
+		Map<Locale, String> titleMap = _merge(
+			journalArticle.getTitleMap(),
+			Collections.singletonMap(locale, structuredContent.getTitle()));
+
+		Optional<String> descriptionOptional =
+			structuredContent.getDescriptionOptional();
+
+		Map<Locale, String> descriptionMap = descriptionOptional.map(
+			description -> _merge(
+				journalArticle.getDescriptionMap(),
+				Collections.singletonMap(locale, description))
+		).orElseGet(
+			() -> journalArticle.getDescriptionMap()
 		);
 
-		Map<Locale, String> friendlyURLMap = Stream.of(
+		Map<Locale, String> friendlyURLMap = _merge(
 			journalArticle.getFriendlyURLMap(),
-			structuredContent.getTitleMap(locale)
-		).map(
-			Map::entrySet
-		).flatMap(
-			Collection::stream
-		).collect(
-			Collectors.toMap(
-				Map.Entry::getKey, Map.Entry::getValue,
-				(journalTitle, structuredContentTitle) -> journalTitle)
-		);
+			Collections.singletonMap(locale, structuredContent.getTitle()));
 
 		Optional<LocalDateTime> publishedDateOptional =
 			structuredContent.getPublishedDateOptional();
@@ -826,12 +844,9 @@ public class StructuredContentNestedCollectionResource
 			_journalArticleService.updateArticle(
 				journalArticle.getGroupId(), journalArticle.getFolderId(),
 				journalArticle.getArticleId(), journalArticle.getVersion(),
-				titleMap,
-				_getDefaultValue(
-					structuredContent.getDescriptionMapOptional(locale),
-					journalArticle.getDescriptionMap()),
-				friendlyURLMap, content, journalArticle.getDDMStructureKey(),
-				ddmTemplateKey, journalArticle.getLayoutUuid(),
+				titleMap, descriptionMap, friendlyURLMap, content,
+				journalArticle.getDDMStructureKey(), ddmTemplateKey,
+				journalArticle.getLayoutUuid(),
 				localDateTime.getMonthValue() - 1,
 				localDateTime.getDayOfMonth(), localDateTime.getYear(),
 				localDateTime.getHour(), localDateTime.getMinute(), 0, 0, 0, 0,
