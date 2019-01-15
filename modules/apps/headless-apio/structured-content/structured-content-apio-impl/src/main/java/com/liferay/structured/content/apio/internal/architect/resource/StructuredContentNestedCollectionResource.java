@@ -105,7 +105,6 @@ import com.liferay.structured.content.apio.internal.model.JournalArticleWrapper;
 import com.liferay.structured.content.apio.internal.model.RenderedJournalArticle;
 import com.liferay.structured.content.apio.internal.util.JournalArticleContentHelper;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Collection;
@@ -338,10 +337,10 @@ public class StructuredContentNestedCollectionResource
 
 		String content =
 			_journalArticleContentHelper.createJournalArticleContent(
-				structuredContent.getStructuredContentValues(), ddmStructure,
-				LocaleUtil.toLanguageId(locale),
-				Collections.singletonList(LocaleUtil.toLanguageId(locale)),
-				LocaleUtil.toLanguageId(locale));
+				locale,
+				Collections.singletonMap(
+					locale, structuredContent.getStructuredContentValues()),
+				ddmStructure);
 
 		String ddmStructureKey = ddmStructure.getStructureKey();
 		String ddmTemplateKey = _getDDMTemplateKey(ddmStructure);
@@ -518,22 +517,6 @@ public class StructuredContentNestedCollectionResource
 
 		return new JournalArticleWrapper(
 			journalArticle, acceptLanguage.getPreferredLocale(), themeDisplay);
-	}
-
-	private List<String> _getLanguagesIds(
-		List<String> languagesIds, Locale locale) {
-
-		String languageId = LocaleUtil.toLanguageId(locale);
-
-		if (!languagesIds.contains(languageId)) {
-			return Stream.concat(
-				languagesIds.stream(), Stream.of(languageId)
-			).collect(
-				Collectors.toList()
-			);
-		}
-
-		return new ArrayList(languagesIds);
 	}
 
 	private String _getLayoutLink(JSONObject jsonObject)
@@ -785,12 +768,11 @@ public class StructuredContentNestedCollectionResource
 
 		String content =
 			_journalArticleContentHelper.createJournalArticleContent(
-				structuredContent.getStructuredContentValues(), ddmStructure,
-				journalArticle.getDefaultLanguageId(),
-				_getLanguagesIds(
-					Arrays.asList(journalArticle.getAvailableLanguageIds()),
-					locale),
-				LocaleUtil.toLanguageId(locale));
+				LocaleUtil.fromLanguageId(
+					journalArticle.getDefaultLanguageId()),
+				Collections.singletonMap(
+					locale, structuredContent.getStructuredContentValues()),
+				ddmStructure);
 
 		String ddmTemplateKey = _getDDMTemplateKey(ddmStructure);
 

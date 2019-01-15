@@ -16,216 +16,198 @@ package com.liferay.structured.content.apio.internal.util;
 
 import com.liferay.apio.architect.functional.Try;
 import com.liferay.document.library.kernel.service.DLAppService;
+import com.liferay.dynamic.data.mapping.io.DDMFormValuesSerializer;
+import com.liferay.dynamic.data.mapping.io.DDMFormValuesSerializerSerializeRequest;
+import com.liferay.dynamic.data.mapping.io.DDMFormValuesSerializerSerializeResponse;
+import com.liferay.dynamic.data.mapping.io.DDMFormValuesSerializerTracker;
 import com.liferay.dynamic.data.mapping.model.DDMForm;
 import com.liferay.dynamic.data.mapping.model.DDMFormField;
+import com.liferay.dynamic.data.mapping.model.DDMFormFieldType;
 import com.liferay.dynamic.data.mapping.model.DDMStructure;
+import com.liferay.dynamic.data.mapping.model.LocalizedValue;
+import com.liferay.dynamic.data.mapping.model.UnlocalizedValue;
+import com.liferay.dynamic.data.mapping.model.Value;
+import com.liferay.dynamic.data.mapping.storage.DDMFormFieldValue;
+import com.liferay.dynamic.data.mapping.storage.DDMFormValues;
+import com.liferay.dynamic.data.mapping.storage.Fields;
+import com.liferay.dynamic.data.mapping.util.DDM;
 import com.liferay.journal.model.JournalArticle;
 import com.liferay.journal.service.JournalArticleService;
+import com.liferay.journal.util.JournalConverter;
+import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.json.JSONFactoryUtil;
 import com.liferay.portal.kernel.json.JSONObject;
-import com.liferay.portal.kernel.security.xml.SecureXMLFactoryProviderUtil;
+import com.liferay.portal.kernel.log.Log;
+import com.liferay.portal.kernel.log.LogFactoryUtil;
+import com.liferay.portal.kernel.service.ServiceContext;
+import com.liferay.portal.kernel.util.LocaleThreadLocal;
+import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.structured.content.apio.architect.model.StructuredContentLocation;
 import com.liferay.structured.content.apio.architect.model.StructuredContentValue;
 
-import java.io.StringWriter;
-
 import java.util.List;
+import java.util.Locale;
+import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
-
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
-import javax.xml.parsers.ParserConfigurationException;
-import javax.xml.transform.Transformer;
-import javax.xml.transform.TransformerException;
-import javax.xml.transform.TransformerFactory;
-import javax.xml.transform.dom.DOMSource;
-import javax.xml.transform.stream.StreamResult;
 
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;
 
-import org.w3c.dom.Document;
-import org.w3c.dom.Element;
-
 /**
  * @author Javier Gamarra
+ * @author Cristina González
  */
 @Component(service = JournalArticleContentHelper.class)
 public class JournalArticleContentHelper {
 
 	public String createJournalArticleContent(
-		List<? extends StructuredContentValue> structuredContentValues,
-		DDMStructure ddmStructure, String defaultLocaleId,
-		List<String> availableLocaleIds, String localeId) {
+		Locale defaultLocale,
+		Map<Locale, List<? extends StructuredContentValue>>
+			structuredContentValuesMap,
+		DDMStructure ddmStructure) {
 
-		return Try.fromFallible(
-			() -> {
-				Document document = _getDocument();
+		Locale originalSiteDefaultLocale =
+			LocaleThreadLocal.getSiteDefaultLocale();
 
-				Stream<String> stream = availableLocaleIds.stream();
+		String instanceId = StringUtil.randomString();
 
-				String availableLocaleIdsString = stream.collect(
-					Collectors.joining(","));
+		try {
+			LocaleThreadLocal.setSiteDefaultLocale(defaultLocale);
 
-				Element rootElement = _getRootElement(
-					defaultLocaleId, availableLocaleIdsString, document);
+			DDMForm ddmForm = ddmStructure.getDDMForm();
 
-				document.appendChild(rootElement);
+			DDMFormValues ddmFormValues = new DDMFormValues(ddmForm);
 
-				DDMForm ddmForm = ddmStructure.getDDMForm();
+			ddmFormValues.setAvailableLocales(ddmForm.getAvailableLocales());
+			ddmFormValues.setDefaultLocale(ddmForm.getDefaultLocale());
 
-				for (DDMFormField ddmFormField : ddmForm.getDDMFormFields()) {
-					String name = ddmFormField.getName();
+			List<DDMFormField> ddmFormFields = ddmForm.getDDMFormFields();
 
-					String type = _getType(ddmFormField);
+			Stream<DDMFormField> stream = ddmFormFields.stream();
 
-					Element dynamicElement = _getDynamicElement(
-						document, name, type);
+			ddmFormValues.setDDMFormFieldValues(
+				stream.map(
+					ddmFormField -> getDDMFormFieldValue(
+						ddmFormField, structuredContentValuesMap, instanceId)
+				).collect(
+					Collectors.toList()
+				)
+			);
 
-					Optional<? extends StructuredContentValue>
-						structuredContentValueOptional =
-							_findStructuredContentValueOptional(
-								structuredContentValues, name);
+			ServiceContext serviceContext = new ServiceContext();
 
-					Element contentElement = _getContentElement(
-						document, localeId, structuredContentValueOptional,
-						type);
+			serviceContext.setAttribute(
+				"ddmFormValues", serializeDDMFormValues(ddmFormValues));
 
-					dynamicElement.appendChild(contentElement);
+			Fields fields = _ddm.getFields(
+				ddmStructure.getStructureId(), serviceContext);
 
-					rootElement.appendChild(dynamicElement);
-				}
+			return _journalConverter.getContent(ddmStructure, fields);
+		}
+		catch (Exception e) {
+			_log.error(
+				"Error Creating content with " + structuredContentValuesMap, e);
 
-				return _toString(document);
-			}
-		).orElse(
-			""
-		);
+			return StringPool.BLANK;
+		}
+		finally {
+			LocaleThreadLocal.setSiteDefaultLocale(originalSiteDefaultLocale);
+		}
 	}
 
-	private Optional<? extends StructuredContentValue>
-		_findStructuredContentValueOptional(
-			List<? extends StructuredContentValue> structuredContentValues,
-			String name) {
+	protected DDMFormFieldValue getDDMFormFieldValue(
+		DDMFormField ddmFormField,
+		Map<Locale, List<? extends StructuredContentValue>>
+			structuredContentValuesMap,
+		String instanceId) {
+
+		DDMFormFieldValue ddmFormFieldValue = new DDMFormFieldValue();
+
+		ddmFormFieldValue.setName(ddmFormField.getName());
+		ddmFormFieldValue.setInstanceId(instanceId);
+
+		ddmFormFieldValue.setValue(
+			_getValue(ddmFormField, structuredContentValuesMap));
+
+		return ddmFormFieldValue;
+	}
+
+	protected String serializeDDMFormValues(DDMFormValues ddmFormValues) {
+		DDMFormValuesSerializer ddmFormValuesSerializer =
+			_ddmFormValuesSerializerTracker.getDDMFormValuesSerializer("json");
+
+		DDMFormValuesSerializerSerializeResponse
+			ddmFormValuesSerializerSerializeResponse =
+				ddmFormValuesSerializer.serialize(
+					DDMFormValuesSerializerSerializeRequest.Builder.newBuilder(
+						ddmFormValues
+					).build());
+
+		return ddmFormValuesSerializerSerializeResponse.getContent();
+	}
+
+	private String _getData(
+		DDMFormField ddmFormField,
+		List<? extends StructuredContentValue> structuredContentValues) {
 
 		Stream<? extends StructuredContentValue> stream =
 			structuredContentValues.stream();
 
 		return stream.filter(
-			structuredContentValue -> Objects.equals(
-				name, structuredContentValue.getName())
-		).findFirst();
-	}
-
-	private Element _getContentElement(
-		Document document, String localeId,
-		Optional<? extends StructuredContentValue>
-			structuredContentValueOptional,
-		String type) {
-
-		Element element = document.createElement("dynamic-content");
-
-		element.setAttribute("language-id", localeId);
-
-		return structuredContentValueOptional.map(
-			structuredContentValue -> {
-				if (type.equals("list") &&
-					_isJsonArray(structuredContentValue.getValue())) {
-
-					return _getDynamicContentListElement(
-						document, element, structuredContentValue);
-				}
-
-				String data = _getData(structuredContentValue, type);
-
-				element.appendChild(document.createCDATASection(data));
-
-				return element;
-			}
+			structuredContentValue ->
+				Objects.equals(
+					structuredContentValue.getName(), ddmFormField.getName())
+		).findFirst(
+		).map(
+			structuredContentValue -> _getData(
+				ddmFormField, structuredContentValue)
 		).orElse(
-			element
+			StringPool.BLANK
 		);
 	}
 
 	private String _getData(
-		StructuredContentValue structuredContentValue, String type) {
+		DDMFormField ddmFormField,
+		StructuredContentValue structuredContentValue) {
 
-		if (type.equals("image") || type.equals("document-library")) {
-			return _getFileData(structuredContentValue, type);
+		if (Objects.equals(
+				ddmFormField.getType(), DDMFormFieldType.DOCUMENT_LIBRARY)) {
+
+			return _getFileData(ddmFormField, structuredContentValue);
 		}
-		else if (type.equals("ddm-geolocation")) {
+		else if (Objects.equals(
+					ddmFormField.getType(), DDMFormFieldType.GEOLOCATION)) {
+
 			return _getGeoLocationData(structuredContentValue);
 		}
-		else if (type.equals("ddm-journal-article")) {
+		else if (Objects.equals(
+					ddmFormField.getType(), DDMFormFieldType.JOURNAL_ARTICLE)) {
+
 			return _getStructuredContentData(structuredContentValue);
 		}
 
-		return structuredContentValue.getValue();
-	}
-
-	private Document _getDocument() throws ParserConfigurationException {
-		DocumentBuilderFactory documentBuilderFactory =
-			SecureXMLFactoryProviderUtil.newDocumentBuilderFactory();
-
-		DocumentBuilder documentBuilder =
-			documentBuilderFactory.newDocumentBuilder();
-
-		return documentBuilder.newDocument();
+		return Optional.ofNullable(
+			structuredContentValue.getValue()
+		).orElse(
+			StringPool.BLANK
+		);
 	}
 
 	private String _getDocumentType(String type) {
-		if (type.equals("document-library")) {
+		if (Objects.equals(DDMFormFieldType.DOCUMENT_LIBRARY, type)) {
 			return "document";
 		}
 
 		return "journal";
 	}
 
-	private Element _getDynamicContentListElement(
-		Document document, Element element,
-		StructuredContentValue structuredContentValue) {
-
-		return Try.fromFallible(
-			structuredContentValue::getValue
-		).map(
-			JSONFactoryUtil::createJSONArray
-		).map(
-			jsonArray -> {
-				for (int i = 0; i < jsonArray.length(); i++) {
-					Element optionElement = document.createElement("option");
-
-					String value = jsonArray.getString(i);
-
-					optionElement.appendChild(
-						document.createCDATASection(value));
-
-					element.appendChild(optionElement);
-				}
-
-				return element;
-			}
-		).orElse(
-			element
-		);
-	}
-
-	private Element _getDynamicElement(
-		Document document, String name, String type) {
-
-		Element element = document.createElement("dynamic-element");
-
-		element.setAttribute("index-type", "keyword");
-		element.setAttribute("name", name);
-		element.setAttribute("type", type);
-
-		return element;
-	}
-
 	private String _getFileData(
-		StructuredContentValue structuredContentValue, String type) {
+		DDMFormField ddmFormField,
+		StructuredContentValue structuredContentValue) {
 
 		return Try.fromFallible(
 			structuredContentValue::getDocument
@@ -241,7 +223,8 @@ public class JournalArticleContentHelper {
 				jsonObject.put("name", fileEntry.getFileName());
 				jsonObject.put("resourcePrimKey", fileEntry.getPrimaryKey());
 				jsonObject.put("title", fileEntry.getFileName());
-				jsonObject.put("type", _getDocumentType(type));
+				jsonObject.put(
+					"type", _getDocumentType(ddmFormField.getType()));
 				jsonObject.put("uuid", fileEntry.getUuid());
 
 				return jsonObject.toString();
@@ -263,17 +246,6 @@ public class JournalArticleContentHelper {
 		jsonObject.put("longitude", structuredContentLocation.getLongitude());
 
 		return jsonObject.toString();
-	}
-
-	private Element _getRootElement(
-		String defaultLocaleId, String availableLocaleIds, Document document) {
-
-		Element element = document.createElement("root");
-
-		element.setAttribute("available-locales", availableLocaleIds);
-		element.setAttribute("default-locale", defaultLocaleId);
-
-		return element;
 	}
 
 	private String _getStructuredContentData(
@@ -298,48 +270,57 @@ public class JournalArticleContentHelper {
 		);
 	}
 
-	private String _getType(DDMFormField ddmFormField) {
-		String type = ddmFormField.getType();
+	private Value _getValue(
+		DDMFormField ddmFormField,
+		Map<Locale, List<? extends StructuredContentValue>>
+			structuredContentValuesMap) {
 
-		if (type.equals("ddm-image") || type.equals("ddm-documentlibrary") ||
-			type.equals("checkbox")) {
+		Set<Map.Entry<Locale, List<? extends StructuredContentValue>>> entries =
+			structuredContentValuesMap.entrySet();
 
-			return ddmFormField.getDataType();
-		}
-		else if (type.equals("ddm-text-html")) {
-			return "text_area";
-		}
-		else if (type.equals("select")) {
-			return "list";
+		DDMForm ddmForm = ddmFormField.getDDMForm();
+
+		if (ddmFormField.isLocalizable()) {
+			Stream<Map.Entry<Locale, List<? extends StructuredContentValue>>>
+				stream = entries.stream();
+
+			LocalizedValue localizedValue = new LocalizedValue(
+				ddmForm.getDefaultLocale());
+
+			stream.forEach(
+				entry -> localizedValue.addString(
+					entry.getKey(), _getData(ddmFormField, entry.getValue())));
+
+			return localizedValue;
 		}
 
-		return type;
+		return Optional.ofNullable(
+			structuredContentValuesMap.get(ddmForm.getDefaultLocale())
+		).map(
+			structuredContentValues ->
+				new UnlocalizedValue(
+					_getData(ddmFormField, structuredContentValues))
+		).orElseGet(
+			() -> new UnlocalizedValue(StringPool.BLANK)
+		);
 	}
 
-	private boolean _isJsonArray(String value) {
-		return Try.fromFallible(
-			() -> JSONFactoryUtil.createJSONArray(value)
-		).isSuccess();
-	}
+	private static final Log _log = LogFactoryUtil.getLog(
+		JournalArticleContentHelper.class);
 
-	private String _toString(Document document) throws TransformerException {
-		TransformerFactory transformerFactory =
-			TransformerFactory.newInstance();
+	@Reference
+	private DDM _ddm;
 
-		Transformer transformer = transformerFactory.newTransformer();
-
-		StringWriter stringWriter = new StringWriter();
-
-		transformer.transform(
-			new DOMSource(document), new StreamResult(stringWriter));
-
-		return stringWriter.toString();
-	}
+	@Reference
+	private DDMFormValuesSerializerTracker _ddmFormValuesSerializerTracker;
 
 	@Reference
 	private DLAppService _dlAppService;
 
 	@Reference
 	private JournalArticleService _journalArticleService;
+
+	@Reference
+	private JournalConverter _journalConverter;
 
 }
