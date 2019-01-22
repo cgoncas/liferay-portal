@@ -65,6 +65,11 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
+import javax.ws.rs.BadRequestException;
+
+import org.assertj.core.api.AbstractThrowableAssert;
+import org.assertj.core.api.Assertions;
+
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
@@ -107,6 +112,41 @@ public class JournalArticleContentHelperTest {
 	@After
 	public void tearDown() {
 		_serviceTracker.close();
+	}
+
+	@Test
+	public void testCreateJournalArticleContentWithInvalidMediaObjectStructuredContentValue()
+		throws Throwable {
+
+		DDMStructure ddmStructure = _ddmStructureTestHelper.addStructure(
+			PortalUtil.getClassNameId(JournalArticle.class),
+			RandomTestUtil.randomString(), RandomTestUtil.randomString(),
+			deserialize(
+				_ddmFormDeserializerTracker,
+				FileTestUtil.readFile(
+					"test-journal-media-object-field-structure.json",
+					JournalArticleContentHelperTest.class)),
+			StorageType.JSON.getValue(), DDMStructureConstants.TYPE_DEFAULT);
+
+		StructuredContentValue structuredContentValue =
+			getDocumentStructuredContentValue(
+				"MyDocumentsAndMedia", 4L, RandomTestUtil.randomString());
+
+		AbstractThrowableAssert exception = Assertions.assertThatThrownBy(
+			() -> createJournalArticleContent(
+				LocaleUtil.US,
+				Collections.singletonMap(
+					LocaleUtil.US,
+					Collections.singletonList(structuredContentValue)),
+				ddmStructure)
+		).isInstanceOf(
+			BadRequestException.class
+		);
+
+		exception.hasMessage(
+			String.format(
+				"Invalid Structured Content Value No FileEntry exists with " +
+					"the key {fileEntryId=4}"));
 	}
 
 	@Test
@@ -271,6 +311,40 @@ public class JournalArticleContentHelperTest {
 			structuredContentValue.getValue(), field.getValue());
 		Assert.assertEquals(
 			structuredContentValue.getValue(), field.getValue(LocaleUtil.US));
+	}
+
+	@Test
+	public void testCreateJournalArticleContentWitInvalidStructuredContentStructuredContentValue()
+		throws Throwable {
+
+		DDMStructure ddmStructure = _ddmStructureTestHelper.addStructure(
+			PortalUtil.getClassNameId(JournalArticle.class),
+			RandomTestUtil.randomString(), RandomTestUtil.randomString(),
+			deserialize(
+				_ddmFormDeserializerTracker,
+				FileTestUtil.readFile(
+					"test-journal-structured-content-field-structure.json",
+					JournalArticleContentHelperTest.class)),
+			StorageType.JSON.getValue(), DDMStructureConstants.TYPE_DEFAULT);
+
+		StructuredContentValue structuredContentValue =
+			getStructureStructuredContentValue("MyJournalArticle", 4L);
+
+		AbstractThrowableAssert exception = Assertions.assertThatThrownBy(
+			() -> createJournalArticleContent(
+				LocaleUtil.US,
+				Collections.singletonMap(
+					LocaleUtil.US,
+					Collections.singletonList(structuredContentValue)),
+				ddmStructure)
+		).isInstanceOf(
+			BadRequestException.class
+		);
+
+		exception.hasMessage(
+			String.format(
+				"Invalid Structured Content Value No JournalArticle exists " +
+					"with the primary key 4"));
 	}
 
 	@Test
