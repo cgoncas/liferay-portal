@@ -14,7 +14,6 @@
 
 package com.liferay.structured.content.apio.internal.util;
 
-import com.liferay.apio.architect.functional.Try;
 import com.liferay.document.library.kernel.service.DLAppService;
 import com.liferay.dynamic.data.mapping.io.DDMFormValuesSerializer;
 import com.liferay.dynamic.data.mapping.io.DDMFormValuesSerializerSerializeRequest;
@@ -35,10 +34,10 @@ import com.liferay.journal.model.JournalArticle;
 import com.liferay.journal.service.JournalArticleService;
 import com.liferay.journal.util.JournalConverter;
 import com.liferay.petra.string.StringPool;
+import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.json.JSONFactoryUtil;
 import com.liferay.portal.kernel.json.JSONObject;
-import com.liferay.portal.kernel.log.Log;
-import com.liferay.portal.kernel.log.LogFactoryUtil;
+import com.liferay.portal.kernel.repository.model.FileEntry;
 import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.util.LocaleThreadLocal;
 import com.liferay.portal.kernel.util.StringUtil;
@@ -51,8 +50,10 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
-import java.util.stream.Collectors;
 import java.util.stream.Stream;
+
+import javax.ws.rs.BadRequestException;
+import javax.ws.rs.InternalServerErrorException;
 
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;
@@ -87,16 +88,11 @@ public class JournalArticleContentHelper {
 
 			List<DDMFormField> ddmFormFields = ddmForm.getDDMFormFields();
 
-			Stream<DDMFormField> stream = ddmFormFields.stream();
-
-			ddmFormValues.setDDMFormFieldValues(
-				stream.map(
-					ddmFormField -> getDDMFormFieldValue(
-						ddmFormField, structuredContentValuesMap, instanceId)
-				).collect(
-					Collectors.toList()
-				)
-			);
+			for (DDMFormField ddmFormField : ddmFormFields) {
+				ddmFormValues.addDDMFormFieldValue(
+					getDDMFormFieldValue(
+						ddmFormField, structuredContentValuesMap, instanceId));
+			}
 
 			ServiceContext serviceContext = new ServiceContext();
 
@@ -108,11 +104,15 @@ public class JournalArticleContentHelper {
 
 			return _journalConverter.getContent(ddmStructure, fields);
 		}
-		catch (Exception e) {
-			_log.error(
-				"Error Creating content with " + structuredContentValuesMap, e);
-
-			return StringPool.BLANK;
+		catch (PortalException pe) {
+			throw new BadRequestException(
+				"Invalid Structured Content Value " + pe.getMessage(), pe);
+		}
+		catch (BadRequestException bre) {
+			throw bre;
+		}
+		catch (Throwable t) {
+			throw new InternalServerErrorException(t);
 		}
 		finally {
 			LocaleThreadLocal.setSiteDefaultLocale(originalSiteDefaultLocale);
@@ -158,21 +158,29 @@ public class JournalArticleContentHelper {
 			structuredContentValues.stream();
 
 		return stream.filter(
-			structuredContentValue ->
-				Objects.equals(
-					structuredContentValue.getName(), ddmFormField.getName())
+			structuredContentValue -> Objects.equals(
+				structuredContentValue.getName(), ddmFormField.getName())
 		).findFirst(
 		).map(
-			structuredContentValue -> _getData(
-				ddmFormField, structuredContentValue)
+			structuredContentValue -> {
+				try {
+					return _getData(ddmFormField, structuredContentValue);
+				}
+				catch (PortalException pe) {
+					throw new BadRequestException(
+						"Invalid Structured Content Value " + pe.getMessage(),
+						pe);
+				}
+			}
 		).orElse(
 			StringPool.BLANK
 		);
 	}
 
 	private String _getData(
-		DDMFormField ddmFormField,
-		StructuredContentValue structuredContentValue) {
+			DDMFormField ddmFormField,
+			StructuredContentValue structuredContentValue)
+		throws PortalException {
 
 		if (Objects.equals(
 				ddmFormField.getType(), DDMFormFieldType.DOCUMENT_LIBRARY)) {
@@ -206,32 +214,25 @@ public class JournalArticleContentHelper {
 	}
 
 	private String _getFileData(
-		DDMFormField ddmFormField,
-		StructuredContentValue structuredContentValue) {
+			DDMFormField ddmFormField,
+			StructuredContentValue structuredContentValue)
+		throws PortalException {
 
-		return Try.fromFallible(
-			structuredContentValue::getDocument
-		).map(
-			_dlAppService::getFileEntry
-		).map(
-			fileEntry -> {
-				JSONObject jsonObject = JSONFactoryUtil.createJSONObject();
+		FileEntry fileEntry = _dlAppService.getFileEntry(
+			structuredContentValue.getDocument());
 
-				jsonObject.put("alt", structuredContentValue.getValue());
-				jsonObject.put("fileEntryId", fileEntry.getFileEntryId());
-				jsonObject.put("groupId", fileEntry.getGroupId());
-				jsonObject.put("name", fileEntry.getFileName());
-				jsonObject.put("resourcePrimKey", fileEntry.getPrimaryKey());
-				jsonObject.put("title", fileEntry.getFileName());
-				jsonObject.put(
-					"type", _getDocumentType(ddmFormField.getType()));
-				jsonObject.put("uuid", fileEntry.getUuid());
+		JSONObject jsonObject = JSONFactoryUtil.createJSONObject();
 
-				return jsonObject.toString();
-			}
-		).orElse(
-			null
-		);
+		jsonObject.put("alt", structuredContentValue.getValue());
+		jsonObject.put("fileEntryId", fileEntry.getFileEntryId());
+		jsonObject.put("groupId", fileEntry.getGroupId());
+		jsonObject.put("name", fileEntry.getFileName());
+		jsonObject.put("resourcePrimKey", fileEntry.getPrimaryKey());
+		jsonObject.put("title", fileEntry.getFileName());
+		jsonObject.put("type", _getDocumentType(ddmFormField.getType()));
+		jsonObject.put("uuid", fileEntry.getUuid());
+
+		return jsonObject.toString();
 	}
 
 	private String _getGeoLocationData(
@@ -249,25 +250,19 @@ public class JournalArticleContentHelper {
 	}
 
 	private String _getStructuredContentData(
-		StructuredContentValue structuredContentValue) {
+			StructuredContentValue structuredContentValue)
+		throws PortalException {
 
-		return Try.fromFallible(
-			structuredContentValue::getStructuredContentId
-		).map(
-			_journalArticleService::getArticle
-		).map(
-			journalArticle -> {
-				JSONObject jsonObject = JSONFactoryUtil.createJSONObject();
+		JournalArticle journalArticle = _journalArticleService.getArticle(
+			structuredContentValue.getStructuredContentId());
 
-				jsonObject.put("className", JournalArticle.class.getName());
-				jsonObject.put("classPK", journalArticle.getResourcePrimKey());
-				jsonObject.put("title", journalArticle.getTitle());
+		JSONObject jsonObject = JSONFactoryUtil.createJSONObject();
 
-				return jsonObject.toString();
-			}
-		).orElse(
-			null
-		);
+		jsonObject.put("className", JournalArticle.class.getName());
+		jsonObject.put("classPK", journalArticle.getResourcePrimKey());
+		jsonObject.put("title", journalArticle.getTitle());
+
+		return jsonObject.toString();
 	}
 
 	private Value _getValue(
@@ -304,9 +299,6 @@ public class JournalArticleContentHelper {
 			() -> new UnlocalizedValue(StringPool.BLANK)
 		);
 	}
-
-	private static final Log _log = LogFactoryUtil.getLog(
-		JournalArticleContentHelper.class);
 
 	@Reference
 	private DDM _ddm;
