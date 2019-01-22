@@ -135,8 +135,8 @@ public class CategoryNestedCollectionResource
 		ServiceContext serviceContext = new ServiceContext();
 
 		return _assetCategoryService.addCategory(
-			assetVocabulary.getGroupId(), 0, categoryForm.getTitles(locale),
-			categoryForm.getDescriptions(locale), vocabularyId, null,
+			assetVocabulary.getGroupId(), 0, categoryForm.getNameMap(locale),
+			categoryForm.getDescriptionMap(locale), vocabularyId, null,
 			serviceContext);
 	}
 
@@ -179,8 +179,8 @@ public class CategoryNestedCollectionResource
 
 		return _assetCategoryService.updateCategory(
 			assetCategoryId, assetCategory.getParentCategoryId(),
-			categoryForm.getTitles(locale),
-			categoryForm.getDescriptions(locale),
+			categoryForm.getNameMap(locale),
+			categoryForm.getDescriptionMap(locale),
 			assetCategory.getVocabularyId(), null, serviceContext);
 	}
 

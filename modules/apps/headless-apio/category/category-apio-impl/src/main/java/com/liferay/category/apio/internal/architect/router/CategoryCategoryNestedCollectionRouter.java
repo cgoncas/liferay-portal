@@ -75,8 +75,8 @@ public class CategoryCategoryNestedCollectionRouter
 
 		return _assetCategoryService.addCategory(
 			group.getGroupId(), parentCategoryId,
-			categoryForm.getTitles(locale),
-			categoryForm.getDescriptions(locale),
+			categoryForm.getNameMap(locale),
+			categoryForm.getDescriptionMap(locale),
 			assetCategory.getVocabularyId(), null, serviceContext);
 	}
 

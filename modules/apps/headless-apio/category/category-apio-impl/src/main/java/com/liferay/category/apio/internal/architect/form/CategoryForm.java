@@ -56,16 +56,16 @@ public class CategoryForm {
 	 *
 	 * @return the description map
 	 */
-	public Map<Locale, String> getDescriptions(Locale locale) {
+	public Map<Locale, String> getDescriptionMap(Locale locale) {
 		return Collections.singletonMap(locale, _description);
 	}
 
 	/**
-	 * Returns the asset category's title map.
+	 * Returns the asset category's name map.
 	 *
 	 * @return the title map
 	 */
-	public Map<Locale, String> getTitles(Locale locale) {
+	public Map<Locale, String> getNameMap(Locale locale) {
 		return Collections.singletonMap(locale, _name);
 	}
 
