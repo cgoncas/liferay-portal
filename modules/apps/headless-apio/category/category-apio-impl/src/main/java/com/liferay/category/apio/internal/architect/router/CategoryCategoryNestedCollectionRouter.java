@@ -21,6 +21,7 @@ import com.liferay.apio.architect.routes.NestedCollectionRoutes;
 import com.liferay.asset.kernel.model.AssetCategory;
 import com.liferay.asset.kernel.service.AssetCategoryService;
 import com.liferay.category.apio.architect.identifier.CategoryIdentifier;
+import com.liferay.category.apio.architect.model.Category;
 import com.liferay.category.apio.internal.architect.form.CategoryForm;
 import com.liferay.portal.apio.permission.HasPermission;
 import com.liferay.portal.kernel.exception.PortalException;
@@ -61,7 +62,7 @@ public class CategoryCategoryNestedCollectionRouter
 	}
 
 	private AssetCategory _addAssetCategory(
-			long parentCategoryId, CategoryForm categoryForm)
+			long parentCategoryId, Category category)
 		throws PortalException {
 
 		AssetCategory assetCategory = _assetCategoryService.getCategory(
@@ -75,8 +76,7 @@ public class CategoryCategoryNestedCollectionRouter
 
 		return _assetCategoryService.addCategory(
 			group.getGroupId(), parentCategoryId,
-			categoryForm.getNameMap(locale),
-			categoryForm.getDescriptionMap(locale),
+			category.getNameMap(locale), category.getDescriptionMap(locale),
 			assetCategory.getVocabularyId(), null, serviceContext);
 	}
 
