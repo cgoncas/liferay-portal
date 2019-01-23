@@ -40,6 +40,7 @@ import com.liferay.portal.kernel.json.JSONObject;
 import com.liferay.portal.kernel.repository.model.FileEntry;
 import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.util.LocaleThreadLocal;
+import com.liferay.portal.kernel.util.LocaleUtil;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.structured.content.apio.architect.model.StructuredContentLocation;
 import com.liferay.structured.content.apio.architect.model.StructuredContentValue;
@@ -66,10 +67,9 @@ import org.osgi.service.component.annotations.Reference;
 public class JournalArticleContentHelper {
 
 	public String createJournalArticleContent(
-		Locale defaultLocale,
+		DDMStructure ddmStructure,
 		Map<Locale, List<? extends StructuredContentValue>>
-			structuredContentValuesMap,
-		DDMStructure ddmStructure) {
+			structuredContentValuesMap) {
 
 		Locale originalSiteDefaultLocale =
 			LocaleThreadLocal.getSiteDefaultLocale();
@@ -77,7 +77,8 @@ public class JournalArticleContentHelper {
 		String instanceId = StringUtil.randomString();
 
 		try {
-			LocaleThreadLocal.setSiteDefaultLocale(defaultLocale);
+			LocaleThreadLocal.setSiteDefaultLocale(
+				LocaleUtil.fromLanguageId(ddmStructure.getDefaultLanguageId()));
 
 			DDMForm ddmForm = ddmStructure.getDDMForm();
 

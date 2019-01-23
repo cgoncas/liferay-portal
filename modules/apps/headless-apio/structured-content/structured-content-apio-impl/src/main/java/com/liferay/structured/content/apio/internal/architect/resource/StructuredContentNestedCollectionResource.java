@@ -351,10 +351,9 @@ public class StructuredContentNestedCollectionResource
 
 		String content =
 			_journalArticleContentHelper.createJournalArticleContent(
-				locale,
+				ddmStructure,
 				Collections.singletonMap(
-					locale, structuredContent.getStructuredContentValues()),
-				ddmStructure);
+					locale, structuredContent.getStructuredContentValues()));
 
 		String ddmStructureKey = ddmStructure.getStructureKey();
 		String ddmTemplateKey = _getDDMTemplateKey(ddmStructure);
@@ -816,11 +815,9 @@ public class StructuredContentNestedCollectionResource
 
 		String content =
 			_journalArticleContentHelper.createJournalArticleContent(
-				LocaleUtil.fromLanguageId(
-					journalArticle.getDefaultLanguageId()),
+				ddmStructure,
 				Collections.singletonMap(
-					locale, structuredContent.getStructuredContentValues()),
-				ddmStructure);
+					locale, structuredContent.getStructuredContentValues()));
 
 		String ddmTemplateKey = _getDDMTemplateKey(ddmStructure);
 

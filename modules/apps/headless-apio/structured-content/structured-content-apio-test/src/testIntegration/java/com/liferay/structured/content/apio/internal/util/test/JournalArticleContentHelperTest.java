@@ -32,6 +32,7 @@ import com.liferay.journal.model.JournalArticle;
 import com.liferay.journal.model.JournalFolderConstants;
 import com.liferay.journal.test.util.JournalTestUtil;
 import com.liferay.journal.util.JournalConverter;
+import com.liferay.petra.string.StringPool;
 import com.liferay.portal.apio.test.util.FileTestUtil;
 import com.liferay.portal.kernel.json.JSONFactoryUtil;
 import com.liferay.portal.kernel.json.JSONObject;
@@ -62,10 +63,15 @@ import com.liferay.structured.content.apio.architect.model.StructuredContentValu
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 
+import java.util.AbstractMap;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.Set;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import javax.ws.rs.BadRequestException;
 
@@ -137,11 +143,10 @@ public class JournalArticleContentHelperTest {
 
 		AbstractThrowableAssert exception = Assertions.assertThatThrownBy(
 			() -> createJournalArticleContent(
-				LocaleUtil.US,
+				ddmStructure,
 				Collections.singletonMap(
 					LocaleUtil.US,
-					Collections.singletonList(structuredContentValue)),
-				ddmStructure)
+					Collections.singletonList(structuredContentValue)))
 		).isInstanceOf(
 			BadRequestException.class
 		);
@@ -150,6 +155,266 @@ public class JournalArticleContentHelperTest {
 			String.format(
 				"Invalid Structured Content Value No FileEntry exists with " +
 					"the key {fileEntryId=4}"));
+	}
+
+	@Sync
+	@Test
+	public void testCreateJournalArticleContentWithLocalizedTextAndLocalizedMediaObjectStructuredContentValue()
+		throws Throwable {
+
+		DDMStructure ddmStructure = _ddmStructureTestHelper.addStructure(
+			PortalUtil.getClassNameId(JournalArticle.class),
+			RandomTestUtil.randomString(), RandomTestUtil.randomString(),
+			deserialize(
+				_ddmFormDeserializerTracker,
+				FileTestUtil.readFile(
+					"test-journal-text-field-media-object-field-structure.json",
+					JournalArticleContentHelperTest.class)),
+			StorageType.JSON.getValue(), DDMStructureConstants.TYPE_DEFAULT);
+
+		FileEntry fileEntry = _dlAppLocalService.addFileEntry(
+			TestPropsValues.getUserId(), _group.getGroupId(),
+			DLFolderConstants.DEFAULT_PARENT_FOLDER_ID,
+			RandomTestUtil.randomString() + ".jpg", ContentTypes.IMAGE_JPEG,
+			FileUtil.getBytes(
+				JournalArticleContentHelperTest.class, "image.jpg"),
+			ServiceContextTestUtil.getServiceContext(
+				_group.getGroupId(), TestPropsValues.getUserId()));
+
+		Map<Locale, List<? extends StructuredContentValue>>
+			structuredContentValueMap = Stream.of(
+				new AbstractMap.SimpleEntry<>(
+					LocaleUtil.US,
+					Arrays.asList(
+						getTextStructuredContentValue("MyText", "My text"),
+						getDocumentStructuredContentValue(
+							"MyDocumentsAndMedia", fileEntry.getFileEntryId(),
+							RandomTestUtil.randomString()))),
+				new AbstractMap.SimpleEntry<>(
+					LocaleUtil.SPAIN,
+					Collections.singletonList(
+						getTextStructuredContentValue("MyText", "Mi texto")))
+			).collect(
+				Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue)
+			);
+
+		String content = createJournalArticleContent(
+			ddmStructure, structuredContentValueMap);
+
+		Fields fields = _journalConverter.getDDMFields(ddmStructure, content);
+
+		Assert.assertEquals(
+			ddmStructure.getStructureId(), fields.getDDMStructureId());
+
+		Assert.assertEquals(fields.getDefaultLocale(), LocaleUtil.US);
+
+		Set<Locale> availableLocales = fields.getAvailableLocales();
+
+		Assert.assertTrue(availableLocales.contains(LocaleUtil.US));
+		Assert.assertTrue(availableLocales.contains(LocaleUtil.SPAIN));
+
+		Field textField = fields.get("MyText");
+
+		Assert.assertNotNull(textField);
+		Assert.assertEquals("My text", textField.getValue());
+		Assert.assertEquals("My text", textField.getValue(LocaleUtil.US));
+		Assert.assertEquals("Mi texto", textField.getValue(LocaleUtil.SPAIN));
+
+		Field mediaObjectField = fields.get("MyDocumentsAndMedia");
+
+		JSONObject jsonObjectUS = JSONFactoryUtil.createJSONObject(
+			(String)mediaObjectField.getValue(LocaleUtil.US));
+
+		Assert.assertEquals(
+			fileEntry.getFileEntryId(), jsonObjectUS.getLong("fileEntryId"));
+
+		Assert.assertEquals(
+			StringPool.BLANK, mediaObjectField.getValue(LocaleUtil.SPAIN));
+	}
+
+	@Test
+	public void testCreateJournalArticleContentWithLocalizedTextAndUnlocalizedGeoLocalizationStructuredContentValueInNoDefaultLocale()
+		throws Throwable {
+
+		DDMStructure ddmStructure = _ddmStructureTestHelper.addStructure(
+			PortalUtil.getClassNameId(JournalArticle.class),
+			RandomTestUtil.randomString(), RandomTestUtil.randomString(),
+			deserialize(
+				_ddmFormDeserializerTracker,
+				FileTestUtil.readFile(
+					"test-journal-text-field-geolocalization-field-" +
+						"structure.json",
+					JournalArticleContentHelperTest.class)),
+			StorageType.JSON.getValue(), DDMStructureConstants.TYPE_DEFAULT);
+
+		Map<Locale, List<? extends StructuredContentValue>>
+			structuredContentValueMap = Stream.of(
+				new AbstractMap.SimpleEntry<>(
+					LocaleUtil.US,
+					Collections.singletonList(
+						getTextStructuredContentValue("MyText", "My text"))),
+				new AbstractMap.SimpleEntry<>(
+					LocaleUtil.SPAIN,
+					Arrays.asList(
+						getTextStructuredContentValue("MyText", "Mi texto"),
+						getStructuredContentLocationStructuredContentValue(
+							"MyGeolocation", 12.0, -13.7)))
+			).collect(
+				Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue)
+			);
+
+		String content = createJournalArticleContent(
+			ddmStructure, structuredContentValueMap);
+
+		Fields fields = _journalConverter.getDDMFields(ddmStructure, content);
+
+		Assert.assertEquals(
+			ddmStructure.getStructureId(), fields.getDDMStructureId());
+
+		Assert.assertEquals(fields.getDefaultLocale(), LocaleUtil.US);
+
+		Set<Locale> availableLocales = fields.getAvailableLocales();
+
+		Assert.assertTrue(availableLocales.contains(LocaleUtil.US));
+		Assert.assertTrue(availableLocales.contains(LocaleUtil.SPAIN));
+
+		Field textField = fields.get("MyText");
+
+		Assert.assertNotNull(textField);
+		Assert.assertEquals("My text", textField.getValue());
+		Assert.assertEquals("My text", textField.getValue(LocaleUtil.US));
+		Assert.assertEquals("Mi texto", textField.getValue(LocaleUtil.SPAIN));
+
+		Field geolocationField = fields.get("MyGeolocation");
+
+		Assert.assertNotNull(geolocationField);
+		Assert.assertEquals(StringPool.BLANK, geolocationField.getValue());
+		Assert.assertEquals(
+			StringPool.BLANK, geolocationField.getValue(LocaleUtil.SPAIN));
+		Assert.assertEquals(
+			StringPool.BLANK, geolocationField.getValue(LocaleUtil.US));
+	}
+
+	@Test
+	public void testCreateJournalArticleContentWithLocalizedTextAndUnlozalizedGeoLocalizationStructuredContentValueInDefaultLocale()
+		throws Throwable {
+
+		DDMStructure ddmStructure = _ddmStructureTestHelper.addStructure(
+			PortalUtil.getClassNameId(JournalArticle.class),
+			RandomTestUtil.randomString(), RandomTestUtil.randomString(),
+			deserialize(
+				_ddmFormDeserializerTracker,
+				FileTestUtil.readFile(
+					"test-journal-text-field-geolocalization-field-" +
+						"structure.json",
+					JournalArticleContentHelperTest.class)),
+			StorageType.JSON.getValue(), DDMStructureConstants.TYPE_DEFAULT);
+
+		Map<Locale, List<? extends StructuredContentValue>>
+			structuredContentValueMap = Stream.of(
+				new AbstractMap.SimpleEntry<>(
+					LocaleUtil.US,
+					Arrays.asList(
+						getTextStructuredContentValue("MyText", "My text"),
+						getStructuredContentLocationStructuredContentValue(
+							"MyGeolocation", 12.0, -13.7))),
+				new AbstractMap.SimpleEntry<>(
+					LocaleUtil.SPAIN,
+					Arrays.asList(
+						getTextStructuredContentValue("MyText", "Mi texto")))
+			).collect(
+				Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue)
+			);
+
+		String content = createJournalArticleContent(
+			ddmStructure, structuredContentValueMap);
+
+		Fields fields = _journalConverter.getDDMFields(ddmStructure, content);
+
+		Assert.assertEquals(
+			ddmStructure.getStructureId(), fields.getDDMStructureId());
+
+		Assert.assertEquals(fields.getDefaultLocale(), LocaleUtil.US);
+
+		Set<Locale> availableLocales = fields.getAvailableLocales();
+
+		Assert.assertTrue(availableLocales.contains(LocaleUtil.US));
+		Assert.assertTrue(availableLocales.contains(LocaleUtil.SPAIN));
+
+		Field textField = fields.get("MyText");
+
+		Assert.assertNotNull(textField);
+		Assert.assertEquals("My text", textField.getValue());
+		Assert.assertEquals("My text", textField.getValue(LocaleUtil.US));
+		Assert.assertEquals("Mi texto", textField.getValue(LocaleUtil.SPAIN));
+
+		Field geolocationField = fields.get("MyGeolocation");
+
+		JSONObject jsonObjectDefault = JSONFactoryUtil.createJSONObject(
+			(String)geolocationField.getValue());
+
+		Assert.assertEquals(12.0, jsonObjectDefault.getDouble("latitude"), 0);
+
+		JSONObject jsonObjectES = JSONFactoryUtil.createJSONObject(
+			(String)geolocationField.getValue(LocaleUtil.SPAIN));
+
+		Assert.assertEquals(12.0, jsonObjectES.getDouble("latitude"), 0);
+
+		JSONObject jsonObjectUS = JSONFactoryUtil.createJSONObject(
+			(String)geolocationField.getValue(LocaleUtil.US));
+
+		Assert.assertEquals(12.0, jsonObjectUS.getDouble("latitude"), 0);
+	}
+
+	@Test
+	public void testCreateJournalArticleContentWithLocalizedTextStructuredContentValue()
+		throws Throwable {
+
+		DDMStructure ddmStructure = _ddmStructureTestHelper.addStructure(
+			PortalUtil.getClassNameId(JournalArticle.class),
+			RandomTestUtil.randomString(), RandomTestUtil.randomString(),
+			deserialize(
+				_ddmFormDeserializerTracker,
+				FileTestUtil.readFile(
+					"test-journal-text-field-structure.json",
+					JournalArticleContentHelperTest.class)),
+			StorageType.JSON.getValue(), DDMStructureConstants.TYPE_DEFAULT);
+
+		Map<Locale, List<? extends StructuredContentValue>>
+			structuredContentValueMap = Stream.of(
+				new AbstractMap.SimpleEntry<>(
+					LocaleUtil.US,
+					Collections.singletonList(
+						getTextStructuredContentValue("MyText", "My text"))),
+				new AbstractMap.SimpleEntry<>(
+					LocaleUtil.SPAIN,
+					Collections.singletonList(
+						getTextStructuredContentValue("MyText", "Mi texto")))
+			).collect(
+				Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue)
+			);
+
+		String content = createJournalArticleContent(
+			ddmStructure, structuredContentValueMap);
+
+		Fields fields = _journalConverter.getDDMFields(ddmStructure, content);
+
+		Assert.assertEquals(
+			ddmStructure.getStructureId(), fields.getDDMStructureId());
+
+		Assert.assertEquals(fields.getDefaultLocale(), LocaleUtil.US);
+
+		Set<Locale> availableLocales = fields.getAvailableLocales();
+
+		Assert.assertTrue(availableLocales.contains(LocaleUtil.US));
+		Assert.assertTrue(availableLocales.contains(LocaleUtil.SPAIN));
+
+		Field field = fields.get("MyText");
+
+		Assert.assertNotNull(field);
+		Assert.assertEquals("My text", field.getValue());
+		Assert.assertEquals("My text", field.getValue(LocaleUtil.US));
+		Assert.assertEquals("Mi texto", field.getValue(LocaleUtil.SPAIN));
 	}
 
 	@Sync
@@ -182,11 +447,10 @@ public class JournalArticleContentHelperTest {
 				RandomTestUtil.randomString());
 
 		String content = createJournalArticleContent(
-			LocaleUtil.US,
+			ddmStructure,
 			Collections.singletonMap(
 				LocaleUtil.US,
-				Collections.singletonList(structuredContentValue)),
-			ddmStructure);
+				Collections.singletonList(structuredContentValue)));
 
 		Fields fields = _journalConverter.getDDMFields(ddmStructure, content);
 
@@ -238,11 +502,10 @@ public class JournalArticleContentHelperTest {
 				"MyGeolocation", 12.0, -13.7);
 
 		String content = createJournalArticleContent(
-			LocaleUtil.US,
+			ddmStructure,
 			Collections.singletonMap(
 				LocaleUtil.US,
-				Collections.singletonList(structuredContentValue)),
-			ddmStructure);
+				Collections.singletonList(structuredContentValue)));
 
 		Fields fields = _journalConverter.getDDMFields(ddmStructure, content);
 
@@ -291,11 +554,10 @@ public class JournalArticleContentHelperTest {
 			getTextStructuredContentValue("MyText", "My text");
 
 		String content = createJournalArticleContent(
-			LocaleUtil.US,
+			ddmStructure,
 			Collections.singletonMap(
 				LocaleUtil.US,
-				Collections.singletonList(structuredContentValue)),
-			ddmStructure);
+				Collections.singletonList(structuredContentValue)));
 
 		Fields fields = _journalConverter.getDDMFields(ddmStructure, content);
 
@@ -336,11 +598,10 @@ public class JournalArticleContentHelperTest {
 
 		AbstractThrowableAssert exception = Assertions.assertThatThrownBy(
 			() -> createJournalArticleContent(
-				LocaleUtil.US,
+				ddmStructure,
 				Collections.singletonMap(
 					LocaleUtil.US,
-					Collections.singletonList(structuredContentValue)),
-				ddmStructure)
+					Collections.singletonList(structuredContentValue)))
 		).isInstanceOf(
 			BadRequestException.class
 		);
@@ -374,11 +635,10 @@ public class JournalArticleContentHelperTest {
 				"MyJournalArticle", journalArticle.getPrimaryKey());
 
 		String content = createJournalArticleContent(
-			LocaleUtil.US,
+			ddmStructure,
 			Collections.singletonMap(
 				LocaleUtil.US,
-				Collections.singletonList(structuredContentValue)),
-			ddmStructure);
+				Collections.singletonList(structuredContentValue)));
 
 		Fields fields = _journalConverter.getDDMFields(ddmStructure, content);
 
@@ -406,10 +666,9 @@ public class JournalArticleContentHelperTest {
 	}
 
 	protected String createJournalArticleContent(
-			Locale defaultLocale,
+			DDMStructure ddmStructure,
 			Map<Locale, List<? extends StructuredContentValue>>
-				structuredContentValuesMap,
-			DDMStructure ddmStructure)
+				structuredContentValuesMap)
 		throws Throwable {
 
 		Object service = _serviceTracker.getService();
@@ -417,15 +676,13 @@ public class JournalArticleContentHelperTest {
 		Class<?> clazz = service.getClass();
 
 		Method method = clazz.getDeclaredMethod(
-			"createJournalArticleContent", Locale.class, Map.class,
-			DDMStructure.class);
+			"createJournalArticleContent", DDMStructure.class, Map.class);
 
 		method.setAccessible(true);
 
 		try {
 			return (String)method.invoke(
-				service, defaultLocale, structuredContentValuesMap,
-				ddmStructure);
+				service, ddmStructure, structuredContentValuesMap);
 		}
 		catch (InvocationTargetException ite) {
 			throw ite.getTargetException();
