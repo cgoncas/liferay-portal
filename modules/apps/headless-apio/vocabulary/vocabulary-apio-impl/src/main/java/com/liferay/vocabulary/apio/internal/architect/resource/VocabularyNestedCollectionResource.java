@@ -79,7 +79,7 @@ public class VocabularyNestedCollectionResource
 		ItemRoutes.Builder<AssetVocabulary, Long> builder) {
 
 		return builder.addGetter(
-			_assetVocabularyService::getVocabulary
+			this::_getAssetVocabulary
 		).addUpdater(
 			this::_updateAssetVocabulary, _hasPermission::forUpdating,
 			VocabularyForm::buildForm
@@ -131,6 +131,12 @@ public class VocabularyNestedCollectionResource
 		return _assetVocabularyService.addVocabulary(
 			groupId, null, vocabulary.getNameMap(locale),
 			vocabulary.getDescriptionMap(locale), null, serviceContext);
+	}
+
+	private AssetVocabulary _getAssetVocabulary(long vocabularyId)
+		throws PortalException {
+
+		return _assetVocabularyService.getVocabulary(vocabularyId);
 	}
 
 	private PageItems<AssetVocabulary> _getPageItems(
