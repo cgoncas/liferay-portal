@@ -33,6 +33,7 @@ import com.liferay.portal.kernel.service.GroupLocalService;
 import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.util.LocaleUtil;
 import com.liferay.vocabulary.apio.architect.identifier.VocabularyIdentifier;
+import com.liferay.vocabulary.apio.architect.model.Vocabulary;
 import com.liferay.vocabulary.apio.internal.architect.form.VocabularyForm;
 
 import java.util.Arrays;
@@ -118,7 +119,7 @@ public class VocabularyNestedCollectionResource
 	}
 
 	private AssetVocabulary _addAssetVocabulary(
-			long groupId, VocabularyForm vocabularyForm)
+			long groupId, Vocabulary vocabulary)
 		throws PortalException {
 
 		Group group = _groupLocalService.getGroup(groupId);
@@ -128,8 +129,8 @@ public class VocabularyNestedCollectionResource
 		ServiceContext serviceContext = new ServiceContext();
 
 		return _assetVocabularyService.addVocabulary(
-			groupId, null, vocabularyForm.getTitles(locale),
-			vocabularyForm.getDescriptions(locale), null, serviceContext);
+			groupId, null, vocabulary.getNameMap(locale),
+			vocabulary.getDescriptionMap(locale), null, serviceContext);
 	}
 
 	private PageItems<AssetVocabulary> _getPageItems(
@@ -145,7 +146,7 @@ public class VocabularyNestedCollectionResource
 	}
 
 	private AssetVocabulary _updateAssetVocabulary(
-			long vocabularyId, VocabularyForm vocabularyForm)
+			long vocabularyId, Vocabulary vocabulary)
 		throws PortalException {
 
 		AssetVocabulary assetVocabulary = _assetVocabularyService.getVocabulary(
@@ -156,8 +157,8 @@ public class VocabularyNestedCollectionResource
 		Locale locale = LocaleUtil.fromLanguageId(group.getDefaultLanguageId());
 
 		return _assetVocabularyService.updateVocabulary(
-			vocabularyId, null, vocabularyForm.getTitles(locale),
-			vocabularyForm.getDescriptions(locale), null, new ServiceContext());
+			vocabularyId, null, vocabulary.getNameMap(locale),
+			vocabulary.getDescriptionMap(locale), null, new ServiceContext());
 	}
 
 	@Reference
