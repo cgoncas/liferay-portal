@@ -21,10 +21,13 @@ import com.liferay.headless.document.library.dto.Folder;
 import com.liferay.headless.document.library.resource.FolderResource;
 import com.liferay.portal.kernel.exception.NoSuchGroupException;
 import com.liferay.portal.kernel.exception.PortalException;
+import com.liferay.portal.kernel.security.auth.PrincipalException;
+import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.vulcan.context.Pagination;
 import com.liferay.portal.vulcan.dto.Page;
 
 import javax.ws.rs.InternalServerErrorException;
+import javax.ws.rs.NotAuthorizedException;
 import javax.ws.rs.NotFoundException;
 
 import org.osgi.service.component.annotations.Component;
@@ -49,6 +52,11 @@ public class FolderResourceImpl extends BaseFolderResourceImpl {
 	}
 
 	@Override
+	public Folder getFolder(Long id) {
+		return _toFolder(_getFolder(id));
+	}
+
+	@Override
 	public Page<Folder> getFolderFolderPage(
 		Long parentId, Pagination pagination) {
 
@@ -59,6 +67,76 @@ public class FolderResourceImpl extends BaseFolderResourceImpl {
 			return _getFolderPage(
 				parentFolder.getGroupId(), parentFolder.getFolderId(),
 				pagination);
+		}
+		catch (NoSuchFolderException nsfe) {
+			throw new NotFoundException(nsfe);
+		}
+		catch (PrincipalException pe) {
+			throw new NotAuthorizedException(pe);
+		}
+		catch (PortalException pe) {
+			throw new InternalServerErrorException(pe);
+		}
+	}
+
+	@Override
+	public Folder postDocumentsRepositoryFolder(Long parentId, Folder folder) {
+		return _addFolder(parentId, 0L, folder);
+	}
+
+	@Override
+	public Folder postFolderFolder(Long parentId, Folder folder) {
+		com.liferay.portal.kernel.repository.model.Folder parentFolder =
+			_getFolder(parentId);
+
+		return _addFolder(
+			parentFolder.getGroupId(), parentFolder.getFolderId(), folder);
+	}
+
+	@Override
+	public Folder putFolder(Long id, Folder folder) {
+		try {
+			return _toFolder(
+				_dlAppService.updateFolder(
+					id, folder.getName(), folder.getDescription(),
+					new ServiceContext()));
+		}
+		catch (NoSuchFolderException nsfe) {
+			throw new NotFoundException(nsfe);
+		}
+		catch (PrincipalException pe) {
+			throw new NotAuthorizedException(pe);
+		}
+		catch (PortalException pe) {
+			throw new InternalServerErrorException(pe);
+		}
+	}
+
+	private Folder _addFolder(
+		Long parentId, Long parentFolderId, Folder folder) {
+
+		try {
+			return _toFolder(
+				_dlAppService.addFolder(
+					parentId, parentFolderId, folder.getName(),
+					folder.getDescription(), new ServiceContext()));
+		}
+		catch (NoSuchGroupException nsge) {
+			throw new NotFoundException(nsge);
+		}
+		catch (PrincipalException pe) {
+			throw new NotAuthorizedException(pe);
+		}
+		catch (PortalException pe) {
+			throw new InternalServerErrorException(pe);
+		}
+	}
+
+	private com.liferay.portal.kernel.repository.model.Folder _getFolder(
+		Long id) {
+
+		try {
+			return _dlAppService.getFolder(id);
 		}
 		catch (NoSuchFolderException nsfe) {
 			throw new NotFoundException(nsfe);
@@ -83,6 +161,9 @@ public class FolderResourceImpl extends BaseFolderResourceImpl {
 		}
 		catch (NoSuchGroupException nsge) {
 			throw new NotFoundException(nsge);
+		}
+		catch (PrincipalException pe) {
+			throw new NotAuthorizedException(pe);
 		}
 		catch (PortalException pe) {
 			throw new InternalServerErrorException(pe);
