@@ -19,8 +19,10 @@ import com.liferay.headless.web.experience.resource.StructuredContentResource;
 import com.liferay.journal.model.JournalArticle;
 import com.liferay.journal.model.JournalArticleConstants;
 import com.liferay.journal.util.JournalHelper;
+import com.liferay.portal.kernel.exception.NoSuchCompanyException;
+import com.liferay.portal.kernel.exception.NoSuchGroupException;
+import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.model.Company;
-import com.liferay.portal.kernel.model.Group;
 import com.liferay.portal.kernel.search.Field;
 import com.liferay.portal.kernel.search.Hits;
 import com.liferay.portal.kernel.search.IndexSearcherHelperUtil;
@@ -33,6 +35,7 @@ import com.liferay.portal.kernel.search.SearchException;
 import com.liferay.portal.kernel.search.SearchResultPermissionFilter;
 import com.liferay.portal.kernel.search.SearchResultPermissionFilterFactory;
 import com.liferay.portal.kernel.search.SearchResultPermissionFilterSearcher;
+import com.liferay.portal.kernel.security.auth.PrincipalException;
 import com.liferay.portal.kernel.security.permission.PermissionChecker;
 import com.liferay.portal.kernel.security.permission.PermissionThreadLocal;
 import com.liferay.portal.kernel.service.CompanyService;
@@ -42,6 +45,10 @@ import com.liferay.portal.kernel.workflow.WorkflowConstants;
 import com.liferay.portal.vulcan.context.AcceptLanguage;
 import com.liferay.portal.vulcan.context.Pagination;
 import com.liferay.portal.vulcan.dto.Page;
+
+import javax.ws.rs.InternalServerErrorException;
+import javax.ws.rs.NotAuthorizedException;
+import javax.ws.rs.NotFoundException;
 
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;
@@ -58,16 +65,30 @@ public class StructuredContentResourceImpl
 
 	@Override
 	public Page<StructuredContent> getContentSpaceStructuredContentsPage(
-			Long parentId, String filter, String sort,
-			AcceptLanguage acceptLanguage, Pagination pagination)
-		throws Exception {
+		Long parentId, String filter, String sort,
+		AcceptLanguage acceptLanguage, Pagination pagination) {
 
-		Hits hits = _getHits(pagination);
+		try {
+			Hits hits = _getHits(parentId, pagination);
 
-		return new Page<>(
-			transform(
-				_journalHelper.getArticles(hits), this::_toStructuredContent),
-			hits.getLength());
+			return new Page<>(
+				transform(
+					_journalHelper.getArticles(hits),
+					this::_toStructuredContent),
+				hits.getLength());
+		}
+		catch (NoSuchGroupException nsge) {
+			throw new NotFoundException(nsge);
+		}
+		catch (PrincipalException pe) {
+			throw new NotAuthorizedException(pe);
+		}
+		catch (SearchException se) {
+			throw new InternalServerErrorException(se);
+		}
+		catch (PortalException pe) {
+			throw new InternalServerErrorException(pe);
+		}
 	}
 
 	private SearchContext _createSearchContext(
@@ -95,51 +116,75 @@ public class StructuredContentResourceImpl
 		return searchContext;
 	}
 
-	private Hits _getHits(Pagination pagination) throws Exception {
-		Company company = _companyService.getCompanyByWebId(
-			PropsUtil.get(PropsKeys.COMPANY_DEFAULT_WEB_ID));
+	private Hits _getHits(long groupId, Pagination pagination) {
+		try {
+			Company company = _companyService.getCompanyByWebId(
+				PropsUtil.get(PropsKeys.COMPANY_DEFAULT_WEB_ID));
 
-		Group group = company.getGroup();
+			SearchContext searchContext = _createSearchContext(
+				company.getCompanyId(), groupId, pagination.getStartPosition(),
+				pagination.getEndPosition());
 
-		SearchContext searchContext = _createSearchContext(
-			company.getCompanyId(), group.getGroupId(),
-			pagination.getStartPosition(), pagination.getEndPosition());
+			Query query = _getQuery(searchContext);
 
-		Query query = _getQuery(searchContext);
+			PermissionChecker permissionChecker =
+				PermissionThreadLocal.getPermissionChecker();
 
-		PermissionChecker permissionChecker =
-			PermissionThreadLocal.getPermissionChecker();
+			if (permissionChecker == null) {
+				return IndexSearcherHelperUtil.search(searchContext, query);
+			}
 
-		if (permissionChecker == null) {
-			return IndexSearcherHelperUtil.search(searchContext, query);
+			if (searchContext.getUserId() == 0) {
+				searchContext.setUserId(permissionChecker.getUserId());
+			}
+
+			SearchResultPermissionFilter searchResultPermissionFilter =
+				_searchResultPermissionFilterFactory.create(
+					new SearchResultPermissionFilterSearcher() {
+
+						public Hits search(SearchContext searchContext)
+							throws SearchException {
+
+							return IndexSearcherHelperUtil.search(
+								searchContext, query);
+						}
+
+					},
+					permissionChecker);
+
+			return searchResultPermissionFilter.search(searchContext);
 		}
-
-		if (searchContext.getUserId() == 0) {
-			searchContext.setUserId(permissionChecker.getUserId());
+		catch (NoSuchCompanyException nsce) {
+			throw new NotFoundException(nsce);
 		}
-
-		SearchResultPermissionFilter searchResultPermissionFilter =
-			_searchResultPermissionFilterFactory.create(
-				new SearchResultPermissionFilterSearcher() {
-
-					public Hits search(SearchContext searchContext)
-						throws SearchException {
-
-						return IndexSearcherHelperUtil.search(
-							searchContext, query);
-					}
-
-				},
-				permissionChecker);
-
-		return searchResultPermissionFilter.search(searchContext);
+		catch (SearchException se) {
+			throw new InternalServerErrorException(se);
+		}
+		catch (PortalException pe) {
+			throw new InternalServerErrorException(pe);
+		}
 	}
 
-	private Query _getQuery(SearchContext searchContext) throws Exception {
+	private Query _getQuery(SearchContext searchContext) {
 		Indexer<JournalArticle> indexer = _indexerRegistry.nullSafeGetIndexer(
 			JournalArticle.class);
 
-		return indexer.getFullQuery(searchContext);
+		try {
+			return indexer.getFullQuery(searchContext);
+		}
+		catch (SearchException se) {
+			Throwable throwable = se.getCause();
+
+			while (throwable != null) {
+				if (throwable instanceof NoSuchGroupException) {
+					throw new NotFoundException(se);
+				}
+
+				throwable = throwable.getCause();
+			}
+
+			throw new InternalServerErrorException(se);
+		}
 	}
 
 	private StructuredContent _toStructuredContent(
