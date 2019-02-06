@@ -14,6 +14,11 @@
 
 package com.liferay.headless.document.library.client.test;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.liferay.headless.document.library.dto.Folder;
+
 import com.liferay.portal.kernel.util.StringUtil;
 
 import io.restassured.RestAssured;
@@ -202,7 +207,7 @@ public class FolderResourceTest {
 		).statusCode(
 			200
 		).body(
-			"itemsPerPage", Matchers.equalTo(1)
+			"itemsPerPage", Matchers.equalTo(20)
 		).body(
 			"lastPageNumber", Matchers.equalTo(1)
 		).body(
@@ -360,7 +365,7 @@ public class FolderResourceTest {
 		).statusCode(
 			200
 		).body(
-			"itemsPerPage", Matchers.equalTo(1)
+			"itemsPerPage", Matchers.equalTo(20)
 		).body(
 			"lastPageNumber", Matchers.equalTo(1)
 		).body(
@@ -391,7 +396,16 @@ public class FolderResourceTest {
 
 	@Test
 	public void testPostDocumentsRepositoryFolder()
-		throws MalformedURLException {
+		throws MalformedURLException, JsonProcessingException {
+
+		ObjectMapper objectMapper = new ObjectMapper();
+
+		objectMapper.setSerializationInclusion(JsonInclude.Include.NON_NULL);
+
+		Folder folder = new Folder();
+
+		folder.setDescription("testPostDocumentsRepositoryFolder description");
+		folder.setName("testPostDocumentsRepositoryFolder");
 
 		RestAssured.given(
 		).auth(
@@ -403,8 +417,8 @@ public class FolderResourceTest {
 		).header(
 			"Content-Type", "application/json"
 		).body(
-			"{\"description\":\"testPostDocumentsRepositoryFolder " +
-				"description\",\"name\":\"testPostDocumentsRepositoryFolder\"}"
+			objectMapper.writeValueAsString(folder)
+		).log().all(
 		).when(
 		).post(
 			new URL(
@@ -412,6 +426,7 @@ public class FolderResourceTest {
 				"/o/headless-document-library/1.0.0/documents-repository/" +
 					_groupId + "/folder")
 		).then(
+		).log().all(
 		).statusCode(
 			200
 		).body(
