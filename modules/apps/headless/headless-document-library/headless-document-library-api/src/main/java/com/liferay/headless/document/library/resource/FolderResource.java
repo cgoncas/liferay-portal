@@ -69,7 +69,7 @@ public interface FolderResource {
 	@Path("/documents-repository/{documents-repository-id}/folder")
 	@Produces("application/json")
 	@RequiresScope("headless-document-library-application.read")
-	public Folder postDocumentsRepositoryFolder( @PathParam("documents-repository-id") Long documentsRepositoryId ) throws Exception;
+	public Folder postDocumentsRepositoryFolder( @PathParam("documents-repository-id") Long documentsRepositoryId, Folder folder ) throws Exception;
 
 	@Consumes("application/json")
 	@POST
@@ -95,7 +95,7 @@ public interface FolderResource {
 	@Path("/folder/{folder-id}")
 	@Produces("application/json")
 	@RequiresScope("headless-document-library-application.read")
-	public Folder putFolder( @PathParam("folder-id") Long folderId ) throws Exception;
+	public Folder putFolder( @PathParam("folder-id") Long folderId, Folder folder ) throws Exception;
 
 	@GET
 	@Path("/folder/{folder-id}/folder")
@@ -108,7 +108,7 @@ public interface FolderResource {
 	@Path("/folder/{folder-id}/folder")
 	@Produces("application/json")
 	@RequiresScope("headless-document-library-application.read")
-	public Folder postFolderFolder( @PathParam("folder-id") Long folderId ) throws Exception;
+	public Folder postFolderFolder( @PathParam("folder-id") Long folderId, Folder folder) throws Exception;
 
 	@Consumes("application/json")
 	@POST
