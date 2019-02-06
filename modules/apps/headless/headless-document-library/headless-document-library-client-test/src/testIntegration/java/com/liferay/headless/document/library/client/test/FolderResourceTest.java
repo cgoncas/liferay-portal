@@ -14,12 +14,22 @@
 
 package com.liferay.headless.document.library.client.test;
 
+import static org.hamcrest.MatcherAssert.assertThat;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+
+import com.liferay.headless.document.library.dto.Folder;
 import com.liferay.portal.kernel.util.StringUtil;
 
 import io.restassured.RestAssured;
 
 import java.net.MalformedURLException;
 import java.net.URL;
+
+import java.util.Map;
 
 import org.hamcrest.Matchers;
 import org.hamcrest.core.IsNull;
@@ -30,8 +40,11 @@ import org.jboss.arquillian.test.api.ArquillianResource;
 
 import org.junit.After;
 import org.junit.Before;
+import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+
+import uk.co.datumedge.hamcrest.json.SameJSONAs;
 
 /**
  * @author Rubén Pulido
@@ -40,9 +53,22 @@ import org.junit.runner.RunWith;
 @RunWith(Arquillian.class)
 public class FolderResourceTest {
 
+	@BeforeClass
+	public static void setUpClass() {
+		_inputObjectMapper = new ObjectMapper();
+
+		_inputObjectMapper.setSerializationInclusion(
+			JsonInclude.Include.NON_NULL);
+
+		_outputObjectMapper = new ObjectMapper();
+
+		_outputObjectMapper.addMixIn(Folder.class, IgnoreIdFieldMixin.class);
+	}
+
 	@Before
 	public void setUp() throws MalformedURLException {
-		String groupName = StringUtil.randomString(10);
+		_headlessDocumentLibraryURL = new URL(
+			_url.toExternalForm() + "/o/headless-document-library/1.0.0");
 
 		_groupId = Long.valueOf(
 			RestAssured.given(
@@ -60,7 +86,7 @@ public class FolderResourceTest {
 			).param(
 				"liveGroupId", 0
 			).param(
-				"name", groupName
+				"name", StringUtil.randomString(10)
 			).param(
 				"description", ""
 			).param(
@@ -70,7 +96,7 @@ public class FolderResourceTest {
 			).param(
 				"membershipRestriction", 0
 			).param(
-				"friendlyURL", "/" + groupName
+				"friendlyURL", "/" + StringUtil.randomString(10)
 			).param(
 				"site", true
 			).param(
@@ -110,30 +136,12 @@ public class FolderResourceTest {
 	}
 
 	@Test
-	public void testDeleteFolder() throws MalformedURLException {
-		int folderId = RestAssured.given(
-		).auth(
-		).preemptive(
-		).basic(
-			"test@liferay.com", "test"
-		).header(
-			"Accept", "application/json"
-		).header(
-			"Content-Type", "application/json"
-		).body(
-			"{\"description\":\"testDeleteFolder description\"," +
-				"\"name\":\"testDeleteFolder\"}"
-		).when(
-		).post(
-			new URL(
-				_url,
-				"/o/headless-document-library/1.0.0/documents-repository/" +
-					_groupId + "/folder")
-		).then(
-		).extract(
-		).path(
-			"id"
-		);
+	public void testDeleteFolder()
+		throws JsonProcessingException, MalformedURLException {
+
+		Folder folder = _getFolder();
+
+		int folderId = _createFolder(folder);
 
 		RestAssured.given(
 		).auth(
@@ -147,7 +155,8 @@ public class FolderResourceTest {
 		).when(
 		).delete(
 			new URL(
-				_url, "/o/headless-document-library/1.0.0/folder/" + folderId)
+				_headlessDocumentLibraryURL.toExternalForm() + "/folder/" +
+					folderId)
 		).then(
 		).statusCode(
 			200
@@ -156,36 +165,13 @@ public class FolderResourceTest {
 
 	@Test
 	public void testGetDocumentsRepositoryFolderPage()
-		throws MalformedURLException {
+		throws JsonProcessingException, MalformedURLException {
 
-		int folderId = RestAssured.given(
-		).auth(
-		).preemptive(
-		).basic(
-			"test@liferay.com", "test"
-		).header(
-			"Accept", "application/json"
-		).header(
-			"Content-Type", "application/json"
-		).body(
-			"{\"description\":\"testGetDocumentsRepositoryFolderPage " +
-				"description\",\"name\":\"" +
-					"testGetDocumentsRepositoryFolderPage\"}"
-		).when(
-		).post(
-			new URL(
-				_url,
-				"/o/headless-document-library/1.0.0/documents-repository/" +
-					_groupId + "/folder")
-		).then(
-		).statusCode(
-			200
-		).extract(
-		).path(
-			"id"
-		);
+		Folder folder = _getFolder();
 
-		RestAssured.given(
+		int folderId = _createFolder(folder);
+
+		Map firstFolderMap = RestAssured.given(
 		).auth(
 		).preemptive(
 		).basic(
@@ -195,14 +181,13 @@ public class FolderResourceTest {
 		).when(
 		).get(
 			new URL(
-				_url,
-				"/o/headless-document-library/1.0.0/documents-repository/" +
-					_groupId + "/folder/")
+				_headlessDocumentLibraryURL.toExternalForm() +
+					"/documents-repository/" + _groupId + "/folder/")
 		).then(
 		).statusCode(
 			200
 		).body(
-			"itemsPerPage", Matchers.equalTo(1)
+			"itemsPerPage", Matchers.equalTo(20)
 		).body(
 			"lastPageNumber", Matchers.equalTo(1)
 		).body(
@@ -210,53 +195,29 @@ public class FolderResourceTest {
 		).body(
 			"totalCount", Matchers.equalTo(1)
 		).body(
-			"items[0].dateCreated", IsNull.nullValue()
-		).body(
-			"items[0].dateModified", IsNull.nullValue()
-		).body(
-			"items[0].description",
-			Matchers.equalTo("testGetDocumentsRepositoryFolderPage description")
-		).body(
-			"items[0].documents", IsNull.nullValue()
-		).body(
-			"items[0].folders", IsNull.nullValue()
-		).body(
 			"items[0].id", Matchers.equalTo(folderId)
-		).body(
-			"items[0].name",
-			Matchers.equalTo("testGetDocumentsRepositoryFolderPage")
-		).body(
-			"items[0].self", IsNull.nullValue()
-		).body(
-			"items[0].subFolders", IsNull.nullValue()
+		).extract(
+		).path(
+			"items[0]"
 		);
+
+		Folder firstFolder = _outputObjectMapper.convertValue(
+			firstFolderMap, Folder.class);
+
+		assertThat(
+			_outputObjectMapper.writeValueAsString(firstFolder),
+			SameJSONAs.sameJSONAs(
+				_outputObjectMapper.writeValueAsString(folder)
+			).allowingExtraUnexpectedFields());
 	}
 
 	@Test
-	public void testGetFolder() throws MalformedURLException {
-		int folderId = RestAssured.given(
-		).auth(
-		).preemptive(
-		).basic(
-			"test@liferay.com", "test"
-		).header(
-			"Accept", "application/json"
-		).header(
-			"Content-Type", "application/json"
-		).body(
-			"{\"description\":\"testGetFolder description\",\"name\":\"" +
-				"testGetFolder\"}"
-		).when(
-		).post(
-			new URL(
-				_url,
-				"/o/headless-document-library/1.0.0/documents-repository/" +
-					_groupId + "/folder")
-		).then(
-		).extract(
-		).path(
-			"id"
-		);
+	public void testGetFolder()
+		throws JsonProcessingException, MalformedURLException {
+
+		Folder folder = _getFolder();
+
+		int folderId = _createFolder(folder);
 
 		RestAssured.given(
 		).auth(
@@ -268,82 +229,33 @@ public class FolderResourceTest {
 		).when(
 		).get(
 			new URL(
-				_url, "/o/headless-document-library/1.0.0/folder/" + folderId)
+				_headlessDocumentLibraryURL.toExternalForm() + "/folder/" +
+					folderId)
 		).then(
 		).statusCode(
 			200
 		).body(
-			"dateCreated", IsNull.nullValue()
+			SameJSONAs.sameJSONAs(
+				_outputObjectMapper.writeValueAsString(folder)
+			).allowingExtraUnexpectedFields()
 		).body(
-			"dateModified", IsNull.nullValue()
-		).body(
-			"description", Matchers.equalTo("testGetFolder description")
-		).body(
-			"documents", IsNull.nullValue()
-		).body(
-			"folders", IsNull.nullValue()
-		).body(
-			"id", IsNull.notNullValue()
-		).body(
-			"name", Matchers.equalTo("testGetFolder")
-		).body(
-			"self", IsNull.nullValue()
-		).body(
-			"subFolders", IsNull.nullValue()
+			"id", Matchers.equalTo(folderId)
 		);
 	}
 
 	@Test
-	public void testGetFolderFolderPage() throws MalformedURLException {
-		int parentFolderId = RestAssured.given(
-		).auth(
-		).preemptive(
-		).basic(
-			"test@liferay.com", "test"
-		).header(
-			"Accept", "application/json"
-		).header(
-			"Content-Type", "application/json"
-		).body(
-			"{\"description\":\"" + StringUtil.randomString(10) + "\"," +
-				"\"name\":\"" + StringUtil.randomString(10) + "\"}"
-		).when(
-		).post(
-			new URL(
-				_url,
-				"/o/headless-document-library/1.0.0/documents-repository/" +
-					_groupId + "/folder")
-		).then(
-		).extract(
-		).path(
-			"id"
-		);
+	public void testGetFolderFolderPage()
+		throws JsonProcessingException, MalformedURLException {
 
-		int folderId = RestAssured.given(
-		).auth(
-		).preemptive(
-		).basic(
-			"test@liferay.com", "test"
-		).header(
-			"Accept", "application/json"
-		).header(
-			"Content-Type", "application/json"
-		).body(
-			"{\"description\":\"testGetFolderFolderPage description\"," +
-				"\"name\":\"testGetFolderFolderPage\"}"
-		).when(
-		).post(
-			new URL(
-				_url,
-				"/o/headless-document-library/1.0.0/folder/" + parentFolderId +
-					"/folder")
-		).then(
-		).extract(
-		).path(
-			"id"
-		);
+		Folder parentFolder = _getFolder();
 
-		RestAssured.given(
+		int parentFolderId = _createFolder(parentFolder);
+
+		Folder folder = _getFolder();
+
+		int folderId = _createSubfolder(parentFolderId, folder);
+
+		Map firstFolderMap = RestAssured.given(
 		).auth(
 		).preemptive(
 		).basic(
@@ -353,14 +265,13 @@ public class FolderResourceTest {
 		).when(
 		).get(
 			new URL(
-				_url,
-				"/o/headless-document-library/1.0.0/folder/" + parentFolderId +
-					"/folder/")
+				_headlessDocumentLibraryURL.toExternalForm() + "/folder/" +
+					parentFolderId + "/folder/")
 		).then(
 		).statusCode(
 			200
 		).body(
-			"itemsPerPage", Matchers.equalTo(1)
+			"itemsPerPage", Matchers.equalTo(20)
 		).body(
 			"lastPageNumber", Matchers.equalTo(1)
 		).body(
@@ -368,30 +279,27 @@ public class FolderResourceTest {
 		).body(
 			"totalCount", Matchers.equalTo(1)
 		).body(
-			"items[0].dateCreated", IsNull.nullValue()
-		).body(
-			"items[0].dateModified", IsNull.nullValue()
-		).body(
-			"items[0].description",
-			Matchers.equalTo("testGetFolderFolderPage description")
-		).body(
-			"items[0].documents", IsNull.nullValue()
-		).body(
-			"items[0].folders", IsNull.nullValue()
-		).body(
 			"items[0].id", Matchers.equalTo(folderId)
-		).body(
-			"items[0].name", Matchers.equalTo("testGetFolderFolderPage")
-		).body(
-			"items[0].self", IsNull.nullValue()
-		).body(
-			"items[0].subFolders", IsNull.nullValue()
+		).extract(
+		).path(
+			"items[0]"
 		);
+
+		Folder firstFolder = _outputObjectMapper.convertValue(
+			firstFolderMap, Folder.class);
+
+		assertThat(
+			_outputObjectMapper.writeValueAsString(firstFolder),
+			SameJSONAs.sameJSONAs(
+				_outputObjectMapper.writeValueAsString(folder)
+			).allowingExtraUnexpectedFields());
 	}
 
 	@Test
 	public void testPostDocumentsRepositoryFolder()
-		throws MalformedURLException {
+		throws JsonProcessingException, MalformedURLException {
+
+		Folder folder = _getFolder();
 
 		RestAssured.given(
 		).auth(
@@ -403,66 +311,31 @@ public class FolderResourceTest {
 		).header(
 			"Content-Type", "application/json"
 		).body(
-			"{\"description\":\"testPostDocumentsRepositoryFolder " +
-				"description\",\"name\":\"testPostDocumentsRepositoryFolder\"}"
+			_inputObjectMapper.writeValueAsString(folder)
 		).when(
 		).post(
 			new URL(
-				_url,
-				"/o/headless-document-library/1.0.0/documents-repository/" +
-					_groupId + "/folder")
+				_headlessDocumentLibraryURL.toExternalForm() +
+					"/documents-repository/" + _groupId + "/folder")
 		).then(
 		).statusCode(
 			200
 		).body(
-			"dateCreated", IsNull.nullValue()
-		).body(
-			"dateModified", IsNull.nullValue()
-		).body(
-			"description",
-			Matchers.equalTo("testPostDocumentsRepositoryFolder description")
-		).body(
-			"documents", IsNull.nullValue()
-		).body(
-			"folders", IsNull.nullValue()
+			SameJSONAs.sameJSONAs(
+				_outputObjectMapper.writeValueAsString(folder)
+			).allowingExtraUnexpectedFields()
 		).body(
 			"id", IsNull.notNullValue()
-		).body(
-			"name", Matchers.equalTo("testPostDocumentsRepositoryFolder")
-		).body(
-			"self", IsNull.nullValue()
-		).body(
-			"subFolders", IsNull.nullValue()
 		);
 	}
 
 	@Test
-	public void testPostFolderFolder() throws MalformedURLException {
-		int parentFolderId = RestAssured.given(
-		).auth(
-		).preemptive(
-		).basic(
-			"test@liferay.com", "test"
-		).header(
-			"Accept", "application/json"
-		).header(
-			"Content-Type", "application/json"
-		).body(
-			"{\"description\":\"" + StringUtil.randomString(10) + "\"," +
-				"\"name\":\"" + StringUtil.randomString(10) + "\"}"
-		).when(
-		).post(
-			new URL(
-				_url,
-				"/o/headless-document-library/1.0.0/documents-repository/" +
-					_groupId + "/folder")
-		).then(
-		).statusCode(
-			200
-		).extract(
-		).path(
-			"id"
-		);
+	public void testPostFolderFolder()
+		throws JsonProcessingException, MalformedURLException {
+
+		Folder folder = _getFolder();
+
+		int parentFolderId = _createFolder(folder);
 
 		RestAssured.given(
 		).auth(
@@ -474,65 +347,33 @@ public class FolderResourceTest {
 		).header(
 			"Content-Type", "application/json"
 		).body(
-			"{\"description\":\"testPostFolderFolder description\"," +
-				"\"name\":\"testPostFolderFolder\"}"
+			_inputObjectMapper.writeValueAsString(folder)
 		).when(
 		).post(
 			new URL(
-				_url,
-				"/o/headless-document-library/1.0.0/folder/" + parentFolderId +
-					"/folder")
+				_headlessDocumentLibraryURL.toExternalForm() + "/folder/" +
+					parentFolderId + "/folder")
 		).then(
 		).statusCode(
 			200
 		).body(
-			"dateCreated", IsNull.nullValue()
-		).body(
-			"dateModified", IsNull.nullValue()
-		).body(
-			"description", Matchers.equalTo("testPostFolderFolder description")
-		).body(
-			"documents", IsNull.nullValue()
-		).body(
-			"folders", IsNull.nullValue()
+			SameJSONAs.sameJSONAs(
+				_outputObjectMapper.writeValueAsString(folder)
+			).allowingExtraUnexpectedFields()
 		).body(
 			"id", IsNull.notNullValue()
-		).body(
-			"name", Matchers.equalTo("testPostFolderFolder")
-		).body(
-			"self", IsNull.nullValue()
-		).body(
-			"subFolders", IsNull.nullValue()
 		);
 	}
 
 	@Test
-	public void testUpdateFolder() throws MalformedURLException {
-		int folderId = RestAssured.given(
-		).auth(
-		).preemptive(
-		).basic(
-			"test@liferay.com", "test"
-		).header(
-			"Accept", "application/json"
-		).header(
-			"Content-Type", "application/json"
-		).body(
-			"{\"description\":\"testUpdateFolder description\"," +
-				"\"name\":\"testUpdateFolder\"}"
-		).when(
-		).post(
-			new URL(
-				_url,
-				"/o/headless-document-library/1.0.0/documents-repository/" +
-					_groupId + "/folder")
-		).then(
-		).statusCode(
-			200
-		).extract(
-		).path(
-			"id"
-		);
+	public void testUpdateFolder()
+		throws JsonProcessingException, MalformedURLException {
+
+		Folder folder = _getFolder();
+
+		int folderId = _createFolder(folder);
+
+		Folder updatedFolder = _getFolder();
 
 		RestAssured.given(
 		).auth(
@@ -544,40 +385,99 @@ public class FolderResourceTest {
 		).header(
 			"Content-Type", "application/json"
 		).body(
-			"{\"description\":\"testUpdateFolder description updated\"," +
-				"\"name\":\"testUpdateFolder updated\"}"
+			_inputObjectMapper.writeValueAsString(updatedFolder)
 		).when(
 		).put(
 			new URL(
-				_url, "/o/headless-document-library/1.0.0/folder/" + folderId)
+				_headlessDocumentLibraryURL.toExternalForm() + "/folder/" +
+					folderId)
 		).then(
 		).statusCode(
 			200
 		).body(
-			"dateCreated", IsNull.nullValue()
+			SameJSONAs.sameJSONAs(
+				_outputObjectMapper.writeValueAsString(updatedFolder)
+			).allowingExtraUnexpectedFields()
 		).body(
-			"dateModified", IsNull.nullValue()
-		).body(
-			"description",
-			Matchers.equalTo("testUpdateFolder description updated")
-		).body(
-			"documents", IsNull.nullValue()
-		).body(
-			"folders", IsNull.nullValue()
-		).body(
-			"id", IsNull.notNullValue()
-		).body(
-			"name", Matchers.equalTo("testUpdateFolder updated")
-		).body(
-			"self", IsNull.nullValue()
-		).body(
-			"subFolders", IsNull.nullValue()
+			"id", Matchers.equalTo(folderId)
 		);
 	}
 
+	private int _createFolder(Folder folder)
+		throws JsonProcessingException, MalformedURLException {
+
+		return RestAssured.given(
+		).auth(
+		).preemptive(
+		).basic(
+			"test@liferay.com", "test"
+		).header(
+			"Accept", "application/json"
+		).header(
+			"Content-Type", "application/json"
+		).body(
+			_inputObjectMapper.writeValueAsString(folder)
+		).when(
+		).post(
+			new URL(
+				_headlessDocumentLibraryURL.toExternalForm() +
+					"/documents-repository/" + _groupId + "/folder")
+		).then(
+		).extract(
+		).path(
+			"id"
+		);
+	}
+
+	private int _createSubfolder(int parentFolderId, Folder folder)
+		throws JsonProcessingException, MalformedURLException {
+
+		return RestAssured.given(
+		).auth(
+		).preemptive(
+		).basic(
+			"test@liferay.com", "test"
+		).header(
+			"Accept", "application/json"
+		).header(
+			"Content-Type", "application/json"
+		).body(
+			_inputObjectMapper.writeValueAsString(folder)
+		).when(
+		).post(
+			new URL(
+				_headlessDocumentLibraryURL.toExternalForm() + "/folder/" +
+					parentFolderId + "/folder")
+		).then(
+		).extract(
+		).path(
+			"id"
+		);
+	}
+
+	private Folder _getFolder() {
+		Folder folder = new Folder();
+
+		folder.setDescription(StringUtil.randomString(10) + " description");
+		folder.setName(StringUtil.randomString(10));
+
+		return folder;
+	}
+
+	private static ObjectMapper _inputObjectMapper;
+	private static ObjectMapper _outputObjectMapper;
+
 	private long _groupId;
+	private URL _headlessDocumentLibraryURL;
 
 	@ArquillianResource
 	private URL _url;
+
+	private abstract class IgnoreIdFieldMixin {
+
+		@JsonIgnore
+		public abstract Long getId();
+
+	}
 
 }
