@@ -14,6 +14,12 @@
 
 package com.liferay.headless.document.library.client.test;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+
+import com.liferay.headless.document.library.dto.Folder;
 import com.liferay.portal.kernel.util.StringUtil;
 
 import io.restassured.RestAssured;
@@ -30,8 +36,11 @@ import org.jboss.arquillian.test.api.ArquillianResource;
 
 import org.junit.After;
 import org.junit.Before;
+import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+
+import uk.co.datumedge.hamcrest.json.SameJSONAs;
 
 /**
  * @author Rubén Pulido
@@ -39,6 +48,18 @@ import org.junit.runner.RunWith;
 @RunAsClient
 @RunWith(Arquillian.class)
 public class FolderResourceTest {
+
+	@BeforeClass
+	public static void setUpClass() {
+		_inputObjectMapper = new ObjectMapper();
+
+		_inputObjectMapper.setSerializationInclusion(
+			JsonInclude.Include.NON_NULL);
+
+		_outputObjectMapper = new ObjectMapper();
+
+		_outputObjectMapper.addMixIn(Folder.class, IgnoreIdFieldMixin.class);
+	}
 
 	@Before
 	public void setUp() throws MalformedURLException {
@@ -202,7 +223,7 @@ public class FolderResourceTest {
 		).statusCode(
 			200
 		).body(
-			"itemsPerPage", Matchers.equalTo(1)
+			"itemsPerPage", Matchers.equalTo(20)
 		).body(
 			"lastPageNumber", Matchers.equalTo(1)
 		).body(
@@ -360,7 +381,7 @@ public class FolderResourceTest {
 		).statusCode(
 			200
 		).body(
-			"itemsPerPage", Matchers.equalTo(1)
+			"itemsPerPage", Matchers.equalTo(20)
 		).body(
 			"lastPageNumber", Matchers.equalTo(1)
 		).body(
@@ -391,7 +412,12 @@ public class FolderResourceTest {
 
 	@Test
 	public void testPostDocumentsRepositoryFolder()
-		throws MalformedURLException {
+		throws JsonProcessingException, MalformedURLException {
+
+		Folder folder = new Folder();
+
+		folder.setDescription("testPostDocumentsRepositoryFolder description");
+		folder.setName("testPostDocumentsRepositoryFolder");
 
 		RestAssured.given(
 		).auth(
@@ -403,8 +429,9 @@ public class FolderResourceTest {
 		).header(
 			"Content-Type", "application/json"
 		).body(
-			"{\"description\":\"testPostDocumentsRepositoryFolder " +
-				"description\",\"name\":\"testPostDocumentsRepositoryFolder\"}"
+			_inputObjectMapper.writeValueAsString(folder)
+		).log(
+		).all(
 		).when(
 		).post(
 			new URL(
@@ -412,27 +439,16 @@ public class FolderResourceTest {
 				"/o/headless-document-library/1.0.0/documents-repository/" +
 					_groupId + "/folder")
 		).then(
+		).log(
+		).all(
 		).statusCode(
 			200
 		).body(
-			"dateCreated", IsNull.nullValue()
-		).body(
-			"dateModified", IsNull.nullValue()
-		).body(
-			"description",
-			Matchers.equalTo("testPostDocumentsRepositoryFolder description")
-		).body(
-			"documents", IsNull.nullValue()
-		).body(
-			"folders", IsNull.nullValue()
+			SameJSONAs.sameJSONAs(
+				_outputObjectMapper.writeValueAsString(folder)
+			).allowingExtraUnexpectedFields()
 		).body(
 			"id", IsNull.notNullValue()
-		).body(
-			"name", Matchers.equalTo("testPostDocumentsRepositoryFolder")
-		).body(
-			"self", IsNull.nullValue()
-		).body(
-			"subFolders", IsNull.nullValue()
 		);
 	}
 
@@ -575,9 +591,19 @@ public class FolderResourceTest {
 		);
 	}
 
+	private static ObjectMapper _inputObjectMapper;
+	private static ObjectMapper _outputObjectMapper;
+
 	private long _groupId;
 
 	@ArquillianResource
 	private URL _url;
+
+	private abstract class IgnoreIdFieldMixin {
+
+		@JsonIgnore
+		public abstract Long getId();
+
+	}
 
 }
