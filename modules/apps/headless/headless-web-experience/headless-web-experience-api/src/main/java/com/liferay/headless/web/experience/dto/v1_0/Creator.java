@@ -30,14 +30,6 @@ public class Creator {
 		return _additionalName;
 	}
 
-	public String getAlternateName() {
-		return _alternateName;
-	}
-
-	public String getEmail() {
-		return _email;
-	}
-
 	public String getFamilyName() {
 		return _familyName;
 	}
@@ -54,10 +46,6 @@ public class Creator {
 		return _image;
 	}
 
-	public String getJobTitle() {
-		return _jobTitle;
-	}
-
 	public String getName() {
 		return _name;
 	}
@@ -68,14 +56,6 @@ public class Creator {
 
 	public void setAdditionalName(String additionalName) {
 		_additionalName = additionalName;
-	}
-
-	public void setAlternateName(String alternateName) {
-		_alternateName = alternateName;
-	}
-
-	public void setEmail(String email) {
-		_email = email;
 	}
 
 	public void setFamilyName(String familyName) {
@@ -94,10 +74,6 @@ public class Creator {
 		_image = image;
 	}
 
-	public void setJobTitle(String jobTitle) {
-		_jobTitle = jobTitle;
-	}
-
 	public void setName(String name) {
 		_name = name;
 	}
@@ -107,13 +83,10 @@ public class Creator {
 	}
 
 	private String _additionalName;
-	private String _alternateName;
-	private String _email;
 	private String _familyName;
 	private String _givenName;
 	private Long _id;
 	private String _image;
-	private String _jobTitle;
 	private String _name;
 	private String _profileURL;
 
