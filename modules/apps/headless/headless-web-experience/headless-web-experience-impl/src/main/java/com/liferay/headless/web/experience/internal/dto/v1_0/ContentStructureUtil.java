@@ -18,6 +18,7 @@ import com.liferay.dynamic.data.mapping.model.DDMStructure;
 import com.liferay.headless.web.experience.dto.v1_0.ContentStructure;
 import com.liferay.portal.kernel.service.UserLocalService;
 import com.liferay.portal.kernel.util.LocaleUtil;
+import com.liferay.portal.kernel.util.Portal;
 
 import java.util.Locale;
 
@@ -27,7 +28,7 @@ import java.util.Locale;
 public class ContentStructureUtil {
 
 	public static ContentStructure toContentStructure(
-			DDMStructure ddmStructure, Locale locale,
+			DDMStructure ddmStructure, Locale locale, Portal portal,
 			UserLocalService userLocalService)
 		throws Exception {
 
@@ -43,6 +44,7 @@ public class ContentStructureUtil {
 				setContentSpace(ddmStructure.getGroupId());
 				setCreator(
 					CreatorUtil.toCreator(
+						portal,
 						userLocalService.getUserById(
 							ddmStructure.getUserId())));
 				setDateCreated(ddmStructure.getCreateDate());

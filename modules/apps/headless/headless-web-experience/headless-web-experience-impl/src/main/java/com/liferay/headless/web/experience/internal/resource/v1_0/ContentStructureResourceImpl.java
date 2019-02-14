@@ -32,6 +32,7 @@ import com.liferay.portal.kernel.search.filter.Filter;
 import com.liferay.portal.kernel.service.ClassNameService;
 import com.liferay.portal.kernel.service.UserLocalService;
 import com.liferay.portal.kernel.util.GetterUtil;
+import com.liferay.portal.kernel.util.Portal;
 import com.liferay.portal.odata.entity.EntityModel;
 import com.liferay.portal.vulcan.pagination.Page;
 import com.liferay.portal.vulcan.pagination.Pagination;
@@ -114,7 +115,7 @@ public class ContentStructureResourceImpl
 		throws Exception {
 
 		return ContentStructureUtil.toContentStructure(
-			ddmStructure, acceptLanguage.getPreferredLocale(),
+			ddmStructure, acceptLanguage.getPreferredLocale(), _portal,
 			_userLocalService);
 	}
 
@@ -129,6 +130,9 @@ public class ContentStructureResourceImpl
 
 	@Reference
 	private IndexerRegistry _indexerRegistry;
+
+	@Reference
+	private Portal _portal;
 
 	@Reference
 	private SearchResultPermissionFilterFactory

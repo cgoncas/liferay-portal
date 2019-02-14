@@ -54,6 +54,7 @@ import com.liferay.portal.kernel.service.UserLocalService;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.LocaleThreadLocal;
 import com.liferay.portal.kernel.util.LocaleUtil;
+import com.liferay.portal.kernel.util.Portal;
 import com.liferay.portal.kernel.workflow.WorkflowConstants;
 import com.liferay.portal.odata.entity.EntityField;
 import com.liferay.portal.odata.entity.EntityModel;
@@ -398,10 +399,11 @@ public class StructuredContentResourceImpl
 				setContentStructure(
 					ContentStructureUtil.toContentStructure(
 						journalArticle.getDDMStructure(),
-						acceptLanguage.getPreferredLocale(),
+						acceptLanguage.getPreferredLocale(), _portal,
 						_userLocalService));
 				setCreator(
 					CreatorUtil.toCreator(
+						_portal,
 						_userLocalService.getUserById(
 							journalArticle.getUserId())));
 				setDateCreated(journalArticle.getCreateDate());
@@ -442,6 +444,9 @@ public class StructuredContentResourceImpl
 
 	@Reference
 	private JournalHelper _journalHelper;
+
+	@Reference
+	private Portal _portal;
 
 	@Reference
 	private RatingsStatsLocalService _ratingsStatsLocalService;
