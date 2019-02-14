@@ -56,6 +56,7 @@ import com.liferay.portal.kernel.search.SearchResultPermissionFilterSearcher;
 import com.liferay.portal.kernel.search.Sort;
 import com.liferay.portal.kernel.search.filter.BooleanFilter;
 import com.liferay.portal.kernel.search.filter.Filter;
+import com.liferay.portal.kernel.search.filter.TermFilter;
 import com.liferay.portal.kernel.security.permission.PermissionChecker;
 import com.liferay.portal.kernel.security.permission.PermissionThreadLocal;
 import com.liferay.portal.kernel.service.ServiceContext;
@@ -121,8 +122,13 @@ public class StructuredContentResourceImpl
 				Pagination pagination, Sort[] sorts)
 		throws Exception {
 
-		return getContentSpaceStructuredContentsPage(
-			contentSpaceId, filter, pagination, sorts);
+		Hits hits = _getHits(
+			contentSpaceId, filter, pagination, sorts, contentStructureId);
+
+		return Page.of(
+			transform(
+				_journalHelper.getArticles(hits), this::_toStructuredContent),
+			pagination, hits.getLength());
 	}
 
 	@Override
@@ -131,12 +137,8 @@ public class StructuredContentResourceImpl
 			Sort[] sorts)
 		throws Exception {
 
-		Hits hits = _getHits(contentSpaceId, filter, pagination, sorts);
-
-		return Page.of(
-			transform(
-				_journalHelper.getArticles(hits), this::_toStructuredContent),
-			pagination, hits.getLength());
+		return getContentSpaceContentStructureStructuredContentsPage(
+			contentSpaceId, null, filter, pagination, sorts);
 	}
 
 	@Override
@@ -325,7 +327,8 @@ public class StructuredContentResourceImpl
 	}
 
 	private Hits _getHits(
-			long groupId, Filter filter, Pagination pagination, Sort[] sorts)
+			long groupId, Filter filter, Pagination pagination, Sort[] sorts,
+			Long structureId)
 		throws Exception {
 
 		PermissionChecker permissionChecker =
@@ -334,7 +337,7 @@ public class StructuredContentResourceImpl
 		SearchContext searchContext = _createSearchContext(
 			groupId, pagination, permissionChecker, sorts);
 
-		Query query = _getQuery(filter, searchContext);
+		Query query = _getQuery(filter, searchContext, structureId);
 
 		SearchResultPermissionFilter searchResultPermissionFilter =
 			_searchResultPermissionFilterFactory.create(
@@ -353,7 +356,8 @@ public class StructuredContentResourceImpl
 		return searchResultPermissionFilter.search(searchContext);
 	}
 
-	private Query _getQuery(Filter filter, SearchContext searchContext)
+	private Query _getQuery(
+			Filter filter, SearchContext searchContext, Long structureId)
 		throws Exception {
 
 		Indexer<JournalArticle> indexer = _indexerRegistry.nullSafeGetIndexer(
@@ -365,6 +369,14 @@ public class StructuredContentResourceImpl
 			BooleanFilter booleanFilter = booleanQuery.getPreBooleanFilter();
 
 			booleanFilter.add(filter, BooleanClauseOccur.MUST);
+		}
+
+		if (structureId != null) {
+			BooleanFilter booleanFilter = booleanQuery.getPreBooleanFilter();
+
+			booleanFilter.add(
+				new TermFilter(Field.CLASS_TYPE_ID, structureId.toString()),
+				BooleanClauseOccur.MUST);
 		}
 
 		return booleanQuery;
@@ -437,8 +449,6 @@ public class StructuredContentResourceImpl
 	private StructuredContent _toStructuredContent(
 			JournalArticle journalArticle)
 		throws Exception {
-
-		DDMStructure ddmStructure = journalArticle.getDDMStructure();
 
 		return new StructuredContent() {
 			{
