@@ -121,10 +121,6 @@ components:
       properties:
         additionalName:
           type: string
-        alternateName:
-          type: string
-        email:
-          type: string
         familyName:
           type: string
         givenName:
@@ -134,8 +130,6 @@ components:
           type: integer
         image:
           format: uri
-          type: string
-        jobTitle:
           type: string
         name:
           type: string
