@@ -28,6 +28,7 @@ import com.liferay.dynamic.data.mapping.storage.DDMFormValues;
 import com.liferay.dynamic.data.mapping.util.DDM;
 import com.liferay.headless.web.experience.dto.v1_0.StructuredContent;
 import com.liferay.headless.web.experience.internal.dto.v1_0.AggregateRatingUtil;
+import com.liferay.headless.web.experience.internal.dto.v1_0.ContentStructureUtil;
 import com.liferay.headless.web.experience.internal.dto.v1_0.CreatorUtil;
 import com.liferay.headless.web.experience.internal.odata.entity.v1_0.EntityFieldsProvider;
 import com.liferay.headless.web.experience.internal.odata.entity.v1_0.StructuredContentEntityModel;
@@ -461,7 +462,10 @@ public class StructuredContentResourceImpl
 							JournalArticle.class.getName(),
 							journalArticle.getResourcePrimKey())));
 				setContentSpace(journalArticle.getGroupId());
-				setContentStructureId(ddmStructure.getStructureId());
+				setContentStructure(
+					ContentStructureUtil.toContentStructure(
+						journalArticle.getDDMStructure(),
+						acceptLanguage.getPreferredLocale(), _userService));
 				setCreator(
 					CreatorUtil.toCreator(
 						_userService.getUserById(journalArticle.getUserId())));

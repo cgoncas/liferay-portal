@@ -17,7 +17,7 @@ package com.liferay.headless.web.experience.internal.resource.v1_0;
 import com.liferay.dynamic.data.mapping.model.DDMStructure;
 import com.liferay.dynamic.data.mapping.service.DDMStructureService;
 import com.liferay.headless.web.experience.dto.v1_0.ContentStructure;
-import com.liferay.headless.web.experience.internal.dto.v1_0.CreatorUtil;
+import com.liferay.headless.web.experience.internal.dto.v1_0.ContentStructureUtil;
 import com.liferay.headless.web.experience.resource.v1_0.ContentStructureResource;
 import com.liferay.journal.model.JournalArticle;
 import com.liferay.portal.kernel.model.ClassName;
@@ -25,7 +25,6 @@ import com.liferay.portal.kernel.model.Group;
 import com.liferay.portal.kernel.service.ClassNameService;
 import com.liferay.portal.kernel.service.GroupService;
 import com.liferay.portal.kernel.service.UserService;
-import com.liferay.portal.kernel.util.LocaleUtil;
 import com.liferay.portal.vulcan.pagination.Page;
 import com.liferay.portal.vulcan.pagination.Pagination;
 
@@ -76,25 +75,8 @@ public class ContentStructureResourceImpl
 	private ContentStructure _toContentStructure(DDMStructure ddmStructure)
 		throws Exception {
 
-		return new ContentStructure() {
-			{
-				setAvailableLanguages(
-					LocaleUtil.toW3cLanguageIds(
-						ddmStructure.getAvailableLanguageIds()));
-				setContentSpace(ddmStructure.getGroupId());
-				setCreator(
-					CreatorUtil.toCreator(
-						_userService.getUserById(ddmStructure.getUserId())));
-				setDateCreated(ddmStructure.getCreateDate());
-				setDateModified(ddmStructure.getModifiedDate());
-				setDescription(
-					ddmStructure.getDescription(
-						acceptLanguage.getPreferredLocale()));
-				setId(ddmStructure.getStructureId());
-				setName(
-					ddmStructure.getName(acceptLanguage.getPreferredLocale()));
-			}
-		};
+		return ContentStructureUtil.toContentStructure(
+			ddmStructure, acceptLanguage.getPreferredLocale(), _userService);
 	}
 
 	@Reference
