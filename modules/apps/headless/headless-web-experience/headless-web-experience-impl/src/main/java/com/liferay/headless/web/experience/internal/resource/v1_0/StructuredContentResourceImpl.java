@@ -61,7 +61,7 @@ import com.liferay.portal.kernel.search.filter.TermFilter;
 import com.liferay.portal.kernel.security.permission.PermissionChecker;
 import com.liferay.portal.kernel.security.permission.PermissionThreadLocal;
 import com.liferay.portal.kernel.service.ServiceContext;
-import com.liferay.portal.kernel.service.UserService;
+import com.liferay.portal.kernel.service.UserLocalService;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.LocaleThreadLocal;
 import com.liferay.portal.kernel.util.LocaleUtil;
@@ -465,10 +465,12 @@ public class StructuredContentResourceImpl
 				setContentStructure(
 					ContentStructureUtil.toContentStructure(
 						journalArticle.getDDMStructure(),
-						acceptLanguage.getPreferredLocale(), _userService));
+						acceptLanguage.getPreferredLocale(),
+						_userLocalService));
 				setCreator(
 					CreatorUtil.toCreator(
-						_userService.getUserById(journalArticle.getUserId())));
+						_userLocalService.getUserById(
+							journalArticle.getUserId())));
 				setDateCreated(journalArticle.getCreateDate());
 				setDateModified(journalArticle.getModifiedDate());
 				setDatePublished(journalArticle.getDisplayDate());
@@ -516,6 +518,6 @@ public class StructuredContentResourceImpl
 		_searchResultPermissionFilterFactory;
 
 	@Reference
-	private UserService _userService;
+	private UserLocalService _userLocalService;
 
 }

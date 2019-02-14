@@ -30,12 +30,9 @@ public class CreatorUtil {
 		return new Creator() {
 			{
 				setAdditionalName(user.getMiddleName());
-				setAlternateName(user.getScreenName());
-				setEmail(user.getEmailAddress());
 				setFamilyName(user.getLastName());
 				setGivenName(user.getFirstName());
 				setId(user.getUserId());
-				setJobTitle(user.getJobTitle());
 				setName(user.getFullName());
 			}
 		};

@@ -24,7 +24,7 @@ import com.liferay.portal.kernel.model.ClassName;
 import com.liferay.portal.kernel.model.Group;
 import com.liferay.portal.kernel.service.ClassNameService;
 import com.liferay.portal.kernel.service.GroupService;
-import com.liferay.portal.kernel.service.UserService;
+import com.liferay.portal.kernel.service.UserLocalService;
 import com.liferay.portal.vulcan.pagination.Page;
 import com.liferay.portal.vulcan.pagination.Pagination;
 
@@ -76,7 +76,8 @@ public class ContentStructureResourceImpl
 		throws Exception {
 
 		return ContentStructureUtil.toContentStructure(
-			ddmStructure, acceptLanguage.getPreferredLocale(), _userService);
+			ddmStructure, acceptLanguage.getPreferredLocale(),
+			_userLocalService);
 	}
 
 	@Reference
@@ -89,6 +90,6 @@ public class ContentStructureResourceImpl
 	private GroupService _groupService;
 
 	@Reference
-	private UserService _userService;
+	private UserLocalService _userLocalService;
 
 }
