@@ -56,7 +56,7 @@ public class Values {
 		return name;
 	}
 
-	public Object getValue() {
+	public Value getValue() {
 		return value;
 	}
 
@@ -148,19 +148,17 @@ public class Values {
 	}
 	}
 
-	public void setValue(Object value) {
-		this.value = value;
-	}
-
-	public void setValue(
-		UnsafeSupplier<Object, Throwable> valueUnsafeSupplier) {
-
+	public void setValue(UnsafeSupplier<Value, Throwable> valueUnsafeSupplier) {
 		try {
 			value = valueUnsafeSupplier.get();
 	}
 		catch (Throwable t) {
 			throw new RuntimeException(t);
 	}
+	}
+
+	public void setValue(Value value) {
+		this.value = value;
 	}
 
 	@GraphQLField
@@ -182,6 +180,6 @@ public class Values {
 	protected String name;
 
 	@GraphQLField
-	protected Object value;
+	protected Value value;
 
 }
