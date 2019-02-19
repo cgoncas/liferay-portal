@@ -38,7 +38,7 @@ public class CreatorUtil {
 				id = user.getUserId();
 				name = user.getFullName();
 
-				setProfileURL(
+				setImage(
 					() -> {
 						if (user.getPortraitId() == 0) {
 							return null;
