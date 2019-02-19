@@ -30,7 +30,7 @@ import com.liferay.portal.vulcan.internal.jaxrs.exception.mapper.PortalException
 import com.liferay.portal.vulcan.internal.jaxrs.exception.mapper.PrincipalExceptionMapper;
 import com.liferay.portal.vulcan.internal.jaxrs.message.body.JSONMessageBodyWriter;
 import com.liferay.portal.vulcan.internal.jaxrs.message.body.MultipartBodyMessageBodyReader;
-import com.liferay.portal.vulcan.internal.resource.EntityModelResourceRegistrar;
+import com.liferay.portal.vulcan.internal.resource.EntityModelResourceRegistry;
 
 import javax.ws.rs.core.Feature;
 import javax.ws.rs.core.FeatureContext;
@@ -73,11 +73,11 @@ public class VulcanFeature implements Feature {
 		featureContext.register(new CompanyContextProvider(_portal));
 		featureContext.register(
 			new FilterContextProvider(
-				_entityModelResourceRegistrar, _expressionConvert,
+				_entityModelResourceRegistry, _expressionConvert,
 				_filterParserProvider, _portal));
 		featureContext.register(
 			new SortContextProvider(
-				_entityModelResourceRegistrar, _portal, _sortParserProvider));
+				_entityModelResourceRegistry, _portal, _sortParserProvider));
 
 		return false;
 	}
@@ -90,7 +90,7 @@ public class VulcanFeature implements Feature {
 	private BundleContext _bundleContext;
 
 	@Reference
-	private EntityModelResourceRegistrar _entityModelResourceRegistrar;
+	private EntityModelResourceRegistry _entityModelResourceRegistry;
 
 	@Reference(
 		target = "(result.class.name=com.liferay.portal.kernel.search.filter.Filter)"
