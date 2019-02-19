@@ -16,6 +16,8 @@ package com.liferay.headless.foundation.internal.dto.v1_0.util;
 
 import com.liferay.headless.foundation.dto.v1_0.Creator;
 import com.liferay.headless.foundation.internal.dto.v1_0.CreatorImpl;
+import com.liferay.petra.string.StringPool;
+import com.liferay.portal.kernel.model.Group;
 import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
 import com.liferay.portal.kernel.util.Portal;
@@ -51,6 +53,20 @@ public class CreatorUtil {
 						};
 
 						return user.getPortraitURL(themeDisplay);
+					});
+
+				setProfileURL(
+					() -> {
+						Group group = user.getGroup();
+
+						ThemeDisplay themeDisplay = new ThemeDisplay() {
+							{
+								setSiteGroupId(group.getGroupId());
+								setPortalURL(StringPool.BLANK);
+							}
+						};
+
+						return group.getDisplayURL(themeDisplay);
 					});
 			}
 		};
