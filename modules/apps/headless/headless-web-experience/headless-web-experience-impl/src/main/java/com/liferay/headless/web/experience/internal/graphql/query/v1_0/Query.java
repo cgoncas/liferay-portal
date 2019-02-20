@@ -180,6 +180,21 @@ public class Query {
 
 	@GraphQLField
 	@GraphQLInvokeDetached
+	public String getStructuredContentTemplate(
+	@GraphQLName("structured-content-id") Long structuredContentId,@GraphQLName("template-id") Long templateId)
+			throws Exception {
+
+				StructuredContentResource structuredContentResource = _getStructuredContentResource();
+
+				structuredContentResource.setContextCompany(
+					CompanyLocalServiceUtil.getCompany(CompanyThreadLocal.getCompanyId()));
+
+				return structuredContentResource.getStructuredContentTemplate(
+					structuredContentId,templateId);
+	}
+
+	@GraphQLField
+	@GraphQLInvokeDetached
 	public Collection<StructuredContentImage> getStructuredContentStructuredContentImagesPage(
 	@GraphQLName("structured-content-id") Long structuredContentId)
 			throws Exception {

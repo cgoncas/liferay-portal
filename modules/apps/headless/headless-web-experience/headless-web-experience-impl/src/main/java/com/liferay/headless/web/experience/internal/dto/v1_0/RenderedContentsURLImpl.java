@@ -17,7 +17,7 @@ package com.liferay.headless.web.experience.internal.dto.v1_0;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-import com.liferay.headless.web.experience.dto.v1_0.RenderedContentsByTemplate;
+import com.liferay.headless.web.experience.dto.v1_0.RenderedContentsURL;
 import com.liferay.petra.function.UnsafeSupplier;
 
 import graphql.annotations.annotationTypes.GraphQLField;
@@ -32,55 +32,28 @@ import javax.xml.bind.annotation.XmlRootElement;
  * @generated
  */
 @Generated("")
-@GraphQLName("RenderedContentsByTemplate")
-@XmlRootElement(name = "RenderedContentsByTemplate")
-public class RenderedContentsByTemplateImpl implements RenderedContentsByTemplate {
+@GraphQLName("RenderedContentsURL")
+@XmlRootElement(name = "RenderedContentsURL")
+public class RenderedContentsURLImpl implements RenderedContentsURL {
 
-	public Long getId() {
-			return id;
+	public String getRenderedContentURL() {
+			return renderedContentURL;
 	}
 
-	public void setId(
-			Long id) {
+	public void setRenderedContentURL(
+			String renderedContentURL) {
 
-			this.id = id;
-	}
-
-	@JsonIgnore
-	public void setId(
-			UnsafeSupplier<Long, Throwable>
-				idUnsafeSupplier) {
-
-			try {
-				id =
-					idUnsafeSupplier.get();
-	}
-			catch (Throwable t) {
-				throw new RuntimeException(t);
-	}
-	}
-
-	@GraphQLField
-	@JsonProperty
-	protected Long id;
-	public String getRenderedContent() {
-			return renderedContent;
-	}
-
-	public void setRenderedContent(
-			String renderedContent) {
-
-			this.renderedContent = renderedContent;
+			this.renderedContentURL = renderedContentURL;
 	}
 
 	@JsonIgnore
-	public void setRenderedContent(
+	public void setRenderedContentURL(
 			UnsafeSupplier<String, Throwable>
-				renderedContentUnsafeSupplier) {
+				renderedContentURLUnsafeSupplier) {
 
 			try {
-				renderedContent =
-					renderedContentUnsafeSupplier.get();
+				renderedContentURL =
+					renderedContentURLUnsafeSupplier.get();
 	}
 			catch (Throwable t) {
 				throw new RuntimeException(t);
@@ -89,25 +62,25 @@ public class RenderedContentsByTemplateImpl implements RenderedContentsByTemplat
 
 	@GraphQLField
 	@JsonProperty
-	protected String renderedContent;
-	public String getTemplate() {
-			return template;
+	protected String renderedContentURL;
+	public String getTemplateName() {
+			return templateName;
 	}
 
-	public void setTemplate(
-			String template) {
+	public void setTemplateName(
+			String templateName) {
 
-			this.template = template;
+			this.templateName = templateName;
 	}
 
 	@JsonIgnore
-	public void setTemplate(
+	public void setTemplateName(
 			UnsafeSupplier<String, Throwable>
-				templateUnsafeSupplier) {
+				templateNameUnsafeSupplier) {
 
 			try {
-				template =
-					templateUnsafeSupplier.get();
+				templateName =
+					templateNameUnsafeSupplier.get();
 	}
 			catch (Throwable t) {
 				throw new RuntimeException(t);
@@ -116,6 +89,6 @@ public class RenderedContentsByTemplateImpl implements RenderedContentsByTemplat
 
 	@GraphQLField
 	@JsonProperty
-	protected String template;
+	protected String templateName;
 
 }

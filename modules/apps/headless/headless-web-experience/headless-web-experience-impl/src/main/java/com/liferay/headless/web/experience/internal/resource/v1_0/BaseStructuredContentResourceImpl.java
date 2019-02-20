@@ -19,6 +19,7 @@ import com.liferay.headless.web.experience.internal.dto.v1_0.StructuredContentIm
 import com.liferay.headless.web.experience.resource.v1_0.StructuredContentResource;
 import com.liferay.oauth2.provider.scope.RequiresScope;
 import com.liferay.petra.function.UnsafeFunction;
+import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.model.Company;
 import com.liferay.portal.kernel.search.Sort;
 import com.liferay.portal.kernel.search.filter.Filter;
@@ -178,6 +179,17 @@ public abstract class BaseStructuredContentResourceImpl implements StructuredCon
 			throws Exception {
 
 				return new StructuredContentImpl();
+	}
+	@Override
+	@GET
+	@Path("/structured-contents/{structured-content-id}/rendered-content/{template-id}")
+	@Produces("text/html")
+	@RequiresScope("everything.read")
+	public String getStructuredContentTemplate(
+	@PathParam("structured-content-id") Long structuredContentId,@PathParam("template-id") Long templateId)
+			throws Exception {
+
+				return StringPool.BLANK;
 	}
 
 	public void setContextCompany(Company contextCompany) {

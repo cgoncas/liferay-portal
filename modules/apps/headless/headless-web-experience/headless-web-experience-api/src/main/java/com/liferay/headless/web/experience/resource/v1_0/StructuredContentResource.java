@@ -55,6 +55,9 @@ public interface StructuredContentResource {
 	public StructuredContent putStructuredContent(
 				Long structuredContentId,StructuredContent structuredContent)
 			throws Exception;
+	public String getStructuredContentTemplate(
+				Long structuredContentId,Long templateId)
+			throws Exception;
 
 	public void setContextCompany(Company contextCompany);
 

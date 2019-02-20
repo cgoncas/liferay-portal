@@ -21,7 +21,7 @@ import com.liferay.headless.web.experience.dto.v1_0.AggregateRating;
 import com.liferay.headless.web.experience.dto.v1_0.Categories;
 import com.liferay.headless.web.experience.dto.v1_0.Comment;
 import com.liferay.headless.web.experience.dto.v1_0.Creator;
-import com.liferay.headless.web.experience.dto.v1_0.RenderedContentsByTemplate;
+import com.liferay.headless.web.experience.dto.v1_0.RenderedContentsURL;
 import com.liferay.headless.web.experience.dto.v1_0.StructuredContent;
 import com.liferay.headless.web.experience.dto.v1_0.Values;
 import com.liferay.petra.function.UnsafeSupplier;
@@ -422,24 +422,24 @@ public class StructuredContentImpl implements StructuredContent {
 	@GraphQLField
 	@JsonProperty
 	protected Date lastReviewed;
-	public RenderedContentsByTemplate[] getRenderedContentsByTemplate() {
-			return renderedContentsByTemplate;
+	public RenderedContentsURL[] getRenderedContentsURL() {
+			return renderedContentsURL;
 	}
 
-	public void setRenderedContentsByTemplate(
-			RenderedContentsByTemplate[] renderedContentsByTemplate) {
+	public void setRenderedContentsURL(
+			RenderedContentsURL[] renderedContentsURL) {
 
-			this.renderedContentsByTemplate = renderedContentsByTemplate;
+			this.renderedContentsURL = renderedContentsURL;
 	}
 
 	@JsonIgnore
-	public void setRenderedContentsByTemplate(
-			UnsafeSupplier<RenderedContentsByTemplate[], Throwable>
-				renderedContentsByTemplateUnsafeSupplier) {
+	public void setRenderedContentsURL(
+			UnsafeSupplier<RenderedContentsURL[], Throwable>
+				renderedContentsURLUnsafeSupplier) {
 
 			try {
-				renderedContentsByTemplate =
-					renderedContentsByTemplateUnsafeSupplier.get();
+				renderedContentsURL =
+					renderedContentsURLUnsafeSupplier.get();
 	}
 			catch (Throwable t) {
 				throw new RuntimeException(t);
@@ -448,7 +448,7 @@ public class StructuredContentImpl implements StructuredContent {
 
 	@GraphQLField
 	@JsonProperty
-	protected RenderedContentsByTemplate[] renderedContentsByTemplate;
+	protected RenderedContentsURL[] renderedContentsURL;
 	public String getTitle() {
 			return title;
 	}
