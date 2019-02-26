@@ -428,6 +428,32 @@ public class StructuredContentResourceImpl
 		};
 	}
 
+	private ContentFieldValue _toContentFieldValue(
+			DDMStructure ddmStructure, Fields fields, String fieldName)
+		throws Exception {
+
+		com.liferay.dynamic.data.mapping.storage.Field ddmField = fields.get(
+			fieldName);
+
+		if (ddmField == null) {
+			return null;
+		}
+
+		DDMFormField ddmFormField = ddmStructure.getDDMFormField(fieldName);
+
+		return new ContentFieldValue() {
+			{
+				dataType = ContentStructureUtil.toDataType(ddmFormField);
+				inputControl = ContentStructureUtil.toInputControl(
+					ddmFormField);
+				name = ddmField.getName();
+				value = _toValue(
+					contextAcceptLanguage.getPreferredLocale(), fields,
+					ddmField);
+			}
+		};
+	}
+
 	private ContentFieldValue[] _toContentFieldValues(
 			JournalArticle journalArticle)
 		throws Exception {
@@ -439,29 +465,15 @@ public class StructuredContentResourceImpl
 
 		List<ContentFieldValue> contentFieldValues = new ArrayList<>();
 
-		Iterator<com.liferay.dynamic.data.mapping.storage.Field> iterator =
-			ddmFields.iterator();
+		List<String> rootFieldNames = ddmStructure.getRootFieldNames();
 
-		while (iterator.hasNext()) {
-			com.liferay.dynamic.data.mapping.storage.Field ddmField =
-				iterator.next();
+		for (String rootFieldName : rootFieldNames) {
+			ContentFieldValue contentFieldValue = _toContentFieldValue(
+				ddmStructure, ddmFields, rootFieldName);
 
-			DDMFormField ddmFormField = ddmStructure.getDDMFormField(
-				ddmField.getName());
-
-			contentFieldValues.add(
-				new ContentFieldValue() {
-					{
-						dataType = ContentStructureUtil.toDataType(
-							ddmFormField);
-						inputControl = ContentStructureUtil.toInputControl(
-							ddmFormField);
-						name = ddmField.getName();
-						value = _toValue(
-							contextAcceptLanguage.getPreferredLocale(),
-							ddmField);
-					}
-				});
+			if (contentFieldValue != null) {
+				contentFieldValues.add(contentFieldValue);
+			}
 		}
 
 		return contentFieldValues.toArray(new ContentFieldValue[0]);
@@ -504,13 +516,26 @@ public class StructuredContentResourceImpl
 		ContentFieldValue[] contentFieldValuesArray, DDMStructure ddmStructure,
 		Locale locale) {
 
+		if (contentFieldValuesArray == null) {
+			return Collections.emptyList();
+		}
+
 		return transform(
 			Arrays.asList(contentFieldValuesArray),
-			contentFieldValues -> new DDMFormFieldValue() {
+			contentFieldValue -> new DDMFormFieldValue() {
 				{
-					setName(contentFieldValues.getName());
+					setName(contentFieldValue.getName());
 					setValue(
-						_toDDMValue(ddmStructure, locale, contentFieldValues));
+						_toDDMValue(ddmStructure, locale, contentFieldValue));
+
+					if (contentFieldValue.getValue() != null) {
+						Value value = contentFieldValue.getValue();
+
+						setNestedDDMFormFields(
+							_toDDMFormFieldValues(
+								value.getContentFieldValues(), ddmStructure,
+								locale));
+					}
 				}
 			});
 	}
@@ -627,6 +652,7 @@ public class StructuredContentResourceImpl
 					_ratingsStatsLocalService.fetchStats(
 						JournalArticle.class.getName(),
 						journalArticle.getResourcePrimKey()));
+				contentFieldValues = _toContentFieldValues(journalArticle);
 				contentSpace = journalArticle.getGroupId();
 				contentStructureId = ddmStructure.getStructureId();
 				creator = CreatorUtil.toCreator(
@@ -643,13 +669,12 @@ public class StructuredContentResourceImpl
 					ddmStructure, journalArticle);
 				title = journalArticle.getTitle(
 					contextAcceptLanguage.getPreferredLocale());
-				contentFieldValues = _toContentFieldValues(journalArticle);
 			}
 		};
 	}
 
 	private Value _toValue(
-			Locale locale,
+			Locale locale, Fields fields,
 			com.liferay.dynamic.data.mapping.storage.Field ddmField)
 		throws Exception {
 
@@ -657,6 +682,20 @@ public class StructuredContentResourceImpl
 
 		DDMFormField ddmFormField = ddmStructure.getDDMFormField(
 			ddmField.getName());
+
+		List<DDMFormField> nestedDDMFormFields =
+			ddmFormField.getNestedDDMFormFields();
+
+		List<ContentFieldValue> nestedContentFieldValues = new ArrayList<>();
+
+		for (DDMFormField nestedDDMFormField : nestedDDMFormFields) {
+			ContentFieldValue contentFieldValue = _toContentFieldValue(
+				ddmStructure, fields, nestedDDMFormField.getName());
+
+			if (contentFieldValue != null) {
+				nestedContentFieldValues.add(contentFieldValue);
+			}
+		}
 
 		if (Objects.equals(
 				DDMFormFieldType.DOCUMENT_LIBRARY, ddmFormField.getType())) {
@@ -674,6 +713,8 @@ public class StructuredContentResourceImpl
 
 			return new Value() {
 				{
+					contentFieldValues = nestedContentFieldValues.toArray(
+						new ContentFieldValue[0]);
 					document = new ContentDocument() {
 						{
 							creator = CreatorUtil.toCreator(
@@ -706,6 +747,8 @@ public class StructuredContentResourceImpl
 
 			return new Value() {
 				{
+					contentFieldValues = nestedContentFieldValues.toArray(
+						new ContentFieldValue[0]);
 					geo = new Geo() {
 						{
 							latitude = jsonObject.getDouble("latitude");
@@ -733,6 +776,8 @@ public class StructuredContentResourceImpl
 
 			return new Value() {
 				{
+					contentFieldValues = nestedContentFieldValues.toArray(
+						new ContentFieldValue[0]);
 					structuredContent = _toStructuredContent(journalArticle);
 				}
 			};
@@ -758,6 +803,8 @@ public class StructuredContentResourceImpl
 
 			return new Value() {
 				{
+					contentFieldValues = nestedContentFieldValues.toArray(
+						new ContentFieldValue[0]);
 					link = layoutByUuidAndGroupId.getFriendlyURL();
 				}
 			};
@@ -765,6 +812,8 @@ public class StructuredContentResourceImpl
 
 		return new Value() {
 			{
+				contentFieldValues = nestedContentFieldValues.toArray(
+					new ContentFieldValue[0]);
 				data = String.valueOf(ddmField.getValue(locale));
 			}
 		};
