@@ -288,6 +288,54 @@ public class ExpressionVisitorImplTest {
 	}
 
 	@Test
+	public void testVisitBinaryExpressionOperationWithNotEqualOperation() {
+		Map<String, EntityField> entityFieldsMap =
+			_entityModel.getEntityFieldsMap();
+
+		EntityField entityField = entityFieldsMap.get("title");
+
+		String value = "title1";
+
+		BooleanFilter booleanFilter =
+			(BooleanFilter)_expressionVisitorImpl.
+				visitBinaryExpressionOperation(
+					BinaryExpression.Operation.NE, entityField, value);
+
+		Assert.assertTrue(booleanFilter.hasClauses());
+
+		List<BooleanClause<Filter>> booleanClauses =
+			booleanFilter.getMustNotBooleanClauses();
+
+		Assert.assertEquals(
+			booleanClauses.toString(), 1, booleanClauses.size());
+
+		BooleanClause<Filter> queryBooleanClause = booleanClauses.get(0);
+
+		Assert.assertEquals(
+			BooleanClauseOccur.MUST_NOT,
+			queryBooleanClause.getBooleanClauseOccur());
+
+		TermFilter termFilter = (TermFilter)queryBooleanClause.getClause();
+
+		Assert.assertEquals(entityField.getName(), termFilter.getField());
+		Assert.assertEquals(value, termFilter.getValue());
+	}
+
+	@Test
+	public void testVisitBinaryExpressionOperationWithNotEqualOperationAndNullValue() {
+		Map<String, EntityField> entityFieldsMap =
+			_entityModel.getEntityFieldsMap();
+
+		EntityField entityField = entityFieldsMap.get("title");
+
+		ExistsFilter existsFilter =
+			(ExistsFilter)_expressionVisitorImpl.visitBinaryExpressionOperation(
+				BinaryExpression.Operation.NE, entityField, null);
+
+		Assert.assertEquals(entityField.getName(), existsFilter.getField());
+	}
+
+	@Test
 	public void testVisitBinaryExpressionOperationWithOrOperation() {
 		TermFilter leftTermFilter = new TermFilter("title", "title1");
 
