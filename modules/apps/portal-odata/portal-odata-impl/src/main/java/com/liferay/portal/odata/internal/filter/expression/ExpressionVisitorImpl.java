@@ -288,6 +288,9 @@ public class ExpressionVisitorImpl implements ExpressionVisitor<Expression> {
 		else if (binaryOperatorKind == BinaryOperatorKind.LT) {
 			return Optional.of(BinaryExpression.Operation.LT);
 		}
+		else if (binaryOperatorKind == BinaryOperatorKind.NE) {
+			return Optional.of(BinaryExpression.Operation.NE);
+		}
 		else if (binaryOperatorKind == BinaryOperatorKind.OR) {
 			return Optional.of(BinaryExpression.Operation.OR);
 		}

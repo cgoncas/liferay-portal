@@ -305,6 +305,9 @@ public class ExpressionVisitorImpl implements ExpressionVisitor<Object> {
 		else if (Objects.equals(BinaryExpression.Operation.LT, operation)) {
 			filter = _getLTFilter((EntityField)left, right, locale);
 		}
+		else if (Objects.equals(BinaryExpression.Operation.NE, operation)) {
+			filter = _getNEFilter((EntityField)left, right, locale);
+		}
 		else if (Objects.equals(BinaryExpression.Operation.OR, operation)) {
 			filter = _getORFilter((Filter)left, (Filter)right);
 		}
@@ -428,6 +431,24 @@ public class ExpressionVisitorImpl implements ExpressionVisitor<Object> {
 		throw new UnsupportedOperationException(
 			"Unsupported method _getLTFilter with entity field type " +
 				entityField.getType());
+	}
+
+	private Filter _getNEFilter(
+		EntityField entityField, Object fieldValue, Locale locale) {
+
+		if (fieldValue == null) {
+			return new ExistsFilter(entityField.getFilterableName(locale));
+		}
+
+		BooleanFilter booleanFilter = new BooleanFilter();
+
+		booleanFilter.add(
+			new TermFilter(
+				entityField.getFilterableName(locale),
+				entityField.getFilterableValue(fieldValue)),
+			BooleanClauseOccur.MUST_NOT);
+
+		return booleanFilter;
 	}
 
 	private Filter _getNotFilter(Filter filter) {
