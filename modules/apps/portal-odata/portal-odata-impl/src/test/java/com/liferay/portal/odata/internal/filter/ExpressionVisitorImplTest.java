@@ -126,9 +126,23 @@ public class ExpressionVisitorImplTest {
 
 		EntityField entityField = entityFieldsMap.get("title");
 
+		BooleanFilter booleanFilter =
+			(BooleanFilter)_expressionVisitorImpl.
+				visitBinaryExpressionOperation(
+					BinaryExpression.Operation.EQ, entityField, null);
+
+		Assert.assertTrue(booleanFilter.hasClauses());
+
+		List<BooleanClause<Filter>> booleanClauses =
+			booleanFilter.getMustNotBooleanClauses();
+
+		Assert.assertEquals(
+			booleanClauses.toString(), 1, booleanClauses.size());
+
+		BooleanClause<Filter> queryBooleanClause = booleanClauses.get(0);
+
 		ExistsFilter existsFilter =
-			(ExistsFilter)_expressionVisitorImpl.visitBinaryExpressionOperation(
-				BinaryExpression.Operation.EQ, entityField, null);
+			(ExistsFilter)queryBooleanClause.getClause();
 
 		Assert.assertEquals(entityField.getName(), existsFilter.getField());
 	}

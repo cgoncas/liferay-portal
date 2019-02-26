@@ -273,7 +273,13 @@ public class ExpressionVisitorImpl implements ExpressionVisitor<Object> {
 		EntityField entityField, Object fieldValue, Locale locale) {
 
 		if (fieldValue == null) {
-			return new ExistsFilter(entityField.getFilterableName(locale));
+			BooleanFilter booleanFilter = new BooleanFilter();
+
+			booleanFilter.add(
+				new ExistsFilter(entityField.getFilterableName(locale)),
+				BooleanClauseOccur.MUST_NOT);
+
+			return booleanFilter;
 		}
 
 		return new TermFilter(
