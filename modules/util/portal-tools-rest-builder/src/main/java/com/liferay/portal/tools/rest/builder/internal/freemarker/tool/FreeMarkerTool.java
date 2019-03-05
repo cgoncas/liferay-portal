@@ -14,6 +14,8 @@
 
 package com.liferay.portal.tools.rest.builder.internal.freemarker.tool;
 
+import com.liferay.portal.kernel.util.StringUtil;
+import com.liferay.portal.kernel.util.TextFormatter;
 import com.liferay.portal.tools.rest.builder.internal.freemarker.tool.java.JavaMethodParameter;
 import com.liferay.portal.tools.rest.builder.internal.freemarker.tool.java.JavaMethodSignature;
 import com.liferay.portal.tools.rest.builder.internal.freemarker.tool.java.parser.DTOOpenAPIParser;
@@ -50,6 +52,12 @@ public class FreeMarkerTool {
 
 		return DTOOpenAPIParser.getJavaMethodParameters(
 			configYAML, openAPIYAML, schemaName);
+	}
+
+	public String getEnumFieldName(String value) {
+		String fieldName = TextFormatter.format(value, TextFormatter.H);
+
+		return StringUtil.toUpperCase(fieldName.replace(' ', '_'));
 	}
 
 	public String getGraphQLArguments(
