@@ -39,6 +39,10 @@ import javax.xml.bind.annotation.XmlRootElement;
 @XmlRootElement(name = "Vocabulary")
 public class Vocabulary {
 
+	public AssetType[] getAssetTypes() {
+		return assetTypes;
+	}
+
 	public String[] getAvailableLanguages() {
 		return availableLanguages;
 	}
@@ -77,6 +81,22 @@ public class Vocabulary {
 
 	public String getViewableBy() {
 		return viewableBy;
+	}
+
+	public void setAssetTypes(AssetType[] assetTypes) {
+		this.assetTypes = assetTypes;
+	}
+
+	@JsonIgnore
+	public void setAssetTypes(
+		UnsafeSupplier<AssetType[], Exception> assetTypesUnsafeSupplier) {
+
+		try {
+			assetTypes = assetTypesUnsafeSupplier.get();
+		}
+		catch (Exception e) {
+			throw new RuntimeException(e);
+		}
 	}
 
 	public void setAvailableLanguages(String[] availableLanguages) {
@@ -240,6 +260,27 @@ public class Vocabulary {
 
 		sb.append("{");
 
+		sb.append("\"assetTypes\": ");
+
+		if (assetTypes == null) {
+			sb.append("null");
+		}
+		else {
+			sb.append("[");
+
+			for (int i = 0; i < assetTypes.length; i++) {
+				sb.append(assetTypes[i]);
+
+				if ((i + 1) < assetTypes.length) {
+					sb.append(", ");
+				}
+			}
+
+			sb.append("]");
+		}
+
+		sb.append(", ");
+
 		sb.append("\"availableLanguages\": ");
 
 		if (availableLanguages == null) {
@@ -321,6 +362,10 @@ public class Vocabulary {
 
 		return sb.toString();
 	}
+
+	@GraphQLField
+	@JsonProperty
+	protected AssetType[] assetTypes;
 
 	@GraphQLField
 	@JsonProperty
