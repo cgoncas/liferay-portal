@@ -14,8 +14,10 @@
 
 package com.liferay.headless.document.library.dto.v1_0;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonValue;
 
 import com.liferay.petra.function.UnsafeSupplier;
 import com.liferay.petra.string.StringBundler;
@@ -24,6 +26,7 @@ import graphql.annotations.annotationTypes.GraphQLField;
 import graphql.annotations.annotationTypes.GraphQLName;
 
 import java.util.Date;
+import java.util.Objects;
 
 import javax.annotation.Generated;
 
@@ -103,7 +106,7 @@ public class Document {
 		return title;
 	}
 
-	public String getViewableBy() {
+	public ViewableBy getViewableBy() {
 		return viewableBy;
 	}
 
@@ -363,13 +366,9 @@ public class Document {
 		}
 	}
 
-	public void setViewableBy(String viewableBy) {
-		this.viewableBy = viewableBy;
-	}
-
 	@JsonIgnore
 	public void setViewableBy(
-		UnsafeSupplier<String, Exception> viewableByUnsafeSupplier) {
+		UnsafeSupplier<ViewableBy, Exception> viewableByUnsafeSupplier) {
 
 		try {
 			viewableBy = viewableByUnsafeSupplier.get();
@@ -377,6 +376,10 @@ public class Document {
 		catch (Exception e) {
 			throw new RuntimeException(e);
 		}
+	}
+
+	public void setViewableBy(ViewableBy viewableBy) {
+		this.viewableBy = viewableBy;
 	}
 
 	public String toString() {
@@ -546,13 +549,39 @@ public class Document {
 
 		sb.append("\"viewableBy\": ");
 
-		sb.append("\"");
 		sb.append(viewableBy);
-		sb.append("\"");
 
 		sb.append("}");
 
 		return sb.toString();
+	}
+
+	public static enum ViewableBy {
+
+		ANYONE("Anyone"), MEMBERS("Members"), OWNER("Owner");
+
+		@JsonCreator
+		public static ViewableBy create(String value) {
+			for (ViewableBy viewableBy : values()) {
+				if (Objects.equals(viewableBy.getValue(), value)) {
+					return viewableBy;
+				}
+			}
+
+			return null;
+		}
+
+		@JsonValue
+		public String getValue() {
+			return _value;
+		}
+
+		private ViewableBy(String value) {
+			_value = value;
+		}
+
+		private final String _value;
+
 	}
 
 	@GraphQLField
@@ -621,6 +650,6 @@ public class Document {
 
 	@GraphQLField
 	@JsonProperty
-	protected String viewableBy;
+	protected ViewableBy viewableBy;
 
 }
