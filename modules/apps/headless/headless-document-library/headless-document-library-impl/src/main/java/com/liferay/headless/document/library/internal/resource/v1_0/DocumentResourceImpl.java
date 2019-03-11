@@ -182,6 +182,8 @@ public class DocumentResourceImpl
 
 		String viewableBy = optional.map(
 			Document::getViewableBy
+		).map(
+			Document.ViewableBy::getValue
 		).orElse(
 			null
 		);
@@ -238,6 +240,14 @@ public class DocumentResourceImpl
 			"document", Document.class);
 		FileEntry existingFileEntry = _dlAppService.getFileEntry(documentId);
 
+		String viewableBy = Optional.ofNullable(
+			document.getViewableBy()
+		).map(
+			Document.ViewableBy::getValue
+		).orElse(
+			null
+		);
+
 		FileEntry fileEntry = _dlAppService.updateFileEntry(
 			documentId, binaryFile.getFileName(), binaryFile.getContentType(),
 			Optional.ofNullable(
@@ -249,7 +259,7 @@ public class DocumentResourceImpl
 			binaryFile.getInputStream(), binaryFile.getSize(),
 			ServiceContextUtil.createServiceContext(
 				document.getKeywords(), document.getCategoryIds(),
-				existingFileEntry.getGroupId(), document.getViewableBy()));
+				existingFileEntry.getGroupId(), viewableBy));
 
 		return _toDocument(
 			fileEntry, fileEntry.getFileVersion(),
@@ -262,8 +272,17 @@ public class DocumentResourceImpl
 		throws Exception {
 
 		BinaryFile binaryFile = multipartBody.getBinaryFile("file");
+
 		Document document = multipartBody.getValueAsInstance(
 			"document", Document.class);
+
+		String viewableBy = Optional.ofNullable(
+			document.getViewableBy()
+		).map(
+			Document.ViewableBy::getValue
+		).orElse(
+			null
+		);
 
 		FileEntry fileEntry = _dlAppService.addFileEntry(
 			repositoryId, folderId, binaryFile.getFileName(),
@@ -277,7 +296,7 @@ public class DocumentResourceImpl
 			binaryFile.getSize(),
 			ServiceContextUtil.createServiceContext(
 				document.getKeywords(), document.getCategoryIds(), groupId,
-				document.getViewableBy()));
+				viewableBy));
 
 		return _toDocument(
 			fileEntry, fileEntry.getFileVersion(),

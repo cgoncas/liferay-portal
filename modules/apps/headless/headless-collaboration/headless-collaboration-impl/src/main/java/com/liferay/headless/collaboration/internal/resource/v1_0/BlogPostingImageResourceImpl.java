@@ -157,8 +157,17 @@ public class BlogPostingImageResourceImpl
 
 		Folder folder = _blogsEntryService.addAttachmentsFolder(contentSpaceId);
 		BinaryFile binaryFile = multipartBody.getBinaryFile("file");
+
 		BlogPostingImage blogPostingImage = multipartBody.getValueAsInstance(
 			"blogPostingImage", BlogPostingImage.class);
+
+		String viewableBy = Optional.ofNullable(
+			blogPostingImage.getViewableBy()
+		).map(
+			BlogPostingImage.ViewableBy::getValue
+		).orElse(
+			null
+		);
 
 		FileEntry fileEntry = _dlAppService.addFileEntry(
 			contentSpaceId, folder.getFolderId(), binaryFile.getFileName(),
@@ -170,7 +179,7 @@ public class BlogPostingImageResourceImpl
 			),
 			null, null, binaryFile.getInputStream(), binaryFile.getSize(),
 			ServiceContextUtil.createServiceContext(
-				contentSpaceId, blogPostingImage.getViewableBy()));
+				contentSpaceId, viewableBy));
 
 		return _toBlogPostingImage(fileEntry);
 	}

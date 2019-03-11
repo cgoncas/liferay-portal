@@ -40,6 +40,8 @@ import com.liferay.portal.vulcan.pagination.Page;
 import com.liferay.portal.vulcan.pagination.Pagination;
 import com.liferay.ratings.kernel.service.RatingsStatsLocalService;
 
+import java.util.Optional;
+
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;
 import org.osgi.service.component.annotations.ServiceScope;
@@ -181,6 +183,14 @@ public class KnowledgeBaseArticleResourceImpl
 			KnowledgeBaseArticle knowledgeBaseArticle)
 		throws Exception {
 
+		String viewableBy = Optional.ofNullable(
+			knowledgeBaseArticle.getViewableBy()
+		).map(
+			KnowledgeBaseArticle.ViewableBy::getValue
+		).orElse(
+			null
+		);
+
 		return _toKBArticle(
 			_kbArticleService.updateKBArticle(
 				knowledgeBaseArticleId, knowledgeBaseArticle.getTitle(),
@@ -189,8 +199,7 @@ public class KnowledgeBaseArticleResourceImpl
 				ServiceContextUtil.createServiceContext(
 					knowledgeBaseArticle.getKeywords(),
 					knowledgeBaseArticle.getCategoryIds(),
-					knowledgeBaseArticle.getContentSpace(),
-					knowledgeBaseArticle.getViewableBy())));
+					knowledgeBaseArticle.getContentSpace(), viewableBy)));
 	}
 
 	private KnowledgeBaseArticle _getKnowledgeBaseArticle(
@@ -198,6 +207,14 @@ public class KnowledgeBaseArticleResourceImpl
 			ClassName resourceClassName,
 			KnowledgeBaseArticle knowledgeBaseArticle)
 		throws PortalException {
+
+		String viewableBy = Optional.ofNullable(
+			knowledgeBaseArticle.getViewableBy()
+		).map(
+			KnowledgeBaseArticle.ViewableBy::getValue
+		).orElse(
+			null
+		);
 
 		return _toKBArticle(
 			_kbArticleService.addKBArticle(
@@ -210,7 +227,7 @@ public class KnowledgeBaseArticleResourceImpl
 				ServiceContextUtil.createServiceContext(
 					knowledgeBaseArticle.getKeywords(),
 					knowledgeBaseArticle.getCategoryIds(), contentSpaceId,
-					knowledgeBaseArticle.getViewableBy())));
+					viewableBy)));
 	}
 
 	private KnowledgeBaseArticle _toKBArticle(KBArticle kbArticle)

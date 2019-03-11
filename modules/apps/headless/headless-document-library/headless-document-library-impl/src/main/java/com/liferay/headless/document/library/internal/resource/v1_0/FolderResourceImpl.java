@@ -117,12 +117,20 @@ public class FolderResourceImpl extends BaseFolderResourceImpl {
 			Long documentsRepositoryId, Long parentFolderId, Folder folder)
 		throws Exception {
 
+		String viewableBy = Optional.ofNullable(
+			folder.getViewableBy()
+		).map(
+			Folder.ViewableBy::getValue
+		).orElse(
+			null
+		);
+
 		return _toFolder(
 			_dlAppService.addFolder(
 				documentsRepositoryId, parentFolderId, folder.getName(),
 				folder.getDescription(),
 				ServiceContextUtil.createServiceContext(
-					documentsRepositoryId, folder.getViewableBy())));
+					documentsRepositoryId, viewableBy)));
 	}
 
 	private Page<Folder> _getFolderPage(

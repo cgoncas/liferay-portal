@@ -114,6 +114,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
 import java.util.Objects;
+import java.util.Optional;
 import java.util.stream.Stream;
 
 import javax.servlet.http.HttpServletRequest;
@@ -266,6 +267,14 @@ public class StructuredContentResourceImpl
 					"language " + w3cLanguageId);
 		}
 
+		String viewableBy = Optional.ofNullable(
+			structuredContent.getViewableBy()
+		).map(
+			StructuredContent.ViewableBy::getValue
+		).orElse(
+			null
+		);
+
 		return _toStructuredContent(
 			_journalArticleService.addArticle(
 				contentSpaceId, 0, 0, 0, null, true,
@@ -297,7 +306,7 @@ public class StructuredContentResourceImpl
 				ServiceContextUtil.createServiceContext(
 					structuredContent.getKeywords(),
 					structuredContent.getCategoryIds(), contentSpaceId,
-					structuredContent.getViewableBy())));
+					viewableBy)));
 	}
 
 	@Override
@@ -312,6 +321,14 @@ public class StructuredContentResourceImpl
 		LocalDateTime localDateTime = toLocalDateTime(
 			structuredContent.getDatePublished(),
 			journalArticle.getDisplayDate());
+
+		String viewableBy = Optional.ofNullable(
+			structuredContent.getViewableBy()
+		).map(
+			StructuredContent.ViewableBy::getValue
+		).orElse(
+			null
+		);
 
 		return _toStructuredContent(
 			_journalArticleService.updateArticle(
@@ -347,8 +364,7 @@ public class StructuredContentResourceImpl
 				ServiceContextUtil.createServiceContext(
 					structuredContent.getKeywords(),
 					structuredContent.getCategoryIds(),
-					journalArticle.getGroupId(),
-					structuredContent.getViewableBy())));
+					journalArticle.getGroupId(), viewableBy)));
 	}
 
 	private void _createFieldsDisplayValue(

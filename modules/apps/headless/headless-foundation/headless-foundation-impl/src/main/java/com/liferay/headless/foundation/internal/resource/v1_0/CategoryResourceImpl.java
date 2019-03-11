@@ -49,6 +49,7 @@ import com.liferay.portal.vulcan.util.SearchUtil;
 
 import java.util.AbstractMap;
 import java.util.Collections;
+import java.util.Optional;
 
 import javax.servlet.http.HttpServletResponse;
 
@@ -151,6 +152,14 @@ public class CategoryResourceImpl
 		AssetCategory assetCategory = _assetCategoryService.getCategory(
 			categoryId);
 
+		String viewableBy = Optional.ofNullable(
+			category.getViewableBy()
+		).map(
+			Category.ViewableBy::getValue
+		).orElse(
+			null
+		);
+
 		return _toCategory(
 			_assetCategoryService.addCategory(
 				assetCategory.getGroupId(), categoryId,
@@ -162,7 +171,7 @@ public class CategoryResourceImpl
 					category.getDescription()),
 				assetCategory.getVocabularyId(), null,
 				ServiceContextUtil.createServiceContext(
-					assetCategory.getGroupId(), category.getViewableBy())));
+					assetCategory.getGroupId(), viewableBy)));
 	}
 
 	@Override
@@ -171,6 +180,14 @@ public class CategoryResourceImpl
 
 		AssetVocabulary assetVocabulary = _assetVocabularyService.getVocabulary(
 			vocabularyId);
+
+		String viewableBy = Optional.ofNullable(
+			category.getViewableBy()
+		).map(
+			Category.ViewableBy::getValue
+		).orElse(
+			null
+		);
 
 		return _toCategory(
 			_assetCategoryService.addCategory(
@@ -183,7 +200,7 @@ public class CategoryResourceImpl
 					category.getDescription()),
 				vocabularyId, null,
 				ServiceContextUtil.createServiceContext(
-					assetVocabulary.getGroupId(), category.getViewableBy())));
+					assetVocabulary.getGroupId(), viewableBy)));
 	}
 
 	@Override

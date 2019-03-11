@@ -53,6 +53,7 @@ import com.liferay.ratings.kernel.service.RatingsStatsLocalService;
 import java.time.LocalDateTime;
 
 import java.util.Date;
+import java.util.Optional;
 
 import javax.ws.rs.BadRequestException;
 import javax.ws.rs.core.MultivaluedMap;
@@ -122,6 +123,14 @@ public class BlogPostingResourceImpl
 		LocalDateTime localDateTime = toLocalDateTime(
 			blogPosting.getDatePublished());
 
+		String viewableBy = Optional.ofNullable(
+			blogPosting.getViewableBy()
+		).map(
+			BlogPosting.ViewableBy::getValue
+		).orElse(
+			null
+		);
+
 		return _toBlogPosting(
 			_blogsEntryService.addEntry(
 				blogPosting.getHeadline(), blogPosting.getAlternativeHeadline(),
@@ -133,7 +142,7 @@ public class BlogPostingResourceImpl
 				_getImageSelector(blogPosting), null,
 				ServiceContextUtil.createServiceContext(
 					blogPosting.getKeywords(), blogPosting.getCategoryIds(),
-					contentSpaceId, blogPosting.getViewableBy())));
+					contentSpaceId, viewableBy)));
 	}
 
 	@Override
@@ -143,6 +152,14 @@ public class BlogPostingResourceImpl
 
 		LocalDateTime localDateTime = toLocalDateTime(
 			blogPosting.getDatePublished());
+
+		String viewableBy = Optional.ofNullable(
+			blogPosting.getViewableBy()
+		).map(
+			BlogPosting.ViewableBy::getValue
+		).orElse(
+			null
+		);
 
 		return _toBlogPosting(
 			_blogsEntryService.updateEntry(
@@ -156,8 +173,7 @@ public class BlogPostingResourceImpl
 				_getImageSelector(blogPosting), null,
 				ServiceContextUtil.createServiceContext(
 					blogPosting.getKeywords(), blogPosting.getCategoryIds(),
-					blogPosting.getContentSpace(),
-					blogPosting.getViewableBy())));
+					blogPosting.getContentSpace(), viewableBy)));
 	}
 
 	@Override
