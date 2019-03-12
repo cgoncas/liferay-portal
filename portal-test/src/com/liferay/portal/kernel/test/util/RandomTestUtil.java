@@ -66,6 +66,12 @@ public class RandomTestUtil {
 		return -value;
 	}
 
+	public static <T extends Enum<?>> T randomEnum(Class<T> clazz) {
+		T[] enumConstants = clazz.getEnumConstants();
+
+		return enumConstants[_random.nextInt(enumConstants.length)];
+	}
+
 	public static int randomInt() {
 		return randomInt(1, Integer.MAX_VALUE);
 	}
