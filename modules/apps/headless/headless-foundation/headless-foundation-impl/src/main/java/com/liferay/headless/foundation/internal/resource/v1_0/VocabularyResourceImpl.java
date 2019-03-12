@@ -209,7 +209,7 @@ public class VocabularyResourceImpl
 								contextAcceptLanguage.getPreferredLocale());
 
 						if (ListUtil.isEmpty(classTypes)) {
-							return "All";
+							return "AllAssetSubtypes";
 						}
 
 						for (ClassType classType : classTypes) {
@@ -283,7 +283,8 @@ public class VocabularyResourceImpl
 		throws Exception {
 
 		if (Objects.equals("AllAssetSubtypes", subtype) ||
-			(classNameId == AssetCategoryConstants.ALL_CLASS_NAME_ID)) {
+			(classNameId == AssetCategoryConstants.ALL_CLASS_NAME_ID) ||
+			(subtype == null)) {
 
 			return AssetCategoryConstants.ALL_CLASS_TYPE_PK;
 		}
