@@ -265,6 +265,10 @@ public class VocabularyResourceImpl
 	}
 
 	private long _getClassNameId(AssetType.Type assetTypeType) {
+		if (Objects.equals(AssetType.Type.ALL_ASSET_TYPES, assetTypeType)) {
+			return AssetCategoryConstants.ALL_CLASS_NAME_ID;
+		}
+
 		if (!_assetTypeTypeToClassNames.containsKey(assetTypeType)) {
 			throw new BadRequestException(
 				"Invalid asset type: " + assetTypeType);
@@ -279,7 +283,9 @@ public class VocabularyResourceImpl
 	private long _getClassTypePK(long classNameId, String subtype, long groupId)
 		throws Exception {
 
-		if (Objects.equals("AllAssetSubtypes", subtype)) {
+		if (Objects.equals("AllAssetSubtypes", subtype) ||
+			(classNameId == AssetCategoryConstants.ALL_CLASS_NAME_ID)) {
+
 			return AssetCategoryConstants.ALL_CLASS_TYPE_PK;
 		}
 
