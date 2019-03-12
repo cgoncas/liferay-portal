@@ -32,7 +32,6 @@ import com.liferay.portal.kernel.model.Group;
 import com.liferay.portal.kernel.model.Layout;
 import com.liferay.portal.kernel.model.Organization;
 import com.liferay.portal.kernel.model.User;
-import com.liferay.portal.kernel.repository.model.FileEntry;
 import com.liferay.portal.kernel.search.Field;
 import com.liferay.portal.kernel.search.Sort;
 import com.liferay.portal.kernel.search.filter.Filter;
@@ -382,7 +381,6 @@ public class VocabularyResourceImpl
 	private static final Map<AssetType.Type, String>
 		_assetTypeTypeToClassNames = new HashMap<AssetType.Type, String>() {
 			{
-				put(AssetType.Type.DOCUMENT, FileEntry.class.getName());
 				put(AssetType.Type.WEB_SITE, Group.class.getName());
 				put(AssetType.Type.WEB_PAGE, Layout.class.getName());
 				put(AssetType.Type.ORGANIZATION, Organization.class.getName());
@@ -390,6 +388,9 @@ public class VocabularyResourceImpl
 				put(
 					AssetType.Type.BLOG_POSTING,
 					"com.liferay.blogs.model.BlogsEntry");
+				put(
+					AssetType.Type.DOCUMENT,
+					"com.liferay.document.library.kernel.model.DLFileEntry");
 				put(
 					AssetType.Type.KNOWLEDGE_BASE_ARTICLE,
 					"com.liferay.knowledge.base.model.KBArticle");
