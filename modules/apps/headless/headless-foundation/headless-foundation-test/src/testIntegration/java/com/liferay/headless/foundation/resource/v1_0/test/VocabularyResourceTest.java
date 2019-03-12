@@ -15,6 +15,7 @@
 package com.liferay.headless.foundation.resource.v1_0.test;
 
 import com.liferay.arquillian.extension.junit.bridge.junit.Arquillian;
+import com.liferay.headless.foundation.dto.v1_0.AssetType;
 import com.liferay.headless.foundation.dto.v1_0.Vocabulary;
 import com.liferay.portal.kernel.test.util.RandomTestUtil;
 
@@ -46,7 +47,8 @@ public class VocabularyResourceTest extends BaseVocabularyResourceTestCase {
 
 	@Override
 	protected boolean equals(Vocabulary vocabulary1, Vocabulary vocabulary2) {
-		if (Objects.equals(
+		if (_equals(vocabulary1.getAssetTypes(), vocabulary2.getAssetTypes()) &&
+			Objects.equals(
 				vocabulary1.getDescription(), vocabulary2.getDescription()) &&
 			Objects.equals(vocabulary1.getName(), vocabulary2.getName())) {
 
@@ -60,6 +62,16 @@ public class VocabularyResourceTest extends BaseVocabularyResourceTestCase {
 	protected Vocabulary randomVocabulary() {
 		return new Vocabulary() {
 			{
+				assetTypes = new AssetType[] {
+					new AssetType() {
+						{
+							required = RandomTestUtil.randomBoolean();
+							subtype = "AllAssetSubtypes";
+							type = RandomTestUtil.randomEnum(
+								AssetType.Type.class);
+						}
+					}
+				};
 				contentSpace = testGroup.getGroupId();
 				description = RandomTestUtil.randomString();
 				name = RandomTestUtil.randomString();
@@ -100,6 +112,46 @@ public class VocabularyResourceTest extends BaseVocabularyResourceTestCase {
 	protected Vocabulary testPutVocabulary_addVocabulary() throws Exception {
 		return invokePostContentSpaceVocabulary(
 			testGroup.getGroupId(), randomVocabulary());
+	}
+
+	private boolean _equals(AssetType[] assetTypes1, AssetType[] assetTypes2) {
+		if (assetTypes1 == assetTypes2) {
+			return true;
+		}
+
+		if ((assetTypes1 == null) || (assetTypes2 == null)) {
+			return false;
+		}
+
+		if (assetTypes1.length != assetTypes1.length) {
+			return false;
+		}
+
+		for (int i = 0; i < assetTypes1.length; i++) {
+			AssetType assetType1 = assetTypes1[i];
+			AssetType assetType2 = assetTypes2[i];
+
+			if (assetType1 == assetType2) {
+				continue;
+			}
+
+			if ((assetType1 == null) || (assetType2 == null)) {
+				return false;
+			}
+
+			if (Objects.equals(
+					assetType1.getRequired(), assetType2.getRequired()) &&
+				Objects.equals(assetType1.getType(), assetType2.getType()) &&
+				Objects.equals(
+					assetType1.getSubtype(), assetType2.getSubtype())) {
+
+				continue;
+			}
+
+			return false;
+		}
+
+		return true;
 	}
 
 }
