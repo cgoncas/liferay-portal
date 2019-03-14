@@ -48,7 +48,8 @@ public interface
 	public String apiKey();
 
 	/**
-	 * Enables auto tagging of images using the Google Cloud Natural Language API.
+	 * Enables auto tagging of documents using the Google Cloud Natural Language
+	 * API.
 	 */
 	@Meta.AD(
 		description = "enabled-description-classification", name = "enabled",
@@ -57,7 +58,8 @@ public interface
 	public boolean enabledClassification();
 
 	/**
-	 * Enables auto tagging of images using the Google Cloud Natural Language API.
+	 * Enables auto tagging of documents using the Google Cloud Natural Language
+	 * API.
 	 */
 	@Meta.AD(
 		description = "enabled-description-entity", name = "enabled",
@@ -66,7 +68,10 @@ public interface
 	public boolean enabledEntity();
 
 	/**
-	 * Sets The salience score for an entity provides information about the importance or centrality of that entity to the entire document text. Scores closer to 0 are less salient, while scores closer to 1.0 are highly salient
+	 * Sets the salience score for an entity. The salience provides information
+	 * about the importance or centrality of that entity to the entire document
+	 * text. Scores closer to 0 are less salient, while scores closer to 1.0 are
+	 * highly salient
 	 */
 	@Meta.AD(
 		deflt = "0.02", description = "salience-description", name = "salience",
@@ -75,7 +80,9 @@ public interface
 	public float salience();
 
 	/**
-	 * Sets The classifier's confidence of the category. Number represents how certain the classifier is that this category represents the given text.
+	 * Sets the classifier's confidence of the category. This number represents
+	 * how certain the classifier is that this category represents the given
+	 * text.
 	 */
 	@Meta.AD(
 		deflt = "0.5", description = "confidence-description",
