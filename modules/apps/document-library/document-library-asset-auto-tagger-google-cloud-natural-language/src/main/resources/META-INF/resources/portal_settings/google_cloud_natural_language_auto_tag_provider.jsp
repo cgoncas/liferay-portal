@@ -22,10 +22,10 @@ GoogleCloudNaturalLanguageAssetAutoTagProviderCompanyConfiguration googleCloudNa
 
 <aui:input name="<%= ActionRequest.ACTION_NAME %>" type="hidden" value="/portal_settings/document_library_asset_auto_tagger_google_cloud_natural_language" />
 
-<aui:input id="enabled-classification" label="classification-enabled" name='<%= PortalSettingsGoogleCloudNaturalLanguageAssetAutoTagProviderConstants.FORM_PARAMETER_NAMESPACE + "enabledClassification" %>' type="checkbox" value="<%= googleCloudNaturalLanguageAssetAutoTagProviderCompanyConfiguration.enabledClassification() %>" />
+<aui:input id="classification-endpoint-enabled" label="classification-endpoint-enabled" name='<%= PortalSettingsGoogleCloudNaturalLanguageAssetAutoTagProviderConstants.FORM_PARAMETER_NAMESPACE + "classificationEndpointEnabled" %>' type="checkbox" value="<%= googleCloudNaturalLanguageAssetAutoTagProviderCompanyConfiguration.classificationEndpointEnabled() %>" />
 <aui:input label="confidence" name='<%= PortalSettingsGoogleCloudNaturalLanguageAssetAutoTagProviderConstants.FORM_PARAMETER_NAMESPACE + "confidence" %>' value="<%= googleCloudNaturalLanguageAssetAutoTagProviderCompanyConfiguration.confidence() %>" />
 
-<aui:input id="enabled-entity" label="entity-enabled" name='<%= PortalSettingsGoogleCloudNaturalLanguageAssetAutoTagProviderConstants.FORM_PARAMETER_NAMESPACE + "enabledEntity" %>' type="checkbox" value="<%= googleCloudNaturalLanguageAssetAutoTagProviderCompanyConfiguration.enabledEntity() %>" />
+<aui:input id="entity-endpoint-enabled" label="entity-endpoint-enabled" name='<%= PortalSettingsGoogleCloudNaturalLanguageAssetAutoTagProviderConstants.FORM_PARAMETER_NAMESPACE + "enabledEntity" %>' type="checkbox" value="<%= googleCloudNaturalLanguageAssetAutoTagProviderCompanyConfiguration.entityEndpointEnabled() %>" />
 <aui:input label="salience" name='<%= PortalSettingsGoogleCloudNaturalLanguageAssetAutoTagProviderConstants.FORM_PARAMETER_NAMESPACE + "salience" %>' value="<%= googleCloudNaturalLanguageAssetAutoTagProviderCompanyConfiguration.salience() %>" />
 
 <aui:input helpMessage='<%= LanguageUtil.format(resourceBundle, "api-key-description", new String[] {GoogleCloudNaturalLanguageAssetAutoTagProviderConstants.API_KEY_DOCS_URL}, false) %>' id="api-key" label="api-key" name='<%= PortalSettingsGoogleCloudNaturalLanguageAssetAutoTagProviderConstants.FORM_PARAMETER_NAMESPACE + "apiKey" %>' value="<%= googleCloudNaturalLanguageAssetAutoTagProviderCompanyConfiguration.apiKey() %>" />

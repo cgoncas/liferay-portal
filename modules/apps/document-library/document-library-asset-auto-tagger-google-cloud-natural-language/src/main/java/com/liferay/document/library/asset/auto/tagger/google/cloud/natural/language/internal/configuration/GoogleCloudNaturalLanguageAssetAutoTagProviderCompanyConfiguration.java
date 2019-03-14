@@ -52,20 +52,20 @@ public interface
 	 * API.
 	 */
 	@Meta.AD(
-		description = "enabled-description-classification", name = "enabled",
-		required = false
+		description = "classification-endpoint-enabled-description",
+		name = "classification-endpoint-enabled", required = false
 	)
-	public boolean enabledClassification();
+	public boolean classificationEndpointEnabled();
 
 	/**
 	 * Enables auto tagging of documents using the Google Cloud Natural Language
 	 * API.
 	 */
 	@Meta.AD(
-		description = "enabled-description-entity", name = "enabled",
-		required = false
+		description = "entity-endpoint-enabled-description",
+		name = "entity-endpoint-enabled", required = false
 	)
-	public boolean enabledEntity();
+	public boolean entityEndpointEnabled();
 
 	/**
 	 * Sets the salience score for an entity. The salience provides information

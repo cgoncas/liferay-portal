@@ -82,7 +82,7 @@ public class GoogleCloudNaturalLanguageDocumentAssetAutoTagProvider
 				String contentText = new String(bytes);
 
 				if (googleCloudNaturalLanguageAssetAutoTagProviderCompanyConfiguration.
-						enabledClassification()) {
+						classificationEndpointEnabled()) {
 
 					List<String> splitedTexts =
 						GoogleCloudNaturalLanguageUtil.splitTextToMaxSizeCall(
@@ -119,7 +119,7 @@ public class GoogleCloudNaturalLanguageDocumentAssetAutoTagProvider
 				}
 
 				if (googleCloudNaturalLanguageAssetAutoTagProviderCompanyConfiguration.
-						enabledEntity()) {
+						entityEndpointEnabled()) {
 
 					List<String> splitedTexts =
 						GoogleCloudNaturalLanguageUtil.splitTextToMaxSizeCall(
