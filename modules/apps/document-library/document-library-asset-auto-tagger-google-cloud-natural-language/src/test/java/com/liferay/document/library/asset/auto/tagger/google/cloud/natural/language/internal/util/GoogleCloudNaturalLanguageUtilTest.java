@@ -73,7 +73,9 @@ public class GoogleCloudNaturalLanguageUtilTest {
 
 		List<String> actual =
 			GoogleCloudNaturalLanguageUtil.splitTextToMaxSizeCall(
-				_fileVersion, 5000);
+				new String(
+					FileUtil.getBytes(_fileVersion.getContentStream(false))),
+				5000);
 
 		List<String> expected = new ArrayList<>();
 
