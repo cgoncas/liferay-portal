@@ -19,7 +19,6 @@ import com.liferay.portal.kernel.json.JSONFactoryUtil;
 import com.liferay.portal.kernel.repository.model.FileEntry;
 import com.liferay.portal.kernel.repository.model.FileVersion;
 import com.liferay.portal.kernel.test.util.RandomTestUtil;
-import com.liferay.portal.kernel.util.Base64;
 import com.liferay.portal.kernel.util.FileUtil;
 import com.liferay.portal.kernel.util.StringBundler;
 import com.liferay.portal.util.FileImpl;
@@ -82,7 +81,7 @@ public class GoogleCloudNaturalLanguageUtilTest {
 		expected.add(
 			StringBundler.concat(
 				"{\"document\":{\"type\":\"PLAIN_TEXT\",\"content\":\"",
-				Base64.encode(randomString.getBytes()), "\"}}"));
+				new String(randomString.getBytes()), "\"}}"));
 
 		Assert.assertEquals(expected, actual);
 	}
