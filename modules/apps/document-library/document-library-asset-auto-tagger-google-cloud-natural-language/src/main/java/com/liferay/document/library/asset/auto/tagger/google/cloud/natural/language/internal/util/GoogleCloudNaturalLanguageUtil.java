@@ -14,13 +14,14 @@
 
 package com.liferay.document.library.asset.auto.tagger.google.cloud.natural.language.internal.util;
 
+import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.json.JSONObject;
 import com.liferay.portal.kernel.json.JSONUtil;
+import com.liferay.portal.kernel.util.Validator;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 /**
  * @author Alicia García
@@ -29,18 +30,41 @@ public class GoogleCloudNaturalLanguageUtil {
 
 	public static List<String> splitTextToMaxSizeCall(
 		String contentText, int max) {
-
+		if (Validator.isNull(contentText)) {
+			return Collections.emptyList();
+		}
 		List<String> matchList = new ArrayList<>();
 
-		Pattern regex = Pattern.compile(
-			".{1," + max + "}(?:\\s|$)", Pattern.DOTALL);
+		int jsonSkeletonSize = _getAnnotateDocumentPayload("").length();
 
-		Matcher regexMatcher = regex.matcher(contentText);
-
-		while (regexMatcher.find()) {
-			matchList.add(_getAnnotateDocumentPayload(regexMatcher.group()));
+		if (contentText.getBytes().length +
+			jsonSkeletonSize < max) {
+			matchList.add(
+				_getAnnotateDocumentPayload(contentText));
 		}
+		else {
 
+
+			String[] lines = contentText.split("\\r?\\n", max);
+			StringBuffer linesAccumulator = new StringBuffer();
+			int spaceLength = StringPool.SPACE.getBytes().length;
+
+			for (int i = 0; i < lines.length; i++) {
+				if (linesAccumulator.toString().getBytes().length +
+					jsonSkeletonSize + lines[i].getBytes().length +
+					spaceLength > max) {
+					matchList.add(
+						_getAnnotateDocumentPayload(
+							linesAccumulator.toString()));
+					linesAccumulator = new StringBuffer();
+				}
+
+				linesAccumulator.append(lines[i] + StringPool.SPACE);
+			}
+			matchList.add(
+				_getAnnotateDocumentPayload(linesAccumulator.toString()));
+
+		}
 		return matchList;
 	}
 
