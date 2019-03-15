@@ -22,7 +22,10 @@ public class GoogleCloudNaturalLanguageAssetAutoTagProviderConstants {
 	public static final String API_KEY_DOCS_URL =
 		"https://cloud.google.com/docs/authentication/api-keys";
 
-	public static final int MAX_CHARACTERS_SERVICE = 125000;
+	/**
+	 * The document maximum size is 1000000 bytes.
+	 */
+	public static final int MAX_CHARACTERS_SERVICE = 1000000;
 
 	public static final String SERVICE_NAME =
 		"com.liferay.document.library.asset.auto.tagger.google.cloud.natural." +
