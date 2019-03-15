@@ -30,41 +30,53 @@ public class GoogleCloudNaturalLanguageUtil {
 
 	public static List<String> splitTextToMaxSizeCall(
 		String contentText, int max) {
+
 		if (Validator.isNull(contentText)) {
 			return Collections.emptyList();
 		}
+
 		List<String> matchList = new ArrayList<>();
 
-		int jsonSkeletonSize = _getAnnotateDocumentPayload("").length();
+		int jsonSkeletonSize = _getAnnotateDocumentPayload(
+			""
+		).length();
 
-		if (contentText.getBytes().length +
-			jsonSkeletonSize < max) {
-			matchList.add(
-				_getAnnotateDocumentPayload(contentText));
+		byte[] contentSize = contentText.getBytes();
+
+		if (contentSize.length + jsonSkeletonSize < max) {
+			matchList.add(_getAnnotateDocumentPayload(contentText));
 		}
 		else {
-
-
 			String[] lines = contentText.split("\\r?\\n", max);
-			StringBuffer linesAccumulator = new StringBuffer();
-			int spaceLength = StringPool.SPACE.getBytes().length;
+			StringBuffer linesAccumulatorStorage = new StringBuffer();
 
-			for (int i = 0; i < lines.length; i++) {
-				if (linesAccumulator.toString().getBytes().length +
-					jsonSkeletonSize + lines[i].getBytes().length +
-					spaceLength > max) {
+			byte[] spaceSize = StringPool.SPACE.getBytes();
+
+			int spaceLength = spaceSize.length;
+
+			for (String line : lines) {
+				byte[] lineSize = line.getBytes();
+
+				String linesAccumulator = linesAccumulatorStorage.toString();
+
+				byte[] linesAccumulatorSize = linesAccumulator.getBytes();
+
+				if (linesAccumulatorSize.length + jsonSkeletonSize +
+					lineSize.length + spaceLength > max) {
+
 					matchList.add(
-						_getAnnotateDocumentPayload(
-							linesAccumulator.toString()));
-					linesAccumulator = new StringBuffer();
+						_getAnnotateDocumentPayload(linesAccumulator));
+					linesAccumulatorStorage = new StringBuffer();
 				}
 
-				linesAccumulator.append(lines[i] + StringPool.SPACE);
+				linesAccumulatorStorage.append(line + StringPool.SPACE);
 			}
-			matchList.add(
-				_getAnnotateDocumentPayload(linesAccumulator.toString()));
 
+			matchList.add(
+				_getAnnotateDocumentPayload(
+					linesAccumulatorStorage.toString()));
 		}
+
 		return matchList;
 	}
 

@@ -70,15 +70,14 @@ public class GoogleCloudNaturalLanguageDocumentAssetAutoTagProvider
 
 			FileVersion fileVersion = fileEntry.getFileVersion();
 
-
 			String fileName = fileVersion.getFileName();
 
-			if (_isTemporary(fileEntry) || !_isSupportedFormat(
-				fileVersion.getContentStream(false),
-				fileName)) {
+			if (_isTemporary(fileEntry) ||
+				!_isSupportedFormat(
+					fileVersion.getContentStream(false), fileName)) {
+
 				return Collections.emptyList();
 			}
-
 
 			if (googleCloudNaturalLanguageAssetAutoTagProviderCompanyConfiguration.
 				classificationEndpointEnabled() ||
@@ -86,8 +85,7 @@ public class GoogleCloudNaturalLanguageDocumentAssetAutoTagProvider
 					entityEndpointEnabled()) {
 
 				String contentText = FileUtil.extractText(
-					fileVersion.getContentStream(false),
-					fileName);
+					fileVersion.getContentStream(false), fileName);
 
 				Set<String> tags = new HashSet<>();
 				List<String> splitedTexts =
@@ -128,9 +126,7 @@ public class GoogleCloudNaturalLanguageDocumentAssetAutoTagProvider
 					}
 				}
 
-
 				return new ArrayList<>(tags);
-
 			}
 		}
 		catch (Exception e) {
@@ -210,7 +206,6 @@ public class GoogleCloudNaturalLanguageDocumentAssetAutoTagProvider
 		String contentType = MimeTypesUtil.getContentType(
 			contentStream, fileName);
 
-
 		return _supportedContentTypes.contains(contentType);
 	}
 
@@ -261,16 +256,14 @@ public class GoogleCloudNaturalLanguageDocumentAssetAutoTagProvider
 	private static final Log _log = LogFactoryUtil.getLog(
 		GoogleCloudNaturalLanguageDocumentAssetAutoTagProvider.class);
 
-	private static final Set<String> _supportedContentTypes =
-		new HashSet<>(Arrays.asList(
+	private static final Set<String> _supportedContentTypes = new HashSet<>(
+		Arrays.asList(
 			ContentTypes.TEXT_PLAIN, ContentTypes.APPLICATION_TEXT,
-			ContentTypes.APPLICATION_MSWORD,
-			ContentTypes.APPLICATION_PDF,
-			"application/epub+zip",
-			"application/vnd.apple.pages.13",
+			ContentTypes.APPLICATION_MSWORD, ContentTypes.APPLICATION_PDF,
+			"application/epub+zip", "application/vnd.apple.pages.13",
 			"application/vnd.google-apps.document",
-			"application/vnd.openxmlformats-officedocument.wordprocessingml.document"
-		));
+			"application/vnd.openxmlformats-officedocument.wordprocessingml." +
+			"document"));
 
 	@Reference
 	private ConfigurationProvider _configurationProvider;
