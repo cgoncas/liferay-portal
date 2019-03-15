@@ -36,12 +36,12 @@ import com.liferay.portal.kernel.util.ContentTypes;
 import com.liferay.portal.kernel.util.FileUtil;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.Http;
-import com.liferay.portal.kernel.util.StringUtil;
+import com.liferay.portal.kernel.util.MimeTypesUtil;
+import org.osgi.service.component.annotations.Component;
+import org.osgi.service.component.annotations.Reference;
 
 import java.io.InputStream;
-
 import java.net.HttpURLConnection;
-
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -50,9 +50,6 @@ import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
-
-import org.osgi.service.component.annotations.Component;
-import org.osgi.service.component.annotations.Reference;
 
 /**
  * @author Alicia García
@@ -69,26 +66,30 @@ public class GoogleCloudNaturalLanguageDocumentAssetAutoTagProvider
 		try {
 			GoogleCloudNaturalLanguageAssetAutoTagProviderCompanyConfiguration
 				googleCloudNaturalLanguageAssetAutoTagProviderCompanyConfiguration =
-					_getConfiguration(fileEntry);
+				_getConfiguration(fileEntry);
 
 			FileVersion fileVersion = fileEntry.getFileVersion();
 
-			if (_isTemporary(fileEntry) || !_isSupportedFormat(fileEntry)) {
+
+			String fileName = fileVersion.getFileName();
+
+			if (_isTemporary(fileEntry) || !_isSupportedFormat(
+				fileVersion.getContentStream(false),
+				fileName)) {
 				return Collections.emptyList();
 			}
 
-			InputStream contentStream = fileVersion.getContentStream(false);
-
-			String contentText = FileUtil.extractText(
-				contentStream, fileEntry.getFileName());
 
 			if (googleCloudNaturalLanguageAssetAutoTagProviderCompanyConfiguration.
-					classificationEndpointEnabled() ||
+				classificationEndpointEnabled() ||
 				googleCloudNaturalLanguageAssetAutoTagProviderCompanyConfiguration.
 					entityEndpointEnabled()) {
 
-				Set<String> tags = new HashSet<>();
+				String contentText = FileUtil.extractText(
+					fileVersion.getContentStream(false),
+					fileName);
 
+				Set<String> tags = new HashSet<>();
 				List<String> splitedTexts =
 					GoogleCloudNaturalLanguageUtil.splitTextToMaxSizeCall(
 						contentText,
@@ -109,7 +110,7 @@ public class GoogleCloudNaturalLanguageDocumentAssetAutoTagProvider
 							apiKey();
 
 					if (googleCloudNaturalLanguageAssetAutoTagProviderCompanyConfiguration.
-							classificationEndpointEnabled()) {
+						classificationEndpointEnabled()) {
 
 						_getContextTags(
 							tags, payloadFragment, apiKey, "name",
@@ -118,7 +119,7 @@ public class GoogleCloudNaturalLanguageDocumentAssetAutoTagProvider
 					}
 
 					if (googleCloudNaturalLanguageAssetAutoTagProviderCompanyConfiguration.
-							entityEndpointEnabled()) {
+						entityEndpointEnabled()) {
 
 						_getContextTags(
 							tags, payloadFragment, apiKey, "name",
@@ -127,7 +128,9 @@ public class GoogleCloudNaturalLanguageDocumentAssetAutoTagProvider
 					}
 				}
 
+
 				return new ArrayList<>(tags);
+
 			}
 		}
 		catch (Exception e) {
@@ -161,7 +164,7 @@ public class GoogleCloudNaturalLanguageDocumentAssetAutoTagProvider
 	}
 
 	private GoogleCloudNaturalLanguageAssetAutoTagProviderCompanyConfiguration
-			_getConfiguration(FileEntry fileEntry)
+	_getConfiguration(FileEntry fileEntry)
 		throws ConfigurationException {
 
 		return _configurationProvider.getConfiguration(
@@ -174,9 +177,9 @@ public class GoogleCloudNaturalLanguageDocumentAssetAutoTagProvider
 	}
 
 	private void _getContextTags(
-			Set<String> tags, String payloadFragment, String apiKey,
-			String name, String analyzeEntitiesEndpoint, String entities,
-			String salienceField, float endpointAcceptance)
+		Set<String> tags, String payloadFragment, String apiKey,
+		String name, String analyzeEntitiesEndpoint, String entities,
+		String salienceField, float endpointAcceptance)
 		throws Exception {
 
 		JSONObject responseJSONObject = _queryCloudNaturalLanguageJSONObject(
@@ -201,10 +204,14 @@ public class GoogleCloudNaturalLanguageDocumentAssetAutoTagProvider
 		}
 	}
 
-	private boolean _isSupportedFormat(FileEntry fileEntry) {
-		String extension = fileEntry.getExtension();
+	private boolean _isSupportedFormat(
+		InputStream contentStream, String fileName) {
 
-		return _supportedFormats.contains(StringUtil.toUpperCase(extension));
+		String contentType = MimeTypesUtil.getContentType(
+			contentStream, fileName);
+
+
+		return _supportedContentTypes.contains(contentType);
 	}
 
 	private boolean _isTemporary(FileEntry fileEntry) {
@@ -213,7 +220,7 @@ public class GoogleCloudNaturalLanguageDocumentAssetAutoTagProvider
 	}
 
 	private JSONObject _queryCloudNaturalLanguageJSONObject(
-			String apiKey, String payloadJSON, String endpoint)
+		String apiKey, String payloadJSON, String endpoint)
 		throws Exception {
 
 		Http.Options options = new Http.Options();
@@ -254,9 +261,16 @@ public class GoogleCloudNaturalLanguageDocumentAssetAutoTagProvider
 	private static final Log _log = LogFactoryUtil.getLog(
 		GoogleCloudNaturalLanguageDocumentAssetAutoTagProvider.class);
 
-	private static final Set<String> _supportedFormats = new HashSet<>(
-		Arrays.asList(
-			"TXT", ContentTypes.APPLICATION_MSWORD, ContentTypes.TEXT_PLAIN));
+	private static final Set<String> _supportedContentTypes =
+		new HashSet<>(Arrays.asList(
+			ContentTypes.TEXT_PLAIN, ContentTypes.APPLICATION_TEXT,
+			ContentTypes.APPLICATION_MSWORD,
+			ContentTypes.APPLICATION_PDF,
+			"application/epub+zip",
+			"application/vnd.apple.pages.13",
+			"application/vnd.google-apps.document",
+			"application/vnd.openxmlformats-officedocument.wordprocessingml.document"
+		));
 
 	@Reference
 	private ConfigurationProvider _configurationProvider;
