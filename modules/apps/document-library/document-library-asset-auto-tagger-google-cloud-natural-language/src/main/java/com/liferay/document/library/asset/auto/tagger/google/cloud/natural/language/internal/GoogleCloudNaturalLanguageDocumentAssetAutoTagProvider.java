@@ -83,16 +83,28 @@ public class GoogleCloudNaturalLanguageDocumentAssetAutoTagProvider
 				classificationEndpointEnabled() ||
 				googleCloudNaturalLanguageAssetAutoTagProviderCompanyConfiguration.
 					entityEndpointEnabled()) {
+				String contentText;
+				String textType;
+				if (_isHTMLFormat(
+					fileVersion.getContentStream(false), fileName)) {
+					contentText = new String(
+						FileUtil.getBytes(fileVersion.getContentStream(false)));
 
-				String contentText = FileUtil.extractText(
-					fileVersion.getContentStream(false), fileName);
+					textType = "HTML";
+				}
+				else {
+					contentText = FileUtil.extractText(
+						fileVersion.getContentStream(false), fileName);
 
+					textType = "PLAIN_TEXT";
+				}
 				Set<String> tags = new HashSet<>();
+
 				List<String> splitedTexts =
 					GoogleCloudNaturalLanguageUtil.splitTextToMaxSizeCall(
 						contentText,
 						GoogleCloudNaturalLanguageAssetAutoTagProviderConstants.
-							MAX_CHARACTERS_SERVICE);
+							MAX_CHARACTERS_SERVICE, textType);
 
 				for (String payloadFragment : splitedTexts) {
 					float limitSalience =
@@ -209,6 +221,15 @@ public class GoogleCloudNaturalLanguageDocumentAssetAutoTagProvider
 		return _supportedContentTypes.contains(contentType);
 	}
 
+	private boolean _isHTMLFormat(
+		InputStream contentStream, String fileName) {
+
+		String contentType = MimeTypesUtil.getContentType(
+			contentStream, fileName);
+
+		return _htmlContentTypes.contains(contentType);
+	}
+
 	private boolean _isTemporary(FileEntry fileEntry) {
 		return fileEntry.isRepositoryCapabilityProvided(
 			TemporaryFileEntriesCapability.class);
@@ -260,10 +281,15 @@ public class GoogleCloudNaturalLanguageDocumentAssetAutoTagProvider
 		Arrays.asList(
 			ContentTypes.TEXT_PLAIN, ContentTypes.APPLICATION_TEXT,
 			ContentTypes.APPLICATION_MSWORD, ContentTypes.APPLICATION_PDF,
+			ContentTypes.TEXT_HTML, ContentTypes.TEXT_HTML_UTF8,
 			"application/epub+zip", "application/vnd.apple.pages.13",
 			"application/vnd.google-apps.document",
 			"application/vnd.openxmlformats-officedocument.wordprocessingml." +
 			"document"));
+
+	private static final Set<String> _htmlContentTypes = new HashSet<>(
+		Arrays.asList(
+			ContentTypes.TEXT_HTML, ContentTypes.TEXT_HTML_UTF8));
 
 	@Reference
 	private ConfigurationProvider _configurationProvider;
