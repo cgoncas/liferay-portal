@@ -38,6 +38,8 @@ import java.util.List;
  */
 public class GoogleCloudNaturalLanguageUtilTest {
 
+	public static String PLAIN_TEXT_TYPE = "PLAIN_TEXT";
+
 	@Before
 	public void setUp() {
 		MockitoAnnotations.initMocks(this);
@@ -49,6 +51,8 @@ public class GoogleCloudNaturalLanguageUtilTest {
 		JSONFactoryUtil jsonFactoryUtil = new JSONFactoryUtil();
 
 		jsonFactoryUtil.setJSONFactory(new JSONFactoryImpl());
+
+
 	}
 
 	@Test
@@ -67,6 +71,7 @@ public class GoogleCloudNaturalLanguageUtilTest {
 			new ByteArrayInputStream(randomString.getBytes())
 		);
 
+
 		List<String> actual =
 			GoogleCloudNaturalLanguageUtil.splitTextToMaxSizeCall(
 				new String(
@@ -77,10 +82,53 @@ public class GoogleCloudNaturalLanguageUtilTest {
 
 		expected.add(
 			StringBundler.concat(
-				"{\"document\":{\"type\":\"PLAIN_TEXT\",\"content\":\"",
-				new String(randomString.getBytes()), "\"}}"));
+				_jsonTextWithContent(randomString)));
 
 		Assert.assertEquals(expected, actual);
+	}
+
+
+	@Test
+	public void testSplitTextToMaxSizeCall3List() {
+		int max = 250;
+
+		String ram = RandomTestUtil.randomString(
+			(max - 1 - _jsonTextWithContent("").length));
+		String randomString = ram + " " +
+							  ram + " "
+							  + ram;
+		List<String> actual =
+			GoogleCloudNaturalLanguageUtil.splitTextToMaxSizeCall(randomString,
+				max, PLAIN_TEXT_TYPE);
+
+		Assert.assertEquals(
+			"The number of split text is ", 3, actual.size());
+
+	}
+
+	@Test
+	public void testSplitTextToMaxSizeCall3WithNewLine() {
+		int max = 20;
+
+		String ram = RandomTestUtil.randomString(
+			(max - _jsonTextWithContent("").length));
+		String randomString = ram + System.lineSeparator() +
+							  ram + " "
+							  + ram;
+		List<String> actual =
+			GoogleCloudNaturalLanguageUtil.splitTextToMaxSizeCall(randomString,
+				max, PLAIN_TEXT_TYPE);
+
+		Assert.assertEquals(
+			"The number of split text is ", 3, actual.size());
+
+	}
+
+	private String[] _jsonTextWithContent(String content) {
+		return new String[]{
+			"{\"document\":{\"type\":\"" + PLAIN_TEXT_TYPE +
+			"\",\"content\":\"",
+			content, "\"}}"};
 	}
 
 	@Mock
