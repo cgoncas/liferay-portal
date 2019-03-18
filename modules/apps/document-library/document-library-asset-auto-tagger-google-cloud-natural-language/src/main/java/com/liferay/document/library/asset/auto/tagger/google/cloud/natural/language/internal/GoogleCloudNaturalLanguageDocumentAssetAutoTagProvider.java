@@ -107,43 +107,45 @@ public class GoogleCloudNaturalLanguageDocumentAssetAutoTagProvider
 
 				Set<String> tags = new HashSet<>();
 
-				List<String> splitedTexts =
-					GoogleCloudNaturalLanguageUtil.splitTextToMaxSizeCall(
-						contentText,
-						GoogleCloudNaturalLanguageAssetAutoTagProviderConstants.
-							MAX_CHARACTERS_SERVICE,
-						textType);
+				int size =
+					GoogleCloudNaturalLanguageAssetAutoTagProviderConstants.
+						MAX_CHARACTERS_SERVICE - _MINIMUM_PAYLOAD_SIZE -
+							textType.length();
 
-				for (String payloadFragment : splitedTexts) {
-					float limitSalience =
-						googleCloudNaturalLanguageAssetAutoTagProviderCompanyConfiguration.
-							salience();
+				String truncatedContent =
+					GoogleCloudNaturalLanguageUtil.truncateToSize(
+						contentText, size);
 
-					float limitConfidence =
-						googleCloudNaturalLanguageAssetAutoTagProviderCompanyConfiguration.
-							confidence();
+				String payload =
+					GoogleCloudNaturalLanguageUtil.getDocumentPayload(
+						truncatedContent, textType);
 
-					String apiKey =
-						googleCloudNaturalLanguageAssetAutoTagProviderCompanyConfiguration.
-							apiKey();
+				float limitSalience =
+					googleCloudNaturalLanguageAssetAutoTagProviderCompanyConfiguration.
+						salience();
 
-					if (googleCloudNaturalLanguageAssetAutoTagProviderCompanyConfiguration.
-							classificationEndpointEnabled()) {
+				float limitConfidence =
+					googleCloudNaturalLanguageAssetAutoTagProviderCompanyConfiguration.
+						confidence();
 
-						_getContextTags(
-							tags, payloadFragment, apiKey, "name",
-							"classifyText", "categories", "confidence",
-							limitConfidence);
-					}
+				String apiKey =
+					googleCloudNaturalLanguageAssetAutoTagProviderCompanyConfiguration.
+						apiKey();
 
-					if (googleCloudNaturalLanguageAssetAutoTagProviderCompanyConfiguration.
-							entityEndpointEnabled()) {
+				if (googleCloudNaturalLanguageAssetAutoTagProviderCompanyConfiguration.
+						classificationEndpointEnabled()) {
 
-						_getContextTags(
-							tags, payloadFragment, apiKey, "name",
-							"analyzeEntities", "entities", "salience",
-							limitSalience);
-					}
+					_getContextTags(
+						tags, payload, apiKey, "name", "classifyText",
+						"categories", "confidence", limitConfidence);
+				}
+
+				if (googleCloudNaturalLanguageAssetAutoTagProviderCompanyConfiguration.
+						entityEndpointEnabled()) {
+
+					_getContextTags(
+						tags, payload, apiKey, "name", "analyzeEntities",
+						"entities", "salience", limitSalience);
 				}
 
 				return new ArrayList<>(tags);
@@ -280,6 +282,8 @@ public class GoogleCloudNaturalLanguageDocumentAssetAutoTagProvider
 		return jsonObject;
 	}
 
+	private static final int _MINIMUM_PAYLOAD_SIZE;
+
 	private static final Log _log = LogFactoryUtil.getLog(
 		GoogleCloudNaturalLanguageDocumentAssetAutoTagProvider.class);
 
@@ -294,6 +298,13 @@ public class GoogleCloudNaturalLanguageDocumentAssetAutoTagProvider
 			"application/vnd.google-apps.document",
 			"application/vnd.openxmlformats-officedocument.wordprocessingml." +
 				"document"));
+
+	static {
+		String payload = GoogleCloudNaturalLanguageUtil.getDocumentPayload(
+			StringPool.BLANK, StringPool.BLANK);
+
+		_MINIMUM_PAYLOAD_SIZE = payload.length();
+	}
 
 	@Reference
 	private ConfigurationProvider _configurationProvider;
