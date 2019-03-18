@@ -20,25 +20,27 @@ import com.liferay.portal.kernel.repository.model.FileEntry;
 import com.liferay.portal.kernel.repository.model.FileVersion;
 import com.liferay.portal.kernel.test.util.RandomTestUtil;
 import com.liferay.portal.kernel.util.FileUtil;
-import com.liferay.portal.kernel.util.StringBundler;
 import com.liferay.portal.util.FileImpl;
+
+import java.io.ByteArrayInputStream;
+
+import java.util.ArrayList;
+import java.util.List;
+
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
+
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
-
-import java.io.ByteArrayInputStream;
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * @author Alicia García
  */
 public class GoogleCloudNaturalLanguageUtilTest {
 
-	public static String PLAIN_TEXT_TYPE = "PLAIN_TEXT";
+	public static final String PLAIN_TEXT_TYPE = "PLAIN_TEXT";
 
 	@Before
 	public void setUp() {
@@ -51,8 +53,6 @@ public class GoogleCloudNaturalLanguageUtilTest {
 		JSONFactoryUtil jsonFactoryUtil = new JSONFactoryUtil();
 
 		jsonFactoryUtil.setJSONFactory(new JSONFactoryImpl());
-
-
 	}
 
 	@Test
@@ -71,7 +71,6 @@ public class GoogleCloudNaturalLanguageUtilTest {
 			new ByteArrayInputStream(randomString.getBytes())
 		);
 
-
 		List<String> actual =
 			GoogleCloudNaturalLanguageUtil.splitTextToMaxSizeCall(
 				new String(
@@ -80,30 +79,25 @@ public class GoogleCloudNaturalLanguageUtilTest {
 
 		List<String> expected = new ArrayList<>();
 
-		expected.add(
-			StringBundler.concat(
-				_jsonTextWithContent(randomString)));
+		expected.add(String.join("", _jsonTextWithContent(randomString)));
 
 		Assert.assertEquals(expected, actual);
 	}
-
 
 	@Test
 	public void testSplitTextToMaxSizeCall3List() {
 		int max = 250;
 
 		String ram = RandomTestUtil.randomString(
-			(max - 1 - _jsonTextWithContent("").length));
-		String randomString = ram + " " +
-							  ram + " "
-							  + ram;
+			max - 1 - _jsonTextWithContent("").length);
+
+		String randomString = ram + " " + ram + " " + ram;
+
 		List<String> actual =
-			GoogleCloudNaturalLanguageUtil.splitTextToMaxSizeCall(randomString,
-				max, PLAIN_TEXT_TYPE);
+			GoogleCloudNaturalLanguageUtil.splitTextToMaxSizeCall(
+				randomString, max, PLAIN_TEXT_TYPE);
 
-		Assert.assertEquals(
-			"The number of split text is ", 3, actual.size());
-
+		Assert.assertEquals("The number of split text is ", 3, actual.size());
 	}
 
 	@Test
@@ -111,24 +105,23 @@ public class GoogleCloudNaturalLanguageUtilTest {
 		int max = 20;
 
 		String ram = RandomTestUtil.randomString(
-			(max - _jsonTextWithContent("").length));
-		String randomString = ram + System.lineSeparator() +
-							  ram + " "
-							  + ram;
+			max - _jsonTextWithContent("").length);
+
+		String randomString = ram + System.lineSeparator() + ram + " " + ram;
+
 		List<String> actual =
-			GoogleCloudNaturalLanguageUtil.splitTextToMaxSizeCall(randomString,
-				max, PLAIN_TEXT_TYPE);
+			GoogleCloudNaturalLanguageUtil.splitTextToMaxSizeCall(
+				randomString, max, PLAIN_TEXT_TYPE);
 
-		Assert.assertEquals(
-			"The number of split text is ", 3, actual.size());
-
+		Assert.assertEquals("The number of split text is ", 3, actual.size());
 	}
 
 	private String[] _jsonTextWithContent(String content) {
-		return new String[]{
+		return new String[] {
 			"{\"document\":{\"type\":\"" + PLAIN_TEXT_TYPE +
-			"\",\"content\":\"",
-			content, "\"}}"};
+				"\",\"content\":\"",
+			content, "\"}}"
+		};
 	}
 
 	@Mock

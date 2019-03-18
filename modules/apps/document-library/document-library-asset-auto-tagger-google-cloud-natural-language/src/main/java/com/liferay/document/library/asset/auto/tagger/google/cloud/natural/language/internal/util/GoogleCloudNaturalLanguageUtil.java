@@ -48,12 +48,14 @@ public class GoogleCloudNaturalLanguageUtil {
 		}
 		else {
 			String[] units;
+
 			if (contentText.contains("\n") || contentText.contains("\r")) {
 				units = contentText.split("\\r?\\n", max);
 			}
 			else {
 				units = contentText.split("\\s?$", max);
 			}
+
 			_accumulateUnits(max, textType, matchList, jsonSkeletonSize, units);
 		}
 
@@ -63,6 +65,7 @@ public class GoogleCloudNaturalLanguageUtil {
 	private static void _accumulateUnits(
 		int max, String textType, List<String> matchList, int jsonSkeletonSize,
 		String[] units) {
+
 		StringBuffer unitsAccumulatorStorage = new StringBuffer();
 
 		byte[] spaceSize = StringPool.SPACE.getBytes();
@@ -74,33 +77,37 @@ public class GoogleCloudNaturalLanguageUtil {
 				byte[] unitSize = unit.getBytes();
 
 				String unitsAccumulator = unitsAccumulatorStorage.toString();
+
 				String cleanUnitsAccumulator = unitsAccumulator.trim();
 
 				byte[] unitsAccumulatorSize = cleanUnitsAccumulator.getBytes();
 
 				if (Validator.isNotNull(cleanUnitsAccumulator) &&
-					unitsAccumulatorSize.length + jsonSkeletonSize +
-					unitSize.length + spaceLength > max) {
+					(unitsAccumulatorSize.length + jsonSkeletonSize +
+						unitSize.length + spaceLength > max)) {
 
 					matchList.add(
 						_getAnnotateDocumentPayload(
-							cleanUnitsAccumulator,
-							textType));
+							cleanUnitsAccumulator, textType));
 					unitsAccumulatorStorage = new StringBuffer();
 				}
 
 				unitsAccumulatorStorage.append(unit + StringPool.SPACE);
 			}
 		}
+
 		String unitsAccumulator = unitsAccumulatorStorage.toString();
+
 		String cleanUnitsAccumulator = unitsAccumulator.trim();
 
 		byte[] unitsAccumulatorSize = cleanUnitsAccumulator.getBytes();
+
 		if (Validator.isNotNull(cleanUnitsAccumulator)) {
-			if (
-				unitsAccumulatorSize.length + jsonSkeletonSize
-				> max && cleanUnitsAccumulator.contains(" ")) {
+			if ((unitsAccumulatorSize.length + jsonSkeletonSize > max) &&
+				cleanUnitsAccumulator.contains(" ")) {
+
 				String[] newUnits = cleanUnitsAccumulator.split(" ", max);
+
 				_accumulateUnits(
 					max, textType, matchList, jsonSkeletonSize, newUnits);
 			}
