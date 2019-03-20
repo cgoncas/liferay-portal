@@ -91,22 +91,22 @@ public class GoogleCloudNaturalLanguageDocumentAssetAutoTagProvider
 				return Collections.emptyList();
 			}
 
-			String contentText = _getFileEntryContent(fileEntry);
-			String textType = _getTextType(fileEntry);
-
 			Set<String> tags = new HashSet<>();
+
+			String type = _getFileEntryType(fileEntry);
 
 			int size =
 				GoogleCloudNaturalLanguageAssetAutoTagProviderConstants.
 					MAX_CHARACTERS_SERVICE - _MINIMUM_PAYLOAD_SIZE -
-						textType.length();
+						type.length();
 
 			String truncatedContent =
 				GoogleCloudNaturalLanguageUtil.truncateToSize(
-					contentText, size);
+					_getFileEntryContent(fileEntry), size);
 
-			String payload = GoogleCloudNaturalLanguageUtil.getDocumentPayload(
-				truncatedContent, textType);
+			String documentPayload =
+				GoogleCloudNaturalLanguageUtil.getDocumentPayload(
+					truncatedContent, type);
 
 			float limitSalience =
 				googleCloudNaturalLanguageAssetAutoTagProviderCompanyConfiguration.
@@ -124,15 +124,15 @@ public class GoogleCloudNaturalLanguageDocumentAssetAutoTagProvider
 					classificationEndpointEnabled()) {
 
 				_getContextTags(
-					tags, payload, apiKey, "name", "classifyText", "categories",
-					"confidence", limitConfidence);
+					tags, documentPayload, apiKey, "name", "classifyText",
+					"categories", "confidence", limitConfidence);
 			}
 
 			if (googleCloudNaturalLanguageAssetAutoTagProviderCompanyConfiguration.
 					entityEndpointEnabled()) {
 
 				_getContextTags(
-					tags, payload, apiKey, "name", "analyzeEntities",
+					tags, documentPayload, apiKey, "name", "analyzeEntities",
 					"entities", "salience", limitSalience);
 			}
 
@@ -182,13 +182,13 @@ public class GoogleCloudNaturalLanguageDocumentAssetAutoTagProvider
 	}
 
 	private void _getContextTags(
-			Set<String> tags, String payloadFragment, String apiKey,
+			Set<String> tags, String documentPayload, String apiKey,
 			String name, String analyzeEntitiesEndpoint, String entities,
 			String salienceField, float endpointAcceptance)
 		throws Exception {
 
 		JSONObject responseJSONObject = _queryCloudNaturalLanguageJSONObject(
-			apiKey, payloadFragment, analyzeEntitiesEndpoint);
+			apiKey, documentPayload, analyzeEntitiesEndpoint);
 
 		JSONArray responsesJSONArray = responseJSONObject.getJSONArray(
 			entities);
@@ -219,9 +219,7 @@ public class GoogleCloudNaturalLanguageDocumentAssetAutoTagProvider
 		}
 	}
 
-	private String _getTextType(FileEntry fileEntry) {
-		String textType;
-
+	private String _getFileEntryType(FileEntry fileEntry) {
 		if (_htmlContentTypes.contains(fileEntry.getMimeType())) {
 			return "HTML";
 		}
