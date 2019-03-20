@@ -92,14 +92,7 @@ public class GoogleCloudNaturalLanguageDocumentAssetAutoTagProvider
 			}
 
 			String contentText = _getFileEntryContent(fileEntry);
-			String textType;
-
-			if (_isHTMLFormat(fileVersion.getContentStream(false), fileName)) {
-				textType = "HTML";
-			}
-			else {
-				textType = "PLAIN_TEXT";
-			}
+			String textType = _getTextType(fileEntry);
 
 			Set<String> tags = new HashSet<>();
 
@@ -226,11 +219,14 @@ public class GoogleCloudNaturalLanguageDocumentAssetAutoTagProvider
 		}
 	}
 
-	private boolean _isHTMLFormat(InputStream contentStream, String fileName) {
-		String contentType = MimeTypesUtil.getContentType(
-			contentStream, fileName);
+	private String _getTextType(FileEntry fileEntry) {
+		String textType;
 
-		return _htmlContentTypes.contains(contentType);
+		if (_htmlContentTypes.contains(fileEntry.getMimeType())) {
+			return "HTML";
+		}
+
+		return "PLAIN_TEXT";
 	}
 
 	private boolean _isSupportedFormat(
