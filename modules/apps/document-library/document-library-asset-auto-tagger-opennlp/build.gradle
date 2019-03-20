@@ -1,9 +1,15 @@
 dependencies {
+	compileInclude group: "com.liferay", name: "org.apache.opennlp.model.en.ner.person", version: "1.5.0", classifier: "bin", ext: "bin"
+	compileInclude group: "com.liferay", name: "org.apache.opennlp.model.en.sent", version: "1.5.0", classifier: "bin", ext: "bin"
+	compileInclude group: "com.liferay", name: "org.apache.opennlp.model.en.token", version: "1.5.0", classifier: "bin", ext: "bin"
+	compileInclude group: "org.apache.opennlp", name: "opennlp-tools", version: "1.8.1"
+
 	compileOnly group: "biz.aQute.bnd", name: "biz.aQute.bndlib", version: "3.1.0"
 	compileOnly group: "com.liferay.portal", name: "com.liferay.portal.kernel", version: "default"
 	compileOnly group: "com.liferay.portal", name: "com.liferay.util.taglib", version: "default"
 	compileOnly group: "javax.portlet", name: "portlet-api", version: "3.0.0"
 	compileOnly group: "javax.servlet", name: "javax.servlet-api", version: "3.0.1"
+	compileOnly group: "org.osgi", name: "org.osgi.core", version: "6.0.0"
 	compileOnly project(":apps:asset:asset-auto-tagger-api")
 	compileOnly project(":apps:frontend-taglib:frontend-taglib")
 	compileOnly project(":apps:portal-settings:portal-settings-api")
