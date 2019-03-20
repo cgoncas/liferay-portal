@@ -18,6 +18,7 @@ import com.liferay.asset.auto.tagger.AssetAutoTagProvider;
 import com.liferay.document.library.asset.auto.tagger.google.cloud.natural.language.internal.configuration.GoogleCloudNaturalLanguageAssetAutoTagProviderCompanyConfiguration;
 import com.liferay.document.library.asset.auto.tagger.google.cloud.natural.language.internal.constants.GoogleCloudNaturalLanguageAssetAutoTagProviderConstants;
 import com.liferay.document.library.asset.auto.tagger.google.cloud.natural.language.internal.util.GoogleCloudNaturalLanguageUtil;
+import com.liferay.petra.string.CharPool;
 import com.liferay.petra.string.StringBundler;
 import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.exception.PortalException;
@@ -37,6 +38,7 @@ import com.liferay.portal.kernel.util.FileUtil;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.Http;
 import com.liferay.portal.kernel.util.MimeTypesUtil;
+import com.liferay.portal.kernel.util.StringUtil;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -47,9 +49,7 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
-import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import org.osgi.service.component.annotations.Component;
@@ -145,27 +145,24 @@ public class GoogleCloudNaturalLanguageDocumentAssetAutoTagProvider
 		return Collections.emptyList();
 	}
 
-	private void _clearDivideTags(Set<String> tags, String untratedTag) {
-		untratedTag.replaceAll(StringPool.DASH, StringPool.BLANK);
-		untratedTag.replaceAll(StringPool.APOSTROPHE, StringPool.BLANK);
+	private void _clearDivideTags(Set<String> tags, String tag) {
+		tag = StringUtil.removeChars(tag, CharPool.APOSTROPHE, CharPool.DASH);
 
-		if (!untratedTag.isEmpty()) {
-			String[] split = untratedTag.split(StringPool.AMPERSAND, -1);
-
-			List<String> candidates = Stream.of(
-				split
-			).flatMap(
-				elem -> Stream.of(elem.split(StringPool.FORWARD_SLASH, 0))
-			).filter(
-				tagCandidate -> !tagCandidate.isEmpty()
-			).map(
-				String::trim
-			).collect(
-				Collectors.toList()
-			);
-
-			tags.addAll(candidates);
+		if (tag.isEmpty()) {
+			return;
 		}
+
+		Stream.of(
+			tag.split(StringPool.AMPERSAND, -1)
+		).flatMap(
+			elem -> Stream.of(elem.split(StringPool.FORWARD_SLASH, 0))
+		).map(
+			String::trim
+		).filter(
+			tagCandidate -> !tagCandidate.isEmpty()
+		).forEach(
+			tags::add
+		);
 	}
 
 	private GoogleCloudNaturalLanguageAssetAutoTagProviderCompanyConfiguration
