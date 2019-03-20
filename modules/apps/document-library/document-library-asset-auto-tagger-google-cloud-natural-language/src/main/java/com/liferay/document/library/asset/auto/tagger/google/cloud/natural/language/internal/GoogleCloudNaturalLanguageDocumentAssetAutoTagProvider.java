@@ -116,27 +116,31 @@ public class GoogleCloudNaturalLanguageDocumentAssetAutoTagProvider
 			if (googleCloudNaturalLanguageAssetAutoTagProviderCompanyConfiguration.
 					classificationEndpointEnabled()) {
 
+				JSONObject responseJSONObject = _queryCloudNaturalLanguageJSONObject(
+					_getServiceURL(apiKey, "classifyText"), documentPayload);
+
 				float limitConfidence =
 					googleCloudNaturalLanguageAssetAutoTagProviderCompanyConfiguration.
 						confidence();
 
 				_getContextTags(
-					tagNames, documentPayload,
-					_getServiceURL(apiKey, "classifyText"), "categories",
-					"confidence", limitConfidence);
+					tagNames, responseJSONObject, "categories", "confidence",
+					limitConfidence);
 			}
 
 			if (googleCloudNaturalLanguageAssetAutoTagProviderCompanyConfiguration.
 					entityEndpointEnabled()) {
+
+				JSONObject responseJSONObject = _queryCloudNaturalLanguageJSONObject(
+					_getServiceURL(apiKey, "analyzeEntities"), documentPayload);
 
 				float limitSalience =
 					googleCloudNaturalLanguageAssetAutoTagProviderCompanyConfiguration.
 						salience();
 
 				_getContextTags(
-					tagNames, documentPayload,
-					_getServiceURL(apiKey, "analyzeEntities"), "entities",
-					"salience", limitSalience);
+					tagNames, responseJSONObject, "entities", "salience",
+					limitSalience);
 			}
 
 			return tagNames;
@@ -166,13 +170,9 @@ public class GoogleCloudNaturalLanguageDocumentAssetAutoTagProvider
 	}
 
 	private void _getContextTags(
-			Set<String> tagNames, String documentPayload, String serviceURL,
-			String entitiesFieldName, String acceptanceFieldName,
-			float acceptanceThreshold)
-		throws Exception {
-
-		JSONObject responseJSONObject = _queryCloudNaturalLanguageJSONObject(
-			serviceURL, documentPayload);
+		Set<String> tagNames, JSONObject responseJSONObject,
+		String entitiesFieldName, String acceptanceFieldName,
+		float acceptanceThreshold) {
 
 		JSONArray jsonArray = responseJSONObject.getJSONArray(
 			entitiesFieldName);
