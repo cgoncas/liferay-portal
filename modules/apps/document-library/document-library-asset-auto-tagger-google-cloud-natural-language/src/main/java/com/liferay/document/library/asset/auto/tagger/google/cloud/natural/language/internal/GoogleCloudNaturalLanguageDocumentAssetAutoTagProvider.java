@@ -49,6 +49,7 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
+import java.util.function.Consumer;
 import java.util.function.Predicate;
 import java.util.stream.Stream;
 
@@ -126,9 +127,10 @@ public class GoogleCloudNaturalLanguageDocumentAssetAutoTagProvider
 						confidence();
 
 				_processTagNames(
-					tagNames, jsonArray,
+					jsonArray,
 					jsonObject ->
-						jsonObject.getDouble("confidence") > limitConfidence);
+						jsonObject.getDouble("confidence") > limitConfidence,
+					tagNames::add);
 			}
 
 			if (googleCloudNaturalLanguageAssetAutoTagProviderCompanyConfiguration.
@@ -145,9 +147,10 @@ public class GoogleCloudNaturalLanguageDocumentAssetAutoTagProvider
 						salience();
 
 				_processTagNames(
-					tagNames, jsonArray,
+					jsonArray,
 					jsonObject ->
-						jsonObject.getDouble("salience") > limitSalience);
+						jsonObject.getDouble("salience") > limitSalience,
+					tagNames::add);
 			}
 
 			return tagNames;
@@ -177,8 +180,8 @@ public class GoogleCloudNaturalLanguageDocumentAssetAutoTagProvider
 	}
 
 	private void _processTagNames(
-		Set<String> tagNames, JSONArray jsonArray,
-		Predicate<JSONObject> predicate) {
+		JSONArray jsonArray, Predicate<JSONObject> predicate,
+		Consumer<String> consumer) {
 
 		if (jsonArray == null) {
 			return;
@@ -202,7 +205,7 @@ public class GoogleCloudNaturalLanguageDocumentAssetAutoTagProvider
 				).filter(
 					_negate(String::isEmpty)
 				).forEach(
-					tagNames::add
+					consumer
 				);
 			}
 		}
