@@ -125,15 +125,15 @@ public class GoogleCloudNaturalLanguageDocumentAssetAutoTagProvider
 					classificationEndpointEnabled()) {
 
 				_getContextTags(
-					tags, documentPayload, apiKey, "name", "classifyText",
-					"categories", "confidence", limitConfidence);
+					tags, documentPayload, apiKey, "classifyText", "categories",
+					"confidence", limitConfidence);
 			}
 
 			if (googleCloudNaturalLanguageAssetAutoTagProviderCompanyConfiguration.
 					entityEndpointEnabled()) {
 
 				_getContextTags(
-					tags, documentPayload, apiKey, "name", "analyzeEntities",
+					tags, documentPayload, apiKey, "analyzeEntities",
 					"entities", "salience", limitSalience);
 			}
 
@@ -165,9 +165,8 @@ public class GoogleCloudNaturalLanguageDocumentAssetAutoTagProvider
 
 	private void _getContextTags(
 			Set<String> tags, String documentPayload, String apiKey,
-			String nameFieldName, String analyzeEntitiesEndpoint,
-			String entitiesFieldName, String acceptanceFieldName,
-			float acceptanceThreshold)
+			String analyzeEntitiesEndpoint, String entitiesFieldName,
+			String acceptanceFieldName, float acceptanceThreshold)
 		throws Exception {
 
 		JSONObject responseJSONObject = _queryCloudNaturalLanguageJSONObject(
@@ -188,7 +187,7 @@ public class GoogleCloudNaturalLanguageDocumentAssetAutoTagProvider
 
 			if (acceptance > acceptanceThreshold) {
 				String tagName = StringUtil.removeChars(
-					jsonObject.getString(nameFieldName), CharPool.APOSTROPHE,
+					jsonObject.getString("name"), CharPool.APOSTROPHE,
 					CharPool.DASH);
 
 				Stream.of(
