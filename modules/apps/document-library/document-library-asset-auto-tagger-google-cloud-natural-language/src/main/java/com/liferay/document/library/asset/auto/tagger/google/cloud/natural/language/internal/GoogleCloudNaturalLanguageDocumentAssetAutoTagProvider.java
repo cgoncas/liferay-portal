@@ -193,18 +193,20 @@ public class GoogleCloudNaturalLanguageDocumentAssetAutoTagProvider
 		JSONArray responsesJSONArray = responseJSONObject.getJSONArray(
 			entities);
 
-		if ((responsesJSONArray != null) && (responsesJSONArray.length() > 0)) {
-			for (int i = 0; i < responsesJSONArray.length(); i++) {
-				JSONObject tagCandidate = responsesJSONArray.getJSONObject(i);
+		if (responsesJSONArray == null) {
+			return;
+		}
 
-				double acceptance = GetterUtil.getDouble(
-					tagCandidate.getString(salienceField));
+		for (int i = 0; i < responsesJSONArray.length(); i++) {
+			JSONObject tagCandidate = responsesJSONArray.getJSONObject(i);
 
-				if (acceptance > endpointAcceptance) {
-					String tag = tagCandidate.getString(name);
+			double acceptance = GetterUtil.getDouble(
+				tagCandidate.getString(salienceField));
 
-					_clearDivideTags(tags, tag);
-				}
+			if (acceptance > endpointAcceptance) {
+				String tag = tagCandidate.getString(name);
+
+				_clearDivideTags(tags, tag);
 			}
 		}
 	}
