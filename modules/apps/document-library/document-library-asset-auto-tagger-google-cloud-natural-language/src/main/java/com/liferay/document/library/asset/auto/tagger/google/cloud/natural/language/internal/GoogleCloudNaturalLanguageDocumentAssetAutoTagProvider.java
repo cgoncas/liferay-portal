@@ -38,6 +38,7 @@ import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.Http;
 import com.liferay.portal.kernel.util.MimeTypesUtil;
 
+import java.io.IOException;
 import java.io.InputStream;
 
 import java.net.HttpURLConnection;
@@ -90,19 +91,13 @@ public class GoogleCloudNaturalLanguageDocumentAssetAutoTagProvider
 				return Collections.emptyList();
 			}
 
-			String contentText;
+			String contentText = _getFileEntryContent(fileEntry);
 			String textType;
 
 			if (_isHTMLFormat(fileVersion.getContentStream(false), fileName)) {
-				contentText = new String(
-					FileUtil.getBytes(fileVersion.getContentStream(false)));
-
 				textType = "HTML";
 			}
 			else {
-				contentText = FileUtil.extractText(
-					fileVersion.getContentStream(false), fileName);
-
 				textType = "PLAIN_TEXT";
 			}
 
@@ -218,6 +213,16 @@ public class GoogleCloudNaturalLanguageDocumentAssetAutoTagProvider
 					_clearDivideTags(tags, tag);
 				}
 			}
+		}
+	}
+
+	private String _getFileEntryContent(FileEntry fileEntry)
+		throws IOException, PortalException {
+
+		FileVersion fileVersion = fileEntry.getFileVersion();
+
+		try (InputStream is = fileVersion.getContentStream(false)) {
+			return FileUtil.extractText(is, fileVersion.getFileName());
 		}
 	}
 
