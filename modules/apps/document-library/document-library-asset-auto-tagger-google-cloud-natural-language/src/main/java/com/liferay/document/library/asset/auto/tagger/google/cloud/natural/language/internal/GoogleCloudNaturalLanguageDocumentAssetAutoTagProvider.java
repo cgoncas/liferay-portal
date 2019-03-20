@@ -50,6 +50,7 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
+import java.util.function.Predicate;
 import java.util.stream.Stream;
 
 import org.osgi.service.component.annotations.Component;
@@ -145,24 +146,8 @@ public class GoogleCloudNaturalLanguageDocumentAssetAutoTagProvider
 		return Collections.emptyList();
 	}
 
-	private void _clearDivideTags(Set<String> tags, String tag) {
-		tag = StringUtil.removeChars(tag, CharPool.APOSTROPHE, CharPool.DASH);
-
-		if (tag.isEmpty()) {
-			return;
-		}
-
-		Stream.of(
-			tag.split(StringPool.AMPERSAND, -1)
-		).flatMap(
-			elem -> Stream.of(elem.split(StringPool.FORWARD_SLASH, 0))
-		).map(
-			String::trim
-		).filter(
-			tagCandidate -> !tagCandidate.isEmpty()
-		).forEach(
-			tags::add
-		);
+	private static <T> Predicate<T> _negate(Predicate<T> predicate) {
+		return predicate.negate();
 	}
 
 	private GoogleCloudNaturalLanguageAssetAutoTagProviderCompanyConfiguration
@@ -180,30 +165,44 @@ public class GoogleCloudNaturalLanguageDocumentAssetAutoTagProvider
 
 	private void _getContextTags(
 			Set<String> tags, String documentPayload, String apiKey,
-			String name, String analyzeEntitiesEndpoint, String entities,
-			String salienceField, float endpointAcceptance)
+			String nameFieldName, String analyzeEntitiesEndpoint,
+			String entitiesFieldName, String acceptanceFieldName,
+			float acceptanceThreshold)
 		throws Exception {
 
 		JSONObject responseJSONObject = _queryCloudNaturalLanguageJSONObject(
 			apiKey, documentPayload, analyzeEntitiesEndpoint);
 
-		JSONArray responsesJSONArray = responseJSONObject.getJSONArray(
-			entities);
+		JSONArray jsonArray = responseJSONObject.getJSONArray(
+			entitiesFieldName);
 
-		if (responsesJSONArray == null) {
+		if (jsonArray == null) {
 			return;
 		}
 
-		for (int i = 0; i < responsesJSONArray.length(); i++) {
-			JSONObject tagCandidate = responsesJSONArray.getJSONObject(i);
+		for (int i = 0; i < jsonArray.length(); i++) {
+			JSONObject jsonObject = jsonArray.getJSONObject(i);
 
 			double acceptance = GetterUtil.getDouble(
-				tagCandidate.getString(salienceField));
+				jsonObject.getString(acceptanceFieldName));
 
-			if (acceptance > endpointAcceptance) {
-				String tag = tagCandidate.getString(name);
+			if (acceptance > acceptanceThreshold) {
+				String tagName = StringUtil.removeChars(
+					jsonObject.getString(nameFieldName), CharPool.APOSTROPHE,
+					CharPool.DASH);
 
-				_clearDivideTags(tags, tag);
+				Stream.of(
+					tagName.split(StringPool.AMPERSAND, -1)
+				).flatMap(
+					element -> Stream.of(
+						element.split(StringPool.FORWARD_SLASH, 0))
+				).map(
+					String::trim
+				).filter(
+					_negate(String::isEmpty)
+				).forEach(
+					tags::add
+				);
 			}
 		}
 	}
