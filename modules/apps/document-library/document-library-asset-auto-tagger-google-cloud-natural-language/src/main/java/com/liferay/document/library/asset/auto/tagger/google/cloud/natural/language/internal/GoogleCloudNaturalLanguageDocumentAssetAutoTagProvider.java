@@ -35,7 +35,6 @@ import com.liferay.portal.kernel.repository.model.FileVersion;
 import com.liferay.portal.kernel.settings.CompanyServiceSettingsLocator;
 import com.liferay.portal.kernel.util.ContentTypes;
 import com.liferay.portal.kernel.util.FileUtil;
-import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.Http;
 import com.liferay.portal.kernel.util.MimeTypesUtil;
 import com.liferay.portal.kernel.util.StringUtil;
@@ -127,7 +126,9 @@ public class GoogleCloudNaturalLanguageDocumentAssetAutoTagProvider
 						confidence();
 
 				_getContextTags(
-					tagNames, jsonArray, "confidence", limitConfidence);
+					tagNames, jsonArray,
+					jsonObject ->
+						jsonObject.getDouble("confidence") > limitConfidence);
 			}
 
 			if (googleCloudNaturalLanguageAssetAutoTagProviderCompanyConfiguration.
@@ -143,7 +144,10 @@ public class GoogleCloudNaturalLanguageDocumentAssetAutoTagProvider
 					googleCloudNaturalLanguageAssetAutoTagProviderCompanyConfiguration.
 						salience();
 
-				_getContextTags(tagNames, jsonArray, "salience", limitSalience);
+				_getContextTags(
+					tagNames, jsonArray,
+					jsonObject ->
+						jsonObject.getDouble("salience") > limitSalience);
 			}
 
 			return tagNames;
@@ -173,8 +177,8 @@ public class GoogleCloudNaturalLanguageDocumentAssetAutoTagProvider
 	}
 
 	private void _getContextTags(
-		Set<String> tagNames, JSONArray jsonArray, String acceptanceFieldName,
-		float acceptanceThreshold) {
+		Set<String> tagNames, JSONArray jsonArray,
+		Predicate<JSONObject> predicate) {
 
 		if (jsonArray == null) {
 			return;
@@ -183,10 +187,7 @@ public class GoogleCloudNaturalLanguageDocumentAssetAutoTagProvider
 		for (int i = 0; i < jsonArray.length(); i++) {
 			JSONObject jsonObject = jsonArray.getJSONObject(i);
 
-			double acceptance = GetterUtil.getDouble(
-				jsonObject.getString(acceptanceFieldName));
-
-			if (acceptance > acceptanceThreshold) {
+			if (predicate.test(jsonObject)) {
 				String tagName = StringUtil.removeChars(
 					jsonObject.getString("name"), CharPool.APOSTROPHE,
 					CharPool.DASH);
