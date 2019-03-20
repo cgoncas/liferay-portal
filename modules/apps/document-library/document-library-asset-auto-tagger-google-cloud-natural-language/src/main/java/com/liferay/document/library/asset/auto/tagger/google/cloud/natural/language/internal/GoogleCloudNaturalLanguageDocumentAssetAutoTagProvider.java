@@ -125,7 +125,8 @@ public class GoogleCloudNaturalLanguageDocumentAssetAutoTagProvider
 					classificationEndpointEnabled()) {
 
 				_getContextTags(
-					tags, documentPayload, apiKey, "classifyText", "categories",
+					tags, documentPayload,
+					_getServiceURL(apiKey, "classifyText"), "categories",
 					"confidence", limitConfidence);
 			}
 
@@ -133,8 +134,9 @@ public class GoogleCloudNaturalLanguageDocumentAssetAutoTagProvider
 					entityEndpointEnabled()) {
 
 				_getContextTags(
-					tags, documentPayload, apiKey, "analyzeEntities",
-					"entities", "salience", limitSalience);
+					tags, documentPayload,
+					_getServiceURL(apiKey, "analyzeEntities"), "entities",
+					"salience", limitSalience);
 			}
 
 			return tags;
@@ -164,13 +166,13 @@ public class GoogleCloudNaturalLanguageDocumentAssetAutoTagProvider
 	}
 
 	private void _getContextTags(
-			Set<String> tags, String documentPayload, String apiKey,
-			String analyzeEntitiesEndpoint, String entitiesFieldName,
-			String acceptanceFieldName, float acceptanceThreshold)
+			Set<String> tags, String documentPayload, String serviceURL,
+			String entitiesFieldName, String acceptanceFieldName,
+			float acceptanceThreshold)
 		throws Exception {
 
 		JSONObject responseJSONObject = _queryCloudNaturalLanguageJSONObject(
-			apiKey, documentPayload, analyzeEntitiesEndpoint);
+			serviceURL, documentPayload);
 
 		JSONArray jsonArray = responseJSONObject.getJSONArray(
 			entitiesFieldName);
@@ -239,7 +241,7 @@ public class GoogleCloudNaturalLanguageDocumentAssetAutoTagProvider
 	}
 
 	private JSONObject _queryCloudNaturalLanguageJSONObject(
-			String apiKey, String payloadJSON, String endpoint)
+			String serviceURL, String payloadJSON)
 		throws Exception {
 
 		Http.Options options = new Http.Options();
@@ -247,10 +249,7 @@ public class GoogleCloudNaturalLanguageDocumentAssetAutoTagProvider
 		options.addHeader("Content-Type", ContentTypes.APPLICATION_JSON);
 		options.setBody(
 			payloadJSON, ContentTypes.APPLICATION_JSON, StringPool.UTF8);
-		options.setLocation(
-			StringBundler.concat(
-				"https://language.googleapis.com/v1/documents:", endpoint,
-				"?key=", apiKey));
+		options.setLocation(serviceURL);
 		options.setPost(true);
 
 		String responseJSON = _http.URLtoString(options);
@@ -276,6 +275,12 @@ public class GoogleCloudNaturalLanguageDocumentAssetAutoTagProvider
 				"Cannot generate tags with Google Natural Language service; ",
 				"Response code ", response.getResponseCode(), ": ",
 				errorMessage));
+	}
+
+	private String _getServiceURL(String apiKey, String endpoint) {
+		return StringBundler.concat(
+			"https://language.googleapis.com/v1/documents:", endpoint,
+			"?key=", apiKey);
 	}
 
 	private static final int _MINIMUM_PAYLOAD_SIZE;
