@@ -39,9 +39,9 @@ import com.liferay.portal.kernel.util.StringUtil;
 import java.net.HttpURLConnection;
 
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 import org.osgi.service.component.annotations.Component;
@@ -58,7 +58,7 @@ public class GoogleCloudVisionImageAssetAutoTagProvider
 	implements AssetAutoTagProvider<FileEntry> {
 
 	@Override
-	public List<String> getTagNames(FileEntry fileEntry) {
+	public Collection<String> getTagNames(FileEntry fileEntry) {
 		try {
 			GoogleCloudVisionAssetAutoTagProviderCompanyConfiguration
 				googleCloudVisionAssetAutoTagProviderCompanyConfiguration =

@@ -42,9 +42,9 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 import org.osgi.service.component.annotations.Component;
@@ -61,7 +61,7 @@ public class MSCognitiveServicesImageAssetAutoTagProvider
 	implements AssetAutoTagProvider<FileEntry> {
 
 	@Override
-	public List<String> getTagNames(FileEntry fileEntry) {
+	public Collection<String> getTagNames(FileEntry fileEntry) {
 		try {
 			MSCognitiveServicesAssetAutoTagProviderCompanyConfiguration
 				msCognitiveServicesAssetAutoTagProviderCompanyConfiguration =

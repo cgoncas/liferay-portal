@@ -39,6 +39,7 @@ import java.net.URL;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
@@ -67,7 +68,7 @@ public class TensorFlowImageAssetAutoTagProvider
 	implements AssetAutoTagProvider<FileEntry> {
 
 	@Override
-	public List<String> getTagNames(FileEntry fileEntry) {
+	public Collection<String> getTagNames(FileEntry fileEntry) {
 		try {
 			TensorFlowImageAssetAutoTagProviderCompanyConfiguration
 				tensorFlowImageAssetAutoTagProviderCompanyConfiguration =
