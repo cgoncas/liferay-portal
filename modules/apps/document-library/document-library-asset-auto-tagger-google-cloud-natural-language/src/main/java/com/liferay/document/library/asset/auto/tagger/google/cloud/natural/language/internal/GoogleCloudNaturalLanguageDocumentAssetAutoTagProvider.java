@@ -82,74 +82,73 @@ public class GoogleCloudNaturalLanguageDocumentAssetAutoTagProvider
 				return Collections.emptyList();
 			}
 
-			if (googleCloudNaturalLanguageAssetAutoTagProviderCompanyConfiguration.
-					classificationEndpointEnabled() ||
-				googleCloudNaturalLanguageAssetAutoTagProviderCompanyConfiguration.
+			if (!googleCloudNaturalLanguageAssetAutoTagProviderCompanyConfiguration.
+					classificationEndpointEnabled() &&
+				!googleCloudNaturalLanguageAssetAutoTagProviderCompanyConfiguration.
 					entityEndpointEnabled()) {
 
-				String contentText;
-				String textType;
-
-				if (_isHTMLFormat(
-						fileVersion.getContentStream(false), fileName)) {
-
-					contentText = new String(
-						FileUtil.getBytes(fileVersion.getContentStream(false)));
-
-					textType = "HTML";
-				}
-				else {
-					contentText = FileUtil.extractText(
-						fileVersion.getContentStream(false), fileName);
-
-					textType = "PLAIN_TEXT";
-				}
-
-				Set<String> tags = new HashSet<>();
-
-				int size =
-					GoogleCloudNaturalLanguageAssetAutoTagProviderConstants.
-						MAX_CHARACTERS_SERVICE - _MINIMUM_PAYLOAD_SIZE -
-							textType.length();
-
-				String truncatedContent =
-					GoogleCloudNaturalLanguageUtil.truncateToSize(
-						contentText, size);
-
-				String payload =
-					GoogleCloudNaturalLanguageUtil.getDocumentPayload(
-						truncatedContent, textType);
-
-				float limitSalience =
-					googleCloudNaturalLanguageAssetAutoTagProviderCompanyConfiguration.
-						salience();
-
-				float limitConfidence =
-					googleCloudNaturalLanguageAssetAutoTagProviderCompanyConfiguration.
-						confidence();
-
-				String apiKey =
-					googleCloudNaturalLanguageAssetAutoTagProviderCompanyConfiguration.
-						apiKey();
-
-				if (googleCloudNaturalLanguageAssetAutoTagProviderCompanyConfiguration.
-						classificationEndpointEnabled()) {
-
-					_getContextTags(
-						tags, payload, apiKey, "name", "classifyText",
-						"categories", "confidence", limitConfidence);
-				}
-
-				if (googleCloudNaturalLanguageAssetAutoTagProviderCompanyConfiguration.
-						entityEndpointEnabled()) {
-
-					_getContextTags(
-						tags, payload, apiKey, "name", "analyzeEntities",
-						"entities", "salience", limitSalience);
-				}
-
-				return new ArrayList<>(tags);
+				return Collections.emptyList();
 			}
+
+			String contentText;
+			String textType;
+
+			if (_isHTMLFormat(fileVersion.getContentStream(false), fileName)) {
+				contentText = new String(
+					FileUtil.getBytes(fileVersion.getContentStream(false)));
+
+				textType = "HTML";
+			}
+			else {
+				contentText = FileUtil.extractText(
+					fileVersion.getContentStream(false), fileName);
+
+				textType = "PLAIN_TEXT";
+			}
+
+			Set<String> tags = new HashSet<>();
+
+			int size =
+				GoogleCloudNaturalLanguageAssetAutoTagProviderConstants.
+					MAX_CHARACTERS_SERVICE - _MINIMUM_PAYLOAD_SIZE -
+						textType.length();
+
+			String truncatedContent =
+				GoogleCloudNaturalLanguageUtil.truncateToSize(
+					contentText, size);
+
+			String payload = GoogleCloudNaturalLanguageUtil.getDocumentPayload(
+				truncatedContent, textType);
+
+			float limitSalience =
+				googleCloudNaturalLanguageAssetAutoTagProviderCompanyConfiguration.
+					salience();
+
+			float limitConfidence =
+				googleCloudNaturalLanguageAssetAutoTagProviderCompanyConfiguration.
+					confidence();
+
+			String apiKey =
+				googleCloudNaturalLanguageAssetAutoTagProviderCompanyConfiguration.
+					apiKey();
+
+			if (googleCloudNaturalLanguageAssetAutoTagProviderCompanyConfiguration.
+					classificationEndpointEnabled()) {
+
+				_getContextTags(
+					tags, payload, apiKey, "name", "classifyText", "categories",
+					"confidence", limitConfidence);
+			}
+
+			if (googleCloudNaturalLanguageAssetAutoTagProviderCompanyConfiguration.
+					entityEndpointEnabled()) {
+
+				_getContextTags(
+					tags, payload, apiKey, "name", "analyzeEntities",
+					"entities", "salience", limitSalience);
+			}
+
+			return new ArrayList<>(tags);
 		}
 		catch (Exception e) {
 			_log.error(e, e);
