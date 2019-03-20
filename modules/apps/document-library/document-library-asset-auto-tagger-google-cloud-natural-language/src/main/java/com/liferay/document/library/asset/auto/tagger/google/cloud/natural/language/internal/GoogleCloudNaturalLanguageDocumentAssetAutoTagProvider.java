@@ -116,7 +116,7 @@ public class GoogleCloudNaturalLanguageDocumentAssetAutoTagProvider
 			if (googleCloudNaturalLanguageAssetAutoTagProviderCompanyConfiguration.
 					classificationEndpointEnabled()) {
 
-				JSONObject responseJSONObject = _queryCloudNaturalLanguageJSONObject(
+				JSONObject responseJSONObject = _post(
 					_getServiceURL(apiKey, "classifyText"), documentPayload);
 
 				float limitConfidence =
@@ -131,7 +131,7 @@ public class GoogleCloudNaturalLanguageDocumentAssetAutoTagProvider
 			if (googleCloudNaturalLanguageAssetAutoTagProviderCompanyConfiguration.
 					entityEndpointEnabled()) {
 
-				JSONObject responseJSONObject = _queryCloudNaturalLanguageJSONObject(
+				JSONObject responseJSONObject = _post(
 					_getServiceURL(apiKey, "analyzeEntities"), documentPayload);
 
 				float limitSalience =
@@ -246,14 +246,14 @@ public class GoogleCloudNaturalLanguageDocumentAssetAutoTagProvider
 			TemporaryFileEntriesCapability.class);
 	}
 
-	private JSONObject _queryCloudNaturalLanguageJSONObject(
-			String serviceURL, String payloadJSON)
+	private JSONObject _post(
+			String serviceURL, String body)
 		throws Exception {
 
 		Http.Options options = new Http.Options();
 
 		options.setBody(
-			payloadJSON, ContentTypes.APPLICATION_JSON, StringPool.UTF8);
+			body, ContentTypes.APPLICATION_JSON, StringPool.UTF8);
 		options.addHeader("Content-Type", ContentTypes.APPLICATION_JSON);
 		options.setLocation(serviceURL);
 		options.setPost(true);
