@@ -15,10 +15,15 @@
 package com.liferay.blogs.internal.search.spi.model.index.contributor;
 
 import com.liferay.blogs.model.BlogsEntry;
+import com.liferay.portal.kernel.language.LanguageUtil;
 import com.liferay.portal.kernel.search.Document;
 import com.liferay.portal.kernel.search.Field;
 import com.liferay.portal.kernel.util.HtmlUtil;
+import com.liferay.portal.kernel.util.LocaleUtil;
+import com.liferay.portal.kernel.util.LocalizationUtil;
 import com.liferay.portal.search.spi.model.index.contributor.ModelDocumentContributor;
+
+import java.util.Locale;
 
 import org.osgi.service.component.annotations.Component;
 
@@ -43,6 +48,19 @@ public class BlogsEntryModelDocumentContributor
 		document.addDate(Field.MODIFIED_DATE, blogsEntry.getModifiedDate());
 		document.addText(Field.SUBTITLE, blogsEntry.getSubtitle());
 		document.addText(Field.TITLE, blogsEntry.getTitle());
+
+		for (Locale locale :
+				LanguageUtil.getAvailableLocales(blogsEntry.getGroupId())) {
+
+			String languageId = LocaleUtil.toLanguageId(locale);
+
+			document.addText(
+				LocalizationUtil.getLocalizedName(Field.CONTENT, languageId),
+				blogsEntry.getContent());
+			document.addText(
+				LocalizationUtil.getLocalizedName(Field.TITLE, languageId),
+				blogsEntry.getTitle());
+		}
 	}
 
 }
