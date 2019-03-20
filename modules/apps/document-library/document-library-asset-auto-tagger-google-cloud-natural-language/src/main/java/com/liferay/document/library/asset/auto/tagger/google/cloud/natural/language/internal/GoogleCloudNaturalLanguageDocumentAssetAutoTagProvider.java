@@ -69,10 +69,6 @@ public class GoogleCloudNaturalLanguageDocumentAssetAutoTagProvider
 	@Override
 	public Collection<String> getTagNames(FileEntry fileEntry) {
 		try {
-			GoogleCloudNaturalLanguageAssetAutoTagProviderCompanyConfiguration
-				googleCloudNaturalLanguageAssetAutoTagProviderCompanyConfiguration =
-					_getConfiguration(fileEntry);
-
 			FileVersion fileVersion = fileEntry.getFileVersion();
 
 			String fileName = fileVersion.getFileName();
@@ -84,6 +80,10 @@ public class GoogleCloudNaturalLanguageDocumentAssetAutoTagProvider
 				return Collections.emptyList();
 			}
 
+			GoogleCloudNaturalLanguageAssetAutoTagProviderCompanyConfiguration
+				googleCloudNaturalLanguageAssetAutoTagProviderCompanyConfiguration =
+					_getConfiguration(fileEntry);
+
 			if (!googleCloudNaturalLanguageAssetAutoTagProviderCompanyConfiguration.
 					classificationEndpointEnabled() &&
 				!googleCloudNaturalLanguageAssetAutoTagProviderCompanyConfiguration.
@@ -92,7 +92,7 @@ public class GoogleCloudNaturalLanguageDocumentAssetAutoTagProvider
 				return Collections.emptyList();
 			}
 
-			Set<String> tags = new HashSet<>();
+			Set<String> tagNames = new HashSet<>();
 
 			String type = _getFileEntryType(fileEntry);
 
@@ -109,14 +109,6 @@ public class GoogleCloudNaturalLanguageDocumentAssetAutoTagProvider
 				GoogleCloudNaturalLanguageUtil.getDocumentPayload(
 					truncatedContent, type);
 
-			float limitSalience =
-				googleCloudNaturalLanguageAssetAutoTagProviderCompanyConfiguration.
-					salience();
-
-			float limitConfidence =
-				googleCloudNaturalLanguageAssetAutoTagProviderCompanyConfiguration.
-					confidence();
-
 			String apiKey =
 				googleCloudNaturalLanguageAssetAutoTagProviderCompanyConfiguration.
 					apiKey();
@@ -124,8 +116,12 @@ public class GoogleCloudNaturalLanguageDocumentAssetAutoTagProvider
 			if (googleCloudNaturalLanguageAssetAutoTagProviderCompanyConfiguration.
 					classificationEndpointEnabled()) {
 
+				float limitConfidence =
+					googleCloudNaturalLanguageAssetAutoTagProviderCompanyConfiguration.
+						confidence();
+
 				_getContextTags(
-					tags, documentPayload,
+					tagNames, documentPayload,
 					_getServiceURL(apiKey, "classifyText"), "categories",
 					"confidence", limitConfidence);
 			}
@@ -133,19 +129,23 @@ public class GoogleCloudNaturalLanguageDocumentAssetAutoTagProvider
 			if (googleCloudNaturalLanguageAssetAutoTagProviderCompanyConfiguration.
 					entityEndpointEnabled()) {
 
+				float limitSalience =
+					googleCloudNaturalLanguageAssetAutoTagProviderCompanyConfiguration.
+						salience();
+
 				_getContextTags(
-					tags, documentPayload,
+					tagNames, documentPayload,
 					_getServiceURL(apiKey, "analyzeEntities"), "entities",
 					"salience", limitSalience);
 			}
 
-			return tags;
+			return tagNames;
 		}
 		catch (Exception e) {
 			_log.error(e, e);
-		}
 
-		return Collections.emptyList();
+			return Collections.emptyList();
+		}
 	}
 
 	private static <T> Predicate<T> _negate(Predicate<T> predicate) {
@@ -166,7 +166,7 @@ public class GoogleCloudNaturalLanguageDocumentAssetAutoTagProvider
 	}
 
 	private void _getContextTags(
-			Set<String> tags, String documentPayload, String serviceURL,
+			Set<String> tagNames, String documentPayload, String serviceURL,
 			String entitiesFieldName, String acceptanceFieldName,
 			float acceptanceThreshold)
 		throws Exception {
@@ -202,7 +202,7 @@ public class GoogleCloudNaturalLanguageDocumentAssetAutoTagProvider
 				).filter(
 					_negate(String::isEmpty)
 				).forEach(
-					tags::add
+					tagNames::add
 				);
 			}
 		}
@@ -226,6 +226,12 @@ public class GoogleCloudNaturalLanguageDocumentAssetAutoTagProvider
 		return "PLAIN_TEXT";
 	}
 
+	private String _getServiceURL(String apiKey, String endpoint) {
+		return StringBundler.concat(
+			"https://language.googleapis.com/v1/documents:", endpoint, "?key=",
+			apiKey);
+	}
+
 	private boolean _isSupportedFormat(
 		InputStream contentStream, String fileName) {
 
@@ -246,9 +252,9 @@ public class GoogleCloudNaturalLanguageDocumentAssetAutoTagProvider
 
 		Http.Options options = new Http.Options();
 
-		options.addHeader("Content-Type", ContentTypes.APPLICATION_JSON);
 		options.setBody(
 			payloadJSON, ContentTypes.APPLICATION_JSON, StringPool.UTF8);
+		options.addHeader("Content-Type", ContentTypes.APPLICATION_JSON);
 		options.setLocation(serviceURL);
 		options.setPost(true);
 
@@ -275,12 +281,6 @@ public class GoogleCloudNaturalLanguageDocumentAssetAutoTagProvider
 				"Cannot generate tags with Google Natural Language service; ",
 				"Response code ", response.getResponseCode(), ": ",
 				errorMessage));
-	}
-
-	private String _getServiceURL(String apiKey, String endpoint) {
-		return StringBundler.concat(
-			"https://language.googleapis.com/v1/documents:", endpoint,
-			"?key=", apiKey);
 	}
 
 	private static final int _MINIMUM_PAYLOAD_SIZE;
