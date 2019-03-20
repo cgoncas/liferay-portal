@@ -125,7 +125,7 @@ public class GoogleCloudNaturalLanguageDocumentAssetAutoTagProvider
 					googleCloudNaturalLanguageAssetAutoTagProviderCompanyConfiguration.
 						confidence();
 
-				_getContextTags(
+				_processTagNames(
 					tagNames, jsonArray,
 					jsonObject ->
 						jsonObject.getDouble("confidence") > limitConfidence);
@@ -144,7 +144,7 @@ public class GoogleCloudNaturalLanguageDocumentAssetAutoTagProvider
 					googleCloudNaturalLanguageAssetAutoTagProviderCompanyConfiguration.
 						salience();
 
-				_getContextTags(
+				_processTagNames(
 					tagNames, jsonArray,
 					jsonObject ->
 						jsonObject.getDouble("salience") > limitSalience);
@@ -176,7 +176,7 @@ public class GoogleCloudNaturalLanguageDocumentAssetAutoTagProvider
 					SERVICE_NAME));
 	}
 
-	private void _getContextTags(
+	private void _processTagNames(
 		Set<String> tagNames, JSONArray jsonArray,
 		Predicate<JSONObject> predicate) {
 
