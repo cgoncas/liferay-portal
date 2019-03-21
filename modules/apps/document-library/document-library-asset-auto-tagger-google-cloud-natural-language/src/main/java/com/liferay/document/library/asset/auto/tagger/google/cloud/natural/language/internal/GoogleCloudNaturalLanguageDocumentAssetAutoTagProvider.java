@@ -184,7 +184,7 @@ public class GoogleCloudNaturalLanguageDocumentAssetAutoTagProvider
 	}
 
 	private String _getFileEntryType(FileEntry fileEntry) {
-		if (_htmlContentTypes.contains(fileEntry.getMimeType())) {
+		if (ContentTypes.TEXT_HTML.equals(fileEntry.getMimeType())) {
 			return "HTML";
 		}
 
@@ -267,8 +267,6 @@ public class GoogleCloudNaturalLanguageDocumentAssetAutoTagProvider
 	private static final Log _log = LogFactoryUtil.getLog(
 		GoogleCloudNaturalLanguageDocumentAssetAutoTagProvider.class);
 
-	private static final Set<String> _htmlContentTypes = new HashSet<>(
-		Arrays.asList(ContentTypes.TEXT_HTML, ContentTypes.TEXT_HTML_UTF8));
 	private static final Set<String> _supportedContentTypes = new HashSet<>(
 		Arrays.asList(
 			"application/epub+zip", ContentTypes.APPLICATION_MSWORD,
@@ -277,8 +275,7 @@ public class GoogleCloudNaturalLanguageDocumentAssetAutoTagProvider
 			"application/vnd.google-apps.document",
 			"application/vnd.openxmlformats-officedocument.wordprocessingml." +
 				"document",
-			ContentTypes.TEXT_HTML, ContentTypes.TEXT_HTML_UTF8,
-			ContentTypes.TEXT_PLAIN));
+			ContentTypes.TEXT_HTML, ContentTypes.TEXT_PLAIN));
 
 	static {
 		String payload = GoogleCloudNaturalLanguageUtil.getDocumentPayload(
