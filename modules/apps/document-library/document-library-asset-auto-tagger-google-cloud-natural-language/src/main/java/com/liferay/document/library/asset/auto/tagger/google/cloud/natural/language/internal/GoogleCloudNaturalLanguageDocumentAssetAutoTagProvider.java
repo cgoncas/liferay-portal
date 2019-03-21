@@ -248,10 +248,10 @@ public class GoogleCloudNaturalLanguageDocumentAssetAutoTagProvider
 					CharPool.DASH);
 
 				Stream.of(
-					tagName.split(StringPool.AMPERSAND, -1)
+					StringUtil.split(tagName, CharPool.AMPERSAND)
 				).flatMap(
-					element -> Stream.of(
-						element.split(StringPool.FORWARD_SLASH, 0))
+					tagNamePart -> Stream.of(
+						StringUtil.split(tagNamePart, CharPool.FORWARD_SLASH))
 				).map(
 					String::trim
 				).filter(
