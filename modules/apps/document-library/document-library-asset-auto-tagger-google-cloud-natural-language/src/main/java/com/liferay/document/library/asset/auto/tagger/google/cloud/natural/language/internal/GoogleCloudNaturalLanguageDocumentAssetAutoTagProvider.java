@@ -68,7 +68,8 @@ public class GoogleCloudNaturalLanguageDocumentAssetAutoTagProvider
 	@Override
 	public Collection<String> getTagNames(FileEntry fileEntry) {
 		try {
-			if (_isTemporary(fileEntry) ||
+			if (fileEntry.isRepositoryCapabilityProvided(
+					TemporaryFileEntriesCapability.class) ||
 				!_supportedContentTypes.contains(fileEntry.getMimeType())) {
 
 				return Collections.emptyList();
@@ -195,11 +196,6 @@ public class GoogleCloudNaturalLanguageDocumentAssetAutoTagProvider
 		return StringBundler.concat(
 			"https://language.googleapis.com/v1/documents:", endpoint, "?key=",
 			apiKey);
-	}
-
-	private boolean _isTemporary(FileEntry fileEntry) {
-		return fileEntry.isRepositoryCapabilityProvided(
-			TemporaryFileEntriesCapability.class);
 	}
 
 	private JSONObject _post(String serviceURL, String body) throws Exception {
