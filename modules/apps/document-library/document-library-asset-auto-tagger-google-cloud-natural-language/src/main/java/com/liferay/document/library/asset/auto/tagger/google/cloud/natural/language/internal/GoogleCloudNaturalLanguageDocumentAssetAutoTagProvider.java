@@ -43,6 +43,8 @@ import java.io.InputStream;
 
 import java.net.HttpURLConnection;
 
+import java.nio.charset.StandardCharsets;
+
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
@@ -177,6 +179,17 @@ public class GoogleCloudNaturalLanguageDocumentAssetAutoTagProvider
 		throws IOException, PortalException {
 
 		FileVersion fileVersion = fileEntry.getFileVersion();
+
+		String mimeType = fileVersion.getMimeType();
+
+		if (mimeType.equals(ContentTypes.TEXT_PLAIN) ||
+			mimeType.equals(ContentTypes.TEXT_HTML)) {
+
+			try (InputStream is = fileVersion.getContentStream(false)) {
+				return new String(
+					FileUtil.getBytes(is), StandardCharsets.UTF_8);
+			}
+		}
 
 		try (InputStream is = fileVersion.getContentStream(false)) {
 			return FileUtil.extractText(is, fileVersion.getFileName());
