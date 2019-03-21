@@ -117,14 +117,14 @@ public class GoogleCloudNaturalLanguageDocumentAssetAutoTagProvider
 				JSONArray jsonArray = responseJSONObject.getJSONArray(
 					"categories");
 
-				float limitConfidence =
+				float confidence =
 					googleCloudNaturalLanguageAssetAutoTagProviderCompanyConfiguration.
 						confidence();
 
 				_processTagNames(
 					jsonArray,
 					jsonObject ->
-						jsonObject.getDouble("confidence") > limitConfidence,
+						jsonObject.getDouble("confidence") > confidence,
 					tagNames::add);
 			}
 
@@ -137,14 +137,14 @@ public class GoogleCloudNaturalLanguageDocumentAssetAutoTagProvider
 				JSONArray jsonArray = responseJSONObject.getJSONArray(
 					"entities");
 
-				float limitSalience =
+				float salience =
 					googleCloudNaturalLanguageAssetAutoTagProviderCompanyConfiguration.
 						salience();
 
 				_processTagNames(
 					jsonArray,
 					jsonObject ->
-						jsonObject.getDouble("salience") > limitSalience,
+						jsonObject.getDouble("salience") > salience,
 					tagNames::add);
 			}
 
