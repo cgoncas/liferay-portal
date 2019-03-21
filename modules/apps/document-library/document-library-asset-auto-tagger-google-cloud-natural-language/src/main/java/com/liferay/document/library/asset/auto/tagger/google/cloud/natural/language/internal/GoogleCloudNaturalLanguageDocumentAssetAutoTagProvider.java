@@ -36,7 +36,6 @@ import com.liferay.portal.kernel.settings.CompanyServiceSettingsLocator;
 import com.liferay.portal.kernel.util.ContentTypes;
 import com.liferay.portal.kernel.util.FileUtil;
 import com.liferay.portal.kernel.util.Http;
-import com.liferay.portal.kernel.util.MimeTypesUtil;
 import com.liferay.portal.kernel.util.StringUtil;
 
 import java.io.IOException;
@@ -69,13 +68,8 @@ public class GoogleCloudNaturalLanguageDocumentAssetAutoTagProvider
 	@Override
 	public Collection<String> getTagNames(FileEntry fileEntry) {
 		try {
-			FileVersion fileVersion = fileEntry.getFileVersion();
-
-			String fileName = fileVersion.getFileName();
-
 			if (_isTemporary(fileEntry) ||
-				!_isSupportedFormat(
-					fileVersion.getContentStream(false), fileName)) {
+				!_supportedContentTypes.contains(fileEntry.getMimeType())) {
 
 				return Collections.emptyList();
 			}
@@ -201,15 +195,6 @@ public class GoogleCloudNaturalLanguageDocumentAssetAutoTagProvider
 		return StringBundler.concat(
 			"https://language.googleapis.com/v1/documents:", endpoint, "?key=",
 			apiKey);
-	}
-
-	private boolean _isSupportedFormat(
-		InputStream contentStream, String fileName) {
-
-		String contentType = MimeTypesUtil.getContentType(
-			contentStream, fileName);
-
-		return _supportedContentTypes.contains(contentType);
 	}
 
 	private boolean _isTemporary(FileEntry fileEntry) {
