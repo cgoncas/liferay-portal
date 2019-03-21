@@ -143,8 +143,7 @@ public class GoogleCloudNaturalLanguageDocumentAssetAutoTagProvider
 
 				_processTagNames(
 					jsonArray,
-					jsonObject ->
-						jsonObject.getDouble("salience") > salience,
+					jsonObject -> jsonObject.getDouble("salience") > salience,
 					tagNames::add);
 			}
 
