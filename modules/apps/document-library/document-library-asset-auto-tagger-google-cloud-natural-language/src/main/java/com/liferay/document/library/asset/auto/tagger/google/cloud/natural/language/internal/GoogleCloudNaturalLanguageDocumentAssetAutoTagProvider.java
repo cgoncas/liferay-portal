@@ -89,6 +89,10 @@ public class GoogleCloudNaturalLanguageDocumentAssetAutoTagProvider
 
 			Set<String> tagNames = new HashSet<>();
 
+			String apiKey =
+				googleCloudNaturalLanguageAssetAutoTagProviderCompanyConfiguration.
+					apiKey();
+
 			String type = _getFileEntryType(fileEntry);
 
 			int size =
@@ -103,10 +107,6 @@ public class GoogleCloudNaturalLanguageDocumentAssetAutoTagProvider
 			String documentPayload =
 				GoogleCloudNaturalLanguageUtil.getDocumentPayload(
 					truncatedContent, type);
-
-			String apiKey =
-				googleCloudNaturalLanguageAssetAutoTagProviderCompanyConfiguration.
-					apiKey();
 
 			if (googleCloudNaturalLanguageAssetAutoTagProviderCompanyConfiguration.
 					classificationEndpointEnabled()) {
@@ -208,9 +208,9 @@ public class GoogleCloudNaturalLanguageDocumentAssetAutoTagProvider
 
 		String responseJSON = _http.URLtoString(options);
 
-		Http.Response response = options.getResponse();
-
 		JSONObject jsonObject = JSONFactoryUtil.createJSONObject(responseJSON);
+
+		Http.Response response = options.getResponse();
 
 		if (response.getResponseCode() == HttpURLConnection.HTTP_OK) {
 			return jsonObject;
@@ -272,13 +272,14 @@ public class GoogleCloudNaturalLanguageDocumentAssetAutoTagProvider
 		Arrays.asList(ContentTypes.TEXT_HTML, ContentTypes.TEXT_HTML_UTF8));
 	private static final Set<String> _supportedContentTypes = new HashSet<>(
 		Arrays.asList(
-			ContentTypes.TEXT_PLAIN, ContentTypes.APPLICATION_TEXT,
-			ContentTypes.APPLICATION_MSWORD, ContentTypes.APPLICATION_PDF,
-			ContentTypes.TEXT_HTML, ContentTypes.TEXT_HTML_UTF8,
-			"application/epub+zip", "application/vnd.apple.pages.13",
+			"application/epub+zip", ContentTypes.APPLICATION_MSWORD,
+			ContentTypes.APPLICATION_PDF, ContentTypes.APPLICATION_TEXT,
+			"application/vnd.apple.pages.13",
 			"application/vnd.google-apps.document",
 			"application/vnd.openxmlformats-officedocument.wordprocessingml." +
-				"document"));
+				"document",
+			ContentTypes.TEXT_HTML, ContentTypes.TEXT_HTML_UTF8,
+			ContentTypes.TEXT_PLAIN));
 
 	static {
 		String payload = GoogleCloudNaturalLanguageUtil.getDocumentPayload(
