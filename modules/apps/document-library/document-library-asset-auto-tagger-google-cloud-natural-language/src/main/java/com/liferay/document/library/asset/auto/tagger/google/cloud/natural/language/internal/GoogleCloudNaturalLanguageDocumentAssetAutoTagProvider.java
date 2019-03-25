@@ -263,22 +263,23 @@ public class GoogleCloudNaturalLanguageDocumentAssetAutoTagProvider
 
 		JSONObject jsonObject = JSONFactoryUtil.createJSONObject(responseJSON);
 
-		if (response.getResponseCode() != HttpURLConnection.HTTP_OK) {
-			JSONObject errorJSONObject = jsonObject.getJSONObject("error");
-
-			String errorMessage = responseJSON;
-
-			if (errorJSONObject != null) {
-				errorMessage = errorJSONObject.getString("message");
-			}
-
-			throw new PortalException(
-				StringBundler.concat(
-					"Response code ", response.getResponseCode(), ": ",
-					errorMessage));
+		if (response.getResponseCode() == HttpURLConnection.HTTP_OK) {
+			return jsonObject;
 		}
 
-		return jsonObject;
+		JSONObject errorJSONObject = jsonObject.getJSONObject("error");
+
+		String errorMessage = responseJSON;
+
+		if (errorJSONObject != null) {
+			errorMessage = errorJSONObject.getString("message");
+		}
+
+		throw new PortalException(
+			StringBundler.concat(
+				"Cannot generate tags with Google Natural Language service; ",
+				"Response code ", response.getResponseCode(), ": ",
+				errorMessage));
 	}
 
 	private static final int _MINIMUM_PAYLOAD_SIZE;
