@@ -14,6 +14,8 @@
 
 package com.liferay.document.library.asset.auto.tagger.google.cloud.natural.language.internal.util;
 
+import com.liferay.petra.string.CharPool;
+import com.liferay.petra.string.StringPool;
 import com.liferay.portal.json.JSONFactoryImpl;
 import com.liferay.portal.kernel.json.JSONFactoryUtil;
 import com.liferay.portal.kernel.repository.model.FileEntry;
@@ -24,8 +26,7 @@ import com.liferay.portal.util.FileImpl;
 
 import java.io.ByteArrayInputStream;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.nio.charset.StandardCharsets;
 
 import org.junit.Assert;
 import org.junit.Before;
@@ -39,8 +40,6 @@ import org.mockito.MockitoAnnotations;
  * @author Alicia García
  */
 public class GoogleCloudNaturalLanguageUtilTest {
-
-	public static final String PLAIN_TEXT_TYPE = "PLAIN_TEXT";
 
 	@Before
 	public void setUp() {
@@ -56,7 +55,7 @@ public class GoogleCloudNaturalLanguageUtilTest {
 	}
 
 	@Test
-	public void testGetAnnotateImagePayload() throws Exception {
+	public void testGetDocumentPayload() throws Exception {
 		Mockito.when(
 			_fileEntry.getFileVersion()
 		).thenReturn(
@@ -71,57 +70,150 @@ public class GoogleCloudNaturalLanguageUtilTest {
 			new ByteArrayInputStream(randomString.getBytes())
 		);
 
-		List<String> actual =
-			GoogleCloudNaturalLanguageUtil.splitTextToMaxSizeCall(
-				new String(
-					FileUtil.getBytes(_fileVersion.getContentStream(false))),
-				5000, PLAIN_TEXT_TYPE);
+		String truncated = GoogleCloudNaturalLanguageUtil.truncateToSize(
+			new String(FileUtil.getBytes(_fileVersion.getContentStream(false))),
+			5000);
 
-		List<String> expected = new ArrayList<>();
+		String expected = GoogleCloudNaturalLanguageUtil.getDocumentPayload(
+			randomString, StringPool.BLANK);
 
-		expected.add(String.join("", _jsonTextWithContent(randomString)));
+		String actual = GoogleCloudNaturalLanguageUtil.getDocumentPayload(
+			truncated, StringPool.BLANK);
 
 		Assert.assertEquals(expected, actual);
 	}
 
 	@Test
-	public void testSplitTextToMaxSizeCall3List() {
-		int max = 250;
-
-		String ram = RandomTestUtil.randomString(
-			max - 1 - _jsonTextWithContent("").length);
-
-		String randomString = ram + " " + ram + " " + ram;
-
-		List<String> actual =
-			GoogleCloudNaturalLanguageUtil.splitTextToMaxSizeCall(
-				randomString, max, PLAIN_TEXT_TYPE);
-
-		Assert.assertEquals("The number of split text is ", 3, actual.size());
+	public void testTruncateToSizeEmptyString() {
+		Assert.assertEquals(
+			StringPool.BLANK,
+			GoogleCloudNaturalLanguageUtil.truncateToSize(
+				StringPool.BLANK, RandomTestUtil.randomInt()));
 	}
 
 	@Test
-	public void testSplitTextToMaxSizeCall3WithNewLine() {
-		int max = 20;
+	public void testTruncateToSizeMixedUnicodeTextEqualToMax() {
+		String text = "中國哲學書電子化計劃 中國哲學書電子化計劃 中國哲學書電子化計劃";
 
-		String ram = RandomTestUtil.randomString(
-			max - _jsonTextWithContent("").length);
+		byte[] bytes = text.getBytes(StandardCharsets.UTF_8);
 
-		String randomString = ram + System.lineSeparator() + ram + " " + ram;
-
-		List<String> actual =
-			GoogleCloudNaturalLanguageUtil.splitTextToMaxSizeCall(
-				randomString, max, PLAIN_TEXT_TYPE);
-
-		Assert.assertEquals("The number of split text is ", 3, actual.size());
+		Assert.assertEquals(
+			text,
+			GoogleCloudNaturalLanguageUtil.truncateToSize(text, bytes.length));
 	}
 
-	private String[] _jsonTextWithContent(String content) {
-		return new String[] {
-			"{\"document\":{\"type\":\"" + PLAIN_TEXT_TYPE +
-				"\",\"content\":\"",
-			content, "\"}}"
-		};
+	@Test(expected = NullPointerException.class)
+	public void testTruncateToSizeNullString() {
+		GoogleCloudNaturalLanguageUtil.truncateToSize(
+			null, RandomTestUtil.randomInt());
+	}
+
+	@Test
+	public void testTruncateToSizeSingleWordEqualToMax() {
+		int size = _randomSize();
+
+		String content = RandomTestUtil.randomString(size);
+
+		Assert.assertEquals(
+			content,
+			GoogleCloudNaturalLanguageUtil.truncateToSize(content, size));
+	}
+
+	@Test
+	public void testTruncateToSizeSingleWordGreaterThanMax() {
+		int size = _randomSize();
+
+		Assert.assertEquals(
+			StringPool.BLANK,
+			GoogleCloudNaturalLanguageUtil.truncateToSize(
+				RandomTestUtil.randomString(size + 1), size));
+	}
+
+	@Test
+	public void testTruncateToSizeSingleWordSmallerThanMax() {
+		int size = _randomSize();
+
+		String expected = RandomTestUtil.randomString(size - 1);
+
+		String actual = GoogleCloudNaturalLanguageUtil.truncateToSize(
+			expected, size);
+
+		Assert.assertEquals(expected, actual);
+	}
+
+	@Test
+	public void testTruncateToSizeTextBiggerThanMax() {
+		int size = _randomSize();
+
+		String randomText =
+			RandomTestUtil.randomString(size + 1) + StringPool.SPACE +
+				RandomTestUtil.randomString(size + 1);
+
+		String actual = GoogleCloudNaturalLanguageUtil.truncateToSize(
+			randomText, size);
+
+		Assert.assertEquals(StringPool.BLANK, actual);
+	}
+
+	@Test
+	public void testTruncateToSizeTextBiggerThanMaxWithTwoWordSmallerThanSize() {
+		int size = _randomSize();
+
+		String expected =
+			RandomTestUtil.randomString(size - 1) + StringPool.SPACE +
+				RandomTestUtil.randomString(size - 1);
+
+		String text =
+			expected + StringPool.SPACE + RandomTestUtil.randomString(size - 1);
+
+		String actual = GoogleCloudNaturalLanguageUtil.truncateToSize(
+			text, expected.length() + 1);
+
+		Assert.assertEquals(expected, actual);
+	}
+
+	@Test
+	public void testTruncateToSizeTextBiggerThanMaxWithWordSmallerThanSize() {
+		int size = _randomSize();
+
+		String expected = RandomTestUtil.randomString(size - 1);
+
+		String text = expected + StringPool.SPACE + expected;
+
+		String actual = GoogleCloudNaturalLanguageUtil.truncateToSize(
+			text, size);
+
+		Assert.assertEquals(expected, actual);
+	}
+
+	@Test
+	public void testTruncateToSizeTextSmallerThanMax() {
+		int size = _randomSize();
+
+		String expected =
+			RandomTestUtil.randomString((size / 2) - 1) + StringPool.SPACE +
+				RandomTestUtil.randomString((size / 2) - 1);
+
+		String actual = GoogleCloudNaturalLanguageUtil.truncateToSize(
+			expected, size);
+
+		Assert.assertEquals(expected, actual);
+	}
+
+	@Test
+	public void testTruncateToSizeUnicodeTextBiggerThanMax() {
+		String text = "中國哲學書電子化計劃 中國哲學書電子化計劃 中國哲學書電子化計劃";
+
+		byte[] bytes = text.getBytes(StandardCharsets.UTF_8);
+
+		Assert.assertEquals(
+			text.substring(0, text.lastIndexOf(CharPool.SPACE)),
+			GoogleCloudNaturalLanguageUtil.truncateToSize(
+				text, bytes.length - 1));
+	}
+
+	private int _randomSize() {
+		return RandomTestUtil.randomInt(1, 100);
 	}
 
 	@Mock
