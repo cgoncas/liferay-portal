@@ -1,4 +1,6 @@
 dependencies {
+	compileInclude group: "com.liferay", name: "org.apache.opennlp.model.en.ner.location", version: "1.5.0", classifier: "bin", ext: "bin"
+	compileInclude group: "com.liferay", name: "org.apache.opennlp.model.en.ner.organization", version: "1.5.0", classifier: "bin", ext: "bin"
 	compileInclude group: "com.liferay", name: "org.apache.opennlp.model.en.ner.person", version: "1.5.0", classifier: "bin", ext: "bin"
 	compileInclude group: "com.liferay", name: "org.apache.opennlp.model.en.sent", version: "1.5.0", classifier: "bin", ext: "bin"
 	compileInclude group: "com.liferay", name: "org.apache.opennlp.model.en.token", version: "1.5.0", classifier: "bin", ext: "bin"
