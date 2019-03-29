@@ -60,6 +60,19 @@ public class GCloudNaturalLanguageDocumentAssetAutoTaggerImpl
 			jsonObject -> jsonObject.getDouble("confidence") > confidence);
 	}
 
+	@Override
+	public Collection<String> getEntityTagNames(
+			String apiKey, float salience, String content)
+		throws Exception {
+
+		JSONObject responseJSONObject = _post(
+			_getServiceURL(apiKey, "analyzeEntities"), content);
+
+		return _toTagNames(
+			responseJSONObject.getJSONArray("entities"),
+			jsonObject -> jsonObject.getDouble("salience") > salience);
+	}
+
 	private static <T> Predicate<T> _negate(Predicate<T> predicate) {
 		return predicate.negate();
 	}
