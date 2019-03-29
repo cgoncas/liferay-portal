@@ -52,4 +52,14 @@ public interface GCloudNaturalLanguageDocumentAssetAutoTagger {
 			String apiKey, float salience, String content)
 		throws Exception;
 
+	/**
+	 * Returns the content truncated to the maximum size of the mimeType.
+	 *
+	 * @param mimeType the mimeType of the content.
+	 * @param content the text to be truncated.
+	 * @return a truncated string.
+	 * @review
+	 */
+	public String getTruncatedContent(String mimeType, String content);
+
 }
