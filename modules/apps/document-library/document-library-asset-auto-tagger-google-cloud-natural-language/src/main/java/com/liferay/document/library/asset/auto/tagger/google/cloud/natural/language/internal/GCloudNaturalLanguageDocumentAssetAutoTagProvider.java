@@ -18,8 +18,6 @@ import com.liferay.asset.auto.tagger.AssetAutoTagProvider;
 import com.liferay.asset.auto.tagger.google.cloud.natural.language.api.GCloudNaturalLanguageDocumentAssetAutoTagger;
 import com.liferay.document.library.asset.auto.tagger.google.cloud.natural.language.internal.configuration.GCloudNaturalLanguageAssetAutoTagProviderCompanyConfiguration;
 import com.liferay.document.library.asset.auto.tagger.google.cloud.natural.language.internal.constants.GCloudNaturalLanguageAssetAutoTagProviderConstants;
-import com.liferay.document.library.asset.auto.tagger.google.cloud.natural.language.internal.util.GCloudNaturalLanguageUtil;
-import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
@@ -103,14 +101,6 @@ public class GCloudNaturalLanguageDocumentAssetAutoTagProvider
 		}
 	}
 
-	private String _getFileEntryType(FileEntry fileEntry) {
-		if (ContentTypes.TEXT_HTML.equals(fileEntry.getMimeType())) {
-			return "HTML";
-		}
-
-		return "PLAIN_TEXT";
-	}
-
 	private Collection<String> _getTagNames(FileEntry fileEntry)
 		throws Exception {
 
@@ -139,17 +129,9 @@ public class GCloudNaturalLanguageDocumentAssetAutoTagProvider
 			gCloudNaturalLanguageAssetAutoTagProviderCompanyConfiguration.
 				apiKey();
 
-		String type = _getFileEntryType(fileEntry);
-
-		int size =
-			GCloudNaturalLanguageAssetAutoTagProviderConstants.
-				MAX_CHARACTERS_SERVICE - _MINIMUM_PAYLOAD_SIZE - type.length();
-
-		String truncatedContent = GCloudNaturalLanguageUtil.truncateToSize(
-			_getFileEntryContent(fileEntry), size);
-
-		String documentPayload = GCloudNaturalLanguageUtil.getDocumentPayload(
-			truncatedContent, type);
+		String documentPayload =
+			_gCloudNaturalLanguageDocumentAssetAutoTagger.getTruncatedContent(
+				fileEntry.getMimeType(), _getFileEntryContent(fileEntry));
 
 		if (gCloudNaturalLanguageAssetAutoTagProviderCompanyConfiguration.
 				classificationEndpointEnabled()) {
@@ -179,8 +161,6 @@ public class GCloudNaturalLanguageDocumentAssetAutoTagProvider
 		return tagNames;
 	}
 
-	private static final int _MINIMUM_PAYLOAD_SIZE;
-
 	private static final Log _log = LogFactoryUtil.getLog(
 		GCloudNaturalLanguageDocumentAssetAutoTagProvider.class);
 
@@ -193,13 +173,6 @@ public class GCloudNaturalLanguageDocumentAssetAutoTagProvider
 			ContentTypes.APPLICATION_MSWORD, ContentTypes.APPLICATION_PDF,
 			ContentTypes.APPLICATION_TEXT, ContentTypes.TEXT_HTML,
 			ContentTypes.TEXT_PLAIN));
-
-	static {
-		String payload = GCloudNaturalLanguageUtil.getDocumentPayload(
-			StringPool.BLANK, StringPool.BLANK);
-
-		_MINIMUM_PAYLOAD_SIZE = payload.length();
-	}
 
 	@Reference
 	private ConfigurationProvider _configurationProvider;
