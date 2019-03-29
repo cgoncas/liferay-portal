@@ -115,50 +115,9 @@ public class GCloudNaturalLanguageDocumentAssetAutoTagProvider
 			gCloudNaturalLanguageAssetAutoTagProviderCompanyConfiguration =
 				_getConfiguration(fileEntry);
 
-		if (!gCloudNaturalLanguageAssetAutoTagProviderCompanyConfiguration.
-				classificationEndpointEnabled() &&
-			!gCloudNaturalLanguageAssetAutoTagProviderCompanyConfiguration.
-				entityEndpointEnabled()) {
-
-			return Collections.emptyList();
-		}
-
-		Set<String> tagNames = new HashSet<>();
-
-		String apiKey =
-			gCloudNaturalLanguageAssetAutoTagProviderCompanyConfiguration.
-				apiKey();
-
-		String documentPayload =
-			_gCloudNaturalLanguageDocumentAssetAutoTagger.getTruncatedContent(
-				fileEntry.getMimeType(), _getFileEntryContent(fileEntry));
-
-		if (gCloudNaturalLanguageAssetAutoTagProviderCompanyConfiguration.
-				classificationEndpointEnabled()) {
-
-			float confidence =
-				gCloudNaturalLanguageAssetAutoTagProviderCompanyConfiguration.
-					confidence();
-
-			tagNames.addAll(
-				_gCloudNaturalLanguageDocumentAssetAutoTagger.
-					getClassificationTagNames(
-						apiKey, confidence, documentPayload));
-		}
-
-		if (gCloudNaturalLanguageAssetAutoTagProviderCompanyConfiguration.
-				entityEndpointEnabled()) {
-
-			float salience =
-				gCloudNaturalLanguageAssetAutoTagProviderCompanyConfiguration.
-					salience();
-
-			tagNames.addAll(
-				_gCloudNaturalLanguageDocumentAssetAutoTagger.getEntityTagNames(
-					apiKey, salience, documentPayload));
-		}
-
-		return tagNames;
+		return _gCloudNaturalLanguageDocumentAssetAutoTagger.getTagNames(
+			gCloudNaturalLanguageAssetAutoTagProviderCompanyConfiguration,
+			_getFileEntryContent(fileEntry), fileEntry.getMimeType());
 	}
 
 	private static final Log _log = LogFactoryUtil.getLog(
