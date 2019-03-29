@@ -20,6 +20,9 @@ package com.liferay.asset.auto.tagger.google.cloud.natural.language.api.constant
  */
 public class GCloudNaturalLanguageAssetAutoTagProviderConstants {
 
+	public static final String API_KEY_DOCS_URL =
+		"https://cloud.google.com/docs/authentication/api-keys";
+
 	/**
 	 * The document maximum size is 1000000 bytes.
 	 */

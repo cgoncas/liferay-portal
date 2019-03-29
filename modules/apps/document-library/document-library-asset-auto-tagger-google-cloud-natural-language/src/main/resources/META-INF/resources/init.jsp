@@ -17,8 +17,8 @@
 <%@ taglib uri="http://liferay.com/tld/aui" prefix="aui" %><%@
 taglib uri="http://liferay.com/tld/frontend" prefix="liferay-frontend" %>
 
-<%@ page import="com.liferay.document.library.asset.auto.tagger.google.cloud.natural.language.internal.configuration.GCloudNaturalLanguageAssetAutoTagProviderCompanyConfiguration" %><%@
-page import="com.liferay.document.library.asset.auto.tagger.google.cloud.natural.language.internal.constants.GCloudNaturalLanguageAssetAutoTagProviderConstants" %><%@
+<%@ page import="com.liferay.asset.auto.tagger.google.cloud.natural.language.api.constants.GCloudNaturalLanguageAssetAutoTagProviderConstants" %><%@
+page import="com.liferay.document.library.asset.auto.tagger.google.cloud.natural.language.internal.configuration.GCloudNaturalLanguageAssetAutoTagProviderCompanyConfiguration" %><%@
 page import="com.liferay.document.library.asset.auto.tagger.google.cloud.natural.language.internal.constants.PortalSettingsGCloudNaturalLanguageAssetAutoTagProviderConstants" %><%@
 page import="com.liferay.portal.kernel.language.LanguageUtil" %>
 
