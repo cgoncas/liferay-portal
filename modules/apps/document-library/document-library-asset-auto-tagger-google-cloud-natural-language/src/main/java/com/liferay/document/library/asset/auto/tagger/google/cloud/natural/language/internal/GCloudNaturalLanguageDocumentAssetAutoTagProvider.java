@@ -21,6 +21,7 @@ import com.liferay.document.library.asset.auto.tagger.google.cloud.natural.langu
 import com.liferay.petra.string.CharPool;
 import com.liferay.petra.string.StringBundler;
 import com.liferay.petra.string.StringPool;
+import com.liferay.portal.asset.auto.tagger.google.cloud.natural.language.api.GCloudNaturalLanguageDocumentAssetAutoTagger;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.json.JSONArray;
 import com.liferay.portal.kernel.json.JSONFactoryUtil;
@@ -175,16 +176,14 @@ public class GCloudNaturalLanguageDocumentAssetAutoTagProvider
 		if (gCloudNaturalLanguageAssetAutoTagProviderCompanyConfiguration.
 				classificationEndpointEnabled()) {
 
-			JSONObject responseJSONObject = _post(
-				_getServiceURL(apiKey, "classifyText"), documentPayload);
 			float confidence =
 				gCloudNaturalLanguageAssetAutoTagProviderCompanyConfiguration.
 					confidence();
 
-			_processTagNames(
-				responseJSONObject.getJSONArray("categories"),
-				jsonObject -> jsonObject.getDouble("confidence") > confidence,
-				tagNames::add);
+			tagNames.addAll(
+				_gCloudNaturalLanguageDocumentAssetAutoTagger.
+					getClassificationTagNames(
+						apiKey, confidence, documentPayload));
 		}
 
 		if (gCloudNaturalLanguageAssetAutoTagProviderCompanyConfiguration.
@@ -294,6 +293,10 @@ public class GCloudNaturalLanguageDocumentAssetAutoTagProvider
 
 	@Reference
 	private ConfigurationProvider _configurationProvider;
+
+	@Reference
+	private GCloudNaturalLanguageDocumentAssetAutoTagger
+		_gCloudNaturalLanguageDocumentAssetAutoTagger;
 
 	@Reference
 	private Http _http;

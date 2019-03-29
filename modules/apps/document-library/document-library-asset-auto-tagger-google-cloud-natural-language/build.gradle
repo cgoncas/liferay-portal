@@ -7,6 +7,7 @@ dependencies {
 	compileOnly group: "org.osgi", name: "org.osgi.service.component.annotations", version: "1.3.0"
 	compileOnly project(":apps:asset:asset-auto-tagger-api")
 	compileOnly project(":apps:frontend-taglib:frontend-taglib")
+	compileOnly project(":apps:portal-asset-auto-tagger-google-cloud-natural-language:portal-asset-auto-tagger-google-cloud-natural-language-api")
 	compileOnly project(":apps:portal-settings:portal-settings-api")
 	compileOnly project(":apps:static:portal-configuration:portal-configuration-metatype-api")
 	compileOnly project(":core:petra:petra-string")

@@ -38,4 +38,18 @@ public interface GCloudNaturalLanguageDocumentAssetAutoTagger {
 			String apiKey, float confidence, String content)
 		throws Exception;
 
+	/**
+	 * Returns a list of tag names from Google Cloud Natural Language
+	 * Entity API.
+	 *
+	 * @param apiKey the API key from Google Cloud Natural Language.
+	 * @param salience the salience score for an entity.
+	 * @param content the text to be tagged.
+	 * @return a list of tag names.
+	 * @review
+	 * */
+	public Collection<String> getEntityTagNames(
+			String apiKey, float salience, String content)
+		throws Exception;
+
 }
