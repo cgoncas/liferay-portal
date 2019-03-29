@@ -1,0 +1,3 @@
+dependencies {
+	compileOnly project(":apps:asset:asset-auto-tagger-google-cloud-natural-language-api")
+}
