@@ -35,11 +35,8 @@ import java.io.InputStream;
 
 import java.nio.charset.StandardCharsets;
 
-import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
-import java.util.HashSet;
-import java.util.Set;
 
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;
@@ -105,8 +102,7 @@ public class GCloudNaturalLanguageDocumentAssetAutoTagProvider
 		throws Exception {
 
 		if (fileEntry.isRepositoryCapabilityProvided(
-				TemporaryFileEntriesCapability.class) ||
-			!_supportedContentTypes.contains(fileEntry.getMimeType())) {
+				TemporaryFileEntriesCapability.class)) {
 
 			return Collections.emptyList();
 		}
@@ -122,16 +118,6 @@ public class GCloudNaturalLanguageDocumentAssetAutoTagProvider
 
 	private static final Log _log = LogFactoryUtil.getLog(
 		GCloudNaturalLanguageDocumentAssetAutoTagProvider.class);
-
-	private static final Set<String> _supportedContentTypes = new HashSet<>(
-		Arrays.asList(
-			"application/epub+zip", "application/vnd.apple.pages.13",
-			"application/vnd.google-apps.document",
-			"application/vnd.openxmlformats-officedocument.wordprocessingml." +
-				"document",
-			ContentTypes.APPLICATION_MSWORD, ContentTypes.APPLICATION_PDF,
-			ContentTypes.APPLICATION_TEXT, ContentTypes.TEXT_HTML,
-			ContentTypes.TEXT_PLAIN));
 
 	@Reference
 	private ConfigurationProvider _configurationProvider;
