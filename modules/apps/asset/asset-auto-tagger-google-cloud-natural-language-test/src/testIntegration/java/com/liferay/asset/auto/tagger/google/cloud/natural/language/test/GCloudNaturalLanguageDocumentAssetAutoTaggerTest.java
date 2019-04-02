@@ -21,6 +21,7 @@ import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.test.rule.AggregateTestRule;
 import com.liferay.portal.kernel.test.util.RandomTestUtil;
 import com.liferay.portal.kernel.util.ContentTypes;
+import com.liferay.portal.kernel.util.LocaleUtil;
 import com.liferay.portal.test.rule.Inject;
 import com.liferay.portal.test.rule.LiferayIntegrationTestRule;
 
@@ -139,6 +140,94 @@ public class GCloudNaturalLanguageDocumentAssetAutoTaggerTest {
 	}
 
 	@Test
+	public void testGetTagNamesWithUnsupportedLanguageForClassification()
+		throws Exception {
+
+		GCloudNaturalLanguageAssetAutoTagProviderCompanyConfiguration
+			configuration =
+				new GCloudNaturalLanguageAssetAutoTagProviderCompanyConfiguration() {
+
+					@Override
+					public String apiKey() {
+						return null;
+					}
+
+					@Override
+					public boolean classificationEndpointEnabled() {
+						return true;
+					}
+
+					@Override
+					public float confidence() {
+						return 0;
+					}
+
+					@Override
+					public boolean entityEndpointEnabled() {
+						return false;
+					}
+
+					@Override
+					public float salience() {
+						return 0;
+					}
+
+				};
+
+		Collection<String> tagNames =
+			_gCloudNaturalLanguageDocumentAssetAutoTagger.getTagNames(
+				configuration, RandomTestUtil.randomString(), LocaleUtil.SPAIN,
+				ContentTypes.TEXT_PLAIN);
+
+		Assert.assertEquals(
+			tagNames.toString(), Collections.emptySet(), tagNames);
+	}
+
+	@Test
+	public void testGetTagNamesWithUnsupportedLanguageForEntities()
+		throws Exception {
+
+		GCloudNaturalLanguageAssetAutoTagProviderCompanyConfiguration
+			configuration =
+				new GCloudNaturalLanguageAssetAutoTagProviderCompanyConfiguration() {
+
+					@Override
+					public String apiKey() {
+						return null;
+					}
+
+					@Override
+					public boolean classificationEndpointEnabled() {
+						return false;
+					}
+
+					@Override
+					public float confidence() {
+						return 0;
+					}
+
+					@Override
+					public boolean entityEndpointEnabled() {
+						return true;
+					}
+
+					@Override
+					public float salience() {
+						return 0;
+					}
+
+				};
+
+		Collection<String> tagNames =
+			_gCloudNaturalLanguageDocumentAssetAutoTagger.getTagNames(
+				configuration, RandomTestUtil.randomString(),
+				LocaleUtil.HUNGARY, ContentTypes.TEXT_PLAIN);
+
+		Assert.assertEquals(
+			tagNames.toString(), Collections.emptySet(), tagNames);
+	}
+
+	@Test
 	public void testGetTagNamesWithUnsupportedType() throws Exception {
 		GCloudNaturalLanguageAssetAutoTagProviderCompanyConfiguration
 			configuration =
@@ -177,7 +266,7 @@ public class GCloudNaturalLanguageDocumentAssetAutoTaggerTest {
 				ContentTypes.IMAGE_JPEG);
 
 		Assert.assertEquals(
-			tagNames.toString(), Collections.emptyList(), tagNames);
+			tagNames.toString(), Collections.emptySet(), tagNames);
 	}
 
 	@Inject
