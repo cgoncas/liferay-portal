@@ -138,6 +138,48 @@ public class GCloudNaturalLanguageDocumentAssetAutoTaggerTest {
 		}
 	}
 
+	@Test
+	public void testGetTagNamesWithUnsupportedType() throws Exception {
+		GCloudNaturalLanguageAssetAutoTagProviderCompanyConfiguration
+			configuration =
+				new GCloudNaturalLanguageAssetAutoTagProviderCompanyConfiguration() {
+
+					@Override
+					public String apiKey() {
+						return null;
+					}
+
+					@Override
+					public boolean classificationEndpointEnabled() {
+						return true;
+					}
+
+					@Override
+					public float confidence() {
+						return 0;
+					}
+
+					@Override
+					public boolean entityEndpointEnabled() {
+						return true;
+					}
+
+					@Override
+					public float salience() {
+						return 0;
+					}
+
+				};
+
+		Collection<String> tagNames =
+			_gCloudNaturalLanguageDocumentAssetAutoTagger.getTagNames(
+				configuration, RandomTestUtil.randomString(),
+				ContentTypes.IMAGE_JPEG);
+
+		Assert.assertEquals(
+			tagNames.toString(), Collections.emptyList(), tagNames);
+	}
+
 	@Inject
 	private GCloudNaturalLanguageDocumentAssetAutoTagger
 		_gCloudNaturalLanguageDocumentAssetAutoTagger;
