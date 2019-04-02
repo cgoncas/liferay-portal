@@ -51,49 +51,109 @@ public class GCloudNaturalLanguageDocumentAssetAutoTaggerImpl
 	implements GCloudNaturalLanguageDocumentAssetAutoTagger {
 
 	@Override
-	public Collection<String> getClassificationTagNames(
-		GCloudNaturalLanguageAssetAutoTagProviderCompanyConfiguration
-			gCloudNaturalLanguageAssetAutoTagProviderCompanyConfiguration,
-		String content)
+	public Collection<String> getTagNames(
+			GCloudNaturalLanguageAssetAutoTagProviderCompanyConfiguration
+				gCloudNaturalLanguageAssetAutoTagProviderCompanyConfiguration,
+			String content, String mimeType)
 		throws Exception {
 
-		JSONObject responseJSONObject = _post(
-			_getServiceURL(
-				gCloudNaturalLanguageAssetAutoTagProviderCompanyConfiguration.
-					apiKey(),
-				"classifyText"),
-			content);
+		if (!gCloudNaturalLanguageAssetAutoTagProviderCompanyConfiguration.
+				classificationEndpointEnabled() &&
+			!gCloudNaturalLanguageAssetAutoTagProviderCompanyConfiguration.
+				entityEndpointEnabled()) {
 
-		return _toTagNames(
-			responseJSONObject.getJSONArray("categories"),
-			jsonObject -> jsonObject.getDouble("confidence") >
-						  gCloudNaturalLanguageAssetAutoTagProviderCompanyConfiguration.confidence());
+			return Collections.emptySet();
+		}
+
+		String documentPayload = _getDocumentPayload(mimeType, content);
+
+		Collection<String> classificationTagNames = getClassificationTagNames(
+			gCloudNaturalLanguageAssetAutoTagProviderCompanyConfiguration,
+			documentPayload);
+
+		Collection<String> entityTagNames = getEntityTagNames(
+			gCloudNaturalLanguageAssetAutoTagProviderCompanyConfiguration,
+			documentPayload);
+
+		return Stream.concat(
+			classificationTagNames.stream(), entityTagNames.stream()
+		).collect(
+			Collectors.toSet()
+		);
 	}
 
-	@Override
-	public Collection<String> getEntityTagNames(
+	protected Collection<String> getClassificationTagNames(
 			GCloudNaturalLanguageAssetAutoTagProviderCompanyConfiguration
 				gCloudNaturalLanguageAssetAutoTagProviderCompanyConfiguration,
 			String content)
 		throws Exception {
 
+		if (!gCloudNaturalLanguageAssetAutoTagProviderCompanyConfiguration.
+				classificationEndpointEnabled()) {
+
+			Collections.emptySet();
+		}
+
+		String apiKey =
+			gCloudNaturalLanguageAssetAutoTagProviderCompanyConfiguration.
+				apiKey();
+
 		JSONObject responseJSONObject = _post(
-			_getServiceURL(
-				gCloudNaturalLanguageAssetAutoTagProviderCompanyConfiguration.
-					apiKey(),
-				"analyzeEntities"),
-			content);
+			_getServiceURL(apiKey, "classifyText"), content);
+
+		float confidence =
+			gCloudNaturalLanguageAssetAutoTagProviderCompanyConfiguration.
+				confidence();
+
+		return _toTagNames(
+			responseJSONObject.getJSONArray("categories"),
+			jsonObject -> jsonObject.getDouble("confidence") > confidence);
+	}
+
+	protected Collection<String> getEntityTagNames(
+			GCloudNaturalLanguageAssetAutoTagProviderCompanyConfiguration
+				gCloudNaturalLanguageAssetAutoTagProviderCompanyConfiguration,
+			String content)
+		throws Exception {
+
+		if (!gCloudNaturalLanguageAssetAutoTagProviderCompanyConfiguration.
+				entityEndpointEnabled()) {
+
+			Collections.emptySet();
+		}
+
+		String apiKey =
+			gCloudNaturalLanguageAssetAutoTagProviderCompanyConfiguration.
+				apiKey();
+
+		JSONObject responseJSONObject = _post(
+			_getServiceURL(apiKey, "analyzeEntities"), content);
+
+		float salience =
+			gCloudNaturalLanguageAssetAutoTagProviderCompanyConfiguration.
+				salience();
 
 		return _toTagNames(
 			responseJSONObject.getJSONArray("entities"),
-			jsonObject -> jsonObject.getDouble("salience") >
-						  gCloudNaturalLanguageAssetAutoTagProviderCompanyConfiguration.salience());
+			jsonObject -> jsonObject.getDouble("salience") > salience);
 	}
-
-	private static final int _MINIMUM_PAYLOAD_SIZE;
 
 	private static <T> Predicate<T> _negate(Predicate<T> predicate) {
 		return predicate.negate();
+	}
+
+	private String _getDocumentPayload(String mimeType, String content) {
+		String type = _getType(mimeType);
+
+		int size =
+			GCloudNaturalLanguageAssetAutoTagProviderConstants.
+				MAX_CHARACTERS_SERVICE - _MINIMUM_PAYLOAD_SIZE - type.length();
+
+		String truncatedContent = GCloudNaturalLanguageUtil.truncateToSize(
+			content, size);
+
+		return GCloudNaturalLanguageUtil.getDocumentPayload(
+			truncatedContent, type);
 	}
 
 	private String _getServiceURL(String apiKey, String endpoint) {
@@ -102,11 +162,12 @@ public class GCloudNaturalLanguageDocumentAssetAutoTaggerImpl
 			apiKey);
 	}
 
-	static {
-		String payload = GCloudNaturalLanguageUtil.getDocumentPayload(
-			StringPool.BLANK, StringPool.BLANK);
+	private String _getType(String mimeType) {
+		if (ContentTypes.TEXT_HTML.equals(mimeType)) {
+			return "HTML";
+		}
 
-		_MINIMUM_PAYLOAD_SIZE = payload.length();
+		return "PLAIN_TEXT";
 	}
 
 	private JSONObject _post(String serviceURL, String body) throws Exception {
@@ -174,23 +235,13 @@ public class GCloudNaturalLanguageDocumentAssetAutoTaggerImpl
 		);
 	}
 
-	@Override
-	public String getTruncatedContent(String mimeType, String content) {
-		String type = _getType(mimeType);
+	private static final int _MINIMUM_PAYLOAD_SIZE;
 
-		int size =
-			GCloudNaturalLanguageAssetAutoTagProviderConstants.
-				MAX_CHARACTERS_SERVICE - _MINIMUM_PAYLOAD_SIZE - type.length();
+	static {
+		String payload = GCloudNaturalLanguageUtil.getDocumentPayload(
+			StringPool.BLANK, StringPool.BLANK);
 
-		return GCloudNaturalLanguageUtil.truncateToSize(content, size);
-	}
-
-	private String _getType(String mimeType) {
-		if (ContentTypes.TEXT_HTML.equals(mimeType)) {
-			return "HTML";
-		}
-
-		return "PLAIN_TEXT";
+		_MINIMUM_PAYLOAD_SIZE = payload.length();
 	}
 
 	@Reference
