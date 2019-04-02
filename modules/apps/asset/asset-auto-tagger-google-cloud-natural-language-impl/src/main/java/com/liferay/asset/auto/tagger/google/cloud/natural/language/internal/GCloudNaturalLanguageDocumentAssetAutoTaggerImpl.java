@@ -15,6 +15,7 @@
 package com.liferay.asset.auto.tagger.google.cloud.natural.language.internal;
 
 import com.liferay.asset.auto.tagger.google.cloud.natural.language.api.GCloudNaturalLanguageDocumentAssetAutoTagger;
+import com.liferay.asset.auto.tagger.google.cloud.natural.language.api.configuration.GCloudNaturalLanguageAssetAutoTagProviderCompanyConfiguration;
 import com.liferay.asset.auto.tagger.google.cloud.natural.language.api.constants.GCloudNaturalLanguageAssetAutoTagProviderConstants;
 import com.liferay.asset.auto.tagger.google.cloud.natural.language.internal.util.GCloudNaturalLanguageUtil;
 import com.liferay.petra.string.CharPool;
@@ -51,28 +52,42 @@ public class GCloudNaturalLanguageDocumentAssetAutoTaggerImpl
 
 	@Override
 	public Collection<String> getClassificationTagNames(
-			String apiKey, float confidence, String content)
+		GCloudNaturalLanguageAssetAutoTagProviderCompanyConfiguration
+			gCloudNaturalLanguageAssetAutoTagProviderCompanyConfiguration,
+		String content)
 		throws Exception {
 
 		JSONObject responseJSONObject = _post(
-			_getServiceURL(apiKey, "classifyText"), content);
+			_getServiceURL(
+				gCloudNaturalLanguageAssetAutoTagProviderCompanyConfiguration.
+					apiKey(),
+				"classifyText"),
+			content);
 
 		return _toTagNames(
 			responseJSONObject.getJSONArray("categories"),
-			jsonObject -> jsonObject.getDouble("confidence") > confidence);
+			jsonObject -> jsonObject.getDouble("confidence") >
+						  gCloudNaturalLanguageAssetAutoTagProviderCompanyConfiguration.confidence());
 	}
 
 	@Override
 	public Collection<String> getEntityTagNames(
-			String apiKey, float salience, String content)
+			GCloudNaturalLanguageAssetAutoTagProviderCompanyConfiguration
+				gCloudNaturalLanguageAssetAutoTagProviderCompanyConfiguration,
+			String content)
 		throws Exception {
 
 		JSONObject responseJSONObject = _post(
-			_getServiceURL(apiKey, "analyzeEntities"), content);
+			_getServiceURL(
+				gCloudNaturalLanguageAssetAutoTagProviderCompanyConfiguration.
+					apiKey(),
+				"analyzeEntities"),
+			content);
 
 		return _toTagNames(
 			responseJSONObject.getJSONArray("entities"),
-			jsonObject -> jsonObject.getDouble("salience") > salience);
+			jsonObject -> jsonObject.getDouble("salience") >
+						  gCloudNaturalLanguageAssetAutoTagProviderCompanyConfiguration.salience());
 	}
 
 	private static final int _MINIMUM_PAYLOAD_SIZE;
