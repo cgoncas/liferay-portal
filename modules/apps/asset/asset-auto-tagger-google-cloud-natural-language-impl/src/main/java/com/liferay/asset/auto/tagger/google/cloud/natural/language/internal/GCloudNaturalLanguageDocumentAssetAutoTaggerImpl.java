@@ -15,6 +15,8 @@
 package com.liferay.asset.auto.tagger.google.cloud.natural.language.internal;
 
 import com.liferay.asset.auto.tagger.google.cloud.natural.language.api.GCloudNaturalLanguageDocumentAssetAutoTagger;
+import com.liferay.asset.auto.tagger.google.cloud.natural.language.api.constants.GCloudNaturalLanguageAssetAutoTagProviderConstants;
+import com.liferay.asset.auto.tagger.google.cloud.natural.language.internal.util.GCloudNaturalLanguageUtil;
 import com.liferay.petra.string.CharPool;
 import com.liferay.petra.string.StringBundler;
 import com.liferay.petra.string.StringPool;
@@ -73,6 +75,8 @@ public class GCloudNaturalLanguageDocumentAssetAutoTaggerImpl
 			jsonObject -> jsonObject.getDouble("salience") > salience);
 	}
 
+	private static final int _MINIMUM_PAYLOAD_SIZE;
+
 	private static <T> Predicate<T> _negate(Predicate<T> predicate) {
 		return predicate.negate();
 	}
@@ -81,6 +85,13 @@ public class GCloudNaturalLanguageDocumentAssetAutoTaggerImpl
 		return StringBundler.concat(
 			"https://language.googleapis.com/v1/documents:", endpoint, "?key=",
 			apiKey);
+	}
+
+	static {
+		String payload = GCloudNaturalLanguageUtil.getDocumentPayload(
+			StringPool.BLANK, StringPool.BLANK);
+
+		_MINIMUM_PAYLOAD_SIZE = payload.length();
 	}
 
 	private JSONObject _post(String serviceURL, String body) throws Exception {
@@ -146,6 +157,25 @@ public class GCloudNaturalLanguageDocumentAssetAutoTaggerImpl
 		).collect(
 			Collectors.toSet()
 		);
+	}
+
+	@Override
+	public String getTruncatedContent(String mimeType, String content) {
+		String type = _getType(mimeType);
+
+		int size =
+			GCloudNaturalLanguageAssetAutoTagProviderConstants.
+				MAX_CHARACTERS_SERVICE - _MINIMUM_PAYLOAD_SIZE - type.length();
+
+		return GCloudNaturalLanguageUtil.truncateToSize(content, size);
+	}
+
+	private String _getType(String mimeType) {
+		if (ContentTypes.TEXT_HTML.equals(mimeType)) {
+			return "HTML";
+		}
+
+		return "PLAIN_TEXT";
 	}
 
 	@Reference
