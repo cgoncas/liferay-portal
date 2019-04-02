@@ -27,6 +27,7 @@ import com.liferay.portal.kernel.json.JSONFactoryUtil;
 import com.liferay.portal.kernel.json.JSONObject;
 import com.liferay.portal.kernel.util.ContentTypes;
 import com.liferay.portal.kernel.util.Http;
+import com.liferay.portal.kernel.util.LocaleUtil;
 import com.liferay.portal.kernel.util.StringUtil;
 
 import java.net.HttpURLConnection;
@@ -35,6 +36,8 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashSet;
+import java.util.Locale;
+import java.util.Objects;
 import java.util.Set;
 import java.util.Spliterator;
 import java.util.function.Predicate;
@@ -56,7 +59,7 @@ public class GCloudNaturalLanguageDocumentAssetAutoTaggerImpl
 	public Collection<String> getTagNames(
 			GCloudNaturalLanguageAssetAutoTagProviderCompanyConfiguration
 				gCloudNaturalLanguageAssetAutoTagProviderCompanyConfiguration,
-			String content, String mimeType)
+			String content, Locale locale, String mimeType)
 		throws Exception {
 
 		if (!_supportedContentTypes.contains(mimeType)) {
@@ -71,15 +74,15 @@ public class GCloudNaturalLanguageDocumentAssetAutoTaggerImpl
 			return Collections.emptySet();
 		}
 
-		String documentPayload = _getDocumentPayload(mimeType, content);
+		String documentPayload = _getDocumentPayload(locale, mimeType, content);
 
 		Collection<String> classificationTagNames = getClassificationTagNames(
 			gCloudNaturalLanguageAssetAutoTagProviderCompanyConfiguration,
-			documentPayload);
+			documentPayload, locale);
 
 		Collection<String> entityTagNames = getEntityTagNames(
 			gCloudNaturalLanguageAssetAutoTagProviderCompanyConfiguration,
-			documentPayload);
+			documentPayload, locale);
 
 		return Stream.concat(
 			classificationTagNames.stream(), entityTagNames.stream()
@@ -88,16 +91,35 @@ public class GCloudNaturalLanguageDocumentAssetAutoTaggerImpl
 		);
 	}
 
+	@Override
+	public Collection<String> getTagNames(
+			GCloudNaturalLanguageAssetAutoTagProviderCompanyConfiguration
+				gCloudNaturalLanguageAssetAutoTagProviderCompanyConfiguration,
+			String content, String mimeType)
+		throws Exception {
+
+		return getTagNames(
+			gCloudNaturalLanguageAssetAutoTagProviderCompanyConfiguration,
+			content, null, mimeType);
+	}
+
 	protected Collection<String> getClassificationTagNames(
 			GCloudNaturalLanguageAssetAutoTagProviderCompanyConfiguration
 				gCloudNaturalLanguageAssetAutoTagProviderCompanyConfiguration,
-			String content)
+			String content, Locale locale)
 		throws Exception {
 
 		if (!gCloudNaturalLanguageAssetAutoTagProviderCompanyConfiguration.
 				classificationEndpointEnabled()) {
 
-			Collections.emptySet();
+			return Collections.emptySet();
+		}
+
+		if (Objects.nonNull(locale) &&
+			!Objects.equals(
+				locale.getLanguage(), LocaleUtil.ENGLISH.getLanguage())) {
+
+			return Collections.emptySet();
 		}
 
 		String apiKey =
@@ -119,13 +141,19 @@ public class GCloudNaturalLanguageDocumentAssetAutoTaggerImpl
 	protected Collection<String> getEntityTagNames(
 			GCloudNaturalLanguageAssetAutoTagProviderCompanyConfiguration
 				gCloudNaturalLanguageAssetAutoTagProviderCompanyConfiguration,
-			String content)
+			String content, Locale locale)
 		throws Exception {
 
 		if (!gCloudNaturalLanguageAssetAutoTagProviderCompanyConfiguration.
 				entityEndpointEnabled()) {
 
-			Collections.emptySet();
+			return Collections.emptySet();
+		}
+
+		if (Objects.nonNull(locale) &&
+			!_supportedEntityLanguages.contains(locale.getLanguage())) {
+
+			return Collections.emptySet();
 		}
 
 		String apiKey =
@@ -148,7 +176,9 @@ public class GCloudNaturalLanguageDocumentAssetAutoTaggerImpl
 		return predicate.negate();
 	}
 
-	private String _getDocumentPayload(String mimeType, String content) {
+	private String _getDocumentPayload(
+		Locale locale, String mimeType, String content) {
+
 		String type = _getType(mimeType);
 
 		int size =
@@ -159,7 +189,7 @@ public class GCloudNaturalLanguageDocumentAssetAutoTaggerImpl
 			content, size);
 
 		return GCloudNaturalLanguageUtil.getDocumentPayload(
-			truncatedContent, type);
+			truncatedContent, locale, type);
 	}
 
 	private String _getServiceURL(String apiKey, String endpoint) {
@@ -252,10 +282,17 @@ public class GCloudNaturalLanguageDocumentAssetAutoTaggerImpl
 			ContentTypes.APPLICATION_MSWORD, ContentTypes.APPLICATION_PDF,
 			ContentTypes.APPLICATION_TEXT, ContentTypes.TEXT_HTML,
 			ContentTypes.TEXT_PLAIN));
+	private static final Set<String> _supportedEntityLanguages = new HashSet<>(
+		Arrays.asList(
+			Locale.CHINESE.getLanguage(), Locale.ENGLISH.getLanguage(),
+			Locale.FRENCH.getLanguage(), Locale.GERMAN.getLanguage(),
+			Locale.ITALIAN.getLanguage(), Locale.JAPAN.getLanguage(),
+			Locale.KOREAN.getLanguage(), LocaleUtil.PORTUGAL.getLanguage(),
+			LocaleUtil.SPAIN.getLanguage()));
 
 	static {
 		String payload = GCloudNaturalLanguageUtil.getDocumentPayload(
-			StringPool.BLANK, StringPool.BLANK);
+			StringPool.BLANK, null, StringPool.BLANK);
 
 		_MINIMUM_PAYLOAD_SIZE = payload.length();
 	}

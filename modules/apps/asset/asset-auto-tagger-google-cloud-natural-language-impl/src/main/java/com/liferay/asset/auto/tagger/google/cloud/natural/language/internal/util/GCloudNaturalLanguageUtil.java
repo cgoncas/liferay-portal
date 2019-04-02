@@ -14,25 +14,35 @@
 
 package com.liferay.asset.auto.tagger.google.cloud.natural.language.internal.util;
 
+import com.liferay.portal.kernel.json.JSONObject;
 import com.liferay.portal.kernel.json.JSONUtil;
 
 import java.nio.charset.StandardCharsets;
 
 import java.util.Arrays;
+import java.util.Locale;
+import java.util.Objects;
 
 /**
  * @author Alicia García
  */
 public class GCloudNaturalLanguageUtil {
 
-	public static String getDocumentPayload(String content, String type) {
+	public static String getDocumentPayload(
+		String content, Locale locale, String type) {
+
+		JSONObject jsonObject = JSONUtil.put(
+			"type", type
+		).put(
+			"content", content
+		);
+
+		if (Objects.nonNull(locale)) {
+			jsonObject = jsonObject.put("language", locale.getLanguage());
+		}
+
 		return JSONUtil.put(
-			"document",
-			JSONUtil.put(
-				"type", type
-			).put(
-				"content", content
-			)
+			"document", jsonObject
 		).toString();
 	}
 

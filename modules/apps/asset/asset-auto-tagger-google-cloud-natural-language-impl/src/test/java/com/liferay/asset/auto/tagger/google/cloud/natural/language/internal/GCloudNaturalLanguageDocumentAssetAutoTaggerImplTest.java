@@ -29,7 +29,7 @@ import java.util.Set;
 import java.util.function.Predicate;
 
 import org.junit.Assert;
-import org.junit.Before;
+import org.junit.BeforeClass;
 import org.junit.Test;
 
 /**
@@ -37,12 +37,8 @@ import org.junit.Test;
  */
 public class GCloudNaturalLanguageDocumentAssetAutoTaggerImplTest {
 
-	@Before
-	public void setUp() {
-		ReflectionTestUtil.setFieldValue(
-			_gCloudNaturalLanguageDocumentAssetAutoTagger, "_http",
-			new HttpImpl());
-
+	@BeforeClass
+	public static void setUpClass() {
 		FileUtil fileUtil = new FileUtil();
 
 		fileUtil.setFile(new FileImpl());
@@ -50,6 +46,13 @@ public class GCloudNaturalLanguageDocumentAssetAutoTaggerImplTest {
 		JSONFactoryUtil jsonFactoryUtil = new JSONFactoryUtil();
 
 		jsonFactoryUtil.setJSONFactory(new JSONFactoryImpl());
+
+		_gCloudNaturalLanguageDocumentAssetAutoTagger =
+			new GCloudNaturalLanguageDocumentAssetAutoTaggerImpl();
+
+		ReflectionTestUtil.setFieldValue(
+			_gCloudNaturalLanguageDocumentAssetAutoTagger, "_http",
+			new HttpImpl());
 	}
 
 	@Test
@@ -244,8 +247,7 @@ public class GCloudNaturalLanguageDocumentAssetAutoTaggerImplTest {
 			actualTagNames.containsAll(expectedTagNames));
 	}
 
-	private final GCloudNaturalLanguageDocumentAssetAutoTaggerImpl
-		_gCloudNaturalLanguageDocumentAssetAutoTagger =
-			new GCloudNaturalLanguageDocumentAssetAutoTaggerImpl();
+	private static GCloudNaturalLanguageDocumentAssetAutoTaggerImpl
+		_gCloudNaturalLanguageDocumentAssetAutoTagger;
 
 }

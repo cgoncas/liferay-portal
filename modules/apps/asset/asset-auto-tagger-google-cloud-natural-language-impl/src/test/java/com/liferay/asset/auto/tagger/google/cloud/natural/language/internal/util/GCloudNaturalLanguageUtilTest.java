@@ -72,14 +72,14 @@ public class GCloudNaturalLanguageUtilTest {
 
 		Assert.assertEquals(
 			GCloudNaturalLanguageUtil.getDocumentPayload(
-				randomString, StringPool.BLANK),
+				randomString, null, StringPool.BLANK),
 			GCloudNaturalLanguageUtil.getDocumentPayload(
 				GCloudNaturalLanguageUtil.truncateToSize(
 					new String(
 						FileUtil.getBytes(
 							_fileVersion.getContentStream(false))),
 					5000),
-				StringPool.BLANK));
+				null, StringPool.BLANK));
 	}
 
 	@Test
