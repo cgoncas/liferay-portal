@@ -30,40 +30,16 @@ public interface GCloudNaturalLanguageDocumentAssetAutoTagger {
 	 * Returns a list of tag names from Google Cloud Natural Language
 	 * Classification API.
 	 *
-	 * @param gCloudNaturalLanguageAssetAutoTagProviderCompanyConfiguration the configuratio.
+	 * @param gCloudNaturalLanguageAssetAutoTagProviderCompanyConfiguration the configuration.
 	 * @param content the text to be tagged.
+	 * @param mimeType the text mimeType.
 	 * @return a list of tag names.
 	 * @review
 	 */
-	public Collection<String> getClassificationTagNames(
+	public Collection<String> getTagNames(
 			GCloudNaturalLanguageAssetAutoTagProviderCompanyConfiguration
 				gCloudNaturalLanguageAssetAutoTagProviderCompanyConfiguration,
-			String content)
+			String content, String mimeType)
 		throws Exception;
-
-	/**
-	 * Returns a list of tag names from Google Cloud Natural Language
-	 * Entity API.
-	 *
-	 * @param gCloudNaturalLanguageAssetAutoTagProviderCompanyConfiguration the configuratio.
-	 * @param content the text to be tagged.
-	 * @return a list of tag names.
-	 * @review
-	 * */
-	public Collection<String> getEntityTagNames(
-			GCloudNaturalLanguageAssetAutoTagProviderCompanyConfiguration
-				gCloudNaturalLanguageAssetAutoTagProviderCompanyConfiguration,
-			String content)
-		throws Exception;
-
-	/**
-	 * Returns the content truncated to the maximum size of the mimeType.
-	 *
-	 * @param mimeType the mimeType of the content.
-	 * @param content the text to be truncated.
-	 * @return a truncated string.
-	 * @review
-	 */
-	public String getTruncatedContent(String mimeType, String content);
 
 }
