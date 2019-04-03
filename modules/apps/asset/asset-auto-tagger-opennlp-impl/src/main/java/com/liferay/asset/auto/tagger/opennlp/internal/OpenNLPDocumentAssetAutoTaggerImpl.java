@@ -1,6 +1,7 @@
 package com.liferay.asset.auto.tagger.opennlp.internal;
 
 import com.liferay.asset.auto.tagger.opennlp.api.OpenNLPDocumentAssetAutoTagger;
+import com.liferay.asset.auto.tagger.opennlp.api.configuration.OpenNPLDocumentAssetAutoTagCompanyConfiguration;
 import com.liferay.portal.kernel.util.ContentTypes;
 
 import java.io.IOException;
@@ -33,7 +34,13 @@ public class OpenNLPDocumentAssetAutoTaggerImpl
 
 	@Override
 	public Collection<String> getTagNames(
-		String content, float confidenceThreshold, String mimeType) {
+		OpenNPLDocumentAssetAutoTagCompanyConfiguration
+			openNPLDocumentAssetAutoTagCompanyConfiguration,
+		String content, String mimeType) {
+
+		if (!openNPLDocumentAssetAutoTagCompanyConfiguration.enabled()) {
+			return Collections.emptyList();
+		}
 
 		if (!_supportedContentTypes.contains(mimeType)) {
 			return Collections.emptyList();
@@ -49,7 +56,10 @@ public class OpenNLPDocumentAssetAutoTaggerImpl
 		).map(
 			tokenizerME::tokenize
 		).map(
-			tokens -> _getTagNames(tokens, confidenceThreshold)
+			tokens -> _getTagNames(
+				tokens,
+				openNPLDocumentAssetAutoTagCompanyConfiguration.
+					confidenceThreshold())
 		).flatMap(
 			Arrays::stream
 		).collect(

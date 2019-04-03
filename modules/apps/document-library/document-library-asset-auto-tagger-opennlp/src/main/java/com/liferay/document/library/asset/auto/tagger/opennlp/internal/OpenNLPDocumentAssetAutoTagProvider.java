@@ -94,16 +94,9 @@ public class OpenNLPDocumentAssetAutoTagProvider
 			openNPLDocumentAssetAutoTagProviderCompanyConfiguration =
 				_getConfiguration(fileEntry.getCompanyId());
 
-		if (!openNPLDocumentAssetAutoTagProviderCompanyConfiguration.
-				enabled()) {
-
-			return Collections.emptyList();
-		}
-
 		return _openNLPDocumentAssetAutoTagger.getTagNames(
+			openNPLDocumentAssetAutoTagProviderCompanyConfiguration,
 			_getFileEntryContent(fileEntry),
-			openNPLDocumentAssetAutoTagProviderCompanyConfiguration.
-				confidenceThreshold(),
 			fileEntry.getMimeType());
 	}
 
