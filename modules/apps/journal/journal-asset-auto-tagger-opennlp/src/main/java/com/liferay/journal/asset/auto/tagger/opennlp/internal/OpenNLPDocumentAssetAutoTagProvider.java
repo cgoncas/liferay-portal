@@ -12,17 +12,17 @@
  * details.
  */
 
-package com.liferay.journal.asset.auto.tagger.google.cloud.natural.language.internal;
+package com.liferay.journal.asset.auto.tagger.opennlp.internal;
 
 import com.liferay.asset.auto.tagger.AssetAutoTagProvider;
-import com.liferay.asset.auto.tagger.google.cloud.natural.language.api.GCloudNaturalLanguageDocumentAssetAutoTagger;
+import com.liferay.asset.auto.tagger.opennlp.api.OpenNLPDocumentAssetAutoTagger;
 import com.liferay.dynamic.data.mapping.model.DDMStructure;
 import com.liferay.dynamic.data.mapping.service.DDMStructureLocalService;
 import com.liferay.dynamic.data.mapping.storage.DDMFormValues;
 import com.liferay.dynamic.data.mapping.storage.Fields;
 import com.liferay.dynamic.data.mapping.util.DDMIndexer;
 import com.liferay.dynamic.data.mapping.util.FieldsToDDMFormValuesConverter;
-import com.liferay.journal.asset.auto.tagger.google.cloud.natural.language.internal.configuration.GCloudNaturalLanguageAssetAutoTagProviderCompanyConfiguration;
+import com.liferay.journal.asset.auto.tagger.opennlp.internal.configuration.OpenNPLDocumentAssetAutoTagProviderCompanyConfiguration;
 import com.liferay.journal.model.JournalArticle;
 import com.liferay.journal.util.JournalConverter;
 import com.liferay.petra.string.StringPool;
@@ -48,7 +48,7 @@ import org.osgi.service.component.annotations.Reference;
 	property = "model.class.name=com.liferay.journal.model.JournalArticle",
 	service = AssetAutoTagProvider.class
 )
-public class GCloudNaturalLanguageDocumentAssetAutoTagProvider
+public class OpenNLPDocumentAssetAutoTagProvider
 	implements AssetAutoTagProvider<JournalArticle> {
 
 	@Override
@@ -102,17 +102,16 @@ public class GCloudNaturalLanguageDocumentAssetAutoTagProvider
 		Locale locale = LocaleUtil.fromLanguageId(
 			journalArticle.getDefaultLanguageId());
 
-		return _gCloudNaturalLanguageDocumentAssetAutoTagger.getTagNames(
+		return _openNLPDocumentAssetAutoTagger.getTagNames(
 			_configurationProvider.getCompanyConfiguration(
-				GCloudNaturalLanguageAssetAutoTagProviderCompanyConfiguration.
-					class,
+				OpenNPLDocumentAssetAutoTagProviderCompanyConfiguration.class,
 				journalArticle.getCompanyId()),
 			extractDDMContent(journalArticle, locale), locale,
 			ContentTypes.TEXT_PLAIN);
 	}
 
 	private static final Log _log = LogFactoryUtil.getLog(
-		GCloudNaturalLanguageDocumentAssetAutoTagProvider.class);
+		OpenNLPDocumentAssetAutoTagProvider.class);
 
 	@Reference
 	private ConfigurationProvider _configurationProvider;
@@ -127,11 +126,10 @@ public class GCloudNaturalLanguageDocumentAssetAutoTagProvider
 	private FieldsToDDMFormValuesConverter _fieldsToDDMFormValuesConverter;
 
 	@Reference
-	private GCloudNaturalLanguageDocumentAssetAutoTagger
-		_gCloudNaturalLanguageDocumentAssetAutoTagger;
+	private JournalConverter _journalConverter;
 
 	@Reference
-	private JournalConverter _journalConverter;
+	private OpenNLPDocumentAssetAutoTagger _openNLPDocumentAssetAutoTagger;
 
 	@Reference
 	private Portal _portal;

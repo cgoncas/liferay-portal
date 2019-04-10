@@ -12,7 +12,7 @@
  * details.
  */
 
-package com.liferay.document.library.asset.auto.tagger.opennlp.internal.configuration;
+package com.liferay.journal.asset.auto.tagger.opennlp.internal.configuration;
 
 import aQute.bnd.annotation.metatype.Meta;
 
@@ -23,16 +23,16 @@ import com.liferay.portal.configuration.metatype.annotations.ExtendedObjectClass
  * @author Cristina González
  */
 @ExtendedObjectClassDefinition(
-	category = "documents-and-media",
+	category = "web-content",
 	scope = ExtendedObjectClassDefinition.Scope.COMPANY
 )
 @Meta.OCD(
 	description = "opennlp-auto-tag-provider-configuration-description",
-	id = "com.liferay.document.library.asset.auto.tagger.opennlp.internal.configuration.OpenNLPDocumentAssetAutoTagProviderCompanyConfiguration",
+	id = "com.liferay.journal.asset.auto.tagger.opennlp.internal.configuration.OpenNPLDocumentAssetAutoTagProviderCompanyConfiguration",
 	localization = "content/Language",
 	name = "opennlp-auto-tag-provider-configuration-name"
 )
-public interface OpenNLPDocumentAssetAutoTagProviderCompanyConfiguration
+public interface OpenNPLDocumentAssetAutoTagProviderCompanyConfiguration
 	extends OpenNLPDocumentAssetAutoTagCompanyConfiguration {
 
 	@Meta.AD(deflt = "false", name = "enabled", required = false)
