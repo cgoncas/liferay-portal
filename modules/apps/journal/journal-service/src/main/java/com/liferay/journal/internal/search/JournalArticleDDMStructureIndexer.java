@@ -107,6 +107,8 @@ public class JournalArticleDDMStructureIndexer
 					ddmStructureLocalService.getDDMStructure(ddmStructureId);
 
 				ddmStructureKeys[i] = ddmStructure.getStructureKey();
+
+				doReindex(ddmStructure);
 			}
 
 			ActionableDynamicQuery actionableDynamicQuery =
@@ -326,6 +328,40 @@ public class JournalArticleDDMStructureIndexer
 	@Reference
 	protected JournalArticleResourceLocalService
 		journalArticleResourceLocalService;
+
+	private void _reindexDDMStructures(List<Long> ddmStructureIds)
+		throws PortalException {
+
+		final IndexableActionableDynamicQuery indexableActionableDynamicQuery =
+			ddmStructureLocalService.getIndexableActionableDynamicQuery();
+
+		indexableActionableDynamicQuery.setAddCriteriaMethod(
+			dynamicQuery -> {
+				Property ddmStructureId = PropertyFactoryUtil.forName(
+					"structureId");
+
+				dynamicQuery.add(ddmStructureId.in(ddmStructureIds));
+			});
+		indexableActionableDynamicQuery.setPerformActionMethod(
+			(DDMStructure ddmStructure) -> {
+				try {
+					Document document = getDocument(ddmStructure);
+
+					indexableActionableDynamicQuery.addDocuments(document);
+				}
+				catch (PortalException pe) {
+					if (_log.isWarnEnabled()) {
+						_log.warn(
+							"Unable to index DDMStrcutured " +
+								ddmStructure.getStructureId(),
+							pe);
+					}
+				}
+			});
+		indexableActionableDynamicQuery.setSearchEngineId(getSearchEngineId());
+
+		indexableActionableDynamicQuery.performActions();
+	}
 
 	private static final Log _log = LogFactoryUtil.getLog(
 		JournalArticleDDMStructureIndexer.class);
