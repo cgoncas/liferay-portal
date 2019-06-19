@@ -78,13 +78,13 @@ public class DLFileEntryAttachmentSearchTest {
 
 	@Test
 	public void testSearchIncludeAttachment() throws Exception {
-		String keyword = RandomTestUtil.randomString();
+		String title = "title";
 
-		_addFileEntry(keyword);
-		_addWikiPageWithAttachment(keyword);
+		_addFileEntry(title);
+		_addWikiPageWithAttachment(title);
 
-		Assert.assertEquals(1, _searchCount(keyword, false));
-		Assert.assertEquals(2, _searchCount(keyword, true));
+		Assert.assertEquals(1, _searchCount(title, false));
+		Assert.assertEquals(2, _searchCount(title, true));
 	}
 
 	private void _addFileEntry(String title) throws PortalException {
@@ -99,7 +99,7 @@ public class DLFileEntryAttachmentSearchTest {
 			serviceContext);
 	}
 
-	private void _addWikiPageWithAttachment(String name) throws Exception {
+	private void _addWikiPageWithAttachment(String fileName) throws Exception {
 		ServiceContext serviceContext =
 			ServiceContextTestUtil.getServiceContext(_group.getGroupId());
 
@@ -119,7 +119,7 @@ public class DLFileEntryAttachmentSearchTest {
 
 		WikiPageLocalServiceUtil.addPageAttachment(
 			serviceContext.getUserId(), wikiNode.getNodeId(), wikiPageTitle,
-			name, file, MimeTypesUtil.getExtensionContentType("docx"));
+			fileName, file, MimeTypesUtil.getExtensionContentType("docx"));
 	}
 
 	private int _searchCount(String keywords, boolean includeAttachments)
