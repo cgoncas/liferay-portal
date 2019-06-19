@@ -16,7 +16,7 @@ package com.liferay.document.library.search.test;
 
 import com.liferay.arquillian.extension.junit.bridge.junit.Arquillian;
 import com.liferay.document.library.kernel.model.DLFolderConstants;
-import com.liferay.document.library.kernel.service.DLAppLocalServiceUtil;
+import com.liferay.document.library.kernel.service.DLAppLocalService;
 import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.model.Group;
@@ -43,8 +43,8 @@ import com.liferay.portal.service.test.ServiceTestUtil;
 import com.liferay.portal.test.rule.Inject;
 import com.liferay.portal.test.rule.LiferayIntegrationTestRule;
 import com.liferay.wiki.model.WikiNode;
-import com.liferay.wiki.service.WikiNodeLocalServiceUtil;
-import com.liferay.wiki.service.WikiPageLocalServiceUtil;
+import com.liferay.wiki.service.WikiNodeLocalService;
+import com.liferay.wiki.service.WikiPageLocalService;
 
 import java.io.File;
 
@@ -91,7 +91,7 @@ public class DLFileEntryAttachmentSearchTest {
 		ServiceContext serviceContext =
 			ServiceContextTestUtil.getServiceContext(_group.getGroupId());
 
-		DLAppLocalServiceUtil.addFileEntry(
+		_dlAppLocalService.addFileEntry(
 			serviceContext.getUserId(), _group.getGroupId(),
 			DLFolderConstants.DEFAULT_PARENT_FOLDER_ID,
 			StringUtil.randomString(), ContentTypes.TEXT_PLAIN, title,
@@ -105,19 +105,19 @@ public class DLFileEntryAttachmentSearchTest {
 
 		serviceContext.setCommand(Constants.ADD);
 
-		WikiNode wikiNode = WikiNodeLocalServiceUtil.addNode(
+		WikiNode wikiNode = _wikiNodeLocalService.addNode(
 			TestPropsValues.getUserId(), RandomTestUtil.randomString(),
 			RandomTestUtil.randomString(50), serviceContext);
 
 		String wikiPageTitle = RandomTestUtil.randomString();
 
-		WikiPageLocalServiceUtil.addPage(
+		_wikiPageLocalService.addPage(
 			serviceContext.getUserId(), wikiNode.getNodeId(), wikiPageTitle,
 			RandomTestUtil.randomString(), "Summary", false, serviceContext);
 
 		File file = FileUtil.createTempFile(_CONTENT.getBytes());
 
-		WikiPageLocalServiceUtil.addPageAttachment(
+		_wikiPageLocalService.addPageAttachment(
 			serviceContext.getUserId(), wikiNode.getNodeId(), wikiPageTitle,
 			fileName, file, MimeTypesUtil.getExtensionContentType("docx"));
 	}
@@ -143,7 +143,16 @@ public class DLFileEntryAttachmentSearchTest {
 		"Content: Enterprise. Open Source. For Life.";
 
 	@Inject
+	private static DLAppLocalService _dlAppLocalService;
+
+	@Inject
 	private static FacetedSearcherManager _facetedSearcherManager;
+
+	@Inject
+	private static WikiNodeLocalService _wikiNodeLocalService;
+
+	@Inject
+	private static WikiPageLocalService _wikiPageLocalService;
 
 	@DeleteAfterTestRun
 	private Group _group;
