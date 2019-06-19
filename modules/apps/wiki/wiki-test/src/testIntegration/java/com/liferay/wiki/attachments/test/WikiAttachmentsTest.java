@@ -15,17 +15,31 @@
 package com.liferay.wiki.attachments.test;
 
 import com.liferay.arquillian.extension.junit.bridge.junit.Arquillian;
+import com.liferay.document.library.kernel.model.DLFolderConstants;
+import com.liferay.document.library.kernel.service.DLAppLocalService;
 import com.liferay.document.library.kernel.service.DLFileEntryLocalServiceUtil;
 import com.liferay.document.library.kernel.service.DLFolderLocalServiceUtil;
+import com.liferay.petra.string.StringPool;
+import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.model.Group;
 import com.liferay.portal.kernel.repository.model.FileEntry;
+import com.liferay.portal.kernel.search.Hits;
+import com.liferay.portal.kernel.search.SearchContext;
+import com.liferay.portal.kernel.search.facet.faceted.searcher.FacetedSearcher;
+import com.liferay.portal.kernel.search.facet.faceted.searcher.FacetedSearcherManager;
 import com.liferay.portal.kernel.service.GroupLocalServiceUtil;
+import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.test.rule.AggregateTestRule;
 import com.liferay.portal.kernel.test.rule.DeleteAfterTestRun;
 import com.liferay.portal.kernel.test.util.GroupTestUtil;
 import com.liferay.portal.kernel.test.util.RandomTestUtil;
+import com.liferay.portal.kernel.test.util.SearchContextTestUtil;
+import com.liferay.portal.kernel.test.util.ServiceContextTestUtil;
 import com.liferay.portal.kernel.test.util.TestPropsValues;
+import com.liferay.portal.kernel.util.ContentTypes;
+import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.service.test.ServiceTestUtil;
+import com.liferay.portal.test.rule.Inject;
 import com.liferay.portal.test.rule.LiferayIntegrationTestRule;
 import com.liferay.wiki.model.WikiNode;
 import com.liferay.wiki.model.WikiPage;
@@ -286,6 +300,17 @@ public class WikiAttachmentsTest {
 		_trashWikiAttachments(true);
 	}
 
+	@Test
+	public void testSearchIncludeAttachment() throws Exception {
+		String title = "title";
+
+		_addFileEntry(title);
+		_addWikiPageWithAttachmentFileName(title);
+
+		Assert.assertEquals(1, _searchCount(title, false));
+		Assert.assertEquals(2, _searchCount(title, true));
+	}
+
 	protected void addWikiNode() throws Exception {
 		if (_group == null) {
 			_group = GroupTestUtil.addGroup();
@@ -310,6 +335,47 @@ public class WikiAttachmentsTest {
 
 		WikiTestUtil.addWikiAttachment(
 			_page.getUserId(), _page.getNodeId(), _page.getTitle(), getClass());
+	}
+
+	private void _addFileEntry(String title) throws PortalException {
+		ServiceContext serviceContext =
+			ServiceContextTestUtil.getServiceContext(_group.getGroupId());
+
+		_dlAppLocalService.addFileEntry(
+			serviceContext.getUserId(), _group.getGroupId(),
+			DLFolderConstants.DEFAULT_PARENT_FOLDER_ID,
+			StringUtil.randomString(), ContentTypes.TEXT_PLAIN, title,
+			StringPool.BLANK, StringPool.BLANK, _CONTENT.getBytes(),
+			serviceContext);
+	}
+
+	private void _addWikiPageWithAttachmentFileName(String fileName)
+		throws Exception {
+
+		if (_page == null) {
+			addWikiPage();
+		}
+
+		WikiTestUtil.addWikiAttachment(
+			_page.getUserId(), _page.getNodeId(), _page.getTitle(), fileName,
+			getClass());
+	}
+
+	private int _searchCount(String keywords, boolean includeAttachments)
+		throws Exception {
+
+		SearchContext searchContext = SearchContextTestUtil.getSearchContext(
+			_group.getGroupId());
+
+		searchContext.setIncludeAttachments(includeAttachments);
+		searchContext.setKeywords(keywords);
+
+		FacetedSearcher facetedSearcher =
+			_facetedSearcherManager.createFacetedSearcher();
+
+		Hits hits = facetedSearcher.search(searchContext);
+
+		return hits.getLength();
 	}
 
 	private void _trashWikiAttachments(boolean restore) throws Exception {
@@ -366,6 +432,15 @@ public class WikiAttachmentsTest {
 				_page.getDeletedAttachmentsFileEntriesCount());
 		}
 	}
+
+	private static final String _CONTENT =
+		"Content: Enterprise. Open Source. For Life.";
+
+	@Inject
+	private static DLAppLocalService _dlAppLocalService;
+
+	@Inject
+	private static FacetedSearcherManager _facetedSearcherManager;
 
 	@DeleteAfterTestRun
 	private Group _group;
