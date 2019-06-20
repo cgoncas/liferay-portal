@@ -103,8 +103,7 @@ public class WikiAttachmentsTest {
 			initialFileEntriesCount + 1,
 			_dlFileEntryLocalService.getFileEntriesCount());
 
-		_wikiPageLocalService.deletePage(
-			_page.getNodeId(), _page.getTitle());
+		_wikiPageLocalService.deletePage(_page.getNodeId(), _page.getTitle());
 
 		Assert.assertEquals(
 			initialFileEntriesCount,
@@ -159,8 +158,7 @@ public class WikiAttachmentsTest {
 		addWikiPageAttachment();
 
 		Assert.assertEquals(
-			initialFoldersCount + 3,
-			_dlFolderLocalService.getDLFoldersCount());
+			initialFoldersCount + 3, _dlFolderLocalService.getDLFoldersCount());
 	}
 
 	@Test
@@ -221,14 +219,12 @@ public class WikiAttachmentsTest {
 		addWikiPageAttachment();
 
 		Assert.assertEquals(
-			initialFoldersCount + 3,
-			_dlFolderLocalService.getDLFoldersCount());
+			initialFoldersCount + 3, _dlFolderLocalService.getDLFoldersCount());
 
 		_wikiNodeLocalService.deleteNode(_page.getNodeId());
 
 		Assert.assertEquals(
-			initialFoldersCount + 1,
-			_dlFolderLocalService.getDLFoldersCount());
+			initialFoldersCount + 1, _dlFolderLocalService.getDLFoldersCount());
 	}
 
 	@Test
@@ -257,15 +253,12 @@ public class WikiAttachmentsTest {
 		addWikiPageAttachment();
 
 		Assert.assertEquals(
-			initialFoldersCount + 3,
-			_dlFolderLocalService.getDLFoldersCount());
+			initialFoldersCount + 3, _dlFolderLocalService.getDLFoldersCount());
 
-		_wikiPageLocalService.deletePage(
-			_page.getNodeId(), _page.getTitle());
+		_wikiPageLocalService.deletePage(_page.getNodeId(), _page.getTitle());
 
 		Assert.assertEquals(
-			initialFoldersCount + 2,
-			_dlFolderLocalService.getDLFoldersCount());
+			initialFoldersCount + 2, _dlFolderLocalService.getDLFoldersCount());
 	}
 
 	@Test
@@ -279,8 +272,7 @@ public class WikiAttachmentsTest {
 		Assert.assertEquals(
 			initialFoldersCount, _dlFolderLocalService.getDLFoldersCount());
 
-		_wikiPageLocalService.deletePage(
-			_page.getNodeId(), _page.getTitle());
+		_wikiPageLocalService.deletePage(_page.getNodeId(), _page.getTitle());
 
 		Assert.assertEquals(
 			initialFoldersCount, _dlFolderLocalService.getDLFoldersCount());
@@ -395,10 +387,9 @@ public class WikiAttachmentsTest {
 			initialTrashEntriesCount,
 			_page.getDeletedAttachmentsFileEntriesCount());
 
-		FileEntry fileEntry =
-			_wikiPageLocalService.movePageAttachmentToTrash(
-				TestPropsValues.getUserId(), _page.getNodeId(),
-				_page.getTitle(), fileName);
+		FileEntry fileEntry = _wikiPageLocalService.movePageAttachmentToTrash(
+			TestPropsValues.getUserId(), _page.getNodeId(), _page.getTitle(),
+			fileName);
 
 		Assert.assertEquals(
 			initialNotInTrashCount, _page.getAttachmentsFileEntriesCount());
@@ -440,18 +431,22 @@ public class WikiAttachmentsTest {
 	private static DLAppLocalService _dlAppLocalService;
 
 	@Inject
-	private static WikiPageLocalService _wikiPageLocalService;
-	@Inject
-	private static WikiNodeLocalService _wikiNodeLocalService;
-	@Inject
-	private static GroupLocalService _groupLocalService;
-	@Inject
 	private static DLFileEntryLocalService _dlFileEntryLocalService;
+
 	@Inject
 	private static DLFolderLocalService _dlFolderLocalService;
 
 	@Inject
 	private static FacetedSearcherManager _facetedSearcherManager;
+
+	@Inject
+	private static GroupLocalService _groupLocalService;
+
+	@Inject
+	private static WikiNodeLocalService _wikiNodeLocalService;
+
+	@Inject
+	private static WikiPageLocalService _wikiPageLocalService;
 
 	@DeleteAfterTestRun
 	private Group _group;
