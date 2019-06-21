@@ -12,7 +12,7 @@
  * details.
  */
 
-package com.liferay.portal.portletfilerepository;
+package com.liferay.document.library.repository.portletfilerepository.impl;
 
 import com.liferay.document.library.kernel.exception.NoSuchFileEntryException;
 import com.liferay.document.library.kernel.exception.NoSuchFolderException;
@@ -58,17 +58,18 @@ import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.repository.portletrepository.PortletRepository;
 import com.liferay.portal.webserver.WebServerServlet;
 import com.liferay.trash.kernel.util.TrashUtil;
+import org.osgi.service.component.annotations.Component;
 
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
-
 import java.util.List;
 
 /**
  * @author Eudaldo Alonso
  * @author Alexander Chow
  */
+@Component(immediate = true, service = PortletFileRepository.class)
 public class PortletFileRepositoryImpl implements PortletFileRepository {
 
 	@Override
