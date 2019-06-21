@@ -1,0 +1,3 @@
+Bundle-Name: Liferay Document Library Repository Portletfilerepository Implementation
+Bundle-SymbolicName: com.liferay.document.library.repository.portletfilerepository.impl
+Bundle-Version: 1.0.0
