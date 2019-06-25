@@ -21,13 +21,7 @@ class ElementsDefaultEventHandler extends DefaultEventHandler {
 			'are-you-sure-you-want-to-delete-this'
 		);
 
-		if (this.trashEnabled) {
-			message = Liferay.Language.get(
-				'are-you-sure-you-want-to-move-this-to-the-recycle-bin'
-			);
-		}
-
-		if (confirm(message)) {
+		if (this.trashEnabled || confirm(message)) {
 			this._send(itemData.deleteURL);
 		}
 	}
