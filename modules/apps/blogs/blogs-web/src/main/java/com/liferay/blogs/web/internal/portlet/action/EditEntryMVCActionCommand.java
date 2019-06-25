@@ -539,9 +539,8 @@ public class EditEntryMVCActionCommand extends BaseMVCActionCommand {
 
 		try {
 			if (moveToTrash) {
-				_blogsEntryService.moveEntryToTrash(entry.getEntryId());
-
-				trashedModels.add(entry);
+				trashedModels.add(
+					_blogsEntryService.moveEntryToTrash(entry.getEntryId()));
 			}
 			else {
 				_blogsEntryService.deleteEntry(entry.getEntryId());
