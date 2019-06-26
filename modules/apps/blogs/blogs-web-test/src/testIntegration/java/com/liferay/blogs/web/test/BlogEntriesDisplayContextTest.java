@@ -25,7 +25,6 @@ import com.liferay.portal.kernel.model.Company;
 import com.liferay.portal.kernel.model.Group;
 import com.liferay.portal.kernel.model.Layout;
 import com.liferay.portal.kernel.model.Portlet;
-import com.liferay.portal.kernel.portlet.LiferayPortletConfig;
 import com.liferay.portal.kernel.portlet.LiferayPortletRequest;
 import com.liferay.portal.kernel.portlet.LiferayPortletResponse;
 import com.liferay.portal.kernel.portlet.LiferayPortletURL;
@@ -62,7 +61,6 @@ import java.io.PrintWriter;
 import java.io.Writer;
 
 import java.util.Collection;
-import java.util.Enumeration;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
@@ -98,8 +96,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.Part;
 
-import javax.xml.namespace.QName;
-
 import org.junit.AfterClass;
 import org.junit.Assert;
 import org.junit.Before;
@@ -111,7 +107,6 @@ import org.junit.runner.RunWith;
 
 import org.springframework.mock.web.MockHttpServletRequest;
 import org.springframework.mock.web.portlet.MockActionRequest;
-import org.springframework.mock.web.portlet.MockPortletConfig;
 
 import org.w3c.dom.DOMException;
 import org.w3c.dom.Element;
@@ -307,46 +302,6 @@ public class BlogEntriesDisplayContextTest {
 	private Group _group;
 
 	private Layout _layout;
-
-	private static class MockLiferayPortletConfig
-		extends MockPortletConfig implements LiferayPortletConfig {
-
-		@Override
-		public Portlet getPortlet() {
-			return null;
-		}
-
-		@Override
-		public String getPortletId() {
-			return "testPortlet";
-		}
-
-		@Override
-		public Enumeration<PortletMode> getPortletModes(String mimeType) {
-			return null;
-		}
-
-		@Override
-		public Map<String, QName> getPublicRenderParameterDefinitions() {
-			return null;
-		}
-
-		@Override
-		public Enumeration<WindowState> getWindowStates(String mimeType) {
-			return null;
-		}
-
-		@Override
-		public boolean isCopyRequestParameters() {
-			return false;
-		}
-
-		@Override
-		public boolean isWARFile() {
-			return false;
-		}
-
-	}
 
 	private static class MockLiferayPortletRequest
 		extends MockActionRequest
