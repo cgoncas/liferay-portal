@@ -25,7 +25,6 @@ import com.liferay.portal.kernel.model.Company;
 import com.liferay.portal.kernel.model.Group;
 import com.liferay.portal.kernel.model.Layout;
 import com.liferay.portal.kernel.model.Portlet;
-import com.liferay.portal.kernel.portlet.LiferayPortletRequest;
 import com.liferay.portal.kernel.portlet.LiferayPortletResponse;
 import com.liferay.portal.kernel.portlet.LiferayPortletURL;
 import com.liferay.portal.kernel.portlet.bridges.mvc.MVCRenderCommand;
@@ -68,21 +67,16 @@ import java.util.Objects;
 import java.util.Set;
 import java.util.function.BiConsumer;
 
-import javax.portlet.ActionParameters;
 import javax.portlet.ActionURL;
 import javax.portlet.CacheControl;
 import javax.portlet.MimeResponse;
 import javax.portlet.MutableRenderParameters;
 import javax.portlet.MutableResourceParameters;
-import javax.portlet.PortletConfig;
-import javax.portlet.PortletContext;
 import javax.portlet.PortletException;
 import javax.portlet.PortletMode;
 import javax.portlet.PortletModeException;
-import javax.portlet.PortletResponse;
 import javax.portlet.PortletSecurityException;
 import javax.portlet.PortletURL;
-import javax.portlet.RenderParameters;
 import javax.portlet.RenderRequest;
 import javax.portlet.RenderResponse;
 import javax.portlet.RenderURL;
@@ -94,7 +88,6 @@ import javax.portlet.annotations.PortletSerializable;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.Part;
 
 import org.junit.AfterClass;
 import org.junit.Assert;
@@ -106,7 +99,6 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 
 import org.springframework.mock.web.MockHttpServletRequest;
-import org.springframework.mock.web.portlet.MockActionRequest;
 
 import org.w3c.dom.DOMException;
 import org.w3c.dom.Element;
@@ -259,8 +251,8 @@ public class BlogEntriesDisplayContextTest {
 
 		MVCRenderCommand mvcRenderCommand = _serviceTracker.getService();
 
-		MockLiferayPortletRequest mockLiferayPortletRequest =
-			new MockLiferayPortletRequest(httpServletRequest);
+		MyMockLiferayPortletRequest mockLiferayPortletRequest =
+			new MyMockLiferayPortletRequest(httpServletRequest);
 
 		mvcRenderCommand.render(
 			mockLiferayPortletRequest, new MockLiferayPortletResponse());
@@ -302,132 +294,6 @@ public class BlogEntriesDisplayContextTest {
 	private Group _group;
 
 	private Layout _layout;
-
-	private static class MockLiferayPortletRequest
-		extends MockActionRequest
-		implements LiferayPortletRequest, RenderRequest {
-
-		public MockLiferayPortletRequest(
-			HttpServletRequest httpServletRequest) {
-
-			_httpServletRequest = httpServletRequest;
-		}
-
-		@Override
-		public void addParameter(String name, String value) {
-			throw new UnsupportedOperationException();
-		}
-
-		@Override
-		public void cleanUp() {
-		}
-
-		@Override
-		public Map<String, String[]> clearRenderParameters() {
-			return null;
-		}
-
-		@Override
-		public void defineObjects(
-			PortletConfig portletConfig, PortletResponse portletResponse) {
-		}
-
-		@Override
-		public ActionParameters getActionParameters() {
-			return null;
-		}
-
-		@Override
-		public Object getAttribute(String name) {
-			if (Objects.equals(name, JavaConstants.JAVAX_PORTLET_CONFIG)) {
-				return new MockLiferayPortletConfig();
-			}
-
-			return super.getAttribute(name);
-		}
-
-		@Override
-		public long getContentLengthLong() {
-			return 0;
-		}
-
-		@Override
-		public String getETag() {
-			return null;
-		}
-
-		@Override
-		public HttpServletRequest getHttpServletRequest() {
-			return _httpServletRequest;
-		}
-
-		@Override
-		public String getLifecycle() {
-			return null;
-		}
-
-		@Override
-		public HttpServletRequest getOriginalHttpServletRequest() {
-			return _httpServletRequest;
-		}
-
-		@Override
-		public Part getPart(String name) {
-			return null;
-		}
-
-		@Override
-		public Collection<Part> getParts() {
-			return null;
-		}
-
-		@Override
-		public long getPlid() {
-			return 0;
-		}
-
-		@Override
-		public Portlet getPortlet() {
-			return null;
-		}
-
-		@Override
-		public PortletContext getPortletContext() {
-			return null;
-		}
-
-		@Override
-		public String getPortletName() {
-			return null;
-		}
-
-		@Override
-		public HttpServletRequest getPortletRequestDispatcherRequest() {
-			return null;
-		}
-
-		@Override
-		public RenderParameters getRenderParameters() {
-			return null;
-		}
-
-		@Override
-		public String getUserAgent() {
-			return null;
-		}
-
-		@Override
-		public void invalidateSession() {
-		}
-
-		@Override
-		public void setPortletRequestDispatcherRequest(
-			HttpServletRequest httpServletRequest) {
-		}
-
-		private final HttpServletRequest _httpServletRequest;
-
-	}
 
 	private static class MockLiferayPortletResponse
 		implements LiferayPortletResponse, RenderResponse {
@@ -1196,6 +1062,46 @@ public class BlogEntriesDisplayContextTest {
 
 		@Override
 		public void write(Writer out, boolean escapeXML) throws IOException {
+		}
+
+	}
+
+	private static class MyMockLiferayPortletRequest
+		extends MockLiferayPortletRequest implements RenderRequest {
+
+		public MyMockLiferayPortletRequest(
+			HttpServletRequest httpServletRequest) {
+
+			this.httpServletRequest = httpServletRequest;
+		}
+
+		@Override
+		public void addParameter(String name, String value) {
+			throw new UnsupportedOperationException();
+		}
+
+		@Override
+		public Object getAttribute(String name) {
+			if (Objects.equals(name, JavaConstants.JAVAX_PORTLET_CONFIG)) {
+				return new MockLiferayPortletConfig();
+			}
+
+			return super.getAttribute(name);
+		}
+
+		@Override
+		public String getETag() {
+			return null;
+		}
+
+		@Override
+		public HttpServletRequest getHttpServletRequest() {
+			return httpServletRequest;
+		}
+
+		@Override
+		public HttpServletRequest getOriginalHttpServletRequest() {
+			return httpServletRequest;
 		}
 
 	}

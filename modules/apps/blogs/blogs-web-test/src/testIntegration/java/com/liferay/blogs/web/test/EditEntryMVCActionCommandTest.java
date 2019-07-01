@@ -23,8 +23,6 @@ import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.model.Company;
 import com.liferay.portal.kernel.model.Group;
 import com.liferay.portal.kernel.model.Layout;
-import com.liferay.portal.kernel.model.Portlet;
-import com.liferay.portal.kernel.portlet.LiferayPortletRequest;
 import com.liferay.portal.kernel.portlet.bridges.mvc.MVCActionCommand;
 import com.liferay.portal.kernel.security.permission.PermissionThreadLocal;
 import com.liferay.portal.kernel.service.CompanyLocalService;
@@ -52,21 +50,14 @@ import com.liferay.registry.ServiceTracker;
 import com.liferay.trash.kernel.model.TrashEntry;
 import com.liferay.trash.kernel.service.TrashEntryLocalService;
 
-import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
-import javax.portlet.ActionParameters;
 import javax.portlet.ActionRequest;
-import javax.portlet.PortletConfig;
-import javax.portlet.PortletContext;
-import javax.portlet.PortletResponse;
-import javax.portlet.RenderParameters;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.Part;
 
 import org.junit.AfterClass;
 import org.junit.Assert;
@@ -78,7 +69,6 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 
 import org.springframework.mock.web.MockHttpServletRequest;
-import org.springframework.mock.web.portlet.MockActionRequest;
 
 /**
  * @author Alicia García
@@ -133,7 +123,7 @@ public class EditEntryMVCActionCommandTest {
 		BlogsEntry blogsEntry = _addBlogEntry(RandomTestUtil.randomString());
 
 		_deleteEntries(
-			new MockLiferayPortletRequest(
+			new MyMockLiferayPortletRequest(
 				_getMockHttpServletRequest(), blogsEntry.getEntryId()),
 			false);
 
@@ -145,7 +135,7 @@ public class EditEntryMVCActionCommandTest {
 		BlogsEntry blogsEntry = _addBlogEntry(RandomTestUtil.randomString());
 
 		_deleteEntries(
-			new MockLiferayPortletRequest(
+			new MyMockLiferayPortletRequest(
 				_getMockHttpServletRequest(), blogsEntry.getEntryId()),
 			true);
 
@@ -222,34 +212,14 @@ public class EditEntryMVCActionCommandTest {
 	@Inject
 	private TrashEntryLocalService _trashEntryLocalService;
 
-	private static class MockLiferayPortletRequest
-		extends MockActionRequest
-		implements ActionRequest, LiferayPortletRequest {
+	private static class MyMockLiferayPortletRequest
+		extends MockLiferayPortletRequest implements ActionRequest {
 
-		public MockLiferayPortletRequest(
+		public MyMockLiferayPortletRequest(
 			HttpServletRequest httpServletRequest, long entryId) {
 
-			_httpServletRequest = httpServletRequest;
-			_entryId = entryId;
-		}
-
-		@Override
-		public void cleanUp() {
-		}
-
-		@Override
-		public Map<String, String[]> clearRenderParameters() {
-			return null;
-		}
-
-		@Override
-		public void defineObjects(
-			PortletConfig portletConfig, PortletResponse portletResponse) {
-		}
-
-		@Override
-		public ActionParameters getActionParameters() {
-			return null;
+			this.httpServletRequest = httpServletRequest;
+			this.entryId = entryId;
 		}
 
 		@Override
@@ -262,90 +232,23 @@ public class EditEntryMVCActionCommandTest {
 		}
 
 		@Override
-		public long getContentLengthLong() {
-			return 0;
-		}
-
-		@Override
 		public HttpServletRequest getHttpServletRequest() {
-			return _httpServletRequest;
-		}
-
-		@Override
-		public String getLifecycle() {
-			return null;
-		}
-
-		@Override
-		public HttpServletRequest getOriginalHttpServletRequest() {
-			return null;
+			return httpServletRequest;
 		}
 
 		@Override
 		public Map<String, String[]> getParameterMap() {
 			Map<String, String[]> parameters = new HashMap<>();
 
-			parameters.put("entryId", new String[] {String.valueOf(_entryId)});
+			parameters.put("entryId", new String[] {String.valueOf(entryId)});
 
 			return parameters;
-		}
-
-		@Override
-		public Part getPart(String name) {
-			return null;
-		}
-
-		@Override
-		public Collection<Part> getParts() {
-			return null;
-		}
-
-		@Override
-		public long getPlid() {
-			return 0;
-		}
-
-		@Override
-		public Portlet getPortlet() {
-			return null;
-		}
-
-		@Override
-		public PortletContext getPortletContext() {
-			return null;
-		}
-
-		@Override
-		public String getPortletName() {
-			return null;
-		}
-
-		@Override
-		public HttpServletRequest getPortletRequestDispatcherRequest() {
-			return null;
-		}
-
-		@Override
-		public RenderParameters getRenderParameters() {
-			return null;
-		}
-
-		@Override
-		public String getUserAgent() {
-			return null;
-		}
-
-		@Override
-		public void invalidateSession() {
 		}
 
 		@Override
 		public void setPortletRequestDispatcherRequest(
 			HttpServletRequest httpServletRequest) {
 		}
-
-		private final long _entryId;
-		private final HttpServletRequest _httpServletRequest;
 
 	}
 
