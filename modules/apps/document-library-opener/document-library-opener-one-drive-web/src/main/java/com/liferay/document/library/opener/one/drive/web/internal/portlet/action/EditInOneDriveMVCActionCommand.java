@@ -15,6 +15,7 @@
 package com.liferay.document.library.opener.one.drive.web.internal.portlet.action;
 
 import com.liferay.document.library.constants.DLPortletKeys;
+import com.liferay.document.library.opener.one.drive.web.internal.DLOpenerOneDriveManager;
 import com.liferay.document.library.opener.one.drive.web.internal.oauth.AccessToken;
 import com.liferay.document.library.opener.one.drive.web.internal.oauth.OAuth2Manager;
 import com.liferay.document.library.opener.one.drive.web.internal.oauth.OAuth2StateUtil;
@@ -23,8 +24,12 @@ import com.liferay.portal.kernel.portlet.LiferayPortletURL;
 import com.liferay.portal.kernel.portlet.PortletURLFactory;
 import com.liferay.portal.kernel.portlet.bridges.mvc.BaseMVCActionCommand;
 import com.liferay.portal.kernel.portlet.bridges.mvc.MVCActionCommand;
+import com.liferay.portal.kernel.util.Constants;
+import com.liferay.portal.kernel.util.ParamUtil;
 import com.liferay.portal.kernel.util.Portal;
 import com.liferay.portal.kernel.util.PwdGenerator;
+
+import com.microsoft.graph.models.extensions.User;
 
 import java.util.Optional;
 
@@ -81,8 +86,20 @@ public class EditInOneDriveMVCActionCommand extends BaseMVCActionCommand {
 			ActionRequest actionRequest, AccessToken accessToken)
 		throws PortalException {
 
-		System.out.println(
-			"Logged successfully " + accessToken.getAccessToken());
+		String cmd = ParamUtil.getString(actionRequest, Constants.CMD);
+
+		if (cmd.equals(Constants.ADD)) {
+			try {
+				User user = _dlOpenerOneDriveManager.getUser(accessToken);
+
+				System.out.println("--->> " + user.displayName);
+
+				hideDefaultSuccessMessage(actionRequest);
+			}
+			catch (Throwable throwable) {
+				throw new PortalException(throwable);
+			}
+		}
 	}
 
 	private String _getFailureURL(PortletRequest portletRequest)
@@ -100,6 +117,9 @@ public class EditInOneDriveMVCActionCommand extends BaseMVCActionCommand {
 		return _portal.getCurrentURL(
 			_portal.getHttpServletRequest(portletRequest));
 	}
+
+	@Reference
+	private DLOpenerOneDriveManager _dlOpenerOneDriveManager;
 
 	@Reference
 	private OAuth2Manager _oAuth2Manager;
