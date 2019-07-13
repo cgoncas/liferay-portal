@@ -11,8 +11,7 @@
  * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
  * details.
  */
-
-package com.liferay.document.library.opener.google.drive.constants;
+package com.liferay.document.library.opener.drive.constants;
 
 import com.liferay.petra.string.StringBundler;
 import com.liferay.petra.string.StringPool;
@@ -30,7 +29,7 @@ import java.util.Map;
  * @author Adolfo Pérez
  * @review
  */
-public class DLOpenerGoogleDriveMimeTypes {
+public class DLOpenerDriveMimeTypes {
 
 	/**
 	 * The MIME type for Rich Text files.
@@ -44,7 +43,7 @@ public class DLOpenerGoogleDriveMimeTypes {
 	 */
 	public static final String APPLICATION_VND_DOCX =
 		"application/vnd.openxmlformats-officedocument.wordprocessingml." +
-			"document";
+		"document";
 
 	/**
 	 * The MIME type for Google Docs.
@@ -87,7 +86,7 @@ public class DLOpenerGoogleDriveMimeTypes {
 	 */
 	public static final String APPLICATION_VND_PPTX =
 		"application/vnd.openxmlformats-officedocument.presentationml." +
-			"presentation";
+		"presentation";
 
 	/**
 	 * The MIME type for Microsoft Excel (xslx) spreadsheets.

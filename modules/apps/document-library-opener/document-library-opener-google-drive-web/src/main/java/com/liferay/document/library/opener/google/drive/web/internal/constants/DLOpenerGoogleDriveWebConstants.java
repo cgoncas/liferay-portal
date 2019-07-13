@@ -21,18 +21,10 @@ import com.liferay.portal.kernel.util.Constants;
  */
 public class DLOpenerGoogleDriveWebConstants {
 
-	public static final String GOOGLE_DRIVE_ADD = Constants.ADD;
-
-	public static final String GOOGLE_DRIVE_CANCEL_CHECKOUT =
-		Constants.CANCEL_CHECKOUT;
-
-	public static final String GOOGLE_DRIVE_CHECKIN = Constants.CHECKIN;
-
-	public static final String GOOGLE_DRIVE_CHECKOUT = Constants.CHECKOUT;
-
-	public static final String GOOGLE_DRIVE_EDIT = Constants.EDIT;
-
 	public static final String GOOGLE_DRIVE_SERVLET_PATH =
 		"/document_library/google/oauth2";
+
+	public static final String SESSION_ATTRIBUTE_NAME_GOOGLE_OAUTH2_STATE =
+		"google-oauth2-state";
 
 }

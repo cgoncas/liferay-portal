@@ -18,9 +18,8 @@ import com.liferay.document.library.display.context.BaseDLViewFileVersionDisplay
 import com.liferay.document.library.display.context.DLUIItemKeys;
 import com.liferay.document.library.display.context.DLViewFileVersionDisplayContext;
 import com.liferay.document.library.opener.constants.DLOpenerFileEntryReferenceConstants;
+import com.liferay.document.library.opener.drive.constants.DLOpenerDriveMimeTypes;
 import com.liferay.document.library.opener.google.drive.DLOpenerGoogleDriveManager;
-import com.liferay.document.library.opener.google.drive.constants.DLOpenerGoogleDriveMimeTypes;
-import com.liferay.document.library.opener.google.drive.web.internal.constants.DLOpenerGoogleDriveWebConstants;
 import com.liferay.document.library.opener.model.DLOpenerFileEntryReference;
 import com.liferay.document.library.opener.service.DLOpenerFileEntryReferenceLocalService;
 import com.liferay.petra.string.StringBundler;
@@ -96,7 +95,7 @@ public class DLOpenerGoogleDriveDLViewFileVersionDisplayContext
 	@Override
 	public Menu getMenu() throws PortalException {
 		if (!isActionsVisible() ||
-			!DLOpenerGoogleDriveMimeTypes.isMimeTypeSupported(
+			!DLOpenerDriveMimeTypes.isMimeTypeSupported(
 				fileVersion.getMimeType()) ||
 			!_dlOpenerGoogleDriveManager.isConfigured(
 				fileVersion.getCompanyId()) ||
@@ -119,8 +118,7 @@ public class DLOpenerGoogleDriveDLViewFileVersionDisplayContext
 
 				_addEditInGoogleDocsUIItem(
 					menuItems,
-					_createEditInGoogleDocsMenuItem(
-						DLOpenerGoogleDriveWebConstants.GOOGLE_DRIVE_EDIT));
+					_createEditInGoogleDocsMenuItem(Constants.EDIT));
 			}
 
 			return menu;
@@ -128,8 +126,7 @@ public class DLOpenerGoogleDriveDLViewFileVersionDisplayContext
 
 		_addEditInGoogleDocsUIItem(
 			menu.getMenuItems(),
-			_createEditInGoogleDocsMenuItem(
-				DLOpenerGoogleDriveWebConstants.GOOGLE_DRIVE_CHECKOUT));
+			_createEditInGoogleDocsMenuItem(Constants.CHECKOUT));
 
 		return menu;
 	}
@@ -196,17 +193,17 @@ public class DLOpenerGoogleDriveDLViewFileVersionDisplayContext
 
 	private String _getLabelKey() {
 		String googleDocsMimeType =
-			DLOpenerGoogleDriveMimeTypes.getGoogleDocsMimeType(
+			DLOpenerDriveMimeTypes.getGoogleDocsMimeType(
 				fileVersion.getMimeType());
 
-		if (DLOpenerGoogleDriveMimeTypes.
+		if (DLOpenerDriveMimeTypes.
 				APPLICATION_VND_GOOGLE_APPS_PRESENTATION.equals(
 					googleDocsMimeType)) {
 
 			return "edit-in-google-slides";
 		}
 
-		if (DLOpenerGoogleDriveMimeTypes.
+		if (DLOpenerDriveMimeTypes.
 				APPLICATION_VND_GOOGLE_APPS_SPREADSHEET.equals(
 					googleDocsMimeType)) {
 
@@ -270,18 +267,14 @@ public class DLOpenerGoogleDriveDLViewFileVersionDisplayContext
 						javaScriptUIItem.setOnClick(
 							StringBundler.concat(
 								"window.location.href = '",
-								_getActionURL(
-									DLOpenerGoogleDriveWebConstants.
-										GOOGLE_DRIVE_CHECKIN),
+								_getActionURL(Constants.CHECKIN),
 								"'"));
 					}
 					else {
 						javaScriptUIItem.setOnClick(
 							StringBundler.concat(
 								_getNamespace(), "showVersionDetailsDialog('",
-								_getActionURL(
-									DLOpenerGoogleDriveWebConstants.
-										GOOGLE_DRIVE_CHECKIN),
+								_getActionURL(Constants.CHECKIN),
 								"');"));
 					}
 				}
@@ -292,9 +285,7 @@ public class DLOpenerGoogleDriveDLViewFileVersionDisplayContext
 
 					urlMenuItem.setMethod(HttpMethods.POST);
 					urlMenuItem.setURL(
-						_getActionURL(
-							DLOpenerGoogleDriveWebConstants.
-								GOOGLE_DRIVE_CANCEL_CHECKOUT));
+						_getActionURL(Constants.CANCEL_CHECKOUT));
 				}
 			}
 		}
