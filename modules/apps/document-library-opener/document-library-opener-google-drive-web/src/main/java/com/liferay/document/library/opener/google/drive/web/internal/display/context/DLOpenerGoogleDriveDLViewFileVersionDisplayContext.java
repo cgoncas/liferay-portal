@@ -18,8 +18,8 @@ import com.liferay.document.library.display.context.BaseDLViewFileVersionDisplay
 import com.liferay.document.library.display.context.DLUIItemKeys;
 import com.liferay.document.library.display.context.DLViewFileVersionDisplayContext;
 import com.liferay.document.library.opener.constants.DLOpenerFileEntryReferenceConstants;
-import com.liferay.document.library.opener.drive.constants.DLOpenerDriveMimeTypes;
 import com.liferay.document.library.opener.google.drive.DLOpenerGoogleDriveManager;
+import com.liferay.document.library.opener.google.drive.constants.DLOpenerGoogleDriveMimeTypes;
 import com.liferay.document.library.opener.model.DLOpenerFileEntryReference;
 import com.liferay.document.library.opener.service.DLOpenerFileEntryReferenceLocalService;
 import com.liferay.petra.string.StringBundler;
@@ -95,7 +95,7 @@ public class DLOpenerGoogleDriveDLViewFileVersionDisplayContext
 	@Override
 	public Menu getMenu() throws PortalException {
 		if (!isActionsVisible() ||
-			!DLOpenerDriveMimeTypes.isMimeTypeSupported(
+			!DLOpenerGoogleDriveMimeTypes.isGoogleMimeTypeSupported(
 				fileVersion.getMimeType()) ||
 			!_dlOpenerGoogleDriveManager.isConfigured(
 				fileVersion.getCompanyId()) ||
@@ -117,8 +117,7 @@ public class DLOpenerGoogleDriveDLViewFileVersionDisplayContext
 				_updateCancelCheckoutAndCheckinMenuItems(menuItems);
 
 				_addEditInGoogleDocsUIItem(
-					menuItems,
-					_createEditInGoogleDocsMenuItem(Constants.EDIT));
+					menuItems, _createEditInGoogleDocsMenuItem(Constants.EDIT));
 			}
 
 			return menu;
@@ -193,17 +192,17 @@ public class DLOpenerGoogleDriveDLViewFileVersionDisplayContext
 
 	private String _getLabelKey() {
 		String googleDocsMimeType =
-			DLOpenerDriveMimeTypes.getGoogleDocsMimeType(
+			DLOpenerGoogleDriveMimeTypes.getGoogleDocsMimeType(
 				fileVersion.getMimeType());
 
-		if (DLOpenerDriveMimeTypes.
+		if (DLOpenerGoogleDriveMimeTypes.
 				APPLICATION_VND_GOOGLE_APPS_PRESENTATION.equals(
 					googleDocsMimeType)) {
 
 			return "edit-in-google-slides";
 		}
 
-		if (DLOpenerDriveMimeTypes.
+		if (DLOpenerGoogleDriveMimeTypes.
 				APPLICATION_VND_GOOGLE_APPS_SPREADSHEET.equals(
 					googleDocsMimeType)) {
 
@@ -267,15 +266,13 @@ public class DLOpenerGoogleDriveDLViewFileVersionDisplayContext
 						javaScriptUIItem.setOnClick(
 							StringBundler.concat(
 								"window.location.href = '",
-								_getActionURL(Constants.CHECKIN),
-								"'"));
+								_getActionURL(Constants.CHECKIN), "'"));
 					}
 					else {
 						javaScriptUIItem.setOnClick(
 							StringBundler.concat(
 								_getNamespace(), "showVersionDetailsDialog('",
-								_getActionURL(Constants.CHECKIN),
-								"');"));
+								_getActionURL(Constants.CHECKIN), "');"));
 					}
 				}
 			}

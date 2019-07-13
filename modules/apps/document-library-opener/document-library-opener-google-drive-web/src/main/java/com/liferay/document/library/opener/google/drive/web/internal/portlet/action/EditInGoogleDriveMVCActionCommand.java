@@ -17,9 +17,9 @@ package com.liferay.document.library.opener.google.drive.web.internal.portlet.ac
 import com.liferay.document.library.constants.DLPortletKeys;
 import com.liferay.document.library.kernel.model.DLVersionNumberIncrease;
 import com.liferay.document.library.kernel.service.DLAppService;
+import com.liferay.document.library.opener.drive.constants.DLOpenerDriveMimeTypes;
 import com.liferay.document.library.opener.google.drive.DLOpenerGoogleDriveFileReference;
 import com.liferay.document.library.opener.google.drive.DLOpenerGoogleDriveManager;
-import com.liferay.document.library.opener.drive.constants.DLOpenerDriveMimeTypes;
 import com.liferay.document.library.opener.google.drive.upload.UniqueFileEntryTitleProvider;
 import com.liferay.document.library.opener.google.drive.web.internal.constants.DLOpenerGoogleDriveWebKeys;
 import com.liferay.document.library.opener.google.drive.web.internal.util.GoogleDrivePortletRequestAuthorizationHelper;
@@ -83,7 +83,7 @@ public class EditInGoogleDriveMVCActionCommand extends BaseMVCActionCommand {
 			}
 		}
 		catch (PortalException pe) {
-			SessionErrors.add(actionRequest, pe.getClass( 	));
+			SessionErrors.add(actionRequest, pe.getClass());
 		}
 	}
 
@@ -153,12 +153,9 @@ public class EditInGoogleDriveMVCActionCommand extends BaseMVCActionCommand {
 			}
 		}
 		else if (cmd.equals(Constants.CANCEL_CHECKOUT)) {
-
 			_dlAppService.cancelCheckOut(fileEntryId);
 		}
-		else if (cmd.equals(
-					Constants.CHECKIN)) {
-
+		else if (cmd.equals(Constants.CHECKIN)) {
 			DLVersionNumberIncrease dlVersionNumberIncrease =
 				DLVersionNumberIncrease.valueOf(
 					actionRequest.getParameter("versionIncrease"),
@@ -174,7 +171,6 @@ public class EditInGoogleDriveMVCActionCommand extends BaseMVCActionCommand {
 				serviceContext);
 		}
 		else if (cmd.equals(Constants.CHECKOUT)) {
-
 			try {
 				ServiceContext serviceContext =
 					ServiceContextFactory.getInstance(actionRequest);
@@ -195,9 +191,7 @@ public class EditInGoogleDriveMVCActionCommand extends BaseMVCActionCommand {
 				throw new PortalException(throwable);
 			}
 		}
-		else if (cmd.equals(
-					Constants.EDIT)) {
-
+		else if (cmd.equals(Constants.EDIT)) {
 			ThemeDisplay themeDisplay =
 				(ThemeDisplay)actionRequest.getAttribute(WebKeys.THEME_DISPLAY);
 

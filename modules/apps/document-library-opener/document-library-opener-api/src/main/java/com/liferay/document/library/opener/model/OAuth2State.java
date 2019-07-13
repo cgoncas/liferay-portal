@@ -14,23 +14,13 @@
 
 package com.liferay.document.library.opener.model;
 
-import com.liferay.portal.kernel.util.ParamUtil;
-import com.liferay.portal.kernel.util.Validator;
-
-import java.io.IOException;
 import java.io.Serializable;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 
 /**
  * @author Adolfo Pérez
  * @author Alicia Garcia Garcia
  */
 public class OAuth2State implements Serializable {
-
-
 
 	public OAuth2State(
 		long userId, String successURL, String failureURL, String state) {
@@ -41,19 +31,19 @@ public class OAuth2State implements Serializable {
 		_state = state;
 	}
 
+	public String getFailureURL() {
+		return _failureURL;
+	}
+
+	public String getSuccessURL() {
+		return _successURL;
+	}
+
 	public long getUserId() {
 		return _userId;
 	}
 
-	public boolean isValid(HttpServletRequest httpServletRequest) {
-		if (Validator.isNotNull(
-				ParamUtil.getString(httpServletRequest, "error"))) {
-
-			return false;
-		}
-
-		String state = ParamUtil.getString(httpServletRequest, "state");
-
+	public boolean isValid(String state) {
 		if (!_state.equals(state)) {
 			return false;
 		}
@@ -62,14 +52,6 @@ public class OAuth2State implements Serializable {
 	}
 
 	private static final long serialVersionUID = 1180494919540636880L;
-
-	public String getFailureURL() {
-		return _failureURL;
-	}
-
-	public String getSuccessURL() {
-		return _successURL;
-	}
 
 	private final String _failureURL;
 	private final String _state;

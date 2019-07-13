@@ -22,7 +22,7 @@ import com.google.api.client.json.jackson2.JacksonFactory;
 import com.google.api.services.drive.Drive;
 
 import com.liferay.document.library.kernel.service.DLAppLocalService;
-import com.liferay.document.library.opener.drive.constants.DLOpenerDriveMimeTypes;
+import com.liferay.document.library.opener.google.drive.constants.DLOpenerGoogleDriveMimeTypes;
 import com.liferay.document.library.opener.google.drive.web.internal.OAuth2Manager;
 import com.liferay.document.library.opener.google.drive.web.internal.constants.GoogleDriveBackgroundTaskConstants;
 import com.liferay.document.library.opener.service.DLOpenerFileEntryReferenceLocalService;
@@ -156,7 +156,7 @@ public class UploadGoogleDriveDocumentBackgroundTaskExecutor
 			new com.google.api.services.drive.model.File();
 
 		String googleDocsMimeType =
-			DLOpenerDriveMimeTypes.getGoogleDocsMimeType(
+			DLOpenerGoogleDriveMimeTypes.getGoogleDocsMimeType(
 				fileEntry.getMimeType());
 
 		file.setMimeType(googleDocsMimeType);

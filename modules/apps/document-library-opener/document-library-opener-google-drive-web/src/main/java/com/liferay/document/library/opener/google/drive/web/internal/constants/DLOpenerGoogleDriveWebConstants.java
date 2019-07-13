@@ -14,8 +14,6 @@
 
 package com.liferay.document.library.opener.google.drive.web.internal.constants;
 
-import com.liferay.portal.kernel.util.Constants;
-
 /**
  * @author Adolfo Pérez
  */
@@ -23,8 +21,5 @@ public class DLOpenerGoogleDriveWebConstants {
 
 	public static final String GOOGLE_DRIVE_SERVLET_PATH =
 		"/document_library/google/oauth2";
-
-	public static final String SESSION_ATTRIBUTE_NAME_GOOGLE_OAUTH2_STATE =
-		"google-oauth2-state";
 
 }

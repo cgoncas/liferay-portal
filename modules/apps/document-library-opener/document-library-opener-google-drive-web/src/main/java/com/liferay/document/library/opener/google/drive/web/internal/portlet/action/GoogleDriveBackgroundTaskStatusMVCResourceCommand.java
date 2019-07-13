@@ -16,7 +16,7 @@ package com.liferay.document.library.opener.google.drive.web.internal.portlet.ac
 
 import com.liferay.document.library.constants.DLPortletKeys;
 import com.liferay.document.library.kernel.service.DLAppLocalService;
-import com.liferay.document.library.opener.drive.constants.DLOpenerDriveMimeTypes;
+import com.liferay.document.library.opener.google.drive.constants.DLOpenerGoogleDriveMimeTypes;
 import com.liferay.document.library.opener.model.DLOpenerFileEntryReference;
 import com.liferay.document.library.opener.service.DLOpenerFileEntryReferenceLocalService;
 import com.liferay.petra.string.StringBundler;
@@ -122,7 +122,7 @@ public class GoogleDriveBackgroundTaskStatusMVCResourceCommand
 
 			String googleDocsEditURL = _getGoogleDocsEditURL(
 				dlOpenerFileEntryReference.getReferenceKey(),
-				DLOpenerDriveMimeTypes.getGoogleDocsMimeType(
+				DLOpenerGoogleDriveMimeTypes.getGoogleDocsMimeType(
 					fileEntry.getMimeType()));
 
 			portletURL.setParameter("googleDocsEditURL", googleDocsEditURL);
@@ -146,11 +146,11 @@ public class GoogleDriveBackgroundTaskStatusMVCResourceCommand
 	}
 
 	private static final Map<String, String> _paths = MapUtil.fromArray(
-		DLOpenerDriveMimeTypes.APPLICATION_VND_GOOGLE_APPS_DOCUMENT,
+		DLOpenerGoogleDriveMimeTypes.APPLICATION_VND_GOOGLE_APPS_DOCUMENT,
 		"document",
-		DLOpenerDriveMimeTypes.APPLICATION_VND_GOOGLE_APPS_PRESENTATION,
+		DLOpenerGoogleDriveMimeTypes.APPLICATION_VND_GOOGLE_APPS_PRESENTATION,
 		"presentation",
-		DLOpenerDriveMimeTypes.APPLICATION_VND_GOOGLE_APPS_SPREADSHEET,
+		DLOpenerGoogleDriveMimeTypes.APPLICATION_VND_GOOGLE_APPS_SPREADSHEET,
 		"spreadsheets");
 
 	@Reference

@@ -126,9 +126,7 @@ public class DLOpenerGoogleDriveDLPortletToolbarContributorContext
 			liferayPortletURL.setParameter(
 				ActionRequest.ACTION_NAME,
 				"/document_library/edit_in_google_docs");
-			liferayPortletURL.setParameter(
-				Constants.CMD,
-				Constants.ADD);
+			liferayPortletURL.setParameter(Constants.CMD, Constants.ADD);
 
 			long repositoryId = BeanPropertiesUtil.getLong(
 				folder, "repositoryId",
