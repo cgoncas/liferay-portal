@@ -12,7 +12,7 @@
  * details.
  */
 
-package com.liferay.document.library.opener.google.drive.web.internal.util;
+package com.liferay.document.library.opener.model;
 
 import com.liferay.portal.kernel.util.ParamUtil;
 import com.liferay.portal.kernel.util.Validator;
@@ -26,28 +26,13 @@ import javax.servlet.http.HttpSession;
 
 /**
  * @author Adolfo Pérez
+ * @author Alicia Garcia Garcia
  */
-public class State implements Serializable {
+public class OAuth2State implements Serializable {
 
-	public static State get(HttpServletRequest httpServletRequest) {
-		HttpSession session = httpServletRequest.getSession();
 
-		return (State)session.getAttribute(
-			_SESSION_ATTRIBUTE_NAME_GOOGLE_OAUTH2_STATE);
-	}
 
-	public static void save(
-		HttpServletRequest httpServletRequest, long userId, String successURL,
-		String failureURL, String state) {
-
-		HttpSession session = httpServletRequest.getSession();
-
-		session.setAttribute(
-			_SESSION_ATTRIBUTE_NAME_GOOGLE_OAUTH2_STATE,
-			new State(userId, successURL, failureURL, state));
-	}
-
-	public State(
+	public OAuth2State(
 		long userId, String successURL, String failureURL, String state) {
 
 		_userId = userId;
@@ -58,30 +43,6 @@ public class State implements Serializable {
 
 	public long getUserId() {
 		return _userId;
-	}
-
-	public String goToFailurePage(
-			HttpServletRequest httpServletRequest,
-			HttpServletResponse httpServletResponse)
-		throws IOException {
-
-		_cleanUpSession(httpServletRequest);
-
-		httpServletResponse.sendRedirect(_failureURL);
-
-		return null;
-	}
-
-	public String goToSuccessPage(
-			HttpServletRequest httpServletRequest,
-			HttpServletResponse httpServletResponse)
-		throws IOException {
-
-		_cleanUpSession(httpServletRequest);
-
-		httpServletResponse.sendRedirect(_successURL);
-
-		return null;
 	}
 
 	public boolean isValid(HttpServletRequest httpServletRequest) {
@@ -100,16 +61,15 @@ public class State implements Serializable {
 		return true;
 	}
 
-	private void _cleanUpSession(HttpServletRequest httpServletRequest) {
-		HttpSession session = httpServletRequest.getSession();
+	private static final long serialVersionUID = 1180494919540636880L;
 
-		session.removeAttribute(_SESSION_ATTRIBUTE_NAME_GOOGLE_OAUTH2_STATE);
+	public String getFailureURL() {
+		return _failureURL;
 	}
 
-	private static final String _SESSION_ATTRIBUTE_NAME_GOOGLE_OAUTH2_STATE =
-		"google-oauth2-state";
-
-	private static final long serialVersionUID = 1180494919540636879L;
+	public String getSuccessURL() {
+		return _successURL;
+	}
 
 	private final String _failureURL;
 	private final String _state;

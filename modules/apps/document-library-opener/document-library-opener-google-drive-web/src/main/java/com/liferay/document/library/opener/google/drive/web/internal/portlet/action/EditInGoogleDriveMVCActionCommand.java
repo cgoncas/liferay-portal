@@ -83,7 +83,7 @@ public class EditInGoogleDriveMVCActionCommand extends BaseMVCActionCommand {
 			}
 		}
 		catch (PortalException pe) {
-			SessionErrors.add(actionRequest, pe.getClass());
+			SessionErrors.add(actionRequest, pe.getClass( 	));
 		}
 	}
 
