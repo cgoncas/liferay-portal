@@ -15,16 +15,23 @@
 package com.liferay.document.library.opener.one.drive.web.internal.service;
 
 import com.liferay.document.library.kernel.model.DLFileEntryConstants;
+import com.liferay.document.library.kernel.model.DLVersionNumberIncrease;
 import com.liferay.document.library.kernel.service.DLAppService;
 import com.liferay.document.library.kernel.service.DLAppServiceWrapper;
+import com.liferay.document.library.opener.google.drive.constants.DLOpenerGoogleDriveMimeTypes;
+import com.liferay.document.library.opener.one.drive.web.internal.DLOpenerOneDriveFileReference;
 import com.liferay.document.library.opener.one.drive.web.internal.DLOpenerOneDriveManager;
+import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.repository.model.FileEntry;
 import com.liferay.portal.kernel.security.auth.PrincipalThreadLocal;
+import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.service.ServiceWrapper;
 import com.liferay.portal.kernel.util.GetterUtil;
+
+import java.io.File;
 
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;
@@ -66,8 +73,91 @@ public class DLOpenerOneDriveDLAppServiceWrapper extends DLAppServiceWrapper {
 		}
 	}
 
+	@Override
+	public void checkInFileEntry(
+			long fileEntryId, DLVersionNumberIncrease dlVersionNumberIncrease,
+			String changeLog, ServiceContext serviceContext)
+		throws PortalException {
+
+		FileEntry fileEntry = getFileEntry(fileEntryId);
+
+		if (!_dlOpenerOneDriveManager.isConfigured(fileEntry.getCompanyId()) ||
+			!_dlOpenerOneDriveManager.isOneDriveFile(fileEntry)) {
+
+			super.checkInFileEntry(
+				fileEntryId, dlVersionNumberIncrease, changeLog,
+				serviceContext);
+
+			return;
+		}
+
+		_updateFileEntryFromOneDrive(fileEntry, serviceContext);
+
+		super.checkInFileEntry(
+			fileEntryId, dlVersionNumberIncrease, changeLog, serviceContext);
+
+		_dlOpenerOneDriveManager.deleteFile(
+			serviceContext.getUserId(), fileEntry);
+	}
+
+	@Override
+	public void checkInFileEntry(
+			long fileEntryId, String lockUuid, ServiceContext serviceContext)
+		throws PortalException {
+
+		FileEntry fileEntry = getFileEntry(fileEntryId);
+
+		if (!_dlOpenerOneDriveManager.isConfigured(fileEntry.getCompanyId()) ||
+			!_dlOpenerOneDriveManager.isOneDriveFile(fileEntry)) {
+
+			super.checkInFileEntry(fileEntryId, lockUuid, serviceContext);
+
+			return;
+		}
+
+		_updateFileEntryFromOneDrive(fileEntry, serviceContext);
+
+		super.checkInFileEntry(fileEntryId, lockUuid, serviceContext);
+
+		_dlOpenerOneDriveManager.deleteFile(
+			serviceContext.getUserId(), fileEntry);
+	}
+
 	private long _getUserId() {
 		return GetterUtil.getLong(PrincipalThreadLocal.getName());
+	}
+
+	private void _updateFileEntryFromOneDrive(
+			FileEntry fileEntry, ServiceContext serviceContext)
+		throws PortalException {
+
+		DLOpenerOneDriveFileReference dLOpenerOneDriveFileReference =
+			_dlOpenerOneDriveManager.getDLOpenerOneDriveFileReference(
+				serviceContext.getUserId(), fileEntry);
+
+		File file = dLOpenerOneDriveFileReference.getContentFile();
+
+		try {
+			String sourceFileName = fileEntry.getTitle();
+
+			sourceFileName += DLOpenerGoogleDriveMimeTypes.getMimeTypeExtension(
+				fileEntry.getMimeType());
+
+			updateFileEntry(
+				fileEntry.getFileEntryId(), sourceFileName,
+				fileEntry.getMimeType(), fileEntry.getTitle(),
+				fileEntry.getDescription(), StringPool.BLANK,
+				DLVersionNumberIncrease.NONE, file, serviceContext);
+		}
+		finally {
+			if ((file != null) && !file.delete()) {
+				if (_log.isDebugEnabled()) {
+					_log.debug(
+						"Unable to delete temporary file " +
+							file.getAbsolutePath());
+				}
+			}
+		}
 	}
 
 	private static final Log _log = LogFactoryUtil.getLog(

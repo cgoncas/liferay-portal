@@ -15,6 +15,7 @@
 package com.liferay.document.library.opener.one.drive.web.internal.portlet.action;
 
 import com.liferay.document.library.constants.DLPortletKeys;
+import com.liferay.document.library.kernel.model.DLVersionNumberIncrease;
 import com.liferay.document.library.kernel.service.DLAppService;
 import com.liferay.document.library.opener.google.drive.constants.DLOpenerGoogleDriveMimeTypes;
 import com.liferay.document.library.opener.google.drive.upload.UniqueFileEntryTitleProvider;
@@ -158,6 +159,21 @@ public class EditInOneDriveMVCActionCommand extends BaseMVCActionCommand {
 		}
 		else if (cmd.equals(Constants.CANCEL_CHECKOUT)) {
 			_dlAppService.cancelCheckOut(fileEntryId);
+		}
+		else if (cmd.equals(Constants.CHECKIN)) {
+			DLVersionNumberIncrease dlVersionNumberIncrease =
+				DLVersionNumberIncrease.valueOf(
+					actionRequest.getParameter("versionIncrease"),
+					DLVersionNumberIncrease.AUTOMATIC);
+
+			String changeLog = ParamUtil.getString(actionRequest, "changeLog");
+
+			ServiceContext serviceContext = ServiceContextFactory.getInstance(
+				actionRequest);
+
+			_dlAppService.checkInFileEntry(
+				fileEntryId, dlVersionNumberIncrease, changeLog,
+				serviceContext);
 		}
 	}
 
