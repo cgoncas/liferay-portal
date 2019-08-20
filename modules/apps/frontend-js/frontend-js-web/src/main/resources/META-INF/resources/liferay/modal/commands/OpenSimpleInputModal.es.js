@@ -18,6 +18,7 @@ import SimpleInputModal from '../components/SimpleInputModal.es';
  * Function that implements the SimpleInputModal pattern, which allows
  * manipulating small amounts of data with a form shown inside a modal.
  *
+ * @param {Object} alert
  * @param {Object} options
  * @param {string} checkboxFieldLabel
  * @param {string} checkboxFieldName
@@ -70,6 +71,7 @@ import SimpleInputModal from '../components/SimpleInputModal.es';
  */
 
 function openSimpleInputModal({
+	alert,
 	checkboxFieldLabel = '',
 	checkboxFieldName = '',
 	checkboxFieldValue = false,
@@ -122,6 +124,7 @@ function openSimpleInputModal({
 	}
 
 	simpleInputModal = new SimpleInputModal({
+		alert,
 		checkboxFieldLabel,
 		checkboxFieldName,
 		checkboxFieldValue,

@@ -175,6 +175,20 @@ SimpleInputModal.STATE = {
 		.value(false),
 
 	/**
+	 * Optional ClayAlert in SimpleInputModal
+	 *
+	 * @default undefined
+	 * @instance
+	 * @memberOf SimpleInputModal
+	 * @type {!object}
+	 */
+	alert: Config.shapeOf({
+		message: Config.string(),
+		style: Config.string(),
+		title: Config.string()
+	}),
+
+	/**
 	 * Label for the optional checkbox.
 	 *
 	 * @default ''
