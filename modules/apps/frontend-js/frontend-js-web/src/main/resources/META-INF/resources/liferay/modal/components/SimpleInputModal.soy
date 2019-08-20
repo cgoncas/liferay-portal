@@ -59,7 +59,7 @@
 					{/let}
 
 					<div class="{$mainFieldClasses}">
-						<label>
+						<label for="{$namespace}{$mainFieldName}">
 							{$mainFieldLabel}
 							<span class="reference-mark">
 								<svg class="lexicon-icon">
@@ -71,6 +71,7 @@
 						{let $mainFieldAttributes kind="attributes"}
 							{if $_loadingResponse}disabled{/if}
 							class="form-control"
+							id="{$namespace}{$mainFieldName}"
 							name="{$namespace}{$mainFieldName}"
 							placeholder="{$mainFieldPlaceholder ?: ''}"
 							ref="mainField"
