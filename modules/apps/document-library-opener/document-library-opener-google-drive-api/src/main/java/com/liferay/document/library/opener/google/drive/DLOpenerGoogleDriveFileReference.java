@@ -24,7 +24,9 @@ import java.util.function.Supplier;
  * instances of this class, which you should never create directly.
  *
  * @author Adolfo Pérez
+ * @deprecated As of Mueller (7.2.x), with no direct replacement
  */
+@Deprecated
 public class DLOpenerGoogleDriveFileReference {
 
 	/**
