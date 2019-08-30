@@ -17,7 +17,7 @@ package com.liferay.document.library.opener.google.drive.web.internal.display.co
 import com.liferay.document.library.display.context.BaseDLDisplayContextFactory;
 import com.liferay.document.library.display.context.DLDisplayContextFactory;
 import com.liferay.document.library.display.context.DLViewFileVersionDisplayContext;
-import com.liferay.document.library.opener.google.drive.web.internal.DLOpenerGoogleDriveManagerImpl;
+import com.liferay.document.library.opener.google.drive.web.internal.DLOpenerGoogleDriveManager;
 import com.liferay.document.library.opener.service.DLOpenerFileEntryReferenceLocalService;
 import com.liferay.petra.string.StringBundler;
 import com.liferay.portal.kernel.exception.PortalException;
@@ -92,7 +92,7 @@ public class DLOpenerGoogleDriveDLDisplayContextFactory
 		_dlOpenerFileEntryReferenceLocalService;
 
 	@Reference
-	private DLOpenerGoogleDriveManagerImpl _dlOpenerGoogleDriveManager;
+	private DLOpenerGoogleDriveManager _dlOpenerGoogleDriveManager;
 
 	@Reference(
 		target = "(model.class.name=com.liferay.portal.kernel.repository.model.FileEntry)"

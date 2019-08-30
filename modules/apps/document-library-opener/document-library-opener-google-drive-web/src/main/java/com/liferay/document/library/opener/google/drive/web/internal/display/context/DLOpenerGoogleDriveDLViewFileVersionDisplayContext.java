@@ -19,7 +19,7 @@ import com.liferay.document.library.display.context.DLUIItemKeys;
 import com.liferay.document.library.display.context.DLViewFileVersionDisplayContext;
 import com.liferay.document.library.opener.constants.DLOpenerFileEntryReferenceConstants;
 import com.liferay.document.library.opener.google.drive.constants.DLOpenerGoogleDriveMimeTypes;
-import com.liferay.document.library.opener.google.drive.web.internal.DLOpenerGoogleDriveManagerImpl;
+import com.liferay.document.library.opener.google.drive.web.internal.DLOpenerGoogleDriveManager;
 import com.liferay.document.library.opener.google.drive.web.internal.constants.DLOpenerGoogleDriveConstants;
 import com.liferay.document.library.opener.model.DLOpenerFileEntryReference;
 import com.liferay.document.library.opener.service.DLOpenerFileEntryReferenceLocalService;
@@ -73,8 +73,7 @@ public class DLOpenerGoogleDriveDLViewFileVersionDisplayContext
 		ModelResourcePermission<FileEntry> fileEntryModelResourcePermission,
 		DLOpenerFileEntryReferenceLocalService
 			dlOpenerFileEntryReferenceLocalService,
-		DLOpenerGoogleDriveManagerImpl dlOpenerGoogleDriveManager,
-		Portal portal) {
+		DLOpenerGoogleDriveManager dlOpenerGoogleDriveManager, Portal portal) {
 
 		super(
 			_UUID, parentDLDisplayContext, httpServletRequest,
@@ -297,7 +296,7 @@ public class DLOpenerGoogleDriveDLViewFileVersionDisplayContext
 
 	private final DLOpenerFileEntryReferenceLocalService
 		_dlOpenerFileEntryReferenceLocalService;
-	private final DLOpenerGoogleDriveManagerImpl _dlOpenerGoogleDriveManager;
+	private final DLOpenerGoogleDriveManager _dlOpenerGoogleDriveManager;
 	private final ModelResourcePermission<FileEntry>
 		_fileEntryModelResourcePermission;
 	private final PermissionChecker _permissionChecker;
