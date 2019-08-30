@@ -204,7 +204,7 @@ public class DLOpenerFileEntryReferenceLocalServiceImpl
 			dlOpenerFileEntryReference);
 	}
 
-	private static final String _GOOGLE_REFERENCE_TYPE = "Google";
+	private static final String _GOOGLE_REFERENCE_TYPE = "GoogleDrive";
 
 	@Reference
 	private UserLocalService _userLocalService;
