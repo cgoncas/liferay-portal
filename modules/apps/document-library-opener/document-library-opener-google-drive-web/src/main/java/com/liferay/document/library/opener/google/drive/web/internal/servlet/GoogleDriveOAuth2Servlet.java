@@ -16,7 +16,7 @@ package com.liferay.document.library.opener.google.drive.web.internal.servlet;
 
 import com.google.api.client.auth.oauth2.TokenResponseException;
 
-import com.liferay.document.library.opener.google.drive.DLOpenerGoogleDriveManager;
+import com.liferay.document.library.opener.google.drive.web.internal.DLOpenerGoogleDriveManagerImpl;
 import com.liferay.document.library.opener.google.drive.web.internal.constants.DLOpenerGoogleDriveWebConstants;
 import com.liferay.document.library.opener.google.drive.web.internal.oauth.OAuth2StateUtil;
 import com.liferay.document.library.opener.oauth.OAuth2State;
@@ -124,7 +124,7 @@ public class GoogleDriveOAuth2Servlet extends HttpServlet {
 	private static final long serialVersionUID = 7759897747401129852L;
 
 	@Reference
-	private DLOpenerGoogleDriveManager _dlOpenerGoogleDriveManager;
+	private DLOpenerGoogleDriveManagerImpl _dlOpenerGoogleDriveManager;
 
 	@Reference
 	private Portal _portal;

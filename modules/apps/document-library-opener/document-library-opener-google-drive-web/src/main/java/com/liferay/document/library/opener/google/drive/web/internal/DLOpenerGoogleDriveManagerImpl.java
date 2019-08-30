@@ -69,7 +69,11 @@ import org.osgi.service.component.annotations.Reference;
 /**
  * @author Adolfo Pérez
  */
-@Component(service = DLOpenerGoogleDriveManager.class)
+@Component(
+	service = {
+		DLOpenerGoogleDriveManager.class, DLOpenerGoogleDriveManagerImpl.class
+	}
+)
 public class DLOpenerGoogleDriveManagerImpl
 	implements DLOpenerGoogleDriveManager {
 
@@ -253,7 +257,7 @@ public class DLOpenerGoogleDriveManagerImpl
 		return _backgroundTaskManager.addBackgroundTask(
 			userId, CompanyConstants.SYSTEM,
 			StringBundler.concat(
-				DLOpenerGoogleDriveManager.class.getSimpleName(),
+				DLOpenerGoogleDriveManagerImpl.class.getSimpleName(),
 				StringPool.POUND, fileEntry.getFileEntryId()),
 			UploadGoogleDriveDocumentBackgroundTaskExecutor.class.getName(),
 			taskContextMap, new ServiceContext());
