@@ -16,7 +16,7 @@ package com.liferay.document.library.opener.google.drive.web.internal.portlet.to
 
 import com.liferay.document.library.kernel.model.DLFolderConstants;
 import com.liferay.document.library.opener.constants.DLOpenerMimeTypes;
-import com.liferay.document.library.opener.google.drive.web.internal.DLOpenerGoogleDriveManagerImpl;
+import com.liferay.document.library.opener.google.drive.web.internal.DLOpenerGoogleDriveManager;
 import com.liferay.document.library.portlet.toolbar.contributor.DLPortletToolbarContributorContext;
 import com.liferay.portal.kernel.bean.BeanPropertiesUtil;
 import com.liferay.portal.kernel.exception.PortalException;
@@ -179,7 +179,7 @@ public class DLOpenerGoogleDriveDLPortletToolbarContributorContext
 		DLOpenerGoogleDriveDLPortletToolbarContributorContext.class);
 
 	@Reference
-	private DLOpenerGoogleDriveManagerImpl _dlOpenerGoogleDriveManager;
+	private DLOpenerGoogleDriveManager _dlOpenerGoogleDriveManager;
 
 	@Reference(
 		target = "(model.class.name=com.liferay.portal.kernel.repository.model.Folder)"
