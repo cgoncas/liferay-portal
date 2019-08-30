@@ -28,7 +28,14 @@ public class DLOpenerServiceUpgrade implements UpgradeStepRegistrator {
 	@Override
 	public void register(Registry registry) {
 		registry.register(
-			"1.0.0", "1.1.0", new UpgradeDLOpenerFileEntryReference());
+			"1.0.0", "1.1.0",
+			new com.liferay.document.library.opener.internal.upgrade.v1_1_0.
+				UpgradeDLOpenerFileEntryReference());
+
+		registry.register(
+			"1.1.0", "1.2.0",
+			new com.liferay.document.library.opener.internal.upgrade.v1_2_0.
+				UpgradeDLOpenerFileEntryReference());
 	}
 
 }
