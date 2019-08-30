@@ -23,7 +23,7 @@ import com.google.api.services.drive.model.About;
 
 import com.liferay.connected.app.ConnectedApp;
 import com.liferay.connected.app.ConnectedAppProvider;
-import com.liferay.document.library.opener.google.drive.DLOpenerGoogleDriveManager;
+import com.liferay.document.library.opener.google.drive.web.internal.DLOpenerGoogleDriveManagerImpl;
 import com.liferay.document.library.opener.google.drive.web.internal.oauth.OAuth2Manager;
 import com.liferay.petra.string.StringBundler;
 import com.liferay.petra.string.StringPool;
@@ -146,7 +146,7 @@ public class GoogleDriveConnectedAppProvider implements ConnectedAppProvider {
 		GoogleDriveConnectedAppProvider.class);
 
 	@Reference
-	private DLOpenerGoogleDriveManager _dlOpenerGoogleDriveManager;
+	private DLOpenerGoogleDriveManagerImpl _dlOpenerGoogleDriveManager;
 
 	private JacksonFactory _jsonFactory;
 	private NetHttpTransport _netHttpTransport;
