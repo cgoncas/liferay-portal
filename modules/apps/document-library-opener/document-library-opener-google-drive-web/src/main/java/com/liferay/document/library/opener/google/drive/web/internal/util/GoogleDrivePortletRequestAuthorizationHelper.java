@@ -14,7 +14,7 @@
 
 package com.liferay.document.library.opener.google.drive.web.internal.util;
 
-import com.liferay.document.library.opener.google.drive.web.internal.DLOpenerGoogleDriveManagerImpl;
+import com.liferay.document.library.opener.google.drive.web.internal.DLOpenerGoogleDriveManager;
 import com.liferay.document.library.opener.google.drive.web.internal.oauth.OAuth2StateUtil;
 import com.liferay.document.library.opener.oauth.OAuth2State;
 import com.liferay.portal.kernel.exception.PortalException;
@@ -98,7 +98,7 @@ public class GoogleDrivePortletRequestAuthorizationHelper {
 	}
 
 	@Reference
-	private DLOpenerGoogleDriveManagerImpl _dlOpenerGoogleDriveManager;
+	private DLOpenerGoogleDriveManager _dlOpenerGoogleDriveManager;
 
 	@Reference
 	private HttpUtil _httpUtil;

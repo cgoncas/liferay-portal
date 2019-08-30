@@ -23,7 +23,6 @@ import com.google.api.services.drive.Drive;
 
 import com.liferay.document.library.opener.constants.DLOpenerFileEntryReferenceConstants;
 import com.liferay.document.library.opener.google.drive.DLOpenerGoogleDriveFileReference;
-import com.liferay.document.library.opener.google.drive.DLOpenerGoogleDriveManager;
 import com.liferay.document.library.opener.google.drive.web.internal.background.task.UploadGoogleDriveDocumentBackgroundTaskExecutor;
 import com.liferay.document.library.opener.google.drive.web.internal.constants.DLOpenerGoogleDriveConstants;
 import com.liferay.document.library.opener.google.drive.web.internal.constants.GoogleDriveBackgroundTaskConstants;
@@ -71,11 +70,14 @@ import org.osgi.service.component.annotations.Reference;
  */
 @Component(
 	service = {
-		DLOpenerGoogleDriveManager.class, DLOpenerGoogleDriveManagerImpl.class
+		com.liferay.document.library.opener.google.drive.
+			DLOpenerGoogleDriveManager.class,
+		DLOpenerGoogleDriveManager.class
 	}
 )
-public class DLOpenerGoogleDriveManagerImpl
-	implements DLOpenerGoogleDriveManager {
+public class DLOpenerGoogleDriveManager
+	implements com.liferay.document.library.opener.google.drive.
+				   DLOpenerGoogleDriveManager {
 
 	@Override
 	public DLOpenerGoogleDriveFileReference checkOut(
@@ -257,7 +259,7 @@ public class DLOpenerGoogleDriveManagerImpl
 		return _backgroundTaskManager.addBackgroundTask(
 			userId, CompanyConstants.SYSTEM,
 			StringBundler.concat(
-				DLOpenerGoogleDriveManagerImpl.class.getSimpleName(),
+				DLOpenerGoogleDriveManager.class.getSimpleName(),
 				StringPool.POUND, fileEntry.getFileEntryId()),
 			UploadGoogleDriveDocumentBackgroundTaskExecutor.class.getName(),
 			taskContextMap, new ServiceContext());
