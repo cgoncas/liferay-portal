@@ -30,7 +30,7 @@ public class UpgradeDLOpenerFileEntryReference extends UpgradeProcess {
 
 		runSQL(
 			"update " + DLOpenerFileEntryReferenceTable.TABLE_NAME +
-				" set referenceType = 'Google'");
+				" set referenceType = 'GoogleDrive'");
 	}
 
 }
