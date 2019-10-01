@@ -37,6 +37,20 @@ UnicodeProperties layoutTypeSettings = selLayout.getTypeSettingsProperties();
 	<aui:input id="descriptionSEO" name="description" placeholder="description" />
 
 	<aui:input name="keywords" placeholder="keywords" />
+
+	<div>
+
+		<%
+		Map<String, Object> data = new HashMap<>();
+
+		data.put("number", 1);
+		%>
+
+		<react:component
+			data="<%= data %>"
+			module="js/seo/index.es"
+		/>
+	</div>
 </c:if>
 
 <aui:input name="robots" placeholder="robots" />
