@@ -6,13 +6,12 @@
 	border: 1px solid $secondary-l3;
 	border-radius: 0.25rem;
 	font-size: 0.875rem;
-	line-height: 1.5;
 	padding: 1rem;
 
 	&__description,
 	&__title,
 	&__url {
-		min-height: 1.5rem;
+		min-height: $line-height-base * 1em;
 	}
 
 	&__title {
