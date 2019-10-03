@@ -1,0 +1,38 @@
+@import 'atlas-variables';
+
+.preview-seo {
+	$block: &;
+
+	border: 1px solid $secondary-l3;
+	border-radius: 0.25rem;
+	font-size: 0.875rem;
+	line-height: 1.5;
+	padding: 1rem;
+
+	&__description,
+	&__title,
+	&__url {
+		min-height: 1.5rem;
+	}
+
+	&__title {
+		font-size: 1rem;
+	}
+
+	&--serp {
+		box-sizing: content-box;
+		width: 600px;
+
+		#{$block}__title {
+			color: $primary;
+		}
+
+		#{$block}__url {
+			color: $success;
+		}
+
+		#{$block}__description {
+			color: $dark;
+		}
+	}
+}

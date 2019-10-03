@@ -13,10 +13,8 @@
  */
 
 import React from 'react';
-
-import Preview from './Preview.es';
+import PreviewSeoContainer from './PreviewSeo.es';
 
 export default function(props) {
-	console.log({props});
-	return <Preview {...props} />;
+	return <PreviewSeoContainer {...props} />;
 }

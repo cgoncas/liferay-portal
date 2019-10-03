@@ -1,0 +1,111 @@
+/**
+ * Copyright (c) 2000-present Liferay, Inc. All rights reserved.
+ *
+ * This library is free software; you can redistribute it and/or modify it under
+ * the terms of the GNU Lesser General Public License as published by the Free
+ * Software Foundation; either version 2.1 of the License, or (at your option)
+ * any later version.
+ *
+ * This library is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
+ * details.
+ */
+
+import React, {useEffect, useState} from 'react';
+import {PropTypes} from 'prop-types';
+
+const PreviewSeo = ({
+	description = '',
+	suffixTitle = '',
+	title = '',
+	url = ''
+}) => (
+	<div className="preview-seo preview-seo--serp">
+		<div className="preview-seo__title text-truncate">
+			{title}
+			{suffixTitle && ` - ${suffixTitle}`}
+		</div>
+		<div className="preview-seo__url text-truncate">{url}</div>
+		<div className="preview-seo__description">{description}</div>
+	</div>
+);
+PreviewSeo.propTypes = {
+	description: PropTypes.string,
+	suffixTitle: PropTypes.string,
+	title: PropTypes.string,
+	url: PropTypes.string
+};
+
+const PreviewSeoContainer = ({
+	portletNamespace,
+	suffixTitle,
+	targetsIds,
+	url
+}) => {
+	const [description, setDescription] = useState('');
+	const [title, setTitle] = useState('');
+
+	const handlerInputChange = ({type, event}) => {
+		const value = event.target && event.target.value;
+		if (typeof value === undefined) {
+			return;
+		}
+
+		if (type === 'description') {
+			setDescription(value);
+		} else if (type === 'title') {
+			setTitle(value);
+		}
+	};
+
+	useEffect(() => {
+		const inputs = Object.entries(targetsIds).reduce(
+			(memo, [key, targetId]) => {
+				memo[key] = document.getElementById(
+					`_${portletNamespace}_${targetId}`
+				);
+
+				return memo;
+			},
+			{}
+		);
+
+		const handleDescriptionChange = event => {
+			handlerInputChange({event, type: 'description'});
+		};
+		const handleDescriptionTitle = event => {
+			handlerInputChange({event, type: 'title'});
+		};
+
+		inputs.description.addEventListener('input', handleDescriptionChange);
+		inputs.title.addEventListener('input', handleDescriptionTitle);
+
+		return () => {
+			inputs.description.removeEventListener(
+				'input',
+				handleDescriptionChange
+			);
+			inputs.title.removeEventListener('input', handleDescriptionTitle);
+		};
+	}, [portletNamespace, targetsIds]);
+
+	return (
+		<PreviewSeo
+			description={description}
+			suffixTitle={suffixTitle}
+			title={title}
+			url={url}
+		/>
+	);
+};
+
+PreviewSeoContainer.propTypes = {
+	targetsIds: PropTypes.shape({
+		description: PropTypes.string.isRequired,
+		title: PropTypes.string.isRequired
+	}).isRequired,
+	url: PropTypes.string.isRequired
+};
+
+export default PreviewSeoContainer;

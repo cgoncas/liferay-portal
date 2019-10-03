@@ -30,26 +30,42 @@ UnicodeProperties layoutTypeSettings = selLayout.getTypeSettingsProperties();
 <aui:model-context bean="<%= selLayout %>" model="<%= Layout.class %>" />
 
 <c:if test="<%= !StringUtil.equals(selLayout.getType(), LayoutConstants.TYPE_ASSET_DISPLAY) %>">
-	<aui:input label="html-title" name="title" placeholder="title" />
+
+	<%
+		String titleInputId = "title";
+		String descriptionInputId = "descriptionSEO";
+	%>
+
+	<aui:input id="<%= titleInputId %>" label="html-title" name="title" placeholder="title" />
 
 	<h4><liferay-ui:message key="meta-tags" /></h4>
 
-	<aui:input id="descriptionSEO" name="description" placeholder="description" />
+	<aui:input id="<%= descriptionInputId %>" name="description" placeholder="description" />
 
 	<aui:input name="keywords" placeholder="keywords" />
 
-	<div>
+	<div class="form-group">
+		<label><liferay-ui:message key="preview" /></label>
 
-		<%
-		Map<String, Object> data = new HashMap<>();
+		<div>
 
-		data.put("number", 1);
-		%>
+			<%
+			Map<String, Object> data = new HashMap<>();
+			Map<String, String> targetsIds = new HashMap<>();
 
-		<react:component
-			data="<%= data %>"
-			module="js/seo/index.es"
-		/>
+			targetsIds.put("description", descriptionInputId);
+			targetsIds.put("title", titleInputId);
+
+			data.put("suffixTitle", "Liferay");
+			data.put("targetsIds", targetsIds);
+			data.put("url", "http://www.liferay.com/blog/en/example-url");
+			%>
+
+			<react:component
+				data="<%= data %>"
+				module="js/seo/index.es"
+			/>
+		</div>
 	</div>
 </c:if>
 
