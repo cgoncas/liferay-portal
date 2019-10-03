@@ -62,31 +62,28 @@ const PreviewSeoContainer = ({
 	useEffect(() => {
 		const inputs = Object.entries(targetsIds).reduce(
 			(memo, [key, targetId]) => {
-				memo[key] = document.getElementById(
+				const listener = event => {
+					handlerInputChange({event, type: key});
+				};
+
+				const node = document.getElementById(
 					`_${portletNamespace}_${targetId}`
 				);
+
+				node.addEventListener('input', listener);
+				node.dispatchEvent(new Event('input'));
+
+				memo[key] = {listener, node};
 
 				return memo;
 			},
 			{}
 		);
 
-		const handleDescriptionChange = event => {
-			handlerInputChange({event, type: 'description'});
-		};
-		const handleDescriptionTitle = event => {
-			handlerInputChange({event, type: 'title'});
-		};
-
-		inputs.description.addEventListener('input', handleDescriptionChange);
-		inputs.title.addEventListener('input', handleDescriptionTitle);
-
 		return () => {
-			inputs.description.removeEventListener(
-				'input',
-				handleDescriptionChange
+			Object.values(inputs).forEach(({node, listener}) =>
+				node.removeEventListener('input', listener)
 			);
-			inputs.title.removeEventListener('input', handleDescriptionTitle);
 		};
 	}, [portletNamespace, targetsIds]);
 
