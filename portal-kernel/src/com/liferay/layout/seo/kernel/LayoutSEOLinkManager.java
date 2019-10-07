@@ -31,4 +31,10 @@ public interface LayoutSEOLinkManager {
 			Map<Locale, String> alternateURLs)
 		throws PortalException;
 
+	public default LayoutSEOLink getCanonicalLayoutSEOLink(
+		Layout layout, Locale locale, String canonicalURL,
+		Map<Locale, String> alternateURLs) throws PortalException {
+
+		throw new UnsupportedOperationException();
+	}
 }

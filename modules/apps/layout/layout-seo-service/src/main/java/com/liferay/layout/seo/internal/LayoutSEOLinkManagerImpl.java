@@ -53,11 +53,8 @@ public class LayoutSEOLinkManagerImpl implements LayoutSEOLinkManager {
 			alternateURLs.size() + 2);
 
 		layoutSEOLinks.add(
-			new LayoutSEOLinkImpl(
-				_html.escapeAttribute(
-					_getCanonicalURL(
-						layout, locale, canonicalURL, alternateURLs)),
-				null, LayoutSEOLink.Relationship.CANONICAL));
+			getCanonicalLayoutSEOLink(
+				layout, locale, canonicalURL, alternateURLs));
 
 		alternateURLs.forEach(
 			(urlLocale, url) -> layoutSEOLinks.add(
@@ -78,6 +75,17 @@ public class LayoutSEOLinkManagerImpl implements LayoutSEOLinkManager {
 				LayoutSEOLink.Relationship.ALTERNATE));
 
 		return layoutSEOLinks;
+	}
+
+	@Override
+	public LayoutSEOLink getCanonicalLayoutSEOLink(
+		Layout layout, Locale locale, String canonicalURL,
+		Map<Locale, String> alternateURLs) throws PortalException {
+		return new LayoutSEOLinkImpl(
+			_html.escapeAttribute(
+				_getCanonicalURL(
+					layout, locale, canonicalURL, alternateURLs)),
+			null, LayoutSEOLink.Relationship.CANONICAL);
 	}
 
 	private String _getCanonicalURL(

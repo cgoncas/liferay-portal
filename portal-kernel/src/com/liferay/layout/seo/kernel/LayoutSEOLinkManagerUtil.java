@@ -41,4 +41,12 @@ public class LayoutSEOLinkManagerUtil {
 			LayoutSEOLinkManager.class, LayoutSEOLinkManagerUtil.class,
 			"_layoutSEOLinkManager", false);
 
+	public LayoutSEOLink getCanonicalLayoutSEOLink(
+		Layout layout, Locale locale, String canonicalURL,
+		Map<Locale, String> alternateURLs) throws PortalException{
+
+		return _layoutSEOLinkManager.getCanonicalLayoutSEOLink(
+			layout, locale, canonicalURL, alternateURLs);
+	}
+
 }
