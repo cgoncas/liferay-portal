@@ -18,6 +18,7 @@ import com.liferay.layout.seo.kernel.LayoutSEOLinkManager;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.language.Language;
 import com.liferay.portal.kernel.language.LanguageUtil;
+import com.liferay.portal.kernel.model.Company;
 import com.liferay.portal.kernel.model.Group;
 import com.liferay.portal.kernel.model.Layout;
 import com.liferay.portal.kernel.test.ReflectionTestUtil;
@@ -191,7 +192,7 @@ public class OpenGraphTopHeadDynamicIncludeTest {
 		return locales;
 	}
 
-	private HttpServletRequest _getHttpServletRequest() throws Exception {
+	private HttpServletRequest _getHttpServletRequest() {
 		HttpServletRequest httpServletRequest = new MockHttpServletRequest();
 
 		httpServletRequest.setAttribute(WebKeys.THEME_DISPLAY, _themeDisplay);
@@ -212,7 +213,7 @@ public class OpenGraphTopHeadDynamicIncludeTest {
 		return httpServletResponse;
 	}
 
-	private void _getProcessedHTML(String stringWriter) throws IOException {
+	private void _getProcessedHTML(String stringWriter) {
 		Document document = Jsoup.parse(stringWriter);
 
 		document.outputSettings(
@@ -255,7 +256,8 @@ public class OpenGraphTopHeadDynamicIncludeTest {
 		Assert.assertEquals(1, selectTitle.size());
 		Element elementTitle = selectTitle.get(0);
 
-		Assert.assertEquals("title", elementTitle.attr("content"));
+		Assert.assertEquals(
+			"title - companyName", elementTitle.attr("content"));
 
 		Elements selectUrl = document.select("meta[property='og:url']");
 
@@ -267,9 +269,15 @@ public class OpenGraphTopHeadDynamicIncludeTest {
 			"http://localhost:8080/home", elementUrl.attr("content"));
 	}
 
-	private ThemeDisplay _getThemeDisplay() {
+	private ThemeDisplay _getThemeDisplay() throws PortalException {
 		ThemeDisplay themeDisplay = new ThemeDisplay();
 
+		Mockito.doReturn(
+			"companyName"
+		).when(
+			_company
+		).getName();
+		themeDisplay.setCompany(_company);
 		themeDisplay.setLocale(_locale);
 		themeDisplay.setLanguageId(_locale.toLanguageTag());
 		themeDisplay.setLayout(_layout);
@@ -282,6 +290,9 @@ public class OpenGraphTopHeadDynamicIncludeTest {
 	private static final String _PRIVATE_FRIENDLY_URL_PATH = "/group";
 
 	private static final String _PUBLIC_FRIENDLY_URL_PATH = "/web";
+
+	@Mock
+	private Company _company;
 
 	private Group _group;
 
