@@ -95,10 +95,10 @@ public class OpenGraphTopHeadDynamicIncludeTest {
 		Assert.assertNotNull(elements);
 
 		for (String languageId : languageIds) {
-			Elements languageIdElement = elements.select(
+			Elements element = elements.select(
 				"[hrefLang='" + LocaleUtil.toW3cLanguageId(languageId) + "']");
 
-			Assert.assertEquals(1, languageIdElement.size());
+			Assert.assertEquals(1, element.size());
 		}
 	}
 
