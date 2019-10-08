@@ -138,9 +138,8 @@ public class OpenGraphTopHeadDynamicIncludeTest {
 
 		String languageId = _group.getDefaultLanguageId();
 
-		themeDisplay.setLocale(LocaleUtil.fromLanguageId(languageId));
-
 		themeDisplay.setLanguageId(languageId);
+		themeDisplay.setLocale(LocaleUtil.fromLanguageId(languageId));
 
 		themeDisplay.setLayout(_layout);
 
