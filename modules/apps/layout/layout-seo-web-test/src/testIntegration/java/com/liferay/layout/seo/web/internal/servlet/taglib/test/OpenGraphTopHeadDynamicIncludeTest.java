@@ -108,9 +108,9 @@ public class OpenGraphTopHeadDynamicIncludeTest {
 		Assert.assertNotNull(elements);
 		Assert.assertEquals(1, elements.size());
 
-		Element elementUrl = elements.get(0);
+		Element element = elements.get(0);
 
-		Assert.assertEquals(href, elementUrl.attr("href"));
+		Assert.assertEquals(href, element.attr("href"));
 	}
 
 	private HttpServletRequest _getHttpServletRequest() throws PortalException {
