@@ -142,11 +142,11 @@ public class OpenGraphTopHeadDynamicIncludeTest {
 		themeDisplay.setLayout(_layout);
 		themeDisplay.setLayoutSet(
 			_layoutSetLocalService.getLayoutSet(_group.getGroupId(), false));
-		themeDisplay.setSiteGroupId(_group.getGroupId());
 		themeDisplay.setPortalURL(company.getPortalURL(_group.getGroupId()));
 		themeDisplay.setPortalDomain("localhost");
 		themeDisplay.setServerName("localhost");
 		themeDisplay.setServerPort(8080);
+		themeDisplay.setSiteGroupId(_group.getGroupId());
 
 		return themeDisplay;
 	}
