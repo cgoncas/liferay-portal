@@ -15,14 +15,14 @@
 package com.liferay.layout.seo.web.internal.servlet.taglib;
 
 import com.liferay.layout.seo.kernel.LayoutSEOLink;
-import com.liferay.layout.seo.kernel.LayoutSEOLinkManagerUtil;
+import com.liferay.layout.seo.kernel.LayoutSEOLinkManager;
 import com.liferay.portal.kernel.exception.PortalException;
-import com.liferay.portal.kernel.language.LanguageUtil;
+import com.liferay.portal.kernel.language.Language;
 import com.liferay.portal.kernel.model.Layout;
 import com.liferay.portal.kernel.servlet.taglib.BaseDynamicInclude;
 import com.liferay.portal.kernel.servlet.taglib.DynamicInclude;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
-import com.liferay.portal.kernel.util.PortalUtil;
+import com.liferay.portal.kernel.util.Portal;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.kernel.util.WebKeys;
 
@@ -38,6 +38,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.osgi.service.component.annotations.Component;
+import org.osgi.service.component.annotations.Reference;
 
 /**
  * @author Alicia García
@@ -59,27 +60,27 @@ public class OpenGraphTopHeadDynamicInclude extends BaseDynamicInclude {
 
 		try {
 			if (!themeDisplay.isSignedIn() && layout.isPublicLayout()) {
-				String completeURL = PortalUtil.getCurrentCompleteURL(
+				String completeURL = _portal.getCurrentCompleteURL(
 					httpServletRequest);
 
-				String canonicalURL = PortalUtil.getCanonicalURL(
+				String canonicalURL = _portal.getCanonicalURL(
 					completeURL, themeDisplay, layout, false, false);
 
 				Map<Locale, String> alternateURLs = Collections.emptyMap();
 
-				Set<Locale> availableLocales = LanguageUtil.getAvailableLocales(
+				Set<Locale> availableLocales = _language.getAvailableLocales(
 					themeDisplay.getSiteGroupId());
 
 				if (availableLocales.size() > 1) {
-					alternateURLs = PortalUtil.getAlternateURLs(
+					alternateURLs = _portal.getAlternateURLs(
 						canonicalURL, themeDisplay, layout);
 				}
 
 				PrintWriter printWriter = httpServletResponse.getWriter();
 
 				for (LayoutSEOLink layoutSEOLink :
-						LayoutSEOLinkManagerUtil.getLocalizedLayoutSEOLinks(
-							layout, PortalUtil.getLocale(httpServletRequest),
+						_layoutSEOLinkManager.getLocalizedLayoutSEOLinks(
+							layout, _portal.getLocale(httpServletRequest),
 							canonicalURL, alternateURLs)) {
 
 					printWriter.println(_addLinkTag(layoutSEOLink));
@@ -116,5 +117,14 @@ public class OpenGraphTopHeadDynamicInclude extends BaseDynamicInclude {
 
 		return sb.toString();
 	}
+
+	@Reference
+	private Language _language;
+
+	@Reference
+	private LayoutSEOLinkManager _layoutSEOLinkManager;
+
+	@Reference
+	private Portal _portal;
 
 }
