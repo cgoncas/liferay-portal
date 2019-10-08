@@ -21,13 +21,13 @@ const PreviewSeo = ({
 	title = '',
 	url = ''
 }) => (
-	<div className="preview-seo preview-seo--serp">
-		<div className="preview-seo__title text-truncate">
+	<div className="preview-seo preview-seo-serp">
+		<div className="preview-seo-title text-truncate">
 			{title}
 			{suffixTitle && ` - ${suffixTitle}`}
 		</div>
-		<div className="preview-seo__url text-truncate">{url}</div>
-		<div className="preview-seo__description">{description}</div>
+		<div className="preview-seo-url text-truncate">{url}</div>
+		<div className="preview-seo-description">{description}</div>
 	</div>
 );
 PreviewSeo.propTypes = {
