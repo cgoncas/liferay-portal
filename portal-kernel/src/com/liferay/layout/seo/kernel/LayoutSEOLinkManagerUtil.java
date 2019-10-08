@@ -25,7 +25,7 @@ import java.util.Map;
 /**
  * @author Cristina González
  *
- * @deprecated As of Mueller (7.2.x), replaced by {@link com.liferay.layout.seo.kernel.LayoutSEOLinkManager}
+ * @deprecated As of Mueller (7.2.x), replaced by {@link LayoutSEOLinkManager}
  */
 @Deprecated
 public class LayoutSEOLinkManagerUtil {
