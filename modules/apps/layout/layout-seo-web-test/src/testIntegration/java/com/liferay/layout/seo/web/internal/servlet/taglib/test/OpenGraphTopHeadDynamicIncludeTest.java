@@ -136,20 +136,14 @@ public class OpenGraphTopHeadDynamicIncludeTest {
 		themeDisplay.setCompany(
 			_companyLocalService.getCompany(TestPropsValues.getCompanyId()));
 
-		String languageId = _group.getDefaultLanguageId();
-
-		themeDisplay.setLanguageId(languageId);
-		themeDisplay.setLocale(LocaleUtil.fromLanguageId(languageId));
-
+		themeDisplay.setLanguageId(_group.getDefaultLanguageId());
+		themeDisplay.setLocale(
+			LocaleUtil.fromLanguageId(_group.getDefaultLanguageId()));
 		themeDisplay.setLayout(_layout);
-
 		themeDisplay.setLayoutSet(
 			_layoutSetLocalService.getLayoutSet(_group.getGroupId(), false));
-
 		themeDisplay.setSiteGroupId(_group.getGroupId());
-
 		themeDisplay.setPortalURL(company.getPortalURL(_group.getGroupId()));
-
 		themeDisplay.setPortalDomain("localhost");
 		themeDisplay.setServerName("localhost");
 		themeDisplay.setServerPort(8080);
