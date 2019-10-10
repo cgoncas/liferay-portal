@@ -15,6 +15,8 @@
 import React, {useEffect, useState} from 'react';
 import {PropTypes} from 'prop-types';
 
+const MAX_LENGTH_DESCIPTION = 160;
+
 const PreviewSeo = ({
 	description = '',
 	suffixTitle = '',
@@ -27,7 +29,11 @@ const PreviewSeo = ({
 			{suffixTitle && ` - ${suffixTitle}`}
 		</div>
 		<div className="preview-seo-url text-truncate">{url}</div>
-		<div className="preview-seo-description">{description}</div>
+		<div className="preview-seo-description">
+			{description > MAX_LENGTH_DESCIPTION
+				? description
+				: `${description.slice(0, MAX_LENGTH_DESCIPTION)} \u2026`}
+		</div>
 	</div>
 );
 PreviewSeo.propTypes = {
