@@ -56,9 +56,9 @@ UnicodeProperties layoutTypeSettings = selLayout.getTypeSettingsProperties();
 			targetsIds.put("description", descriptionInputId);
 			targetsIds.put("title", titleInputId);
 
-			data.put("suffixTitle", "Liferay");
+			data.put("suffixTitle", StringPool.BLANK);
 			data.put("targetsIds", targetsIds);
-			data.put("url", "http://www.liferay.com/blog/en/example-url");
+			data.put("url", StringPool.BLANK);
 			%>
 
 			<react:component
