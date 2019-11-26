@@ -14,6 +14,7 @@
 
 package com.liferay.site.item.selector.web.internal.display.context;
 
+import com.liferay.item.selector.criteria.group.criterion.GroupItemSelectorCriterion;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.model.Group;
 import com.liferay.portal.kernel.portlet.PortletURLUtil;
@@ -41,11 +42,11 @@ public abstract class BaseSitesItemSelectorViewDisplayContext
 
 	public BaseSitesItemSelectorViewDisplayContext(
 		HttpServletRequest httpServletRequest,
-		SiteItemSelectorCriterion siteItemSelectorCriterion,
+		GroupItemSelectorCriterion groupItemSelectorCriterion,
 		String itemSelectedEventName, PortletURL portletURL) {
 
 		request = httpServletRequest;
-		_siteItemSelectorCriterion = siteItemSelectorCriterion;
+		_groupItemSelectorCriterion = groupItemSelectorCriterion;
 		_itemSelectedEventName = itemSelectedEventName;
 		this.portletURL = portletURL;
 	}
@@ -94,8 +95,8 @@ public abstract class BaseSitesItemSelectorViewDisplayContext
 	}
 
 	@Override
-	public SiteItemSelectorCriterion getSiteItemSelectorCriterion() {
-		return _siteItemSelectorCriterion;
+	public GroupItemSelectorCriterion getGroupItemSelectorCriterion() {
+		return _groupItemSelectorCriterion;
 	}
 
 	@Override
@@ -118,6 +119,6 @@ public abstract class BaseSitesItemSelectorViewDisplayContext
 
 	private String _displayStyle;
 	private final String _itemSelectedEventName;
-	private final SiteItemSelectorCriterion _siteItemSelectorCriterion;
+	private final GroupItemSelectorCriterion _groupItemSelectorCriterion;
 
 }

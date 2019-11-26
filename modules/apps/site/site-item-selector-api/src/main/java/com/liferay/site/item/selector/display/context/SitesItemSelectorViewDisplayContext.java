@@ -14,6 +14,7 @@
 
 package com.liferay.site.item.selector.display.context;
 
+import com.liferay.item.selector.criteria.group.criterion.GroupItemSelectorCriterion;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.model.Group;
 import com.liferay.portlet.usersadmin.search.GroupSearch;
@@ -43,7 +44,19 @@ public interface SitesItemSelectorViewDisplayContext {
 
 	public PortletURL getPortletURL() throws PortletException;
 
-	public SiteItemSelectorCriterion getSiteItemSelectorCriterion();
+	/**
+	 *
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *             #getGroupItemSelectorCriterion()}
+	 */
+	@Deprecated
+	public default SiteItemSelectorCriterion getSiteItemSelectorCriterion() {
+		return new SiteItemSelectorCriterion();
+	}
+
+	public default GroupItemSelectorCriterion getGroupItemSelectorCriterion() {
+		return getSiteItemSelectorCriterion();
+	}
 
 	public boolean isShowChildSitesLink();
 

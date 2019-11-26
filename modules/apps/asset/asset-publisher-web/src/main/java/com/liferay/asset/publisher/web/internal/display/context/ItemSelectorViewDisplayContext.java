@@ -14,6 +14,7 @@
 
 package com.liferay.asset.publisher.web.internal.display.context;
 
+import com.liferay.item.selector.criteria.group.criterion.GroupItemSelectorCriterion;
 import com.liferay.portlet.usersadmin.search.GroupSearch;
 import com.liferay.site.item.selector.criterion.SiteItemSelectorCriterion;
 
@@ -41,7 +42,7 @@ public interface ItemSelectorViewDisplayContext {
 
 	public long[] getSelectedGroupIds();
 
-	public SiteItemSelectorCriterion getSiteItemSelectorCriterion();
+	public GroupItemSelectorCriterion getGroupItemSelectorCriterion();
 
 	public boolean isShowSearch();
 

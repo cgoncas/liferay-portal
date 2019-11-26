@@ -60,7 +60,7 @@ page import="com.liferay.portal.kernel.util.PropsKeys" %><%@
 page import="com.liferay.portal.kernel.util.StringUtil" %><%@
 page import="com.liferay.portal.kernel.util.UnicodeProperties" %><%@
 page import="com.liferay.portal.kernel.util.Validator" %><%@
-page import="com.liferay.site.item.selector.criterion.SiteItemSelectorCriterion" %>
+page import="com.liferay.item.selector.criteria.group.criterion.GroupItemSelectorCriterion" %>
 
 <%@ page import="java.util.ArrayList" %><%@
 page import="java.util.List" %><%@

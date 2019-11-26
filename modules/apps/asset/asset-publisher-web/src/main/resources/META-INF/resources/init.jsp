@@ -113,7 +113,7 @@ page import="com.liferay.portal.kernel.workflow.WorkflowConstants" %><%@
 page import="com.liferay.portal.util.PropsValues" %><%@
 page import="com.liferay.portlet.usersadmin.search.GroupSearch" %><%@
 page import="com.liferay.rss.util.RSSUtil" %><%@
-page import="com.liferay.site.item.selector.criterion.SiteItemSelectorCriterion" %><%@
+page import="com.liferay.item.selector.criteria.group.criterion.GroupItemSelectorCriterion" %><%@
 page import="com.liferay.taglib.aui.AUIUtil" %>
 
 <%@ page import="java.io.Serializable" %>

@@ -15,6 +15,7 @@
 package com.liferay.asset.publisher.web.internal.display.context;
 
 import com.liferay.asset.publisher.util.AssetPublisherHelper;
+import com.liferay.item.selector.criteria.group.criterion.GroupItemSelectorCriterion;
 import com.liferay.portal.kernel.dao.orm.QueryUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.model.Group;
@@ -47,11 +48,11 @@ public class ChildSitesItemSelectorViewDisplayContext
 	public ChildSitesItemSelectorViewDisplayContext(
 		HttpServletRequest httpServletRequest,
 		AssetPublisherHelper assetPublisherHelper,
-		SiteItemSelectorCriterion siteItemSelectorCriterion,
+		GroupItemSelectorCriterion groupItemSelectorCriterion,
 		String itemSelectedEventName, PortletURL portletURL) {
 
 		super(
-			httpServletRequest, assetPublisherHelper, siteItemSelectorCriterion,
+			httpServletRequest, assetPublisherHelper, groupItemSelectorCriterion,
 			itemSelectedEventName, portletURL);
 	}
 
