@@ -70,6 +70,7 @@
 		<!-- Other fields -->
 
 		<column name="openGraphEnabled" type="boolean" />
+		<column localized="true" name="openGraphImageAlt" type="String" />
 		<column name="openGraphImageFileEntryId" type="long" />
 
 		<!-- Finder methods -->
