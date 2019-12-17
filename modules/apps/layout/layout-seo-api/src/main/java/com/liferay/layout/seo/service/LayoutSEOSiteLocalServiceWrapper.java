@@ -373,13 +373,14 @@ public class LayoutSEOSiteLocalServiceWrapper
 	@Override
 	public com.liferay.layout.seo.model.LayoutSEOSite updateLayoutSEOSite(
 			long userId, long groupId, boolean openGraphEnabled,
+			java.util.Map<java.util.Locale, String> openGraphImageAltMap,
 			long openGraphImageFileEntryId,
 			com.liferay.portal.kernel.service.ServiceContext serviceContext)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
 		return _layoutSEOSiteLocalService.updateLayoutSEOSite(
-			userId, groupId, openGraphEnabled, openGraphImageFileEntryId,
-			serviceContext);
+			userId, groupId, openGraphEnabled, openGraphImageAltMap,
+			openGraphImageFileEntryId, serviceContext);
 	}
 
 	@Override

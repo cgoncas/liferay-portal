@@ -37,6 +37,8 @@ import com.liferay.portal.kernel.util.OrderByComparator;
 import java.io.Serializable;
 
 import java.util.List;
+import java.util.Locale;
+import java.util.Map;
 
 import org.osgi.annotation.versioning.ProviderType;
 
@@ -297,6 +299,7 @@ public interface LayoutSEOSiteLocalService
 
 	public LayoutSEOSite updateLayoutSEOSite(
 			long userId, long groupId, boolean openGraphEnabled,
+			Map<Locale, String> openGraphImageAltMap,
 			long openGraphImageFileEntryId, ServiceContext serviceContext)
 		throws PortalException;
 

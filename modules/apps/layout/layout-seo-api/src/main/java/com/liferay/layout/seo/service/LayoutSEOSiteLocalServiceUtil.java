@@ -353,13 +353,14 @@ public class LayoutSEOSiteLocalServiceUtil {
 	public static com.liferay.layout.seo.model.LayoutSEOSite
 			updateLayoutSEOSite(
 				long userId, long groupId, boolean openGraphEnabled,
+				java.util.Map<java.util.Locale, String> openGraphImageAltMap,
 				long openGraphImageFileEntryId,
 				com.liferay.portal.kernel.service.ServiceContext serviceContext)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
 		return getService().updateLayoutSEOSite(
-			userId, groupId, openGraphEnabled, openGraphImageFileEntryId,
-			serviceContext);
+			userId, groupId, openGraphEnabled, openGraphImageAltMap,
+			openGraphImageFileEntryId, serviceContext);
 	}
 
 	public static LayoutSEOSiteLocalService getService() {
