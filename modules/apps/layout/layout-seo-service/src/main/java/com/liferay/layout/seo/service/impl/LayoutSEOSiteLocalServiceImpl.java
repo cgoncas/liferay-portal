@@ -21,7 +21,10 @@ import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.model.Group;
 import com.liferay.portal.kernel.service.ServiceContext;
 
+import java.util.Collections;
 import java.util.Date;
+import java.util.Locale;
+import java.util.Map;
 
 import org.osgi.service.component.annotations.Component;
 
@@ -44,6 +47,7 @@ public class LayoutSEOSiteLocalServiceImpl
 	@Override
 	public LayoutSEOSite updateLayoutSEOSite(
 			long userId, long groupId, boolean openGraphEnabled,
+			Map<Locale, String> openGraphImageAltMap,
 			long openGraphImageFileEntryId, ServiceContext serviceContext)
 		throws PortalException {
 
@@ -52,20 +56,29 @@ public class LayoutSEOSiteLocalServiceImpl
 
 		if (layoutSEOSite == null) {
 			return _addLayoutSEOSite(
-				userId, groupId, openGraphImageFileEntryId, openGraphEnabled,
-				serviceContext);
+				userId, groupId, openGraphImageAltMap,
+				openGraphImageFileEntryId, openGraphEnabled, serviceContext);
 		}
 
 		layoutSEOSite.setModifiedDate(new Date());
 		layoutSEOSite.setOpenGraphEnabled(openGraphEnabled);
+
+		if (openGraphImageFileEntryId != 0) {
+			layoutSEOSite.setOpenGraphImageAltMap(openGraphImageAltMap);
+		}
+		else {
+			layoutSEOSite.setOpenGraphImageAltMap(Collections.emptyMap());
+		}
+
 		layoutSEOSite.setOpenGraphImageFileEntryId(openGraphImageFileEntryId);
 
 		return layoutSEOSitePersistence.update(layoutSEOSite);
 	}
 
 	private LayoutSEOSite _addLayoutSEOSite(
-			long userId, long groupId, long openGraphImageFileEntryId,
-			boolean openGraphEnabled, ServiceContext serviceContext)
+			long userId, long groupId, Map<Locale, String> openGraphImageAltMap,
+			long openGraphImageFileEntryId, boolean openGraphEnabled,
+			ServiceContext serviceContext)
 		throws PortalException {
 
 		LayoutSEOSite layoutSEOSite = layoutSEOSitePersistence.create(
@@ -84,6 +97,11 @@ public class LayoutSEOSiteLocalServiceImpl
 		layoutSEOSite.setModifiedDate(new Date());
 
 		layoutSEOSite.setOpenGraphEnabled(openGraphEnabled);
+
+		if (openGraphImageFileEntryId != 0) {
+			layoutSEOSite.setOpenGraphImageAltMap(openGraphImageAltMap);
+		}
+
 		layoutSEOSite.setOpenGraphImageFileEntryId(openGraphImageFileEntryId);
 
 		return layoutSEOSitePersistence.update(layoutSEOSite);
