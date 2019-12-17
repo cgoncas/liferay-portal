@@ -142,6 +142,8 @@ public class LayoutSEOSitePersistenceTest {
 
 		newLayoutSEOSite.setOpenGraphEnabled(RandomTestUtil.randomBoolean());
 
+		newLayoutSEOSite.setOpenGraphImageAlt(RandomTestUtil.randomString());
+
 		newLayoutSEOSite.setOpenGraphImageFileEntryId(
 			RandomTestUtil.nextLong());
 
@@ -177,6 +179,9 @@ public class LayoutSEOSitePersistenceTest {
 		Assert.assertEquals(
 			existingLayoutSEOSite.isOpenGraphEnabled(),
 			newLayoutSEOSite.isOpenGraphEnabled());
+		Assert.assertEquals(
+			existingLayoutSEOSite.getOpenGraphImageAlt(),
+			newLayoutSEOSite.getOpenGraphImageAlt());
 		Assert.assertEquals(
 			existingLayoutSEOSite.getOpenGraphImageFileEntryId(),
 			newLayoutSEOSite.getOpenGraphImageFileEntryId());
@@ -244,8 +249,8 @@ public class LayoutSEOSitePersistenceTest {
 			"LayoutSEOSite", "mvccVersion", true, "uuid", true,
 			"layoutSEOSiteId", true, "groupId", true, "companyId", true,
 			"userId", true, "userName", true, "createDate", true,
-			"modifiedDate", true, "openGraphEnabled", true,
-			"openGraphImageFileEntryId", true);
+			"modifiedDate", true, "openGraphEnabled", true, "openGraphImageAlt",
+			true, "openGraphImageFileEntryId", true);
 	}
 
 	@Test
@@ -509,6 +514,8 @@ public class LayoutSEOSitePersistenceTest {
 		layoutSEOSite.setModifiedDate(RandomTestUtil.nextDate());
 
 		layoutSEOSite.setOpenGraphEnabled(RandomTestUtil.randomBoolean());
+
+		layoutSEOSite.setOpenGraphImageAlt(RandomTestUtil.randomString());
 
 		layoutSEOSite.setOpenGraphImageFileEntryId(RandomTestUtil.nextLong());
 

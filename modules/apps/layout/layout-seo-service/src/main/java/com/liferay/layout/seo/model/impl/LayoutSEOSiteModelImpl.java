@@ -22,6 +22,7 @@ import com.liferay.layout.seo.model.LayoutSEOSiteModel;
 import com.liferay.layout.seo.model.LayoutSEOSiteSoap;
 import com.liferay.petra.string.StringBundler;
 import com.liferay.portal.kernel.bean.AutoEscapeBeanHandler;
+import com.liferay.portal.kernel.exception.LocaleException;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.json.JSON;
 import com.liferay.portal.kernel.model.CacheModel;
@@ -31,8 +32,11 @@ import com.liferay.portal.kernel.model.impl.BaseModelImpl;
 import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.service.UserLocalServiceUtil;
 import com.liferay.portal.kernel.util.GetterUtil;
+import com.liferay.portal.kernel.util.LocaleUtil;
+import com.liferay.portal.kernel.util.LocalizationUtil;
 import com.liferay.portal.kernel.util.PortalUtil;
 import com.liferay.portal.kernel.util.ProxyUtil;
+import com.liferay.portal.kernel.util.Validator;
 
 import java.io.Serializable;
 
@@ -47,7 +51,10 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
+import java.util.Set;
+import java.util.TreeSet;
 import java.util.function.BiConsumer;
 import java.util.function.Function;
 
@@ -79,6 +86,7 @@ public class LayoutSEOSiteModelImpl
 		{"companyId", Types.BIGINT}, {"userId", Types.BIGINT},
 		{"userName", Types.VARCHAR}, {"createDate", Types.TIMESTAMP},
 		{"modifiedDate", Types.TIMESTAMP}, {"openGraphEnabled", Types.BOOLEAN},
+		{"openGraphImageAlt", Types.VARCHAR},
 		{"openGraphImageFileEntryId", Types.BIGINT}
 	};
 
@@ -96,11 +104,12 @@ public class LayoutSEOSiteModelImpl
 		TABLE_COLUMNS_MAP.put("createDate", Types.TIMESTAMP);
 		TABLE_COLUMNS_MAP.put("modifiedDate", Types.TIMESTAMP);
 		TABLE_COLUMNS_MAP.put("openGraphEnabled", Types.BOOLEAN);
+		TABLE_COLUMNS_MAP.put("openGraphImageAlt", Types.VARCHAR);
 		TABLE_COLUMNS_MAP.put("openGraphImageFileEntryId", Types.BIGINT);
 	}
 
 	public static final String TABLE_SQL_CREATE =
-		"create table LayoutSEOSite (mvccVersion LONG default 0 not null,uuid_ VARCHAR(75) null,layoutSEOSiteId LONG not null primary key,groupId LONG,companyId LONG,userId LONG,userName VARCHAR(75) null,createDate DATE null,modifiedDate DATE null,openGraphEnabled BOOLEAN,openGraphImageFileEntryId LONG)";
+		"create table LayoutSEOSite (mvccVersion LONG default 0 not null,uuid_ VARCHAR(75) null,layoutSEOSiteId LONG not null primary key,groupId LONG,companyId LONG,userId LONG,userName VARCHAR(75) null,createDate DATE null,modifiedDate DATE null,openGraphEnabled BOOLEAN,openGraphImageAlt STRING null,openGraphImageFileEntryId LONG)";
 
 	public static final String TABLE_SQL_DROP = "drop table LayoutSEOSite";
 
@@ -155,6 +164,7 @@ public class LayoutSEOSiteModelImpl
 		model.setCreateDate(soapModel.getCreateDate());
 		model.setModifiedDate(soapModel.getModifiedDate());
 		model.setOpenGraphEnabled(soapModel.isOpenGraphEnabled());
+		model.setOpenGraphImageAlt(soapModel.getOpenGraphImageAlt());
 		model.setOpenGraphImageFileEntryId(
 			soapModel.getOpenGraphImageFileEntryId());
 
@@ -353,6 +363,12 @@ public class LayoutSEOSiteModelImpl
 			(BiConsumer<LayoutSEOSite, Boolean>)
 				LayoutSEOSite::setOpenGraphEnabled);
 		attributeGetterFunctions.put(
+			"openGraphImageAlt", LayoutSEOSite::getOpenGraphImageAlt);
+		attributeSetterBiConsumers.put(
+			"openGraphImageAlt",
+			(BiConsumer<LayoutSEOSite, String>)
+				LayoutSEOSite::setOpenGraphImageAlt);
+		attributeGetterFunctions.put(
 			"openGraphImageFileEntryId",
 			LayoutSEOSite::getOpenGraphImageFileEntryId);
 		attributeSetterBiConsumers.put(
@@ -550,6 +566,119 @@ public class LayoutSEOSiteModelImpl
 
 	@JSON
 	@Override
+	public String getOpenGraphImageAlt() {
+		if (_openGraphImageAlt == null) {
+			return "";
+		}
+		else {
+			return _openGraphImageAlt;
+		}
+	}
+
+	@Override
+	public String getOpenGraphImageAlt(Locale locale) {
+		String languageId = LocaleUtil.toLanguageId(locale);
+
+		return getOpenGraphImageAlt(languageId);
+	}
+
+	@Override
+	public String getOpenGraphImageAlt(Locale locale, boolean useDefault) {
+		String languageId = LocaleUtil.toLanguageId(locale);
+
+		return getOpenGraphImageAlt(languageId, useDefault);
+	}
+
+	@Override
+	public String getOpenGraphImageAlt(String languageId) {
+		return LocalizationUtil.getLocalization(
+			getOpenGraphImageAlt(), languageId);
+	}
+
+	@Override
+	public String getOpenGraphImageAlt(String languageId, boolean useDefault) {
+		return LocalizationUtil.getLocalization(
+			getOpenGraphImageAlt(), languageId, useDefault);
+	}
+
+	@Override
+	public String getOpenGraphImageAltCurrentLanguageId() {
+		return _openGraphImageAltCurrentLanguageId;
+	}
+
+	@JSON
+	@Override
+	public String getOpenGraphImageAltCurrentValue() {
+		Locale locale = getLocale(_openGraphImageAltCurrentLanguageId);
+
+		return getOpenGraphImageAlt(locale);
+	}
+
+	@Override
+	public Map<Locale, String> getOpenGraphImageAltMap() {
+		return LocalizationUtil.getLocalizationMap(getOpenGraphImageAlt());
+	}
+
+	@Override
+	public void setOpenGraphImageAlt(String openGraphImageAlt) {
+		_openGraphImageAlt = openGraphImageAlt;
+	}
+
+	@Override
+	public void setOpenGraphImageAlt(String openGraphImageAlt, Locale locale) {
+		setOpenGraphImageAlt(
+			openGraphImageAlt, locale, LocaleUtil.getSiteDefault());
+	}
+
+	@Override
+	public void setOpenGraphImageAlt(
+		String openGraphImageAlt, Locale locale, Locale defaultLocale) {
+
+		String languageId = LocaleUtil.toLanguageId(locale);
+		String defaultLanguageId = LocaleUtil.toLanguageId(defaultLocale);
+
+		if (Validator.isNotNull(openGraphImageAlt)) {
+			setOpenGraphImageAlt(
+				LocalizationUtil.updateLocalization(
+					getOpenGraphImageAlt(), "OpenGraphImageAlt",
+					openGraphImageAlt, languageId, defaultLanguageId));
+		}
+		else {
+			setOpenGraphImageAlt(
+				LocalizationUtil.removeLocalization(
+					getOpenGraphImageAlt(), "OpenGraphImageAlt", languageId));
+		}
+	}
+
+	@Override
+	public void setOpenGraphImageAltCurrentLanguageId(String languageId) {
+		_openGraphImageAltCurrentLanguageId = languageId;
+	}
+
+	@Override
+	public void setOpenGraphImageAltMap(
+		Map<Locale, String> openGraphImageAltMap) {
+
+		setOpenGraphImageAltMap(
+			openGraphImageAltMap, LocaleUtil.getSiteDefault());
+	}
+
+	@Override
+	public void setOpenGraphImageAltMap(
+		Map<Locale, String> openGraphImageAltMap, Locale defaultLocale) {
+
+		if (openGraphImageAltMap == null) {
+			return;
+		}
+
+		setOpenGraphImageAlt(
+			LocalizationUtil.updateLocalization(
+				openGraphImageAltMap, getOpenGraphImageAlt(),
+				"OpenGraphImageAlt", LocaleUtil.toLanguageId(defaultLocale)));
+	}
+
+	@JSON
+	@Override
 	public long getOpenGraphImageFileEntryId() {
 		return _openGraphImageFileEntryId;
 	}
@@ -583,6 +712,77 @@ public class LayoutSEOSiteModelImpl
 	}
 
 	@Override
+	public String[] getAvailableLanguageIds() {
+		Set<String> availableLanguageIds = new TreeSet<String>();
+
+		Map<Locale, String> openGraphImageAltMap = getOpenGraphImageAltMap();
+
+		for (Map.Entry<Locale, String> entry :
+				openGraphImageAltMap.entrySet()) {
+
+			Locale locale = entry.getKey();
+			String value = entry.getValue();
+
+			if (Validator.isNotNull(value)) {
+				availableLanguageIds.add(LocaleUtil.toLanguageId(locale));
+			}
+		}
+
+		return availableLanguageIds.toArray(
+			new String[availableLanguageIds.size()]);
+	}
+
+	@Override
+	public String getDefaultLanguageId() {
+		String xml = getOpenGraphImageAlt();
+
+		if (xml == null) {
+			return "";
+		}
+
+		Locale defaultLocale = LocaleUtil.getSiteDefault();
+
+		return LocalizationUtil.getDefaultLanguageId(xml, defaultLocale);
+	}
+
+	@Override
+	public void prepareLocalizedFieldsForImport() throws LocaleException {
+		Locale defaultLocale = LocaleUtil.fromLanguageId(
+			getDefaultLanguageId());
+
+		Locale[] availableLocales = LocaleUtil.fromLanguageIds(
+			getAvailableLanguageIds());
+
+		Locale defaultImportLocale = LocalizationUtil.getDefaultImportLocale(
+			LayoutSEOSite.class.getName(), getPrimaryKey(), defaultLocale,
+			availableLocales);
+
+		prepareLocalizedFieldsForImport(defaultImportLocale);
+	}
+
+	@Override
+	@SuppressWarnings("unused")
+	public void prepareLocalizedFieldsForImport(Locale defaultImportLocale)
+		throws LocaleException {
+
+		Locale defaultLocale = LocaleUtil.getSiteDefault();
+
+		String modelDefaultLanguageId = getDefaultLanguageId();
+
+		String openGraphImageAlt = getOpenGraphImageAlt(defaultLocale);
+
+		if (Validator.isNull(openGraphImageAlt)) {
+			setOpenGraphImageAlt(
+				getOpenGraphImageAlt(modelDefaultLanguageId), defaultLocale);
+		}
+		else {
+			setOpenGraphImageAlt(
+				getOpenGraphImageAlt(defaultLocale), defaultLocale,
+				defaultLocale);
+		}
+	}
+
+	@Override
 	public LayoutSEOSite toEscapedModel() {
 		if (_escapedModel == null) {
 			Function<InvocationHandler, LayoutSEOSite>
@@ -611,6 +811,7 @@ public class LayoutSEOSiteModelImpl
 		layoutSEOSiteImpl.setCreateDate(getCreateDate());
 		layoutSEOSiteImpl.setModifiedDate(getModifiedDate());
 		layoutSEOSiteImpl.setOpenGraphEnabled(isOpenGraphEnabled());
+		layoutSEOSiteImpl.setOpenGraphImageAlt(getOpenGraphImageAlt());
 		layoutSEOSiteImpl.setOpenGraphImageFileEntryId(
 			getOpenGraphImageFileEntryId());
 
@@ -743,6 +944,14 @@ public class LayoutSEOSiteModelImpl
 
 		layoutSEOSiteCacheModel.openGraphEnabled = isOpenGraphEnabled();
 
+		layoutSEOSiteCacheModel.openGraphImageAlt = getOpenGraphImageAlt();
+
+		String openGraphImageAlt = layoutSEOSiteCacheModel.openGraphImageAlt;
+
+		if ((openGraphImageAlt != null) && (openGraphImageAlt.length() == 0)) {
+			layoutSEOSiteCacheModel.openGraphImageAlt = null;
+		}
+
 		layoutSEOSiteCacheModel.openGraphImageFileEntryId =
 			getOpenGraphImageFileEntryId();
 
@@ -838,6 +1047,8 @@ public class LayoutSEOSiteModelImpl
 	private Date _modifiedDate;
 	private boolean _setModifiedDate;
 	private boolean _openGraphEnabled;
+	private String _openGraphImageAlt;
+	private String _openGraphImageAltCurrentLanguageId;
 	private long _openGraphImageFileEntryId;
 	private long _columnBitmask;
 	private LayoutSEOSite _escapedModel;

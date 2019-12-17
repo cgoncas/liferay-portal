@@ -77,7 +77,7 @@ public class LayoutSEOSiteCacheModel
 
 	@Override
 	public String toString() {
-		StringBundler sb = new StringBundler(23);
+		StringBundler sb = new StringBundler(25);
 
 		sb.append("{mvccVersion=");
 		sb.append(mvccVersion);
@@ -99,6 +99,8 @@ public class LayoutSEOSiteCacheModel
 		sb.append(modifiedDate);
 		sb.append(", openGraphEnabled=");
 		sb.append(openGraphEnabled);
+		sb.append(", openGraphImageAlt=");
+		sb.append(openGraphImageAlt);
 		sb.append(", openGraphImageFileEntryId=");
 		sb.append(openGraphImageFileEntryId);
 		sb.append("}");
@@ -146,6 +148,14 @@ public class LayoutSEOSiteCacheModel
 		}
 
 		layoutSEOSiteImpl.setOpenGraphEnabled(openGraphEnabled);
+
+		if (openGraphImageAlt == null) {
+			layoutSEOSiteImpl.setOpenGraphImageAlt("");
+		}
+		else {
+			layoutSEOSiteImpl.setOpenGraphImageAlt(openGraphImageAlt);
+		}
+
 		layoutSEOSiteImpl.setOpenGraphImageFileEntryId(
 			openGraphImageFileEntryId);
 
@@ -171,6 +181,7 @@ public class LayoutSEOSiteCacheModel
 		modifiedDate = objectInput.readLong();
 
 		openGraphEnabled = objectInput.readBoolean();
+		openGraphImageAlt = objectInput.readUTF();
 
 		openGraphImageFileEntryId = objectInput.readLong();
 	}
@@ -206,6 +217,13 @@ public class LayoutSEOSiteCacheModel
 
 		objectOutput.writeBoolean(openGraphEnabled);
 
+		if (openGraphImageAlt == null) {
+			objectOutput.writeUTF("");
+		}
+		else {
+			objectOutput.writeUTF(openGraphImageAlt);
+		}
+
 		objectOutput.writeLong(openGraphImageFileEntryId);
 	}
 
@@ -219,6 +237,7 @@ public class LayoutSEOSiteCacheModel
 	public long createDate;
 	public long modifiedDate;
 	public boolean openGraphEnabled;
+	public String openGraphImageAlt;
 	public long openGraphImageFileEntryId;
 
 }

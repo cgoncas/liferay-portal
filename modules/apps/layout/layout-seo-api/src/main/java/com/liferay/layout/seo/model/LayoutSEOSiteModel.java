@@ -15,13 +15,17 @@
 package com.liferay.layout.seo.model;
 
 import com.liferay.portal.kernel.bean.AutoEscape;
+import com.liferay.portal.kernel.exception.LocaleException;
 import com.liferay.portal.kernel.model.BaseModel;
 import com.liferay.portal.kernel.model.GroupedModel;
+import com.liferay.portal.kernel.model.LocalizedModel;
 import com.liferay.portal.kernel.model.MVCCModel;
 import com.liferay.portal.kernel.model.ShardedModel;
 import com.liferay.portal.kernel.model.StagedAuditedModel;
 
 import java.util.Date;
+import java.util.Locale;
+import java.util.Map;
 
 import org.osgi.annotation.versioning.ProviderType;
 
@@ -38,8 +42,8 @@ import org.osgi.annotation.versioning.ProviderType;
  */
 @ProviderType
 public interface LayoutSEOSiteModel
-	extends BaseModel<LayoutSEOSite>, GroupedModel, MVCCModel, ShardedModel,
-			StagedAuditedModel {
+	extends BaseModel<LayoutSEOSite>, GroupedModel, LocalizedModel, MVCCModel,
+			ShardedModel, StagedAuditedModel {
 
 	/**
 	 * NOTE FOR DEVELOPERS:
@@ -243,6 +247,108 @@ public interface LayoutSEOSiteModel
 	public void setOpenGraphEnabled(boolean openGraphEnabled);
 
 	/**
+	 * Returns the open graph image alt of this layout seo site.
+	 *
+	 * @return the open graph image alt of this layout seo site
+	 */
+	public String getOpenGraphImageAlt();
+
+	/**
+	 * Returns the localized open graph image alt of this layout seo site in the language. Uses the default language if no localization exists for the requested language.
+	 *
+	 * @param locale the locale of the language
+	 * @return the localized open graph image alt of this layout seo site
+	 */
+	@AutoEscape
+	public String getOpenGraphImageAlt(Locale locale);
+
+	/**
+	 * Returns the localized open graph image alt of this layout seo site in the language, optionally using the default language if no localization exists for the requested language.
+	 *
+	 * @param locale the local of the language
+	 * @param useDefault whether to use the default language if no localization exists for the requested language
+	 * @return the localized open graph image alt of this layout seo site. If <code>useDefault</code> is <code>false</code> and no localization exists for the requested language, an empty string will be returned.
+	 */
+	@AutoEscape
+	public String getOpenGraphImageAlt(Locale locale, boolean useDefault);
+
+	/**
+	 * Returns the localized open graph image alt of this layout seo site in the language. Uses the default language if no localization exists for the requested language.
+	 *
+	 * @param languageId the ID of the language
+	 * @return the localized open graph image alt of this layout seo site
+	 */
+	@AutoEscape
+	public String getOpenGraphImageAlt(String languageId);
+
+	/**
+	 * Returns the localized open graph image alt of this layout seo site in the language, optionally using the default language if no localization exists for the requested language.
+	 *
+	 * @param languageId the ID of the language
+	 * @param useDefault whether to use the default language if no localization exists for the requested language
+	 * @return the localized open graph image alt of this layout seo site
+	 */
+	@AutoEscape
+	public String getOpenGraphImageAlt(String languageId, boolean useDefault);
+
+	@AutoEscape
+	public String getOpenGraphImageAltCurrentLanguageId();
+
+	@AutoEscape
+	public String getOpenGraphImageAltCurrentValue();
+
+	/**
+	 * Returns a map of the locales and localized open graph image alts of this layout seo site.
+	 *
+	 * @return the locales and localized open graph image alts of this layout seo site
+	 */
+	public Map<Locale, String> getOpenGraphImageAltMap();
+
+	/**
+	 * Sets the open graph image alt of this layout seo site.
+	 *
+	 * @param openGraphImageAlt the open graph image alt of this layout seo site
+	 */
+	public void setOpenGraphImageAlt(String openGraphImageAlt);
+
+	/**
+	 * Sets the localized open graph image alt of this layout seo site in the language.
+	 *
+	 * @param openGraphImageAlt the localized open graph image alt of this layout seo site
+	 * @param locale the locale of the language
+	 */
+	public void setOpenGraphImageAlt(String openGraphImageAlt, Locale locale);
+
+	/**
+	 * Sets the localized open graph image alt of this layout seo site in the language, and sets the default locale.
+	 *
+	 * @param openGraphImageAlt the localized open graph image alt of this layout seo site
+	 * @param locale the locale of the language
+	 * @param defaultLocale the default locale
+	 */
+	public void setOpenGraphImageAlt(
+		String openGraphImageAlt, Locale locale, Locale defaultLocale);
+
+	public void setOpenGraphImageAltCurrentLanguageId(String languageId);
+
+	/**
+	 * Sets the localized open graph image alts of this layout seo site from the map of locales and localized open graph image alts.
+	 *
+	 * @param openGraphImageAltMap the locales and localized open graph image alts of this layout seo site
+	 */
+	public void setOpenGraphImageAltMap(
+		Map<Locale, String> openGraphImageAltMap);
+
+	/**
+	 * Sets the localized open graph image alts of this layout seo site from the map of locales and localized open graph image alts, and sets the default locale.
+	 *
+	 * @param openGraphImageAltMap the locales and localized open graph image alts of this layout seo site
+	 * @param defaultLocale the default locale
+	 */
+	public void setOpenGraphImageAltMap(
+		Map<Locale, String> openGraphImageAltMap, Locale defaultLocale);
+
+	/**
 	 * Returns the open graph image file entry ID of this layout seo site.
 	 *
 	 * @return the open graph image file entry ID of this layout seo site
@@ -255,5 +361,18 @@ public interface LayoutSEOSiteModel
 	 * @param openGraphImageFileEntryId the open graph image file entry ID of this layout seo site
 	 */
 	public void setOpenGraphImageFileEntryId(long openGraphImageFileEntryId);
+
+	@Override
+	public String[] getAvailableLanguageIds();
+
+	@Override
+	public String getDefaultLanguageId();
+
+	@Override
+	public void prepareLocalizedFieldsForImport() throws LocaleException;
+
+	@Override
+	public void prepareLocalizedFieldsForImport(Locale defaultImportLocale)
+		throws LocaleException;
 
 }

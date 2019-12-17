@@ -33,5 +33,6 @@ create table LayoutSEOSite (
 	createDate DATE null,
 	modifiedDate DATE null,
 	openGraphEnabled BOOLEAN,
+	openGraphImageAlt STRING null,
 	openGraphImageFileEntryId LONG
 );

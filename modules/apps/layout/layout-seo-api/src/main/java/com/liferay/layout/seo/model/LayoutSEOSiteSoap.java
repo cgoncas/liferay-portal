@@ -41,6 +41,7 @@ public class LayoutSEOSiteSoap implements Serializable {
 		soapModel.setCreateDate(model.getCreateDate());
 		soapModel.setModifiedDate(model.getModifiedDate());
 		soapModel.setOpenGraphEnabled(model.isOpenGraphEnabled());
+		soapModel.setOpenGraphImageAlt(model.getOpenGraphImageAlt());
 		soapModel.setOpenGraphImageFileEntryId(
 			model.getOpenGraphImageFileEntryId());
 
@@ -180,6 +181,14 @@ public class LayoutSEOSiteSoap implements Serializable {
 		_openGraphEnabled = openGraphEnabled;
 	}
 
+	public String getOpenGraphImageAlt() {
+		return _openGraphImageAlt;
+	}
+
+	public void setOpenGraphImageAlt(String openGraphImageAlt) {
+		_openGraphImageAlt = openGraphImageAlt;
+	}
+
 	public long getOpenGraphImageFileEntryId() {
 		return _openGraphImageFileEntryId;
 	}
@@ -198,6 +207,7 @@ public class LayoutSEOSiteSoap implements Serializable {
 	private Date _createDate;
 	private Date _modifiedDate;
 	private boolean _openGraphEnabled;
+	private String _openGraphImageAlt;
 	private long _openGraphImageFileEntryId;
 
 }

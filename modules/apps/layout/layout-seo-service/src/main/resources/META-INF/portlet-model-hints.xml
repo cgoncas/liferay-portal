@@ -38,6 +38,7 @@
 		<field name="createDate" type="Date" />
 		<field name="modifiedDate" type="Date" />
 		<field name="openGraphEnabled" type="boolean" />
+		<field localized="true" name="openGraphImageAlt" type="String" />
 		<field name="openGraphImageFileEntryId" type="long" />
 	</model>
 </model-hints>
