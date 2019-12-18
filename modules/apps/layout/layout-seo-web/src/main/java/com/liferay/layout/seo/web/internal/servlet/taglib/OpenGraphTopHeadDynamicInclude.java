@@ -159,6 +159,9 @@ public class OpenGraphTopHeadDynamicInclude extends BaseDynamicInclude {
 				return;
 			}
 
+			boolean openGraphImageFromLayout = _isOpenGraphImageFromLayout(
+				layoutSEOEntry);
+
 			FileEntry fileEntry = _dlAppLocalService.getFileEntry(
 				openGraphImageFileEntryId);
 
@@ -170,7 +173,9 @@ public class OpenGraphTopHeadDynamicInclude extends BaseDynamicInclude {
 			printWriter.println(
 				_getOpenGraphTag(
 					"og:image:alt",
-					_getImageAltTagValue(layout, themeDisplay)));
+					_getImageAltTagValue(
+						layoutSEOEntry, group, openGraphImageFromLayout,
+						themeDisplay)));
 
 			printWriter.println(
 				_getOpenGraphTag("og:image:type", fileEntry.getMimeType()));
@@ -256,24 +261,31 @@ public class OpenGraphTopHeadDynamicInclude extends BaseDynamicInclude {
 	}
 
 	private String _getImageAltTagValue(
-		Layout layout, ThemeDisplay themeDisplay) {
+		LayoutSEOEntry layoutSEOEntry, Group group,
+		boolean openGraphImageFromLayout, ThemeDisplay themeDisplay) {
 
-		LayoutSEOEntry layoutSEOEntry =
-			_layoutSEOEntryLocalService.fetchLayoutSEOEntry(
-				layout.getGroupId(), layout.isPrivateLayout(),
-				layout.getLayoutId());
+		if ((layoutSEOEntry != null) &&
+			(layoutSEOEntry.getOpenGraphImageFileEntryId() != 0)) {
 
-		if ((layoutSEOEntry == null) ||
-			(layoutSEOEntry.getOpenGraphImageFileEntryId() == 0)) {
+			return layoutSEOEntry.getOpenGraphImageAlt(
+				themeDisplay.getLocale());
+		}
+
+		LayoutSEOSite layoutSEOSite =
+			_layoutSEOSiteLocalService.fetchLayoutSEOSiteByGroupId(
+				group.getGroupId());
+
+		if ((openGraphImageFromLayout && (layoutSEOSite == null)) ||
+			(layoutSEOSite.getOpenGraphImageFileEntryId() == 0)) {
 
 			return null;
 		}
 
-		return layoutSEOEntry.getOpenGraphImageAlt(themeDisplay.getLocale());
+		return layoutSEOSite.getOpenGraphImageAlt(themeDisplay.getLocale());
 	}
 
 	private long _getOpenGraphImageFileEntryId(
-		LayoutSEOEntry layoutSEOEntry, Group group)
+			LayoutSEOEntry layoutSEOEntry, Group group)
 		throws PortalException {
 
 		if (!_openGraphConfiguration.isOpenGraphEnabled(group)) {
@@ -339,6 +351,16 @@ public class OpenGraphTopHeadDynamicInclude extends BaseDynamicInclude {
 			themeDisplay.getLayout(), portletId, themeDisplay.getTilesTitle(),
 			titleListMergeable, subtitleListMergeable, company.getName(),
 			themeDisplay.getLocale());
+	}
+
+	private boolean _isOpenGraphImageFromLayout(LayoutSEOEntry layoutSEOEntry) {
+		if ((layoutSEOEntry != null) &&
+			(layoutSEOEntry.getOpenGraphImageFileEntryId() > 0)) {
+
+			return true;
+		}
+
+		return false;
 	}
 
 	@Reference
