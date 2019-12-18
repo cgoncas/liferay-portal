@@ -281,6 +281,7 @@ public class OpenGraphTopHeadDynamicIncludeTest {
 
 		_layoutSEOSiteLocalService.updateLayoutSEOSite(
 			TestPropsValues.getUserId(), _layout.getGroupId(), true,
+			Collections.emptyMap(),
 			siteOpenGraphImageFileEntry.getFileEntryId(),
 			ServiceContextTestUtil.getServiceContext(_group.getGroupId()));
 
@@ -383,6 +384,7 @@ public class OpenGraphTopHeadDynamicIncludeTest {
 
 		_layoutSEOSiteLocalService.updateLayoutSEOSite(
 			TestPropsValues.getUserId(), _layout.getGroupId(), true,
+			Collections.emptyMap(),
 			siteOpenGraphImageFileEntry.getFileEntryId(),
 			ServiceContextTestUtil.getServiceContext(_group.getGroupId()));
 
@@ -414,6 +416,7 @@ public class OpenGraphTopHeadDynamicIncludeTest {
 
 		_layoutSEOSiteLocalService.updateLayoutSEOSite(
 			TestPropsValues.getUserId(), _layout.getGroupId(), false,
+			Collections.emptyMap(),
 			siteOpenGraphImageFileEntry.getFileEntryId(),
 			ServiceContextTestUtil.getServiceContext(_group.getGroupId()));
 

@@ -817,12 +817,16 @@ public class SiteAdminPortlet extends MVCPortlet {
 
 		boolean openGraphEnabled = ParamUtil.getBoolean(
 			actionRequest, "openGraphEnabled", true);
+		Map<Locale, String> openGraphImageAltMap =
+			LocalizationUtil.getLocalizationMap(
+				actionRequest, "openGraphImageAlt");
 		long openGraphImageFileEntryId = ParamUtil.getLong(
 			actionRequest, "openGraphImageFileEntryId");
 
 		layoutSEOSiteLocalService.updateLayoutSEOSite(
 			portal.getUserId(actionRequest), liveGroup.getGroupId(),
-			openGraphEnabled, openGraphImageFileEntryId, serviceContext);
+			openGraphEnabled, openGraphImageAltMap, openGraphImageFileEntryId,
+			serviceContext);
 
 		// Settings
 
