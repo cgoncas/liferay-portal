@@ -115,15 +115,16 @@ public class OpenGraphTopHeadDynamicInclude extends BaseDynamicInclude {
 				return;
 			}
 
-			LayoutSEOLink layoutSEOLink =
-				_layoutSEOLinkManager.getCanonicalLayoutSEOLink(
-					layout, themeDisplay.getLocale(), canonicalURL,
-					alternateURLs);
+			LayoutSEOEntry layoutSEOEntry =
+				_layoutSEOEntryLocalService.fetchLayoutSEOEntry(
+					layout.getGroupId(), layout.isPrivateLayout(),
+					layout.getLayoutId());
 
 			printWriter.println(
 				_getOpenGraphTag(
 					"og:description",
-					_getDescriptionTagValue(layout, themeDisplay)));
+					_getDescriptionTagValue(layoutSEOEntry, themeDisplay)));
+
 			printWriter.println(
 				_getOpenGraphTag("og:locale", themeDisplay.getLanguageId()));
 
@@ -140,12 +141,19 @@ public class OpenGraphTopHeadDynamicInclude extends BaseDynamicInclude {
 
 			printWriter.println(
 				_getOpenGraphTag(
-					"og:title", _getTitleTagValue(httpServletRequest)));
+					"og:title",
+					_getTitleTagValue(httpServletRequest, layoutSEOEntry)));
+
+			LayoutSEOLink layoutSEOLink =
+				_layoutSEOLinkManager.getCanonicalLayoutSEOLink(
+					layout, themeDisplay.getLocale(), canonicalURL,
+					alternateURLs);
+
 			printWriter.println(
 				_getOpenGraphTag("og:url", layoutSEOLink.getHref()));
 
 			long openGraphImageFileEntryId = _getOpenGraphImageFileEntryId(
-				layout);
+				layoutSEOEntry, group);
 
 			if (openGraphImageFileEntryId == 0) {
 				return;
@@ -233,12 +241,7 @@ public class OpenGraphTopHeadDynamicInclude extends BaseDynamicInclude {
 	}
 
 	private String _getDescriptionTagValue(
-		Layout layout, ThemeDisplay themeDisplay) {
-
-		LayoutSEOEntry layoutSEOEntry =
-			_layoutSEOEntryLocalService.fetchLayoutSEOEntry(
-				layout.getGroupId(), layout.isPrivateLayout(),
-				layout.getLayoutId());
+		LayoutSEOEntry layoutSEOEntry, ThemeDisplay themeDisplay) {
 
 		if ((layoutSEOEntry != null) &&
 			layoutSEOEntry.isOpenGraphDescriptionEnabled()) {
@@ -246,6 +249,8 @@ public class OpenGraphTopHeadDynamicInclude extends BaseDynamicInclude {
 			return layoutSEOEntry.getOpenGraphDescription(
 				themeDisplay.getLocale());
 		}
+
+		Layout layout = themeDisplay.getLayout();
 
 		return layout.getDescription(themeDisplay.getLanguageId());
 	}
@@ -267,17 +272,13 @@ public class OpenGraphTopHeadDynamicInclude extends BaseDynamicInclude {
 		return layoutSEOEntry.getOpenGraphImageAlt(themeDisplay.getLocale());
 	}
 
-	private long _getOpenGraphImageFileEntryId(Layout layout)
+	private long _getOpenGraphImageFileEntryId(
+		LayoutSEOEntry layoutSEOEntry, Group group)
 		throws PortalException {
 
-		if (!_openGraphConfiguration.isOpenGraphEnabled(layout.getGroup())) {
+		if (!_openGraphConfiguration.isOpenGraphEnabled(group)) {
 			return 0;
 		}
-
-		LayoutSEOEntry layoutSEOEntry =
-			_layoutSEOEntryLocalService.fetchLayoutSEOEntry(
-				layout.getGroupId(), layout.isPrivateLayout(),
-				layout.getLayoutId());
 
 		if ((layoutSEOEntry != null) &&
 			(layoutSEOEntry.getOpenGraphImageFileEntryId() > 0)) {
@@ -287,7 +288,7 @@ public class OpenGraphTopHeadDynamicInclude extends BaseDynamicInclude {
 
 		LayoutSEOSite layoutSEOSite =
 			_layoutSEOSiteLocalService.fetchLayoutSEOSiteByGroupId(
-				layout.getGroupId());
+				group.getGroupId());
 
 		if ((layoutSEOSite == null) ||
 			(layoutSEOSite.getOpenGraphImageFileEntryId() == 0)) {
@@ -307,19 +308,14 @@ public class OpenGraphTopHeadDynamicInclude extends BaseDynamicInclude {
 			"<meta property=\"", property, "\" content=\"", content, "\">");
 	}
 
-	private String _getTitleTagValue(HttpServletRequest httpServletRequest)
+	private String _getTitleTagValue(
+			HttpServletRequest httpServletRequest,
+			LayoutSEOEntry layoutSEOEntry)
 		throws PortalException {
 
 		ThemeDisplay themeDisplay =
 			(ThemeDisplay)httpServletRequest.getAttribute(
 				WebKeys.THEME_DISPLAY);
-
-		Layout layout = themeDisplay.getLayout();
-
-		LayoutSEOEntry layoutSEOEntry =
-			_layoutSEOEntryLocalService.fetchLayoutSEOEntry(
-				layout.getGroupId(), layout.isPrivateLayout(),
-				layout.getLayoutId());
 
 		if ((layoutSEOEntry != null) &&
 			layoutSEOEntry.isOpenGraphTitleEnabled()) {
@@ -340,8 +336,9 @@ public class OpenGraphTopHeadDynamicInclude extends BaseDynamicInclude {
 		Company company = themeDisplay.getCompany();
 
 		return _layoutSEOLinkManager.getFullPageTitle(
-			layout, portletId, themeDisplay.getTilesTitle(), titleListMergeable,
-			subtitleListMergeable, company.getName(), themeDisplay.getLocale());
+			themeDisplay.getLayout(), portletId, themeDisplay.getTilesTitle(),
+			titleListMergeable, subtitleListMergeable, company.getName(),
+			themeDisplay.getLocale());
 	}
 
 	@Reference
