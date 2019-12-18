@@ -17,6 +17,7 @@ package com.liferay.layout.seo.web.internal.servlet.taglib.ui;
 import com.liferay.document.library.util.DLURLHelper;
 import com.liferay.item.selector.ItemSelector;
 import com.liferay.layout.seo.open.graph.OpenGraphConfiguration;
+import com.liferay.layout.seo.service.LayoutSEOSiteLocalService;
 import com.liferay.layout.seo.web.internal.display.context.OpenGraphSettingsDisplayContext;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.language.LanguageUtil;
@@ -92,6 +93,7 @@ public class SiteOpenGraphFormNavigatorEntry
 			OpenGraphSettingsDisplayContext.class.getName(),
 			new OpenGraphSettingsDisplayContext(
 				_dlurlHelper, httpServletRequest, _itemSelector,
+				_layoutSEOSiteLocalService,
 				_portal.getLiferayPortletRequest(portletRequest),
 				_portal.getLiferayPortletResponse(portletResponse),
 				_openGraphConfiguration));
@@ -143,6 +145,9 @@ public class SiteOpenGraphFormNavigatorEntry
 
 	@Reference
 	private ItemSelector _itemSelector;
+
+	@Reference
+	private LayoutSEOSiteLocalService _layoutSEOSiteLocalService;
 
 	@Reference
 	private OpenGraphConfiguration _openGraphConfiguration;

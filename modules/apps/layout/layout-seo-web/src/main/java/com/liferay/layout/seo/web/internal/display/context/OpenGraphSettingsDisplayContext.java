@@ -23,7 +23,7 @@ import com.liferay.item.selector.criteria.URLItemSelectorReturnType;
 import com.liferay.item.selector.criteria.image.criterion.ImageItemSelectorCriterion;
 import com.liferay.layout.seo.model.LayoutSEOSite;
 import com.liferay.layout.seo.open.graph.OpenGraphConfiguration;
-import com.liferay.layout.seo.service.LayoutSEOSiteLocalServiceUtil;
+import com.liferay.layout.seo.service.LayoutSEOSiteLocalService;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
@@ -46,13 +46,16 @@ public class OpenGraphSettingsDisplayContext {
 
 	public OpenGraphSettingsDisplayContext(
 		DLURLHelper dlurlHelper, HttpServletRequest httpServletRequest,
-		ItemSelector itemSelector, LiferayPortletRequest liferayPortletRequest,
+		ItemSelector itemSelector,
+		LayoutSEOSiteLocalService layoutSEOSiteLocalService,
+		LiferayPortletRequest liferayPortletRequest,
 		LiferayPortletResponse liferayPortletResponse,
 		OpenGraphConfiguration openGraphConfiguration) {
 
 		_dlurlHelper = dlurlHelper;
 		_httpServletRequest = httpServletRequest;
 		_itemSelector = itemSelector;
+		_layoutSEOSiteLocalService = layoutSEOSiteLocalService;
 		_liferayPortletResponse = liferayPortletResponse;
 		_openGraphConfiguration = openGraphConfiguration;
 
@@ -77,11 +80,25 @@ public class OpenGraphSettingsDisplayContext {
 		return itemSelectorURL.toString();
 	}
 
+	public long getOpenGraphImageFileEntryId() {
+		Group group = _getGroup();
+
+		LayoutSEOSite layoutSEOSite =
+			_layoutSEOSiteLocalService.fetchLayoutSEOSiteByGroupId(
+				group.getGroupId());
+
+		if (layoutSEOSite == null) {
+			return 0;
+		}
+
+		return layoutSEOSite.getOpenGraphImageFileEntryId();
+	}
+
 	public String getOpenGraphImageTitle() {
 		Group group = _getGroup();
 
 		LayoutSEOSite layoutSEOSite =
-			LayoutSEOSiteLocalServiceUtil.fetchLayoutSEOSiteByGroupId(
+			_layoutSEOSiteLocalService.fetchLayoutSEOSiteByGroupId(
 				group.getGroupId());
 
 		if ((layoutSEOSite == null) ||
@@ -107,7 +124,7 @@ public class OpenGraphSettingsDisplayContext {
 		Group group = _getGroup();
 
 		LayoutSEOSite layoutSEOSite =
-			LayoutSEOSiteLocalServiceUtil.fetchLayoutSEOSiteByGroupId(
+			_layoutSEOSiteLocalService.fetchLayoutSEOSiteByGroupId(
 				group.getGroupId());
 
 		if ((layoutSEOSite == null) ||
@@ -127,6 +144,13 @@ public class OpenGraphSettingsDisplayContext {
 
 			return null;
 		}
+	}
+
+	public LayoutSEOSite getSelLayoutSEOSite() {
+		Group group = _getGroup();
+
+		return _layoutSEOSiteLocalService.fetchLayoutSEOSiteByGroupId(
+			group.getGroupId());
 	}
 
 	public boolean isOpenGraphEnabled() throws PortalException {
@@ -150,6 +174,7 @@ public class OpenGraphSettingsDisplayContext {
 	private final DLURLHelper _dlurlHelper;
 	private final HttpServletRequest _httpServletRequest;
 	private final ItemSelector _itemSelector;
+	private final LayoutSEOSiteLocalService _layoutSEOSiteLocalService;
 	private final LiferayPortletResponse _liferayPortletResponse;
 	private final OpenGraphConfiguration _openGraphConfiguration;
 	private final ThemeDisplay _themeDisplay;

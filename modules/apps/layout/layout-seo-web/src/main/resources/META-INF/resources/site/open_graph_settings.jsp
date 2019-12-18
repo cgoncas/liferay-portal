@@ -50,9 +50,21 @@ OpenGraphSettingsDisplayContext openGraphSettingsDisplayContext = (OpenGraphSett
 			<aui:button name="openGraphImageButton" value="select" />
 			<aui:button name="openGraphClearImageButton" value="clear" />
 		</aui:button-row>
+
+		<label class="control-label"><liferay-ui:message key="open-graph-image-alt-description" /></label>
+
+		<%
+		LayoutSEOSite selLayoutSEOSite = openGraphSettingsDisplayContext.getSelLayoutSEOSite();
+		%>
+
+		<c:if test="<%= selLayoutSEOSite != null %>">
+			<aui:model-context bean="<%= selLayoutSEOSite %>" model="<%= LayoutSEOSite.class %>" />
+		</c:if>
+
+		<aui:input disabled="<%= !openGraphSettingsDisplayContext.isOpenGraphEnabled() || Validator.isNull(openGraphSettingsDisplayContext.getOpenGraphImageURL()) %>" id="openGraphImageAlt" label="<%= StringPool.BLANK %>" localized="<%= true %>" name="openGraphImageAlt" placeholder="open-graph-alt-description" type="textarea" />
 	</div>
 
-	<aui:input id="openGraphImageFileEntryId" name="openGraphImageFileEntryId" type="hidden" />
+	<aui:input id="openGraphImageFileEntryId" name="openGraphImageFileEntryId" type="hidden" value="<%= openGraphSettingsDisplayContext.getOpenGraphImageFileEntryId() %>" />
 
 	<div class="form-group">
 		<label><liferay-ui:message key="preview" /></label>
@@ -100,6 +112,13 @@ OpenGraphSettingsDisplayContext openGraphSettingsDisplayContext = (OpenGraphSett
 		'<portlet:namespace />openGraphPreviewImage'
 	);
 
+	var openGraphImageAltField = document.getElementById(
+		'<portlet:namespace />openGraphImageAlt'
+	);
+	var openGraphImageAltFieldDefaultLocale = document.getElementById(
+		'<portlet:namespace />openGraphImageAlt_<%= themeDisplay.getLanguageId() %>'
+	);
+
 	itemSelectorDialog.on('selectedItemChange', function(event) {
 		var selectedItem = event.selectedItem;
 
@@ -109,6 +128,9 @@ OpenGraphSettingsDisplayContext openGraphSettingsDisplayContext = (OpenGraphSett
 			openGraphImageFileEntryId.value = itemValue.fileEntryId;
 			openGraphImageTitle.value = itemValue.title;
 			openGraphPreviewImage.src = itemValue.url;
+
+			Liferay.Util.toggleDisabled(openGraphImageAltField, false);
+			Liferay.Util.toggleDisabled(openGraphImageAltFieldDefaultLocale, false);
 
 			openGraphPreviewImage.classList.remove('hide');
 		}
@@ -128,6 +150,9 @@ OpenGraphSettingsDisplayContext openGraphSettingsDisplayContext = (OpenGraphSett
 		openGraphImageTitle.value = '';
 		openGraphPreviewImage.src = '';
 
+		Liferay.Util.toggleDisabled(openGraphImageAltField, true);
+		Liferay.Util.toggleDisabled(openGraphImageAltFieldDefaultLocale, true);
+
 		openGraphPreviewImage.classList.add('hide');
 	});
 
@@ -144,6 +169,10 @@ OpenGraphSettingsDisplayContext openGraphSettingsDisplayContext = (OpenGraphSett
 		Liferay.Util.toggleDisabled(openGraphImageTitle, disabled);
 		Liferay.Util.toggleDisabled(openGraphImageButton, disabled);
 		Liferay.Util.toggleDisabled(openGraphClearImageButton, disabled);
+
+		Liferay.Util.toggleDisabled(openGraphImageAltField, disabled);
+		Liferay.Util.toggleDisabled(openGraphImageAltFieldDefaultLocale, disabled);
+
 		openGraphSettings.classList.toggle('disabled');
 	});
 </aui:script>
