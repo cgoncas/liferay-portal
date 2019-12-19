@@ -256,6 +256,41 @@ public class OpenGraphTopHeadDynamicIncludeTest {
 	}
 
 	@Test
+	public void testIncludeLayoutOpenGraphImageNoImageAlt() throws Exception {
+		MockHttpServletResponse mockHttpServletResponse =
+			new MockHttpServletResponse();
+
+		FileEntry layoutOpenGraphImageFileEntry = _addImageFileEntry(
+			"image.jpg",
+			ServiceContextTestUtil.getServiceContext(_group.getGroupId()));
+
+		_layoutSEOEntryLocalService.updateLayoutSEOEntry(
+			TestPropsValues.getUserId(), _layout.getGroupId(), false,
+			_layout.getLayoutId(), true,
+			Collections.singletonMap(LocaleUtil.US, "http://example.com"),
+			false, Collections.emptyMap(), Collections.emptyMap(),
+			layoutOpenGraphImageFileEntry.getFileEntryId(), false,
+			Collections.emptyMap(),
+			ServiceContextTestUtil.getServiceContext(_group.getGroupId()));
+
+		_testWithLayoutSEOCompanyConfiguration(
+			() -> _dynamicInclude.include(
+				_getHttpServletRequest(), mockHttpServletResponse,
+				RandomTestUtil.randomString()),
+			true);
+
+		Document document = Jsoup.parse(
+			mockHttpServletResponse.getContentAsString());
+
+		_assertMetaTag(
+			document, "og:image",
+			_dlurlHelper.getImagePreviewURL(
+				layoutOpenGraphImageFileEntry, _getThemeDisplay()));
+
+		_assertNoOpenGraphMeta(document, "og:image:alt");
+	}
+
+	@Test
 	public void testIncludeLayoutOpenGraphImageWhenBothDefined()
 		throws Exception {
 
@@ -298,6 +333,88 @@ public class OpenGraphTopHeadDynamicIncludeTest {
 			document, "og:image",
 			_dlurlHelper.getImagePreviewURL(
 				layoutOpenGraphImageFileEntry, _getThemeDisplay()));
+	}
+
+	@Test
+	public void testIncludeLayoutOpenGraphImageWhenBothDefinedLayoutImageAlt()
+		throws Exception {
+
+		MockHttpServletResponse mockHttpServletResponse =
+			new MockHttpServletResponse();
+
+		FileEntry imageFileEntry = _addImageFileEntry(
+			"image.jpg",
+			ServiceContextTestUtil.getServiceContext(_group.getGroupId()));
+
+		_layoutSEOEntryLocalService.updateLayoutSEOEntry(
+			TestPropsValues.getUserId(), _layout.getGroupId(), false,
+			_layout.getLayoutId(), true,
+			Collections.singletonMap(LocaleUtil.US, "http://example.com"),
+			false, Collections.emptyMap(),
+			Collections.singletonMap(
+				LocaleUtil.US, "Layout image alternative text"),
+			imageFileEntry.getFileEntryId(), false, Collections.emptyMap(),
+			ServiceContextTestUtil.getServiceContext(_group.getGroupId()));
+
+		_layoutSEOSiteLocalService.updateLayoutSEOSite(
+			TestPropsValues.getUserId(), _layout.getGroupId(), true,
+			Collections.singletonMap(
+				LocaleUtil.US, "Site Image alternative text"),
+			imageFileEntry.getFileEntryId(),
+			ServiceContextTestUtil.getServiceContext(_group.getGroupId()));
+
+		_testWithLayoutSEOCompanyConfiguration(
+			() -> _dynamicInclude.include(
+				_getHttpServletRequest(), mockHttpServletResponse,
+				RandomTestUtil.randomString()),
+			true);
+
+		Document document = Jsoup.parse(
+			mockHttpServletResponse.getContentAsString());
+
+		_assertMetaTag(
+			document, "og:image",
+			_dlurlHelper.getImagePreviewURL(
+				imageFileEntry, _getThemeDisplay()));
+
+		_assertMetaTag(
+			document, "og:image:alt", "Layout image alternative text");
+	}
+
+	@Test
+	public void testIncludeLayoutOpenGraphImageWithImageAlt() throws Exception {
+		MockHttpServletResponse mockHttpServletResponse =
+			new MockHttpServletResponse();
+
+		FileEntry layoutOpenGraphImageFileEntry = _addImageFileEntry(
+			"image.jpg",
+			ServiceContextTestUtil.getServiceContext(_group.getGroupId()));
+
+		_layoutSEOEntryLocalService.updateLayoutSEOEntry(
+			TestPropsValues.getUserId(), _layout.getGroupId(), false,
+			_layout.getLayoutId(), true,
+			Collections.singletonMap(LocaleUtil.US, "http://example.com"),
+			false, Collections.emptyMap(),
+			Collections.singletonMap(LocaleUtil.US, "Image alternative text"),
+			layoutOpenGraphImageFileEntry.getFileEntryId(), false,
+			Collections.emptyMap(),
+			ServiceContextTestUtil.getServiceContext(_group.getGroupId()));
+
+		_testWithLayoutSEOCompanyConfiguration(
+			() -> _dynamicInclude.include(
+				_getHttpServletRequest(), mockHttpServletResponse,
+				RandomTestUtil.randomString()),
+			true);
+
+		Document document = Jsoup.parse(
+			mockHttpServletResponse.getContentAsString());
+
+		_assertMetaTag(
+			document, "og:image",
+			_dlurlHelper.getImagePreviewURL(
+				layoutOpenGraphImageFileEntry, _getThemeDisplay()));
+
+		_assertMetaTag(document, "og:image:alt", "Image alternative text");
 	}
 
 	@Test
