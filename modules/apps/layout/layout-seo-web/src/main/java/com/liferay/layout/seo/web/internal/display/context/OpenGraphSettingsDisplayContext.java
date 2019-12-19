@@ -25,6 +25,8 @@ import com.liferay.layout.seo.model.LayoutSEOSite;
 import com.liferay.layout.seo.open.graph.OpenGraphConfiguration;
 import com.liferay.layout.seo.service.LayoutSEOSiteLocalService;
 import com.liferay.portal.kernel.exception.PortalException;
+import com.liferay.portal.kernel.log.Log;
+import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.model.Group;
 import com.liferay.portal.kernel.portlet.LiferayPortletRequest;
 import com.liferay.portal.kernel.portlet.LiferayPortletResponse;
@@ -89,7 +91,7 @@ public class OpenGraphSettingsDisplayContext {
 		return selLayoutSEOSite.getOpenGraphImageFileEntryId();
 	}
 
-	public String getOpenGraphImageTitle() throws Exception {
+	public String getOpenGraphImageTitle() {
 		LayoutSEOSite selLayoutSEOSite = getSelLayoutSEOSite();
 
 		if ((selLayoutSEOSite == null) ||
@@ -98,10 +100,17 @@ public class OpenGraphSettingsDisplayContext {
 			return null;
 		}
 
-		FileEntry fileEntry = _dlAppService.getFileEntry(
-			selLayoutSEOSite.getOpenGraphImageFileEntryId());
+		try {
+			FileEntry fileEntry = _dlAppService.getFileEntry(
+				selLayoutSEOSite.getOpenGraphImageFileEntryId());
 
-		return fileEntry.getTitle();
+			return fileEntry.getTitle();
+		}
+		catch (PortalException pe) {
+			_log.error(pe, pe);
+
+			return null;
+		}
 	}
 
 	public String getOpenGraphImageURL() throws Exception {
@@ -113,10 +122,17 @@ public class OpenGraphSettingsDisplayContext {
 			return null;
 		}
 
-		return _dlurlHelper.getImagePreviewURL(
-			_dlAppService.getFileEntry(
-				selLayoutSEOSite.getOpenGraphImageFileEntryId()),
-			_themeDisplay);
+		try {
+			return _dlurlHelper.getImagePreviewURL(
+				_dlAppService.getFileEntry(
+					selLayoutSEOSite.getOpenGraphImageFileEntryId()),
+				_themeDisplay);
+		}
+		catch (PortalException pe) {
+			_log.error(pe, pe);
+
+			return null;
+		}
 	}
 
 	public LayoutSEOSite getSelLayoutSEOSite() {
@@ -140,6 +156,9 @@ public class OpenGraphSettingsDisplayContext {
 
 		return (Group)_httpServletRequest.getAttribute("site.group");
 	}
+
+	private static final Log _log = LogFactoryUtil.getLog(
+		OpenGraphSettingsDisplayContext.class);
 
 	private final DLAppService _dlAppService;
 	private final DLURLHelper _dlurlHelper;

@@ -34,6 +34,8 @@ import com.liferay.layout.seo.model.LayoutSEOSite;
 import com.liferay.layout.seo.service.LayoutSEOEntryLocalServiceUtil;
 import com.liferay.layout.seo.service.LayoutSEOSiteLocalService;
 import com.liferay.portal.kernel.exception.PortalException;
+import com.liferay.portal.kernel.log.Log;
+import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.model.Company;
 import com.liferay.portal.kernel.model.Layout;
 import com.liferay.portal.kernel.model.LayoutConstants;
@@ -147,10 +149,17 @@ public class LayoutsSEODisplayContext {
 			return null;
 		}
 
-		return _dlurlHelper.getImagePreviewURL(
-			_dlAppService.getFileEntry(
-				layoutSEOSite.getOpenGraphImageFileEntryId()),
-			_themeDisplay);
+		try {
+			return _dlurlHelper.getImagePreviewURL(
+				_dlAppService.getFileEntry(
+					layoutSEOSite.getOpenGraphImageFileEntryId()),
+				_themeDisplay);
+		}
+		catch (PortalException pe) {
+			_log.error(pe, pe);
+
+			return null;
+		}
 	}
 
 	public long getGroupId() {
@@ -263,6 +272,9 @@ public class LayoutsSEODisplayContext {
 
 		return _selPlid;
 	}
+
+	private static final Log _log = LogFactoryUtil.getLog(
+		LayoutsSEODisplayContext.class);
 
 	private DDMStructure _ddmStructure;
 	private final DLAppService _dlAppService;
