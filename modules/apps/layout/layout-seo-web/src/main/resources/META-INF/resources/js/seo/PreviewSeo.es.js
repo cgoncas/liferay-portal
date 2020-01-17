@@ -83,7 +83,7 @@ const PreviewSeoContainer = ({
 	const [language, setLanguage] = useState(defaultLanguage);
 	const [fields, setFields] = useState({});
 	const isMounted = useIsMounted();
-	const [inputTargets, setInputTargets] = useState([]);
+	const [inputTargets, setInputTargets] = useState({});
 
 	const getDefaultValue = useCallback(
 		type => {
@@ -133,14 +133,21 @@ const PreviewSeoContainer = ({
 					const node = document.getElementById(
 						`${portletNamespace}${id}`
 					);
-					acc.push({node, type});
+					const defaultLanguageNode = document.getElementById(
+						`${portletNamespace}${id}_${defaultLanguage}`
+					);
+					acc[type] = {
+						defaultLanguageNode,
+						node,
+						type
+					};
 				} else if (value) {
 					setFieldState({type, value});
 				}
 
 				return acc;
 			},
-			[]
+			{}
 		);
 
 		setInputTargets(inputTargets);
@@ -156,7 +163,7 @@ const PreviewSeoContainer = ({
 			setFieldState({disabled, type, value});
 		};
 
-		const inputs = inputTargets.reduce((acc, {node, type}) => {
+		const inputs = Object.values(inputTargets).reduce((acc, {node, type}) => {
 			const listener = event => {
 				handleInputChange({
 					event,
@@ -183,12 +190,12 @@ const PreviewSeoContainer = ({
 
 			Liferay.detach(previewSeoOnChangeHandle);
 		};
-	}, [isMounted, portletNamespace, targets]);
+	}, [defaultLanguage, isMounted, portletNamespace, targets]);
 
 	useEffect(() => {
 		if (!isMounted()) return;
 
-		const newFieldsState = inputTargets.reduce((acc, {node, type}) => {
+		const newFieldsState = Object.values(inputTargets).reduce((acc, {node, type}) => {
 			const {disabled, value} = node;
 			acc[type] = {disabled, value};
 
@@ -204,9 +211,7 @@ const PreviewSeoContainer = ({
 		let value = fields[type] && fields[type].value;
 
 		if (disabled || (!customizable && !value)) {
-			const defaultLanguageInput = document.getElementById(
-				`${portletNamespace}${type}_${defaultLanguage}`
-			);
+			const defaultLanguageInput = inputTargets[type] && inputTargets[type].defaultLanguageNode;
 
 			const defaultLanguageInputValue =
 				defaultLanguageInput && defaultLanguageInput.value;
