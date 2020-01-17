@@ -130,15 +130,15 @@ const PreviewSeoContainer = ({
 		const inputTargets = Object.entries(targets).reduce(
 			(acc, [type, {id, value}]) => {
 				if (id) {
-					const node = document.getElementById(
+					const input = document.getElementById(
 						`${portletNamespace}${id}`
 					);
-					const defaultLanguageNode = document.getElementById(
+					const defaultLanguageInput = document.getElementById(
 						`${portletNamespace}${id}_${defaultLanguage}`
 					);
 					acc[type] = {
-						defaultLanguageNode,
-						node,
+						defaultLanguageInput,
+						input,
 						type
 					};
 				} else if (value) {
@@ -163,20 +163,23 @@ const PreviewSeoContainer = ({
 			setFieldState({disabled, type, value});
 		};
 
-		const inputs = Object.values(inputTargets).reduce((acc, {node, type}) => {
-			const listener = event => {
-				handleInputChange({
-					event,
-					type
-				});
-			};
+		const inputs = Object.values(inputTargets).reduce(
+			(acc, {input, type}) => {
+				const listener = event => {
+					handleInputChange({
+						event,
+						type
+					});
+				};
 
-			node.addEventListener('input', listener);
+				input.addEventListener('input', listener);
 
-			acc.push({listener, node});
+				acc.push({input, listener});
 
-			return acc;
-		}, []);
+				return acc;
+			},
+			[]
+		);
 
 		const previewSeoOnChangeHandle = previewSeoOnChange(
 			portletNamespace,
@@ -184,8 +187,8 @@ const PreviewSeoContainer = ({
 		);
 
 		return () => {
-			inputs.forEach(({listener, node}) =>
-				node.removeEventListener('input', listener)
+			inputs.forEach(({input, listener}) =>
+				input.removeEventListener('input', listener)
 			);
 
 			Liferay.detach(previewSeoOnChangeHandle);
@@ -195,12 +198,15 @@ const PreviewSeoContainer = ({
 	useEffect(() => {
 		if (!isMounted()) return;
 
-		const newFieldsState = Object.values(inputTargets).reduce((acc, {node, type}) => {
-			const {disabled, value} = node;
-			acc[type] = {disabled, value};
+		const newFieldsState = Object.values(inputTargets).reduce(
+			(acc, {input, type}) => {
+				const {disabled, value} = input;
+				acc[type] = {disabled, value};
 
-			return acc;
-		}, {});
+				return acc;
+			},
+			{}
+		);
 
 		setFields(prevFieldsState => ({...prevFieldsState, ...newFieldsState}));
 	}, [inputTargets, isMounted, language]);
@@ -211,7 +217,8 @@ const PreviewSeoContainer = ({
 		let value = fields[type] && fields[type].value;
 
 		if (disabled || (!customizable && !value)) {
-			const defaultLanguageInput = inputTargets[type] && inputTargets[type].defaultLanguageNode;
+			const defaultLanguageInput =
+				inputTargets[type] && inputTargets[type].defaultLanguageInput;
 
 			const defaultLanguageInputValue =
 				defaultLanguageInput && defaultLanguageInput.value;
