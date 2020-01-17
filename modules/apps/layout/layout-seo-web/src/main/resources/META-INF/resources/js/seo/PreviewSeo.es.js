@@ -201,11 +201,21 @@ const PreviewSeoContainer = ({
 	const getValue = type => {
 		const disabled = fields[type] && fields[type].disabled;
 		const customizable = targets[type] && targets[type].customizable;
-		const defaultValue = getDefaultValue(type);
 		let value = fields[type] && fields[type].value;
 
 		if (disabled || (!customizable && !value)) {
-			value = defaultValue;
+			const defaultLanguageInput = document.getElementById(
+				`${portletNamespace}${type}_${defaultLanguage}`
+			);
+
+			const defaultLanguageInputValue =
+				defaultLanguageInput && defaultLanguageInput.value;
+
+			if (language !== defaultLanguage && defaultLanguageInputValue) {
+				value = defaultLanguageInputValue;
+			} else {
+				value = getDefaultValue(type);
+			}
 		}
 
 		return value || '';
