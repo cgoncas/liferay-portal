@@ -104,8 +104,6 @@ Layout selLayout = layoutsSEODisplayContext.getSelLayout();
 						HashMapBuilder.<String, Object>put(
 							"description",
 							HashMapBuilder.<String, Object>put(
-								"customizable", Boolean.TRUE
-							).put(
 								"defaultValue", selLayout.getDescriptionMap()
 							).put(
 								"id", "openGraphDescription"
@@ -122,8 +120,6 @@ Layout selLayout = layoutsSEODisplayContext.getSelLayout();
 						).put(
 							"title",
 							HashMapBuilder.<String, Object>put(
-								"customizable", Boolean.TRUE
-							).put(
 								"defaultValue", layoutsSEODisplayContext.getDefaultPageTitleMap()
 							).put(
 								"id", "openGraphTitle"

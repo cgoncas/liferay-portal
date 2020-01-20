@@ -213,10 +213,9 @@ const PreviewSeoContainer = ({
 
 	const getValue = type => {
 		const disabled = fields[type] && fields[type].disabled;
-		const customizable = targets[type] && targets[type].customizable;
 		let value = fields[type] && fields[type].value;
 
-		if (disabled || (!customizable && !value)) {
+		if (disabled || !value) {
 			const defaultLanguageInput =
 				inputTargets[type] && inputTargets[type].defaultLanguageInput;
 
