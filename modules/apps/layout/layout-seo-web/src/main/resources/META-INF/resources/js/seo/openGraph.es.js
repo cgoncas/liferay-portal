@@ -107,6 +107,10 @@ export default function({namespace, uploadOpenGraphImageURL}) {
 		Liferay.Util.toggleDisabled(openGraphTitleField, disabled);
 		Liferay.Util.toggleDisabled(openGraphTitleFieldDefaultLocale, disabled);
 
+		if (disabled) {
+			openGraphTitleField.value = '';
+		}
+
 		previewSeoFireChange(namespace, {
 			disabled,
 			type: 'title',
@@ -132,6 +136,10 @@ export default function({namespace, uploadOpenGraphImageURL}) {
 			openGraphDescriptionFieldDefaultLocale,
 			disabled
 		);
+
+		if (disabled) {
+			openGraphDescriptionField.value = '';
+		}
 
 		previewSeoFireChange(namespace, {
 			disabled,
