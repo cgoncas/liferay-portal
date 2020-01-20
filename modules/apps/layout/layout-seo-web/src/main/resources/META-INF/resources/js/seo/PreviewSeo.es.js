@@ -220,7 +220,9 @@ const PreviewSeoContainer = ({
 				inputTargets[type] && inputTargets[type].defaultLanguageInput;
 
 			const defaultLanguageInputValue =
-				defaultLanguageInput && defaultLanguageInput.value;
+				defaultLanguageInput &&
+				!defaultLanguageInput.disabled &&
+				defaultLanguageInput.value;
 
 			if (language !== defaultLanguage && defaultLanguageInputValue) {
 				value = defaultLanguageInputValue;
