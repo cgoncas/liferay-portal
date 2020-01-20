@@ -214,36 +214,6 @@ UnicodeProperties layoutTypeSettings = selLayout.getTypeSettingsProperties();
 	</div>
 </aui:form>
 
-<aui:script require='<%= npmResolvedPackageName + "/js/seo/PreviewSeoEvents.es as PreviewSeoEvents" %>'>
-	var canonicalURLEnabledCheck = document.getElementById(
-		'<portlet:namespace />canonicalURLEnabled'
-	);
-	var canonicalURLField = document.getElementById(
-		'<portlet:namespace />canonicalURL'
-	);
-	var canonicalURLFieldDefaultLocale = document.getElementById(
-		'<portlet:namespace />canonicalURL_<%= themeDisplay.getLanguageId() %>'
-	);
-	var canonicalURLAlert = document.getElementById(
-		'<portlet:namespace />canonicalURLAlert'
-	);
-
-	canonicalURLEnabledCheck.addEventListener('click', function(event) {
-		var disabled = !event.target.checked;
-
-		canonicalURLAlert.classList.toggle('hide');
-
-		Liferay.Util.toggleDisabled(canonicalURLField, disabled);
-
-		Liferay.Util.toggleDisabled(canonicalURLFieldDefaultLocale, disabled);
-
-		if (disabled) {
-			canonicalURLField.value = '';
-		}
-
-		PreviewSeoEvents.previewSeoFireChange('<portlet:namespace />', {
-			type: 'url',
-			value: canonicalURLField.value
-		});
-	});
-</aui:script>
+<liferay-frontend:component
+	module="js/seo/seo.es"
+/>
