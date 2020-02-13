@@ -65,7 +65,3 @@ wsdl {
 		}
 	}
 }
-
-tasks.withType(com.intershop.gradle.wsdl.tasks.axis2.WSDL2Java).each { task ->
-	task.enabled = !(new File("src/generated").exists());
-}
