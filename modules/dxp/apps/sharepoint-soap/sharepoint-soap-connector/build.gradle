@@ -1,22 +1,13 @@
-buildscript {
-	repositories {
-		maven {
-			url "https://repository-cdn.liferay.com/nexus/content/groups/public"
-		}
-	}
-	dependencies {
-		classpath group: "com.intershop.gradle.wsdl", name: "wsdl-gradle-plugin", version: "2.3.0"
-	}
-}
-
-apply plugin: "com.intershop.gradle.wsdl"
-
 buildWSDL {
-	buildLibs = false
-}
+	axisVersion = 2
 
-configurations {
-	wsdlAxis2.extendsFrom(compile)
+	generateOptions {
+		backwordCompatible = true
+		databindingMethod = "xmlbeans"
+		flattenFiles = true
+		generateAll = true
+		serverSide = true
+	}
 }
 
 dependencies {
@@ -28,40 +19,4 @@ dependencies {
 	compileOnly project(":core:petra:petra-string")
 
 	testCompile group: "com.liferay.portal", name: "com.liferay.portal.impl", version: "default"
-
-	wsdlAxis2 group: "org.apache.axis2", name: "axis2", version: "1.7.9"
-	wsdlAxis2 group: "org.apache.axis2", name: "axis2-xmlbeans", version: "1.7.9"
-}
-
-wsdl {
-	axis2 {
-		copyWSDL {
-			databindingMethod = 'xmlbeans'
-			generateAllClasses = true
-			outputDir = new File('src/generated')
-			serverSide = true
-			wsdlFile = file('./wsdl/copy.wsdl')
-		}
-		listsWSDL {
-			databindingMethod = 'xmlbeans'
-			generateAllClasses = true
-			outputDir = new File('src/generated')
-			serverSide = true
-			wsdlFile = file('./wsdl/lists.wsdl')
-		}
-		searchWSDL {
-			databindingMethod = 'xmlbeans'
-			generateAllClasses = true
-			outputDir = new File('src/generated')
-			serverSide = true
-			wsdlFile = file('./wsdl/search.wsdl')
-		}
-		versionsWSDL {
-			databindingMethod = 'xmlbeans'
-			generateAllClasses = true
-			outputDir = new File('src/generated')
-			serverSide = true
-			wsdlFile = file('./wsdl/versions.wsdl')
-		}
-	}
 }
