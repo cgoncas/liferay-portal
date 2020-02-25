@@ -186,6 +186,7 @@ public abstract class PermissionCheckerWrapper implements PermissionChecker {
 	@Override
 	public final void setPermissionChecker(
 		PermissionChecker permissionChecker) {
+
 		this.permissionChecker = permissionChecker;
 		delegatePermissionChecker.setPermissionChecker(permissionChecker);
 	}
