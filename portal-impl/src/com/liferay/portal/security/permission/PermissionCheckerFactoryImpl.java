@@ -16,11 +16,22 @@ package com.liferay.portal.security.permission;
 
 import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.security.permission.PermissionChecker;
+import com.liferay.portal.kernel.security.permission.PermissionCheckerDecorator;
 import com.liferay.portal.kernel.security.permission.PermissionCheckerFactory;
 import com.liferay.portal.kernel.security.permission.contributor.RoleContributor;
 import com.liferay.portal.util.PropsValues;
+import com.liferay.registry.Registry;
+import com.liferay.registry.RegistryUtil;
+import com.liferay.registry.ServiceReference;
+import com.liferay.registry.ServiceTracker;
+import com.liferay.registry.ServiceTrackerCustomizer;
 import com.liferay.registry.collections.ServiceTrackerCollections;
 import com.liferay.registry.collections.ServiceTrackerList;
+
+import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.List;
+import java.util.Objects;
 
 /**
  * @author Charles May
@@ -40,6 +51,14 @@ public class PermissionCheckerFactoryImpl implements PermissionCheckerFactory {
 	public void afterPropertiesSet() {
 		_roleContributors = ServiceTrackerCollections.openList(
 			RoleContributor.class);
+
+		Registry registry = RegistryUtil.getRegistry();
+
+		_serviceTracker = registry.trackServices(
+			PermissionCheckerDecorator.class,
+			new PermissionCheckerDecoratorServiceTrackerCustomizer());
+
+		_serviceTracker.open();
 	}
 
 	@Override
@@ -53,6 +72,8 @@ public class PermissionCheckerFactoryImpl implements PermissionCheckerFactory {
 	}
 
 	public void destroy() {
+		_serviceTracker.close();
+
 		_roleContributors.close();
 	}
 
@@ -113,5 +134,79 @@ public class PermissionCheckerFactoryImpl implements PermissionCheckerFactory {
 	private volatile PermissionChecker _decoratedPermissionChecker;
 	private final PermissionChecker _permissionChecker;
 	private ServiceTrackerList<RoleContributor> _roleContributors;
+	private List<ServiceReferenceServiceTuple<PermissionCheckerDecorator>>
+		_serviceReferenceServiceTuplesList = new ArrayList<>();
+	private ServiceTracker<PermissionCheckerDecorator, ?> _serviceTracker;
+
+	private class PermissionCheckerDecoratorServiceTrackerCustomizer
+		implements ServiceTrackerCustomizer
+			<PermissionCheckerDecorator,
+			 ServiceReferenceServiceTuple<PermissionCheckerDecorator>> {
+
+		@Override
+		public synchronized ServiceReferenceServiceTuple
+			<PermissionCheckerDecorator> addingService(
+				ServiceReference<PermissionCheckerDecorator> serviceReference) {
+
+			Registry registry = RegistryUtil.getRegistry();
+
+			ServiceReferenceServiceTuple<PermissionCheckerDecorator>
+				serviceReferenceServiceTuple =
+					new ServiceReferenceServiceTuple<>(
+						serviceReference,
+						registry.getService(serviceReference));
+
+			_serviceReferenceServiceTuplesList.add(
+				serviceReferenceServiceTuple);
+
+			_rebuild();
+
+			return serviceReferenceServiceTuple;
+		}
+
+		@Override
+		public synchronized void modifiedService(
+			ServiceReference<PermissionCheckerDecorator> serviceReference,
+			ServiceReferenceServiceTuple<PermissionCheckerDecorator> service) {
+
+			_rebuild();
+		}
+
+		@Override
+		public synchronized void removedService(
+			ServiceReference<PermissionCheckerDecorator> serviceReference,
+			ServiceReferenceServiceTuple<PermissionCheckerDecorator> service) {
+
+			Registry registry = RegistryUtil.getRegistry();
+
+			registry.ungetService(serviceReference);
+
+			_serviceReferenceServiceTuplesList.remove(service);
+
+			_rebuild();
+		}
+
+		private void _rebuild() {
+			_serviceReferenceServiceTuplesList.sort(Comparator.naturalOrder());
+			
+			PermissionChecker permissionChecker = _permissionChecker;
+
+			for (ServiceReferenceServiceTuple<PermissionCheckerDecorator>
+					serviceReferenceServiceTuple :
+						_serviceReferenceServiceTuplesList) {
+
+				PermissionCheckerDecorator permissionCheckerDecorator =
+					serviceReferenceServiceTuple.getService();
+
+				permissionChecker = permissionCheckerDecorator.decorate(
+					permissionChecker);
+			}
+
+			_decoratedPermissionChecker = permissionChecker;
+
+			permissionChecker.setPermissionChecker(permissionChecker);
+		}
+
+	}
 
 }
