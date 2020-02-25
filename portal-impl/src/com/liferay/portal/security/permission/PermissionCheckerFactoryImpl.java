@@ -46,6 +46,8 @@ public class PermissionCheckerFactoryImpl implements PermissionCheckerFactory {
 				PropsValues.PERMISSIONS_CHECKER);
 
 		_permissionChecker = clazz.newInstance();
+
+		_decoratedPermissionChecker = _permissionChecker;
 	}
 
 	public void afterPropertiesSet() {
@@ -68,6 +70,8 @@ public class PermissionCheckerFactoryImpl implements PermissionCheckerFactory {
 
 		permissionChecker.init(
 			user, _roleContributors.toArray(new RoleContributor[0]));
+
+		permissionChecker.setPermissionChecker(permissionChecker);
 
 		return permissionChecker;
 	}
@@ -189,7 +193,7 @@ public class PermissionCheckerFactoryImpl implements PermissionCheckerFactory {
 
 		private void _rebuild() {
 			_serviceReferenceServiceTuplesList.sort(Comparator.naturalOrder());
-			
+
 			PermissionChecker permissionChecker = _permissionChecker;
 
 			for (ServiceReferenceServiceTuple<PermissionCheckerDecorator>
@@ -204,8 +208,6 @@ public class PermissionCheckerFactoryImpl implements PermissionCheckerFactory {
 			}
 
 			_decoratedPermissionChecker = permissionChecker;
-
-			permissionChecker.setPermissionChecker(permissionChecker);
 		}
 
 	}
