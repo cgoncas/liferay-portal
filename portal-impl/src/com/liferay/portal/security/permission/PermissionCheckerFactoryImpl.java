@@ -63,7 +63,8 @@ public class PermissionCheckerFactoryImpl implements PermissionCheckerFactory {
 
 	@Override
 	public PermissionChecker create(User user) {
-		PermissionChecker permissionChecker = _permissionChecker.clone();
+		PermissionChecker permissionChecker =
+			_decoratedPermissionChecker.clone();
 
 		permissionChecker.init(
 			user, _roleContributors.toArray(new RoleContributor[0]));
