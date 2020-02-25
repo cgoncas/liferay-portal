@@ -49,7 +49,7 @@ public class PermissionCheckerFactoryTest {
 
 		Assert.assertEquals(
 			"com.liferay.depot.internal.security.permissions." +
-				"DepotPermissionChecker",
+				"DepotPermissionCheckerWrapper",
 			clazz.getCanonicalName());
 	}
 
