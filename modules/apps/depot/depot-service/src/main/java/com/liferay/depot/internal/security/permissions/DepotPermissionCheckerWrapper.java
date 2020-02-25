@@ -14,7 +14,7 @@
 
 package com.liferay.depot.internal.security.permissions;
 
-import com.liferay.depot.internal.constants.DepotRolesConstants;
+import com.liferay.depot.constants.DepotRolesConstants;
 import com.liferay.petra.function.UnsafeFunction;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.log.Log;
@@ -22,30 +22,29 @@ import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.model.Group;
 import com.liferay.portal.kernel.model.GroupConstants;
 import com.liferay.portal.kernel.model.Role;
-import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.security.permission.ActionKeys;
 import com.liferay.portal.kernel.security.permission.PermissionChecker;
-import com.liferay.portal.kernel.security.permission.UserBag;
+import com.liferay.portal.kernel.security.permission.PermissionCheckerWrapper;
 import com.liferay.portal.kernel.service.GroupLocalService;
 import com.liferay.portal.kernel.service.RoleLocalService;
 import com.liferay.portal.kernel.service.UserGroupRoleLocalService;
 import com.liferay.portal.security.permission.PermissionCacheUtil;
 
 import java.util.Arrays;
-import java.util.Map;
 import java.util.Objects;
 
 /**
  * @author Cristina González
  */
-public class DepotPermissionChecker implements PermissionChecker {
+public class DepotPermissionCheckerWrapper extends PermissionCheckerWrapper {
 
-	public DepotPermissionChecker(
+	public DepotPermissionCheckerWrapper(
 		PermissionChecker permissionChecker,
 		GroupLocalService groupLocalService, RoleLocalService roleLocalService,
 		UserGroupRoleLocalService userGroupRoleLocalService) {
 
-		_permissionChecker = permissionChecker;
+		super(permissionChecker);
+
 		_groupLocalService = groupLocalService;
 		_roleLocalService = roleLocalService;
 		_userGroupRoleLocalService = userGroupRoleLocalService;
@@ -53,131 +52,18 @@ public class DepotPermissionChecker implements PermissionChecker {
 
 	@Override
 	public PermissionChecker clone() {
-		return new DepotPermissionChecker(
-			_permissionChecker.clone(), _groupLocalService, _roleLocalService,
-			_userGroupRoleLocalService);
-	}
-
-	@Override
-	public long getCompanyId() {
-		return _permissionChecker.getCompanyId();
-	}
-
-	@Override
-	public long[] getGuestUserRoleIds() {
-		return _permissionChecker.getGuestUserRoleIds();
-	}
-
-	@Override
-	public long getOwnerRoleId() {
-		return _permissionChecker.getOwnerRoleId();
-	}
-
-	@Override
-	public Map<Object, Object> getPermissionChecksMap() {
-		return _permissionChecker.getPermissionChecksMap();
-	}
-
-	@Override
-	public long[] getRoleIds(long userId, long groupId) {
-		return _permissionChecker.getRoleIds(userId, groupId);
-	}
-
-	@Override
-	public User getUser() {
-		return _permissionChecker.getUser();
-	}
-
-	@Override
-	public UserBag getUserBag() throws Exception {
-		return _permissionChecker.getUserBag();
-	}
-
-	@Override
-	public long getUserId() {
-		return _permissionChecker.getUserId();
-	}
-
-	@Override
-	public boolean hasOwnerPermission(
-		long companyId, String name, long primKey, long ownerId,
-		String actionId) {
-
-		return _permissionChecker.hasOwnerPermission(
-			companyId, name, primKey, ownerId, actionId);
-	}
-
-	@Override
-	public boolean hasOwnerPermission(
-		long companyId, String name, String primKey, long ownerId,
-		String actionId) {
-
-		return _permissionChecker.hasOwnerPermission(
-			companyId, name, primKey, ownerId, actionId);
-	}
-
-	@Override
-	public boolean hasPermission(
-		Group group, String name, long primKey, String actionId) {
-
-		return _permissionChecker.hasPermission(group, name, primKey, actionId);
-	}
-
-	@Override
-	public boolean hasPermission(
-		Group group, String name, String primKey, String actionId) {
-
-		return _permissionChecker.hasPermission(group, name, primKey, actionId);
-	}
-
-	@Override
-	public boolean hasPermission(
-		long groupId, String name, long primKey, String actionId) {
-
-		return _permissionChecker.hasPermission(
-			groupId, name, primKey, actionId);
-	}
-
-	@Override
-	public boolean hasPermission(
-		long groupId, String name, String primKey, String actionId) {
-
-		return _permissionChecker.hasPermission(
-			groupId, name, primKey, actionId);
-	}
-
-	@Override
-	public void init(User user) {
-		_permissionChecker.init(user);
-	}
-
-	@Override
-	public boolean isCheckGuest() {
-		return _permissionChecker.isCheckGuest();
-	}
-
-	@Override
-	public boolean isCompanyAdmin() {
-		return _permissionChecker.isCompanyAdmin();
-	}
-
-	@Override
-	public boolean isCompanyAdmin(long companyId) {
-		return _permissionChecker.isCompanyAdmin(companyId);
-	}
-
-	@Override
-	public boolean isContentReviewer(long companyId, long groupId) {
-		return _permissionChecker.isContentReviewer(companyId, groupId);
+		return new DepotPermissionCheckerWrapper(
+			delegatePermissionChecker.clone(), _groupLocalService,
+			_roleLocalService, _userGroupRoleLocalService);
 	}
 
 	@Override
 	public boolean isGroupAdmin(long groupId) {
-		if (!isSignedIn()) {
+		if (!permissionChecker.isSignedIn()) {
 			return false;
 		}
 
-		if (_permissionChecker.isGroupAdmin(groupId)) {
+		if (delegatePermissionChecker.isGroupAdmin(groupId)) {
 			return true;
 		}
 
@@ -199,7 +85,7 @@ public class DepotPermissionChecker implements PermissionChecker {
 
 	@Override
 	public boolean isGroupMember(long groupId) {
-		if (!isSignedIn()) {
+		if (!permissionChecker.isSignedIn()) {
 			return false;
 		}
 
@@ -219,11 +105,11 @@ public class DepotPermissionChecker implements PermissionChecker {
 
 	@Override
 	public boolean isGroupOwner(long groupId) {
-		if (!isSignedIn()) {
+		if (!permissionChecker.isSignedIn()) {
 			return false;
 		}
 
-		if (_permissionChecker.isGroupOwner(groupId)) {
+		if (delegatePermissionChecker.isGroupOwner(groupId)) {
 			return true;
 		}
 
@@ -241,26 +127,6 @@ public class DepotPermissionChecker implements PermissionChecker {
 
 			return false;
 		}
-	}
-
-	@Override
-	public boolean isOmniadmin() {
-		return _permissionChecker.isOmniadmin();
-	}
-
-	@Override
-	public boolean isOrganizationAdmin(long organizationId) {
-		return _permissionChecker.isOrganizationAdmin(organizationId);
-	}
-
-	@Override
-	public boolean isOrganizationOwner(long organizationId) {
-		return _permissionChecker.isOrganizationOwner(organizationId);
-	}
-
-	@Override
-	public boolean isSignedIn() {
-		return _permissionChecker.isSignedIn();
 	}
 
 	private boolean _getOrAddToPermissionCache(
@@ -311,7 +177,7 @@ public class DepotPermissionChecker implements PermissionChecker {
 			while (!parentGroup.isRoot()) {
 				parentGroup = parentGroup.getParentGroup();
 
-				if (_permissionChecker.hasPermission(
+				if (permissionChecker.hasPermission(
 						parentGroup, Group.class.getName(),
 						String.valueOf(parentGroup.getGroupId()),
 						ActionKeys.MANAGE_SUBGROUPS)) {
@@ -334,7 +200,7 @@ public class DepotPermissionChecker implements PermissionChecker {
 			return true;
 		}
 
-		return _permissionChecker.isGroupMember(group.getGroupId());
+		return delegatePermissionChecker.isGroupMember(group.getGroupId());
 	}
 
 	private boolean _isGroupOwner(Group group) throws PortalException {
@@ -350,10 +216,9 @@ public class DepotPermissionChecker implements PermissionChecker {
 	}
 
 	private static final Log _log = LogFactoryUtil.getLog(
-		DepotPermissionChecker.class);
+		DepotPermissionCheckerWrapper.class);
 
 	private final GroupLocalService _groupLocalService;
-	private final PermissionChecker _permissionChecker;
 	private final RoleLocalService _roleLocalService;
 	private final UserGroupRoleLocalService _userGroupRoleLocalService;
 
