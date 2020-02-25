@@ -56,6 +56,61 @@ public class PermissionCheckerFactoryImpl implements PermissionCheckerFactory {
 		_roleContributors.close();
 	}
 
+	public static class ServiceReferenceServiceTuple<T>
+		implements Comparable<ServiceReferenceServiceTuple<T>> {
+
+		public ServiceReferenceServiceTuple(
+			ServiceReference<T> serviceReference, T service) {
+
+			_serviceReference = serviceReference;
+			_service = service;
+		}
+
+		@Override
+		public int compareTo(
+			ServiceReferenceServiceTuple<T> serviceReferenceServiceTuple) {
+
+			return _serviceReference.compareTo(
+				serviceReferenceServiceTuple.getServiceReference());
+		}
+
+		@Override
+		public boolean equals(Object object) {
+			if (this == object) {
+				return true;
+			}
+
+			if (!(object instanceof ServiceReferenceServiceTuple)) {
+				return false;
+			}
+
+			ServiceReferenceServiceTuple<?> serviceReferenceServiceTuple =
+				(ServiceReferenceServiceTuple<?>)object;
+
+			return Objects.equals(
+				_serviceReference,
+				serviceReferenceServiceTuple._serviceReference);
+		}
+
+		public T getService() {
+			return _service;
+		}
+
+		public ServiceReference<T> getServiceReference() {
+			return _serviceReference;
+		}
+
+		@Override
+		public int hashCode() {
+			return Objects.hash(_serviceReference);
+		}
+
+		private final T _service;
+		private final ServiceReference<T> _serviceReference;
+
+	}
+
+	private volatile PermissionChecker _decoratedPermissionChecker;
 	private final PermissionChecker _permissionChecker;
 	private ServiceTrackerList<RoleContributor> _roleContributors;
 
