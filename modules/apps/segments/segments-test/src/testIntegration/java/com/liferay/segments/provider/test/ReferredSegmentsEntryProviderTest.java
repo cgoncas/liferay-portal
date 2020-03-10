@@ -70,6 +70,50 @@ public class ReferredSegmentsEntryProviderTest {
 	}
 
 	@Test
+	public void testDeleteSegmentsEntryWithAnyReferredSegments()
+		throws Exception {
+
+		_user1 = UserTestUtil.addUser(_group.getGroupId());
+		_user2 = UserTestUtil.addUser(_group.getGroupId());
+
+		SegmentsEntry segmentsEntry1 = SegmentsTestUtil.addSegmentsEntry(
+			_group.getGroupId(), User.class.getName(), _user1.getUserId());
+		SegmentsEntry segmentsEntry2 = SegmentsTestUtil.addSegmentsEntry(
+			_group.getGroupId(), User.class.getName(), _user2.getUserId());
+
+		Criteria criteria = new Criteria();
+
+		_segmentsEntrySegmentsCriteriaContributor.contribute(
+			criteria,
+			String.format(
+				"(segmentsEntryIds eq '%s') or (segmentsEntryIds eq '%s')",
+				segmentsEntry1.getSegmentsEntryId(),
+				segmentsEntry2.getSegmentsEntryId()),
+			Criteria.Conjunction.OR);
+
+		SegmentsTestUtil.addSegmentsEntry(
+			_group.getGroupId(), CriteriaSerializer.serialize(criteria),
+			User.class.getName());
+
+		long[] segmentsEntryIds =
+			_segmentsEntryProviderRegistry.getSegmentsEntryIds(
+				_group.getGroupId(), User.class.getName(), _user1.getUserId(),
+				new Context());
+
+		Assert.assertEquals(
+			segmentsEntryIds.toString(), 2, segmentsEntryIds.length);
+
+		_segmentsEntryLocalService.deleteSegmentsEntry(segmentsEntry1);
+
+		segmentsEntryIds = _segmentsEntryProviderRegistry.getSegmentsEntryIds(
+			_group.getGroupId(), User.class.getName(), _user1.getUserId(),
+			new Context());
+
+		Assert.assertEquals(
+			segmentsEntryIds.toString(), 0, segmentsEntryIds.length);
+	}
+
+	@Test
 	public void testGetSegmentsEntryClassPKsWithAllReferredSegments()
 		throws Exception {
 
