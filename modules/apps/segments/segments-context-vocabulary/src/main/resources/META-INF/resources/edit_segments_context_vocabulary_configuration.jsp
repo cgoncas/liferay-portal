@@ -94,7 +94,7 @@ SegmentsContextVocabularyConfigurationDisplayContext segmentsContextVocabularyCo
 
 						</aui:select>
 
-						<span class="form-text"><liferay-ui:message key="segments-vocabulary-field-customizer-asset-vocabulary-description" /></span>
+						<span class="form-text"><liferay-ui:message key="segments-context-vocabulary-configuration-asset-vocabulary-description" /></span>
 					</div>
 
 					<aui:button-row>
