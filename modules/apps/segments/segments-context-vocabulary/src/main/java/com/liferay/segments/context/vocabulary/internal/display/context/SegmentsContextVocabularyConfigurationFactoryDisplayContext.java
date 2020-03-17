@@ -25,6 +25,7 @@ import com.liferay.segments.context.vocabulary.internal.constants.SegmentsContex
 import java.util.List;
 import java.util.ResourceBundle;
 
+import javax.portlet.ActionRequest;
 import javax.portlet.PortletURL;
 import javax.portlet.RenderRequest;
 import javax.portlet.RenderResponse;
@@ -59,6 +60,19 @@ public class SegmentsContextVocabularyConfigurationFactoryDisplayContext {
 		portletURL.setParameter(
 			"factoryPid",
 			SegmentsContextVocabularyConfiguration.class.getCanonicalName());
+
+		return portletURL;
+	}
+
+	public PortletURL getDeleteConfigurationURL(Configuration configuration) {
+		PortletURL portletURL = _renderResponse.createActionURL();
+
+		portletURL.setParameter(
+			ActionRequest.ACTION_NAME,
+			"/delete_segments_context_vocabulary_configuration");
+		portletURL.setParameter("factoryPid", configuration.getFactoryPid());
+		portletURL.setParameter("pid", configuration.getPid());
+		portletURL.setParameter("redirect", String.valueOf(_getRedirect()));
 
 		return portletURL;
 	}
@@ -112,6 +126,18 @@ public class SegmentsContextVocabularyConfigurationFactoryDisplayContext {
 
 	public int getTotal() {
 		return _configurations.size();
+	}
+
+	private PortletURL _getRedirect() {
+		PortletURL portletURL = _renderResponse.createRenderURL();
+
+		portletURL.setParameter(
+			"mvcRenderCommandName", "/view_configuration_screen");
+		portletURL.setParameter(
+			"configurationScreenKey",
+			"segments-context-vocabulary-configuration-name");
+
+		return portletURL;
 	}
 
 	private final List<Configuration> _configurations;
