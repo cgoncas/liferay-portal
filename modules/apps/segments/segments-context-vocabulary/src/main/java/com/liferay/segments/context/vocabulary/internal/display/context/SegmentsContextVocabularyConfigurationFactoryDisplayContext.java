@@ -19,6 +19,7 @@ import com.liferay.portal.kernel.theme.ThemeDisplay;
 import com.liferay.portal.kernel.util.ListUtil;
 import com.liferay.portal.kernel.util.ResourceBundleUtil;
 import com.liferay.portal.kernel.util.WebKeys;
+import com.liferay.segments.context.vocabulary.internal.configuration.SegmentsContextVocabularyConfiguration;
 import com.liferay.segments.context.vocabulary.internal.constants.SegmentsContextVocabularyWebKeys;
 
 import java.util.List;
@@ -50,11 +51,28 @@ public class SegmentsContextVocabularyConfigurationFactoryDisplayContext {
 	}
 
 	public PortletURL getAddConfigurationURL() {
-		return _renderResponse.createRenderURL();
+		PortletURL portletURL = _renderResponse.createRenderURL();
+
+		portletURL.setParameter(
+			"mvcRenderCommandName",
+			"/edit_segments_context_vocabulary_configuration");
+		portletURL.setParameter(
+			"factoryPid",
+			SegmentsContextVocabularyConfiguration.class.getCanonicalName());
+
+		return portletURL;
 	}
 
 	public PortletURL getEditConfigurationURL(Configuration configuration) {
-		return _renderResponse.createRenderURL();
+		PortletURL portletURL = _renderResponse.createRenderURL();
+
+		portletURL.setParameter(
+			"mvcRenderCommandName",
+			"/edit_segments_context_vocabulary_configuration");
+		portletURL.setParameter("factoryPid", configuration.getFactoryPid());
+		portletURL.setParameter("pid", configuration.getPid());
+
+		return portletURL;
 	}
 
 	public String getEmptyResultMessage() {

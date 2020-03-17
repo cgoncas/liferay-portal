@@ -50,7 +50,7 @@ SegmentsContextVocabularyConfigurationFactoryDisplayContext segmentsContextVocab
 		<liferay-ui:search-container-column-text
 			name="<%= segmentsContextVocabularyConfigurationFactoryDisplayContext.getTitle() %>"
 		>
-			<aui:a href="<%= String.valueOf(segmentsContextVocabularyConfigurationFactoryDisplayContext.getEditConfigurationURL(configuration)) %>"><strong><%= configuration.getProperties().get("EntityField") %></strong></aui:a>
+			<aui:a href="<%= String.valueOf(segmentsContextVocabularyConfigurationFactoryDisplayContext.getEditConfigurationURL(configuration)) %>"><strong><%= configuration.getProperties().get("entityfield") %></strong></aui:a>
 		</liferay-ui:search-container-column-text>
 
 		<liferay-ui:search-container-column-text

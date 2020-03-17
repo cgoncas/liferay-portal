@@ -19,6 +19,10 @@ package com.liferay.segments.context.vocabulary.internal.constants;
  */
 public class SegmentsContextVocabularyWebKeys {
 
+	public static final String
+		SEGMENTS_CONTEXT_VOCABULARY_CONFIGURATION_DISPLAY_CONTEXT =
+			"SEGMENTS_CONTEXT_VOCABULARY_CONFIGURATION_DISPLAY_CONTEXT";
+
 	public static final String SEGMENTS_CONTEXT_VOCABULARY_CONFIGURATIONS =
 		"SEGMENTS_CONTEXT_VOCABULARY_CONFIGURATIONS";
 
