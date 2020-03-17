@@ -17,8 +17,19 @@
 <%@ include file="/init.jsp" %>
 
 <%
+PortalUtil.addPortletBreadcrumbEntry(request, portletDisplay.getPortletDisplayName(), String.valueOf(renderResponse.createRenderURL()));
+
 SegmentsContextVocabularyConfigurationDisplayContext segmentsContextVocabularyConfigurationDisplayContext = (SegmentsContextVocabularyConfigurationDisplayContext)renderRequest.getAttribute(SegmentsContextVocabularyWebKeys.SEGMENTS_CONTEXT_VOCABULARY_CONFIGURATION_DISPLAY_CONTEXT);
 %>
+
+<liferay-ui:error exception="<%= ConfigurationModelListenerException.class %>">
+
+	<%
+	ConfigurationModelListenerException cmle = (ConfigurationModelListenerException)errorException;
+	%>
+
+	<liferay-ui:message key="<%= cmle.causeMessage %>" localizeKey="<%= false %>" />
+</liferay-ui:error>
 
 <div class="container-fluid container-fluid-max-xl">
 	<div class="col-12">
@@ -44,12 +55,14 @@ SegmentsContextVocabularyConfigurationDisplayContext segmentsContextVocabularyCo
 					<aui:input name="pid" type="hidden" value="<%= segmentsContextVocabularyConfigurationDisplayContext.getPid() %>" />
 
 					<h2>
-						<%= HtmlUtil.escape(LanguageUtil.get(request, "add")) %>
+						<%= HtmlUtil.escape(segmentsContextVocabularyConfigurationDisplayContext.getTitle()) %>
 					</h2>
 
-					<aui:alert closeable="<%= false %>" id="errorAlert" type="info">
-						<liferay-ui:message key="this-configuration-is-not-saved-yet" />
-					</aui:alert>
+					<c:if test="<%= Validator.isBlank(segmentsContextVocabularyConfigurationDisplayContext.getPid()) %>">
+						<aui:alert closeable="<%= false %>" id="errorAlert" type="info">
+							<liferay-ui:message key="this-configuration-is-not-saved-yet" />
+						</aui:alert>
+					</c:if>
 
 					<%
 					String description = segmentsContextVocabularyConfigurationDisplayContext.getDescription();
@@ -68,7 +81,7 @@ SegmentsContextVocabularyConfigurationDisplayContext segmentsContextVocabularyCo
 							for (ConfigurationFieldOptionsProvider.Option option : segmentsContextVocabularyConfigurationDisplayContext.getEntityFieldOptions()) {
 							%>
 
-								<aui:option label="<%= option.getLabel(locale) %>" value="<%= option.getValue() %>" />
+								<aui:option label="<%= option.getLabel(locale) %>" selected="<%= Objects.equals(segmentsContextVocabularyConfigurationDisplayContext.getEntityField(), option.getValue()) %>" value="<%= option.getValue() %>" />
 
 							<%
 							}
@@ -86,7 +99,7 @@ SegmentsContextVocabularyConfigurationDisplayContext segmentsContextVocabularyCo
 							for (ConfigurationFieldOptionsProvider.Option option : segmentsContextVocabularyConfigurationDisplayContext.getAssetVocabularyOptions()) {
 							%>
 
-								<aui:option label="<%= option.getLabel(locale) %>" value="<%= option.getValue() %>" />
+								<aui:option label="<%= option.getLabel(locale) %>" selected="<%= Objects.equals(segmentsContextVocabularyConfigurationDisplayContext.getAssetVocabulary(), option.getValue()) %>" value="<%= option.getValue() %>" />
 
 							<%
 							}
@@ -98,7 +111,14 @@ SegmentsContextVocabularyConfigurationDisplayContext segmentsContextVocabularyCo
 					</div>
 
 					<aui:button-row>
-						<aui:button name="save" type="submit" value="save" />
+						<c:choose>
+							<c:when test="<%= !Validator.isBlank(segmentsContextVocabularyConfigurationDisplayContext.getPid()) %>">
+								<aui:button name="update" type="submit" value="update" />
+							</c:when>
+							<c:otherwise>
+								<aui:button name="save" type="submit" value="save" />
+							</c:otherwise>
+						</c:choose>
 
 						<aui:button href="<%= String.valueOf(segmentsContextVocabularyConfigurationDisplayContext.getRedirect()) %>" name="cancel" type="cancel" />
 					</aui:button-row>

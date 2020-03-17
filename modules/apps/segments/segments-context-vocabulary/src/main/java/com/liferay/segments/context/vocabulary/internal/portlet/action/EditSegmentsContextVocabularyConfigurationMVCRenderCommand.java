@@ -38,6 +38,7 @@ import javax.servlet.ServletContext;
 
 import org.osgi.framework.Bundle;
 import org.osgi.framework.BundleContext;
+import org.osgi.service.cm.ConfigurationAdmin;
 import org.osgi.service.component.annotations.Activate;
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Deactivate;
@@ -83,7 +84,7 @@ public class EditSegmentsContextVocabularyConfigurationMVCRenderCommand
 				SegmentsContextVocabularyWebKeys.
 					SEGMENTS_CONTEXT_VOCABULARY_CONFIGURATION_DISPLAY_CONTEXT,
 				new SegmentsContextVocabularyConfigurationDisplayContext(
-					renderRequest, renderResponse,
+					renderRequest, renderResponse, _configurationAdmin,
 					extendedObjectClassDefinition,
 					_assetVocabularyConfigurationFieldOptionsProvider.
 						getOptions(),
@@ -119,6 +120,9 @@ public class EditSegmentsContextVocabularyConfigurationMVCRenderCommand
 		_assetVocabularyConfigurationFieldOptionsProvider;
 
 	private Bundle _bundle;
+
+	@Reference
+	private ConfigurationAdmin _configurationAdmin;
 
 	@Reference(
 		target = "(&(configuration.field.name=entityField)(configuration.pid=com.liferay.segments.context.vocabulary.internal.configuration.SegmentsContextVocabularyConfiguration))"
