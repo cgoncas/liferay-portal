@@ -107,6 +107,13 @@ public class SegmentsExperimentServiceUtil {
 		return getService().getSegmentsExperiment(segmentsExperimentId);
 	}
 
+	public static com.liferay.segments.model.SegmentsExperiment
+			getSegmentsExperiment(String segmentsExperimentKey)
+		throws com.liferay.portal.kernel.exception.PortalException {
+
+		return getService().getSegmentsExperiment(segmentsExperimentKey);
+	}
+
 	public static java.util.List<com.liferay.segments.model.SegmentsExperiment>
 		getSegmentsExperiments(long groupId, long classNameId, long classPK) {
 

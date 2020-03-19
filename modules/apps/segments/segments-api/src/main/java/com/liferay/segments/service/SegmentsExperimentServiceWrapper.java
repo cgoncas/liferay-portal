@@ -116,6 +116,15 @@ public class SegmentsExperimentServiceWrapper
 	}
 
 	@Override
+	public com.liferay.segments.model.SegmentsExperiment getSegmentsExperiment(
+			String segmentsExperimentKey)
+		throws com.liferay.portal.kernel.exception.PortalException {
+
+		return _segmentsExperimentService.getSegmentsExperiment(
+			segmentsExperimentKey);
+	}
+
+	@Override
 	public java.util.List<com.liferay.segments.model.SegmentsExperiment>
 		getSegmentsExperiments(long groupId, long classNameId, long classPK) {
 

@@ -97,6 +97,11 @@ public interface SegmentsExperimentService extends BaseService {
 		throws PortalException;
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public SegmentsExperiment getSegmentsExperiment(
+			String segmentsExperimentKey)
+		throws PortalException;
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public List<SegmentsExperiment> getSegmentsExperiments(
 		long groupId, long classNameId, long classPK);
 

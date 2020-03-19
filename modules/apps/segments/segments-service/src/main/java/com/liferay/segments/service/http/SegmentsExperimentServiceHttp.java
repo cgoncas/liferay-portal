@@ -350,6 +350,47 @@ public class SegmentsExperimentServiceHttp {
 		}
 	}
 
+	public static com.liferay.segments.model.SegmentsExperiment
+			getSegmentsExperiment(
+				HttpPrincipal httpPrincipal, String segmentsExperimentKey)
+		throws com.liferay.portal.kernel.exception.PortalException {
+
+		try {
+			MethodKey methodKey = new MethodKey(
+				SegmentsExperimentServiceUtil.class, "getSegmentsExperiment",
+				_getSegmentsExperimentParameterTypes7);
+
+			MethodHandler methodHandler = new MethodHandler(
+				methodKey, segmentsExperimentKey);
+
+			Object returnObj = null;
+
+			try {
+				returnObj = TunnelUtil.invoke(httpPrincipal, methodHandler);
+			}
+			catch (Exception exception) {
+				if (exception instanceof
+						com.liferay.portal.kernel.exception.PortalException) {
+
+					throw (com.liferay.portal.kernel.exception.PortalException)
+						exception;
+				}
+
+				throw new com.liferay.portal.kernel.exception.SystemException(
+					exception);
+			}
+
+			return (com.liferay.segments.model.SegmentsExperiment)returnObj;
+		}
+		catch (com.liferay.portal.kernel.exception.SystemException
+					systemException) {
+
+			_log.error(systemException, systemException);
+
+			throw systemException;
+		}
+	}
+
 	public static java.util.List<com.liferay.segments.model.SegmentsExperiment>
 		getSegmentsExperiments(
 			HttpPrincipal httpPrincipal, long groupId, long classNameId,
@@ -358,7 +399,7 @@ public class SegmentsExperimentServiceHttp {
 		try {
 			MethodKey methodKey = new MethodKey(
 				SegmentsExperimentServiceUtil.class, "getSegmentsExperiments",
-				_getSegmentsExperimentsParameterTypes7);
+				_getSegmentsExperimentsParameterTypes8);
 
 			MethodHandler methodHandler = new MethodHandler(
 				methodKey, groupId, classNameId, classPK);
@@ -396,7 +437,7 @@ public class SegmentsExperimentServiceHttp {
 		try {
 			MethodKey methodKey = new MethodKey(
 				SegmentsExperimentServiceUtil.class, "getSegmentsExperiments",
-				_getSegmentsExperimentsParameterTypes8);
+				_getSegmentsExperimentsParameterTypes9);
 
 			MethodHandler methodHandler = new MethodHandler(
 				methodKey, segmentsExperienceId, classNameId, classPK, statuses,
@@ -434,7 +475,7 @@ public class SegmentsExperimentServiceHttp {
 		try {
 			MethodKey methodKey = new MethodKey(
 				SegmentsExperimentServiceUtil.class, "runSegmentsExperiment",
-				_runSegmentsExperimentParameterTypes9);
+				_runSegmentsExperimentParameterTypes10);
 
 			MethodHandler methodHandler = new MethodHandler(
 				methodKey, segmentsExperimentId, confidenceLevel,
@@ -478,7 +519,7 @@ public class SegmentsExperimentServiceHttp {
 		try {
 			MethodKey methodKey = new MethodKey(
 				SegmentsExperimentServiceUtil.class, "runSegmentsExperiment",
-				_runSegmentsExperimentParameterTypes10);
+				_runSegmentsExperimentParameterTypes11);
 
 			MethodHandler methodHandler = new MethodHandler(
 				methodKey, segmentsExperimentKey, confidenceLevel,
@@ -521,7 +562,7 @@ public class SegmentsExperimentServiceHttp {
 		try {
 			MethodKey methodKey = new MethodKey(
 				SegmentsExperimentServiceUtil.class, "updateSegmentsExperiment",
-				_updateSegmentsExperimentParameterTypes11);
+				_updateSegmentsExperimentParameterTypes12);
 
 			MethodHandler methodHandler = new MethodHandler(
 				methodKey, segmentsExperimentId, name, description, goal,
@@ -565,7 +606,7 @@ public class SegmentsExperimentServiceHttp {
 			MethodKey methodKey = new MethodKey(
 				SegmentsExperimentServiceUtil.class,
 				"updateSegmentsExperimentStatus",
-				_updateSegmentsExperimentStatusParameterTypes12);
+				_updateSegmentsExperimentStatusParameterTypes13);
 
 			MethodHandler methodHandler = new MethodHandler(
 				methodKey, segmentsExperimentId, status);
@@ -608,7 +649,7 @@ public class SegmentsExperimentServiceHttp {
 			MethodKey methodKey = new MethodKey(
 				SegmentsExperimentServiceUtil.class,
 				"updateSegmentsExperimentStatus",
-				_updateSegmentsExperimentStatusParameterTypes13);
+				_updateSegmentsExperimentStatusParameterTypes14);
 
 			MethodHandler methodHandler = new MethodHandler(
 				methodKey, segmentsExperimentId, winnerSegmentsExperienceId,
@@ -652,7 +693,7 @@ public class SegmentsExperimentServiceHttp {
 			MethodKey methodKey = new MethodKey(
 				SegmentsExperimentServiceUtil.class,
 				"updateSegmentsExperimentStatus",
-				_updateSegmentsExperimentStatusParameterTypes14);
+				_updateSegmentsExperimentStatusParameterTypes15);
 
 			MethodHandler methodHandler = new MethodHandler(
 				methodKey, segmentsExperimentKey, status);
@@ -695,7 +736,7 @@ public class SegmentsExperimentServiceHttp {
 			MethodKey methodKey = new MethodKey(
 				SegmentsExperimentServiceUtil.class,
 				"updateSegmentsExperimentStatus",
-				_updateSegmentsExperimentStatusParameterTypes15);
+				_updateSegmentsExperimentStatusParameterTypes16);
 
 			MethodHandler methodHandler = new MethodHandler(
 				methodKey, segmentsExperimentKey, winnerSegmentsExperienceKey,
@@ -753,35 +794,37 @@ public class SegmentsExperimentServiceHttp {
 		};
 	private static final Class<?>[] _getSegmentsExperimentParameterTypes6 =
 		new Class[] {long.class};
-	private static final Class<?>[] _getSegmentsExperimentsParameterTypes7 =
-		new Class[] {long.class, long.class, long.class};
+	private static final Class<?>[] _getSegmentsExperimentParameterTypes7 =
+		new Class[] {String.class};
 	private static final Class<?>[] _getSegmentsExperimentsParameterTypes8 =
+		new Class[] {long.class, long.class, long.class};
+	private static final Class<?>[] _getSegmentsExperimentsParameterTypes9 =
 		new Class[] {
 			long.class, long.class, long.class, int[].class,
 			com.liferay.portal.kernel.util.OrderByComparator.class
 		};
-	private static final Class<?>[] _runSegmentsExperimentParameterTypes9 =
-		new Class[] {long.class, double.class, java.util.Map.class};
 	private static final Class<?>[] _runSegmentsExperimentParameterTypes10 =
+		new Class[] {long.class, double.class, java.util.Map.class};
+	private static final Class<?>[] _runSegmentsExperimentParameterTypes11 =
 		new Class[] {String.class, double.class, java.util.Map.class};
-	private static final Class<?>[] _updateSegmentsExperimentParameterTypes11 =
+	private static final Class<?>[] _updateSegmentsExperimentParameterTypes12 =
 		new Class[] {
 			long.class, String.class, String.class, String.class, String.class
 		};
 	private static final Class<?>[]
-		_updateSegmentsExperimentStatusParameterTypes12 = new Class[] {
+		_updateSegmentsExperimentStatusParameterTypes13 = new Class[] {
 			long.class, int.class
 		};
 	private static final Class<?>[]
-		_updateSegmentsExperimentStatusParameterTypes13 = new Class[] {
+		_updateSegmentsExperimentStatusParameterTypes14 = new Class[] {
 			long.class, long.class, int.class
 		};
 	private static final Class<?>[]
-		_updateSegmentsExperimentStatusParameterTypes14 = new Class[] {
+		_updateSegmentsExperimentStatusParameterTypes15 = new Class[] {
 			String.class, int.class
 		};
 	private static final Class<?>[]
-		_updateSegmentsExperimentStatusParameterTypes15 = new Class[] {
+		_updateSegmentsExperimentStatusParameterTypes16 = new Class[] {
 			String.class, String.class, int.class
 		};
 
