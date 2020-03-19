@@ -16,7 +16,10 @@ package com.liferay.segments.asah.rest.internal.resource.v1_0;
 
 import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.service.ServiceContextThreadLocal;
+import com.liferay.segments.asah.rest.dto.v1_0.Experiment;
 import com.liferay.segments.asah.rest.resource.v1_0.ExperimentResource;
+import com.liferay.segments.constants.SegmentsExperimentConstants;
+import com.liferay.segments.model.SegmentsExperiment;
 import com.liferay.segments.service.SegmentsExperimentService;
 
 import org.osgi.service.component.annotations.Component;
@@ -46,6 +49,32 @@ public class ExperimentResourceImpl extends BaseExperimentResourceImpl {
 		ServiceContextThreadLocal.pushServiceContext(serviceContext);
 
 		_segmentsExperimentService.deleteSegmentsExperiment(experimentId);
+	}
+
+	@Override
+	public Experiment getExperiment(String experimentId) throws Exception {
+		return _toExperiment(
+			_segmentsExperimentService.getSegmentsExperiment(experimentId));
+	}
+
+	private Experiment _toExperiment(SegmentsExperiment segmentsExperiment) {
+		SegmentsExperimentConstants.Status segmentsExperimentConstantsStatus =
+			SegmentsExperimentConstants.Status.valueOf(
+				segmentsExperiment.getStatus());
+
+		return new Experiment() {
+			{
+				dateCreated = segmentsExperiment.getCreateDate();
+				dateModified = segmentsExperiment.getModifiedDate();
+				description = segmentsExperiment.getDescription();
+				id = segmentsExperiment.getSegmentsExperimentKey();
+				name = segmentsExperiment.getName();
+				siteId = segmentsExperiment.getGroupId();
+				status = segmentsExperimentConstantsStatus.toString();
+				winnerVariantId =
+					segmentsExperiment.getWinnerSegmentsExperienceId();
+			}
+		};
 	}
 
 	@Reference
