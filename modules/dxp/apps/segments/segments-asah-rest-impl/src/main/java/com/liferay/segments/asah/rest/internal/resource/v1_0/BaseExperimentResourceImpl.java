@@ -56,6 +56,7 @@ import javax.validation.constraints.NotNull;
 
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
+import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
@@ -128,6 +129,27 @@ public abstract class BaseExperimentResourceImpl
 			vulcanBatchEngineImportTaskResource.deleteImportTask(
 				Experiment.class.getName(), callbackURL, object)
 		).build();
+	}
+
+	/**
+	 * Invoke this method with the command line:
+	 *
+	 * curl -X 'GET' 'http://localhost:8080/o/segments-asah/v1.0/experiments/{experimentId}'  -u 'test@liferay.com:test'
+	 */
+	@Override
+	@GET
+	@Parameters(
+		value = {@Parameter(in = ParameterIn.PATH, name = "experimentId")}
+	)
+	@Path("/experiments/{experimentId}")
+	@Produces({"application/json", "application/xml"})
+	@Tags(value = {@Tag(name = "Experiment")})
+	public Experiment getExperiment(
+			@NotNull @Parameter(hidden = true) @PathParam("experimentId") String
+				experimentId)
+		throws Exception {
+
+		return new Experiment();
 	}
 
 	@Override

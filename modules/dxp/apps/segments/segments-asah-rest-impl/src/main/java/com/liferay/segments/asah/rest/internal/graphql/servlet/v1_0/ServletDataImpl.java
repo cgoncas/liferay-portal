@@ -46,6 +46,9 @@ public class ServletDataImpl implements ServletData {
 			_experimentRunResourceComponentServiceObjects);
 		Mutation.setStatusResourceComponentServiceObjects(
 			_statusResourceComponentServiceObjects);
+
+		Query.setExperimentResourceComponentServiceObjects(
+			_experimentResourceComponentServiceObjects);
 	}
 
 	@Override

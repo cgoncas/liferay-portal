@@ -15,6 +15,7 @@
 package com.liferay.segments.asah.rest.resource.v1_0;
 
 import com.liferay.portal.vulcan.accept.language.AcceptLanguage;
+import com.liferay.segments.asah.rest.dto.v1_0.Experiment;
 
 import javax.annotation.Generated;
 
@@ -46,6 +47,8 @@ public interface ExperimentResource {
 
 	public Response deleteExperimentBatch(String callbackURL, Object object)
 		throws Exception;
+
+	public Experiment getExperiment(String experimentId) throws Exception;
 
 	public default void setContextAcceptLanguage(
 		AcceptLanguage contextAcceptLanguage) {
@@ -80,6 +83,9 @@ public interface ExperimentResource {
 		public ExperimentResource build();
 
 		public Builder checkPermissions(boolean checkPermissions);
+
+		public Builder httpServletRequest(
+			HttpServletRequest httpServletRequest);
 
 		public Builder user(com.liferay.portal.kernel.model.User user);
 

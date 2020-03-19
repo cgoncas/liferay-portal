@@ -111,21 +111,6 @@ public class Mutation {
 	}
 
 	@GraphQLField
-	public Response createExperimentRunBatch(
-			@GraphQLName("experimentId") Long experimentId,
-			@GraphQLName("callbackURL") String callbackURL,
-			@GraphQLName("object") Object object)
-		throws Exception {
-
-		return _applyComponentServiceObjects(
-			_experimentRunResourceComponentServiceObjects,
-			this::_populateResourceContext,
-			experimentRunResource ->
-				experimentRunResource.postExperimentRunBatch(
-					experimentId, callbackURL, object));
-	}
-
-	@GraphQLField
 	public Experiment createExperimentStatus(
 			@GraphQLName("experimentId") Long experimentId,
 			@GraphQLName("status") Status status)
@@ -136,6 +121,20 @@ public class Mutation {
 			this::_populateResourceContext,
 			statusResource -> statusResource.postExperimentStatus(
 				experimentId, status));
+	}
+
+	@GraphQLField
+	public Response createExperimentStatusBatch(
+			@GraphQLName("experimentId") Long experimentId,
+			@GraphQLName("callbackURL") String callbackURL,
+			@GraphQLName("object") Object object)
+		throws Exception {
+
+		return _applyComponentServiceObjects(
+			_statusResourceComponentServiceObjects,
+			this::_populateResourceContext,
+			statusResource -> statusResource.postExperimentStatusBatch(
+				experimentId, callbackURL, object));
 	}
 
 	private <T, R, E1 extends Throwable, E2 extends Throwable> R

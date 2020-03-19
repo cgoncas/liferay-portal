@@ -59,10 +59,8 @@ import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
-import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MultivaluedHashMap;
 import javax.ws.rs.core.MultivaluedMap;
-import javax.ws.rs.core.Response;
 import javax.ws.rs.core.UriInfo;
 
 /**
@@ -98,57 +96,12 @@ public abstract class BaseExperimentRunResourceImpl
 		return new ExperimentRun();
 	}
 
-	/**
-	 * Invoke this method with the command line:
-	 *
-	 * curl -X 'POST' 'http://localhost:8080/o/segments-asah/v1.0/experiments/{experimentId}/run/batch'  -u 'test@liferay.com:test'
-	 */
-	@Override
-	@Consumes("application/json")
-	@POST
-	@Parameters(
-		value = {
-			@Parameter(in = ParameterIn.PATH, name = "experimentId"),
-			@Parameter(in = ParameterIn.QUERY, name = "callbackURL")
-		}
-	)
-	@Path("/experiments/{experimentId}/run/batch")
-	@Produces("application/json")
-	@Tags(value = {@Tag(name = "ExperimentRun")})
-	public Response postExperimentRunBatch(
-			@NotNull @Parameter(hidden = true) @PathParam("experimentId") Long
-				experimentId,
-			@Parameter(hidden = true) @QueryParam("callbackURL") String
-				callbackURL,
-			Object object)
-		throws Exception {
-
-		vulcanBatchEngineImportTaskResource.setContextAcceptLanguage(
-			contextAcceptLanguage);
-		vulcanBatchEngineImportTaskResource.setContextCompany(contextCompany);
-		vulcanBatchEngineImportTaskResource.setContextHttpServletRequest(
-			contextHttpServletRequest);
-		vulcanBatchEngineImportTaskResource.setContextUriInfo(contextUriInfo);
-		vulcanBatchEngineImportTaskResource.setContextUser(contextUser);
-
-		Response.ResponseBuilder responseBuilder = Response.accepted();
-
-		return responseBuilder.entity(
-			vulcanBatchEngineImportTaskResource.postImportTask(
-				ExperimentRun.class.getName(), callbackURL, null, object)
-		).build();
-	}
-
 	@Override
 	@SuppressWarnings("PMD.UnusedLocalVariable")
 	public void create(
 			java.util.Collection<ExperimentRun> experimentRuns,
 			Map<String, Serializable> parameters)
 		throws Exception {
-
-		for (ExperimentRun experimentRun : experimentRuns) {
-			postExperimentRun(null, experimentRun);
-		}
 	}
 
 	@Override

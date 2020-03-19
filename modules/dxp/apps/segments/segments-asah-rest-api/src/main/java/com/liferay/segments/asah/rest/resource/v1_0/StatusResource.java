@@ -23,6 +23,7 @@ import javax.annotation.Generated;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import javax.ws.rs.core.Response;
 import javax.ws.rs.core.UriInfo;
 
 import org.osgi.annotation.versioning.ProviderType;
@@ -44,6 +45,10 @@ public interface StatusResource {
 	}
 
 	public Experiment postExperimentStatus(Long experimentId, Status status)
+		throws Exception;
+
+	public Response postExperimentStatusBatch(
+			Long experimentId, String callbackURL, Object object)
 		throws Exception;
 
 	public default void setContextAcceptLanguage(
@@ -79,6 +84,9 @@ public interface StatusResource {
 		public StatusResource build();
 
 		public Builder checkPermissions(boolean checkPermissions);
+
+		public Builder httpServletRequest(
+			HttpServletRequest httpServletRequest);
 
 		public Builder user(com.liferay.portal.kernel.model.User user);
 
