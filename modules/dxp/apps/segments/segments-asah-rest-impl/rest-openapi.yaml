@@ -93,6 +93,26 @@ paths:
                     description:
                         ""
             tags: ["Experiment"]
+        get:
+            operationId: getExperiment
+            parameters:
+                - in: path
+                  name: experimentId
+                  required: true
+                  schema:
+                      type: string
+            responses:
+                200:
+                    content:
+                        application/json:
+                            schema:
+                                $ref: "#/components/schemas/Experiment"
+                        application/xml:
+                            schema:
+                                $ref: "#/components/schemas/Experiment"
+                    description:
+                        ""
+            tags: ["Experiment"]
     "/experiments/{experimentId}/run":
         post:
             operationId: postExperimentRun
