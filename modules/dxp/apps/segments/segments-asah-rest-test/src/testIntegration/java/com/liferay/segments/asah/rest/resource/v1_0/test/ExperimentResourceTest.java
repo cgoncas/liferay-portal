@@ -23,8 +23,6 @@ import com.liferay.segments.model.SegmentsExperience;
 import com.liferay.segments.model.SegmentsExperiment;
 import com.liferay.segments.test.util.SegmentsTestUtil;
 
-import org.junit.Ignore;
-import org.junit.Test;
 import org.junit.runner.RunWith;
 
 /**
@@ -34,8 +32,8 @@ import org.junit.runner.RunWith;
 public class ExperimentResourceTest extends BaseExperimentResourceTestCase {
 
 	@Override
-	@Test
-	public void testGraphQLDeleteExperiment() {
+	protected String[] getAdditionalAssertFieldNames() {
+		return new String[] {"name"};
 	}
 
 	@Override
@@ -55,6 +53,11 @@ public class ExperimentResourceTest extends BaseExperimentResourceTestCase {
 				segmentsExperience.getSegmentsExperienceId(),
 				segmentsExperience.getClassNameId(),
 				segmentsExperience.getClassPK()));
+	}
+
+	@Override
+	protected Experiment testGetExperiment_addExperiment() throws Exception {
+		return testDeleteExperiment_addExperiment();
 	}
 
 	@Override
