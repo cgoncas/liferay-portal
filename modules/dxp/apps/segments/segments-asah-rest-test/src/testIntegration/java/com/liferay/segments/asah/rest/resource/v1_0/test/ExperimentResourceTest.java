@@ -33,7 +33,6 @@ import org.junit.runner.RunWith;
 @RunWith(Arquillian.class)
 public class ExperimentResourceTest extends BaseExperimentResourceTestCase {
 
-	@Ignore
 	@Override
 	@Test
 	public void testGraphQLDeleteExperiment() {
