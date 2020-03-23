@@ -2,7 +2,7 @@ alter table SegmentsExperience add segmentsExperienceKey VARCHAR(75) null;
 
 create unique index IX_B8F358EB on SegmentsExperience (groupId, segmentsExperienceKey[$COLUMN_LENGTH:75$]);
 
-update SegmentsExperience set segmentsExperienceKey = segmentsExperienceId;
+update SegmentsExperience set segmentsExperienceKey = CAST_TEXT(segmentsExperienceId);
 
 create table SegmentsExperiment (
 	uuid_ VARCHAR(75) null,
