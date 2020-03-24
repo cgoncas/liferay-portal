@@ -42,7 +42,7 @@ import org.osgi.service.component.annotations.Reference;
 	},
 	service = ConfigurationFieldOptionsProvider.class
 )
-public class AssetVocabularyNameConfigurationFieldOptionsProvider
+public class AssetVocabularyConfigurationFieldOptionsProvider
 	implements ConfigurationFieldOptionsProvider {
 
 	@Override
@@ -93,7 +93,7 @@ public class AssetVocabularyNameConfigurationFieldOptionsProvider
 	}
 
 	private static final Log _log = LogFactoryUtil.getLog(
-		AssetVocabularyNameConfigurationFieldOptionsProvider.class);
+		AssetVocabularyConfigurationFieldOptionsProvider.class);
 
 	@Reference
 	private AssetVocabularyLocalService _assetVocabularyLocalService;

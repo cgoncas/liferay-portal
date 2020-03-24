@@ -42,7 +42,7 @@ import org.junit.runner.RunWith;
  * @author Cristina González
  */
 @RunWith(Arquillian.class)
-public class AssetVocabularyNameConfigurationOptionsProviderTest {
+public class AssetVocabularyConfigurationOptionsProviderTest {
 
 	@ClassRule
 	@Rule
