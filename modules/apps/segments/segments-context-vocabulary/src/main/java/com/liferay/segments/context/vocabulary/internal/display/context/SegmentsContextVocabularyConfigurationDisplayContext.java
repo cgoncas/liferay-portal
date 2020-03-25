@@ -46,18 +46,18 @@ import org.osgi.service.cm.ConfigurationAdmin;
 public class SegmentsContextVocabularyConfigurationDisplayContext {
 
 	public SegmentsContextVocabularyConfigurationDisplayContext(
-		RenderRequest renderRequest, RenderResponse renderResponse,
-		ConfigurationAdmin configurationAdmin,
-		ExtendedObjectClassDefinition extendedObjectClassDefinition,
 		List<ConfigurationFieldOptionsProvider.Option> assetVocabularyOptions,
-		List<ConfigurationFieldOptionsProvider.Option> entityFieldOptions) {
+		ConfigurationAdmin configurationAdmin,
+		List<ConfigurationFieldOptionsProvider.Option> entityFieldOptions,
+		ExtendedObjectClassDefinition extendedObjectClassDefinition,
+		RenderRequest renderRequest, RenderResponse renderResponse) {
 
+		_assetVocabularyOptions = assetVocabularyOptions;
+		_configurationAdmin = configurationAdmin;
+		_entityFieldOptions = entityFieldOptions;
+		_extendedObjectClassDefinition = extendedObjectClassDefinition;
 		_renderRequest = renderRequest;
 		_renderResponse = renderResponse;
-		_configurationAdmin = configurationAdmin;
-		_extendedObjectClassDefinition = extendedObjectClassDefinition;
-		_assetVocabularyOptions = assetVocabularyOptions;
-		_entityFieldOptions = entityFieldOptions;
 
 		ThemeDisplay themeDisplay = (ThemeDisplay)_renderRequest.getAttribute(
 			WebKeys.THEME_DISPLAY);

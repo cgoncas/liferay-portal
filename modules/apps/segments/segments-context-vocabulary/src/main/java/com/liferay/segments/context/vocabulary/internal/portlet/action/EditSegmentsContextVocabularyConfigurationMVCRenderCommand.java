@@ -84,12 +84,12 @@ public class EditSegmentsContextVocabularyConfigurationMVCRenderCommand
 				SegmentsContextVocabularyWebKeys.
 					SEGMENTS_CONTEXT_VOCABULARY_CONFIGURATION_DISPLAY_CONTEXT,
 				new SegmentsContextVocabularyConfigurationDisplayContext(
-					renderRequest, renderResponse, _configurationAdmin,
-					extendedObjectClassDefinition,
 					_assetVocabularyConfigurationFieldOptionsProvider.
 						getOptions(),
-					_entityFieldConfigurationFieldOptionsProvider.
-						getOptions()));
+					_configurationAdmin,
+					_entityFieldConfigurationFieldOptionsProvider.getOptions(),
+					extendedObjectClassDefinition, renderRequest,
+					renderResponse));
 
 			requestDispatcher.forward(
 				_portal.getHttpServletRequest(renderRequest),
