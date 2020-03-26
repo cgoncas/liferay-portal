@@ -22,11 +22,13 @@ import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.portlet.bridges.mvc.BaseMVCActionCommand;
 import com.liferay.portal.kernel.portlet.bridges.mvc.MVCActionCommand;
+import com.liferay.portal.kernel.servlet.SessionErrors;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.ParamUtil;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.util.PropsValues;
 import com.liferay.segments.context.vocabulary.internal.configuration.SegmentsContextVocabularyConfiguration;
+import com.liferay.segments.context.vocabulary.internal.configuration.persistence.listener.DuplicatedSegmentsContextVocabularyConfigurationModelListenerException;
 
 import java.io.File;
 import java.io.IOException;
@@ -72,19 +74,44 @@ public class UpdateSegmentsContextVocabularyConfigurationMVCActionCommand
 
 		String pid = ParamUtil.getString(actionRequest, "pid");
 
-		_updateConfiguration(
-			_getConfiguration(pid),
-			GetterUtil.get(
-				ParamUtil.getString(actionRequest, "entityField"),
-				StringPool.BLANK),
-			GetterUtil.get(
-				ParamUtil.getString(actionRequest, "assetVocabulary"),
-				StringPool.BLANK));
+		try {
+			_updateConfiguration(
+				_getConfiguration(pid),
+				GetterUtil.get(
+					ParamUtil.getString(actionRequest, "entityField"),
+					StringPool.BLANK),
+				GetterUtil.get(
+					ParamUtil.getString(actionRequest, "assetVocabulary"),
+					StringPool.BLANK));
 
-		String redirect = ParamUtil.getString(actionRequest, "redirect");
+			String redirect = ParamUtil.getString(actionRequest, "redirect");
 
-		if (Validator.isNotNull(redirect)) {
-			sendRedirect(actionRequest, actionResponse, redirect);
+			if (Validator.isNotNull(redirect)) {
+				sendRedirect(actionRequest, actionResponse, redirect);
+			}
+		}
+		catch (DuplicatedSegmentsContextVocabularyConfigurationModelListenerException
+					duplicatedSegmentsContextVocabularyConfigurationModelListenerException) {
+
+			SessionErrors.add(
+				actionRequest,
+				DuplicatedSegmentsContextVocabularyConfigurationModelListenerException.class,
+				duplicatedSegmentsContextVocabularyConfigurationModelListenerException);
+
+			actionResponse.setRenderParameter(
+				"mvcRenderCommandName",
+				"/edit_segments_context_vocabulary_configuration");
+		}
+		catch (ConfigurationModelListenerException
+					configurationModelListenerException) {
+
+			SessionErrors.add(
+				actionRequest, ConfigurationModelListenerException.class,
+				configurationModelListenerException);
+
+			actionResponse.setRenderParameter(
+				"mvcRenderCommandName",
+				"/edit_segments_context_vocabulary_configuration");
 		}
 	}
 
