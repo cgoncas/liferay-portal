@@ -47,7 +47,7 @@ import org.osgi.service.component.annotations.Reference;
  * @author Raymond Augé
  */
 @Component(
-	configurationPid = "com.liferay.segments.vocabulary.field.customizer.internal.configuration.SegmentsVocabularyFieldCustomizerConfiguration",
+	configurationPid = "com.liferay.segments.context.vocabulary.internal.configuration.SegmentsContextVocabularyConfiguration",
 	configurationPolicy = ConfigurationPolicy.REQUIRE,
 	property = {
 		"segments.field.customizer.entity.name=Context",
