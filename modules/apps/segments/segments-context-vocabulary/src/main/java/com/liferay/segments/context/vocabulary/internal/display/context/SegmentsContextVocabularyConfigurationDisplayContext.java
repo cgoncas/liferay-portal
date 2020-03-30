@@ -18,9 +18,12 @@ import com.liferay.configuration.admin.definition.ConfigurationFieldOptionsProvi
 import com.liferay.petra.string.StringPool;
 import com.liferay.portal.configuration.metatype.definitions.ExtendedObjectClassDefinition;
 import com.liferay.portal.kernel.language.LanguageUtil;
+import com.liferay.portal.kernel.portlet.PortletURLUtil;
 import com.liferay.portal.kernel.servlet.SessionErrors;
+import com.liferay.portal.kernel.theme.PortletDisplay;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
 import com.liferay.portal.kernel.util.ParamUtil;
+import com.liferay.portal.kernel.util.PortalUtil;
 import com.liferay.portal.kernel.util.ResourceBundleUtil;
 import com.liferay.portal.kernel.util.StringBundler;
 import com.liferay.portal.kernel.util.Validator;
@@ -76,7 +79,34 @@ public class SegmentsContextVocabularyConfigurationDisplayContext {
 		ThemeDisplay themeDisplay = (ThemeDisplay)_renderRequest.getAttribute(
 			WebKeys.THEME_DISPLAY);
 
+		_portletDisplay = themeDisplay.getPortletDisplay();
+
 		_locale = themeDisplay.getLocale();
+	}
+
+	public void addBreadCrumbs() {
+		PortalUtil.addPortletBreadcrumbEntry(
+			PortalUtil.getHttpServletRequest(_renderRequest),
+			_portletDisplay.getPortletDisplayName(),
+			String.valueOf(_renderResponse.createRenderURL()));
+
+		ResourceBundle resourceBundle = ResourceBundleUtil.getBundle(
+			_locale, getClass());
+
+		PortalUtil.addPortletBreadcrumbEntry(
+			PortalUtil.getHttpServletRequest(_renderRequest),
+			ResourceBundleUtil.getString(resourceBundle, "segments"),
+			String.valueOf(getRedirect()));
+
+		PortletURL portletURL = PortletURLUtil.getCurrent(
+			_renderRequest, _renderResponse);
+
+		PortalUtil.addPortletBreadcrumbEntry(
+			PortalUtil.getHttpServletRequest(_renderRequest),
+			ResourceBundleUtil.getString(
+				resourceBundle,
+				"segments-context-vocabulary-configuration-name"),
+			String.valueOf(portletURL));
 	}
 
 	public ActionURL getActionURL() {
@@ -237,6 +267,7 @@ public class SegmentsContextVocabularyConfigurationDisplayContext {
 	private final List<String> _entityFields;
 	private final ExtendedObjectClassDefinition _extendedObjectClassDefinition;
 	private final Locale _locale;
+	private final PortletDisplay _portletDisplay;
 	private final RenderRequest _renderRequest;
 	private final RenderResponse _renderResponse;
 

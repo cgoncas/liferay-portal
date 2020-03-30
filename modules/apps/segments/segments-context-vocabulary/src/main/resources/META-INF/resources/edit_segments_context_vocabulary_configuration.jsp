@@ -17,9 +17,9 @@
 <%@ include file="/init.jsp" %>
 
 <%
-PortalUtil.addPortletBreadcrumbEntry(request, portletDisplay.getPortletDisplayName(), String.valueOf(renderResponse.createRenderURL()));
-
 SegmentsContextVocabularyConfigurationDisplayContext segmentsContextVocabularyConfigurationDisplayContext = (SegmentsContextVocabularyConfigurationDisplayContext)renderRequest.getAttribute(SegmentsContextVocabularyWebKeys.SEGMENTS_CONTEXT_VOCABULARY_CONFIGURATION_DISPLAY_CONTEXT);
+
+segmentsContextVocabularyConfigurationDisplayContext.addBreadCrumbs();
 %>
 
 <liferay-ui:error exception="<%= ConfigurationModelListenerException.class %>">
@@ -45,7 +45,25 @@ SegmentsContextVocabularyConfigurationDisplayContext segmentsContextVocabularyCo
 <div class="container-fluid container-fluid-max-xl">
 	<div class="row">
 		<div class="col-md-3">
-			<liferay-util:include page="/configuration_category_menu.jsp" servletContext="<%= application %>" />
+			<nav class="menubar menubar-transparent menubar-vertical-expand-md">
+				<div class="collapse menubar-collapse" id="<%= 12 %>">
+					<ul class="nav nav-nested">
+						<li class="nav-item">
+							<a class="nav-link text-uppercase">
+								<liferay-ui:message key='<%= "scope.system" %>' />
+							</a>
+
+							<div>
+								<ul class="nav nav-stacked">
+									<li>
+										<aui:a cssClass="nav-link" href="<%= String.valueOf(segmentsContextVocabularyConfigurationDisplayContext.getRedirect()) %>"><liferay-ui:message key="segments-context-vocabulary-configuration-name" /></aui:a>
+									</li>
+								</ul>
+							</div>
+						</li>
+					</ul>
+				</div>
+			</nav>
 		</div>
 
 		<div class="col-md-9">
