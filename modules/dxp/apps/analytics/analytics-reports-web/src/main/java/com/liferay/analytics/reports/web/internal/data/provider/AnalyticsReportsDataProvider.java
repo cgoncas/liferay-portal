@@ -80,7 +80,7 @@ public class AnalyticsReportsDataProvider {
 		try {
 			return Long.valueOf(
 				_asahFaroBackendClient.doGet(
-					companyId, "api/1.0/pages/read-count?url=" + url));
+					companyId, "api/1.0/pages/view-count?url=" + url));
 		}
 		catch (Exception exception) {
 			throw new PortalException("Unable to get total views", exception);
