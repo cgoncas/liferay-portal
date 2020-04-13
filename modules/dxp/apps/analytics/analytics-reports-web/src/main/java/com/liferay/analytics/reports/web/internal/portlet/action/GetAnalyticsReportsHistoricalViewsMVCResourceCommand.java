@@ -16,9 +16,13 @@ package com.liferay.analytics.reports.web.internal.portlet.action;
 
 import com.liferay.analytics.reports.web.internal.constants.AnalyticsReportsPortletKeys;
 import com.liferay.analytics.reports.web.internal.data.provider.AnalyticsReportsDataProvider;
+import com.liferay.analytics.reports.web.internal.layout.seo.CanonicalURLProvider;
+import com.liferay.analytics.reports.web.internal.model.Histogram;
 import com.liferay.analytics.reports.web.internal.model.TimeSpan;
+import com.liferay.layout.seo.kernel.LayoutSEOLinkManager;
 import com.liferay.portal.kernel.json.JSONFactoryUtil;
 import com.liferay.portal.kernel.json.JSONObject;
+import com.liferay.portal.kernel.language.Language;
 import com.liferay.portal.kernel.language.LanguageUtil;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
@@ -27,12 +31,14 @@ import com.liferay.portal.kernel.portlet.bridges.mvc.BaseMVCResourceCommand;
 import com.liferay.portal.kernel.portlet.bridges.mvc.MVCResourceCommand;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
 import com.liferay.portal.kernel.util.ParamUtil;
+import com.liferay.portal.kernel.util.Portal;
 import com.liferay.portal.kernel.util.WebKeys;
 
 import javax.portlet.ResourceRequest;
 import javax.portlet.ResourceResponse;
 
 import org.osgi.service.component.annotations.Component;
+import org.osgi.service.component.annotations.Reference;
 
 /**
  * @author David Arques
@@ -56,8 +62,6 @@ public class GetAnalyticsReportsHistoricalViewsMVCResourceCommand
 		JSONObject jsonObject = JSONFactoryUtil.createJSONObject();
 
 		try {
-			long plid = ParamUtil.getLong(resourceRequest, "plid");
-
 			String timeSpanKey = ParamUtil.getString(
 				resourceRequest, "timeSpanKey", TimeSpan.defaultTimeSpanKey());
 
@@ -66,10 +70,19 @@ public class GetAnalyticsReportsHistoricalViewsMVCResourceCommand
 			int timeSpanOffset = ParamUtil.getInteger(
 				resourceRequest, "timeSpanOffset");
 
+			CanonicalURLProvider canonicalURLProvider =
+				new CanonicalURLProvider(
+					_portal.getHttpServletRequest(resourceRequest), _language,
+					_layoutSEOLinkManager, _portal);
+
+			Histogram histogram =
+				_analyticsReportsDataProvider.getHistoricalViewsHistogram(
+					_portal.getCompanyId(resourceRequest),
+					timeSpan.toTimeRange(timeSpanOffset),
+					canonicalURLProvider.getCanonicalURL());
+
 			jsonObject.put(
-				"analyticsReportsHistoricalViews",
-				_analyticsReportsDataProvider.getHistoricalViewsJSONObject(
-					plid, timeSpan.toTimeRange(timeSpanOffset)));
+				"analyticsReportsHistoricalViews", histogram.toJSONObject());
 		}
 		catch (Exception exception) {
 			_log.error(exception, exception);
@@ -93,5 +106,14 @@ public class GetAnalyticsReportsHistoricalViewsMVCResourceCommand
 
 	private static final AnalyticsReportsDataProvider
 		_analyticsReportsDataProvider = new AnalyticsReportsDataProvider();
+
+	@Reference
+	private Language _language;
+
+	@Reference
+	private LayoutSEOLinkManager _layoutSEOLinkManager;
+
+	@Reference
+	private Portal _portal;
 
 }

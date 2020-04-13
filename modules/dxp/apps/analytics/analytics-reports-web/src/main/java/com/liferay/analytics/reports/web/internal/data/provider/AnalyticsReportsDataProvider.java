@@ -21,6 +21,7 @@ import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.databind.type.TypeFactory;
 
 import com.liferay.analytics.reports.web.internal.client.AsahFaroBackendClient;
+import com.liferay.analytics.reports.web.internal.model.Histogram;
 import com.liferay.analytics.reports.web.internal.model.TimeRange;
 import com.liferay.analytics.reports.web.internal.model.TrafficSource;
 import com.liferay.portal.kernel.exception.PortalException;
@@ -63,11 +64,28 @@ public class AnalyticsReportsDataProvider {
 		return _getHistoricalJSONObject(timeRange.getIntervalLocalDateTimes());
 	}
 
-	public JSONObject getHistoricalViewsJSONObject(
-			long plid, TimeRange timeRange)
+	public Histogram getHistoricalViewsHistogram(
+			long companyId, TimeRange timeRange, String url)
 		throws PortalException {
 
-		return _getHistoricalJSONObject(timeRange.getIntervalLocalDateTimes());
+		try {
+			String response = _asahFaroBackendClient.doGet(
+				companyId,
+				String.format(
+					"api/1.0/pages/view-counts?endDate=%s&interval=D&" +
+						"startDate=%s&url=%s",
+					DateTimeFormatter.ISO_DATE.format(
+						timeRange.getEndLocalDate()),
+					DateTimeFormatter.ISO_DATE.format(
+						timeRange.getStartLocalDate()),
+					url));
+
+			return _objectMapper.readValue(response, Histogram.class);
+		}
+		catch (Exception exception) {
+			throw new PortalException(
+				"Unable to get historical views", exception);
+		}
 	}
 
 	public Long getTotalReads(long companyId, String url)
