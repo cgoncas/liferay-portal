@@ -106,6 +106,12 @@ public class TimeRange {
 		return intervals;
 	}
 
+	public LocalDate getStartLocalDate() {
+		LocalDate localDate = getEndLocalDate();
+
+		return localDate.minusDays(_timeSpan.getDays() - 1);
+	}
+
 	public LocalDateTime getStartLocalDateTime() {
 		LocalDateTime localDateTime = getEndLocalDateTime();
 
