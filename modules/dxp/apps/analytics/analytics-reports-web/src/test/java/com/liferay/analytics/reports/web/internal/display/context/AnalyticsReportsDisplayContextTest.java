@@ -28,6 +28,7 @@ import com.liferay.portal.kernel.test.util.RandomTestUtil;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
 import com.liferay.portal.kernel.util.FastDateFormatFactoryUtil;
 import com.liferay.portal.kernel.util.HashMapBuilder;
+import com.liferay.portal.kernel.util.Http;
 import com.liferay.portal.kernel.util.LocaleUtil;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.util.FastDateFormatFactoryImpl;
@@ -199,7 +200,7 @@ public class AnalyticsReportsDisplayContextTest {
 		int paidTrafficAmount, double paidTrafficShare,
 		boolean validAnalyticsConnection) {
 
-		return new AnalyticsReportsDataProvider() {
+		return new AnalyticsReportsDataProvider(Mockito.mock(Http.class)) {
 
 			@Override
 			public List<TrafficSource> getTrafficSources(
