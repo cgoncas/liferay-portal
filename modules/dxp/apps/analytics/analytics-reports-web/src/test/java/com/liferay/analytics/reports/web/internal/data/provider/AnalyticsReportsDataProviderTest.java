@@ -14,7 +14,6 @@
 
 package com.liferay.analytics.reports.web.internal.data.provider;
 
-import com.liferay.analytics.reports.web.internal.client.AsahFaroBackendClient;
 import com.liferay.analytics.reports.web.internal.model.TrafficSource;
 import com.liferay.portal.json.JSONFactoryImpl;
 import com.liferay.portal.kernel.exception.PortalException;
@@ -55,8 +54,7 @@ public class AnalyticsReportsDataProviderTest {
 	@Test
 	public void testGetTotalReads() throws Exception {
 		AnalyticsReportsDataProvider analyticsReportsDataProvider =
-			new AnalyticsReportsDataProvider(
-				new AsahFaroBackendClient(_getMockHttp("12345")));
+			new AnalyticsReportsDataProvider(_getMockHttp("12345"));
 
 		Long totalReads = analyticsReportsDataProvider.getTotalReads(
 			RandomTestUtil.randomLong(), RandomTestUtil.randomString());
@@ -67,8 +65,7 @@ public class AnalyticsReportsDataProviderTest {
 	@Test(expected = PortalException.class)
 	public void testGetTotalReadsWithAsahFaroBackendError() throws Exception {
 		AnalyticsReportsDataProvider analyticsReportsDataProvider =
-			new AnalyticsReportsDataProvider(
-				new AsahFaroBackendClient(_getMockHttp(new IOException())));
+			new AnalyticsReportsDataProvider(_getMockHttp(new IOException()));
 
 		analyticsReportsDataProvider.getTotalReads(
 			RandomTestUtil.randomLong(), RandomTestUtil.randomString());
@@ -77,8 +74,7 @@ public class AnalyticsReportsDataProviderTest {
 	@Test
 	public void testGetTotalViews() throws Exception {
 		AnalyticsReportsDataProvider analyticsReportsDataProvider =
-			new AnalyticsReportsDataProvider(
-				new AsahFaroBackendClient(_getMockHttp("12345")));
+			new AnalyticsReportsDataProvider(_getMockHttp("12345"));
 
 		Long totalViews = analyticsReportsDataProvider.getTotalViews(
 			RandomTestUtil.randomLong(), RandomTestUtil.randomString());
@@ -89,8 +85,7 @@ public class AnalyticsReportsDataProviderTest {
 	@Test(expected = PortalException.class)
 	public void testGetTotalViewsWithAsahFaroBackendError() throws Exception {
 		AnalyticsReportsDataProvider analyticsReportsDataProvider =
-			new AnalyticsReportsDataProvider(
-				new AsahFaroBackendClient(_getMockHttp(new IOException())));
+			new AnalyticsReportsDataProvider(_getMockHttp(new IOException()));
 
 		analyticsReportsDataProvider.getTotalViews(
 			RandomTestUtil.randomLong(), RandomTestUtil.randomString());
@@ -100,24 +95,23 @@ public class AnalyticsReportsDataProviderTest {
 	public void testGetTrafficSources() throws Exception {
 		AnalyticsReportsDataProvider analyticsReportsDataProvider =
 			new AnalyticsReportsDataProvider(
-				new AsahFaroBackendClient(
-					_getMockHttp(
-						JSONUtil.putAll(
-							JSONUtil.put(
-								"name", "search"
-							).put(
-								"trafficAmount", 3849
-							).put(
-								"trafficShare", 94.25D
-							),
-							JSONUtil.put(
-								"name", "paid"
-							).put(
-								"trafficAmount", 235
-							).put(
-								"trafficShare", 5.75D
-							)
-						).toString())));
+				_getMockHttp(
+					JSONUtil.putAll(
+						JSONUtil.put(
+							"name", "search"
+						).put(
+							"trafficAmount", 3849
+						).put(
+							"trafficShare", 94.25D
+						),
+						JSONUtil.put(
+							"name", "paid"
+						).put(
+							"trafficAmount", 235
+						).put(
+							"trafficShare", 5.75D
+						)
+					).toString()));
 
 		List<TrafficSource> trafficSources =
 			analyticsReportsDataProvider.getTrafficSources(
@@ -136,11 +130,15 @@ public class AnalyticsReportsDataProviderTest {
 		throws Exception {
 
 		AnalyticsReportsDataProvider analyticsReportsDataProvider =
-			new AnalyticsReportsDataProvider(
-				new AsahFaroBackendClient(_getMockHttp(new IOException())));
+			new AnalyticsReportsDataProvider(_getMockHttp(new IOException()));
 
 		analyticsReportsDataProvider.getTrafficSources(
 			RandomTestUtil.randomLong(), RandomTestUtil.randomString());
+	}
+
+	@Test(expected = IllegalArgumentException.class)
+	public void testNewAnalyticsReportsDataProviderWithNullHttp() {
+		new AnalyticsReportsDataProvider(null);
 	}
 
 	private Http _getMockHttp(Exception exception) throws Exception {
