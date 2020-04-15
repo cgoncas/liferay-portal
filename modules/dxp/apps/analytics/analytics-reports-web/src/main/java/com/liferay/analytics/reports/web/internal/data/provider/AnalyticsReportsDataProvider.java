@@ -42,19 +42,12 @@ import java.util.concurrent.ThreadLocalRandom;
  */
 public class AnalyticsReportsDataProvider {
 
-	public AnalyticsReportsDataProvider(
-		AsahFaroBackendClient asahFaroBackendClient) {
-
-		if (asahFaroBackendClient == null) {
-			throw new IllegalArgumentException(
-				"Asah Faro backend client is null");
+	public AnalyticsReportsDataProvider(Http http) {
+		if (http == null) {
+			throw new IllegalArgumentException("Http is null");
 		}
 
-		_asahFaroBackendClient = asahFaroBackendClient;
-	}
-
-	public AnalyticsReportsDataProvider(Http http) {
-		this(new AsahFaroBackendClient(http));
+		_asahFaroBackendClient = new AsahFaroBackendClient(http);
 	}
 
 	public JSONObject getHistoricalReadsJSONObject(
