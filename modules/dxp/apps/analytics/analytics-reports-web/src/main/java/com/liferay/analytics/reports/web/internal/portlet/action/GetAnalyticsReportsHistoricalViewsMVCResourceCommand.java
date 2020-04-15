@@ -30,6 +30,7 @@ import com.liferay.portal.kernel.portlet.JSONPortletResponseUtil;
 import com.liferay.portal.kernel.portlet.bridges.mvc.BaseMVCResourceCommand;
 import com.liferay.portal.kernel.portlet.bridges.mvc.MVCResourceCommand;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
+import com.liferay.portal.kernel.util.Http;
 import com.liferay.portal.kernel.util.ParamUtil;
 import com.liferay.portal.kernel.util.Portal;
 import com.liferay.portal.kernel.util.WebKeys;
@@ -62,6 +63,9 @@ public class GetAnalyticsReportsHistoricalViewsMVCResourceCommand
 		JSONObject jsonObject = JSONFactoryUtil.createJSONObject();
 
 		try {
+			AnalyticsReportsDataProvider analyticsReportsDataProvider =
+				new AnalyticsReportsDataProvider(_http);
+
 			String timeSpanKey = ParamUtil.getString(
 				resourceRequest, "timeSpanKey", TimeSpan.defaultTimeSpanKey());
 
@@ -75,7 +79,7 @@ public class GetAnalyticsReportsHistoricalViewsMVCResourceCommand
 					_layoutSEOLinkManager, _portal);
 
 			HistoricalMetric historicalMetric =
-				_analyticsReportsDataProvider.getHistoricalViewsHistogram(
+				analyticsReportsDataProvider.getHistoricalViewsHistogram(
 					_portal.getCompanyId(resourceRequest),
 					timeSpan.toTimeRange(timeSpanOffset),
 					canonicalURLProvider.getCanonicalURL());
@@ -104,8 +108,8 @@ public class GetAnalyticsReportsHistoricalViewsMVCResourceCommand
 	private static final Log _log = LogFactoryUtil.getLog(
 		GetAnalyticsReportsHistoricalViewsMVCResourceCommand.class);
 
-	private static final AnalyticsReportsDataProvider
-		_analyticsReportsDataProvider = new AnalyticsReportsDataProvider();
+	@Reference
+	private Http _http;
 
 	@Reference
 	private Language _language;

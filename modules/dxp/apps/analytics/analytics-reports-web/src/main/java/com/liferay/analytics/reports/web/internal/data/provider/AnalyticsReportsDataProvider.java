@@ -29,6 +29,7 @@ import com.liferay.portal.kernel.json.JSONArray;
 import com.liferay.portal.kernel.json.JSONFactoryUtil;
 import com.liferay.portal.kernel.json.JSONObject;
 import com.liferay.portal.kernel.json.JSONUtil;
+import com.liferay.portal.kernel.util.Http;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -41,10 +42,6 @@ import java.util.concurrent.ThreadLocalRandom;
  */
 public class AnalyticsReportsDataProvider {
 
-	public AnalyticsReportsDataProvider() {
-		this(new AsahFaroBackendClient());
-	}
-
 	public AnalyticsReportsDataProvider(
 		AsahFaroBackendClient asahFaroBackendClient) {
 
@@ -54,6 +51,10 @@ public class AnalyticsReportsDataProvider {
 		}
 
 		_asahFaroBackendClient = asahFaroBackendClient;
+	}
+
+	public AnalyticsReportsDataProvider(Http http) {
+		this(new AsahFaroBackendClient(http));
 	}
 
 	public JSONObject getHistoricalReadsJSONObject(

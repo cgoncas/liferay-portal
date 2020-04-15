@@ -26,6 +26,7 @@ import com.liferay.portal.kernel.portlet.JSONPortletResponseUtil;
 import com.liferay.portal.kernel.portlet.bridges.mvc.BaseMVCResourceCommand;
 import com.liferay.portal.kernel.portlet.bridges.mvc.MVCResourceCommand;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
+import com.liferay.portal.kernel.util.Http;
 import com.liferay.portal.kernel.util.ParamUtil;
 import com.liferay.portal.kernel.util.WebKeys;
 
@@ -33,6 +34,7 @@ import javax.portlet.ResourceRequest;
 import javax.portlet.ResourceResponse;
 
 import org.osgi.service.component.annotations.Component;
+import org.osgi.service.component.annotations.Reference;
 
 /**
  * @author David Arques
@@ -56,6 +58,9 @@ public class GetAnalyticsReportsHistoricalReadsMVCResourceCommand
 		JSONObject jsonObject = JSONFactoryUtil.createJSONObject();
 
 		try {
+			AnalyticsReportsDataProvider analyticsReportsDataProvider =
+				new AnalyticsReportsDataProvider(_http);
+
 			long plid = ParamUtil.getLong(resourceRequest, "plid");
 
 			String timeSpanKey = ParamUtil.getString(
@@ -68,7 +73,7 @@ public class GetAnalyticsReportsHistoricalReadsMVCResourceCommand
 
 			jsonObject.put(
 				"analyticsReportsHistoricalReads",
-				_analyticsReportsDataProvider.getHistoricalReadsJSONObject(
+				analyticsReportsDataProvider.getHistoricalReadsJSONObject(
 					plid, timeSpan.toTimeRange(timeSpanOffset)));
 		}
 		catch (Exception exception) {
@@ -91,7 +96,7 @@ public class GetAnalyticsReportsHistoricalReadsMVCResourceCommand
 	private static final Log _log = LogFactoryUtil.getLog(
 		GetAnalyticsReportsHistoricalReadsMVCResourceCommand.class);
 
-	private static final AnalyticsReportsDataProvider
-		_analyticsReportsDataProvider = new AnalyticsReportsDataProvider();
+	@Reference
+	private Http _http;
 
 }
