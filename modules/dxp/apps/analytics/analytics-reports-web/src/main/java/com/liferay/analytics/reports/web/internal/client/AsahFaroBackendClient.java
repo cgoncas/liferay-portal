@@ -19,49 +19,29 @@ import com.liferay.petra.string.StringBundler;
 import com.liferay.portal.kernel.exception.NestableRuntimeException;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
+import com.liferay.portal.kernel.util.Http;
 
-import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 
-import org.apache.http.HttpEntity;
-import org.apache.http.HttpResponse;
 import org.apache.http.HttpStatus;
-import org.apache.http.StatusLine;
-import org.apache.http.client.methods.HttpGet;
-import org.apache.http.client.methods.HttpRequestBase;
-import org.apache.http.entity.ByteArrayEntity;
-import org.apache.http.impl.client.CloseableHttpClient;
-import org.apache.http.impl.client.HttpClientBuilder;
-import org.apache.http.util.EntityUtils;
 
 /**
  * @author David Arques
  */
 public class AsahFaroBackendClient {
 
+	public AsahFaroBackendClient(Http http) {
+		_http = http;
+	}
+
 	public String doGet(long companyId, String path) {
 		try {
-			HttpResponse httpResponse = _request(
+			return _getResponse(
 				companyId,
-				new HttpGet(
-					String.format(
-						"%s/%s",
-						AnalyticsReportsUtil.getAsahFaroBackendURL(companyId),
-						path)));
-
-			String response = EntityUtils.toString(httpResponse.getEntity());
-
-			StatusLine statusLine = httpResponse.getStatusLine();
-
-			if (statusLine.getStatusCode() != HttpStatus.SC_OK) {
-				throw new NestableRuntimeException(
-					StringBundler.concat(
-						"Unexpected response status ",
-						statusLine.getStatusCode(), " with response message: ",
-						response));
-			}
-
-			return response;
+				String.format(
+					"%s/%s",
+					AnalyticsReportsUtil.getAsahFaroBackendURL(companyId),
+					path));
 		}
 		catch (IOException ioException) {
 			throw new NestableRuntimeException(
@@ -93,41 +73,34 @@ public class AsahFaroBackendClient {
 		}
 	}
 
-	private HttpResponse _request(
-			long companyId, HttpRequestBase httpRequestBase)
-		throws IOException {
+	private String _getResponse(long companyId, String url) throws IOException {
+		Http.Options options = new Http.Options();
 
-		HttpClientBuilder httpClientBuilder = HttpClientBuilder.create();
+		options.addHeader("Accept", "application/json");
+		options.addHeader(
+			"OSB-Asah-Faro-Backend-Security-Signature",
+			AnalyticsReportsUtil.getAsahFaroBackendSecuritySignature(
+				companyId));
+		options.setLocation(url);
 
-		httpClientBuilder.useSystemProperties();
+		String response = _http.URLtoString(options);
 
-		try (CloseableHttpClient closeableHttpClient =
-				httpClientBuilder.build()) {
+		Http.Response httpResponse = options.getResponse();
 
-			httpRequestBase.setHeader("Accept", "application/json");
-			httpRequestBase.setHeader(
-				"OSB-Asah-Faro-Backend-Security-Signature",
-				AnalyticsReportsUtil.getAsahFaroBackendSecuritySignature(
-					companyId));
-
-			HttpResponse httpResponse = closeableHttpClient.execute(
-				httpRequestBase);
-
-			HttpEntity httpEntity = httpResponse.getEntity();
-
-			ByteArrayOutputStream byteArrayOutputStream =
-				new ByteArrayOutputStream();
-
-			httpEntity.writeTo(byteArrayOutputStream);
-
-			httpResponse.setEntity(
-				new ByteArrayEntity(byteArrayOutputStream.toByteArray()));
-
-			return httpResponse;
+		if (httpResponse.getResponseCode() != HttpStatus.SC_OK) {
+			throw new NestableRuntimeException(
+				StringBundler.concat(
+					"Unexpected response status ",
+					httpResponse.getResponseCode(), " with response message: ",
+					response));
 		}
+
+		return response;
 	}
 
 	private static final Log _log = LogFactoryUtil.getLog(
 		AsahFaroBackendClient.class);
+
+	private final Http _http;
 
 }

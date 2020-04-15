@@ -24,6 +24,7 @@ import com.liferay.portal.kernel.language.Language;
 import com.liferay.portal.kernel.portlet.JSONPortletResponseUtil;
 import com.liferay.portal.kernel.portlet.bridges.mvc.BaseMVCResourceCommand;
 import com.liferay.portal.kernel.portlet.bridges.mvc.MVCResourceCommand;
+import com.liferay.portal.kernel.util.Http;
 import com.liferay.portal.kernel.util.Portal;
 
 import javax.portlet.ResourceRequest;
@@ -51,13 +52,16 @@ public class GetAnalyticsReportsTotalViewsMVCResourceCommand
 			ResourceRequest resourceRequest, ResourceResponse resourceResponse)
 		throws Exception {
 
+		AnalyticsReportsDataProvider analyticsReportsDataProvider =
+			new AnalyticsReportsDataProvider(_http);
+
 		CanonicalURLProvider canonicalURLProvider = new CanonicalURLProvider(
 			_portal.getHttpServletRequest(resourceRequest), _language,
 			_layoutSEOLinkManager, _portal);
 
 		JSONObject jsonObject = JSONUtil.put(
 			"analyticsReportsTotalViews",
-			_analyticsReportsDataProvider.getTotalViews(
+			analyticsReportsDataProvider.getTotalViews(
 				_portal.getCompanyId(resourceRequest),
 				canonicalURLProvider.getCanonicalURL()));
 
@@ -65,8 +69,8 @@ public class GetAnalyticsReportsTotalViewsMVCResourceCommand
 			resourceRequest, resourceResponse, jsonObject);
 	}
 
-	private static final AnalyticsReportsDataProvider
-		_analyticsReportsDataProvider = new AnalyticsReportsDataProvider();
+	@Reference
+	private Http _http;
 
 	@Reference
 	private Language _language;
