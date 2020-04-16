@@ -242,10 +242,19 @@ public class AnalyticsReportsDisplayContext {
 	private JSONArray _getTrafficSourcesJSONArray() {
 		JSONArray trafficSourcesJSONArray = JSONFactoryUtil.createJSONArray();
 
-		String helpMessage = ResourceBundleUtil.getString(
-			_resourceBundle,
-			"this-number-refers-to-the-volume-of-people-that-find-your-page-" +
-				"through-a-search-engine");
+		Map<String, String> helpMessageMap = HashMapBuilder.put(
+			"organic",
+			ResourceBundleUtil.getString(
+				_resourceBundle,
+				"this-number-refers-to-the-volume-of-people-that-find-your-" +
+					"page-through-a-search-engine")
+		).put(
+			"paid",
+			ResourceBundleUtil.getString(
+				_resourceBundle,
+				"this-number-refers-to-the-volume-of-people-that-find-your-" +
+					"page-through-paid-keywords")
+		).build();
 
 		Map<String, String> titleMap = HashMapBuilder.put(
 			"organic", ResourceBundleUtil.getString(_resourceBundle, "organic")
@@ -266,10 +275,10 @@ public class AnalyticsReportsDisplayContext {
 					).findFirst(
 					).map(
 						trafficSource -> trafficSource.toJSONObject(
-							helpMessage, title)
+							helpMessageMap.get(name), title)
 					).orElse(
 						JSONUtil.put(
-							"helpMessage", helpMessage
+							"helpMessage", helpMessageMap.get(name)
 						).put(
 							"name", name
 						).put(
