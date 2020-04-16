@@ -43,20 +43,6 @@ public class TimeRangeTest {
 	}
 
 	@Test
-	public void testGetIntervalLocalDateTimesWithLast24HoursTimeSpan() {
-		TimeRange timeRange = TimeRange.of(TimeSpan.LAST_24_HOURS, 0);
-
-		List<LocalDateTime> intervalLocalDateTimes =
-			timeRange.getIntervalLocalDateTimes();
-
-		Assert.assertEquals(
-			intervalLocalDateTimes.toString(), 24,
-			intervalLocalDateTimes.size());
-		Assert.assertEquals(
-			timeRange.getStartLocalDateTime(), intervalLocalDateTimes.get(0));
-	}
-
-	@Test
 	public void testGetIntervalLocalDateTimesWithLast30DaysTimeSpan() {
 		TimeRange timeRange = TimeRange.of(TimeSpan.LAST_30_DAYS, 0);
 
@@ -72,7 +58,7 @@ public class TimeRangeTest {
 
 	@Test
 	public void testOf() {
-		TimeSpan timeSpan = TimeSpan.LAST_24_HOURS;
+		TimeSpan timeSpan = TimeSpan.LAST_7_DAYS;
 		int timeSpanOffset = RandomTestUtil.randomInt();
 
 		TimeRange timeRange = TimeRange.of(timeSpan, timeSpanOffset);
@@ -84,7 +70,7 @@ public class TimeRangeTest {
 
 	@Test(expected = IllegalArgumentException.class)
 	public void testOfWithNegativeTimeSpanOffset() {
-		TimeRange.of(TimeSpan.LAST_24_HOURS, -1);
+		TimeRange.of(TimeSpan.LAST_7_DAYS, -1);
 	}
 
 	@Test(expected = IllegalArgumentException.class)

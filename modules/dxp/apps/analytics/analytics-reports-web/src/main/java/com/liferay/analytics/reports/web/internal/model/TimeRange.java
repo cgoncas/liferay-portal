@@ -36,19 +36,6 @@ public class TimeRange {
 			throw new IllegalArgumentException("Time span offset is negative");
 		}
 
-		if (timeSpan.equals(TimeSpan.LAST_24_HOURS)) {
-			return new TimeRange(true, timeSpan, timeSpanOffset) {
-
-				@Override
-				public LocalDateTime getStartLocalDateTime() {
-					LocalDateTime localDateTime = getEndLocalDateTime();
-
-					return localDateTime.minusHours(23);
-				}
-
-			};
-		}
-
 		return new TimeRange(false, timeSpan, timeSpanOffset);
 	}
 
@@ -88,19 +75,10 @@ public class TimeRange {
 
 		LocalDateTime intervalLocalDateTime = getStartLocalDateTime();
 
-		if (_timeSpan.equals(TimeSpan.LAST_24_HOURS)) {
-			for (int i = 0; i < 24; i++) {
-				intervals.add(intervalLocalDateTime);
+		for (int i = 0; i < _timeSpan.getDays(); i++) {
+			intervals.add(intervalLocalDateTime);
 
-				intervalLocalDateTime = intervalLocalDateTime.plusHours(1);
-			}
-		}
-		else {
-			for (int i = 0; i < _timeSpan.getDays(); i++) {
-				intervals.add(intervalLocalDateTime);
-
-				intervalLocalDateTime = intervalLocalDateTime.plusDays(1);
-			}
+			intervalLocalDateTime = intervalLocalDateTime.plusDays(1);
 		}
 
 		return intervals;
