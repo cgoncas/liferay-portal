@@ -38,7 +38,7 @@ public class HistoricalMetric {
 		List<HistogramMetric> histogramMetrics, double value) {
 
 		if (histogramMetrics == null) {
-			throw new IllegalArgumentException("Histogram Metrics are null");
+			throw new IllegalArgumentException("Histogram metrics are null");
 		}
 
 		_histogramMetrics = Collections.unmodifiableList(histogramMetrics);
@@ -57,9 +57,9 @@ public class HistoricalMetric {
 
 		HistoricalMetric historicalMetric = (HistoricalMetric)obj;
 
-		if ((Double.compare(historicalMetric._value, _value) == 0) &&
-			Objects.equals(
-				_histogramMetrics, historicalMetric._histogramMetrics)) {
+		if (Objects.equals(
+				_histogramMetrics, historicalMetric._histogramMetrics) &&
+			Objects.equals(_value, historicalMetric._value)) {
 
 			return true;
 		}
