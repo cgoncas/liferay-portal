@@ -60,16 +60,18 @@ public class AnalyticsReportsDataProvider {
 			long plid, TimeRange timeRange)
 		throws PortalException {
 
-		JSONArray intervalsJSONArray = JSONFactoryUtil.createJSONArray();
+		JSONArray jsonArray = JSONFactoryUtil.createJSONArray();
 		int totalValue = 0;
 
-		for (LocalDateTime interval : timeRange.getIntervalLocalDateTimes()) {
+		for (LocalDateTime localDateTime :
+				timeRange.getIntervalLocalDateTimes()) {
+
 			int value = _getRandomInt();
 
-			intervalsJSONArray.put(
+			jsonArray.put(
 				JSONUtil.put(
 					"key",
-					DateTimeFormatter.ISO_LOCAL_DATE_TIME.format(interval)
+					DateTimeFormatter.ISO_LOCAL_DATE_TIME.format(localDateTime)
 				).put(
 					"value", value
 				));
@@ -78,7 +80,7 @@ public class AnalyticsReportsDataProvider {
 		}
 
 		return JSONUtil.put(
-			"histogram", intervalsJSONArray
+			"histogram", jsonArray
 		).put(
 			"value", totalValue
 		);
