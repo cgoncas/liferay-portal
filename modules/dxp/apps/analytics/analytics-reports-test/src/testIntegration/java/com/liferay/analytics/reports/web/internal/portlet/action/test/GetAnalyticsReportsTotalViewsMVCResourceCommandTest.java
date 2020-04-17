@@ -213,10 +213,7 @@ public class GetAnalyticsReportsTotalViewsMVCResourceCommandTest {
 			Company company = _companyLocalService.getCompany(
 				TestPropsValues.getCompanyId());
 
-			themeDisplay.setCompany(
-				_companyLocalService.getCompany(
-					TestPropsValues.getCompanyId()));
-
+			themeDisplay.setCompany(company);
 			themeDisplay.setLanguageId(_group.getDefaultLanguageId());
 			themeDisplay.setLocale(
 				LocaleUtil.fromLanguageId(_group.getDefaultLanguageId()));
