@@ -55,10 +55,10 @@ public class HistogramMetric {
 			return false;
 		}
 
-		HistogramMetric that = (HistogramMetric)obj;
+		HistogramMetric histogramMetric = (HistogramMetric)obj;
 
-		if (Objects.equals(_key, that._key) &&
-			(Double.compare(that._value, _value) == 0)) {
+		if (Objects.equals(_key, histogramMetric._key) &&
+			Objects.equals(_value, histogramMetric._value)) {
 
 			return true;
 		}
