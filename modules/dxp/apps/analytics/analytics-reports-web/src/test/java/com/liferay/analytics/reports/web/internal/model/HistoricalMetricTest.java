@@ -26,7 +26,6 @@ import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.Date;
 
@@ -53,7 +52,7 @@ public class HistoricalMetricTest {
 
 		Assert.assertEquals(
 			Collections.emptyList(), historicalMetric.getHistogramMetrics());
-		Assert.assertEquals(0.0, 0.0, historicalMetric.getValue());
+		Assert.assertEquals(0.0, historicalMetric.getValue(), 0.0);
 	}
 
 	@Test(expected = IllegalArgumentException.class)
@@ -67,7 +66,8 @@ public class HistoricalMetricTest {
 			new Date(), RandomTestUtil.randomDouble());
 
 		HistoricalMetric historicalMetric = new HistoricalMetric(
-			Arrays.asList(histogramMetric), RandomTestUtil.randomDouble());
+			Collections.singletonList(histogramMetric),
+			RandomTestUtil.randomDouble());
 
 		JSONObject jsonObject = historicalMetric.toJSONObject();
 
