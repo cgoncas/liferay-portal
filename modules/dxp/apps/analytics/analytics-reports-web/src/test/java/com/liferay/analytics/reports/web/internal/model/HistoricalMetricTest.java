@@ -37,7 +37,7 @@ import org.junit.Test;
 /**
  * @author Cristina González
  */
-public class HistogramTest {
+public class HistoricalMetricTest {
 
 	@BeforeClass
 	public static void setUpClass() {
@@ -47,17 +47,18 @@ public class HistogramTest {
 	}
 
 	@Test
-	public void testNewHistogram() {
-		Histogram histogram = new Histogram(Collections.emptyList(), 0);
+	public void testNewHistoricalMetric() {
+		HistoricalMetric historicalMetric = new HistoricalMetric(
+			Collections.emptyList(), 0);
 
 		Assert.assertEquals(
-			Collections.emptyList(), histogram.getHistogramMetrics());
-		Assert.assertEquals(0.0, 0.0, histogram.getValue());
+			Collections.emptyList(), historicalMetric.getHistogramMetrics());
+		Assert.assertEquals(0.0, 0.0, historicalMetric.getValue());
 	}
 
 	@Test(expected = IllegalArgumentException.class)
-	public void testNewHistogramWithNulllHistogramMetrics() {
-		new Histogram(null, 0);
+	public void testNewHistoricalMetricWithNullHistogramMetrics() {
+		new HistoricalMetric(null, 0);
 	}
 
 	@Test
@@ -65,10 +66,10 @@ public class HistogramTest {
 		HistogramMetric histogramMetric = new HistogramMetric(
 			new Date(), RandomTestUtil.randomDouble());
 
-		Histogram histogram = new Histogram(
+		HistoricalMetric historicalMetric = new HistoricalMetric(
 			Arrays.asList(histogramMetric), RandomTestUtil.randomDouble());
 
-		JSONObject jsonObject = histogram.toJSONObject();
+		JSONObject jsonObject = historicalMetric.toJSONObject();
 
 		Assert.assertEquals(
 			JSONUtil.put(
@@ -80,7 +81,7 @@ public class HistogramTest {
 						"value", histogramMetric.getValue()
 					))
 			).put(
-				"value", histogram.getValue()
+				"value", historicalMetric.getValue()
 			).toJSONString(),
 			jsonObject.toJSONString());
 	}

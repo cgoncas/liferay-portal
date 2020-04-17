@@ -29,12 +29,14 @@ import java.util.stream.Stream;
 /**
  * @author Cistina González
  */
-public class Histogram {
+public class HistoricalMetric {
 
-	public Histogram() {
+	public HistoricalMetric() {
 	}
 
-	public Histogram(List<HistogramMetric> histogramMetrics, double value) {
+	public HistoricalMetric(
+		List<HistogramMetric> histogramMetrics, double value) {
+
 		if (histogramMetrics == null) {
 			throw new IllegalArgumentException("Histogram Metrics are null");
 		}
@@ -49,14 +51,15 @@ public class Histogram {
 			return true;
 		}
 
-		if (!(obj instanceof Histogram)) {
+		if (!(obj instanceof HistoricalMetric)) {
 			return false;
 		}
 
-		Histogram histogram = (Histogram)obj;
+		HistoricalMetric historicalMetric = (HistoricalMetric)obj;
 
-		if ((Double.compare(histogram._value, _value) == 0) &&
-			Objects.equals(_histogramMetrics, histogram._histogramMetrics)) {
+		if ((Double.compare(historicalMetric._value, _value) == 0) &&
+			Objects.equals(
+				_histogramMetrics, historicalMetric._histogramMetrics)) {
 
 			return true;
 		}

@@ -17,7 +17,7 @@ package com.liferay.analytics.reports.web.internal.portlet.action;
 import com.liferay.analytics.reports.web.internal.constants.AnalyticsReportsPortletKeys;
 import com.liferay.analytics.reports.web.internal.data.provider.AnalyticsReportsDataProvider;
 import com.liferay.analytics.reports.web.internal.layout.seo.CanonicalURLProvider;
-import com.liferay.analytics.reports.web.internal.model.Histogram;
+import com.liferay.analytics.reports.web.internal.model.HistoricalMetric;
 import com.liferay.analytics.reports.web.internal.model.TimeSpan;
 import com.liferay.layout.seo.kernel.LayoutSEOLinkManager;
 import com.liferay.portal.kernel.json.JSONFactoryUtil;
@@ -75,14 +75,15 @@ public class GetAnalyticsReportsHistoricalViewsMVCResourceCommand
 					_portal.getHttpServletRequest(resourceRequest), _language,
 					_layoutSEOLinkManager, _portal);
 
-			Histogram histogram =
+			HistoricalMetric historicalMetric =
 				_analyticsReportsDataProvider.getHistoricalViewsHistogram(
 					_portal.getCompanyId(resourceRequest),
 					timeSpan.toTimeRange(timeSpanOffset),
 					canonicalURLProvider.getCanonicalURL());
 
 			jsonObject.put(
-				"analyticsReportsHistoricalViews", histogram.toJSONObject());
+				"analyticsReportsHistoricalViews",
+				historicalMetric.toJSONObject());
 		}
 		catch (Exception exception) {
 			_log.error(exception, exception);

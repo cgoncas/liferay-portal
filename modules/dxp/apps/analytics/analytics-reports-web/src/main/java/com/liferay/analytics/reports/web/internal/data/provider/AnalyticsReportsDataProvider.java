@@ -21,7 +21,7 @@ import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.databind.type.TypeFactory;
 
 import com.liferay.analytics.reports.web.internal.client.AsahFaroBackendClient;
-import com.liferay.analytics.reports.web.internal.model.Histogram;
+import com.liferay.analytics.reports.web.internal.model.HistoricalMetric;
 import com.liferay.analytics.reports.web.internal.model.TimeRange;
 import com.liferay.analytics.reports.web.internal.model.TrafficSource;
 import com.liferay.portal.kernel.exception.PortalException;
@@ -64,7 +64,7 @@ public class AnalyticsReportsDataProvider {
 		return _getHistoricalJSONObject(timeRange.getIntervalLocalDateTimes());
 	}
 
-	public Histogram getHistoricalViewsHistogram(
+	public HistoricalMetric getHistoricalViewsHistogram(
 			long companyId, TimeRange timeRange, String url)
 		throws PortalException {
 
@@ -80,7 +80,7 @@ public class AnalyticsReportsDataProvider {
 						timeRange.getStartLocalDate()),
 					url));
 
-			return _objectMapper.readValue(response, Histogram.class);
+			return _objectMapper.readValue(response, HistoricalMetric.class);
 		}
 		catch (Exception exception) {
 			throw new PortalException(
