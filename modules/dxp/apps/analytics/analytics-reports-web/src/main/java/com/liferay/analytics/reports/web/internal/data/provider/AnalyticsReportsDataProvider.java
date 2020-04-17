@@ -33,7 +33,6 @@ import com.liferay.portal.kernel.json.JSONUtil;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
-import java.util.Collection;
 import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;
 
@@ -61,7 +60,28 @@ public class AnalyticsReportsDataProvider {
 			long plid, TimeRange timeRange)
 		throws PortalException {
 
-		return _getHistoricalJSONObject(timeRange.getIntervalLocalDateTimes());
+		JSONArray intervalsJSONArray = JSONFactoryUtil.createJSONArray();
+		int totalValue = 0;
+
+		for (LocalDateTime interval : timeRange.getIntervalLocalDateTimes()) {
+			int value = _getRandomInt();
+
+			intervalsJSONArray.put(
+				JSONUtil.put(
+					"key",
+					DateTimeFormatter.ISO_LOCAL_DATE_TIME.format(interval)
+				).put(
+					"value", value
+				));
+
+			totalValue = totalValue + value;
+		}
+
+		return JSONUtil.put(
+			"histogram", intervalsJSONArray
+		).put(
+			"value", totalValue
+		);
 	}
 
 	public HistoricalMetric getHistoricalViewsHistogram(
@@ -136,33 +156,6 @@ public class AnalyticsReportsDataProvider {
 
 	public boolean isValidAnalyticsConnection(long companyId) {
 		return _asahFaroBackendClient.isValidConnection(companyId);
-	}
-
-	private JSONObject _getHistoricalJSONObject(
-		Collection<LocalDateTime> intervals) {
-
-		JSONArray intervalsJSONArray = JSONFactoryUtil.createJSONArray();
-		int totalValue = 0;
-
-		for (LocalDateTime interval : intervals) {
-			int value = _getRandomInt();
-
-			intervalsJSONArray.put(
-				JSONUtil.put(
-					"key",
-					DateTimeFormatter.ISO_LOCAL_DATE_TIME.format(interval)
-				).put(
-					"value", value
-				));
-
-			totalValue = totalValue + value;
-		}
-
-		return JSONUtil.put(
-			"histogram", intervalsJSONArray
-		).put(
-			"value", totalValue
-		);
 	}
 
 	private int _getRandomInt() {
