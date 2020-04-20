@@ -44,13 +44,10 @@ import com.liferay.portal.test.rule.Inject;
 import com.liferay.portal.test.rule.LiferayIntegrationTestRule;
 
 import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.io.OutputStream;
 
 import java.util.Objects;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 
 import org.junit.Assert;
 import org.junit.Before;
@@ -59,8 +56,6 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.TestRule;
 import org.junit.runner.RunWith;
-
-import org.springframework.mock.web.MockHttpServletResponse;
 
 /**
  * @author Cristina González
@@ -117,15 +112,15 @@ public class GetAnalyticsReportsTotalViewsMVCResourceCommandTest {
 				}));
 
 		try {
-			MockResourceResponse mockResourceResponse =
-				new MockResourceResponse();
+			MockLiferayResourceResponse mockLiferayResourceResponse =
+				new MockLiferayResourceResponse();
 
 			_mvcResourceCommand.serveResource(
-				new MockResourceRequest(), mockResourceResponse);
+				new MockResourceRequest(), mockLiferayResourceResponse);
 
 			ByteArrayOutputStream byteArrayOutputStream =
 				(ByteArrayOutputStream)
-					mockResourceResponse.getPortletOutputStream();
+					mockLiferayResourceResponse.getPortletOutputStream();
 
 			JSONObject jsonObject = JSONFactoryUtil.createJSONObject(
 				new String(byteArrayOutputStream.toByteArray()));
@@ -192,30 +187,6 @@ public class GetAnalyticsReportsTotalViewsMVCResourceCommandTest {
 
 	@Inject(filter = "mvc.command.name=/analytics_reports/get_total_views")
 	private MVCResourceCommand _mvcResourceCommand;
-
-	private static class MockResourceResponse
-		extends MockLiferayResourceResponse {
-
-		public MockResourceResponse() {
-			_mockHttpServletResponse = new MockHttpServletResponse();
-
-			_byteArrayOutputStream = new ByteArrayOutputStream();
-		}
-
-		@Override
-		public HttpServletResponse getHttpServletResponse() {
-			return _mockHttpServletResponse;
-		}
-
-		@Override
-		public OutputStream getPortletOutputStream() throws IOException {
-			return _byteArrayOutputStream;
-		}
-
-		private final ByteArrayOutputStream _byteArrayOutputStream;
-		private final MockHttpServletResponse _mockHttpServletResponse;
-
-	}
 
 	private class MockResourceRequest extends MockLiferayResourceRequest {
 

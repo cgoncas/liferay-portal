@@ -37,7 +37,6 @@ import com.liferay.portal.kernel.util.WebKeys;
 import com.liferay.portal.test.rule.Inject;
 import com.liferay.portal.test.rule.LiferayIntegrationTestRule;
 import com.liferay.portal.test.rule.PermissionCheckerMethodTestRule;
-import com.liferay.spring.mock.web.portlet.MockResourceResponse;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -45,7 +44,6 @@ import java.util.List;
 import javax.portlet.Portlet;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 
 import org.junit.Assert;
 import org.junit.Before;
@@ -81,14 +79,15 @@ public class MentionsPortletTest {
 
 		MVCPortlet mvcPortlet = (MVCPortlet)_portlet;
 
-		MockResourceResponse mockResourceResponse = new MockResourceResponse();
+		MockLiferayResourceResponse mockLiferayResourceResponse =
+			new MockLiferayResourceResponse();
 
 		mvcPortlet.serveResource(
-			_getMockLiferayResourceRequest(null), mockResourceResponse);
+			_getMockLiferayResourceRequest(null), mockLiferayResourceResponse);
 
 		MockHttpServletResponse mockHttpServletResponse =
 			(MockHttpServletResponse)
-				mockResourceResponse.getHttpServletResponse();
+				mockLiferayResourceResponse.getHttpServletResponse();
 
 		Assert.assertEquals(
 			ContentTypes.APPLICATION_JSON,
@@ -112,14 +111,16 @@ public class MentionsPortletTest {
 
 		MVCPortlet mvcPortlet = (MVCPortlet)_portlet;
 
-		MockResourceResponse mockResourceResponse = new MockResourceResponse();
+		MockLiferayResourceResponse mockLiferayResourceResponse =
+			new MockLiferayResourceResponse();
 
 		mvcPortlet.serveResource(
-			_getMockLiferayResourceRequest("example"), mockResourceResponse);
+			_getMockLiferayResourceRequest("example"),
+			mockLiferayResourceResponse);
 
 		MockHttpServletResponse mockHttpServletResponse =
 			(MockHttpServletResponse)
-				mockResourceResponse.getHttpServletResponse();
+				mockLiferayResourceResponse.getHttpServletResponse();
 
 		Assert.assertEquals(
 			ContentTypes.APPLICATION_JSON,
@@ -143,14 +144,15 @@ public class MentionsPortletTest {
 
 		MVCPortlet mvcPortlet = (MVCPortlet)_portlet;
 
-		MockResourceResponse mockResourceResponse = new MockResourceResponse();
+		MockLiferayResourceResponse mockLiferayResourceResponse =
+			new MockLiferayResourceResponse();
 
 		mvcPortlet.serveResource(
-			_getMockLiferayResourceRequest("exa"), mockResourceResponse);
+			_getMockLiferayResourceRequest("exa"), mockLiferayResourceResponse);
 
 		MockHttpServletResponse mockHttpServletResponse =
 			(MockHttpServletResponse)
-				mockResourceResponse.getHttpServletResponse();
+				mockLiferayResourceResponse.getHttpServletResponse();
 
 		Assert.assertEquals(
 			ContentTypes.APPLICATION_JSON,
@@ -172,14 +174,15 @@ public class MentionsPortletTest {
 
 		MVCPortlet mvcPortlet = (MVCPortlet)_portlet;
 
-		MockResourceResponse mockResourceResponse = new MockResourceResponse();
+		MockLiferayResourceResponse mockLiferayResourceResponse =
+			new MockLiferayResourceResponse();
 
 		mvcPortlet.serveResource(
-			_getMockLiferayResourceRequest(""), mockResourceResponse);
+			_getMockLiferayResourceRequest(""), mockLiferayResourceResponse);
 
 		MockHttpServletResponse mockHttpServletResponse =
 			(MockHttpServletResponse)
-				mockResourceResponse.getHttpServletResponse();
+				mockLiferayResourceResponse.getHttpServletResponse();
 
 		Assert.assertEquals(
 			ContentTypes.APPLICATION_JSON,
@@ -201,14 +204,15 @@ public class MentionsPortletTest {
 
 		MVCPortlet mvcPortlet = (MVCPortlet)_portlet;
 
-		MockResourceResponse mockResourceResponse = new MockResourceResponse();
+		MockLiferayResourceResponse mockLiferayResourceResponse =
+			new MockLiferayResourceResponse();
 
 		mvcPortlet.serveResource(
-			_getMockLiferayResourceRequest(""), mockResourceResponse);
+			_getMockLiferayResourceRequest(""), mockLiferayResourceResponse);
 
 		MockHttpServletResponse mockHttpServletResponse =
 			(MockHttpServletResponse)
-				mockResourceResponse.getHttpServletResponse();
+				mockLiferayResourceResponse.getHttpServletResponse();
 
 		Assert.assertEquals(
 			ContentTypes.APPLICATION_JSON,
@@ -280,22 +284,6 @@ public class MentionsPortletTest {
 		}
 
 		private final ThemeDisplay _themeDisplay;
-
-	}
-
-	private static class MockResourceResponse
-		extends MockLiferayResourceResponse {
-
-		public MockResourceResponse() {
-			_mockHttpServletResponse = new MockHttpServletResponse();
-		}
-
-		@Override
-		public HttpServletResponse getHttpServletResponse() {
-			return _mockHttpServletResponse;
-		}
-
-		private final MockHttpServletResponse _mockHttpServletResponse;
 
 	}
 
