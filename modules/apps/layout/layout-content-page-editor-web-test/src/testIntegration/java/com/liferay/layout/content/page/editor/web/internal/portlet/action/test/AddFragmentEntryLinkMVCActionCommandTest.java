@@ -55,16 +55,12 @@ import java.util.List;
 
 import javax.portlet.ActionRequest;
 
-import javax.servlet.http.HttpServletRequest;
-
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.ClassRule;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-
-import org.springframework.mock.web.MockHttpServletRequest;
 
 /**
  * @author Jürgen Kappler
@@ -94,8 +90,8 @@ public class AddFragmentEntryLinkMVCActionCommandTest {
 
 		FragmentEntry fragmentEntry = _getFragmentEntry(_company.getGroupId());
 
-		MockLiferayPortletActionRequest actionRequest = _getMockActionRequest(
-			_company.getGroupId());
+		MockLiferayPortletActionRequest actionRequest =
+			_getMockLiferayPortletActionRequest(_company.getGroupId());
 
 		actionRequest.addParameter(
 			"fragmentEntryKey", fragmentEntry.getFragmentEntryKey());
@@ -123,8 +119,8 @@ public class AddFragmentEntryLinkMVCActionCommandTest {
 
 		FragmentEntry fragmentEntry = _getFragmentEntry(_group.getGroupId());
 
-		MockLiferayPortletActionRequest actionRequest = _getMockActionRequest(
-			_group.getGroupId());
+		MockLiferayPortletActionRequest actionRequest =
+			_getMockLiferayPortletActionRequest(_group.getGroupId());
 
 		actionRequest.addParameter(
 			"fragmentEntryKey", fragmentEntry.getFragmentEntryKey());
@@ -172,8 +168,8 @@ public class AddFragmentEntryLinkMVCActionCommandTest {
 				PortalUtil.getClassNameId(Layout.class.getName()),
 				_layout.getPlid());
 
-		MockLiferayPortletActionRequest actionRequest = _getMockActionRequest(
-			_group.getGroupId());
+		MockLiferayPortletActionRequest actionRequest =
+			_getMockLiferayPortletActionRequest(_group.getGroupId());
 
 		actionRequest.addParameter(
 			"fragmentEntryKey", fragmentEntry.getFragmentEntryKey());
@@ -196,8 +192,8 @@ public class AddFragmentEntryLinkMVCActionCommandTest {
 
 	@Test(expected = NoSuchEntryException.class)
 	public void testAddInvalidFragmentEntryToLayout() throws Exception {
-		MockLiferayPortletActionRequest actionRequest = _getMockActionRequest(
-			_group.getGroupId());
+		MockLiferayPortletActionRequest actionRequest =
+			_getMockLiferayPortletActionRequest(_group.getGroupId());
 
 		actionRequest.addParameter(
 			"fragmentEntryKey", RandomTestUtil.randomString());
@@ -228,17 +224,20 @@ public class AddFragmentEntryLinkMVCActionCommandTest {
 			serviceContext);
 	}
 
-	private MockActionRequest _getMockActionRequest(long groupId)
+	private MockLiferayPortletActionRequest _getMockLiferayPortletActionRequest(
+			long groupId)
 		throws PortalException {
 
-		MockActionRequest mockActionRequest = new MockActionRequest();
+		MockLiferayPortletActionRequest mockLiferayPortletActionRequest =
+			new MockLiferayPortletActionRequest();
 
-		mockActionRequest.setAttribute(
+		mockLiferayPortletActionRequest.setAttribute(
 			WebKeys.THEME_DISPLAY, _getThemeDisplay());
 
-		mockActionRequest.addParameter("groupId", String.valueOf(groupId));
+		mockLiferayPortletActionRequest.addParameter(
+			"groupId", String.valueOf(groupId));
 
-		return mockActionRequest;
+		return mockLiferayPortletActionRequest;
 	}
 
 	private ThemeDisplay _getThemeDisplay() throws PortalException {
@@ -278,15 +277,5 @@ public class AddFragmentEntryLinkMVCActionCommandTest {
 
 	@Inject(filter = "mvc.command.name=/content_layout/add_fragment_entry_link")
 	private MVCActionCommand _mvcActionCommand;
-
-	private static class MockActionRequest
-		extends MockLiferayPortletActionRequest {
-
-		@Override
-		public HttpServletRequest getHttpServletRequest() {
-			return new MockHttpServletRequest();
-		}
-
-	}
 
 }

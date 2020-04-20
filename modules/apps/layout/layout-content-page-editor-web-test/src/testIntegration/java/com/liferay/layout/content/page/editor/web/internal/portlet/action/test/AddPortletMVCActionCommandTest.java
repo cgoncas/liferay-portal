@@ -74,7 +74,6 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
-import org.springframework.mock.web.MockHttpServletRequest;
 import org.springframework.mock.web.MockHttpServletResponse;
 
 /**
@@ -355,20 +354,14 @@ public class AddPortletMVCActionCommandTest {
 		public MockActionRequest(Layout layout, ThemeDisplay themeDisplay) {
 			_layout = layout;
 			_themeDisplay = themeDisplay;
-		}
 
-		@Override
-		public HttpServletRequest getHttpServletRequest() {
-			MockHttpServletRequest httpServletRequest =
-				new MockHttpServletRequest();
+			HttpServletRequest httpServletRequest = getHttpServletRequest();
 
 			httpServletRequest.setAttribute(
 				JavaConstants.JAVAX_PORTLET_RESPONSE, new MockActionResponse());
 			httpServletRequest.setAttribute(WebKeys.LAYOUT, _layout);
 			httpServletRequest.setAttribute(
 				WebKeys.THEME_DISPLAY, _themeDisplay);
-
-			return httpServletRequest;
 		}
 
 		private final Layout _layout;
