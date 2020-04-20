@@ -61,8 +61,6 @@ import com.liferay.spring.mock.web.portlet.MockActionRequest;
 import javax.portlet.ActionRequest;
 import javax.portlet.ActionResponse;
 
-import javax.servlet.http.HttpServletResponse;
-
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.ClassRule;
@@ -71,7 +69,6 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 
 import org.springframework.mock.web.MockHttpServletRequest;
-import org.springframework.mock.web.MockHttpServletResponse;
 
 /**
  * @author Jürgen Kappler
@@ -125,7 +122,7 @@ public class PropagateGroupFragmentEntryChangesMVCActionCommandTest {
 			_fragmentEntry);
 
 		MockActionRequest actionRequest = _getMockActionRequest();
-		ActionResponse actionResponse = new MockActionResponse();
+		ActionResponse actionResponse = new MockLiferayPortletActionResponse();
 
 		ReflectionTestUtil.invoke(
 			_mvcActionCommand, "processAction",
@@ -239,7 +236,8 @@ public class PropagateGroupFragmentEntryChangesMVCActionCommandTest {
 				(MockHttpServletRequest)getHttpServletRequest();
 
 			mockHttpServletRequest.setAttribute(
-				JavaConstants.JAVAX_PORTLET_RESPONSE, new MockActionResponse());
+				JavaConstants.JAVAX_PORTLET_RESPONSE,
+				new MockLiferayPortletActionResponse());
 			mockHttpServletRequest.setAttribute(
 				WebKeys.THEME_DISPLAY, _themeDisplay);
 			mockHttpServletRequest.setParameter(
@@ -248,16 +246,6 @@ public class PropagateGroupFragmentEntryChangesMVCActionCommandTest {
 
 		private final Group _group;
 		private final ThemeDisplay _themeDisplay;
-
-	}
-
-	private static class MockActionResponse
-		extends MockLiferayPortletActionResponse {
-
-		@Override
-		public HttpServletResponse getHttpServletResponse() {
-			return new MockHttpServletResponse();
-		}
 
 	}
 
