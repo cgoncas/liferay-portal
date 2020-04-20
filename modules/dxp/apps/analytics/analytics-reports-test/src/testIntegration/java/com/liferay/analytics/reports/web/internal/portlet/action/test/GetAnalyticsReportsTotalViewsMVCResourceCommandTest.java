@@ -17,6 +17,7 @@ package com.liferay.analytics.reports.web.internal.portlet.action.test;
 import com.liferay.arquillian.extension.junit.bridge.junit.Arquillian;
 import com.liferay.layout.test.util.LayoutTestUtil;
 import com.liferay.petra.function.UnsafeSupplier;
+import com.liferay.portal.kernel.exception.NestableRuntimeException;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.json.JSONFactoryUtil;
 import com.liferay.portal.kernel.json.JSONObject;
@@ -82,7 +83,7 @@ public class GetAnalyticsReportsTotalViewsMVCResourceCommandTest {
 	@Test
 	public void testServeResponse() throws Exception {
 		ReflectionTestUtil.setFieldValue(
-			_mvcResourceCommand, "_http", _getMockHttp(() -> "12345"));
+			_mvcResourceCommand, "_http", _geMocktHttp(() -> "12345"));
 
 		try {
 			MockResourceResponse mockResourceResponse =
@@ -107,7 +108,39 @@ public class GetAnalyticsReportsTotalViewsMVCResourceCommandTest {
 		}
 	}
 
-	private Http _getMockHttp(
+	@Test
+	public void testServeResponseWithError() throws Exception {
+		ReflectionTestUtil.setFieldValue(
+			_mvcResourceCommand, "_http",
+			_geMocktHttp(
+				() -> {
+					throw new NestableRuntimeException();
+				}));
+
+		try {
+			MockResourceResponse mockResourceResponse =
+				new MockResourceResponse();
+
+			_mvcResourceCommand.serveResource(
+				new MockResourceRequest(), mockResourceResponse);
+
+			ByteArrayOutputStream byteArrayOutputStream =
+				(ByteArrayOutputStream)
+					mockResourceResponse.getPortletOutputStream();
+
+			JSONObject jsonObject = JSONFactoryUtil.createJSONObject(
+				new String(byteArrayOutputStream.toByteArray()));
+
+			Assert.assertEquals(
+				"An unexpected error occurred.", jsonObject.getString("error"));
+		}
+		finally {
+			ReflectionTestUtil.setFieldValue(
+				_mvcResourceCommand, "_http", _http);
+		}
+	}
+
+	private Http _geMocktHttp(
 		UnsafeSupplier<String, Exception> unsafeSupplier) {
 
 		return (Http)ProxyUtil.newProxyInstance(
@@ -117,15 +150,30 @@ public class GetAnalyticsReportsTotalViewsMVCResourceCommandTest {
 					throw new UnsupportedOperationException();
 				}
 
-				Http.Options options = (Http.Options)args[0];
+				try {
+					String response = unsafeSupplier.get();
 
-				Http.Response response = new Http.Response();
+					Http.Options options = (Http.Options)args[0];
 
-				response.setResponseCode(200);
+					Http.Response httpResponse = new Http.Response();
 
-				options.setResponse(response);
+					httpResponse.setResponseCode(200);
 
-				return unsafeSupplier.get();
+					options.setResponse(httpResponse);
+
+					return response;
+				}
+				catch (Throwable throwable) {
+					Http.Options options = (Http.Options)args[0];
+
+					Http.Response httpResponse = new Http.Response();
+
+					httpResponse.setResponseCode(400);
+
+					options.setResponse(httpResponse);
+
+					throw throwable;
+				}
 			});
 	}
 
@@ -199,7 +247,7 @@ public class GetAnalyticsReportsTotalViewsMVCResourceCommandTest {
 					});
 			}
 
-			return super.getAttribute(name);
+			return _mockHttpServletRequest.getAttribute(name);
 		}
 
 		@Override
