@@ -61,7 +61,6 @@ import com.liferay.spring.mock.web.portlet.MockActionRequest;
 import javax.portlet.ActionRequest;
 import javax.portlet.ActionResponse;
 
-import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.junit.Assert;
@@ -235,21 +234,16 @@ public class PropagateGroupFragmentEntryChangesMVCActionCommandTest {
 		public MockActionRequest(Group group, ThemeDisplay themeDisplay) {
 			_group = group;
 			_themeDisplay = themeDisplay;
-		}
 
-		@Override
-		public HttpServletRequest getHttpServletRequest() {
-			MockHttpServletRequest httpServletRequest =
-				new MockHttpServletRequest();
+			MockHttpServletRequest mockHttpServletRequest =
+				(MockHttpServletRequest)getHttpServletRequest();
 
-			httpServletRequest.setAttribute(
+			mockHttpServletRequest.setAttribute(
 				JavaConstants.JAVAX_PORTLET_RESPONSE, new MockActionResponse());
-			httpServletRequest.setAttribute(
+			mockHttpServletRequest.setAttribute(
 				WebKeys.THEME_DISPLAY, _themeDisplay);
-			httpServletRequest.setParameter(
+			mockHttpServletRequest.setParameter(
 				"rowIds", new String[] {String.valueOf(_group.getGroupId())});
-
-			return httpServletRequest;
 		}
 
 		private final Group _group;
