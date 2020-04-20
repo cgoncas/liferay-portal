@@ -160,7 +160,7 @@ public class DLAdminDisplayContextTest {
 
 		mockHttpServletRequest.setAttribute(
 			JavaConstants.JAVAX_PORTLET_REQUEST,
-			new MockActionRequest(httpServletRequest));
+			new MockLiferayPortletActionRequest(httpServletRequest));
 		mockHttpServletRequest.setAttribute(
 			JavaConstants.JAVAX_PORTLET_RESPONSE, new MockActionResponse());
 
@@ -236,22 +236,6 @@ public class DLAdminDisplayContextTest {
 	private Group _group;
 
 	private Layout _layout;
-
-	private static class MockActionRequest
-		extends MockLiferayPortletActionRequest {
-
-		public MockActionRequest(HttpServletRequest httpServletRequest) {
-			_httpServletRequest = httpServletRequest;
-		}
-
-		@Override
-		public HttpServletRequest getHttpServletRequest() {
-			return _httpServletRequest;
-		}
-
-		private final HttpServletRequest _httpServletRequest;
-
-	}
 
 	private static class MockActionResponse
 		extends MockLiferayPortletActionResponse {

@@ -48,16 +48,12 @@ import java.io.InputStream;
 
 import javax.portlet.ActionRequest;
 
-import javax.servlet.http.HttpServletRequest;
-
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.ClassRule;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-
-import org.springframework.mock.web.MockHttpServletRequest;
 
 /**
  * @author Jürgen Kappler
@@ -93,16 +89,18 @@ public class AddItemMVCActionCommandTest {
 
 	@Test
 	public void testAddItemToLayoutData() throws Exception {
-		MockLiferayPortletActionRequest actionRequest = _getMockActionRequest();
+		MockLiferayPortletActionRequest mockLiferayPortletActionRequest =
+			_getMockLiferayPortletActionRequest();
 
-		actionRequest.addParameter(
+		mockLiferayPortletActionRequest.addParameter(
 			"itemType", LayoutDataItemTypeConstants.TYPE_CONTAINER);
-		actionRequest.addParameter("parentItemId", "root");
-		actionRequest.addParameter("position", "0");
+		mockLiferayPortletActionRequest.addParameter("parentItemId", "root");
+		mockLiferayPortletActionRequest.addParameter("position", "0");
 
 		JSONObject jsonObject = ReflectionTestUtil.invoke(
 			_mvcActionCommand, "addItemToLayoutData",
-			new Class<?>[] {ActionRequest.class}, actionRequest);
+			new Class<?>[] {ActionRequest.class},
+			mockLiferayPortletActionRequest);
 
 		JSONObject layoutDataJSONObject = jsonObject.getJSONObject(
 			"layoutData");
@@ -127,7 +125,8 @@ public class AddItemMVCActionCommandTest {
 
 	@Test
 	public void testAddItemToLayoutDataAtPosition() throws Exception {
-		MockLiferayPortletActionRequest actionRequest = _getMockActionRequest();
+		MockLiferayPortletActionRequest mockLiferayPortletActionRequest =
+			_getMockLiferayPortletActionRequest();
 
 		_layoutPageTemplateStructureLocalService.
 			updateLayoutPageTemplateStructure(
@@ -135,14 +134,15 @@ public class AddItemMVCActionCommandTest {
 				_portal.getClassNameId(Layout.class.getName()),
 				_layout.getPlid(), _read("layout_data_with_children.json"));
 
-		actionRequest.addParameter(
+		mockLiferayPortletActionRequest.addParameter(
 			"itemType", LayoutDataItemTypeConstants.TYPE_CONTAINER);
-		actionRequest.addParameter("parentItemId", "root");
-		actionRequest.addParameter("position", "1");
+		mockLiferayPortletActionRequest.addParameter("parentItemId", "root");
+		mockLiferayPortletActionRequest.addParameter("position", "1");
 
 		JSONObject jsonObject = ReflectionTestUtil.invoke(
 			_mvcActionCommand, "addItemToLayoutData",
-			new Class<?>[] {ActionRequest.class}, actionRequest);
+			new Class<?>[] {ActionRequest.class},
+			mockLiferayPortletActionRequest);
 
 		JSONObject layoutDataJSONObject = jsonObject.getJSONObject(
 			"layoutData");
@@ -165,16 +165,20 @@ public class AddItemMVCActionCommandTest {
 			newItemJSONObject.getString("type"));
 	}
 
-	private MockActionRequest _getMockActionRequest() throws PortalException {
-		MockActionRequest mockActionRequest = new MockActionRequest();
+	private MockLiferayPortletActionRequest
+			_getMockLiferayPortletActionRequest()
+		throws PortalException {
 
-		mockActionRequest.setAttribute(
+		MockLiferayPortletActionRequest mockLiferayPortletActionRequest =
+			new MockLiferayPortletActionRequest();
+
+		mockLiferayPortletActionRequest.setAttribute(
 			WebKeys.THEME_DISPLAY, _getThemeDisplay());
 
-		mockActionRequest.addParameter(
+		mockLiferayPortletActionRequest.addParameter(
 			"groupId", String.valueOf(_group.getGroupId()));
 
-		return mockActionRequest;
+		return mockLiferayPortletActionRequest;
 	}
 
 	private ThemeDisplay _getThemeDisplay() throws PortalException {
@@ -224,15 +228,5 @@ public class AddItemMVCActionCommandTest {
 
 	@Inject
 	private Portal _portal;
-
-	private static class MockActionRequest
-		extends MockLiferayPortletActionRequest {
-
-		@Override
-		public HttpServletRequest getHttpServletRequest() {
-			return new MockHttpServletRequest();
-		}
-
-	}
 
 }

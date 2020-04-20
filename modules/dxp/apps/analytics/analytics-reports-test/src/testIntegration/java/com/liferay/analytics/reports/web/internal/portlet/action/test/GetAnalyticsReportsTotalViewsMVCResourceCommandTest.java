@@ -60,7 +60,6 @@ import org.junit.Test;
 import org.junit.rules.TestRule;
 import org.junit.runner.RunWith;
 
-import org.springframework.mock.web.MockHttpServletRequest;
 import org.springframework.mock.web.MockHttpServletResponse;
 
 /**
@@ -86,15 +85,15 @@ public class GetAnalyticsReportsTotalViewsMVCResourceCommandTest {
 			_mvcResourceCommand, "_http", _geMocktHttp(() -> "12345"));
 
 		try {
-			MockResourceResponse mockResourceResponse =
-				new MockResourceResponse();
+			MockLiferayResourceResponse mockLiferayResourceResponse =
+				new MockLiferayResourceResponse();
 
 			_mvcResourceCommand.serveResource(
-				new MockResourceRequest(), mockResourceResponse);
+				new MockResourceRequest(), mockLiferayResourceResponse);
 
 			ByteArrayOutputStream byteArrayOutputStream =
 				(ByteArrayOutputStream)
-					mockResourceResponse.getPortletOutputStream();
+					mockLiferayResourceResponse.getPortletOutputStream();
 
 			JSONObject jsonObject = JSONFactoryUtil.createJSONObject(
 				new String(byteArrayOutputStream.toByteArray()));
@@ -221,38 +220,30 @@ public class GetAnalyticsReportsTotalViewsMVCResourceCommandTest {
 	private class MockResourceRequest extends MockLiferayResourceRequest {
 
 		public MockResourceRequest() {
-			_mockHttpServletRequest = new MockHttpServletRequest();
+			HttpServletRequest httpServletRequest = getHttpServletRequest();
 
 			try {
-				_mockHttpServletRequest.setAttribute(
+				httpServletRequest.setAttribute(
 					WebKeys.THEME_DISPLAY, _getThemeDisplay());
+
+				httpServletRequest.setAttribute(
+					JavaConstants.JAVAX_PORTLET_CONFIG,
+					ProxyUtil.newProxyInstance(
+						LiferayPortletConfig.class.getClassLoader(),
+						new Class<?>[] {LiferayPortletConfig.class},
+						(proxy, method, args) -> {
+							if (Objects.equals(
+									method.getName(), "getPortletId")) {
+
+								return "testPortlet";
+							}
+
+							return null;
+						}));
 			}
 			catch (PortalException portalException) {
 				throw new AssertionError(portalException);
 			}
-		}
-
-		@Override
-		public Object getAttribute(String name) {
-			if (name.equals(JavaConstants.JAVAX_PORTLET_CONFIG)) {
-				return ProxyUtil.newProxyInstance(
-					LiferayPortletConfig.class.getClassLoader(),
-					new Class<?>[] {LiferayPortletConfig.class},
-					(proxy, method, args) -> {
-						if (Objects.equals(method.getName(), "getPortletId")) {
-							return "testPortlet";
-						}
-
-						return null;
-					});
-			}
-
-			return _mockHttpServletRequest.getAttribute(name);
-		}
-
-		@Override
-		public HttpServletRequest getHttpServletRequest() {
-			return _mockHttpServletRequest;
 		}
 
 		private ThemeDisplay _getThemeDisplay() throws PortalException {
@@ -280,8 +271,6 @@ public class GetAnalyticsReportsTotalViewsMVCResourceCommandTest {
 
 			return themeDisplay;
 		}
-
-		private final MockHttpServletRequest _mockHttpServletRequest;
 
 	}
 
