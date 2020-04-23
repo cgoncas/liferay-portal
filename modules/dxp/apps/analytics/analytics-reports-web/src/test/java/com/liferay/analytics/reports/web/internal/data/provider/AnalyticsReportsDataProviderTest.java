@@ -21,13 +21,19 @@ import com.liferay.portal.kernel.json.JSONFactoryUtil;
 import com.liferay.portal.kernel.json.JSONUtil;
 import com.liferay.portal.kernel.test.ReflectionTestUtil;
 import com.liferay.portal.kernel.test.util.RandomTestUtil;
+import com.liferay.portal.kernel.util.HashMapBuilder;
 import com.liferay.portal.kernel.util.Http;
 import com.liferay.portal.kernel.util.PrefsProps;
 import com.liferay.portal.kernel.util.PrefsPropsUtil;
 
 import java.io.IOException;
 
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+
+import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 
 import org.junit.Assert;
 import org.junit.BeforeClass;
@@ -54,7 +60,8 @@ public class AnalyticsReportsDataProviderTest {
 	@Test
 	public void testGetTotalReads() throws Exception {
 		AnalyticsReportsDataProvider analyticsReportsDataProvider =
-			new AnalyticsReportsDataProvider(_getHttp("12345"));
+			new AnalyticsReportsDataProvider(
+				_getHttp(Collections.singletonMap("/read-count", "12345")));
 
 		Long totalReads = analyticsReportsDataProvider.getTotalReads(
 			RandomTestUtil.randomLong(), RandomTestUtil.randomString());
@@ -73,13 +80,34 @@ public class AnalyticsReportsDataProviderTest {
 
 	@Test
 	public void testGetTotalViews() throws Exception {
+		LocalDate localDate = LocalDate.now();
+
 		AnalyticsReportsDataProvider analyticsReportsDataProvider =
-			new AnalyticsReportsDataProvider(_getHttp("12345"));
+			new AnalyticsReportsDataProvider(
+				_getHttp(
+					HashMapBuilder.put(
+						"/view-count", "12345"
+					).put(
+						"/view-counts",
+						JSONUtil.put(
+							"histogram",
+							JSONUtil.put(
+								JSONUtil.put(
+									"key",
+									localDate.format(
+										DateTimeFormatter.ISO_LOCAL_DATE)
+								).put(
+									"value", 5
+								))
+						).put(
+							"value", 5
+						).toJSONString()
+					).build()));
 
 		Long totalViews = analyticsReportsDataProvider.getTotalViews(
 			RandomTestUtil.randomLong(), RandomTestUtil.randomString());
 
-		Assert.assertEquals(Long.valueOf(12345), totalViews);
+		Assert.assertEquals(Long.valueOf(12340), totalViews);
 	}
 
 	@Test(expected = PortalException.class)
@@ -96,22 +124,24 @@ public class AnalyticsReportsDataProviderTest {
 		AnalyticsReportsDataProvider analyticsReportsDataProvider =
 			new AnalyticsReportsDataProvider(
 				_getHttp(
-					JSONUtil.putAll(
-						JSONUtil.put(
-							"name", "search"
-						).put(
-							"trafficAmount", 3849
-						).put(
-							"trafficShare", 94.25D
-						),
-						JSONUtil.put(
-							"name", "paid"
-						).put(
-							"trafficAmount", 235
-						).put(
-							"trafficShare", 5.75D
-						)
-					).toString()));
+					Collections.singletonMap(
+						"/traffic-sources",
+						JSONUtil.putAll(
+							JSONUtil.put(
+								"name", "search"
+							).put(
+								"trafficAmount", 3849
+							).put(
+								"trafficShare", 94.25D
+							),
+							JSONUtil.put(
+								"name", "paid"
+							).put(
+								"trafficAmount", 235
+							).put(
+								"trafficShare", 5.75D
+							)
+						).toString())));
 
 		List<TrafficSource> trafficSources =
 			analyticsReportsDataProvider.getTrafficSources(
@@ -153,7 +183,7 @@ public class AnalyticsReportsDataProviderTest {
 		return http;
 	}
 
-	private Http _getHttp(String response) throws Exception {
+	private Http _getHttp(Map<String, String> mockRequest) throws Exception {
 		Http http = Mockito.mock(Http.class);
 
 		Mockito.when(
@@ -162,13 +192,28 @@ public class AnalyticsReportsDataProviderTest {
 			answer -> {
 				Http.Options options = (Http.Options)answer.getArguments()[0];
 
+				String location = options.getLocation();
+
+				String endpoint = location.substring(
+					location.lastIndexOf("/"), location.indexOf("?"));
+
+				if (mockRequest.containsKey(endpoint)) {
+					Http.Response httpResponse = new Http.Response();
+
+					httpResponse.setResponseCode(200);
+
+					options.setResponse(httpResponse);
+
+					return mockRequest.get(endpoint);
+				}
+
 				Http.Response httpResponse = new Http.Response();
 
-				httpResponse.setResponseCode(200);
+				httpResponse.setResponseCode(400);
 
 				options.setResponse(httpResponse);
 
-				return response;
+				return "error, endpoint not found";
 			}
 		);
 
