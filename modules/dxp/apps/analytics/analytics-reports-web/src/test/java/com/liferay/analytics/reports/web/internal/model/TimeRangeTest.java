@@ -69,6 +69,30 @@ public class TimeRangeTest {
 		Assert.assertEquals(timeSpanOffset, timeRange.getTimeSpanOffset());
 	}
 
+	@Test
+	public void testOfWithLast7DaysTimeSpan() {
+		TimeRange timeRange = TimeRange.of(TimeSpan.LAST_7_DAYS, 0);
+
+		LocalDate localDate = LocalDate.now();
+
+		Assert.assertEquals(
+			localDate.minusDays(1), timeRange.getEndLocalDate());
+		Assert.assertEquals(
+			localDate.minusDays(7), timeRange.getStartLocalDate());
+	}
+
+	@Test
+	public void testOfWithLast30DaysTimeSpan() {
+		TimeRange timeRange = TimeRange.of(TimeSpan.LAST_30_DAYS, 0);
+
+		LocalDate localDate = LocalDate.now();
+
+		Assert.assertEquals(
+			localDate.minusDays(1), timeRange.getEndLocalDate());
+		Assert.assertEquals(
+			localDate.minusDays(30), timeRange.getStartLocalDate());
+	}
+
 	@Test(expected = IllegalArgumentException.class)
 	public void testOfWithNegativeTimeSpanOffset() {
 		TimeRange.of(TimeSpan.LAST_7_DAYS, -1);
