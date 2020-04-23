@@ -21,8 +21,10 @@ import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.databind.type.TypeFactory;
 
 import com.liferay.analytics.reports.web.internal.client.AsahFaroBackendClient;
+import com.liferay.analytics.reports.web.internal.model.HistogramMetric;
 import com.liferay.analytics.reports.web.internal.model.HistoricalMetric;
 import com.liferay.analytics.reports.web.internal.model.TimeRange;
+import com.liferay.analytics.reports.web.internal.model.TimeSpan;
 import com.liferay.analytics.reports.web.internal.model.TrafficSource;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.json.JSONArray;
@@ -121,9 +123,11 @@ public class AnalyticsReportsDataProvider {
 		throws PortalException {
 
 		try {
-			return Long.valueOf(
+			Long totalViews = Long.valueOf(
 				_asahFaroBackendClient.doGet(
 					companyId, "api/1.0/pages/view-count?url=" + url));
+
+			return totalViews - _getTodayViews(companyId, url);
 		}
 		catch (Exception exception) {
 			throw new PortalException("Unable to get total views", exception);
@@ -158,6 +162,22 @@ public class AnalyticsReportsDataProvider {
 		ThreadLocalRandom threadLocalRandom = ThreadLocalRandom.current();
 
 		return threadLocalRandom.nextInt(0, 200 + 1);
+	}
+
+	private Long _getTodayViews(long companyId, String url)
+		throws PortalException {
+
+		HistoricalMetric historicalViewsHistogram = getHistoricalViewsHistogram(
+			companyId, TimeRange.of(TimeSpan.TODAY, 0), url);
+
+		List<HistogramMetric> histogramMetrics =
+			historicalViewsHistogram.getHistogramMetrics();
+
+		HistogramMetric histogramMetric = histogramMetrics.get(0);
+
+		Double value = histogramMetric.getValue();
+
+		return value.longValue();
 	}
 
 	private static final ObjectMapper _objectMapper = new ObjectMapper() {
