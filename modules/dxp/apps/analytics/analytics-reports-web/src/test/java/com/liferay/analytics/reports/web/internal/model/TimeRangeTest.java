@@ -16,6 +16,7 @@ package com.liferay.analytics.reports.web.internal.model;
 
 import com.liferay.portal.kernel.test.util.RandomTestUtil;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 import java.util.List;
@@ -76,6 +77,14 @@ public class TimeRangeTest {
 	@Test(expected = IllegalArgumentException.class)
 	public void testOfWithNullKey() {
 		TimeRange.of(null, RandomTestUtil.randomInt());
+	}
+
+	@Test
+	public void testOfWithTodayTimeSpan() {
+		TimeRange timeRange = TimeRange.of(TimeSpan.TODAY, 0);
+
+		Assert.assertEquals(LocalDate.now(), timeRange.getEndLocalDate());
+		Assert.assertEquals(LocalDate.now(), timeRange.getStartLocalDate());
 	}
 
 }
