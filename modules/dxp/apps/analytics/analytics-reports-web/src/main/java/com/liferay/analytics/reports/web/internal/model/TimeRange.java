@@ -36,6 +36,10 @@ public class TimeRange {
 			throw new IllegalArgumentException("Time span offset is negative");
 		}
 
+		if (timeSpan == TimeSpan.TODAY) {
+			return new TimeRange(true, timeSpan, timeSpanOffset);
+		}
+
 		return new TimeRange(false, timeSpan, timeSpanOffset);
 	}
 
