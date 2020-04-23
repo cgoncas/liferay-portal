@@ -227,7 +227,9 @@ public class AnalyticsReportsDisplayContext {
 
 		Stream<TimeSpan> stream = Arrays.stream(TimeSpan.values());
 
-		stream.sorted(
+		stream.filter(
+			timeSpan -> timeSpan != TimeSpan.TODAY
+		).sorted(
 			Comparator.comparingInt(TimeSpan::getDays)
 		).forEach(
 			timeSpan -> timeSpansJSONArray.put(
