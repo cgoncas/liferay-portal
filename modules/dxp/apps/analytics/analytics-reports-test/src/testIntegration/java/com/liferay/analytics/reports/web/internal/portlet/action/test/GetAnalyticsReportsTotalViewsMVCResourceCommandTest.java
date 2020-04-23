@@ -21,6 +21,7 @@ import com.liferay.portal.kernel.exception.NestableRuntimeException;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.json.JSONFactoryUtil;
 import com.liferay.portal.kernel.json.JSONObject;
+import com.liferay.portal.kernel.json.JSONUtil;
 import com.liferay.portal.kernel.model.Company;
 import com.liferay.portal.kernel.model.Group;
 import com.liferay.portal.kernel.model.Layout;
@@ -35,6 +36,7 @@ import com.liferay.portal.kernel.test.rule.DeleteAfterTestRun;
 import com.liferay.portal.kernel.test.util.GroupTestUtil;
 import com.liferay.portal.kernel.test.util.TestPropsValues;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
+import com.liferay.portal.kernel.util.HashMapBuilder;
 import com.liferay.portal.kernel.util.Http;
 import com.liferay.portal.kernel.util.JavaConstants;
 import com.liferay.portal.kernel.util.LocaleUtil;
@@ -45,6 +47,11 @@ import com.liferay.portal.test.rule.LiferayIntegrationTestRule;
 
 import java.io.ByteArrayOutputStream;
 
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+
+import java.util.Collections;
+import java.util.Map;
 import java.util.Objects;
 
 import javax.servlet.http.HttpServletRequest;
@@ -76,8 +83,29 @@ public class GetAnalyticsReportsTotalViewsMVCResourceCommandTest {
 
 	@Test
 	public void testServeResponse() throws Exception {
+		LocalDate localDate = LocalDate.now();
+
 		ReflectionTestUtil.setFieldValue(
-			_mvcResourceCommand, "_http", _geMocktHttp(() -> "12345"));
+			_mvcResourceCommand, "_http",
+			_geMocktHttp(
+				HashMapBuilder.<String, UnsafeSupplier<String, Exception>>put(
+					"/api/1.0/pages/view-count", () -> "12345"
+				).put(
+					"/api/1.0/pages/view-counts",
+					() -> JSONUtil.put(
+						"histogram",
+						JSONUtil.put(
+							JSONUtil.put(
+								"key",
+								localDate.format(
+									DateTimeFormatter.ISO_LOCAL_DATE)
+							).put(
+								"value", 5
+							))
+					).put(
+						"value", 5
+					).toJSONString()
+				).build()));
 
 		try {
 			MockLiferayResourceResponse mockLiferayResourceResponse =
@@ -94,7 +122,7 @@ public class GetAnalyticsReportsTotalViewsMVCResourceCommandTest {
 				new String(byteArrayOutputStream.toByteArray()));
 
 			Assert.assertEquals(
-				12345L, jsonObject.getLong("analyticsReportsTotalViews"));
+				12340L, jsonObject.getLong("analyticsReportsTotalViews"));
 		}
 		finally {
 			ReflectionTestUtil.setFieldValue(
@@ -107,9 +135,11 @@ public class GetAnalyticsReportsTotalViewsMVCResourceCommandTest {
 		ReflectionTestUtil.setFieldValue(
 			_mvcResourceCommand, "_http",
 			_geMocktHttp(
-				() -> {
-					throw new NestableRuntimeException();
-				}));
+				Collections.singletonMap(
+					"/api/1.0/pages/view-count",
+					() -> {
+						throw new NestableRuntimeException();
+					})));
 
 		try {
 			MockLiferayResourceResponse mockLiferayResourceResponse =
@@ -135,7 +165,8 @@ public class GetAnalyticsReportsTotalViewsMVCResourceCommandTest {
 	}
 
 	private Http _geMocktHttp(
-		UnsafeSupplier<String, Exception> unsafeSupplier) {
+			Map<String, UnsafeSupplier<String, Exception>> mockRequest)
+		throws Exception {
 
 		return (Http)ProxyUtil.newProxyInstance(
 			Http.class.getClassLoader(), new Class<?>[] {Http.class},
@@ -145,17 +176,34 @@ public class GetAnalyticsReportsTotalViewsMVCResourceCommandTest {
 				}
 
 				try {
-					String response = unsafeSupplier.get();
-
 					Http.Options options = (Http.Options)args[0];
+
+					String location = options.getLocation();
+
+					String endpoint = location.substring(
+						location.lastIndexOf("/api/1.0/pages/"),
+						location.indexOf("?"));
+
+					if (mockRequest.containsKey(endpoint)) {
+						Http.Response httpResponse = new Http.Response();
+
+						httpResponse.setResponseCode(200);
+
+						options.setResponse(httpResponse);
+
+						UnsafeSupplier<String, Exception> unsafeSupplier =
+							mockRequest.get(endpoint);
+
+						return unsafeSupplier.get();
+					}
 
 					Http.Response httpResponse = new Http.Response();
 
-					httpResponse.setResponseCode(200);
+					httpResponse.setResponseCode(400);
 
 					options.setResponse(httpResponse);
 
-					return response;
+					return "error";
 				}
 				catch (Throwable throwable) {
 					Http.Options options = (Http.Options)args[0];
