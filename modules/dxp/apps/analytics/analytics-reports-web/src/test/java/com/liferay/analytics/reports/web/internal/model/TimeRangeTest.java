@@ -111,4 +111,12 @@ public class TimeRangeTest {
 		Assert.assertEquals(LocalDate.now(), timeRange.getStartLocalDate());
 	}
 
+	@Test
+	public void testOfWithTodayTimeSpanWithTimeSpanOffset1() {
+		TimeRange timeRange = TimeRange.of(TimeSpan.TODAY, 1);
+
+		Assert.assertEquals(LocalDate.now(), timeRange.getEndLocalDate());
+		Assert.assertEquals(LocalDate.now(), timeRange.getStartLocalDate());
+	}
+
 }
