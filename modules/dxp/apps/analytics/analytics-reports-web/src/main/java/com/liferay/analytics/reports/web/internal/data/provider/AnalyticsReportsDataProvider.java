@@ -166,10 +166,10 @@ public class AnalyticsReportsDataProvider {
 	private long _getTodayViews(long companyId, String url)
 		throws PortalException {
 
-		HistoricalMetric historicalViewsHistogram = getHistoricalViewsHistogram(
+		HistoricalMetric historicalMetric = getHistoricalViewsHistogram(
 			companyId, TimeRange.of(TimeSpan.TODAY, 0), url);
 
-		Double value = historicalViewsHistogram.getValue();
+		Double value = historicalMetric.getValue();
 
 		return value.longValue();
 	}
