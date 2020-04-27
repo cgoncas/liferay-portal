@@ -15,12 +15,18 @@
 package com.liferay.analytics.reports.journal.internal.info.item;
 
 import com.liferay.analytics.reports.info.item.AnalyticsReportsInfoItem;
+import com.liferay.asset.display.page.model.AssetDisplayPageEntry;
+import com.liferay.asset.display.page.service.AssetDisplayPageEntryLocalService;
 import com.liferay.journal.model.JournalArticle;
 import com.liferay.journal.service.JournalArticleLocalService;
 import com.liferay.journal.util.comparator.ArticleVersionComparator;
 import com.liferay.petra.string.StringPool;
+import com.liferay.portal.kernel.exception.PortalException;
+import com.liferay.portal.kernel.log.Log;
+import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.service.UserLocalService;
+import com.liferay.portal.kernel.util.Portal;
 
 import java.util.Date;
 import java.util.List;
@@ -54,8 +60,22 @@ public class JournalArticleAnalyticsReportsInfoItem
 	}
 
 	@Override
-	public Date getPublishDate(JournalArticle article) {
-		return article.getDisplayDate();
+	public Date getPublishDate(JournalArticle journalArticle) {
+		AssetDisplayPageEntry assetDisplayPageEntry =
+			_assetDisplayPageEntryLocalService.fetchAssetDisplayPageEntry(
+				journalArticle.getGroupId(),
+				_portal.getClassNameId(JournalArticle.class),
+				journalArticle.getResourcePrimKey());
+
+		Date date = _getJournalArticleFirstPublishLocalDate(journalArticle);
+
+		if ((assetDisplayPageEntry == null) ||
+			date.after(assetDisplayPageEntry.getCreateDate())) {
+
+			return date;
+		}
+
+		return assetDisplayPageEntry.getCreateDate();
 	}
 
 	@Override
@@ -63,8 +83,35 @@ public class JournalArticleAnalyticsReportsInfoItem
 		return article.getTitle(locale);
 	}
 
+	private Date _getJournalArticleFirstPublishLocalDate(
+		JournalArticle journalArticle) {
+
+		try {
+			JournalArticle oldestJournalArticle =
+				_journalArticleLocalService.getOldestArticle(
+					journalArticle.getGroupId(), journalArticle.getArticleId());
+
+			return oldestJournalArticle.getDisplayDate();
+		}
+		catch (PortalException portalException) {
+			_log.error(portalException, portalException);
+
+			return journalArticle.getDisplayDate();
+		}
+	}
+
+	private static final Log _log = LogFactoryUtil.getLog(
+		JournalArticleAnalyticsReportsInfoItem.class);
+
+	@Reference
+	private AssetDisplayPageEntryLocalService
+		_assetDisplayPageEntryLocalService;
+
 	@Reference
 	private JournalArticleLocalService _journalArticleLocalService;
+
+	@Reference
+	private Portal _portal;
 
 	@Reference
 	private UserLocalService _userLocalService;
