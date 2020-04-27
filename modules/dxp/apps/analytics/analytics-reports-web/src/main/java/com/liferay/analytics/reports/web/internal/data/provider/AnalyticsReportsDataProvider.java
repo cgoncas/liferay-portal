@@ -82,7 +82,7 @@ public class AnalyticsReportsDataProvider {
 		);
 	}
 
-	public HistoricalMetric getHistoricalViewsHistogram(
+	public HistoricalMetric getHistoricalViewsHistoricalMetric(
 			long companyId, TimeRange timeRange, String url)
 		throws PortalException {
 
@@ -167,7 +167,7 @@ public class AnalyticsReportsDataProvider {
 	private long _getTodayViews(long companyId, String url)
 		throws PortalException {
 
-		HistoricalMetric historicalMetric = getHistoricalViewsHistogram(
+		HistoricalMetric historicalMetric = getHistoricalViewsHistoricalMetric(
 			companyId, TimeRange.of(TimeSpan.TODAY, 0), url);
 
 		Double value = historicalMetric.getValue();
