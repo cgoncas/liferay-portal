@@ -54,8 +54,6 @@ import java.util.Collections;
 import java.util.Map;
 import java.util.Objects;
 
-import javax.servlet.http.HttpServletRequest;
-
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.ClassRule;
@@ -112,7 +110,7 @@ public class GetAnalyticsReportsTotalViewsMVCResourceCommandTest {
 				new MockLiferayResourceResponse();
 
 			_mvcResourceCommand.serveResource(
-				new MockResourceRequest(), mockLiferayResourceResponse);
+				_getMockLiferayResourceRequest(), mockLiferayResourceResponse);
 
 			ByteArrayOutputStream byteArrayOutputStream =
 				(ByteArrayOutputStream)
@@ -146,7 +144,7 @@ public class GetAnalyticsReportsTotalViewsMVCResourceCommandTest {
 				new MockLiferayResourceResponse();
 
 			_mvcResourceCommand.serveResource(
-				new MockResourceRequest(), mockLiferayResourceResponse);
+				_getMockLiferayResourceRequest(), mockLiferayResourceResponse);
 
 			ByteArrayOutputStream byteArrayOutputStream =
 				(ByteArrayOutputStream)
@@ -219,6 +217,58 @@ public class GetAnalyticsReportsTotalViewsMVCResourceCommandTest {
 			});
 	}
 
+	private MockLiferayResourceRequest _getMockLiferayResourceRequest() {
+		MockLiferayResourceRequest mockLiferayResourceRequest =
+			new MockLiferayResourceRequest();
+
+		try {
+			mockLiferayResourceRequest.setAttribute(
+				WebKeys.THEME_DISPLAY, _getThemeDisplay());
+
+			mockLiferayResourceRequest.setAttribute(
+				JavaConstants.JAVAX_PORTLET_CONFIG,
+				ProxyUtil.newProxyInstance(
+					LiferayPortletConfig.class.getClassLoader(),
+					new Class<?>[] {LiferayPortletConfig.class},
+					(proxy, method, args) -> {
+						if (Objects.equals(method.getName(), "getPortletId")) {
+							return "testPortlet";
+						}
+
+						return null;
+					}));
+
+			return mockLiferayResourceRequest;
+		}
+		catch (PortalException portalException) {
+			throw new AssertionError(portalException);
+		}
+	}
+
+	private ThemeDisplay _getThemeDisplay() throws PortalException {
+		ThemeDisplay themeDisplay = new ThemeDisplay();
+
+		Company company = _companyLocalService.getCompany(
+			TestPropsValues.getCompanyId());
+
+		themeDisplay.setCompany(company);
+
+		themeDisplay.setLanguageId(_group.getDefaultLanguageId());
+		themeDisplay.setLocale(
+			LocaleUtil.fromLanguageId(_group.getDefaultLanguageId()));
+		themeDisplay.setLayout(_layout);
+		themeDisplay.setLayoutSet(
+			_layoutSetLocalService.getLayoutSet(_group.getGroupId(), false));
+		themeDisplay.setPortalURL(company.getPortalURL(_group.getGroupId()));
+		themeDisplay.setPortalDomain("localhost");
+		themeDisplay.setSecure(true);
+		themeDisplay.setServerName("localhost");
+		themeDisplay.setServerPort(8080);
+		themeDisplay.setSiteGroupId(_group.getGroupId());
+
+		return themeDisplay;
+	}
+
 	@Inject
 	private CompanyLocalService _companyLocalService;
 
@@ -235,62 +285,5 @@ public class GetAnalyticsReportsTotalViewsMVCResourceCommandTest {
 
 	@Inject(filter = "mvc.command.name=/analytics_reports/get_total_views")
 	private MVCResourceCommand _mvcResourceCommand;
-
-	private class MockResourceRequest extends MockLiferayResourceRequest {
-
-		public MockResourceRequest() {
-			HttpServletRequest httpServletRequest = getHttpServletRequest();
-
-			try {
-				httpServletRequest.setAttribute(
-					WebKeys.THEME_DISPLAY, _getThemeDisplay());
-
-				httpServletRequest.setAttribute(
-					JavaConstants.JAVAX_PORTLET_CONFIG,
-					ProxyUtil.newProxyInstance(
-						LiferayPortletConfig.class.getClassLoader(),
-						new Class<?>[] {LiferayPortletConfig.class},
-						(proxy, method, args) -> {
-							if (Objects.equals(
-									method.getName(), "getPortletId")) {
-
-								return "testPortlet";
-							}
-
-							return null;
-						}));
-			}
-			catch (PortalException portalException) {
-				throw new AssertionError(portalException);
-			}
-		}
-
-		private ThemeDisplay _getThemeDisplay() throws PortalException {
-			ThemeDisplay themeDisplay = new ThemeDisplay();
-
-			Company company = _companyLocalService.getCompany(
-				TestPropsValues.getCompanyId());
-
-			themeDisplay.setCompany(company);
-
-			themeDisplay.setLanguageId(_group.getDefaultLanguageId());
-			themeDisplay.setLocale(
-				LocaleUtil.fromLanguageId(_group.getDefaultLanguageId()));
-			themeDisplay.setLayout(_layout);
-			themeDisplay.setLayoutSet(
-				_layoutSetLocalService.getLayoutSet(
-					_group.getGroupId(), false));
-			themeDisplay.setPortalURL(
-				company.getPortalURL(_group.getGroupId()));
-			themeDisplay.setPortalDomain("localhost");
-			themeDisplay.setSecure(true);
-			themeDisplay.setServerName("localhost");
-			themeDisplay.setServerPort(8080);
-			themeDisplay.setSiteGroupId(_group.getGroupId());
-
-			return themeDisplay;
-		}
-
-	}
 
 }
