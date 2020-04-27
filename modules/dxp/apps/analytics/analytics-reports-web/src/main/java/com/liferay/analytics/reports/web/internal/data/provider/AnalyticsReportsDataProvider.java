@@ -30,6 +30,7 @@ import com.liferay.portal.kernel.json.JSONArray;
 import com.liferay.portal.kernel.json.JSONFactoryUtil;
 import com.liferay.portal.kernel.json.JSONObject;
 import com.liferay.portal.kernel.json.JSONUtil;
+import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.Http;
 
 import java.time.LocalDateTime;
@@ -122,7 +123,7 @@ public class AnalyticsReportsDataProvider {
 		throws PortalException {
 
 		try {
-			long totalViews = Long.parseLong(
+			long totalViews = GetterUtil.getLong(
 				_asahFaroBackendClient.doGet(
 					companyId, "api/1.0/pages/view-count?url=" + url));
 
