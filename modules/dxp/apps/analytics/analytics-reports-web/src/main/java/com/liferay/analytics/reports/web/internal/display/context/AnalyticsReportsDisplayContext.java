@@ -29,7 +29,6 @@ import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.model.Layout;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
-import com.liferay.portal.kernel.util.DateUtil;
 import com.liferay.portal.kernel.util.HashMapBuilder;
 import com.liferay.portal.kernel.util.Portal;
 import com.liferay.portal.kernel.util.PrefsPropsUtil;
@@ -40,7 +39,6 @@ import java.time.format.DateTimeFormatter;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
-import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
@@ -204,20 +202,8 @@ public class AnalyticsReportsDisplayContext {
 				_analyticsReportsInfoItemObject)
 		).put(
 			"publishDate",
-			() -> {
-				Date publishDate = _analyticsReportsInfoItem.getPublishDate(
-					_analyticsReportsInfoItemObject);
-
-				Layout layout = _themeDisplay.getLayout();
-
-				if (DateUtil.compareTo(publishDate, layout.getPublishDate()) >
-						0) {
-
-					return publishDate;
-				}
-
-				return layout.getPublishDate();
-			}
+			() -> _analyticsReportsInfoItem.getPublishDate(
+				_analyticsReportsInfoItemObject)
 		).put(
 			"title",
 			_analyticsReportsInfoItem.getTitle(
