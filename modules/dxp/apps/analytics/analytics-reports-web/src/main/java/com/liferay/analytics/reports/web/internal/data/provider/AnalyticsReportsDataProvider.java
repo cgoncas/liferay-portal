@@ -98,9 +98,11 @@ public class AnalyticsReportsDataProvider {
 		throws PortalException {
 
 		try {
-			return Long.valueOf(
+			long totalReads = GetterUtil.getLong(
 				_asahFaroBackendClient.doGet(
 					companyId, "api/1.0/pages/read-count?url=" + url));
+
+			return Math.max(0, totalReads - _getTodayReads(companyId, url));
 		}
 		catch (Exception exception) {
 			throw new PortalException("Unable to get total reads", exception);
@@ -144,6 +146,17 @@ public class AnalyticsReportsDataProvider {
 
 	public boolean isValidAnalyticsConnection(long companyId) {
 		return _asahFaroBackendClient.isValidConnection(companyId);
+	}
+
+	private long _getTodayReads(long companyId, String url)
+		throws PortalException {
+
+		HistoricalMetric historicalMetric = getHistoricalReadsHistoricalMetric(
+			companyId, TimeRange.of(TimeSpan.TODAY, 0), url);
+
+		Double value = historicalMetric.getValue();
+
+		return value.longValue();
 	}
 
 	private long _getTodayViews(long companyId, String url)
