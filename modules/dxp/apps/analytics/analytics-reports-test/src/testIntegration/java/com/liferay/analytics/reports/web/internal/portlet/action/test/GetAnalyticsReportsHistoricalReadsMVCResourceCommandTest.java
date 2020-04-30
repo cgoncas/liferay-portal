@@ -15,13 +15,13 @@
 package com.liferay.analytics.reports.web.internal.portlet.action.test;
 
 import com.liferay.analytics.reports.web.internal.portlet.action.test.util.MockHttpUtil;
+import com.liferay.analytics.reports.web.internal.portlet.action.test.util.MockThemeDisplayUtil;
 import com.liferay.arquillian.extension.junit.bridge.junit.Arquillian;
 import com.liferay.layout.test.util.LayoutTestUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.json.JSONFactoryUtil;
 import com.liferay.portal.kernel.json.JSONObject;
 import com.liferay.portal.kernel.json.JSONUtil;
-import com.liferay.portal.kernel.model.Company;
 import com.liferay.portal.kernel.model.Group;
 import com.liferay.portal.kernel.model.Layout;
 import com.liferay.portal.kernel.portlet.LiferayPortletConfig;
@@ -34,10 +34,8 @@ import com.liferay.portal.kernel.test.portlet.MockLiferayResourceResponse;
 import com.liferay.portal.kernel.test.rule.DeleteAfterTestRun;
 import com.liferay.portal.kernel.test.util.GroupTestUtil;
 import com.liferay.portal.kernel.test.util.TestPropsValues;
-import com.liferay.portal.kernel.theme.ThemeDisplay;
 import com.liferay.portal.kernel.util.Http;
 import com.liferay.portal.kernel.util.JavaConstants;
-import com.liferay.portal.kernel.util.LocaleUtil;
 import com.liferay.portal.kernel.util.ProxyUtil;
 import com.liferay.portal.kernel.util.WebKeys;
 import com.liferay.portal.test.rule.Inject;
@@ -131,7 +129,13 @@ public class GetAnalyticsReportsHistoricalReadsMVCResourceCommandTest {
 
 		try {
 			mockLiferayResourceRequest.setAttribute(
-				WebKeys.THEME_DISPLAY, _getThemeDisplay());
+				WebKeys.THEME_DISPLAY,
+				MockThemeDisplayUtil.getThemeDisplay(
+					_companyLocalService.getCompany(
+						TestPropsValues.getCompanyId()),
+					_group, _layout,
+					_layoutSetLocalService.getLayoutSet(
+						_group.getGroupId(), false)));
 
 			mockLiferayResourceRequest.setAttribute(
 				JavaConstants.JAVAX_PORTLET_CONFIG,
@@ -151,30 +155,6 @@ public class GetAnalyticsReportsHistoricalReadsMVCResourceCommandTest {
 		catch (PortalException portalException) {
 			throw new AssertionError(portalException);
 		}
-	}
-
-	private ThemeDisplay _getThemeDisplay() throws PortalException {
-		ThemeDisplay themeDisplay = new ThemeDisplay();
-
-		Company company = _companyLocalService.getCompany(
-			TestPropsValues.getCompanyId());
-
-		themeDisplay.setCompany(company);
-
-		themeDisplay.setLanguageId(_group.getDefaultLanguageId());
-		themeDisplay.setLocale(
-			LocaleUtil.fromLanguageId(_group.getDefaultLanguageId()));
-		themeDisplay.setLayout(_layout);
-		themeDisplay.setLayoutSet(
-			_layoutSetLocalService.getLayoutSet(_group.getGroupId(), false));
-		themeDisplay.setPortalURL(company.getPortalURL(_group.getGroupId()));
-		themeDisplay.setPortalDomain("localhost");
-		themeDisplay.setSecure(true);
-		themeDisplay.setServerName("localhost");
-		themeDisplay.setServerPort(8080);
-		themeDisplay.setSiteGroupId(_group.getGroupId());
-
-		return themeDisplay;
 	}
 
 	@Inject
