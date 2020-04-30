@@ -14,9 +14,9 @@
 
 package com.liferay.analytics.reports.web.internal.portlet.action.test;
 
+import com.liferay.analytics.reports.web.internal.portlet.action.test.util.MockHttpUtil;
 import com.liferay.arquillian.extension.junit.bridge.junit.Arquillian;
 import com.liferay.layout.test.util.LayoutTestUtil;
-import com.liferay.petra.function.UnsafeSupplier;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.json.JSONFactoryUtil;
 import com.liferay.portal.kernel.json.JSONObject;
@@ -49,7 +49,6 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 
 import java.util.Collections;
-import java.util.Map;
 import java.util.Objects;
 
 import org.junit.Assert;
@@ -83,7 +82,7 @@ public class GetAnalyticsReportsHistoricalViewsMVCResourceCommandTest {
 
 		ReflectionTestUtil.setFieldValue(
 			_mvcResourceCommand, "_http",
-			_geMocktHttp(
+			MockHttpUtil.geHttp(
 				Collections.singletonMap(
 					"/api/1.0/pages/view-counts",
 					() -> JSONUtil.put(
@@ -124,61 +123,6 @@ public class GetAnalyticsReportsHistoricalViewsMVCResourceCommandTest {
 			ReflectionTestUtil.setFieldValue(
 				_mvcResourceCommand, "_http", _http);
 		}
-	}
-
-	private Http _geMocktHttp(
-			Map<String, UnsafeSupplier<String, Exception>> mockRequest)
-		throws Exception {
-
-		return (Http)ProxyUtil.newProxyInstance(
-			Http.class.getClassLoader(), new Class<?>[] {Http.class},
-			(proxy, method, args) -> {
-				if (!Objects.equals(method.getName(), "URLtoString")) {
-					throw new UnsupportedOperationException();
-				}
-
-				try {
-					Http.Options options = (Http.Options)args[0];
-
-					String location = options.getLocation();
-
-					String endpoint = location.substring(
-						location.lastIndexOf("/api/1.0/pages/"),
-						location.indexOf("?"));
-
-					if (mockRequest.containsKey(endpoint)) {
-						Http.Response httpResponse = new Http.Response();
-
-						httpResponse.setResponseCode(200);
-
-						options.setResponse(httpResponse);
-
-						UnsafeSupplier<String, Exception> unsafeSupplier =
-							mockRequest.get(endpoint);
-
-						return unsafeSupplier.get();
-					}
-
-					Http.Response httpResponse = new Http.Response();
-
-					httpResponse.setResponseCode(400);
-
-					options.setResponse(httpResponse);
-
-					return "error";
-				}
-				catch (Throwable throwable) {
-					Http.Options options = (Http.Options)args[0];
-
-					Http.Response httpResponse = new Http.Response();
-
-					httpResponse.setResponseCode(400);
-
-					options.setResponse(httpResponse);
-
-					throw throwable;
-				}
-			});
 	}
 
 	private MockLiferayResourceRequest _getMockLiferayResourceRequest() {
