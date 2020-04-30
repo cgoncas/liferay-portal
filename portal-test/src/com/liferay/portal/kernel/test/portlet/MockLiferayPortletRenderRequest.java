@@ -15,11 +15,15 @@
 package com.liferay.portal.kernel.test.portlet;
 
 import com.liferay.portal.kernel.model.Portlet;
+import com.liferay.portal.kernel.portlet.LiferayPortletConfig;
 import com.liferay.portal.kernel.portlet.LiferayPortletRequest;
+import com.liferay.portal.kernel.util.JavaConstants;
+import com.liferay.portal.kernel.util.ProxyUtil;
 import com.liferay.spring.mock.web.portlet.MockRenderRequest;
 
 import java.util.Enumeration;
 import java.util.Map;
+import java.util.Objects;
 
 import javax.portlet.PortletConfig;
 import javax.portlet.PortletContext;
@@ -37,13 +41,26 @@ public class MockLiferayPortletRenderRequest
 	extends MockRenderRequest implements LiferayPortletRequest {
 
 	public MockLiferayPortletRenderRequest() {
-		_mockHttpServletRequest = new MockHttpServletRequest();
+		this(new MockHttpServletRequest());
 	}
 
 	public MockLiferayPortletRenderRequest(
 		MockHttpServletRequest mockHttpServletRequest) {
 
 		_mockHttpServletRequest = mockHttpServletRequest;
+
+		_mockHttpServletRequest.setAttribute(
+			JavaConstants.JAVAX_PORTLET_CONFIG,
+			ProxyUtil.newProxyInstance(
+				LiferayPortletConfig.class.getClassLoader(),
+				new Class<?>[] {LiferayPortletConfig.class},
+				(proxy, method, args) -> {
+					if (Objects.equals(method.getName(), "getPortletId")) {
+						return "testPortlet";
+					}
+
+					return null;
+				}));
 	}
 
 	@Override

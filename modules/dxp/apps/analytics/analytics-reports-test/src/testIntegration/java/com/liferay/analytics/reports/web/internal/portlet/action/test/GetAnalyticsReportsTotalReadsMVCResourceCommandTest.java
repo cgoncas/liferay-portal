@@ -26,7 +26,6 @@ import com.liferay.portal.kernel.json.JSONObject;
 import com.liferay.portal.kernel.json.JSONUtil;
 import com.liferay.portal.kernel.model.Group;
 import com.liferay.portal.kernel.model.Layout;
-import com.liferay.portal.kernel.portlet.LiferayPortletConfig;
 import com.liferay.portal.kernel.portlet.bridges.mvc.MVCResourceCommand;
 import com.liferay.portal.kernel.service.CompanyLocalService;
 import com.liferay.portal.kernel.service.LayoutSetLocalService;
@@ -38,8 +37,6 @@ import com.liferay.portal.kernel.test.util.GroupTestUtil;
 import com.liferay.portal.kernel.test.util.TestPropsValues;
 import com.liferay.portal.kernel.util.HashMapBuilder;
 import com.liferay.portal.kernel.util.Http;
-import com.liferay.portal.kernel.util.JavaConstants;
-import com.liferay.portal.kernel.util.ProxyUtil;
 import com.liferay.portal.kernel.util.WebKeys;
 import com.liferay.portal.test.rule.Inject;
 import com.liferay.portal.test.rule.LiferayIntegrationTestRule;
@@ -50,7 +47,6 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 
 import java.util.Collections;
-import java.util.Objects;
 
 import org.junit.Assert;
 import org.junit.Before;
@@ -173,19 +169,6 @@ public class GetAnalyticsReportsTotalReadsMVCResourceCommandTest {
 					_group, _layout,
 					_layoutSetLocalService.getLayoutSet(
 						_group.getGroupId(), false)));
-
-			mockLiferayResourceRequest.setAttribute(
-				JavaConstants.JAVAX_PORTLET_CONFIG,
-				ProxyUtil.newProxyInstance(
-					LiferayPortletConfig.class.getClassLoader(),
-					new Class<?>[] {LiferayPortletConfig.class},
-					(proxy, method, args) -> {
-						if (Objects.equals(method.getName(), "getPortletId")) {
-							return "testPortlet";
-						}
-
-						return null;
-					}));
 
 			return mockLiferayResourceRequest;
 		}
