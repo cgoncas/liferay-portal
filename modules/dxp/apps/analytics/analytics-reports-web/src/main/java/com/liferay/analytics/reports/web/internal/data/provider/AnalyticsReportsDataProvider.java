@@ -27,6 +27,7 @@ import com.liferay.analytics.reports.web.internal.model.TimeSpan;
 import com.liferay.analytics.reports.web.internal.model.TrafficSource;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.util.GetterUtil;
+import com.liferay.portal.kernel.util.HtmlUtil;
 import com.liferay.portal.kernel.util.Http;
 
 import java.time.format.DateTimeFormatter;
@@ -60,7 +61,7 @@ public class AnalyticsReportsDataProvider {
 						timeRange.getEndLocalDate()),
 					DateTimeFormatter.ISO_DATE.format(
 						timeRange.getStartLocalDate()),
-					url));
+					HtmlUtil.escapeURL(url)));
 
 			return _objectMapper.readValue(response, HistoricalMetric.class);
 		}
@@ -84,7 +85,7 @@ public class AnalyticsReportsDataProvider {
 						timeRange.getEndLocalDate()),
 					DateTimeFormatter.ISO_DATE.format(
 						timeRange.getStartLocalDate()),
-					url));
+					HtmlUtil.escapeURL(url)));
 
 			return _objectMapper.readValue(response, HistoricalMetric.class);
 		}
@@ -100,7 +101,8 @@ public class AnalyticsReportsDataProvider {
 		try {
 			long totalReads = GetterUtil.getLong(
 				_asahFaroBackendClient.doGet(
-					companyId, "api/1.0/pages/read-count?url=" + url));
+					companyId,
+					"api/1.0/pages/read-count?url=" + HtmlUtil.escapeURL(url)));
 
 			return Math.max(0, totalReads - _getTodayReads(companyId, url));
 		}
@@ -115,7 +117,8 @@ public class AnalyticsReportsDataProvider {
 		try {
 			long totalViews = GetterUtil.getLong(
 				_asahFaroBackendClient.doGet(
-					companyId, "api/1.0/pages/view-count?url=" + url));
+					companyId,
+					"api/1.0/pages/view-count?url=" + HtmlUtil.escapeURL(url)));
 
 			return Math.max(0, totalViews - _getTodayViews(companyId, url));
 		}
