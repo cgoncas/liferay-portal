@@ -26,9 +26,11 @@ import com.liferay.portal.kernel.json.JSONUtil;
 import com.liferay.portal.kernel.test.ReflectionTestUtil;
 import com.liferay.portal.kernel.test.util.RandomTestUtil;
 import com.liferay.portal.kernel.util.HashMapBuilder;
+import com.liferay.portal.kernel.util.HtmlUtil;
 import com.liferay.portal.kernel.util.Http;
 import com.liferay.portal.kernel.util.PrefsProps;
 import com.liferay.portal.kernel.util.PrefsPropsUtil;
+import com.liferay.portal.util.HtmlImpl;
 
 import java.io.IOException;
 
@@ -63,6 +65,10 @@ public class AnalyticsReportsDataProviderTest {
 		ReflectionTestUtil.setFieldValue(
 			PrefsPropsUtil.class, "_prefsProps",
 			Mockito.mock(PrefsProps.class));
+
+		HtmlUtil htmlUtil = new HtmlUtil();
+
+		htmlUtil.setHtml(new HtmlImpl());
 	}
 
 	@Test
