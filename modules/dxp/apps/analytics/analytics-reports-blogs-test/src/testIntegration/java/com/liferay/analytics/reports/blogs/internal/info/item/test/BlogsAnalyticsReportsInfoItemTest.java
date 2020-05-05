@@ -16,9 +16,13 @@ package com.liferay.analytics.reports.blogs.internal.info.item.test;
 
 import com.liferay.analytics.reports.info.item.AnalyticsReportsInfoItem;
 import com.liferay.arquillian.extension.junit.bridge.junit.Arquillian;
+import com.liferay.asset.display.page.constants.AssetDisplayPageConstants;
+import com.liferay.asset.display.page.model.AssetDisplayPageEntry;
 import com.liferay.asset.display.page.service.AssetDisplayPageEntryLocalService;
 import com.liferay.blogs.model.BlogsEntry;
 import com.liferay.blogs.service.BlogsEntryLocalService;
+import com.liferay.layout.page.template.constants.LayoutPageTemplateEntryTypeConstants;
+import com.liferay.layout.page.template.model.LayoutPageTemplateEntry;
 import com.liferay.layout.page.template.service.LayoutPageTemplateEntryLocalService;
 import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.exception.PortalException;
@@ -91,7 +95,36 @@ public class BlogsAnalyticsReportsInfoItemTest {
 		BlogsEntry blogsEntry = _addBlogEntry();
 
 		Assert.assertEquals(
-			blogsEntry.getDisplayDate(),
+			blogsEntry.getCreateDate(),
+			_analyticsReportsInfoItem.getPublishDate(blogsEntry));
+	}
+
+	@Test
+	public void testGetPublishDateWithDisplayPage() throws Exception {
+		BlogsEntry blogsEntry = _addBlogEntry();
+
+		ServiceContext serviceContext =
+			ServiceContextTestUtil.getServiceContext(_group.getGroupId());
+
+		LayoutPageTemplateEntry layoutPageTemplateEntry =
+			_layoutPageTemplateEntryLocalService.addLayoutPageTemplateEntry(
+				_group.getCreatorUserId(), _group.getGroupId(), 0,
+				_portal.getClassNameId(BlogsEntry.class.getName()), 0,
+				RandomTestUtil.randomString(),
+				LayoutPageTemplateEntryTypeConstants.TYPE_DISPLAY_PAGE, 0, true,
+				0, 0, 0, 0, serviceContext);
+
+		AssetDisplayPageEntry assetDisplayPageEntry =
+			_assetDisplayPageEntryLocalService.addAssetDisplayPageEntry(
+				TestPropsValues.getUserId(), _group.getGroupId(),
+				_portal.getClassNameId(BlogsEntry.class.getName()),
+				blogsEntry.getEntryId(),
+				layoutPageTemplateEntry.getLayoutPageTemplateEntryId(),
+				AssetDisplayPageConstants.TYPE_SPECIFIC,
+				ServiceContextTestUtil.getServiceContext(_group.getGroupId()));
+
+		Assert.assertEquals(
+			assetDisplayPageEntry.getCreateDate(),
 			_analyticsReportsInfoItem.getPublishDate(blogsEntry));
 	}
 
