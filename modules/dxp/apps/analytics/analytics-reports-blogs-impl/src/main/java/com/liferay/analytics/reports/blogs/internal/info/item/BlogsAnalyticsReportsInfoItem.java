@@ -15,10 +15,13 @@
 package com.liferay.analytics.reports.blogs.internal.info.item;
 
 import com.liferay.analytics.reports.info.item.AnalyticsReportsInfoItem;
+import com.liferay.asset.display.page.model.AssetDisplayPageEntry;
+import com.liferay.asset.display.page.service.AssetDisplayPageEntryLocalService;
 import com.liferay.blogs.model.BlogsEntry;
 import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.service.UserLocalService;
+import com.liferay.portal.kernel.util.Portal;
 
 import java.util.Date;
 import java.util.Locale;
@@ -46,13 +49,30 @@ public class BlogsAnalyticsReportsInfoItem
 
 	@Override
 	public Date getPublishDate(BlogsEntry blogsEntry) {
-		return blogsEntry.getDisplayDate();
+		AssetDisplayPageEntry assetDisplayPageEntry =
+			_assetDisplayPageEntryLocalService.fetchAssetDisplayPageEntry(
+				blogsEntry.getGroupId(),
+				_portal.getClassNameId(BlogsEntry.class),
+				blogsEntry.getEntryId());
+
+		if (assetDisplayPageEntry == null) {
+			return blogsEntry.getCreateDate();
+		}
+
+		return assetDisplayPageEntry.getCreateDate();
 	}
 
 	@Override
 	public String getTitle(BlogsEntry blogsEntry, Locale locale) {
 		return blogsEntry.getTitle();
 	}
+
+	@Reference
+	private AssetDisplayPageEntryLocalService
+		_assetDisplayPageEntryLocalService;
+
+	@Reference
+	private Portal _portal;
 
 	@Reference
 	private UserLocalService _userLocalService;
