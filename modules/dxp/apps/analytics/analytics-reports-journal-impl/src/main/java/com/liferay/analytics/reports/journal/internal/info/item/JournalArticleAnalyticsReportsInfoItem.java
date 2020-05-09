@@ -74,7 +74,7 @@ public class JournalArticleAnalyticsReportsInfoItem
 		Date date = _getJournalArticleFirstPublishLocalDate(journalArticle);
 
 		if ((assetDisplayPageEntry == null) ||
-			date.after(assetDisplayPageEntry.getCreateDate())) {
+			date.after(assetDisplayPageEntry.getModifiedDate())) {
 
 			return date;
 		}

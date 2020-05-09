@@ -60,7 +60,7 @@ public class BlogsAnalyticsReportsInfoItem
 			return blogsEntry.getCreateDate();
 		}
 
-		return assetDisplayPageEntry.getCreateDate();
+		return assetDisplayPageEntry.getModifiedDate();
 	}
 
 	@Override
