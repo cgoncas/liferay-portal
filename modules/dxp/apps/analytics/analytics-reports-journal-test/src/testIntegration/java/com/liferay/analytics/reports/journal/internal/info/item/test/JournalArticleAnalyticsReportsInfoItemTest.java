@@ -130,7 +130,7 @@ public class JournalArticleAnalyticsReportsInfoItemTest {
 				ServiceContextTestUtil.getServiceContext(_group.getGroupId()));
 
 		Assert.assertEquals(
-			assetDisplayPageEntry.getCreateDate(),
+			assetDisplayPageEntry.getModifiedDate(),
 			_analyticsReportsInfoItem.getPublishDate(journalArticle));
 	}
 
