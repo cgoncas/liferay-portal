@@ -14,12 +14,29 @@
 
 package com.liferay.content.dashboard.web.internal.portlet;
 
+import com.liferay.asset.kernel.service.AssetEntryService;
 import com.liferay.content.dashboard.web.internal.constants.ContentDashboardPortletKeys;
+import com.liferay.content.dashboard.web.internal.dao.search.ContentDashboardInfoItemDisplaySearchContainerFactory;
+import com.liferay.content.dashboard.web.internal.display.ContentDashboardInfoItemDisplay;
+import com.liferay.content.dashboard.web.internal.display.context.ContentDashboardAdminManagementToolbarDisplayContext;
+import com.liferay.content.dashboard.web.internal.display.context.ContentDashboardViewDisplayContext;
+import com.liferay.content.dashboard.web.internal.info.item.ContentDashboardInfoItemTracker;
+import com.liferay.content.dashboard.web.internal.info.item.util.ContentDashboardInfoItemDisplayMapper;
+import com.liferay.portal.kernel.dao.search.SearchContainer;
 import com.liferay.portal.kernel.portlet.bridges.mvc.MVCPortlet;
+import com.liferay.portal.kernel.util.Portal;
+
+import java.io.IOException;
 
 import javax.portlet.Portlet;
+import javax.portlet.PortletException;
+import javax.portlet.RenderRequest;
+import javax.portlet.RenderResponse;
 
+import org.osgi.service.component.annotations.Activate;
 import org.osgi.service.component.annotations.Component;
+import org.osgi.service.component.annotations.Deactivate;
+import org.osgi.service.component.annotations.Reference;
 
 /**
  * @author Cristina González
@@ -37,7 +54,6 @@ import org.osgi.service.component.annotations.Component;
 		"com.liferay.portlet.use-default-template=true",
 		"javax.portlet.display-name=Content Dashboard",
 		"javax.portlet.expiration-cache=0",
-		"javax.portlet.init-param.always-send-redirect=true",
 		"javax.portlet.init-param.template-path=/META-INF/resources/",
 		"javax.portlet.init-param.view-template=/view.jsp",
 		"javax.portlet.name=" + ContentDashboardPortletKeys.CONTENT_DASHBOARD_ADMIN,
@@ -47,4 +63,64 @@ import org.osgi.service.component.annotations.Component;
 	service = Portlet.class
 )
 public class ContentDashboardAdminPortlet extends MVCPortlet {
+
+	@Override
+	public void render(
+			RenderRequest renderRequest, RenderResponse renderResponse)
+		throws IOException, PortletException {
+
+		SearchContainer<ContentDashboardInfoItemDisplay<?>> searchContainer =
+			ContentDashboardInfoItemDisplaySearchContainerFactory.
+				getSearchFactory(
+					renderRequest, renderResponse, _assetEntryService,
+					_contentDashboardInfoItemDisplayMapper, _portal);
+
+		ContentDashboardViewDisplayContext contentDashboardViewDisplayContext =
+			new ContentDashboardViewDisplayContext(
+				renderRequest, renderResponse, searchContainer);
+
+		renderRequest.setAttribute(
+			ContentDashboardPortletKeys.CONTENT_DASHBOARD_VIEW_DISPLAY_CONTEXT,
+			contentDashboardViewDisplayContext);
+
+		ContentDashboardAdminManagementToolbarDisplayContext
+			contentDashboardAdminManagementToolbarDisplayContext =
+				new ContentDashboardAdminManagementToolbarDisplayContext(
+					_portal.getHttpServletRequest(renderRequest),
+					_portal.getLiferayPortletRequest(renderRequest),
+					_portal.getLiferayPortletResponse(renderResponse),
+					searchContainer);
+
+		renderRequest.setAttribute(
+			ContentDashboardPortletKeys.
+				CONTENT_DASHBOARD_ADMIN_MANAGEMENT_TOOLBAR_DISPLAY_CONTEXT,
+			contentDashboardAdminManagementToolbarDisplayContext);
+
+		super.render(renderRequest, renderResponse);
+	}
+
+	@Activate
+	protected void activate() {
+		_contentDashboardInfoItemDisplayMapper =
+			new ContentDashboardInfoItemDisplayMapper(
+				_contentDashboardInfoItemTracker);
+	}
+
+	@Deactivate
+	protected void deactivate() {
+		_contentDashboardInfoItemDisplayMapper = null;
+	}
+
+	@Reference
+	private AssetEntryService _assetEntryService;
+
+	private ContentDashboardInfoItemDisplayMapper
+		_contentDashboardInfoItemDisplayMapper;
+
+	@Reference
+	private ContentDashboardInfoItemTracker _contentDashboardInfoItemTracker;
+
+	@Reference
+	private Portal _portal;
+
 }

@@ -1,4 +1,3 @@
-<%--
 /**
  * Copyright (c) 2000-present Liferay, Inc. All rights reserved.
  *
@@ -12,15 +11,33 @@
  * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
  * details.
  */
---%>
 
-<%@ taglib uri="http://liferay.com/tld/clay" prefix="clay" %><%@
-taglib uri="http://liferay.com/tld/theme" prefix="liferay-theme" %><%@
-taglib uri="http://liferay.com/tld/ui" prefix="liferay-ui" %>
+package com.liferay.content.dashboard.web.internal.info.item;
 
-<%@ page import="com.liferay.content.dashboard.web.internal.constants.ContentDashboardPortletKeys" %><%@
-page import="com.liferay.content.dashboard.web.internal.display.context.ContentDashboardViewDisplayContext" %><%@
-page import="com.liferay.portal.kernel.language.LanguageUtil" %><%@
-page import="com.liferay.portal.kernel.util.HtmlUtil" %>
+import com.liferay.portal.kernel.model.User;
 
-<liferay-theme:defineObjects />
+import java.util.Date;
+import java.util.Locale;
+
+/**
+ * @author Cristina González
+ */
+public interface ContentDashboardInfoItem<T> {
+
+	public User getAuthor(T model);
+
+	public Date getExpiredDate(T model);
+
+	public Date getModifiedDate(T model);
+
+	public Date getPublishDate(T model);
+
+	public String getStatusLabel(T model, Locale locale);
+
+	public String getStatusStyle(T model);
+
+	public String getTitle(T model, Locale locale);
+
+	public String getType(T model, Locale locale);
+
+}

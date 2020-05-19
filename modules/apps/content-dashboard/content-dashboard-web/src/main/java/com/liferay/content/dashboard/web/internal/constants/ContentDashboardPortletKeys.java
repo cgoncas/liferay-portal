@@ -23,4 +23,11 @@ public class ContentDashboardPortletKeys {
 		"com_liferay_content_dashboard_web_portlet_" +
 			"ContentDashboardAdminPortlet";
 
+	public static final String
+		CONTENT_DASHBOARD_ADMIN_MANAGEMENT_TOOLBAR_DISPLAY_CONTEXT =
+			"CONTENT_DASHBOARD_ADMIN_MANAGEMENT_TOOLBAR_DISPLAY_CONTEXT";
+
+	public static final String CONTENT_DASHBOARD_VIEW_DISPLAY_CONTEXT =
+		"CONTENT_DASHBOARD_VIEW_DISPLAY_CONTEXT";
+
 }
