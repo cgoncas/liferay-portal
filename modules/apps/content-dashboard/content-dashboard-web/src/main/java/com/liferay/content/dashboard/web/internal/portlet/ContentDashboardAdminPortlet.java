@@ -15,11 +15,23 @@
 package com.liferay.content.dashboard.web.internal.portlet;
 
 import com.liferay.content.dashboard.web.internal.constants.ContentDashboardPortletKeys;
+import com.liferay.content.dashboard.web.internal.dao.search.ContentDashboardInfoItemSearchContainerFactory;
+import com.liferay.content.dashboard.web.internal.display.context.ContentDashboardAdminManagementToolbarDisplayContext;
+import com.liferay.content.dashboard.web.internal.info.item.ContentDashboardInfoItem;
+import com.liferay.content.dashboard.web.internal.info.item.ContentDashboardInfoItemFactoryTracker;
+import com.liferay.portal.kernel.dao.search.SearchContainer;
 import com.liferay.portal.kernel.portlet.bridges.mvc.MVCPortlet;
+import com.liferay.portal.kernel.util.Portal;
+
+import java.io.IOException;
 
 import javax.portlet.Portlet;
+import javax.portlet.PortletException;
+import javax.portlet.RenderRequest;
+import javax.portlet.RenderResponse;
 
 import org.osgi.service.component.annotations.Component;
+import org.osgi.service.component.annotations.Reference;
 
 /**
  * @author Cristina González
@@ -37,7 +49,6 @@ import org.osgi.service.component.annotations.Component;
 		"com.liferay.portlet.use-default-template=true",
 		"javax.portlet.display-name=Content Dashboard",
 		"javax.portlet.expiration-cache=0",
-		"javax.portlet.init-param.always-send-redirect=true",
 		"javax.portlet.init-param.template-path=/META-INF/resources/",
 		"javax.portlet.init-param.view-template=/view.jsp",
 		"javax.portlet.name=" + ContentDashboardPortletKeys.CONTENT_DASHBOARD_ADMIN,
@@ -47,4 +58,42 @@ import org.osgi.service.component.annotations.Component;
 	service = Portlet.class
 )
 public class ContentDashboardAdminPortlet extends MVCPortlet {
+
+	@Override
+	public void render(
+			RenderRequest renderRequest, RenderResponse renderResponse)
+		throws IOException, PortletException {
+
+		ContentDashboardInfoItemSearchContainerFactory
+			contentDashboardInfoItemSearchContainerFactory =
+				ContentDashboardInfoItemSearchContainerFactory.getInstance(
+					renderRequest, renderResponse,
+					_contentDashboardInfoItemFactoryTracker, _portal);
+
+		SearchContainer<ContentDashboardInfoItem<?>> searchContainer =
+			contentDashboardInfoItemSearchContainerFactory.create();
+
+		ContentDashboardAdminManagementToolbarDisplayContext
+			contentDashboardAdminManagementToolbarDisplayContext =
+				new ContentDashboardAdminManagementToolbarDisplayContext(
+					_portal.getHttpServletRequest(renderRequest),
+					_portal.getLiferayPortletRequest(renderRequest),
+					_portal.getLiferayPortletResponse(renderResponse),
+					searchContainer);
+
+		renderRequest.setAttribute(
+			ContentDashboardPortletKeys.
+				CONTENT_DASHBOARD_ADMIN_MANAGEMENT_TOOLBAR_DISPLAY_CONTEXT,
+			contentDashboardAdminManagementToolbarDisplayContext);
+
+		super.render(renderRequest, renderResponse);
+	}
+
+	@Reference
+	private ContentDashboardInfoItemFactoryTracker
+		_contentDashboardInfoItemFactoryTracker;
+
+	@Reference
+	private Portal _portal;
+
 }
