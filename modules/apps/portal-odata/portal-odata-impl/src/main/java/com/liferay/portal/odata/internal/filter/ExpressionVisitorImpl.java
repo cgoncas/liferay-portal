@@ -26,6 +26,7 @@ import com.liferay.portal.kernel.search.filter.PrefixFilter;
 import com.liferay.portal.kernel.search.filter.QueryFilter;
 import com.liferay.portal.kernel.search.filter.RangeTermFilter;
 import com.liferay.portal.kernel.search.filter.TermFilter;
+import com.liferay.portal.kernel.search.filter.TermsFilter;
 import com.liferay.portal.kernel.search.generic.WildcardQueryImpl;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.odata.entity.CollectionEntityField;
@@ -167,6 +168,10 @@ public class ExpressionVisitorImpl implements ExpressionVisitor<Object> {
 	public Object visitListExpressionOperation(
 			ListExpression.Operation operation, Object left, List<Object> right)
 		throws ExpressionVisitException {
+
+		if (operation == ListExpression.Operation.IN) {
+			return _getINFilter((EntityField)left, right, _locale);
+		}
 
 		throw new UnsupportedOperationException(
 			"Unsupported method visitListExpressionOperation with operation " +
@@ -381,6 +386,19 @@ public class ExpressionVisitorImpl implements ExpressionVisitor<Object> {
 		throw new UnsupportedOperationException(
 			"Unsupported method _getGTFilter with entity field type " +
 				entityField.getType());
+	}
+
+	private Filter _getINFilter(
+		EntityField entityField, List<Object> fieldValues, Locale locale) {
+
+		TermsFilter termsFilter = new TermsFilter(
+			entityField.getFilterableName(locale));
+
+		for (Object fieldValue : fieldValues) {
+			termsFilter.addValue(entityField.getFilterableValue(fieldValue));
+		}
+
+		return termsFilter;
 	}
 
 	private EntityModel _getLambdaEntityModel(
