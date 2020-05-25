@@ -27,3 +27,5 @@ page import="com.liferay.portal.kernel.util.HtmlUtil" %><%@
 page import="com.liferay.portal.kernel.util.StringUtil" %>
 
 <liferay-theme:defineObjects />
+
+<%@ include file="/init-ext.jsp" %>
