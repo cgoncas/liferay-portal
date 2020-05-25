@@ -12,22 +12,26 @@
  * details.
  */
 
-package com.liferay.content.dashboard.web.internal.constants;
+package com.liferay.content.dashboard.web.internal.display.context;
+
+import com.liferay.content.dashboard.web.internal.info.item.ContentDashboardInfoItem;
+import com.liferay.portal.kernel.dao.search.SearchContainer;
 
 /**
  * @author Cristina González
  */
-public class ContentDashboardPortletKeys {
+public class ContentDashboardAdminDisplayContext {
 
-	public static final String CONTENT_DASHBOARD_ADMIN =
-		"com_liferay_content_dashboard_web_portlet_" +
-			"ContentDashboardAdminPortlet";
+	public ContentDashboardAdminDisplayContext(
+		SearchContainer<ContentDashboardInfoItem<?>> searchContainer) {
 
-	public static final String CONTENT_DASHBOARD_ADMIN_DISPLAY_CONTEXT =
-		"CONTENT_DASHBOARD_ADMIN_DISPLAY_CONTEXT";
+		_searchContainer = searchContainer;
+	}
 
-	public static final String
-		CONTENT_DASHBOARD_ADMIN_MANAGEMENT_TOOLBAR_DISPLAY_CONTEXT =
-			"CONTENT_DASHBOARD_ADMIN_MANAGEMENT_TOOLBAR_DISPLAY_CONTEXT";
+	public SearchContainer<ContentDashboardInfoItem<?>> getSearchContainer() {
+		return _searchContainer;
+	}
+
+	private final SearchContainer<ContentDashboardInfoItem<?>> _searchContainer;
 
 }
