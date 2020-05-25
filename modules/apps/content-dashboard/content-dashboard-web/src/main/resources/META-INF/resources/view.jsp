@@ -17,6 +17,8 @@
 <%@ include file="/init.jsp" %>
 
 <%
+ContentDashboardAdminDisplayContext contentDashboardAdminDisplayContext = (ContentDashboardAdminDisplayContext)request.getAttribute(ContentDashboardPortletKeys.CONTENT_DASHBOARD_ADMIN_DISPLAY_CONTEXT);
+
 ContentDashboardAdminManagementToolbarDisplayContext contentDashboardAdminManagementToolbarDisplayContext = (ContentDashboardAdminManagementToolbarDisplayContext)request.getAttribute(ContentDashboardPortletKeys.CONTENT_DASHBOARD_ADMIN_MANAGEMENT_TOOLBAR_DISPLAY_CONTEXT);
 %>
 
@@ -25,7 +27,6 @@ ContentDashboardAdminManagementToolbarDisplayContext contentDashboardAdminManage
 >
 	<div class="sheet">
 		<h2 class="sheet-title">
-			<!-- Replace 0 from contents.lenght -->
 			<%= LanguageUtil.format(request, "content-x", 0, false) %>
 		</h2>
 
@@ -33,20 +34,64 @@ ContentDashboardAdminManagementToolbarDisplayContext contentDashboardAdminManage
 			displayContext="<%= contentDashboardAdminManagementToolbarDisplayContext %>"
 		/>
 
-		<c:choose>
-			<c:when test="<%= true %>">
-				<!-- Check if contents is empty -->
-				<div class="taglib-empty-result-message">
-					<div class="taglib-empty-result-message-header"></div>
+		<div class="sheet-section">
+			<liferay-ui:search-container
+				id="contents"
+				rowChecker="<%= new EmptyOnClickRowChecker(renderResponse) %>"
+				searchContainer="<%= contentDashboardAdminDisplayContext.getSearchContainer() %>"
+			>
+				<liferay-ui:search-container-row
+					className="com.liferay.content.dashboard.web.internal.info.item.ContentDashboardInfoItem"
+					keyProperty="id"
+					modelVar="contentDashboardInfoItem"
+				>
+					<liferay-ui:search-container-column-text
+						name="author"
+					>
+						<liferay-ui:user-portrait
+							userId="<%= contentDashboardInfoItem.getUserId() %>"
+						/>
+					</liferay-ui:search-container-column-text>
 
-					<div class="sheet-text text-center">
-						<%= LanguageUtil.get(request, "there-are-no-contents") %>
-					</div>
-				</div>
-			</c:when>
-			<c:otherwise>
-				<!-- Show table with contents information -->
-			</c:otherwise>
-		</c:choose>
+					<liferay-ui:search-container-column-text
+						name="title"
+						value="<%= HtmlUtil.escape(contentDashboardInfoItem.getTitle(locale)) %>"
+					/>
+
+					<liferay-ui:search-container-column-text
+						name="type"
+						value="<%= HtmlUtil.escape(contentDashboardInfoItem.getType(locale)) %>"
+					/>
+
+					<liferay-ui:search-container-column-text
+						name="status"
+					>
+						<clay:label
+							label="<%= StringUtil.toUpperCase(contentDashboardInfoItem.getStatusLabel(locale)) %>"
+							style="<%= contentDashboardInfoItem.getStatusStyle() %>"
+						/>
+					</liferay-ui:search-container-column-text>
+
+					<liferay-ui:search-container-column-date
+						name="publish-date"
+						value="<%= contentDashboardInfoItem.getPublishDate() %>"
+					/>
+
+					<liferay-ui:search-container-column-date
+						name="modified-date"
+						value="<%= contentDashboardInfoItem.getModifiedDate() %>"
+					/>
+
+					<liferay-ui:search-container-column-date
+						name="expiration-date"
+						value="<%= contentDashboardInfoItem.getExpiredDate() %>"
+					/>
+				</liferay-ui:search-container-row>
+
+				<liferay-ui:search-iterator
+					markupView="lexicon"
+				/>
+			</liferay-ui:search-container>
+		</div>
 	</div>
 </clay:container>
