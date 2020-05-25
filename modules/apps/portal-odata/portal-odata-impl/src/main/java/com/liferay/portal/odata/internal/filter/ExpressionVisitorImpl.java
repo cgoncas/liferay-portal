@@ -41,6 +41,7 @@ import com.liferay.portal.odata.filter.expression.ExpressionVisitException;
 import com.liferay.portal.odata.filter.expression.ExpressionVisitor;
 import com.liferay.portal.odata.filter.expression.LambdaFunctionExpression;
 import com.liferay.portal.odata.filter.expression.LambdaVariableExpression;
+import com.liferay.portal.odata.filter.expression.ListExpression;
 import com.liferay.portal.odata.filter.expression.LiteralExpression;
 import com.liferay.portal.odata.filter.expression.MemberExpression;
 import com.liferay.portal.odata.filter.expression.MethodExpression;
@@ -160,6 +161,16 @@ public class ExpressionVisitorImpl implements ExpressionVisitor<Object> {
 		}
 
 		return entityField;
+	}
+
+	@Override
+	public Object visitListExpressionOperation(
+			ListExpression.Operation operation, Object left, List<Object> right)
+		throws ExpressionVisitException {
+
+		throw new UnsupportedOperationException(
+			"Unsupported method visitListExpressionOperation with operation " +
+				operation);
 	}
 
 	@Override

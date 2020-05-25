@@ -18,6 +18,7 @@ import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.odata.filter.expression.BinaryExpression;
 import com.liferay.portal.odata.filter.expression.Expression;
 import com.liferay.portal.odata.filter.expression.LambdaFunctionExpression;
+import com.liferay.portal.odata.filter.expression.ListExpression;
 import com.liferay.portal.odata.filter.expression.LiteralExpression;
 import com.liferay.portal.odata.filter.expression.MethodExpression;
 import com.liferay.portal.odata.filter.expression.PropertyExpression;
@@ -88,8 +89,15 @@ public class ExpressionVisitorImpl implements ExpressionVisitor<Expression> {
 	@Override
 	public Expression visitBinaryOperator(
 		BinaryOperatorKind binaryOperatorKind,
-		Expression leftBinaryOperationExpression,
-		List<Expression> rightBinaryOperationExpressions) {
+		Expression leftListOperationExpression,
+		List<Expression> rightListOperationExpressions) {
+
+		if (binaryOperatorKind == BinaryOperatorKind.IN) {
+			return new ListExpressionImpl(
+				leftListOperationExpression, ListExpression.Operation.IN,
+				rightListOperationExpressions) {
+			};
+		}
 
 		throw new UnsupportedOperationException(
 			"Binary operator: " + binaryOperatorKind);
