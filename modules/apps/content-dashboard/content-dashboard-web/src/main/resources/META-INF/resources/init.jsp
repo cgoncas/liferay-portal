@@ -20,6 +20,8 @@
 taglib uri="http://liferay.com/tld/react" prefix="react" %><%@
 taglib uri="http://liferay.com/tld/theme" prefix="liferay-theme" %>
 
-<liferay-theme:defineObjects />
+<%@ page import="com.liferay.content.dashboard.web.internal.constants.ContentDashboardWebKeys" %><%@
+page import="com.liferay.content.dashboard.web.internal.display.context.ContentDashboardAdminManagementToolbarDisplayContext" %><%@
+page import="com.liferay.portal.kernel.language.LanguageUtil" %>
 
-<%@ page import="com.liferay.portal.kernel.language.LanguageUtil" %>
+<liferay-theme:defineObjects />
