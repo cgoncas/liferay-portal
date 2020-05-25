@@ -75,17 +75,20 @@ public class UserOrganizationSegmentsCriteriaContributor
 
 			StringBundler sb = new StringBundler();
 
-			for (int i = 0; i < organizations.size(); i++) {
-				Organization organization = organizations.get(i);
+			sb.append("organizationIds in (");
 
-				sb.append("contains(organizationIds, '");
+			for (Organization organization : organizations) {
+				sb.append("'");
 				sb.append(organization.getOrganizationId());
-				sb.append("')");
-
-				if (i < (organizations.size() - 1)) {
-					sb.append(" or ");
-				}
+				sb.append("'");
+				sb.append(", ");
 			}
+
+			if (!organizations.isEmpty()) {
+				sb.setIndex(sb.index() - 1);
+			}
+
+			sb.append(")");
 
 			newFilterString = sb.toString();
 		}
