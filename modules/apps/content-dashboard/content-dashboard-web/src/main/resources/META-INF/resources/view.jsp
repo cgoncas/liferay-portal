@@ -16,6 +16,10 @@
 
 <%@ include file="/init.jsp" %>
 
+<%
+ContentDashboardAdminManagementToolbarDisplayContext contentDashboardAdminManagementToolbarDisplayContext = (ContentDashboardAdminManagementToolbarDisplayContext)request.getAttribute(ContentDashboardPortletKeys.CONTENT_DASHBOARD_ADMIN_MANAGEMENT_TOOLBAR_DISPLAY_CONTEXT);
+%>
+
 <clay:container
 	className="main-content-body"
 >
@@ -24,6 +28,10 @@
 			<!-- Replace 0 from contents.lenght -->
 			<%= LanguageUtil.format(request, "content-x", 0, false) %>
 		</h2>
+
+		<clay:management-toolbar
+			displayContext="<%= contentDashboardAdminManagementToolbarDisplayContext %>"
+		/>
 
 		<c:choose>
 			<c:when test="<%= true %>">
