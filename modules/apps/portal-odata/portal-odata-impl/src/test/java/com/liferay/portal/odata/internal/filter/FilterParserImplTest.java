@@ -30,6 +30,7 @@ import com.liferay.portal.odata.filter.expression.Expression;
 import com.liferay.portal.odata.filter.expression.ExpressionVisitException;
 import com.liferay.portal.odata.filter.expression.LambdaFunctionExpression;
 import com.liferay.portal.odata.filter.expression.LambdaVariableExpression;
+import com.liferay.portal.odata.filter.expression.ListExpression;
 import com.liferay.portal.odata.filter.expression.LiteralExpression;
 import com.liferay.portal.odata.filter.expression.MemberExpression;
 import com.liferay.portal.odata.filter.expression.MethodExpression;
@@ -455,6 +456,36 @@ public class FilterParserImplTest {
 		Assert.assertEquals("'value'", literalExpression.getText());
 		Assert.assertEquals(
 			LiteralExpression.Type.STRING, literalExpression.getType());
+	}
+
+	@Test
+	public void testParseWithINMethod() throws ExpressionVisitException {
+		Expression expression = _filterParserImpl.parse(
+			"fieldExternal in ('value1', 'value2', 'value3')");
+
+		Assert.assertNotNull(expression);
+
+		ListExpression listExpression = (ListExpression)expression;
+
+		Assert.assertEquals(
+			ListExpression.Operation.IN, listExpression.getOperation());
+
+		MemberExpression memberExpression =
+			(MemberExpression)listExpression.getLeftOperationExpression();
+
+		PrimitivePropertyExpression primitivePropertyExpression =
+			(PrimitivePropertyExpression)memberExpression.getExpression();
+
+		Assert.assertEquals(
+			"fieldExternal", primitivePropertyExpression.getName());
+
+		List<Expression> rightOperationExpressions =
+			listExpression.getRightOperationExpressions();
+
+		LiteralExpression literalExpression1 =
+			(LiteralExpression)rightOperationExpressions.get(0);
+
+		Assert.assertEquals("'value1'", literalExpression1.getText());
 	}
 
 	@Test
