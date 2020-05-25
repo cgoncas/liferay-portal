@@ -16,6 +16,7 @@ package com.liferay.content.dashboard.web.internal.portlet;
 
 import com.liferay.content.dashboard.web.internal.constants.ContentDashboardPortletKeys;
 import com.liferay.content.dashboard.web.internal.dao.search.ContentDashboardItemSearchContainerFactory;
+import com.liferay.content.dashboard.web.internal.display.context.ContentDashboardAdminDisplayContext;
 import com.liferay.content.dashboard.web.internal.display.context.ContentDashboardAdminManagementToolbarDisplayContext;
 import com.liferay.content.dashboard.web.internal.item.ContentDashboardItem;
 import com.liferay.content.dashboard.web.internal.item.ContentDashboardItemFactoryTracker;
@@ -72,6 +73,14 @@ public class ContentDashboardAdminPortlet extends MVCPortlet {
 
 		SearchContainer<ContentDashboardItem<?>> searchContainer =
 			contentDashboardItemSearchContainerFactory.create();
+
+		ContentDashboardAdminDisplayContext
+			contentDashboardAdminDisplayContext =
+				new ContentDashboardAdminDisplayContext(searchContainer);
+
+		renderRequest.setAttribute(
+			ContentDashboardPortletKeys.CONTENT_DASHBOARD_ADMIN_DISPLAY_CONTEXT,
+			contentDashboardAdminDisplayContext);
 
 		ContentDashboardAdminManagementToolbarDisplayContext
 			contentDashboardAdminManagementToolbarDisplayContext =
