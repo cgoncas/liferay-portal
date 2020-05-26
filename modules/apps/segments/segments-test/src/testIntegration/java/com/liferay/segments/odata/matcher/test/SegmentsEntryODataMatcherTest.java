@@ -66,6 +66,29 @@ public class SegmentsEntryODataMatcherTest {
 	}
 
 	@Test
+	public void testMatchesIdIn() throws Exception {
+		long segmentsEntryId = RandomTestUtil.nextLong();
+
+		Map<String, String> segmentsMap = HashMapBuilder.put(
+			"segmentsEntryIds",
+			StringUtil.merge(
+				new long[] {segmentsEntryId, RandomTestUtil.nextLong()}, ",")
+		).build();
+
+		Assert.assertTrue(
+			_contextODataMatcher.matches(
+				StringBundler.concat(
+					"(segmentsEntryIds in ('", segmentsEntryId, "'))"),
+				segmentsMap));
+		Assert.assertFalse(
+			_contextODataMatcher.matches(
+				StringBundler.concat(
+					"(segmentsEntryIds in ('", RandomTestUtil.nextLong(),
+					"'))"),
+				segmentsMap));
+	}
+
+	@Test
 	public void testMatchesStringNotContains() throws Exception {
 		long segmentsEntryId = RandomTestUtil.nextLong();
 
