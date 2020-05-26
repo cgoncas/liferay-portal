@@ -19,11 +19,11 @@ import com.liferay.petra.string.StringBundler;
 import com.liferay.petra.string.StringUtil;
 import com.liferay.portal.kernel.test.rule.AggregateTestRule;
 import com.liferay.portal.kernel.test.util.RandomTestUtil;
-import com.liferay.portal.kernel.util.HashMapBuilder;
 import com.liferay.portal.test.rule.Inject;
 import com.liferay.portal.test.rule.LiferayIntegrationTestRule;
 import com.liferay.segments.odata.matcher.ODataMatcher;
 
+import java.util.Collections;
 import java.util.Map;
 
 import org.junit.Assert;
@@ -47,68 +47,65 @@ public class SegmentsEntryODataMatcherTest {
 	public void testMatchesIdEquals() throws Exception {
 		long segmentsEntryId = RandomTestUtil.nextLong();
 
-		Map<String, String> segmentsMap = HashMapBuilder.put(
+		Map<String, String> segmentsEntryIds = Collections.singletonMap(
 			"segmentsEntryIds",
 			StringUtil.merge(
-				new long[] {segmentsEntryId, RandomTestUtil.nextLong()}, ",")
-		).build();
+				new long[] {segmentsEntryId, RandomTestUtil.nextLong()}, ","));
 
 		Assert.assertTrue(
 			_contextODataMatcher.matches(
 				StringBundler.concat(
 					"(segmentsEntryIds eq '", segmentsEntryId, "')"),
-				segmentsMap));
+				segmentsEntryIds));
 		Assert.assertFalse(
 			_contextODataMatcher.matches(
 				StringBundler.concat(
 					"(segmentsEntryIds eq '", RandomTestUtil.nextLong(), "')"),
-				segmentsMap));
+				segmentsEntryIds));
 	}
 
 	@Test
 	public void testMatchesIdIn() throws Exception {
 		long segmentsEntryId = RandomTestUtil.nextLong();
 
-		Map<String, String> segmentsMap = HashMapBuilder.put(
+		Map<String, String> segmentsEntryIds = Collections.singletonMap(
 			"segmentsEntryIds",
 			StringUtil.merge(
-				new long[] {segmentsEntryId, RandomTestUtil.nextLong()}, ",")
-		).build();
+				new long[] {segmentsEntryId, RandomTestUtil.nextLong()}, ","));
 
 		Assert.assertTrue(
 			_contextODataMatcher.matches(
 				StringBundler.concat(
 					"(segmentsEntryIds in ('", segmentsEntryId, "'))"),
-				segmentsMap));
+				segmentsEntryIds));
 		Assert.assertFalse(
 			_contextODataMatcher.matches(
 				StringBundler.concat(
 					"(segmentsEntryIds in ('", RandomTestUtil.nextLong(),
 					"'))"),
-				segmentsMap));
+				segmentsEntryIds));
 	}
 
 	@Test
 	public void testMatchesStringNotContains() throws Exception {
 		long segmentsEntryId = RandomTestUtil.nextLong();
 
-		Map<String, String> segmentsMap = HashMapBuilder.put(
+		Map<String, String> segmentsEntryIds = Collections.singletonMap(
 			"segmentsEntryIds",
 			StringUtil.merge(
-				new long[] {segmentsEntryId, RandomTestUtil.nextLong()}, ",")
-		).build();
+				new long[] {segmentsEntryId, RandomTestUtil.nextLong()}, ","));
 
 		Assert.assertFalse(
 			_contextODataMatcher.matches(
 				StringBundler.concat(
 					"not (segmentsEntryIds eq '", segmentsEntryId, "')"),
-				segmentsMap));
+				segmentsEntryIds));
 		Assert.assertTrue(
 			_contextODataMatcher.matches(
 				StringBundler.concat(
 					"not (segmentsEntryIds eq '", RandomTestUtil.nextLong(),
 					"')"),
-				segmentsMap));
+				segmentsEntryIds));
 	}
 
 	@Inject(
