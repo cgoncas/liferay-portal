@@ -14,9 +14,9 @@
 
 package com.liferay.info.internal.list.provider;
 
-import com.liferay.info.internal.util.GenericsUtil;
 import com.liferay.info.list.provider.InfoListProvider;
 import com.liferay.info.list.provider.InfoListProviderTracker;
+import com.liferay.petra.reflect.GenericsUtil;
 import com.liferay.portal.kernel.util.Validator;
 
 import java.util.ArrayList;

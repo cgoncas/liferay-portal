@@ -14,13 +14,13 @@
 
 package com.liferay.info.internal.item.field.reader;
 
-import com.liferay.info.internal.util.GenericsUtil;
 import com.liferay.info.item.field.reader.InfoItemFieldReader;
 import com.liferay.info.item.field.reader.InfoItemFieldReaderTracker;
 import com.liferay.osgi.service.tracker.collections.map.PropertyServiceReferenceComparator;
 import com.liferay.osgi.service.tracker.collections.map.ServiceReferenceMapperFactory;
 import com.liferay.osgi.service.tracker.collections.map.ServiceTrackerMap;
 import com.liferay.osgi.service.tracker.collections.map.ServiceTrackerMapFactory;
+import com.liferay.petra.reflect.GenericsUtil;
 
 import java.util.ArrayList;
 import java.util.Collections;
