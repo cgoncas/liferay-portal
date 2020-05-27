@@ -14,10 +14,10 @@
 
 package com.liferay.content.dashboard.web.internal.info.item;
 
-import com.liferay.content.dashboard.web.internal.util.GenericsUtil;
 import com.liferay.osgi.service.tracker.collections.map.ServiceReferenceMapperFactory;
 import com.liferay.osgi.service.tracker.collections.map.ServiceTrackerMap;
 import com.liferay.osgi.service.tracker.collections.map.ServiceTrackerMapFactory;
+import com.liferay.petra.reflect.GenericsUtil;
 
 import java.util.Collection;
 import java.util.Collections;

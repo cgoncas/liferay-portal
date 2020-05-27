@@ -14,9 +14,9 @@
 
 package com.liferay.layout.internal.list.retriever;
 
-import com.liferay.layout.internal.list.retriever.util.GenericsUtil;
 import com.liferay.layout.list.retriever.ListObjectReferenceFactory;
 import com.liferay.layout.list.retriever.ListObjectReferenceFactoryTracker;
+import com.liferay.petra.reflect.GenericsUtil;
 
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;

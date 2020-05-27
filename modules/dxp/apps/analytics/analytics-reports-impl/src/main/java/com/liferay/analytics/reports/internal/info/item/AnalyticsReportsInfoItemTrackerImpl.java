@@ -16,7 +16,7 @@ package com.liferay.analytics.reports.internal.info.item;
 
 import com.liferay.analytics.reports.info.item.AnalyticsReportsInfoItem;
 import com.liferay.analytics.reports.info.item.AnalyticsReportsInfoItemTracker;
-import com.liferay.analytics.reports.internal.util.GenericsUtil;
+import com.liferay.petra.reflect.GenericsUtil;
 import com.liferay.portal.kernel.util.Validator;
 
 import java.util.ArrayList;
