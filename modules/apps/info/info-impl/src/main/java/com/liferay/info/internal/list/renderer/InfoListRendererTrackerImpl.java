@@ -14,9 +14,9 @@
 
 package com.liferay.info.internal.list.renderer;
 
-import com.liferay.info.internal.util.GenericsUtil;
 import com.liferay.info.list.renderer.InfoListRenderer;
 import com.liferay.info.list.renderer.InfoListRendererTracker;
+import com.liferay.petra.reflect.GenericsUtil;
 import com.liferay.portal.kernel.util.Validator;
 
 import java.util.ArrayList;
@@ -71,7 +71,7 @@ public class InfoListRendererTrackerImpl implements InfoListRendererTracker {
 
 		List<InfoListRenderer> itemClassInfoListRenderers =
 			_itemClassNameInfoListRenderers.computeIfAbsent(
-				GenericsUtil.getItemClassName(infoListRenderer),
+				GenericsUtil.getGenericClassName(infoListRenderer),
 				itemClass -> new ArrayList<>());
 
 		itemClassInfoListRenderers.add(infoListRenderer);
@@ -82,7 +82,7 @@ public class InfoListRendererTrackerImpl implements InfoListRendererTracker {
 
 		List<InfoListRenderer> itemClassInfoListRenderers =
 			_itemClassNameInfoListRenderers.get(
-				GenericsUtil.getItemClassName(infoListRenderer));
+				GenericsUtil.getGenericClassName(infoListRenderer));
 
 		if (itemClassInfoListRenderers != null) {
 			itemClassInfoListRenderers.remove(infoListRenderer);

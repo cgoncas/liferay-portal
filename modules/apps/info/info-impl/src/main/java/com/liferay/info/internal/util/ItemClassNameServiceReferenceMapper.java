@@ -16,6 +16,7 @@ package com.liferay.info.internal.util;
 
 import com.liferay.osgi.service.tracker.collections.map.PropertyServiceReferenceMapper;
 import com.liferay.osgi.service.tracker.collections.map.ServiceReferenceMapper;
+import com.liferay.petra.reflect.GenericsUtil;
 
 import org.osgi.framework.BundleContext;
 import org.osgi.framework.ServiceReference;
@@ -45,7 +46,7 @@ public class ItemClassNameServiceReferenceMapper
 		Object serviceObject = _bundleContext.getService(serviceReference);
 
 		try {
-			emitter.emit(GenericsUtil.getItemClassName(serviceObject));
+			emitter.emit(GenericsUtil.getGenericClassName(serviceObject));
 		}
 		finally {
 			_bundleContext.ungetService(serviceReference);

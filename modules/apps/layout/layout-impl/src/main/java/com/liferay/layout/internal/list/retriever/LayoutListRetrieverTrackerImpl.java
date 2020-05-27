@@ -14,9 +14,9 @@
 
 package com.liferay.layout.internal.list.retriever;
 
-import com.liferay.layout.internal.list.retriever.util.GenericsUtil;
 import com.liferay.layout.list.retriever.LayoutListRetriever;
 import com.liferay.layout.list.retriever.LayoutListRetrieverTracker;
+import com.liferay.petra.reflect.GenericsUtil;
 
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -45,7 +45,7 @@ public class LayoutListRetrieverTrackerImpl
 		LayoutListRetriever layoutListRetriever) {
 
 		_layoutListRetrievers.put(
-			GenericsUtil.getItemClassName(layoutListRetriever),
+			GenericsUtil.getGenericClassName(layoutListRetriever),
 			layoutListRetriever);
 	}
 
@@ -53,7 +53,7 @@ public class LayoutListRetrieverTrackerImpl
 		LayoutListRetriever layoutListRetriever) {
 
 		_layoutListRetrievers.remove(
-			GenericsUtil.getItemClassName(layoutListRetriever));
+			GenericsUtil.getGenericClassName(layoutListRetriever));
 	}
 
 	private final Map<String, LayoutListRetriever> _layoutListRetrievers =

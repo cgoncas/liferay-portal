@@ -14,9 +14,9 @@
 
 package com.liferay.info.internal.list.provider;
 
-import com.liferay.info.internal.util.GenericsUtil;
 import com.liferay.info.list.provider.InfoListProvider;
 import com.liferay.info.list.provider.InfoListProviderTracker;
+import com.liferay.petra.reflect.GenericsUtil;
 import com.liferay.portal.kernel.util.Validator;
 
 import java.util.ArrayList;
@@ -52,7 +52,8 @@ public class InfoListProviderTrackerImpl implements InfoListProviderTracker {
 
 	@Override
 	public List<InfoListProvider> getInfoListProviders(Class<?> itemClass) {
-		return getInfoListProviders(GenericsUtil.getItemClassName(itemClass));
+		return getInfoListProviders(
+			GenericsUtil.getGenericClassName(itemClass));
 	}
 
 	@Override
@@ -76,7 +77,7 @@ public class InfoListProviderTrackerImpl implements InfoListProviderTracker {
 
 		List<InfoListProvider> itemClassInfoListProviders =
 			_itemClassInfoListProviders.computeIfAbsent(
-				GenericsUtil.getItemClassName(infoListProvider),
+				GenericsUtil.getGenericClassName(infoListProvider),
 				itemClass -> new ArrayList<>());
 
 		itemClassInfoListProviders.add(infoListProvider);
@@ -87,7 +88,7 @@ public class InfoListProviderTrackerImpl implements InfoListProviderTracker {
 
 		List<InfoListProvider> itemClassInfoListProviders =
 			_itemClassInfoListProviders.get(
-				GenericsUtil.getItemClassName(infoListProvider));
+				GenericsUtil.getGenericClassName(infoListProvider));
 
 		if (itemClassInfoListProviders != null) {
 			itemClassInfoListProviders.remove(infoListProvider);
