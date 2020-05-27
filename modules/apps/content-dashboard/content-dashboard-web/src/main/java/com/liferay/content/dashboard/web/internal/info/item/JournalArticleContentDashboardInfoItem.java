@@ -36,6 +36,16 @@ public class JournalArticleContentDashboardInfoItem
 	}
 
 	@Override
+	public String getClassName() {
+		return JournalArticle.class.getCanonicalName();
+	}
+
+	@Override
+	public JournalArticle getObject() {
+		return _journalArticle;
+	}
+
+	@Override
 	public Date getExpiredDate() {
 		return _journalArticle.getExpirationDate();
 	}

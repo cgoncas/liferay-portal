@@ -22,6 +22,10 @@ import java.util.Locale;
  */
 public interface ContentDashboardInfoItem<T> {
 
+	public String getClassName();
+
+	public T getObject();
+
 	public Date getExpiredDate();
 
 	public Date getModifiedDate();

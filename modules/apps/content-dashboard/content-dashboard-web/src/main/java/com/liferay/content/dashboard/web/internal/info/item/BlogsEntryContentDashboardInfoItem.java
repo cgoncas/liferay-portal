@@ -37,6 +37,16 @@ public class BlogsEntryContentDashboardInfoItem
 	}
 
 	@Override
+	public String getClassName() {
+		return BlogsEntry.class.getCanonicalName();
+	}
+
+	@Override
+	public BlogsEntry getObject() {
+		return _blogsEntry;
+	}
+
+	@Override
 	public Date getExpiredDate() {
 		return null;
 	}

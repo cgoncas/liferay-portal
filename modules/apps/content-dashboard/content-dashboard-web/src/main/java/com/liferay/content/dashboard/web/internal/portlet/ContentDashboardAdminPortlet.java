@@ -15,12 +15,13 @@
 package com.liferay.content.dashboard.web.internal.portlet;
 
 import com.liferay.content.dashboard.web.internal.constants.ContentDashboardPortletKeys;
+import com.liferay.content.dashboard.web.internal.dao.search.ContentDashboardInfoItemSearchContainerFactory;
+import com.liferay.content.dashboard.web.internal.display.context.ContentDashboardAdminDisplayContext;
 import com.liferay.content.dashboard.web.internal.display.context.ContentDashboardAdminManagementToolbarDisplayContext;
 import com.liferay.content.dashboard.web.internal.info.item.ContentDashboardInfoItem;
 import com.liferay.content.dashboard.web.internal.info.item.ContentDashboardInfoItemFactoryTracker;
+import com.liferay.info.display.url.provider.InfoEditURLProviderTracker;
 import com.liferay.portal.kernel.dao.search.SearchContainer;
-import com.liferay.content.dashboard.web.internal.dao.search.ContentDashboardInfoItemSearchContainerFactory;
-import com.liferay.content.dashboard.web.internal.display.context.ContentDashboardAdminDisplayContext;
 import com.liferay.portal.kernel.portlet.bridges.mvc.MVCPortlet;
 import com.liferay.portal.kernel.util.Portal;
 
@@ -30,6 +31,7 @@ import javax.portlet.Portlet;
 import javax.portlet.PortletException;
 import javax.portlet.RenderRequest;
 import javax.portlet.RenderResponse;
+import javax.servlet.http.HttpServletRequest;
 
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;
@@ -74,9 +76,14 @@ public class ContentDashboardAdminPortlet extends MVCPortlet {
 		SearchContainer<ContentDashboardInfoItem<?>> searchContainer =
 			contentDashboardInfoItemSearchContainerFactory.create();
 
+		HttpServletRequest httpServletRequest =
+			_portal.getHttpServletRequest(renderRequest);
+
 		ContentDashboardAdminDisplayContext
 			contentDashboardAdminDisplayContext =
-				new ContentDashboardAdminDisplayContext(searchContainer);
+				new ContentDashboardAdminDisplayContext(
+					httpServletRequest, _infoEditURLProviderTracker,
+					searchContainer);
 
 		renderRequest.setAttribute(
 			ContentDashboardPortletKeys.CONTENT_DASHBOARD_ADMIN_DISPLAY_CONTEXT,
@@ -85,7 +92,7 @@ public class ContentDashboardAdminPortlet extends MVCPortlet {
 		ContentDashboardAdminManagementToolbarDisplayContext
 			contentDashboardAdminManagementToolbarDisplayContext =
 				new ContentDashboardAdminManagementToolbarDisplayContext(
-					_portal.getHttpServletRequest(renderRequest),
+					httpServletRequest,
 					_portal.getLiferayPortletRequest(renderRequest),
 					_portal.getLiferayPortletResponse(renderResponse),
 					searchContainer);
@@ -104,5 +111,8 @@ public class ContentDashboardAdminPortlet extends MVCPortlet {
 
 	@Reference
 	private Portal _portal;
+
+	@Reference
+	private InfoEditURLProviderTracker _infoEditURLProviderTracker;
 
 }

@@ -15,7 +15,11 @@
 package com.liferay.content.dashboard.web.internal.display.context;
 
 import com.liferay.content.dashboard.web.internal.info.item.ContentDashboardInfoItem;
+import com.liferay.info.display.url.provider.InfoEditURLProvider;
+import com.liferay.info.display.url.provider.InfoEditURLProviderTracker;
 import com.liferay.portal.kernel.dao.search.SearchContainer;
+
+import javax.servlet.http.HttpServletRequest;
 
 /**
  * @author Cristina González
@@ -23,10 +27,16 @@ import com.liferay.portal.kernel.dao.search.SearchContainer;
 public class ContentDashboardAdminDisplayContext {
 
 	public ContentDashboardAdminDisplayContext(
+		HttpServletRequest httpServletRequest,
+		InfoEditURLProviderTracker infoEditURLProviderTracker,
 		SearchContainer<ContentDashboardInfoItem<?>> searchContainer) {
 
+		_httpServletRequest = httpServletRequest;
+		_infoEditURLProviderTracker = infoEditURLProviderTracker;
 		_searchContainer = searchContainer;
 	}
+
+	private InfoEditURLProviderTracker _infoEditURLProviderTracker;
 
 	public SearchContainer<ContentDashboardInfoItem<?>> getSearchContainer() {
 		return _searchContainer;
@@ -34,4 +44,17 @@ public class ContentDashboardAdminDisplayContext {
 
 	private final SearchContainer<ContentDashboardInfoItem<?>> _searchContainer;
 
+	public String getEditURL(ContentDashboardInfoItem contentDashboardInfoItem)
+		throws Exception {
+
+		InfoEditURLProvider infoEditURLProvider =
+			_infoEditURLProviderTracker.getInfoEditURLProvider(
+				contentDashboardInfoItem.getClassName());
+
+		return infoEditURLProvider.getURL(
+			contentDashboardInfoItem.getObject(), _httpServletRequest);
+
+	}
+
+	private final HttpServletRequest _httpServletRequest;
 }
