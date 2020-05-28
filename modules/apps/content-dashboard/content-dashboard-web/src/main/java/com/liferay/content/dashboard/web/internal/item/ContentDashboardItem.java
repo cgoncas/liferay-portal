@@ -12,7 +12,7 @@
  * details.
  */
 
-package com.liferay.content.dashboard.web.internal.info.item;
+package com.liferay.content.dashboard.web.internal.item;
 
 import java.util.Date;
 import java.util.Locale;
@@ -20,7 +20,7 @@ import java.util.Locale;
 /**
  * @author Cristina González
  */
-public interface ContentDashboardInfoItem<T> {
+public interface ContentDashboardItem<T> {
 
 	public Date getExpiredDate();
 

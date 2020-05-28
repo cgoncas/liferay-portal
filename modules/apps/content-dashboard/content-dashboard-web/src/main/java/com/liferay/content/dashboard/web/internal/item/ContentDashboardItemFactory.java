@@ -12,16 +12,15 @@
  * details.
  */
 
-package com.liferay.content.dashboard.web.internal.info.item;
+package com.liferay.content.dashboard.web.internal.item;
 
 import com.liferay.portal.kernel.exception.PortalException;
 
 /**
  * @author Cristina González
  */
-public interface ContentDashboardInfoItemFactory<T> {
+public interface ContentDashboardItemFactory<T> {
 
-	public ContentDashboardInfoItem<T> create(long classPK)
-		throws PortalException;
+	public ContentDashboardItem<T> create(long classPK) throws PortalException;
 
 }
