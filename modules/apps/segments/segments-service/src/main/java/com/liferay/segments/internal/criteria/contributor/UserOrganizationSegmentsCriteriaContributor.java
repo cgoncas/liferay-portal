@@ -80,12 +80,11 @@ public class UserOrganizationSegmentsCriteriaContributor
 			for (Organization organization : organizations) {
 				sb.append("'");
 				sb.append(organization.getOrganizationId());
-				sb.append("'");
-				sb.append(", ");
+				sb.append("', ");
 			}
 
 			if (!organizations.isEmpty()) {
-				sb.setIndex(sb.index() - 1);
+				sb.setStringAt("'", sb.index() - 1);
 			}
 
 			sb.append(")");
