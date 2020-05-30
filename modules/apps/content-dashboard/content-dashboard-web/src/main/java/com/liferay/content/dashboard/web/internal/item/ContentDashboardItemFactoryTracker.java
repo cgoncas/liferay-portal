@@ -38,12 +38,10 @@ public class ContentDashboardItemFactoryTracker {
 		return Collections.unmodifiableCollection(_serviceTrackerMap.keySet());
 	}
 
-	public <T> Optional<ContentDashboardItemFactory<T>>
-		getContentDashboardInfoItemFactoryOptional(String className) {
+	public Optional<ContentDashboardItemFactory<?>>
+		getContentDashboardItemFactoryOptional(String className) {
 
-		return Optional.ofNullable(
-			(ContentDashboardItemFactory<T>)_serviceTrackerMap.getService(
-				className));
+		return Optional.ofNullable(_serviceTrackerMap.getService(className));
 	}
 
 	@Activate
@@ -54,9 +52,9 @@ public class ContentDashboardItemFactoryTracker {
 					bundleContext, ContentDashboardItemFactory.class, null,
 					ServiceReferenceMapperFactory.create(
 						bundleContext,
-						(contentDashboardInfoItem, emitter) -> emitter.emit(
+						(contentDashboardItem, emitter) -> emitter.emit(
 							GenericUtil.getGenericClass(
-								contentDashboardInfoItem))));
+								contentDashboardItem))));
 	}
 
 	@Deactivate
