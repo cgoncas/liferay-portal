@@ -50,6 +50,7 @@ ContentDashboardAdminManagementToolbarDisplayContext contentDashboardAdminManage
 
 		<clay:management-toolbar
 			displayContext="<%= contentDashboardAdminManagementToolbarDisplayContext %>"
+			selectable="<%= false %>"
 		/>
 
 		<c:choose>
