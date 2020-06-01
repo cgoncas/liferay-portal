@@ -19,7 +19,7 @@ import com.liferay.portal.kernel.search.Field;
 import com.liferay.portal.kernel.search.Indexer;
 
 import java.util.Collection;
-import java.util.stream.Stream;
+import java.util.Collections;
 
 /**
  * @author Cristina González
@@ -32,13 +32,11 @@ public class ContentDashboardSearcher extends BaseSearcher {
 
 	@Override
 	public String[] getSearchClassNames() {
-		Stream<String> stream = _classNames.stream();
-
-		return stream.toArray(String[]::new);
+		return _classNames.toArray(new String[0]);
 	}
 
 	private ContentDashboardSearcher(Collection<String> classNames) {
-		_classNames = classNames;
+		_classNames = Collections.unmodifiableCollection(classNames);
 
 		setDefaultSelectedFieldNames(
 			Field.ENTRY_CLASS_NAME, Field.ENTRY_CLASS_PK, Field.UID);
