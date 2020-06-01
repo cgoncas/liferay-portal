@@ -18,7 +18,6 @@ import com.liferay.content.dashboard.web.internal.item.ContentDashboardItem;
 import com.liferay.content.dashboard.web.internal.item.ContentDashboardItemFactory;
 import com.liferay.content.dashboard.web.internal.item.ContentDashboardItemFactoryTracker;
 import com.liferay.content.dashboard.web.internal.search.ContentDashboardSearcher;
-import com.liferay.portal.kernel.dao.search.EmptyOnClickRowChecker;
 import com.liferay.portal.kernel.dao.search.SearchContainer;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.log.Log;
@@ -82,9 +81,6 @@ public class ContentDashboardItemSearchContainerFactory {
 			_renderRequest, "orderByType", "asc");
 
 		searchContainer.setOrderByType(orderByType);
-
-		searchContainer.setRowChecker(
-			new EmptyOnClickRowChecker(_renderResponse));
 
 		Hits hits = _getHits(
 			orderByCol, orderByType, _portal.getLocale(_renderRequest),
