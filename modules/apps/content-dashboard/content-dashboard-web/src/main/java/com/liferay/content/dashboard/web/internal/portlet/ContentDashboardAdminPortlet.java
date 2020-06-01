@@ -69,8 +69,8 @@ public class ContentDashboardAdminPortlet extends MVCPortlet {
 		ContentDashboardItemSearchContainerFactory
 			contentDashboardItemSearchContainerFactory =
 				ContentDashboardItemSearchContainerFactory.getInstance(
-					renderRequest, renderResponse,
-					_contentDashboardItemFactoryTracker, _portal);
+					_contentDashboardItemFactoryTracker, _portal, renderRequest,
+					renderResponse);
 
 		SearchContainer<ContentDashboardItem<?>> searchContainer =
 			contentDashboardItemSearchContainerFactory.create();
