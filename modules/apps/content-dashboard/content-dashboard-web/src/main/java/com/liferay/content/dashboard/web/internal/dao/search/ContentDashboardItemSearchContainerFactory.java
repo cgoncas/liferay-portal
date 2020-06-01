@@ -54,25 +54,13 @@ import javax.portlet.RenderResponse;
 public class ContentDashboardItemSearchContainerFactory {
 
 	public static ContentDashboardItemSearchContainerFactory getInstance(
-		RenderRequest renderRequest, RenderResponse renderResponse,
 		ContentDashboardItemFactoryTracker contentDashboardItemFactoryTracker,
-		Portal portal) {
+		Portal portal, RenderRequest renderRequest,
+		RenderResponse renderResponse) {
 
 		return new ContentDashboardItemSearchContainerFactory(
-			renderRequest, renderResponse, contentDashboardItemFactoryTracker,
-			portal);
-	}
-
-	public ContentDashboardItemSearchContainerFactory(
-		RenderRequest renderRequest, RenderResponse renderResponse,
-		ContentDashboardItemFactoryTracker contentDashboardItemFactoryTracker,
-		Portal portal) {
-
-		_renderRequest = renderRequest;
-		_renderResponse = renderResponse;
-		_contentDashboardItemFactoryTracker =
-			contentDashboardItemFactoryTracker;
-		_portal = portal;
+			contentDashboardItemFactoryTracker, portal, renderRequest,
+			renderResponse);
 	}
 
 	public SearchContainer<ContentDashboardItem<?>> create()
@@ -107,6 +95,18 @@ public class ContentDashboardItemSearchContainerFactory {
 		searchContainer.setTotal(hits.getLength());
 
 		return searchContainer;
+	}
+
+	private ContentDashboardItemSearchContainerFactory(
+		ContentDashboardItemFactoryTracker contentDashboardItemFactoryTracker,
+		Portal portal, RenderRequest renderRequest,
+		RenderResponse renderResponse) {
+
+		_contentDashboardItemFactoryTracker =
+			contentDashboardItemFactoryTracker;
+		_portal = portal;
+		_renderRequest = renderRequest;
+		_renderResponse = renderResponse;
 	}
 
 	private List<ContentDashboardItem<?>> _getContentDashboardItems(
