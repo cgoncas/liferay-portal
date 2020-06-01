@@ -104,7 +104,7 @@ ContentDashboardAdminManagementToolbarDisplayContext contentDashboardAdminManage
 
 					<liferay-ui:search-container-column-date
 						name="expiration-date"
-						value="<%= contentDashboardItem.getExpiredDate() %>"
+						value="<%= contentDashboardItem.getExpirationDate() %>"
 					/>
 				</liferay-ui:search-container-row>
 
