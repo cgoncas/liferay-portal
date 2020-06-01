@@ -70,6 +70,11 @@ public class ContentDashboardAdminManagementToolbarDisplayContext
 		return false;
 	}
 
+	@Override
+	public Boolean isSelectable() {
+		return false;
+	}
+
 	private static final Log _log = LogFactoryUtil.getLog(
 		ContentDashboardAdminManagementToolbarDisplayContext.class);
 

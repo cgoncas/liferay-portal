@@ -52,7 +52,6 @@ ContentDashboardAdminManagementToolbarDisplayContext contentDashboardAdminManage
 
 		<clay:management-toolbar
 			displayContext="<%= contentDashboardAdminManagementToolbarDisplayContext %>"
-			selectable="<%= false %>"
 		/>
 
 		<div class="sheet-section">
