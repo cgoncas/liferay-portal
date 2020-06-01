@@ -53,7 +53,7 @@ public class ContentDashboardItemFactoryTracker {
 					ServiceReferenceMapperFactory.create(
 						bundleContext,
 						(contentDashboardItem, emitter) -> emitter.emit(
-							GenericUtil.getGenericClass(
+							GenericUtil.getGenericClassName(
 								contentDashboardItem))));
 	}
 
