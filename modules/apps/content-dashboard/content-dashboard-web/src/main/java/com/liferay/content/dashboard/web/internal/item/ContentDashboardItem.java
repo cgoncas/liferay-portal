@@ -38,4 +38,6 @@ public interface ContentDashboardItem<T> {
 
 	public long getUserId();
 
+	public String getUserName();
+
 }

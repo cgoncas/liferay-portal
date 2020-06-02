@@ -67,9 +67,11 @@ ContentDashboardAdminManagementToolbarDisplayContext contentDashboardAdminManage
 					<liferay-ui:search-container-column-text
 						name="author"
 					>
-						<liferay-ui:user-portrait
-							userId="<%= contentDashboardItem.getUserId() %>"
-						/>
+						<span class="lfr-portal-tooltip" title="<%= HtmlUtil.escape(contentDashboardItem.getUserName()) %>">
+							<liferay-ui:user-portrait
+								userId="<%= contentDashboardItem.getUserId() %>"
+							/>
+						</span>
 					</liferay-ui:search-container-column-text>
 
 					<liferay-ui:search-container-column-text

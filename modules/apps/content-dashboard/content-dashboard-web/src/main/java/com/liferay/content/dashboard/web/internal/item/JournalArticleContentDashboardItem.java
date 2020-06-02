@@ -73,6 +73,11 @@ public class JournalArticleContentDashboardItem
 		return _journalArticle.getUserId();
 	}
 
+	@Override
+	public String getUserName() {
+		return _journalArticle.getUserName();
+	}
+
 	private final JournalArticle _journalArticle;
 
 }
