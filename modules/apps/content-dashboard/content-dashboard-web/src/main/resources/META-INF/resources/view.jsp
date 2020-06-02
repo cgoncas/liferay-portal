@@ -75,9 +75,13 @@ ContentDashboardAdminManagementToolbarDisplayContext contentDashboardAdminManage
 					</liferay-ui:search-container-column-text>
 
 					<liferay-ui:search-container-column-text
+						cssClass="table-cell-expand table-title"
 						name="title"
-						value="<%= HtmlUtil.escape(contentDashboardItem.getTitle(locale)) %>"
-					/>
+					>
+						<span class="lfr-portal-tooltip text-truncate-inline" title="<%= HtmlUtil.escape(contentDashboardItem.getTitle(locale)) %>">
+							<span class="text-truncate"><%= HtmlUtil.escape(contentDashboardItem.getTitle(locale)) %></span>
+						</span>
+					</liferay-ui:search-container-column-text>
 
 					<liferay-ui:search-container-column-text
 						name="type"
