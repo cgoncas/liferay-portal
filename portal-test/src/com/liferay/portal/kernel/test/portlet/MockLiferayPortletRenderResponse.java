@@ -106,7 +106,7 @@ public class MockLiferayPortletRenderResponse
 	public LiferayPortletURL createLiferayPortletURL(
 		long plid, String portletName, String lifecycle) {
 
-		return null;
+		return new MockLiferayPortletURL();
 	}
 
 	@Override
@@ -114,14 +114,14 @@ public class MockLiferayPortletRenderResponse
 		long plid, String portletName, String lifecycle,
 		boolean includeLinkToLayoutUuid) {
 
-		return null;
+		return new MockLiferayPortletURL();
 	}
 
 	@Override
 	public LiferayPortletURL createLiferayPortletURL(
 		long plid, String portletName, String lifecycle, Copy copy) {
 
-		return null;
+		return new MockLiferayPortletURL();
 	}
 
 	@Override
@@ -129,26 +129,26 @@ public class MockLiferayPortletRenderResponse
 		long plid, String portletName, String lifecycle, Copy copy,
 		boolean includeLinkToLayoutUuid) {
 
-		return null;
+		return new MockLiferayPortletURL();
 	}
 
 	@Override
 	public LiferayPortletURL createLiferayPortletURL(String lifecycle) {
-		return null;
+		return new MockLiferayPortletURL();
 	}
 
 	@Override
 	public LiferayPortletURL createLiferayPortletURL(
 		String portletName, String lifecycle) {
 
-		return null;
+		return new MockLiferayPortletURL();
 	}
 
 	@Override
 	public LiferayPortletURL createLiferayPortletURL(
 		String portletName, String lifecycle, Copy copy) {
 
-		return null;
+		return new MockLiferayPortletURL();
 	}
 
 	@Override

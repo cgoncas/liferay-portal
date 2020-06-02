@@ -91,12 +91,12 @@ public class MockLiferayResourceResponse
 
 	@Override
 	public LiferayPortletURL createActionURL(String portletName) {
-		return null;
+		return new MockLiferayPortletURL();
 	}
 
 	@Override
 	public LiferayPortletURL createActionURL(String portletName, Copy copy) {
-		return null;
+		return new MockLiferayPortletURL();
 	}
 
 	@Override
@@ -108,7 +108,7 @@ public class MockLiferayResourceResponse
 	public LiferayPortletURL createLiferayPortletURL(
 		long plid, String portletName, String lifecycle) {
 
-		return null;
+		return new MockLiferayPortletURL();
 	}
 
 	@Override
@@ -116,14 +116,14 @@ public class MockLiferayResourceResponse
 		long plid, String portletName, String lifecycle,
 		boolean includeLinkToLayoutUuid) {
 
-		return null;
+		return new MockLiferayPortletURL();
 	}
 
 	@Override
 	public LiferayPortletURL createLiferayPortletURL(
 		long plid, String portletName, String lifecycle, Copy copy) {
 
-		return null;
+		return new MockLiferayPortletURL();
 	}
 
 	@Override
@@ -131,26 +131,26 @@ public class MockLiferayResourceResponse
 		long plid, String portletName, String lifecycle, Copy copy,
 		boolean includeLinkToLayoutUuid) {
 
-		return null;
+		return new MockLiferayPortletURL();
 	}
 
 	@Override
 	public LiferayPortletURL createLiferayPortletURL(String lifecycle) {
-		return null;
+		return new MockLiferayPortletURL();
 	}
 
 	@Override
 	public LiferayPortletURL createLiferayPortletURL(
 		String portletName, String lifecycle) {
 
-		return null;
+		return new MockLiferayPortletURL();
 	}
 
 	@Override
 	public LiferayPortletURL createLiferayPortletURL(
 		String portletName, String lifecycle, Copy copy) {
 
-		return null;
+		return new MockLiferayPortletURL();
 	}
 
 	@Override
@@ -165,22 +165,22 @@ public class MockLiferayResourceResponse
 
 	@Override
 	public LiferayPortletURL createRenderURL(String portletName) {
-		return null;
+		return new MockLiferayPortletURL();
 	}
 
 	@Override
 	public LiferayPortletURL createRenderURL(String portletName, Copy copy) {
-		return null;
+		return new MockLiferayPortletURL();
 	}
 
 	@Override
 	public ResourceURL createResourceURL() {
-		return null;
+		return new MockLiferayPortletURL();
 	}
 
 	@Override
 	public LiferayPortletURL createResourceURL(String portletName) {
-		return null;
+		return new MockLiferayPortletURL();
 	}
 
 	@Override

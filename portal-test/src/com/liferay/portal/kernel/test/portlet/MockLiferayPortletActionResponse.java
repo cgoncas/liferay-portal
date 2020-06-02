@@ -93,14 +93,14 @@ public class MockLiferayPortletActionResponse
 
 	@Override
 	public LiferayPortletURL createActionURL(String portletName) {
-		return null;
+		return new MockLiferayPortletURL();
 	}
 
 	@Override
 	public LiferayPortletURL createActionURL(
 		String portletName, MimeResponse.Copy copy) {
 
-		return null;
+		return new MockLiferayPortletURL();
 	}
 
 	@Override
@@ -112,7 +112,7 @@ public class MockLiferayPortletActionResponse
 	public LiferayPortletURL createLiferayPortletURL(
 		long plid, String portletName, String lifecycle) {
 
-		return null;
+		return new MockLiferayPortletURL();
 	}
 
 	@Override
@@ -120,7 +120,7 @@ public class MockLiferayPortletActionResponse
 		long plid, String portletName, String lifecycle,
 		boolean includeLinkToLayoutUuid) {
 
-		return null;
+		return new MockLiferayPortletURL();
 	}
 
 	@Override
@@ -128,7 +128,7 @@ public class MockLiferayPortletActionResponse
 		long plid, String portletName, String lifecycle,
 		MimeResponse.Copy copy) {
 
-		return null;
+		return new MockLiferayPortletURL();
 	}
 
 	@Override
@@ -136,26 +136,26 @@ public class MockLiferayPortletActionResponse
 		long plid, String portletName, String lifecycle, MimeResponse.Copy copy,
 		boolean includeLinkToLayoutUuid) {
 
-		return null;
+		return new MockLiferayPortletURL();
 	}
 
 	@Override
 	public LiferayPortletURL createLiferayPortletURL(String lifecycle) {
-		return null;
+		return new MockLiferayPortletURL();
 	}
 
 	@Override
 	public LiferayPortletURL createLiferayPortletURL(
 		String portletName, String lifecycle) {
 
-		return null;
+		return new MockLiferayPortletURL();
 	}
 
 	@Override
 	public LiferayPortletURL createLiferayPortletURL(
 		String portletName, String lifecycle, MimeResponse.Copy copy) {
 
-		return null;
+		return new MockLiferayPortletURL();
 	}
 
 	@Override
@@ -177,14 +177,14 @@ public class MockLiferayPortletActionResponse
 
 	@Override
 	public LiferayPortletURL createRenderURL(String portletName) {
-		return null;
+		return new MockLiferayPortletURL();
 	}
 
 	@Override
 	public LiferayPortletURL createRenderURL(
 		String portletName, MimeResponse.Copy copy) {
 
-		return null;
+		return new MockLiferayPortletURL();
 	}
 
 	@Override
@@ -194,7 +194,7 @@ public class MockLiferayPortletActionResponse
 
 	@Override
 	public LiferayPortletURL createResourceURL(String portletName) {
-		return null;
+		return new MockLiferayPortletURL();
 	}
 
 	@Override
