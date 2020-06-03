@@ -32,9 +32,9 @@ public interface ContentDashboardItem<T> {
 
 	public String getStatusStyle();
 
-	public String getTitle(Locale locale);
+	public String getSubtype(Locale locale);
 
-	public String getType(Locale locale);
+	public String getTitle(Locale locale);
 
 	public long getUserId();
 

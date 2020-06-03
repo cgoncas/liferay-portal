@@ -64,7 +64,6 @@ ContentDashboardAdminManagementToolbarDisplayContext contentDashboardAdminManage
 					keyProperty="id"
 					modelVar="contentDashboardItem"
 				>
-
 					<liferay-ui:search-container-column-text
 						cssClass="table-cell-expand table-title"
 						name="title"
@@ -85,8 +84,8 @@ ContentDashboardAdminManagementToolbarDisplayContext contentDashboardAdminManage
 					</liferay-ui:search-container-column-text>
 
 					<liferay-ui:search-container-column-text
-						name="type"
-						value="<%= HtmlUtil.escape(contentDashboardItem.getType(locale)) %>"
+						name="subtype"
+						value="<%= HtmlUtil.escape(contentDashboardItem.getSubtype(locale)) %>"
 					/>
 
 					<liferay-ui:search-container-column-text

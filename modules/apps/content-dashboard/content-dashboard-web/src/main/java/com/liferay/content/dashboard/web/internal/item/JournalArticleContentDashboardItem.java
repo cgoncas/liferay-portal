@@ -57,15 +57,15 @@ public class JournalArticleContentDashboardItem
 	}
 
 	@Override
-	public String getTitle(Locale locale) {
-		return _journalArticle.getTitle(locale);
-	}
-
-	@Override
-	public String getType(Locale locale) {
+	public String getSubtype(Locale locale) {
 		DDMStructure ddmStructure = _journalArticle.getDDMStructure();
 
 		return ddmStructure.getName(locale);
+	}
+
+	@Override
+	public String getTitle(Locale locale) {
+		return _journalArticle.getTitle(locale);
 	}
 
 	@Override
