@@ -64,15 +64,6 @@ ContentDashboardAdminManagementToolbarDisplayContext contentDashboardAdminManage
 					keyProperty="id"
 					modelVar="contentDashboardItem"
 				>
-					<liferay-ui:search-container-column-text
-						name="author"
-					>
-						<span class="lfr-portal-tooltip" title="<%= HtmlUtil.escape(contentDashboardItem.getUserName()) %>">
-							<liferay-ui:user-portrait
-								userId="<%= contentDashboardItem.getUserId() %>"
-							/>
-						</span>
-					</liferay-ui:search-container-column-text>
 
 					<liferay-ui:search-container-column-text
 						cssClass="table-cell-expand table-title"
@@ -80,6 +71,16 @@ ContentDashboardAdminManagementToolbarDisplayContext contentDashboardAdminManage
 					>
 						<span class="lfr-portal-tooltip text-truncate-inline" title="<%= HtmlUtil.escape(contentDashboardItem.getTitle(locale)) %>">
 							<span class="text-truncate"><%= HtmlUtil.escape(contentDashboardItem.getTitle(locale)) %></span>
+						</span>
+					</liferay-ui:search-container-column-text>
+
+					<liferay-ui:search-container-column-text
+						name="author"
+					>
+						<span class="lfr-portal-tooltip" title="<%= HtmlUtil.escape(contentDashboardItem.getUserName()) %>">
+							<liferay-ui:user-portrait
+								userId="<%= contentDashboardItem.getUserId() %>"
+							/>
 						</span>
 					</liferay-ui:search-container-column-text>
 
