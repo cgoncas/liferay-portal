@@ -18,6 +18,7 @@ import com.liferay.content.dashboard.web.internal.item.ContentDashboardItem;
 import com.liferay.frontend.taglib.clay.servlet.taglib.display.context.SearchContainerManagementToolbarDisplayContext;
 import com.liferay.frontend.taglib.clay.servlet.taglib.util.DropdownItem;
 import com.liferay.frontend.taglib.clay.servlet.taglib.util.DropdownItemListBuilder;
+import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.dao.search.SearchContainer;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
@@ -49,6 +50,15 @@ public class ContentDashboardAdminManagementToolbarDisplayContext
 	}
 
 	@Override
+	public String getClearResultsURL() {
+		PortletURL clearResultsURL = getPortletURL();
+
+		clearResultsURL.setParameter("keywords", StringPool.BLANK);
+
+		return String.valueOf(clearResultsURL);
+	}
+
+	@Override
 	public List<DropdownItem> getFilterDropdownItems() {
 		return DropdownItemListBuilder.addGroup(
 			dropdownGroupItem -> {
@@ -74,9 +84,7 @@ public class ContentDashboardAdminManagementToolbarDisplayContext
 
 	@Override
 	public String getSearchActionURL() {
-		PortletURL searchActionURL = getPortletURL();
-
-		return searchActionURL.toString();
+		return String.valueOf(getPortletURL());
 	}
 
 	@Override
