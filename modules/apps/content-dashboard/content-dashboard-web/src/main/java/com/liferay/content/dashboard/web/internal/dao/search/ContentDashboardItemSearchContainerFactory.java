@@ -73,12 +73,12 @@ public class ContentDashboardItemSearchContainerFactory {
 				_renderRequest, portletURL, null, "there-is-no-content");
 
 		String orderByCol = ParamUtil.getString(
-			_renderRequest, "orderByCol", "title");
+			_renderRequest, "orderByCol", "modified-date");
 
 		searchContainer.setOrderByCol(orderByCol);
 
 		String orderByType = ParamUtil.getString(
-			_renderRequest, "orderByType", "asc");
+			_renderRequest, "orderByType", "desc");
 
 		searchContainer.setOrderByType(orderByType);
 
