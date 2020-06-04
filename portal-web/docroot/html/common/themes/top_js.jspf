@@ -192,9 +192,15 @@
 
 				<%
 				String completeURL = PortalUtil.getCurrentCompleteURL(request);
+
+				String canonicalURL = PortalUtil.getCanonicalURL(completeURL, themeDisplay, layout, false, false);
+
+				LayoutSEOLinkManager layoutSEOLinkManager = LayoutSEOLinkManagerUtil.getLayoutSEOLinkManager();
+
+				LayoutSEOLink layoutSEOLink = layoutSEOLinkManager.getCanonicalLayoutSEOLink(layout, themeDisplay.getLocale(), canonicalURL, PortalUtil.getAlternateURLs(canonicalURL, themeDisplay, layout));
 				%>
 
-				return '<%= HtmlUtil.escapeJS(PortalUtil.getCanonicalURL(completeURL, themeDisplay, layout, false, false)) %>';
+				return '<%= HtmlUtil.escapeJS(layoutSEOLink.getHref()) %>';
 			},
 			getCDNBaseURL: function() {
 				return '<%= themeDisplay.getCDNBaseURL() %>';
