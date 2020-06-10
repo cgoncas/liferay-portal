@@ -94,10 +94,22 @@ ContentDashboardAdminManagementToolbarDisplayContext contentDashboardAdminManage
 					<liferay-ui:search-container-column-text
 						name="status"
 					>
-						<clay:label
-							label="<%= StringUtil.toUpperCase(contentDashboardItem.getStatusLabel(locale)) %>"
-							style="<%= contentDashboardItem.getStatusStyle() %>"
-						/>
+
+						<%
+						List<ContentDashboardItem.Status> statuses = contentDashboardItem.getStatuses(locale);
+
+						for (ContentDashboardItem.Status status : statuses) {
+						%>
+
+							<clay:label
+								label="<%= StringUtil.toUpperCase(status.getLabel()) %>"
+								style="<%= status.getStyle() %>"
+							/>
+
+						<%
+						}
+						%>
+
 					</liferay-ui:search-container-column-text>
 
 					<liferay-ui:search-container-column-date
