@@ -33,10 +33,6 @@ public interface ContentDashboardItem<T> {
 
 	public List<Status> getStatuses(Locale locale);
 
-	public String getStatusLabel(Locale locale);
-
-	public String getStatusStyle();
-
 	public String getSubtype(Locale locale);
 
 	public String getTitle(Locale locale);

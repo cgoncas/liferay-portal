@@ -95,29 +95,6 @@ public class JournalArticleContentDashboardItemTest {
 	}
 
 	@Test
-	public void testGetStatusLabel() {
-		JournalArticle journalArticle = _getJournalArticle();
-
-		JournalArticleContentDashboardItem journalArticleContentDashboardItem =
-			new JournalArticleContentDashboardItem(null, journalArticle, null);
-
-		Assert.assertEquals(
-			WorkflowConstants.LABEL_APPROVED,
-			journalArticleContentDashboardItem.getStatusLabel(LocaleUtil.US));
-	}
-
-	@Test
-	public void testGetStatusStyle() {
-		JournalArticle journalArticle = _getJournalArticle();
-
-		JournalArticleContentDashboardItem journalArticleContentDashboardItem =
-			new JournalArticleContentDashboardItem(null, journalArticle, null);
-
-		Assert.assertEquals(
-			"success", journalArticleContentDashboardItem.getStatusStyle());
-	}
-
-	@Test
 	public void testGetSubtype() {
 		JournalArticle journalArticle = _getJournalArticle();
 

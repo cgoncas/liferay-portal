@@ -75,16 +75,6 @@ public class JournalArticleContentDashboardItem
 	}
 
 	@Override
-	public String getStatusLabel(Locale locale) {
-		return WorkflowConstants.getStatusLabel(_journalArticle.getStatus());
-	}
-
-	@Override
-	public String getStatusStyle() {
-		return WorkflowConstants.getStatusStyle(_journalArticle.getStatus());
-	}
-
-	@Override
 	public String getSubtype(Locale locale) {
 		DDMStructure ddmStructure = _journalArticle.getDDMStructure();
 
