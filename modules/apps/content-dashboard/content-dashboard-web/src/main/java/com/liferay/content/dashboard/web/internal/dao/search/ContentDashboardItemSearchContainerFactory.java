@@ -129,12 +129,16 @@ public class ContentDashboardItemSearchContainerFactory {
 		SearchContext searchContext = SearchContextFactory.getInstance(
 			_portal.getHttpServletRequest(_renderRequest));
 
-		searchContext.setAttribute("latest", Boolean.TRUE);
-		searchContext.setAttribute(
-			"status",
-			GetterUtil.getInteger(
-				ParamUtil.getString(_renderRequest, "status"),
-				WorkflowConstants.STATUS_ANY));
+		Integer status = _getStatus();
+
+		if (status == WorkflowConstants.STATUS_APPROVED) {
+			searchContext.setAttribute("head", Boolean.TRUE);
+		}
+		else {
+			searchContext.setAttribute("latest", Boolean.TRUE);
+		}
+
+		searchContext.setAttribute("status", status);
 		searchContext.setEnd(end);
 		searchContext.setGroupIds(null);
 		searchContext.setKeywords(_getKeywords());
@@ -221,8 +225,9 @@ public class ContentDashboardItemSearchContainerFactory {
 	}
 
 	private int _getStatus() {
-		return ParamUtil.getInteger(
-			_renderRequest, "status", WorkflowConstants.STATUS_ANY);
+		return GetterUtil.getInteger(
+			ParamUtil.getInteger(
+				_renderRequest, "status", WorkflowConstants.STATUS_ANY));
 	}
 
 	private Optional<ContentDashboardItem<?>> _toContentDashboardItemOptional(
