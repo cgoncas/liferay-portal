@@ -46,4 +46,24 @@ public interface ContentDashboardItem<T> {
 
 	public boolean isViewURLEnabled(ThemeDisplay themeDisplay);
 
+	public static class Status {
+
+		public Status(String label, String style) {
+			_label = label;
+			_style = style;
+		}
+
+		public String getLabel() {
+			return _label;
+		}
+
+		public String getStyle() {
+			return _style;
+		}
+
+		private final String _label;
+		private final String _style;
+
+	}
+
 }
