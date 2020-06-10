@@ -95,6 +95,49 @@ public class JournalArticleContentDashboardItemTest {
 	}
 
 	@Test
+	public void testGetStatusesWithMultipleStatuses() {
+		JournalArticle journalArticle = _getJournalArticle();
+
+		Mockito.when(
+			journalArticle.hasApprovedVersion()
+		).thenReturn(
+			true
+		);
+
+		Mockito.when(
+			journalArticle.isApproved()
+		).thenReturn(
+			false
+		);
+
+		Mockito.when(
+			journalArticle.getStatus()
+		).thenReturn(
+			WorkflowConstants.STATUS_DRAFT
+		);
+
+		JournalArticleContentDashboardItem journalArticleContentDashboardItem =
+			new JournalArticleContentDashboardItem(
+				null, journalArticle, _getLanguage());
+
+		List<ContentDashboardItem.Status> statuses =
+			journalArticleContentDashboardItem.getStatuses(LocaleUtil.US);
+
+		Assert.assertEquals(statuses.toString(), 2, statuses.size());
+
+		ContentDashboardItem.Status status1 = statuses.get(0);
+
+		Assert.assertEquals(
+			WorkflowConstants.LABEL_APPROVED, status1.getLabel());
+		Assert.assertEquals("success", status1.getStyle());
+
+		ContentDashboardItem.Status status2 = statuses.get(1);
+
+		Assert.assertEquals(WorkflowConstants.LABEL_DRAFT, status2.getLabel());
+		Assert.assertEquals("secondary", status2.getStyle());
+	}
+
+	@Test
 	public void testGetSubtype() {
 		JournalArticle journalArticle = _getJournalArticle();
 
