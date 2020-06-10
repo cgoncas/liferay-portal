@@ -17,6 +17,7 @@ package com.liferay.content.dashboard.web.internal.item;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
 
 import java.util.Date;
+import java.util.List;
 import java.util.Locale;
 
 /**
@@ -29,6 +30,8 @@ public interface ContentDashboardItem<T> {
 	public Date getModifiedDate();
 
 	public Date getPublishDate();
+
+	public List<Status> getStatuses(Locale locale);
 
 	public String getStatusLabel(Locale locale);
 
