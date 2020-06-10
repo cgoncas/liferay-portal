@@ -18,6 +18,7 @@ import com.liferay.asset.display.page.portlet.AssetDisplayPageFriendlyURLProvide
 import com.liferay.journal.model.JournalArticle;
 import com.liferay.journal.service.JournalArticleLocalService;
 import com.liferay.portal.kernel.exception.PortalException;
+import com.liferay.portal.kernel.language.Language;
 
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;
@@ -35,7 +36,7 @@ public class JournalArticleContentDashboardInfoItemFactory
 
 		return new JournalArticleContentDashboardItem(
 			_assetDisplayPageFriendlyURLProvider,
-			_journalArticleLocalService.getLatestArticle(classPK));
+			_journalArticleLocalService.getLatestArticle(classPK), _language);
 	}
 
 	@Reference
@@ -44,5 +45,8 @@ public class JournalArticleContentDashboardInfoItemFactory
 
 	@Reference
 	private JournalArticleLocalService _journalArticleLocalService;
+
+	@Reference
+	private Language _language;
 
 }

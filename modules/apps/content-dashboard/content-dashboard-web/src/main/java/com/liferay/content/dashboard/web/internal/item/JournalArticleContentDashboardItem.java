@@ -19,13 +19,16 @@ import com.liferay.dynamic.data.mapping.model.DDMStructure;
 import com.liferay.journal.model.JournalArticle;
 import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.exception.PortalException;
+import com.liferay.portal.kernel.language.Language;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.kernel.workflow.WorkflowConstants;
 
+import java.util.Collections;
 import java.util.Date;
+import java.util.List;
 import java.util.Locale;
 import java.util.Optional;
 
@@ -37,11 +40,12 @@ public class JournalArticleContentDashboardItem
 
 	public JournalArticleContentDashboardItem(
 		AssetDisplayPageFriendlyURLProvider assetDisplayPageFriendlyURLProvider,
-		JournalArticle journalArticle) {
+		JournalArticle journalArticle, Language language) {
 
 		_assetDisplayPageFriendlyURLProvider =
 			assetDisplayPageFriendlyURLProvider;
 		_journalArticle = journalArticle;
+		_language = language;
 	}
 
 	@Override
@@ -57,6 +61,17 @@ public class JournalArticleContentDashboardItem
 	@Override
 	public Date getPublishDate() {
 		return _journalArticle.getDisplayDate();
+	}
+
+	@Override
+	public List<Status> getStatuses(Locale locale) {
+		return Collections.singletonList(
+			new Status(
+				_language.get(
+					locale,
+					WorkflowConstants.getStatusLabel(
+						_journalArticle.getStatus())),
+				WorkflowConstants.getStatusStyle(_journalArticle.getStatus())));
 	}
 
 	@Override
@@ -138,5 +153,6 @@ public class JournalArticleContentDashboardItem
 	private final AssetDisplayPageFriendlyURLProvider
 		_assetDisplayPageFriendlyURLProvider;
 	private final JournalArticle _journalArticle;
+	private final Language _language;
 
 }
