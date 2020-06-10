@@ -26,6 +26,7 @@ import com.liferay.portal.kernel.theme.ThemeDisplay;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.kernel.workflow.WorkflowConstants;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
@@ -65,13 +66,31 @@ public class JournalArticleContentDashboardItem
 
 	@Override
 	public List<Status> getStatuses(Locale locale) {
-		return Collections.singletonList(
+		List<Status> statuses = new ArrayList<>();
+
+		statuses.add(
 			new Status(
 				_language.get(
 					locale,
 					WorkflowConstants.getStatusLabel(
 						_journalArticle.getStatus())),
 				WorkflowConstants.getStatusStyle(_journalArticle.getStatus())));
+
+		if (_journalArticle.hasApprovedVersion() &&
+			!_journalArticle.isApproved()) {
+
+			statuses.add(
+				0,
+				new Status(
+					_language.get(
+						locale,
+						WorkflowConstants.getStatusLabel(
+							WorkflowConstants.STATUS_APPROVED)),
+					WorkflowConstants.getStatusStyle(
+						WorkflowConstants.STATUS_APPROVED)));
+		}
+
+		return Collections.unmodifiableList(statuses);
 	}
 
 	@Override

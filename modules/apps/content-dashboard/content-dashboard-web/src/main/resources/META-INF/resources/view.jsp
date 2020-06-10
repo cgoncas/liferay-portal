@@ -92,6 +92,7 @@ ContentDashboardAdminManagementToolbarDisplayContext contentDashboardAdminManage
 					/>
 
 					<liferay-ui:search-container-column-text
+						cssClass="text-nowrap"
 						name="status"
 					>
 

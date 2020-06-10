@@ -19,6 +19,7 @@ import com.liferay.journal.model.JournalArticle;
 import com.liferay.journal.service.JournalArticleLocalService;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.language.Language;
+import com.liferay.portal.kernel.workflow.WorkflowConstants;
 
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;
@@ -36,7 +37,9 @@ public class JournalArticleContentDashboardInfoItemFactory
 
 		return new JournalArticleContentDashboardItem(
 			_assetDisplayPageFriendlyURLProvider,
-			_journalArticleLocalService.getLatestArticle(classPK), _language);
+			_journalArticleLocalService.getLatestArticle(
+				classPK, WorkflowConstants.STATUS_ANY, false),
+			_language);
 	}
 
 	@Reference
