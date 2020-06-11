@@ -37,4 +37,11 @@ ContentDashboardItem contentDashboardItem = (ContentDashboardItem)row.getObject(
 			url="<%= contentDashboardAdminDisplayContext.getURLWithBackURL(contentDashboardItem.getViewURL(request)) %>"
 		/>
 	</c:if>
+
+	<c:if test="<%= contentDashboardItem.isEditURLEnabled(request) %>">
+		<liferay-ui:icon
+			message="edit"
+			url="<%= contentDashboardAdminDisplayContext.getURLWithBackURL(contentDashboardItem.getEditURL(request)) %>"
+		/>
+	</c:if>
 </liferay-ui:icon-menu>
