@@ -246,13 +246,12 @@ public class JournalArticleContentDashboardItemTest {
 
 		Assert.assertEquals(
 			"validURL",
-			journalArticleContentDashboardItem.getViewURL(_getThemeDisplay()));
+			journalArticleContentDashboardItem.getViewURL(
+				_getHttpServletRequest()));
 	}
 
 	@Test
-	public void testGetViewURLWithNullFriendlyURL()
-		throws CloneNotSupportedException {
-
+	public void testGetViewURLWithNullFriendlyURL() throws Exception {
 		JournalArticle journalArticle = _getJournalArticle();
 
 		AssetDisplayPageFriendlyURLProvider
@@ -266,7 +265,8 @@ public class JournalArticleContentDashboardItemTest {
 
 		Assert.assertEquals(
 			StringPool.BLANK,
-			journalArticleContentDashboardItem.getViewURL(_getThemeDisplay()));
+			journalArticleContentDashboardItem.getViewURL(
+				_getHttpServletRequest()));
 	}
 
 	@Test
@@ -339,7 +339,7 @@ public class JournalArticleContentDashboardItemTest {
 
 		Assert.assertTrue(
 			journalArticleContentDashboardItem.isViewURLEnabled(
-				_getThemeDisplay()));
+				_getHttpServletRequest()));
 	}
 
 	@Test
@@ -366,9 +366,7 @@ public class JournalArticleContentDashboardItemTest {
 	}
 
 	@Test
-	public void testIsViewURLEnabledWithNullFriendlyURL()
-		throws CloneNotSupportedException {
-
+	public void testIsViewURLEnabledWithNullFriendlyURL() throws Exception {
 		JournalArticle journalArticle = _getJournalArticle();
 
 		AssetDisplayPageFriendlyURLProvider
@@ -382,15 +380,23 @@ public class JournalArticleContentDashboardItemTest {
 
 		Assert.assertFalse(
 			journalArticleContentDashboardItem.isViewURLEnabled(
-				_getThemeDisplay()));
+				_getHttpServletRequest()));
 	}
 
 	private HttpServletRequest _getHttpServletRequest() throws Exception {
 		MockHttpServletRequest mockHttpServletRequest =
 			new MockHttpServletRequest();
 
+		ThemeDisplay themeDisplay = Mockito.mock(ThemeDisplay.class);
+
+		Mockito.when(
+			themeDisplay.clone()
+		).thenReturn(
+			themeDisplay
+		);
+
 		mockHttpServletRequest.setAttribute(
-			WebKeys.THEME_DISPLAY, _getThemeDisplay());
+			WebKeys.THEME_DISPLAY, themeDisplay);
 
 		return mockHttpServletRequest;
 	}
@@ -461,18 +467,6 @@ public class JournalArticleContentDashboardItemTest {
 		);
 
 		return language;
-	}
-
-	private ThemeDisplay _getThemeDisplay() throws CloneNotSupportedException {
-		ThemeDisplay themeDisplay = Mockito.mock(ThemeDisplay.class);
-
-		Mockito.when(
-			themeDisplay.clone()
-		).thenReturn(
-			themeDisplay
-		);
-
-		return themeDisplay;
 	}
 
 }
