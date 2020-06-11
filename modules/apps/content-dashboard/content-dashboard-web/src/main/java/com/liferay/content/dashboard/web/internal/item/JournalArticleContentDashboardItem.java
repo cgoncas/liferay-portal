@@ -142,8 +142,12 @@ public class JournalArticleContentDashboardItem
 	}
 
 	@Override
-	public String getViewURL(ThemeDisplay themeDisplay) {
+	public String getViewURL(HttpServletRequest httpServletRequest) {
 		try {
+			ThemeDisplay themeDisplay =
+				(ThemeDisplay)httpServletRequest.getAttribute(
+					WebKeys.THEME_DISPLAY);
+
 			ThemeDisplay clonedThemeDisplay =
 				(ThemeDisplay)themeDisplay.clone();
 
@@ -188,12 +192,12 @@ public class JournalArticleContentDashboardItem
 	}
 
 	@Override
-	public boolean isViewURLEnabled(ThemeDisplay themeDisplay) {
+	public boolean isViewURLEnabled(HttpServletRequest httpServletRequest) {
 		if (!_journalArticle.hasApprovedVersion()) {
 			return false;
 		}
 
-		if (Validator.isNull(getViewURL(themeDisplay))) {
+		if (Validator.isNull(getViewURL(httpServletRequest))) {
 			return false;
 		}
 

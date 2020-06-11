@@ -14,8 +14,6 @@
 
 package com.liferay.content.dashboard.web.internal.item;
 
-import com.liferay.portal.kernel.theme.ThemeDisplay;
-
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
@@ -45,11 +43,11 @@ public interface ContentDashboardItem<T> {
 
 	public String getUserName();
 
-	public String getViewURL(ThemeDisplay themeDisplay);
+	public String getViewURL(HttpServletRequest httpServletRequest);
 
 	public boolean isEditURLEnabled(HttpServletRequest httpServletRequest);
 
-	public boolean isViewURLEnabled(ThemeDisplay themeDisplay);
+	public boolean isViewURLEnabled(HttpServletRequest httpServletRequest);
 
 	public static class Status {
 

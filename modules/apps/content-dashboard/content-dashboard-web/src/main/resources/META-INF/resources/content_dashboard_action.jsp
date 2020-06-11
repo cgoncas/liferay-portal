@@ -31,10 +31,10 @@ ContentDashboardItem contentDashboardItem = (ContentDashboardItem)row.getObject(
 	message='<%= LanguageUtil.get(request, "actions") %>'
 	showWhenSingleIcon="<%= true %>"
 >
-	<c:if test="<%= contentDashboardItem.isViewURLEnabled(themeDisplay) %>">
+	<c:if test="<%= contentDashboardItem.isViewURLEnabled(request) %>">
 		<liferay-ui:icon
 			message="view"
-			url="<%= contentDashboardAdminDisplayContext.getURLWithBackURL(contentDashboardItem.getViewURL(themeDisplay)) %>"
+			url="<%= contentDashboardAdminDisplayContext.getURLWithBackURL(contentDashboardItem.getViewURL(request)) %>"
 		/>
 	</c:if>
 </liferay-ui:icon-menu>
