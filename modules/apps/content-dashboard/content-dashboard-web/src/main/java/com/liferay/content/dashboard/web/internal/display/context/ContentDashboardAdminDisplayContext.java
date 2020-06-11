@@ -15,14 +15,21 @@
 package com.liferay.content.dashboard.web.internal.display.context;
 
 import com.liferay.content.dashboard.web.internal.item.ContentDashboardItem;
+import com.liferay.frontend.taglib.clay.servlet.taglib.util.DropdownItem;
+import com.liferay.frontend.taglib.clay.servlet.taglib.util.DropdownItemList;
 import com.liferay.portal.kernel.dao.search.SearchContainer;
 import com.liferay.portal.kernel.portlet.LiferayPortletRequest;
 import com.liferay.portal.kernel.portlet.LiferayPortletResponse;
 import com.liferay.portal.kernel.portlet.PortletURLUtil;
 import com.liferay.portal.kernel.util.Http;
 import com.liferay.portal.kernel.util.ParamUtil;
+import com.liferay.portal.kernel.util.Portal;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.kernel.workflow.WorkflowConstants;
+
+import java.util.List;
+
+import javax.servlet.http.HttpServletRequest;
 
 /**
  * @author Cristina González
@@ -31,17 +38,62 @@ public class ContentDashboardAdminDisplayContext {
 
 	public ContentDashboardAdminDisplayContext(
 		Http http, LiferayPortletRequest liferayPortletRequest,
-		LiferayPortletResponse liferayPortletResponse,
+		LiferayPortletResponse liferayPortletResponse, Portal portal,
 		SearchContainer<ContentDashboardItem<?>> searchContainer) {
 
 		_http = http;
 		_liferayPortletRequest = liferayPortletRequest;
 		_liferayPortletResponse = liferayPortletResponse;
+		_portal = portal;
 		_searchContainer = searchContainer;
 
 		_currentURL = String.valueOf(
 			PortletURLUtil.getCurrent(
 				_liferayPortletRequest, _liferayPortletResponse));
+	}
+
+	public List<DropdownItem> getDropdownItems(
+		ContentDashboardItem contentDashboardItem) {
+
+		return DropdownItemList.of(
+			() -> {
+				HttpServletRequest httpServletRequest =
+					_portal.getHttpServletRequest(_liferayPortletRequest);
+
+				if (!contentDashboardItem.isViewURLEnabled(
+						httpServletRequest)) {
+
+					return null;
+				}
+
+				DropdownItem dropdownItem = new DropdownItem();
+
+				dropdownItem.setHref(
+					_getURLWithBackURL(
+						contentDashboardItem.getViewURL(httpServletRequest)));
+				dropdownItem.setLabel("view");
+
+				return dropdownItem;
+			},
+			() -> {
+				HttpServletRequest httpServletRequest =
+					_portal.getHttpServletRequest(_liferayPortletRequest);
+
+				if (!contentDashboardItem.isEditURLEnabled(
+						httpServletRequest)) {
+
+					return null;
+				}
+
+				DropdownItem dropdownItem = new DropdownItem();
+
+				dropdownItem.setHref(
+					_getURLWithBackURL(
+						contentDashboardItem.getEditURL(httpServletRequest)));
+				dropdownItem.setLabel("edit");
+
+				return dropdownItem;
+			});
 	}
 
 	public SearchContainer<ContentDashboardItem<?>> getSearchContainer() {
@@ -59,7 +111,7 @@ public class ContentDashboardAdminDisplayContext {
 		return _status;
 	}
 
-	public String getURLWithBackURL(String url) {
+	private String _getURLWithBackURL(String url) {
 		String backURL = ParamUtil.getString(_liferayPortletRequest, "backURL");
 
 		if (Validator.isNotNull(backURL)) {
@@ -73,6 +125,7 @@ public class ContentDashboardAdminDisplayContext {
 	private final Http _http;
 	private final LiferayPortletRequest _liferayPortletRequest;
 	private final LiferayPortletResponse _liferayPortletResponse;
+	private final Portal _portal;
 	private final SearchContainer<ContentDashboardItem<?>> _searchContainer;
 	private Integer _status;
 

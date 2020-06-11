@@ -128,10 +128,11 @@ ContentDashboardAdminManagementToolbarDisplayContext contentDashboardAdminManage
 						value="<%= contentDashboardItem.getExpirationDate() %>"
 					/>
 
-					<liferay-ui:search-container-column-jsp
-						cssClass="entry-action"
-						path="/content_dashboard_action.jsp"
-					/>
+					<liferay-ui:search-container-column-text>
+						<clay:dropdown-actions
+							dropdownItems="<%= contentDashboardAdminDisplayContext.getDropdownItems(contentDashboardItem) %>"
+						/>
+					</liferay-ui:search-container-column-text>
 				</liferay-ui:search-container-row>
 
 				<liferay-ui:search-iterator

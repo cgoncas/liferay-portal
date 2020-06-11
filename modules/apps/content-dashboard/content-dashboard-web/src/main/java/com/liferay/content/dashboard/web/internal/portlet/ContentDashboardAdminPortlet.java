@@ -88,7 +88,7 @@ public class ContentDashboardAdminPortlet extends MVCPortlet {
 			contentDashboardAdminDisplayContext =
 				new ContentDashboardAdminDisplayContext(
 					_http, liferayPortletRequest, liferayPortletResponse,
-					searchContainer);
+					_portal, searchContainer);
 
 		renderRequest.setAttribute(
 			ContentDashboardWebKeys.CONTENT_DASHBOARD_ADMIN_DISPLAY_CONTEXT,
