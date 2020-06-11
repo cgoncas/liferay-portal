@@ -15,10 +15,12 @@
 package com.liferay.content.dashboard.web.internal.item;
 
 import com.liferay.asset.display.page.portlet.AssetDisplayPageFriendlyURLProvider;
+import com.liferay.info.display.url.provider.InfoEditURLProviderTracker;
 import com.liferay.journal.model.JournalArticle;
 import com.liferay.journal.service.JournalArticleLocalService;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.language.Language;
+import com.liferay.portal.kernel.security.permission.resource.ModelResourcePermission;
 import com.liferay.portal.kernel.workflow.WorkflowConstants;
 
 import org.osgi.service.component.annotations.Component;
@@ -37,9 +39,11 @@ public class JournalArticleContentDashboardInfoItemFactory
 
 		return new JournalArticleContentDashboardItem(
 			_assetDisplayPageFriendlyURLProvider,
+			_infoEditURLProviderTracker.getInfoEditURLProvider(
+				JournalArticle.class.getName()),
 			_journalArticleLocalService.getLatestArticle(
 				classPK, WorkflowConstants.STATUS_ANY, false),
-			_language);
+			_language, _modelResourcePermission);
 	}
 
 	@Reference
@@ -47,9 +51,17 @@ public class JournalArticleContentDashboardInfoItemFactory
 		_assetDisplayPageFriendlyURLProvider;
 
 	@Reference
+	private InfoEditURLProviderTracker _infoEditURLProviderTracker;
+
+	@Reference
 	private JournalArticleLocalService _journalArticleLocalService;
 
 	@Reference
 	private Language _language;
+
+	@Reference(
+		target = "(model.class.name=com.liferay.journal.model.JournalArticle)"
+	)
+	private ModelResourcePermission<JournalArticle> _modelResourcePermission;
 
 }

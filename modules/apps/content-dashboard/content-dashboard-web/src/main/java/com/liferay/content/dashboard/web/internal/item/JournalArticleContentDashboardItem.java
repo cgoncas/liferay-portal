@@ -16,14 +16,18 @@ package com.liferay.content.dashboard.web.internal.item;
 
 import com.liferay.asset.display.page.portlet.AssetDisplayPageFriendlyURLProvider;
 import com.liferay.dynamic.data.mapping.model.DDMStructure;
+import com.liferay.info.display.url.provider.InfoEditURLProvider;
 import com.liferay.journal.model.JournalArticle;
 import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.language.Language;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
+import com.liferay.portal.kernel.security.permission.ActionKeys;
+import com.liferay.portal.kernel.security.permission.resource.ModelResourcePermission;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
 import com.liferay.portal.kernel.util.Validator;
+import com.liferay.portal.kernel.util.WebKeys;
 import com.liferay.portal.kernel.workflow.WorkflowConstants;
 
 import java.util.ArrayList;
@@ -33,6 +37,8 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Optional;
 
+import javax.servlet.http.HttpServletRequest;
+
 /**
  * @author Cristina González
  */
@@ -41,12 +47,32 @@ public class JournalArticleContentDashboardItem
 
 	public JournalArticleContentDashboardItem(
 		AssetDisplayPageFriendlyURLProvider assetDisplayPageFriendlyURLProvider,
-		JournalArticle journalArticle, Language language) {
+		InfoEditURLProvider infoEditURLProvider, JournalArticle journalArticle,
+		Language language,
+		ModelResourcePermission<JournalArticle> modelResourcePermission) {
 
 		_assetDisplayPageFriendlyURLProvider =
 			assetDisplayPageFriendlyURLProvider;
+		_infoEditURLProvider = infoEditURLProvider;
 		_journalArticle = journalArticle;
 		_language = language;
+		_modelResourcePermission = modelResourcePermission;
+	}
+
+	@Override
+	public String getEditURL(HttpServletRequest httpServletRequest) {
+		try {
+			return Optional.ofNullable(
+				_infoEditURLProvider.getURL(_journalArticle, httpServletRequest)
+			).orElse(
+				StringPool.BLANK
+			);
+		}
+		catch (Exception exception) {
+			_log.error(exception, exception);
+
+			return StringPool.BLANK;
+		}
 	}
 
 	@Override
@@ -144,6 +170,24 @@ public class JournalArticleContentDashboardItem
 	}
 
 	@Override
+	public boolean isEditURLEnabled(HttpServletRequest httpServletRequest) {
+		ThemeDisplay themeDisplay =
+			(ThemeDisplay)httpServletRequest.getAttribute(
+				WebKeys.THEME_DISPLAY);
+
+		try {
+			return _modelResourcePermission.contains(
+				themeDisplay.getPermissionChecker(), _journalArticle,
+				ActionKeys.UPDATE);
+		}
+		catch (PortalException portalException) {
+			_log.error(portalException, portalException);
+
+			return false;
+		}
+	}
+
+	@Override
 	public boolean isViewURLEnabled(ThemeDisplay themeDisplay) {
 		if (!_journalArticle.hasApprovedVersion()) {
 			return false;
@@ -161,7 +205,10 @@ public class JournalArticleContentDashboardItem
 
 	private final AssetDisplayPageFriendlyURLProvider
 		_assetDisplayPageFriendlyURLProvider;
+	private final InfoEditURLProvider<JournalArticle> _infoEditURLProvider;
 	private final JournalArticle _journalArticle;
 	private final Language _language;
+	private final ModelResourcePermission<JournalArticle>
+		_modelResourcePermission;
 
 }
