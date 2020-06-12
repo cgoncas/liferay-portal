@@ -22,6 +22,7 @@ import com.liferay.content.dashboard.web.internal.display.context.ContentDashboa
 import com.liferay.content.dashboard.web.internal.item.ContentDashboardItem;
 import com.liferay.content.dashboard.web.internal.item.ContentDashboardItemFactoryTracker;
 import com.liferay.portal.kernel.dao.search.SearchContainer;
+import com.liferay.portal.kernel.language.Language;
 import com.liferay.portal.kernel.portlet.LiferayPortletRequest;
 import com.liferay.portal.kernel.portlet.LiferayPortletResponse;
 import com.liferay.portal.kernel.portlet.bridges.mvc.MVCPortlet;
@@ -87,8 +88,8 @@ public class ContentDashboardAdminPortlet extends MVCPortlet {
 		ContentDashboardAdminDisplayContext
 			contentDashboardAdminDisplayContext =
 				new ContentDashboardAdminDisplayContext(
-					_http, liferayPortletRequest, liferayPortletResponse,
-					_portal, searchContainer);
+					_http, _language, liferayPortletRequest,
+					liferayPortletResponse, _portal, searchContainer);
 
 		renderRequest.setAttribute(
 			ContentDashboardWebKeys.CONTENT_DASHBOARD_ADMIN_DISPLAY_CONTEXT,
@@ -115,6 +116,9 @@ public class ContentDashboardAdminPortlet extends MVCPortlet {
 
 	@Reference
 	private Http _http;
+
+	@Reference
+	private Language _language;
 
 	@Reference
 	private Portal _portal;

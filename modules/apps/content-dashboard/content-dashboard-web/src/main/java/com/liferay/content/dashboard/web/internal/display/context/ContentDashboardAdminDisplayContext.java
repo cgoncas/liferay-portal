@@ -18,6 +18,7 @@ import com.liferay.content.dashboard.web.internal.item.ContentDashboardItem;
 import com.liferay.frontend.taglib.clay.servlet.taglib.util.DropdownItem;
 import com.liferay.frontend.taglib.clay.servlet.taglib.util.DropdownItemList;
 import com.liferay.portal.kernel.dao.search.SearchContainer;
+import com.liferay.portal.kernel.language.Language;
 import com.liferay.portal.kernel.portlet.LiferayPortletRequest;
 import com.liferay.portal.kernel.portlet.LiferayPortletResponse;
 import com.liferay.portal.kernel.portlet.PortletURLUtil;
@@ -28,6 +29,7 @@ import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.kernel.workflow.WorkflowConstants;
 
 import java.util.List;
+import java.util.Locale;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -37,11 +39,13 @@ import javax.servlet.http.HttpServletRequest;
 public class ContentDashboardAdminDisplayContext {
 
 	public ContentDashboardAdminDisplayContext(
-		Http http, LiferayPortletRequest liferayPortletRequest,
+		Http http, Language language,
+		LiferayPortletRequest liferayPortletRequest,
 		LiferayPortletResponse liferayPortletResponse, Portal portal,
 		SearchContainer<ContentDashboardItem<?>> searchContainer) {
 
 		_http = http;
+		_language = language;
 		_liferayPortletRequest = liferayPortletRequest;
 		_liferayPortletResponse = liferayPortletResponse;
 		_portal = portal;
@@ -54,6 +58,8 @@ public class ContentDashboardAdminDisplayContext {
 
 	public List<DropdownItem> getDropdownItems(
 		ContentDashboardItem contentDashboardItem) {
+
+		Locale locale = _portal.getLocale(_liferayPortletRequest);
 
 		return DropdownItemList.of(
 			() -> {
@@ -71,7 +77,7 @@ public class ContentDashboardAdminDisplayContext {
 				dropdownItem.setHref(
 					_getURLWithBackURL(
 						contentDashboardItem.getViewURL(httpServletRequest)));
-				dropdownItem.setLabel("view");
+				dropdownItem.setLabel(_language.get(locale, "view"));
 
 				return dropdownItem;
 			},
@@ -90,7 +96,7 @@ public class ContentDashboardAdminDisplayContext {
 				dropdownItem.setHref(
 					_getURLWithBackURL(
 						contentDashboardItem.getEditURL(httpServletRequest)));
-				dropdownItem.setLabel("edit");
+				dropdownItem.setLabel(_language.get(locale, "edit"));
 
 				return dropdownItem;
 			});
@@ -123,6 +129,7 @@ public class ContentDashboardAdminDisplayContext {
 
 	private final String _currentURL;
 	private final Http _http;
+	private final Language _language;
 	private final LiferayPortletRequest _liferayPortletRequest;
 	private final LiferayPortletResponse _liferayPortletResponse;
 	private final Portal _portal;
