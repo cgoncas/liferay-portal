@@ -17,14 +17,19 @@ package com.liferay.content.dashboard.web.internal.display.context;
 import com.liferay.content.dashboard.web.internal.item.ContentDashboardItem;
 import com.liferay.frontend.taglib.clay.servlet.taglib.util.DropdownItem;
 import com.liferay.petra.string.StringPool;
+import com.liferay.portal.kernel.language.Language;
+import com.liferay.portal.kernel.language.LanguageUtil;
 import com.liferay.portal.kernel.test.portlet.MockLiferayPortletRenderRequest;
 import com.liferay.portal.kernel.test.portlet.MockLiferayPortletURL;
 import com.liferay.portal.kernel.test.util.PropsTestUtil;
 import com.liferay.portal.kernel.test.util.RandomTestUtil;
 import com.liferay.portal.kernel.util.HtmlUtil;
 import com.liferay.portal.kernel.util.Http;
+import com.liferay.portal.kernel.util.LocaleUtil;
 import com.liferay.portal.kernel.util.PortalUtil;
 import com.liferay.portal.kernel.util.WebKeys;
+import com.liferay.portal.language.LanguageImpl;
+import com.liferay.portal.language.LanguageResources;
 import com.liferay.portal.util.HtmlImpl;
 import com.liferay.portal.util.HttpImpl;
 import com.liferay.portal.util.PortalImpl;
@@ -53,6 +58,16 @@ public class ContentDashboardAdminDisplayContextTest {
 
 		_http = new HttpImpl();
 
+		_language = new LanguageImpl();
+
+		LanguageResources languageResources = new LanguageResources();
+
+		languageResources.setConfig(StringPool.BLANK);
+
+		LanguageUtil languageUtil = new LanguageUtil();
+
+		languageUtil.setLanguage(_language);
+
 		PortalUtil portalUtil = new PortalUtil();
 
 		portalUtil.setPortal(new PortalImpl());
@@ -72,10 +87,13 @@ public class ContentDashboardAdminDisplayContextTest {
 			"null" + StringPool.DASH + WebKeys.CURRENT_PORTLET_URL,
 			mockLiferayPortletURL);
 
+		mockLiferayPortletRenderRequest.setAttribute(
+			WebKeys.LOCALE, LocaleUtil.US);
+
 		ContentDashboardAdminDisplayContext
 			contentDashboardAdminDisplayContext =
 				new ContentDashboardAdminDisplayContext(
-					_http, mockLiferayPortletRenderRequest, null,
+					_http, _language, mockLiferayPortletRenderRequest, null,
 					new PortalImpl(), null);
 
 		ContentDashboardItem contentDashboardItem = Mockito.mock(
@@ -102,6 +120,8 @@ public class ContentDashboardAdminDisplayContextTest {
 		DropdownItem dropdownItem = dropdownItems.get(0);
 
 		Assert.assertEquals(
+			"edit", _http.getPath(String.valueOf(dropdownItem.get("label"))));
+		Assert.assertEquals(
 			"validURL",
 			_http.getPath(String.valueOf(dropdownItem.get("href"))));
 	}
@@ -121,7 +141,7 @@ public class ContentDashboardAdminDisplayContextTest {
 		ContentDashboardAdminDisplayContext
 			contentDashboardAdminDisplayContext =
 				new ContentDashboardAdminDisplayContext(
-					_http, mockLiferayPortletRenderRequest, null,
+					_http, _language, mockLiferayPortletRenderRequest, null,
 					new PortalImpl(), null);
 
 		ContentDashboardItem contentDashboardItem = Mockito.mock(
@@ -169,7 +189,7 @@ public class ContentDashboardAdminDisplayContextTest {
 		ContentDashboardAdminDisplayContext
 			contentDashboardAdminDisplayContext =
 				new ContentDashboardAdminDisplayContext(
-					_http, mockLiferayPortletRenderRequest, null,
+					_http, _language, mockLiferayPortletRenderRequest, null,
 					new PortalImpl(), null);
 
 		ContentDashboardItem contentDashboardItem = Mockito.mock(
@@ -213,10 +233,13 @@ public class ContentDashboardAdminDisplayContextTest {
 			"null" + StringPool.DASH + WebKeys.CURRENT_PORTLET_URL,
 			mockLiferayPortletURL);
 
+		mockLiferayPortletRenderRequest.setAttribute(
+			WebKeys.LOCALE, LocaleUtil.US);
+
 		ContentDashboardAdminDisplayContext
 			contentDashboardAdminDisplayContext =
 				new ContentDashboardAdminDisplayContext(
-					_http, mockLiferayPortletRenderRequest, null,
+					_http, _language, mockLiferayPortletRenderRequest, null,
 					new PortalImpl(), null);
 
 		ContentDashboardItem contentDashboardItem = Mockito.mock(
@@ -243,10 +266,13 @@ public class ContentDashboardAdminDisplayContextTest {
 		DropdownItem dropdownItem = dropdownItems.get(0);
 
 		Assert.assertEquals(
+			"view", _http.getPath(String.valueOf(dropdownItem.get("label"))));
+		Assert.assertEquals(
 			"validURL",
 			_http.getPath(String.valueOf(dropdownItem.get("href"))));
 	}
 
 	private static Http _http;
+	private static Language _language;
 
 }
