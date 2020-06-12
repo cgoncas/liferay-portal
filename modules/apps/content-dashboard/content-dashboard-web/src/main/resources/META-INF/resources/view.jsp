@@ -76,13 +76,13 @@ ContentDashboardAdminManagementToolbarDisplayContext contentDashboardAdminManage
 
 					<liferay-ui:search-container-column-text
 						cssClass="text-center"
-						name="author"
+						name=""
 					>
-						<span class="lfr-portal-tooltip" title="<%= HtmlUtil.escape(contentDashboardItem.getUserName()) %>">
-							<liferay-ui:user-portrait
-								userId="<%= contentDashboardItem.getUserId() %>"
+						<c:if test="<%= contentDashboardItem.isViewURLEnabled(request) %>">
+							<clay:icon
+								symbol="page"
 							/>
-						</span>
+						</c:if>
 					</liferay-ui:search-container-column-text>
 
 					<liferay-ui:search-container-column-text
