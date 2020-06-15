@@ -78,6 +78,11 @@ public class ContentDashboardAdminManagementToolbarDisplayContext
 	}
 
 	@Override
+	public String getDefaultEventHandler() {
+		return "contentDashboardManagementToolbarDefaultEventHandle";
+	}
+
+	@Override
 	public List<DropdownItem> getFilterDropdownItems() {
 		return DropdownItemListBuilder.addGroup(
 			dropdownGroupItem -> {
@@ -242,6 +247,38 @@ public class ContentDashboardAdminManagementToolbarDisplayContext
 					getPortletURL(), "authorIds",
 					_contentDashboardAdminDisplayContext.getUserId());
 				dropdownItem.setLabel(LanguageUtil.get(request, "mine"));
+
+				return dropdownItem;
+			},
+			() -> {
+				DropdownItem dropdownItem = new DropdownItem();
+
+				if (((authorIds.size() == 1) &&
+					 !authorIds.contains(
+						 _contentDashboardAdminDisplayContext.getUserId())) ||
+					(authorIds.size() > 1)) {
+
+					dropdownItem.setActive(true);
+				}
+
+				dropdownItem.setLabel(
+					LanguageUtil.get(request, "author") +
+						StringPool.TRIPLE_PERIOD);
+				dropdownItem.putData("action", "selectAuthor");
+				dropdownItem.putData(
+					"dialogTitle", LanguageUtil.get(request, "select-author"));
+
+				PortletURL portletURL = getPortletURL();
+
+				portletURL.setParameter("authorIds", (String)null);
+
+				dropdownItem.putData("redirectURL", String.valueOf(portletURL));
+
+				dropdownItem.putData(
+					"selectAuthorURL",
+					String.valueOf(
+						_contentDashboardAdminDisplayContext.
+							getAuthorItemSelectorURL()));
 
 				return dropdownItem;
 			});
