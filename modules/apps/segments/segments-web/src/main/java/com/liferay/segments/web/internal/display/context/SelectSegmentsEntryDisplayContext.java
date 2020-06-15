@@ -323,6 +323,7 @@ public class SelectSegmentsEntryDisplayContext {
 		}
 
 		portletURL.setParameter("displayStyle", getDisplayStyle());
+		portletURL.setParameter("eventName", getEventName());
 		portletURL.setParameter(
 			"excludedSegmentsEntryIds",
 			StringUtil.merge(_getExcludedSegmentsEntryIds()));
