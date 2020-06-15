@@ -22,12 +22,14 @@ import com.liferay.portal.kernel.language.Language;
 import com.liferay.portal.kernel.portlet.LiferayPortletRequest;
 import com.liferay.portal.kernel.portlet.LiferayPortletResponse;
 import com.liferay.portal.kernel.portlet.PortletURLUtil;
+import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.Http;
 import com.liferay.portal.kernel.util.ParamUtil;
 import com.liferay.portal.kernel.util.Portal;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.kernel.workflow.WorkflowConstants;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.Locale;
 
@@ -54,6 +56,18 @@ public class ContentDashboardAdminDisplayContext {
 		_currentURL = String.valueOf(
 			PortletURLUtil.getCurrent(
 				_liferayPortletRequest, _liferayPortletResponse));
+	}
+
+	public List<Long> getAuthorIds() {
+		if (_authorIds != null) {
+			return _authorIds;
+		}
+
+		_authorIds = Arrays.asList(
+			ArrayUtil.toLongArray(
+				ParamUtil.getLongValues(_liferayPortletRequest, "authorIds")));
+
+		return _authorIds;
 	}
 
 	public List<DropdownItem> getDropdownItems(
@@ -117,6 +131,16 @@ public class ContentDashboardAdminDisplayContext {
 		return _status;
 	}
 
+	public long getUserId() {
+		if (_userId > 0) {
+			return _userId;
+		}
+
+		_userId = _portal.getUserId(_liferayPortletRequest);
+
+		return _userId;
+	}
+
 	private String _getURLWithBackURL(String url) {
 		String backURL = ParamUtil.getString(_liferayPortletRequest, "backURL");
 
@@ -127,6 +151,7 @@ public class ContentDashboardAdminDisplayContext {
 		return _http.setParameter(url, "p_l_back_url", _currentURL);
 	}
 
+	private List<Long> _authorIds;
 	private final String _currentURL;
 	private final Http _http;
 	private final Language _language;
@@ -135,5 +160,6 @@ public class ContentDashboardAdminDisplayContext {
 	private final Portal _portal;
 	private final SearchContainer<ContentDashboardItem<?>> _searchContainer;
 	private Integer _status;
+	private long _userId;
 
 }
