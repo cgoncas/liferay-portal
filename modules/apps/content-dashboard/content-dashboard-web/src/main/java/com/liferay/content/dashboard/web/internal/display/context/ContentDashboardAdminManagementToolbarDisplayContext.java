@@ -61,7 +61,6 @@ public class ContentDashboardAdminManagementToolbarDisplayContext
 
 		_contentDashboardAdminDisplayContext =
 			contentDashboardAdminDisplayContext;
-
 		_userLocalService = userLocalService;
 	}
 

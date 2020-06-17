@@ -138,7 +138,6 @@ public class ContentDashboardAdminPortletTest {
 		try {
 			JournalArticle journalArticle = JournalTestUtil.addArticle(
 				user.getUserId(), _group.getGroupId(), 0);
-
 			JournalTestUtil.addArticle(
 				_user.getUserId(), _group.getGroupId(), 0);
 
@@ -173,7 +172,6 @@ public class ContentDashboardAdminPortletTest {
 		try {
 			JournalArticle journalArticle1 = JournalTestUtil.addArticle(
 				user.getUserId(), _group.getGroupId(), 0);
-
 			JournalArticle journalArticle2 = JournalTestUtil.addArticle(
 				_user.getUserId(), _group.getGroupId(), 0);
 
@@ -223,7 +221,6 @@ public class ContentDashboardAdminPortletTest {
 	public void testGetSearchContainerWithDefaultOrder() throws Exception {
 		JournalArticle journalArticle1 = JournalTestUtil.addArticle(
 			_user.getUserId(), _group.getGroupId(), 0);
-
 		JournalArticle journalArticle2 = JournalTestUtil.addArticle(
 			_user.getUserId(), _group.getGroupId(), 0);
 
@@ -309,7 +306,6 @@ public class ContentDashboardAdminPortletTest {
 		JournalArticle journalArticle1 = JournalTestUtil.addArticleWithWorkflow(
 			_group.getGroupId(), 0, RandomTestUtil.randomString(),
 			RandomTestUtil.randomString(), true, serviceContext);
-
 		JournalArticle journalArticle2 = JournalTestUtil.addArticleWithWorkflow(
 			_group.getGroupId(), 0, RandomTestUtil.randomString(),
 			RandomTestUtil.randomString(), false, serviceContext);
