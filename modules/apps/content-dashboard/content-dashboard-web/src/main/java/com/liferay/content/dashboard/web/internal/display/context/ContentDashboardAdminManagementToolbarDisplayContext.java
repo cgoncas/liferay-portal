@@ -49,10 +49,10 @@ public class ContentDashboardAdminManagementToolbarDisplayContext
 	extends SearchContainerManagementToolbarDisplayContext {
 
 	public ContentDashboardAdminManagementToolbarDisplayContext(
+		ContentDashboardAdminDisplayContext contentDashboardAdminDisplayContext,
 		HttpServletRequest httpServletRequest,
 		LiferayPortletRequest liferayPortletRequest,
 		LiferayPortletResponse liferayPortletResponse,
-		ContentDashboardAdminDisplayContext contentDashboardAdminDisplayContext,
 		UserLocalService userLocalService) {
 
 		super(
@@ -134,21 +134,6 @@ public class ContentDashboardAdminManagementToolbarDisplayContext
 		for (Long authorId : authorIds) {
 			labelItemListWrapper.add(
 				labelItem -> {
-					labelItem.setCloseable(true);
-					labelItem.setLabel(
-						StringBundler.concat(
-							LanguageUtil.get(request, "author"),
-							StringPool.COLON,
-							LanguageUtil.get(
-								request,
-								Optional.ofNullable(
-									_userLocalService.fetchUser(authorId)
-								).map(
-									User::getFullName
-								).orElse(
-									StringPool.BLANK
-								))));
-
 					PortletURL portletURL = PortletURLUtil.clone(
 						currentURLObj, liferayPortletResponse);
 
@@ -169,6 +154,21 @@ public class ContentDashboardAdminManagementToolbarDisplayContext
 					labelItem.putData(
 						"removeLabelURL",
 						String.valueOf(portletURL.toString()));
+
+					labelItem.setCloseable(true);
+					labelItem.setLabel(
+						StringBundler.concat(
+							LanguageUtil.get(request, "author"),
+							StringPool.COLON,
+							LanguageUtil.get(
+								request,
+								Optional.ofNullable(
+									_userLocalService.fetchUser(authorId)
+								).map(
+									User::getFullName
+								).orElse(
+									StringPool.BLANK
+								))));
 				});
 		}
 

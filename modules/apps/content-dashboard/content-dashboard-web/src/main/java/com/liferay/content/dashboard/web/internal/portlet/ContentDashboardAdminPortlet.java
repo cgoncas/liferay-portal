@@ -100,9 +100,10 @@ public class ContentDashboardAdminPortlet extends MVCPortlet {
 		ContentDashboardAdminManagementToolbarDisplayContext
 			contentDashboardAdminManagementToolbarDisplayContext =
 				new ContentDashboardAdminManagementToolbarDisplayContext(
+					contentDashboardAdminDisplayContext,
 					_portal.getHttpServletRequest(renderRequest),
 					liferayPortletRequest, liferayPortletResponse,
-					contentDashboardAdminDisplayContext, _userLocalService);
+					_userLocalService);
 
 		renderRequest.setAttribute(
 			ContentDashboardWebKeys.
