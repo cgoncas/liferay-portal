@@ -259,9 +259,6 @@ public class ContentDashboardAdminManagementToolbarDisplayContext
 					dropdownItem.setActive(true);
 				}
 
-				dropdownItem.setLabel(
-					LanguageUtil.get(request, "author") +
-						StringPool.TRIPLE_PERIOD);
 				dropdownItem.putData("action", "selectAuthor");
 				dropdownItem.putData(
 					"dialogTitle", LanguageUtil.get(request, "select-author"));
@@ -277,6 +274,9 @@ public class ContentDashboardAdminManagementToolbarDisplayContext
 					String.valueOf(
 						_contentDashboardAdminDisplayContext.
 							getAuthorItemSelectorURL()));
+				dropdownItem.setLabel(
+					LanguageUtil.get(request, "author") +
+						StringPool.TRIPLE_PERIOD);
 
 				return dropdownItem;
 			});
