@@ -134,11 +134,7 @@ public class ContentDashboardAdminManagementToolbarDisplayContext
 		for (Long authorId : authorIds) {
 			labelItemListWrapper.add(
 				labelItem -> {
-					PortletURL portletURL = PortletURLUtil.clone(
-						currentURLObj, liferayPortletResponse);
-
 					labelItem.setCloseable(true);
-
 					labelItem.setLabel(
 						StringBundler.concat(
 							LanguageUtil.get(request, "author"),
@@ -152,6 +148,9 @@ public class ContentDashboardAdminManagementToolbarDisplayContext
 								).orElse(
 									StringPool.BLANK
 								))));
+
+					PortletURL portletURL = PortletURLUtil.clone(
+						currentURLObj, liferayPortletResponse);
 
 					Stream<Long> stream = authorIds.stream();
 
