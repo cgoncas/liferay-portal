@@ -18,32 +18,21 @@ import com.liferay.content.dashboard.web.internal.item.ContentDashboardItem;
 import com.liferay.content.dashboard.web.internal.item.ContentDashboardItemFactory;
 import com.liferay.content.dashboard.web.internal.item.ContentDashboardItemFactoryTracker;
 import com.liferay.content.dashboard.web.internal.search.ContentDashboardSearcher;
+import com.liferay.content.dashboard.web.internal.search.request.ContentDashboardSearchContextBuilder;
 import com.liferay.portal.kernel.dao.search.SearchContainer;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.portlet.PortletURLUtil;
-import com.liferay.portal.kernel.search.BooleanClause;
-import com.liferay.portal.kernel.search.BooleanClauseFactoryUtil;
-import com.liferay.portal.kernel.search.BooleanClauseOccur;
 import com.liferay.portal.kernel.search.Field;
 import com.liferay.portal.kernel.search.Hits;
 import com.liferay.portal.kernel.search.Indexer;
-import com.liferay.portal.kernel.search.SearchContext;
-import com.liferay.portal.kernel.search.SearchContextFactory;
 import com.liferay.portal.kernel.search.SearchResult;
 import com.liferay.portal.kernel.search.SearchResultUtil;
 import com.liferay.portal.kernel.search.Sort;
-import com.liferay.portal.kernel.search.filter.BooleanFilter;
-import com.liferay.portal.kernel.search.filter.TermsFilter;
-import com.liferay.portal.kernel.search.generic.BooleanQueryImpl;
-import com.liferay.portal.kernel.util.ArrayUtil;
-import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.LocaleUtil;
 import com.liferay.portal.kernel.util.ParamUtil;
 import com.liferay.portal.kernel.util.Portal;
-import com.liferay.portal.kernel.util.Validator;
-import com.liferay.portal.kernel.workflow.WorkflowConstants;
 
 import java.util.List;
 import java.util.Locale;
@@ -52,7 +41,6 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import javax.portlet.PortletException;
-import javax.portlet.PortletURL;
 import javax.portlet.RenderRequest;
 import javax.portlet.RenderResponse;
 
@@ -76,19 +64,20 @@ public class ContentDashboardItemSearchContainerFactory {
 
 		SearchContainer<ContentDashboardItem<?>> searchContainer =
 			new SearchContainer<>(
-				_renderRequest, _getPortletURL(), null, "there-is-no-content");
+				_renderRequest,
+				PortletURLUtil.clone(
+					PortletURLUtil.getCurrent(_renderRequest, _renderResponse),
+					_renderResponse),
+				null, "there-is-no-content");
 
 		searchContainer.setOrderByCol(_getOrderByCol());
 
 		searchContainer.setOrderByType(_getOrderByType());
 
 		Hits hits = _getHits(
-			_getOrderByCol(), _getOrderByType(),
-			_portal.getLocale(_renderRequest), searchContainer.getEnd(),
-			searchContainer.getStart());
+			searchContainer.getEnd(), searchContainer.getStart());
 
-		searchContainer.setResults(
-			_getContentDashboardItems(hits, _portal.getLocale(_renderRequest)));
+		searchContainer.setResults(_getContentDashboardItems(hits));
 		searchContainer.setTotal(hits.getLength());
 
 		return searchContainer;
@@ -104,42 +93,13 @@ public class ContentDashboardItemSearchContainerFactory {
 		_portal = portal;
 		_renderRequest = renderRequest;
 		_renderResponse = renderResponse;
+
+		_locale = _portal.getLocale(_renderRequest);
 	}
 
-	private long[] _getAuthorIds() {
-		return ParamUtil.getLongValues(_renderRequest, "authorIds");
-	}
-
-	private BooleanClause[] _getBooleanClauses(long[] authorIds) {
-		if (ArrayUtil.isEmpty(authorIds)) {
-			return new BooleanClause[0];
-		}
-
-		BooleanQueryImpl booleanQueryImpl = new BooleanQueryImpl();
-
-		BooleanFilter booleanFilter = new BooleanFilter();
-
-		TermsFilter termsFilter = new TermsFilter(Field.USER_ID);
-
-		for (long authorId : authorIds) {
-			termsFilter.addValue(String.valueOf(authorId));
-		}
-
-		booleanFilter.add(termsFilter, BooleanClauseOccur.MUST);
-
-		booleanQueryImpl.setPreBooleanFilter(booleanFilter);
-
-		return new BooleanClause[] {
-			BooleanClauseFactoryUtil.create(
-				booleanQueryImpl, BooleanClauseOccur.MUST.getName())
-		};
-	}
-
-	private List<ContentDashboardItem<?>> _getContentDashboardItems(
-		Hits hits, Locale locale) {
-
+	private List<ContentDashboardItem<?>> _getContentDashboardItems(Hits hits) {
 		List<SearchResult> searchResults = SearchResultUtil.getSearchResults(
-			hits, locale);
+			hits, _locale);
 
 		Stream<SearchResult> stream = searchResults.stream();
 
@@ -154,97 +114,40 @@ public class ContentDashboardItemSearchContainerFactory {
 		);
 	}
 
-	private Hits _getHits(
-			String orderByCol, String orderByType, Locale locale, int end,
-			int start)
-		throws PortletException {
-
+	private Hits _getHits(int end, int start) throws PortletException {
 		Indexer<?> indexer = ContentDashboardSearcher.getInstance(
 			_contentDashboardItemFactoryTracker.getClassNames());
 
-		SearchContext searchContext = SearchContextFactory.getInstance(
-			_portal.getHttpServletRequest(_renderRequest));
-
-		Integer status = _getStatus();
-
-		if (status == WorkflowConstants.STATUS_APPROVED) {
-			searchContext.setAttribute("head", Boolean.TRUE);
-		}
-		else {
-			searchContext.setAttribute("latest", Boolean.TRUE);
-		}
-
-		searchContext.setAttribute("status", status);
-		searchContext.setBooleanClauses(_getBooleanClauses(_getAuthorIds()));
-		searchContext.setEnd(end);
-		searchContext.setGroupIds(null);
-		searchContext.setKeywords(_getKeywords());
-		searchContext.setSorts(_getSort(orderByCol, orderByType, locale));
-		searchContext.setStart(start);
-
 		try {
-			return indexer.search(searchContext);
+			return indexer.search(
+				new ContentDashboardSearchContextBuilder(
+					_portal.getHttpServletRequest(_renderRequest)
+				).withEnd(
+					end
+				).withSort(
+					_getSort(_getOrderByCol(), _getOrderByType())
+				).withStart(
+					start
+				).build());
 		}
 		catch (PortalException portalException) {
 			throw new PortletException(portalException);
 		}
 	}
 
-	private String _getKeywords() {
-		return ParamUtil.getString(_renderRequest, "keywords");
-	}
-
 	private String _getOrderByCol() {
 		return ParamUtil.getString(
-			_renderRequest, "orderByCol", "modified-date");
+			_renderRequest, SearchContainer.DEFAULT_ORDER_BY_COL_PARAM,
+			"modified-date");
 	}
 
 	private String _getOrderByType() {
-		return ParamUtil.getString(_renderRequest, "orderByType", "desc");
+		return ParamUtil.getString(
+			_renderRequest, SearchContainer.DEFAULT_ORDER_BY_TYPE_PARAM,
+			"desc");
 	}
 
-	private PortletURL _getPortletURL() throws PortletException {
-		PortletURL portletURL = PortletURLUtil.clone(
-			_renderResponse.createRenderURL(), _renderResponse);
-
-		String delta = ParamUtil.getString(_renderRequest, "delta");
-
-		if (Validator.isNotNull(delta)) {
-			portletURL.setParameter("delta", delta);
-		}
-
-		String deltaEntry = ParamUtil.getString(_renderRequest, "deltaEntry");
-
-		if (Validator.isNotNull(deltaEntry)) {
-			portletURL.setParameter("deltaEntry", deltaEntry);
-		}
-
-		String keywords = _getKeywords();
-
-		if (Validator.isNotNull(keywords)) {
-			portletURL.setParameter("keywords", keywords);
-		}
-
-		String orderByCol = _getOrderByCol();
-
-		if (Validator.isNotNull(orderByCol)) {
-			portletURL.setParameter("orderByCol", orderByCol);
-		}
-
-		String orderByType = _getOrderByType();
-
-		if (Validator.isNotNull(orderByType)) {
-			portletURL.setParameter("orderByType", orderByType);
-		}
-
-		portletURL.setParameter("status", String.valueOf(_getStatus()));
-
-		return portletURL;
-	}
-
-	private Sort _getSort(
-		String orderByCol, String orderByType, Locale locale) {
-
+	private Sort _getSort(String orderByCol, String orderByType) {
 		boolean orderByAsc = false;
 
 		if (orderByType.equals("asc")) {
@@ -253,18 +156,12 @@ public class ContentDashboardItemSearchContainerFactory {
 
 		if (orderByCol.equals("title")) {
 			String sortFieldName = Field.getSortableFieldName(
-				"localized_title_".concat(LocaleUtil.toLanguageId(locale)));
+				"localized_title_".concat(LocaleUtil.toLanguageId(_locale)));
 
 			return new Sort(sortFieldName, Sort.STRING_TYPE, !orderByAsc);
 		}
 
 		return new Sort(Field.MODIFIED_DATE, Sort.LONG_TYPE, !orderByAsc);
-	}
-
-	private int _getStatus() {
-		return GetterUtil.getInteger(
-			ParamUtil.getInteger(
-				_renderRequest, "status", WorkflowConstants.STATUS_ANY));
 	}
 
 	private Optional<ContentDashboardItem<?>> _toContentDashboardItemOptional(
@@ -304,6 +201,7 @@ public class ContentDashboardItemSearchContainerFactory {
 
 	private final ContentDashboardItemFactoryTracker
 		_contentDashboardItemFactoryTracker;
+	private final Locale _locale;
 	private final Portal _portal;
 	private final RenderRequest _renderRequest;
 	private final RenderResponse _renderResponse;
