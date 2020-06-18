@@ -67,7 +67,14 @@ public class ContentDashboardSearchContextBuilder {
 			searchContext.setEnd(_end);
 		}
 
-		searchContext.setGroupIds(null);
+		long groupId = ParamUtil.getLong(_httpServletRequest, "scopeId");
+
+		if (groupId > 0) {
+			searchContext.setGroupIds(new long[] {groupId});
+		}
+		else {
+			searchContext.setGroupIds(null);
+		}
 
 		if (_sort != null) {
 			searchContext.setSorts(_sort);

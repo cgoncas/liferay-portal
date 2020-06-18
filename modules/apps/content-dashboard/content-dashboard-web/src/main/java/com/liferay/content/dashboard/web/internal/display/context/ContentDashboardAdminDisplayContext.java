@@ -19,7 +19,9 @@ import com.liferay.content.dashboard.web.internal.item.ContentDashboardItem;
 import com.liferay.content.dashboard.web.internal.servlet.taglib.util.ContentDashboardDropdownItemsProvider;
 import com.liferay.frontend.taglib.clay.servlet.taglib.util.DropdownItem;
 import com.liferay.item.selector.ItemSelector;
+import com.liferay.item.selector.criteria.URLItemSelectorReturnType;
 import com.liferay.item.selector.criteria.UUIDItemSelectorReturnType;
+import com.liferay.item.selector.criteria.group.criterion.GroupItemSelectorCriterion;
 import com.liferay.portal.kernel.dao.search.SearchContainer;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.portlet.LiferayPortletRequest;
@@ -105,6 +107,32 @@ public class ContentDashboardAdminDisplayContext {
 			contentDashboardItem);
 	}
 
+	public long getScopeId() {
+		if (_scopeId > 0) {
+			return _scopeId;
+		}
+
+		_scopeId = ParamUtil.getLong(_liferayPortletRequest, "scopeId");
+
+		return _scopeId;
+	}
+
+	public String getScopeIdItemSelectorURL() throws PortalException {
+		GroupItemSelectorCriterion groupItemSelectorCriterion =
+			new GroupItemSelectorCriterion();
+
+		groupItemSelectorCriterion.setDesiredItemSelectorReturnTypes(
+			new URLItemSelectorReturnType());
+		groupItemSelectorCriterion.setIncludeAllVisibleGroups(true);
+
+		return String.valueOf(
+			_itemSelector.getItemSelectorURL(
+				RequestBackedPortletURLFactoryUtil.create(
+					_liferayPortletRequest),
+				_liferayPortletResponse.getNamespace() + "selectedScopeIdItem",
+				groupItemSelectorCriterion));
+	}
+
 	public SearchContainer<ContentDashboardItem<?>> getSearchContainer() {
 		return _searchContainer;
 	}
@@ -142,6 +170,7 @@ public class ContentDashboardAdminDisplayContext {
 	private final LiferayPortletRequest _liferayPortletRequest;
 	private final LiferayPortletResponse _liferayPortletResponse;
 	private final Portal _portal;
+	private long _scopeId;
 	private final SearchContainer<ContentDashboardItem<?>> _searchContainer;
 	private Integer _status;
 	private long _userId;

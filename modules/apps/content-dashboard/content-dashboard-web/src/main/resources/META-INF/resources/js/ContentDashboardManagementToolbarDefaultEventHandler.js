@@ -17,6 +17,7 @@ import {
 	ItemSelectorDialog,
 	addParams,
 	navigate,
+	openModal,
 } from 'frontend-js-web';
 
 class ContentDashboardManagementToolbarDefaultEventHandler extends DefaultEventHandler {
@@ -46,6 +47,23 @@ class ContentDashboardManagementToolbarDefaultEventHandler extends DefaultEventH
 		});
 
 		itemSelectorDialog.open();
+	}
+
+	selectScope(itemData) {
+		openModal({
+			id: this.ns('selectedScopeIdItem'),
+			onSelect: (selectedItem) => {
+				navigate(
+					addParams(
+						this.namespace + 'scopeId=' + selectedItem.groupid,
+						itemData.redirectURL
+					)
+				);
+			},
+			selectEventName: this.ns('selectedScopeIdItem'),
+			title: itemData.dialogTitle,
+			url: itemData.selectScopeURL,
+		});
 	}
 }
 

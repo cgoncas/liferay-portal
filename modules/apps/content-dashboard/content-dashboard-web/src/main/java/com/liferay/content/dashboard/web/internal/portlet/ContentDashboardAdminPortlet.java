@@ -30,6 +30,7 @@ import com.liferay.portal.kernel.language.Language;
 import com.liferay.portal.kernel.portlet.LiferayPortletRequest;
 import com.liferay.portal.kernel.portlet.LiferayPortletResponse;
 import com.liferay.portal.kernel.portlet.bridges.mvc.MVCPortlet;
+import com.liferay.portal.kernel.service.GroupLocalService;
 import com.liferay.portal.kernel.service.UserLocalService;
 import com.liferay.portal.kernel.util.Http;
 import com.liferay.portal.kernel.util.Portal;
@@ -115,10 +116,10 @@ public class ContentDashboardAdminPortlet extends MVCPortlet {
 		ContentDashboardAdminManagementToolbarDisplayContext
 			contentDashboardAdminManagementToolbarDisplayContext =
 				new ContentDashboardAdminManagementToolbarDisplayContext(
-					contentDashboardAdminDisplayContext,
+					contentDashboardAdminDisplayContext, _groupLocalService,
 					_portal.getHttpServletRequest(renderRequest),
 					liferayPortletRequest, liferayPortletResponse,
-					_userLocalService);
+					_portal.getLocale(renderRequest), _userLocalService);
 
 		renderRequest.setAttribute(
 			ContentDashboardWebKeys.
@@ -148,6 +149,9 @@ public class ContentDashboardAdminPortlet extends MVCPortlet {
 	@Reference
 	private ContentDashboardItemFactoryTracker
 		_contentDashboardItemFactoryTracker;
+
+	@Reference
+	private GroupLocalService _groupLocalService;
 
 	@Reference
 	private Http _http;

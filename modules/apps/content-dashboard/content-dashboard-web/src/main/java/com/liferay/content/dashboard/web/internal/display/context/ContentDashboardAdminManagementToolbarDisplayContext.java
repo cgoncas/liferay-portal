@@ -22,6 +22,7 @@ import com.liferay.frontend.taglib.clay.servlet.taglib.util.LabelItem;
 import com.liferay.frontend.taglib.clay.servlet.taglib.util.LabelItemListBuilder;
 import com.liferay.petra.string.StringBundler;
 import com.liferay.petra.string.StringPool;
+import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.language.LanguageUtil;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
@@ -29,11 +30,13 @@ import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.portlet.LiferayPortletRequest;
 import com.liferay.portal.kernel.portlet.LiferayPortletResponse;
 import com.liferay.portal.kernel.portlet.PortletURLUtil;
+import com.liferay.portal.kernel.service.GroupLocalService;
 import com.liferay.portal.kernel.service.UserLocalService;
 import com.liferay.portal.kernel.workflow.WorkflowConstants;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.Locale;
 import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -50,9 +53,10 @@ public class ContentDashboardAdminManagementToolbarDisplayContext
 
 	public ContentDashboardAdminManagementToolbarDisplayContext(
 		ContentDashboardAdminDisplayContext contentDashboardAdminDisplayContext,
+		GroupLocalService groupLocalService,
 		HttpServletRequest httpServletRequest,
 		LiferayPortletRequest liferayPortletRequest,
-		LiferayPortletResponse liferayPortletResponse,
+		LiferayPortletResponse liferayPortletResponse, Locale locale,
 		UserLocalService userLocalService) {
 
 		super(
@@ -61,6 +65,8 @@ public class ContentDashboardAdminManagementToolbarDisplayContext
 
 		_contentDashboardAdminDisplayContext =
 			contentDashboardAdminDisplayContext;
+		_groupLocalService = groupLocalService;
+		_locale = locale;
 		_userLocalService = userLocalService;
 	}
 
@@ -70,6 +76,7 @@ public class ContentDashboardAdminManagementToolbarDisplayContext
 
 		clearResultsURL.setParameter("authorIds", (String)null);
 		clearResultsURL.setParameter("keywords", StringPool.BLANK);
+		clearResultsURL.setParameter("scopeId", (String)null);
 		clearResultsURL.setParameter(
 			"status", String.valueOf(WorkflowConstants.STATUS_ANY));
 
@@ -84,6 +91,13 @@ public class ContentDashboardAdminManagementToolbarDisplayContext
 	@Override
 	public List<DropdownItem> getFilterDropdownItems() {
 		return DropdownItemListBuilder.addGroup(
+			dropdownGroupItem -> {
+				dropdownGroupItem.setDropdownItems(_getFilterDropdownItems());
+				dropdownGroupItem.setLabel(
+					LanguageUtil.get(request, "filter-by") +
+						StringPool.TRIPLE_PERIOD);
+			}
+		).addGroup(
 			dropdownGroupItem -> {
 				dropdownGroupItem.setDropdownItems(
 					_getFilterAuthorDropdownItems());
@@ -107,10 +121,28 @@ public class ContentDashboardAdminManagementToolbarDisplayContext
 
 	@Override
 	public List<LabelItem> getFilterLabelItems() {
+		long scopeId = _contentDashboardAdminDisplayContext.getScopeId();
 		int status = _contentDashboardAdminDisplayContext.getStatus();
 
 		LabelItemListBuilder.LabelItemListWrapper labelItemListWrapper =
 			LabelItemListBuilder.add(
+				() -> scopeId > 0,
+				labelItem -> {
+					PortletURL removeLabelURL = PortletURLUtil.clone(
+						currentURLObj, liferayPortletResponse);
+
+					removeLabelURL.setParameter("scopeId", (String)null);
+
+					labelItem.putData(
+						"removeLabelURL", removeLabelURL.toString());
+
+					labelItem.setCloseable(true);
+
+					labelItem.setLabel(
+						LanguageUtil.get(request, "site-or-asset-library") +
+							": " + _getScopeLabel(scopeId));
+				}
+			).add(
 				() -> status != WorkflowConstants.STATUS_ANY,
 				labelItem -> {
 					PortletURL removeLabelURL = PortletURLUtil.clone(
@@ -126,7 +158,8 @@ public class ContentDashboardAdminManagementToolbarDisplayContext
 					labelItem.setLabel(
 						LanguageUtil.get(request, "status") + ": " +
 							_getStatusLabel(status));
-				});
+				}
+			);
 
 		List<Long> authorIds =
 			_contentDashboardAdminDisplayContext.getAuthorIds();
@@ -195,6 +228,9 @@ public class ContentDashboardAdminManagementToolbarDisplayContext
 
 		portletURL.setParameter("orderByCol", getOrderByCol());
 		portletURL.setParameter("orderByType", getOrderByType());
+		portletURL.setParameter(
+			"scopeId",
+			String.valueOf(_contentDashboardAdminDisplayContext.getScopeId()));
 		portletURL.setParameter(
 			"status",
 			String.valueOf(_contentDashboardAdminDisplayContext.getStatus()));
@@ -282,6 +318,41 @@ public class ContentDashboardAdminManagementToolbarDisplayContext
 			});
 	}
 
+	private List<DropdownItem> _getFilterDropdownItems() {
+		return DropdownItemList.of(
+			() -> {
+				long scopeId =
+					_contentDashboardAdminDisplayContext.getScopeId();
+
+				DropdownItem dropdownItem = new DropdownItem();
+
+				dropdownItem.setActive(scopeId > 0);
+
+				dropdownItem.putData("action", "selectScope");
+				dropdownItem.putData(
+					"dialogTitle",
+					LanguageUtil.get(request, "select-site-or-asset-library"));
+
+				PortletURL portletURL = getPortletURL();
+
+				portletURL.setParameter("scopeId", (String)null);
+
+				dropdownItem.putData("redirectURL", String.valueOf(portletURL));
+
+				dropdownItem.putData(
+					"selectScopeURL",
+					String.valueOf(
+						_contentDashboardAdminDisplayContext.
+							getScopeIdItemSelectorURL()));
+
+				dropdownItem.setLabel(
+					LanguageUtil.get(request, "site-or-asset-library") +
+						StringPool.TRIPLE_PERIOD);
+
+				return dropdownItem;
+			});
+	}
+
 	private List<DropdownItem> _getFilterStatusDropdownItems() {
 		return new DropdownItemList() {
 			{
@@ -303,6 +374,25 @@ public class ContentDashboardAdminManagementToolbarDisplayContext
 		};
 	}
 
+	private String _getScopeLabel(long scopeId) {
+		return Optional.ofNullable(
+			_groupLocalService.fetchGroup(scopeId)
+		).map(
+			group -> {
+				try {
+					return group.getDescriptiveName(_locale);
+				}
+				catch (PortalException portalException) {
+					_log.error(portalException, portalException);
+
+					return StringPool.BLANK;
+				}
+			}
+		).orElse(
+			StringPool.BLANK
+		);
+	}
+
 	private List<Integer> _getStatuses() {
 		return Arrays.asList(
 			WorkflowConstants.STATUS_ANY, WorkflowConstants.STATUS_DRAFT,
@@ -321,6 +411,8 @@ public class ContentDashboardAdminManagementToolbarDisplayContext
 
 	private final ContentDashboardAdminDisplayContext
 		_contentDashboardAdminDisplayContext;
+	private final GroupLocalService _groupLocalService;
+	private final Locale _locale;
 	private final UserLocalService _userLocalService;
 
 }
