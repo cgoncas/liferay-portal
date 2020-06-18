@@ -21,6 +21,7 @@ import com.liferay.content.dashboard.web.internal.display.context.ContentDashboa
 import com.liferay.content.dashboard.web.internal.display.context.ContentDashboardAdminManagementToolbarDisplayContext;
 import com.liferay.content.dashboard.web.internal.item.ContentDashboardItem;
 import com.liferay.content.dashboard.web.internal.item.ContentDashboardItemFactoryTracker;
+import com.liferay.content.dashboard.web.internal.servlet.taglib.util.ContentDashboardDropdownItemsProvider;
 import com.liferay.item.selector.ItemSelector;
 import com.liferay.portal.kernel.dao.search.SearchContainer;
 import com.liferay.portal.kernel.language.Language;
@@ -90,7 +91,10 @@ public class ContentDashboardAdminPortlet extends MVCPortlet {
 		ContentDashboardAdminDisplayContext
 			contentDashboardAdminDisplayContext =
 				new ContentDashboardAdminDisplayContext(
-					_http, _itemSelector, _language, liferayPortletRequest,
+					new ContentDashboardDropdownItemsProvider(
+						_http, _language, liferayPortletRequest,
+						liferayPortletResponse, _portal),
+					_itemSelector, liferayPortletRequest,
 					liferayPortletResponse, _portal, searchContainer);
 
 		renderRequest.setAttribute(

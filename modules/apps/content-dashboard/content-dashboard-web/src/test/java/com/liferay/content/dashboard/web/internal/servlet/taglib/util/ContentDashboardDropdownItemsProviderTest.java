@@ -12,7 +12,7 @@
  * details.
  */
 
-package com.liferay.content.dashboard.web.internal.display.context;
+package com.liferay.content.dashboard.web.internal.servlet.taglib.util;
 
 import com.liferay.content.dashboard.web.internal.item.ContentDashboardItem;
 import com.liferay.frontend.taglib.clay.servlet.taglib.util.DropdownItem;
@@ -48,7 +48,7 @@ import org.mockito.Mockito;
 /**
  * @author Cristina González
  */
-public class ContentDashboardAdminDisplayContextTest {
+public class ContentDashboardDropdownItemsProviderTest {
 
 	@BeforeClass
 	public static void setUpClass() {
@@ -90,11 +90,11 @@ public class ContentDashboardAdminDisplayContextTest {
 		mockLiferayPortletRenderRequest.setAttribute(
 			WebKeys.LOCALE, LocaleUtil.US);
 
-		ContentDashboardAdminDisplayContext
-			contentDashboardAdminDisplayContext =
-				new ContentDashboardAdminDisplayContext(
-					_http, null, _language, mockLiferayPortletRenderRequest,
-					null, new PortalImpl(), null);
+		ContentDashboardDropdownItemsProvider
+			contentDashboardDropdownItemsProvider =
+				new ContentDashboardDropdownItemsProvider(
+					_http, _language, mockLiferayPortletRenderRequest, null,
+					new PortalImpl());
 
 		ContentDashboardItem contentDashboardItem = Mockito.mock(
 			ContentDashboardItem.class);
@@ -114,7 +114,7 @@ public class ContentDashboardAdminDisplayContextTest {
 		);
 
 		List<DropdownItem> dropdownItems =
-			contentDashboardAdminDisplayContext.getDropdownItems(
+			contentDashboardDropdownItemsProvider.getDropdownItems(
 				contentDashboardItem);
 
 		DropdownItem dropdownItem = dropdownItems.get(0);
@@ -138,11 +138,11 @@ public class ContentDashboardAdminDisplayContextTest {
 			"null" + StringPool.DASH + WebKeys.CURRENT_PORTLET_URL,
 			mockLiferayPortletURL);
 
-		ContentDashboardAdminDisplayContext
-			contentDashboardAdminDisplayContext =
-				new ContentDashboardAdminDisplayContext(
-					_http, null, _language, mockLiferayPortletRenderRequest,
-					null, new PortalImpl(), null);
+		ContentDashboardDropdownItemsProvider
+			contentDashboardDropdownItemsProvider =
+				new ContentDashboardDropdownItemsProvider(
+					_http, _language, mockLiferayPortletRenderRequest, null,
+					new PortalImpl());
 
 		ContentDashboardItem contentDashboardItem = Mockito.mock(
 			ContentDashboardItem.class);
@@ -162,7 +162,7 @@ public class ContentDashboardAdminDisplayContextTest {
 		);
 
 		List<DropdownItem> dropdownItems =
-			contentDashboardAdminDisplayContext.getDropdownItems(
+			contentDashboardDropdownItemsProvider.getDropdownItems(
 				contentDashboardItem);
 
 		DropdownItem dropdownItem = dropdownItems.get(0);
@@ -186,11 +186,11 @@ public class ContentDashboardAdminDisplayContextTest {
 
 		mockLiferayPortletRenderRequest.setParameter("backURL", backURL);
 
-		ContentDashboardAdminDisplayContext
-			contentDashboardAdminDisplayContext =
-				new ContentDashboardAdminDisplayContext(
-					_http, null, _language, mockLiferayPortletRenderRequest,
-					null, new PortalImpl(), null);
+		ContentDashboardDropdownItemsProvider
+			contentDashboardDropdownItemsProvider =
+				new ContentDashboardDropdownItemsProvider(
+					_http, _language, mockLiferayPortletRenderRequest, null,
+					new PortalImpl());
 
 		ContentDashboardItem contentDashboardItem = Mockito.mock(
 			ContentDashboardItem.class);
@@ -210,7 +210,7 @@ public class ContentDashboardAdminDisplayContextTest {
 		);
 
 		List<DropdownItem> dropdownItems =
-			contentDashboardAdminDisplayContext.getDropdownItems(
+			contentDashboardDropdownItemsProvider.getDropdownItems(
 				contentDashboardItem);
 
 		DropdownItem dropdownItem = dropdownItems.get(0);
@@ -236,11 +236,11 @@ public class ContentDashboardAdminDisplayContextTest {
 		mockLiferayPortletRenderRequest.setAttribute(
 			WebKeys.LOCALE, LocaleUtil.US);
 
-		ContentDashboardAdminDisplayContext
-			contentDashboardAdminDisplayContext =
-				new ContentDashboardAdminDisplayContext(
-					_http, null, _language, mockLiferayPortletRenderRequest,
-					null, new PortalImpl(), null);
+		ContentDashboardDropdownItemsProvider
+			contentDashboardDropdownItemsProvider =
+				new ContentDashboardDropdownItemsProvider(
+					_http, _language, mockLiferayPortletRenderRequest, null,
+					new PortalImpl());
 
 		ContentDashboardItem contentDashboardItem = Mockito.mock(
 			ContentDashboardItem.class);
@@ -260,7 +260,7 @@ public class ContentDashboardAdminDisplayContextTest {
 		);
 
 		List<DropdownItem> dropdownItems =
-			contentDashboardAdminDisplayContext.getDropdownItems(
+			contentDashboardDropdownItemsProvider.getDropdownItems(
 				contentDashboardItem);
 
 		DropdownItem dropdownItem = dropdownItems.get(0);
