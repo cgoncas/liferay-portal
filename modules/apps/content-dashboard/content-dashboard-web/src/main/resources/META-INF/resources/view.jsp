@@ -107,6 +107,11 @@ ContentDashboardAdminManagementToolbarDisplayContext contentDashboardAdminManage
 					/>
 
 					<liferay-ui:search-container-column-text
+						name="site-or-asset-library"
+						value="<%= HtmlUtil.escape(contentDashboardItem.getScopeName(locale)) %>"
+					/>
+
+					<liferay-ui:search-container-column-text
 						cssClass="text-nowrap"
 						name="status"
 					>
