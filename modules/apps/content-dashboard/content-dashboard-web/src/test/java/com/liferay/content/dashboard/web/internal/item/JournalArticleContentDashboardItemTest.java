@@ -20,6 +20,7 @@ import com.liferay.info.display.url.provider.InfoEditURLProvider;
 import com.liferay.journal.model.JournalArticle;
 import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.language.Language;
+import com.liferay.portal.kernel.model.Group;
 import com.liferay.portal.kernel.security.permission.PermissionChecker;
 import com.liferay.portal.kernel.security.permission.resource.ModelResourcePermission;
 import com.liferay.portal.kernel.test.util.RandomTestUtil;
@@ -63,7 +64,7 @@ public class JournalArticleContentDashboardItemTest {
 
 		JournalArticleContentDashboardItem journalArticleContentDashboardItem =
 			new JournalArticleContentDashboardItem(
-				null, infoEditURLProvider, journalArticle, null, null);
+				null, infoEditURLProvider, null, journalArticle, null, null);
 
 		Assert.assertEquals(
 			"validURL",
@@ -88,7 +89,7 @@ public class JournalArticleContentDashboardItemTest {
 
 		JournalArticleContentDashboardItem journalArticleContentDashboardItem =
 			new JournalArticleContentDashboardItem(
-				null, infoEditURLProvider, journalArticle, null, null);
+				null, infoEditURLProvider, null, journalArticle, null, null);
 
 		Assert.assertEquals(
 			StringPool.BLANK,
@@ -102,7 +103,7 @@ public class JournalArticleContentDashboardItemTest {
 
 		JournalArticleContentDashboardItem journalArticleContentDashboardItem =
 			new JournalArticleContentDashboardItem(
-				null, null, journalArticle, null, null);
+				null, null, null, journalArticle, null, null);
 
 		Assert.assertEquals(
 			journalArticle.getExpirationDate(),
@@ -115,7 +116,7 @@ public class JournalArticleContentDashboardItemTest {
 
 		JournalArticleContentDashboardItem journalArticleContentDashboardItem =
 			new JournalArticleContentDashboardItem(
-				null, null, journalArticle, null, null);
+				null, null, null, journalArticle, null, null);
 
 		Assert.assertEquals(
 			journalArticle.getModifiedDate(),
@@ -128,11 +129,32 @@ public class JournalArticleContentDashboardItemTest {
 
 		JournalArticleContentDashboardItem journalArticleContentDashboardItem =
 			new JournalArticleContentDashboardItem(
-				null, null, journalArticle, null, null);
+				null, null, null, journalArticle, null, null);
 
 		Assert.assertEquals(
 			journalArticle.getDisplayDate(),
 			journalArticleContentDashboardItem.getPublishDate());
+	}
+
+	@Test
+	public void testGetScopeName() throws Exception {
+		JournalArticle journalArticle = _getJournalArticle();
+
+		Group group = Mockito.mock(Group.class);
+
+		Mockito.when(
+			group.getDescriptiveName(Mockito.any(Locale.class))
+		).thenReturn(
+			"scopeName"
+		);
+
+		JournalArticleContentDashboardItem journalArticleContentDashboardItem =
+			new JournalArticleContentDashboardItem(
+				null, null, group, journalArticle, null, null);
+
+		Assert.assertEquals(
+			"scopeName",
+			journalArticleContentDashboardItem.getScopeName(LocaleUtil.US));
 	}
 
 	@Test
@@ -141,7 +163,7 @@ public class JournalArticleContentDashboardItemTest {
 
 		JournalArticleContentDashboardItem journalArticleContentDashboardItem =
 			new JournalArticleContentDashboardItem(
-				null, null, journalArticle, _getLanguage(), null);
+				null, null, null, journalArticle, _getLanguage(), null);
 
 		List<ContentDashboardItem.Status> statuses =
 			journalArticleContentDashboardItem.getStatuses(LocaleUtil.US);
@@ -179,7 +201,7 @@ public class JournalArticleContentDashboardItemTest {
 
 		JournalArticleContentDashboardItem journalArticleContentDashboardItem =
 			new JournalArticleContentDashboardItem(
-				null, null, journalArticle, _getLanguage(), null);
+				null, null, null, journalArticle, _getLanguage(), null);
 
 		List<ContentDashboardItem.Status> statuses =
 			journalArticleContentDashboardItem.getStatuses(LocaleUtil.US);
@@ -204,7 +226,7 @@ public class JournalArticleContentDashboardItemTest {
 
 		JournalArticleContentDashboardItem journalArticleContentDashboardItem =
 			new JournalArticleContentDashboardItem(
-				null, null, journalArticle, null, null);
+				null, null, null, journalArticle, null, null);
 
 		Assert.assertEquals(
 			"subtype",
@@ -217,7 +239,7 @@ public class JournalArticleContentDashboardItemTest {
 
 		JournalArticleContentDashboardItem journalArticleContentDashboardItem =
 			new JournalArticleContentDashboardItem(
-				null, null, journalArticle, null, null);
+				null, null, null, journalArticle, null, null);
 
 		Assert.assertEquals(
 			journalArticle.getTitle(LocaleUtil.US),
@@ -241,8 +263,8 @@ public class JournalArticleContentDashboardItemTest {
 
 		JournalArticleContentDashboardItem journalArticleContentDashboardItem =
 			new JournalArticleContentDashboardItem(
-				assetDisplayPageFriendlyURLProvider, null, journalArticle, null,
-				null);
+				assetDisplayPageFriendlyURLProvider, null, null, journalArticle,
+				null, null);
 
 		Assert.assertEquals(
 			"validURL",
@@ -260,8 +282,8 @@ public class JournalArticleContentDashboardItemTest {
 
 		JournalArticleContentDashboardItem journalArticleContentDashboardItem =
 			new JournalArticleContentDashboardItem(
-				assetDisplayPageFriendlyURLProvider, null, journalArticle, null,
-				null);
+				assetDisplayPageFriendlyURLProvider, null, null, journalArticle,
+				null, null);
 
 		Assert.assertEquals(
 			StringPool.BLANK,
@@ -289,7 +311,7 @@ public class JournalArticleContentDashboardItemTest {
 
 		JournalArticleContentDashboardItem journalArticleContentDashboardItem =
 			new JournalArticleContentDashboardItem(
-				null, infoEditURLProvider, journalArticle, null,
+				null, infoEditURLProvider, null, journalArticle, null,
 				modelResourcePermission);
 
 		Assert.assertTrue(
@@ -309,7 +331,7 @@ public class JournalArticleContentDashboardItemTest {
 
 		JournalArticleContentDashboardItem journalArticleContentDashboardItem =
 			new JournalArticleContentDashboardItem(
-				null, infoEditURLProvider, journalArticle, null,
+				null, infoEditURLProvider, null, journalArticle, null,
 				modelResourcePermission);
 
 		Assert.assertFalse(
@@ -334,8 +356,8 @@ public class JournalArticleContentDashboardItemTest {
 
 		JournalArticleContentDashboardItem journalArticleContentDashboardItem =
 			new JournalArticleContentDashboardItem(
-				assetDisplayPageFriendlyURLProvider, null, journalArticle, null,
-				null);
+				assetDisplayPageFriendlyURLProvider, null, null, journalArticle,
+				null, null);
 
 		Assert.assertTrue(
 			journalArticleContentDashboardItem.isViewURLEnabled(
@@ -358,8 +380,8 @@ public class JournalArticleContentDashboardItemTest {
 
 		JournalArticleContentDashboardItem journalArticleContentDashboardItem =
 			new JournalArticleContentDashboardItem(
-				assetDisplayPageFriendlyURLProvider, null, journalArticle, null,
-				null);
+				assetDisplayPageFriendlyURLProvider, null, null, journalArticle,
+				null, null);
 
 		Assert.assertFalse(
 			journalArticleContentDashboardItem.isViewURLEnabled(null));
@@ -375,8 +397,8 @@ public class JournalArticleContentDashboardItemTest {
 
 		JournalArticleContentDashboardItem journalArticleContentDashboardItem =
 			new JournalArticleContentDashboardItem(
-				assetDisplayPageFriendlyURLProvider, null, journalArticle, null,
-				null);
+				assetDisplayPageFriendlyURLProvider, null, null, journalArticle,
+				null, null);
 
 		Assert.assertFalse(
 			journalArticleContentDashboardItem.isViewURLEnabled(
