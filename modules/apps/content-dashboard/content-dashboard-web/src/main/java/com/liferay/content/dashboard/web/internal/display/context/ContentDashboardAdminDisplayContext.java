@@ -14,6 +14,7 @@
 
 package com.liferay.content.dashboard.web.internal.display.context;
 
+import com.liferay.content.dashboard.web.internal.configuration.ContentDashboardConfiguration;
 import com.liferay.content.dashboard.web.internal.item.ContentDashboardItem;
 import com.liferay.content.dashboard.web.internal.servlet.taglib.util.ContentDashboardDropdownItemsProvider;
 import com.liferay.frontend.taglib.clay.servlet.taglib.util.DropdownItem;
@@ -44,12 +45,14 @@ import javax.portlet.PortletURL;
 public class ContentDashboardAdminDisplayContext {
 
 	public ContentDashboardAdminDisplayContext(
+		ContentDashboardConfiguration contentDashboardConfiguration,
 		ContentDashboardDropdownItemsProvider
 			contentDashboardDropdownItemsProvider,
 		ItemSelector itemSelector, LiferayPortletRequest liferayPortletRequest,
 		LiferayPortletResponse liferayPortletResponse, Portal portal,
 		SearchContainer<ContentDashboardItem<?>> searchContainer) {
 
+		_contentDashboardConfiguration = contentDashboardConfiguration;
 		_contentDashboardDropdownItemsProvider =
 			contentDashboardDropdownItemsProvider;
 		_itemSelector = itemSelector;
@@ -127,7 +130,12 @@ public class ContentDashboardAdminDisplayContext {
 		return _userId;
 	}
 
+	public boolean isAuditGraphEnabled() {
+		return _contentDashboardConfiguration.auditGraphEnabled();
+	}
+
 	private List<Long> _authorIds;
+	private final ContentDashboardConfiguration _contentDashboardConfiguration;
 	private final ContentDashboardDropdownItemsProvider
 		_contentDashboardDropdownItemsProvider;
 	private final ItemSelector _itemSelector;

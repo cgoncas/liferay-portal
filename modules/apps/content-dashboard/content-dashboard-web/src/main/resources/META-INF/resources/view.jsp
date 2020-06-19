@@ -22,25 +22,27 @@ ContentDashboardAdminDisplayContext contentDashboardAdminDisplayContext = (Conte
 ContentDashboardAdminManagementToolbarDisplayContext contentDashboardAdminManagementToolbarDisplayContext = (ContentDashboardAdminManagementToolbarDisplayContext)request.getAttribute(ContentDashboardWebKeys.CONTENT_DASHBOARD_ADMIN_MANAGEMENT_TOOLBAR_DISPLAY_CONTEXT);
 %>
 
-<clay:container
-	cssClass="main-content-body"
->
-	<div class="sheet">
-		<h2 class="sheet-title">
-			<%= LanguageUtil.format(request, "content-per-audience-and-stage-x", 0, false) %>
-		</h2>
+<c:if test="<%= contentDashboardAdminDisplayContext.isAuditGraphEnabled() %>">
+	<clay:container
+		cssClass="main-content-body"
+	>
+		<div class="sheet">
+			<h2 class="sheet-title">
+				<%= LanguageUtil.format(request, "content-per-audience-and-stage-x", 0, false) %>
+			</h2>
 
-		<div id="audit-graph">
-			<div class="inline-item my-5 p-5 w-100">
-				<span aria-hidden="true" class="loading-animation"></span>
+			<div id="audit-graph">
+				<div class="inline-item my-5 p-5 w-100">
+					<span aria-hidden="true" class="loading-animation"></span>
+				</div>
+
+				<react:component
+					module="js/AuditGraphApp"
+				/>
 			</div>
-
-			<react:component
-				module="js/AuditGraphApp"
-			/>
 		</div>
-	</div>
-</clay:container>
+	</clay:container>
+</c:if>
 
 <clay:container
 	cssClass="main-content-body"
