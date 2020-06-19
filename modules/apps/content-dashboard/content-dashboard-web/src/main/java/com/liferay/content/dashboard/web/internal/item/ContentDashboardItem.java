@@ -33,6 +33,8 @@ public interface ContentDashboardItem<T> {
 
 	public Date getPublishDate();
 
+	public String getScopeName(Locale locale);
+
 	public List<Status> getStatuses(Locale locale);
 
 	public String getSubtype(Locale locale);
