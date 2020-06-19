@@ -22,6 +22,7 @@ import com.liferay.journal.service.JournalArticleLocalService;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.language.Language;
 import com.liferay.portal.kernel.security.permission.resource.ModelResourcePermission;
+import com.liferay.portal.kernel.service.GroupLocalService;
 import com.liferay.portal.kernel.workflow.WorkflowConstants;
 
 import org.osgi.service.component.annotations.Component;
@@ -38,19 +39,25 @@ public class JournalArticleContentDashboardItemFactory
 	public ContentDashboardItem<JournalArticle> create(long classPK)
 		throws PortalException {
 
+		JournalArticle journalArticle =
+			_journalArticleLocalService.getLatestArticle(
+				classPK, WorkflowConstants.STATUS_ANY, false);
+
 		return new JournalArticleContentDashboardItem(
 			_assetDisplayPageFriendlyURLProvider,
 			(InfoEditURLProvider<JournalArticle>)
 				_infoEditURLProviderTracker.getInfoEditURLProvider(
 					JournalArticle.class.getName()),
-			_journalArticleLocalService.getLatestArticle(
-				classPK, WorkflowConstants.STATUS_ANY, false),
-			_language, _modelResourcePermission);
+			_groupLocalService.fetchGroup(journalArticle.getGroupId()),
+			journalArticle, _language, _modelResourcePermission);
 	}
 
 	@Reference
 	private AssetDisplayPageFriendlyURLProvider
 		_assetDisplayPageFriendlyURLProvider;
+
+	@Reference
+	private GroupLocalService _groupLocalService;
 
 	@Reference
 	private InfoEditURLProviderTracker _infoEditURLProviderTracker;

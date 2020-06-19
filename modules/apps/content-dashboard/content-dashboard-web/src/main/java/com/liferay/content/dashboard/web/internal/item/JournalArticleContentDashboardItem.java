@@ -23,6 +23,7 @@ import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.language.Language;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
+import com.liferay.portal.kernel.model.Group;
 import com.liferay.portal.kernel.security.permission.ActionKeys;
 import com.liferay.portal.kernel.security.permission.resource.ModelResourcePermission;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
@@ -47,13 +48,14 @@ public class JournalArticleContentDashboardItem
 
 	public JournalArticleContentDashboardItem(
 		AssetDisplayPageFriendlyURLProvider assetDisplayPageFriendlyURLProvider,
-		InfoEditURLProvider<JournalArticle> infoEditURLProvider,
+		InfoEditURLProvider<JournalArticle> infoEditURLProvider, Group group,
 		JournalArticle journalArticle, Language language,
 		ModelResourcePermission<JournalArticle> modelResourcePermission) {
 
 		_assetDisplayPageFriendlyURLProvider =
 			assetDisplayPageFriendlyURLProvider;
 		_infoEditURLProvider = infoEditURLProvider;
+		_group = group;
 		_journalArticle = journalArticle;
 		_language = language;
 		_modelResourcePermission = modelResourcePermission;
@@ -88,6 +90,26 @@ public class JournalArticleContentDashboardItem
 	@Override
 	public Date getPublishDate() {
 		return _journalArticle.getDisplayDate();
+	}
+
+	@Override
+	public String getScopeName(Locale locale) {
+		return Optional.ofNullable(
+			_group
+		).map(
+			group -> {
+				try {
+					return group.getDescriptiveName(locale);
+				}
+				catch (PortalException portalException) {
+					_log.error(portalException, portalException);
+
+					return StringPool.BLANK;
+				}
+			}
+		).orElse(
+			StringPool.BLANK
+		);
 	}
 
 	@Override
@@ -209,6 +231,7 @@ public class JournalArticleContentDashboardItem
 
 	private final AssetDisplayPageFriendlyURLProvider
 		_assetDisplayPageFriendlyURLProvider;
+	private final Group _group;
 	private final InfoEditURLProvider<JournalArticle> _infoEditURLProvider;
 	private final JournalArticle _journalArticle;
 	private final Language _language;
