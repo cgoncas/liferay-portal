@@ -43,9 +43,10 @@ import javax.servlet.http.HttpServletRequest;
 public class ContentDashboardSearchContextBuilder {
 
 	public ContentDashboardSearchContextBuilder(
-		HttpServletRequest httpServletRequest) {
+		HttpServletRequest httpServletRequest, long userId) {
 
 		_httpServletRequest = httpServletRequest;
+		_userId = userId;
 	}
 
 	public SearchContext build() {
@@ -68,7 +69,8 @@ public class ContentDashboardSearchContextBuilder {
 		searchContext.setBooleanClauses(
 			Stream.of(
 				_getAuthorIdsBooleanClauseOptional(
-					ParamUtil.getLongValues(_httpServletRequest, "authorIds"))
+					ParamUtil.getLongValues(_httpServletRequest, "authorIds")),
+				_getUserIdBooleanClauseOptional(_userId)
 			).filter(
 				Optional::isPresent
 			).map(
@@ -121,6 +123,16 @@ public class ContentDashboardSearchContextBuilder {
 		return this;
 	}
 
+	private BooleanFilter _getApprovedContentBooleanFilter() {
+		BooleanFilter booleanFilter = new BooleanFilter();
+
+		booleanFilter.addRequiredTerm("head", true);
+		booleanFilter.addRequiredTerm(
+			Field.STATUS, WorkflowConstants.STATUS_APPROVED);
+
+		return booleanFilter;
+	}
+
 	private Optional<BooleanClause<Query>> _getAuthorIdsBooleanClauseOptional(
 		long[] authorIds) {
 
@@ -147,9 +159,38 @@ public class ContentDashboardSearchContextBuilder {
 				booleanQuery, BooleanClauseOccur.MUST.getName()));
 	}
 
+	private BooleanFilter _getMyContentBooleanFilter(long userId) {
+		BooleanFilter booleanFilter = new BooleanFilter();
+
+		booleanFilter.addRequiredTerm("head", false);
+		booleanFilter.addRequiredTerm("userId", userId);
+
+		return booleanFilter;
+	}
+
+	private Optional<BooleanClause<Query>> _getUserIdBooleanClauseOptional(
+		long userId) {
+
+		BooleanQuery booleanQuery = new BooleanQueryImpl();
+
+		BooleanFilter booleanFilter = new BooleanFilter();
+
+		booleanFilter.add(
+			_getApprovedContentBooleanFilter(), BooleanClauseOccur.SHOULD);
+		booleanFilter.add(
+			_getMyContentBooleanFilter(userId), BooleanClauseOccur.SHOULD);
+
+		booleanQuery.setPreBooleanFilter(booleanFilter);
+
+		return Optional.of(
+			BooleanClauseFactoryUtil.create(
+				booleanQuery, BooleanClauseOccur.MUST.getName()));
+	}
+
 	private Integer _end;
 	private final HttpServletRequest _httpServletRequest;
 	private Sort _sort;
 	private Integer _start;
+	private final long _userId;
 
 }
