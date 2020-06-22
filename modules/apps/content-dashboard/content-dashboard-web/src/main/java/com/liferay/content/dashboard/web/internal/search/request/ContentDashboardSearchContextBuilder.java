@@ -32,7 +32,6 @@ import com.liferay.portal.kernel.util.ParamUtil;
 import com.liferay.portal.kernel.workflow.WorkflowConstants;
 
 import java.util.Optional;
-import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import javax.servlet.http.HttpServletRequest;
@@ -53,7 +52,7 @@ public class ContentDashboardSearchContextBuilder {
 		SearchContext searchContext = SearchContextFactory.getInstance(
 			_httpServletRequest);
 
-		Integer status = GetterUtil.getInteger(
+		int status = GetterUtil.getInteger(
 			ParamUtil.getInteger(
 				_httpServletRequest, "status", WorkflowConstants.STATUS_ANY));
 
@@ -75,10 +74,8 @@ public class ContentDashboardSearchContextBuilder {
 				Optional::isPresent
 			).map(
 				Optional::get
-			).collect(
-				Collectors.toList()
 			).toArray(
-				new BooleanClause[0]
+				BooleanClause[]::new
 			));
 
 		if (_end != null) {
