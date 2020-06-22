@@ -134,18 +134,8 @@ ContentDashboardAdminManagementToolbarDisplayContext contentDashboardAdminManage
 					</liferay-ui:search-container-column-text>
 
 					<liferay-ui:search-container-column-date
-						name="publish-date"
-						value="<%= contentDashboardItem.getPublishDate() %>"
-					/>
-
-					<liferay-ui:search-container-column-date
 						name="modified-date"
 						value="<%= contentDashboardItem.getModifiedDate() %>"
-					/>
-
-					<liferay-ui:search-container-column-date
-						name="expiration-date"
-						value="<%= contentDashboardItem.getExpirationDate() %>"
 					/>
 
 					<liferay-ui:search-container-column-text>
