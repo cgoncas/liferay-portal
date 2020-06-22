@@ -1062,6 +1062,9 @@ public class ContentDashboardAdminPortletTest {
 		mockLiferayPortletRenderRequest.setAttribute(
 			WebKeys.THEME_DISPLAY, _getThemeDisplay());
 
+		mockLiferayPortletRenderRequest.setAttribute(
+			WebKeys.USER_ID, _user.getUserId());
+
 		return mockLiferayPortletRenderRequest;
 	}
 
@@ -1088,7 +1091,7 @@ public class ContentDashboardAdminPortletTest {
 		themeDisplay.setLocale(LocaleUtil.US);
 		themeDisplay.setPermissionChecker(
 			PermissionThreadLocal.getPermissionChecker());
-		themeDisplay.setUser(_company.getDefaultUser());
+		themeDisplay.setUser(_user);
 
 		return themeDisplay;
 	}
