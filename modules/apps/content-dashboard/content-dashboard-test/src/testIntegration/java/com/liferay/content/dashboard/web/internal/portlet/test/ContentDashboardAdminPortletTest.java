@@ -114,21 +114,38 @@ public class ContentDashboardAdminPortletTest {
 
 	@Test
 	public void testGetSearchContainer() throws Exception {
-		MockLiferayPortletRenderRequest mockLiferayPortletRenderRequest =
-			_getMockLiferayPortletRenderRequest();
+		User user = UserTestUtil.addGroupAdminUser(_group);
 
-		SearchContainer<Object> searchContainer = _getSearchContainer(
-			mockLiferayPortletRenderRequest);
+		Group group = GroupTestUtil.addGroup(
+			_company.getCompanyId(), _user.getUserId(), 0);
 
-		int initialCount = searchContainer.getTotal();
+		try {
+			MockLiferayPortletRenderRequest mockLiferayPortletRenderRequest =
+				_getMockLiferayPortletRenderRequest();
 
-		JournalTestUtil.addArticle(_user.getUserId(), _group.getGroupId(), 0);
+			SearchContainer<Object> searchContainer = _getSearchContainer(
+				mockLiferayPortletRenderRequest);
 
-		searchContainer = _getSearchContainer(mockLiferayPortletRenderRequest);
+			int initialCount = searchContainer.getTotal();
 
-		int actualCount = searchContainer.getTotal();
+			JournalTestUtil.addArticle(
+				_user.getUserId(), _group.getGroupId(), 0);
+			JournalTestUtil.addArticle(
+				user.getUserId(), _group.getGroupId(), 0);
+			JournalTestUtil.addArticle(
+				_user.getUserId(), group.getGroupId(), 0);
 
-		Assert.assertEquals(initialCount + 1, actualCount);
+			searchContainer = _getSearchContainer(
+				mockLiferayPortletRenderRequest);
+
+			int actualCount = searchContainer.getTotal();
+
+			Assert.assertEquals(initialCount + 3, actualCount);
+		}
+		finally {
+			GroupTestUtil.deleteGroup(group);
+			_userLocalService.deleteUser(user);
+		}
 	}
 
 	@Test
@@ -294,6 +311,42 @@ public class ContentDashboardAdminPortletTest {
 
 		Assert.assertEquals(
 			objects.toString(), SearchContainer.DEFAULT_DELTA, objects.size());
+	}
+
+	@Test
+	public void testGetSearchContainerWithScope() throws Exception {
+		Group group = GroupTestUtil.addGroup(
+			_company.getCompanyId(), _user.getUserId(), 0);
+
+		try {
+			JournalArticle journalArticle = JournalTestUtil.addArticle(
+				_user.getUserId(), group.getGroupId(), 0);
+
+			JournalTestUtil.addArticle(
+				_user.getUserId(), _group.getGroupId(), 0);
+
+			MockLiferayPortletRenderRequest mockLiferayPortletRenderRequest =
+				_getMockLiferayPortletRenderRequest();
+
+			mockLiferayPortletRenderRequest.setParameter(
+				"scopeId", String.valueOf(group.getGroupId()));
+
+			SearchContainer<Object> searchContainer = _getSearchContainer(
+				mockLiferayPortletRenderRequest);
+
+			Assert.assertEquals(1, searchContainer.getTotal());
+
+			List<Object> results = searchContainer.getResults();
+
+			Assert.assertEquals(
+				journalArticle.getTitle(LocaleUtil.US),
+				ReflectionTestUtil.invoke(
+					results.get(0), "getTitle", new Class<?>[] {Locale.class},
+					LocaleUtil.US));
+		}
+		finally {
+			GroupTestUtil.deleteGroup(group);
+		}
 	}
 
 	@Test
