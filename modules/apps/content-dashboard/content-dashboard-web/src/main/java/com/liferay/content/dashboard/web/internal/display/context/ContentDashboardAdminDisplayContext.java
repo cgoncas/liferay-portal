@@ -96,6 +96,8 @@ public class ContentDashboardAdminDisplayContext {
 
 		portletURL.setParameter(
 			"checkedUserIds", StringUtil.merge(getAuthorIds()));
+		portletURL.setParameter(
+			"checkedUserIdsEnabled", String.valueOf(Boolean.TRUE));
 
 		return portletURL.toString();
 	}
