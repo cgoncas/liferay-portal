@@ -26,11 +26,13 @@ import javax.portlet.RenderResponse;
 public class UserItemSelectorChecker extends EmptyOnClickRowChecker {
 
 	public UserItemSelectorChecker(
-		RenderResponse renderResponse, long[] checkedUserIds) {
+		RenderResponse renderResponse, long[] checkedUserIds,
+		boolean checkedUserIdsEnabled) {
 
 		super(renderResponse);
 
 		_checkedUserIds = checkedUserIds;
+		_checkedUserIdsEnabled = checkedUserIdsEnabled;
 	}
 
 	@Override
@@ -42,9 +44,14 @@ public class UserItemSelectorChecker extends EmptyOnClickRowChecker {
 
 	@Override
 	public boolean isDisabled(Object object) {
-		return isChecked(object);
+		if (!_checkedUserIdsEnabled) {
+			return isChecked(object);
+		}
+
+		return false;
 	}
 
 	private final long[] _checkedUserIds;
+	private final boolean _checkedUserIdsEnabled;
 
 }
