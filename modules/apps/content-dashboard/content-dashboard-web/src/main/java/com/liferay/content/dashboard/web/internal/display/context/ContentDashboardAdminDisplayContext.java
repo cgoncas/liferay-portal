@@ -14,7 +14,7 @@
 
 package com.liferay.content.dashboard.web.internal.display.context;
 
-import com.liferay.content.dashboard.web.internal.configuration.ContentDashboardConfiguration;
+import com.liferay.content.dashboard.web.internal.configuration.FFContentDashboardConfiguration;
 import com.liferay.content.dashboard.web.internal.item.ContentDashboardItem;
 import com.liferay.content.dashboard.web.internal.model.AssetVocabularyMetric;
 import com.liferay.content.dashboard.web.internal.servlet.taglib.util.ContentDashboardDropdownItemsProvider;
@@ -50,17 +50,17 @@ public class ContentDashboardAdminDisplayContext {
 
 	public ContentDashboardAdminDisplayContext(
 		AssetVocabularyMetric assetVocabularyMetric,
-		ContentDashboardConfiguration contentDashboardConfiguration,
 		ContentDashboardDropdownItemsProvider
 			contentDashboardDropdownItemsProvider,
+		FFContentDashboardConfiguration ffContentDashboardConfiguration,
 		ItemSelector itemSelector, LiferayPortletRequest liferayPortletRequest,
 		LiferayPortletResponse liferayPortletResponse, Portal portal,
 		SearchContainer<ContentDashboardItem<?>> searchContainer) {
 
 		_assetVocabularyMetric = assetVocabularyMetric;
-		_contentDashboardConfiguration = contentDashboardConfiguration;
 		_contentDashboardDropdownItemsProvider =
 			contentDashboardDropdownItemsProvider;
+		_ffContentDashboardConfiguration = ffContentDashboardConfiguration;
 		_itemSelector = itemSelector;
 		_liferayPortletRequest = liferayPortletRequest;
 		_liferayPortletResponse = liferayPortletResponse;
@@ -175,7 +175,7 @@ public class ContentDashboardAdminDisplayContext {
 	}
 
 	public boolean isAuditGraphEnabled() {
-		return _contentDashboardConfiguration.auditGraphEnabled();
+		return _ffContentDashboardConfiguration.auditGraphEnabled();
 	}
 
 	private Map<String, Object> _getProps() {
@@ -185,10 +185,11 @@ public class ContentDashboardAdminDisplayContext {
 
 	private final AssetVocabularyMetric _assetVocabularyMetric;
 	private List<Long> _authorIds;
-	private final ContentDashboardConfiguration _contentDashboardConfiguration;
 	private final ContentDashboardDropdownItemsProvider
 		_contentDashboardDropdownItemsProvider;
 	private Map<String, Object> _data;
+	private final FFContentDashboardConfiguration
+		_ffContentDashboardConfiguration;
 	private final ItemSelector _itemSelector;
 	private final LiferayPortletRequest _liferayPortletRequest;
 	private final LiferayPortletResponse _liferayPortletResponse;
