@@ -102,10 +102,6 @@ public class ContentDashboardAdminDisplayContext {
 		return _authorIds;
 	}
 
-	public String getAuthorItemSelectorEventName() {
-		return _liferayPortletResponse.getNamespace() + "selectedAuthorItem";
-	}
-
 	public String getAuthorItemSelectorURL() throws PortalException {
 		RequestBackedPortletURLFactory requestBackedPortletURLFactory =
 			RequestBackedPortletURLFactoryUtil.create(_liferayPortletRequest);
@@ -117,7 +113,8 @@ public class ContentDashboardAdminDisplayContext {
 			Collections.singletonList(new UUIDItemSelectorReturnType()));
 
 		PortletURL portletURL = _itemSelector.getItemSelectorURL(
-			requestBackedPortletURLFactory, getAuthorItemSelectorEventName(),
+			requestBackedPortletURLFactory,
+			_liferayPortletResponse.getNamespace() + "selectedAuthorItem",
 			userItemSelectorCriterion);
 
 		portletURL.setParameter(
