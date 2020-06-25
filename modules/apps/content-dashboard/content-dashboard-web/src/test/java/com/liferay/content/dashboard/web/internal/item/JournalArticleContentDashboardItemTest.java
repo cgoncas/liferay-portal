@@ -16,7 +16,6 @@ package com.liferay.content.dashboard.web.internal.item;
 
 import com.liferay.asset.display.page.portlet.AssetDisplayPageFriendlyURLProvider;
 import com.liferay.asset.kernel.model.AssetCategory;
-import com.liferay.asset.kernel.model.AssetVocabulary;
 import com.liferay.dynamic.data.mapping.model.DDMStructure;
 import com.liferay.info.display.url.provider.InfoEditURLProvider;
 import com.liferay.journal.model.JournalArticle;
@@ -54,14 +53,12 @@ public class JournalArticleContentDashboardItemTest {
 	public void testGetAssetCategories() {
 		JournalArticle journalArticle = _getJournalArticle();
 
-		AssetVocabulary assetVocabulary = Mockito.mock(AssetVocabulary.class);
-
 		AssetCategory assetCategory = Mockito.mock(AssetCategory.class);
 
 		Mockito.when(
-			assetVocabulary.getCategories()
+			assetCategory.getVocabularyId()
 		).thenReturn(
-			Collections.singletonList(assetCategory)
+			RandomTestUtil.randomLong()
 		);
 
 		JournalArticleContentDashboardItem journalArticleContentDashboardItem =
@@ -72,7 +69,7 @@ public class JournalArticleContentDashboardItemTest {
 		Assert.assertEquals(
 			Collections.singletonList(assetCategory),
 			journalArticleContentDashboardItem.getAssetCategories(
-				assetVocabulary));
+				assetCategory.getVocabularyId()));
 	}
 
 	@Test
@@ -86,7 +83,7 @@ public class JournalArticleContentDashboardItemTest {
 		Assert.assertEquals(
 			Collections.emptyList(),
 			journalArticleContentDashboardItem.getAssetCategories(
-				Mockito.mock(AssetVocabulary.class)));
+				RandomTestUtil.randomLong()));
 	}
 
 	@Test
@@ -94,6 +91,12 @@ public class JournalArticleContentDashboardItemTest {
 		JournalArticle journalArticle = _getJournalArticle();
 
 		AssetCategory assetCategory = Mockito.mock(AssetCategory.class);
+
+		Mockito.when(
+			assetCategory.getVocabularyId()
+		).thenReturn(
+			RandomTestUtil.randomLong()
+		);
 
 		JournalArticleContentDashboardItem journalArticleContentDashboardItem =
 			new JournalArticleContentDashboardItem(
@@ -103,7 +106,7 @@ public class JournalArticleContentDashboardItemTest {
 		Assert.assertEquals(
 			Collections.emptyList(),
 			journalArticleContentDashboardItem.getAssetCategories(
-				Mockito.mock(AssetVocabulary.class)));
+				RandomTestUtil.randomLong()));
 	}
 
 	@Test

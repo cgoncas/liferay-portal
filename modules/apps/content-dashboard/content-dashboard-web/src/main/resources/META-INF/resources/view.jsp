@@ -140,7 +140,7 @@ ContentDashboardAdminManagementToolbarDisplayContext contentDashboardAdminManage
 						<liferay-ui:search-container-column-text
 							name="<%= assetVocabulary.getTitle(locale) %>"
 						>
-							<%= AssetCategoryUtil.toString(contentDashboardItem.getAssetCategories(assetVocabulary), locale) %>
+							<%= AssetCategoryUtil.toString(contentDashboardItem.getAssetCategories(assetVocabulary.getVocabularyId()), locale) %>
 						</liferay-ui:search-container-column-text>
 
 					<%
