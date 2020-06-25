@@ -15,6 +15,8 @@
 package com.liferay.content.dashboard.web.internal.item;
 
 import com.liferay.asset.display.page.portlet.AssetDisplayPageFriendlyURLProvider;
+import com.liferay.asset.kernel.model.AssetCategory;
+import com.liferay.asset.kernel.model.AssetVocabulary;
 import com.liferay.dynamic.data.mapping.model.DDMStructure;
 import com.liferay.info.display.url.provider.InfoEditURLProvider;
 import com.liferay.journal.model.JournalArticle;
@@ -29,6 +31,7 @@ import com.liferay.portal.kernel.util.LocaleUtil;
 import com.liferay.portal.kernel.util.WebKeys;
 import com.liferay.portal.kernel.workflow.WorkflowConstants;
 
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
@@ -46,6 +49,62 @@ import org.springframework.mock.web.MockHttpServletRequest;
  * @author Cristina González
  */
 public class JournalArticleContentDashboardItemTest {
+
+	@Test
+	public void testGetAssetCategories() {
+		JournalArticle journalArticle = _getJournalArticle();
+
+		AssetVocabulary assetVocabulary = Mockito.mock(AssetVocabulary.class);
+
+		AssetCategory assetCategory = Mockito.mock(AssetCategory.class);
+
+		Mockito.when(
+			assetVocabulary.getCategories()
+		).thenReturn(
+			Collections.singletonList(assetCategory)
+		);
+
+		JournalArticleContentDashboardItem journalArticleContentDashboardItem =
+			new JournalArticleContentDashboardItem(
+				Collections.singletonList(assetCategory), null, null, null,
+				journalArticle, null, null);
+
+		Assert.assertEquals(
+			Collections.singletonList(assetCategory),
+			journalArticleContentDashboardItem.getAssetCategories(
+				assetVocabulary));
+	}
+
+	@Test
+	public void testGetAssetCategoriesWithEmptyAssetCategories() {
+		JournalArticle journalArticle = _getJournalArticle();
+
+		JournalArticleContentDashboardItem journalArticleContentDashboardItem =
+			new JournalArticleContentDashboardItem(
+				null, null, null, null, journalArticle, null, null);
+
+		Assert.assertEquals(
+			Collections.emptyList(),
+			journalArticleContentDashboardItem.getAssetCategories(
+				Mockito.mock(AssetVocabulary.class)));
+	}
+
+	@Test
+	public void testGetAssetCategoriesWithNoAssetCategoriesInAssetVocabulary() {
+		JournalArticle journalArticle = _getJournalArticle();
+
+		AssetCategory assetCategory = Mockito.mock(AssetCategory.class);
+
+		JournalArticleContentDashboardItem journalArticleContentDashboardItem =
+			new JournalArticleContentDashboardItem(
+				Collections.singletonList(assetCategory), null, null, null,
+				journalArticle, null, null);
+
+		Assert.assertEquals(
+			Collections.emptyList(),
+			journalArticleContentDashboardItem.getAssetCategories(
+				Mockito.mock(AssetVocabulary.class)));
+	}
 
 	@Test
 	public void testGetEditURL() throws Exception {
