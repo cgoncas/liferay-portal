@@ -48,14 +48,14 @@ public class AssetCategoryUtilTest {
 	}
 
 	@Test
-	public void testToStringWithEmptyCategories() {
+	public void testToStringWithEmptyAssetCategories() {
 		Assert.assertEquals(
 			StringPool.BLANK,
 			AssetCategoryUtil.toString(Collections.emptyList(), LocaleUtil.US));
 	}
 
 	@Test
-	public void testToStringWithMultipleCategories() {
+	public void testToStringWithMultipleAssetCategories() {
 		AssetCategory assetCategory1 = Mockito.mock(AssetCategory.class);
 
 		Mockito.when(
