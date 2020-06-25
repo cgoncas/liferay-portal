@@ -15,6 +15,8 @@
 package com.liferay.content.dashboard.web.internal.item;
 
 import com.liferay.asset.display.page.portlet.AssetDisplayPageFriendlyURLProvider;
+import com.liferay.asset.kernel.model.AssetCategory;
+import com.liferay.asset.kernel.model.AssetVocabulary;
 import com.liferay.dynamic.data.mapping.model.DDMStructure;
 import com.liferay.info.display.url.provider.InfoEditURLProvider;
 import com.liferay.journal.model.JournalArticle;
@@ -27,6 +29,7 @@ import com.liferay.portal.kernel.model.Group;
 import com.liferay.portal.kernel.security.permission.ActionKeys;
 import com.liferay.portal.kernel.security.permission.resource.ModelResourcePermission;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
+import com.liferay.portal.kernel.util.ListUtil;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.kernel.util.WebKeys;
 import com.liferay.portal.kernel.workflow.WorkflowConstants;
@@ -37,6 +40,8 @@ import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 import java.util.Optional;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -47,10 +52,18 @@ public class JournalArticleContentDashboardItem
 	implements ContentDashboardItem<JournalArticle> {
 
 	public JournalArticleContentDashboardItem(
+		List<AssetCategory> assetCategories,
 		AssetDisplayPageFriendlyURLProvider assetDisplayPageFriendlyURLProvider,
 		Group group, InfoEditURLProvider<JournalArticle> infoEditURLProvider,
 		JournalArticle journalArticle, Language language,
 		ModelResourcePermission<JournalArticle> modelResourcePermission) {
+
+		if (ListUtil.isEmpty(assetCategories)) {
+			_assetCategories = Collections.emptyList();
+		}
+		else {
+			_assetCategories = Collections.unmodifiableList(assetCategories);
+		}
 
 		_assetDisplayPageFriendlyURLProvider =
 			assetDisplayPageFriendlyURLProvider;
@@ -59,6 +72,24 @@ public class JournalArticleContentDashboardItem
 		_journalArticle = journalArticle;
 		_language = language;
 		_modelResourcePermission = modelResourcePermission;
+	}
+
+	@Override
+	public List<AssetCategory> getAssetCategories(
+		AssetVocabulary assetVocabulary) {
+
+		Stream<AssetCategory> stream = _assetCategories.stream();
+
+		return stream.filter(
+			assetCategory -> {
+				List<AssetCategory> assetVocabularyCategories =
+					assetVocabulary.getCategories();
+
+				return assetVocabularyCategories.contains(assetCategory);
+			}
+		).collect(
+			Collectors.toList()
+		);
 	}
 
 	@Override
@@ -229,6 +260,7 @@ public class JournalArticleContentDashboardItem
 	private static final Log _log = LogFactoryUtil.getLog(
 		JournalArticleContentDashboardItem.class);
 
+	private final List<AssetCategory> _assetCategories;
 	private final AssetDisplayPageFriendlyURLProvider
 		_assetDisplayPageFriendlyURLProvider;
 	private final Group _group;
