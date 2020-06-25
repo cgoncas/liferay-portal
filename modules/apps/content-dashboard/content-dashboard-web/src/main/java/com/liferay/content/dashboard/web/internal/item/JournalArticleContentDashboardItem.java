@@ -16,7 +16,6 @@ package com.liferay.content.dashboard.web.internal.item;
 
 import com.liferay.asset.display.page.portlet.AssetDisplayPageFriendlyURLProvider;
 import com.liferay.asset.kernel.model.AssetCategory;
-import com.liferay.asset.kernel.model.AssetVocabulary;
 import com.liferay.dynamic.data.mapping.model.DDMStructure;
 import com.liferay.info.display.url.provider.InfoEditURLProvider;
 import com.liferay.journal.model.JournalArticle;
@@ -75,18 +74,11 @@ public class JournalArticleContentDashboardItem
 	}
 
 	@Override
-	public List<AssetCategory> getAssetCategories(
-		AssetVocabulary assetVocabulary) {
-
+	public List<AssetCategory> getAssetCategories(long vocabularyId) {
 		Stream<AssetCategory> stream = _assetCategories.stream();
 
 		return stream.filter(
-			assetCategory -> {
-				List<AssetCategory> assetVocabularyCategories =
-					assetVocabulary.getCategories();
-
-				return assetVocabularyCategories.contains(assetCategory);
-			}
+			assetCategory -> assetCategory.getVocabularyId() == vocabularyId
 		).collect(
 			Collectors.toList()
 		);
