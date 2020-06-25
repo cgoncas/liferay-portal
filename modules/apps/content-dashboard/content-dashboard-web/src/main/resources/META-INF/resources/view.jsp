@@ -134,6 +134,20 @@ ContentDashboardAdminManagementToolbarDisplayContext contentDashboardAdminManage
 
 					</liferay-ui:search-container-column-text>
 
+					<%
+					for (AssetVocabulary assetVocabulary : contentDashboardAdminDisplayContext.getAssetVocabularies()) {
+					%>
+
+						<liferay-ui:search-container-column-text
+							name="<%= assetVocabulary.getTitle(locale) %>"
+						>
+							<%= AssetCategoryUtil.toString(contentDashboardItem.getAssetCategories(assetVocabulary), locale) %>
+						</liferay-ui:search-container-column-text>
+
+					<%
+					}
+					%>
+
 					<liferay-ui:search-container-column-date
 						name="modified-date"
 						value="<%= contentDashboardItem.getModifiedDate() %>"
