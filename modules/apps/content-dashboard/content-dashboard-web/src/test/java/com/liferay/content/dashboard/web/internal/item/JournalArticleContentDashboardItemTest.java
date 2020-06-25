@@ -64,7 +64,8 @@ public class JournalArticleContentDashboardItemTest {
 
 		JournalArticleContentDashboardItem journalArticleContentDashboardItem =
 			new JournalArticleContentDashboardItem(
-				null, null, infoEditURLProvider, journalArticle, null, null);
+				null, null, null, infoEditURLProvider, journalArticle, null,
+				null);
 
 		Assert.assertEquals(
 			"validURL",
@@ -89,7 +90,8 @@ public class JournalArticleContentDashboardItemTest {
 
 		JournalArticleContentDashboardItem journalArticleContentDashboardItem =
 			new JournalArticleContentDashboardItem(
-				null, null, infoEditURLProvider, journalArticle, null, null);
+				null, null, null, infoEditURLProvider, journalArticle, null,
+				null);
 
 		Assert.assertEquals(
 			StringPool.BLANK,
@@ -103,7 +105,7 @@ public class JournalArticleContentDashboardItemTest {
 
 		JournalArticleContentDashboardItem journalArticleContentDashboardItem =
 			new JournalArticleContentDashboardItem(
-				null, null, null, journalArticle, null, null);
+				null, null, null, null, journalArticle, null, null);
 
 		Assert.assertEquals(
 			journalArticle.getExpirationDate(),
@@ -116,7 +118,7 @@ public class JournalArticleContentDashboardItemTest {
 
 		JournalArticleContentDashboardItem journalArticleContentDashboardItem =
 			new JournalArticleContentDashboardItem(
-				null, null, null, journalArticle, null, null);
+				null, null, null, null, journalArticle, null, null);
 
 		Assert.assertEquals(
 			journalArticle.getModifiedDate(),
@@ -129,7 +131,7 @@ public class JournalArticleContentDashboardItemTest {
 
 		JournalArticleContentDashboardItem journalArticleContentDashboardItem =
 			new JournalArticleContentDashboardItem(
-				null, null, null, journalArticle, null, null);
+				null, null, null, null, journalArticle, null, null);
 
 		Assert.assertEquals(
 			journalArticle.getDisplayDate(),
@@ -150,7 +152,7 @@ public class JournalArticleContentDashboardItemTest {
 
 		JournalArticleContentDashboardItem journalArticleContentDashboardItem =
 			new JournalArticleContentDashboardItem(
-				null, group, null, journalArticle, null, null);
+				null, null, group, null, journalArticle, null, null);
 
 		Assert.assertEquals(
 			"scopeName",
@@ -163,7 +165,7 @@ public class JournalArticleContentDashboardItemTest {
 
 		JournalArticleContentDashboardItem journalArticleContentDashboardItem =
 			new JournalArticleContentDashboardItem(
-				null, null, null, journalArticle, _getLanguage(), null);
+				null, null, null, null, journalArticle, _getLanguage(), null);
 
 		List<ContentDashboardItem.Status> statuses =
 			journalArticleContentDashboardItem.getStatuses(LocaleUtil.US);
@@ -201,7 +203,7 @@ public class JournalArticleContentDashboardItemTest {
 
 		JournalArticleContentDashboardItem journalArticleContentDashboardItem =
 			new JournalArticleContentDashboardItem(
-				null, null, null, journalArticle, _getLanguage(), null);
+				null, null, null, null, journalArticle, _getLanguage(), null);
 
 		List<ContentDashboardItem.Status> statuses =
 			journalArticleContentDashboardItem.getStatuses(LocaleUtil.US);
@@ -226,7 +228,7 @@ public class JournalArticleContentDashboardItemTest {
 
 		JournalArticleContentDashboardItem journalArticleContentDashboardItem =
 			new JournalArticleContentDashboardItem(
-				null, null, null, journalArticle, null, null);
+				null, null, null, null, journalArticle, null, null);
 
 		Assert.assertEquals(
 			"subtype",
@@ -239,7 +241,7 @@ public class JournalArticleContentDashboardItemTest {
 
 		JournalArticleContentDashboardItem journalArticleContentDashboardItem =
 			new JournalArticleContentDashboardItem(
-				null, null, null, journalArticle, null, null);
+				null, null, null, null, journalArticle, null, null);
 
 		Assert.assertEquals(
 			journalArticle.getTitle(LocaleUtil.US),
@@ -263,8 +265,8 @@ public class JournalArticleContentDashboardItemTest {
 
 		JournalArticleContentDashboardItem journalArticleContentDashboardItem =
 			new JournalArticleContentDashboardItem(
-				assetDisplayPageFriendlyURLProvider, null, null, journalArticle,
-				null, null);
+				null, assetDisplayPageFriendlyURLProvider, null, null,
+				journalArticle, null, null);
 
 		Assert.assertEquals(
 			"validURL",
@@ -282,8 +284,8 @@ public class JournalArticleContentDashboardItemTest {
 
 		JournalArticleContentDashboardItem journalArticleContentDashboardItem =
 			new JournalArticleContentDashboardItem(
-				assetDisplayPageFriendlyURLProvider, null, null, journalArticle,
-				null, null);
+				null, assetDisplayPageFriendlyURLProvider, null, null,
+				journalArticle, null, null);
 
 		Assert.assertEquals(
 			StringPool.BLANK,
@@ -311,7 +313,7 @@ public class JournalArticleContentDashboardItemTest {
 
 		JournalArticleContentDashboardItem journalArticleContentDashboardItem =
 			new JournalArticleContentDashboardItem(
-				null, null, infoEditURLProvider, journalArticle, null,
+				null, null, null, infoEditURLProvider, journalArticle, null,
 				modelResourcePermission);
 
 		Assert.assertTrue(
@@ -331,7 +333,7 @@ public class JournalArticleContentDashboardItemTest {
 
 		JournalArticleContentDashboardItem journalArticleContentDashboardItem =
 			new JournalArticleContentDashboardItem(
-				null, null, infoEditURLProvider, journalArticle, null,
+				null, null, null, infoEditURLProvider, journalArticle, null,
 				modelResourcePermission);
 
 		Assert.assertFalse(
@@ -356,8 +358,8 @@ public class JournalArticleContentDashboardItemTest {
 
 		JournalArticleContentDashboardItem journalArticleContentDashboardItem =
 			new JournalArticleContentDashboardItem(
-				assetDisplayPageFriendlyURLProvider, null, null, journalArticle,
-				null, null);
+				null, assetDisplayPageFriendlyURLProvider, null, null,
+				journalArticle, null, null);
 
 		Assert.assertTrue(
 			journalArticleContentDashboardItem.isViewURLEnabled(
@@ -380,8 +382,8 @@ public class JournalArticleContentDashboardItemTest {
 
 		JournalArticleContentDashboardItem journalArticleContentDashboardItem =
 			new JournalArticleContentDashboardItem(
-				assetDisplayPageFriendlyURLProvider, null, null, journalArticle,
-				null, null);
+				null, assetDisplayPageFriendlyURLProvider, null, null,
+				journalArticle, null, null);
 
 		Assert.assertFalse(
 			journalArticleContentDashboardItem.isViewURLEnabled(null));
@@ -397,8 +399,8 @@ public class JournalArticleContentDashboardItemTest {
 
 		JournalArticleContentDashboardItem journalArticleContentDashboardItem =
 			new JournalArticleContentDashboardItem(
-				assetDisplayPageFriendlyURLProvider, null, null, journalArticle,
-				null, null);
+				null, assetDisplayPageFriendlyURLProvider, null, null,
+				journalArticle, null, null);
 
 		Assert.assertFalse(
 			journalArticleContentDashboardItem.isViewURLEnabled(
