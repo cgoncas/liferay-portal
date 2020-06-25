@@ -15,7 +15,6 @@
 package com.liferay.content.dashboard.web.internal.item;
 
 import com.liferay.asset.kernel.model.AssetCategory;
-import com.liferay.asset.kernel.model.AssetVocabulary;
 
 import java.util.Date;
 import java.util.List;
@@ -28,8 +27,7 @@ import javax.servlet.http.HttpServletRequest;
  */
 public interface ContentDashboardItem<T> {
 
-	public List<AssetCategory> getAssetCategories(
-		AssetVocabulary assetVocabulary);
+	public List<AssetCategory> getAssetCategories(long vocabularyId);
 
 	public String getEditURL(HttpServletRequest httpServletRequest);
 
