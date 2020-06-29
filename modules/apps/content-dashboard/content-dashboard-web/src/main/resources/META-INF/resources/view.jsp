@@ -139,9 +139,27 @@ ContentDashboardAdminManagementToolbarDisplayContext contentDashboardAdminManage
 					%>
 
 						<liferay-ui:search-container-column-text
+							cssClass="text-nowrap"
 							name="<%= assetVocabulary.getTitle(locale) %>"
 						>
-							<%= AssetCategoryUtil.toString(contentDashboardItem.getAssetCategories(assetVocabulary.getVocabularyId()), locale) %>
+
+							<%
+							for (AssetCategory assetCategory : (List<AssetCategory>)contentDashboardItem.getAssetCategories(assetVocabulary.getVocabularyId())) {
+							%>
+
+								<clay:label
+									cssClass="d-block"
+									dismissible="<%= true %>"
+									displayType="secondary"
+									large="<%= true %>"
+								>
+									<clay:label-item-expand><%= assetCategory.getTitle(locale) %></clay:label-item-expand>
+								</clay:label>
+
+							<%
+							}
+							%>
+
 						</liferay-ui:search-container-column-text>
 
 					<%
