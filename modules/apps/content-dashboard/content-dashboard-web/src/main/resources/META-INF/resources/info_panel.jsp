@@ -21,7 +21,14 @@ ContentDashboardAdminInfoPanelDisplayContext contentDashboardAdminInfoPanelDispl
 %>
 
 <div class="sidebar-header">
-	<h4 class="sidebar-title"><liferay-ui:message key="content" /></h4>
+	<c:choose>
+		<c:when test="<%= contentDashboardAdminInfoPanelDisplayContext.getSelectedContentDashboardItemsCount() > 0 %>">
+			<h4 class="sidebar-title"><liferay-ui:message arguments="<%= contentDashboardAdminInfoPanelDisplayContext.getSelectedContentDashboardItemsCount() %>" key="x-items-are-selected" /></h4>
+		</c:when>
+		<c:otherwise>
+			<h4 class="sidebar-title"><liferay-ui:message key="content" /></h4>
+		</c:otherwise>
+	</c:choose>
 </div>
 
 <liferay-ui:tabs
@@ -32,14 +39,21 @@ ContentDashboardAdminInfoPanelDisplayContext contentDashboardAdminInfoPanelDispl
 >
 	<liferay-ui:section>
 		<div class="sidebar-body">
-			<dl class="sidebar-block">
-				<dt class="sidebar-dt">
-					<liferay-ui:message key="num-of-items" />
-				</dt>
-				<dd class="sidebar-dd">
-					<%= contentDashboardAdminInfoPanelDisplayContext.getContentDashboardItemsCount() %>
-				</dd>
-			</dl>
+			<c:choose>
+				<c:when test="<%= contentDashboardAdminInfoPanelDisplayContext.getSelectedContentDashboardItemsCount() > 0 %>">
+					<h5><liferay-ui:message arguments="<%= contentDashboardAdminInfoPanelDisplayContext.getSelectedContentDashboardItemsCount() %>" key="x-items-are-selected" /></h5>
+				</c:when>
+				<c:otherwise>
+					<dl class="sidebar-block">
+						<dt class="sidebar-dt">
+							<liferay-ui:message key="num-of-items" />
+						</dt>
+						<dd class="sidebar-dd">
+							<%= contentDashboardAdminInfoPanelDisplayContext.getContentDashboardItemsCount() %>
+						</dd>
+					</dl>
+				</c:otherwise>
+			</c:choose>
 		</div>
 	</liferay-ui:section>
 </liferay-ui:tabs>

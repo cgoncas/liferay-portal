@@ -64,7 +64,8 @@ public class InfoPanelMVCResourceCommand extends BaseMVCResourceCommand {
 			ContentDashboardWebKeys.
 				CONTENT_DASHBOARD_ADMIN_INFO_PANEL_DISPLAY_CONTEXT,
 			new ContentDashboardAdminInfoPanelDisplayContext(
-				searchResponse.getCount()));
+				searchResponse.getCount(),
+				_portal.getHttpServletRequest(resourceRequest)));
 
 		include(resourceRequest, resourceResponse, "/info_panel.jsp");
 	}

@@ -14,21 +14,45 @@
 
 package com.liferay.content.dashboard.web.internal.display.context;
 
+import com.liferay.content.dashboard.web.internal.item.ContentDashboardItem;
+import com.liferay.portal.kernel.dao.search.RowChecker;
+import com.liferay.portal.kernel.util.ParamUtil;
+
+import javax.servlet.http.HttpServletRequest;
+
 /**
  * @author Cristina González
  */
 public class ContentDashboardAdminInfoPanelDisplayContext {
 
 	public ContentDashboardAdminInfoPanelDisplayContext(
-		long contentDashboardItemsCount) {
+		long contentDashboardItemsCount,
+		HttpServletRequest httpServletRequest) {
 
 		_contentDashboardItemsCount = contentDashboardItemsCount;
+		_httpServletRequest = httpServletRequest;
 	}
 
 	public long getContentDashboardItemsCount() {
 		return _contentDashboardItemsCount;
 	}
 
+	public long getSelectedContentDashboardItemsCount() {
+		if (_selectedContentDashboardItemsCount > 0) {
+			return _selectedContentDashboardItemsCount;
+		}
+
+		String[] rowIds = ParamUtil.getStringValues(
+			_httpServletRequest,
+			RowChecker.ROW_IDS + ContentDashboardItem.class.getSimpleName());
+
+		_selectedContentDashboardItemsCount = rowIds.length;
+
+		return _selectedContentDashboardItemsCount;
+	}
+
 	private final long _contentDashboardItemsCount;
+	private final HttpServletRequest _httpServletRequest;
+	private long _selectedContentDashboardItemsCount;
 
 }
