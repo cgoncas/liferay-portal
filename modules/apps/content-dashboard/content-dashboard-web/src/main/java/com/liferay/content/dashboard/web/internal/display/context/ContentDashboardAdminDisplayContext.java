@@ -46,6 +46,7 @@ import java.util.Map;
 import java.util.ResourceBundle;
 
 import javax.portlet.PortletURL;
+import javax.portlet.ResourceURL;
 
 /**
  * @author Cristina González
@@ -154,6 +155,14 @@ public class ContentDashboardAdminDisplayContext {
 
 		return _contentDashboardDropdownItemsProvider.getDropdownItems(
 			contentDashboardItem);
+	}
+
+	public ResourceURL getInfoPanelURL() {
+		ResourceURL resourceURL = _liferayPortletResponse.createResourceURL();
+
+		resourceURL.setResourceID("/content_dashboard/info_panel");
+
+		return resourceURL;
 	}
 
 	public long getScopeId() {
