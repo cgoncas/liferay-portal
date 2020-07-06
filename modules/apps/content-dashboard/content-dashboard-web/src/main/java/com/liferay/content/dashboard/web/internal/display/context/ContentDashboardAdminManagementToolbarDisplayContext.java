@@ -239,6 +239,11 @@ public class ContentDashboardAdminManagementToolbarDisplayContext
 	}
 
 	@Override
+	public String getSearchContainerId() {
+		return "content";
+	}
+
+	@Override
 	public Boolean isDisabled() {
 		return false;
 	}
