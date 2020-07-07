@@ -41,11 +41,6 @@ import java.util.Collections;
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 
-import org.jsoup.Jsoup;
-import org.jsoup.nodes.Document;
-import org.jsoup.nodes.Element;
-import org.jsoup.select.Elements;
-
 import org.junit.Assert;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -89,18 +84,11 @@ public class ComponentTagTest {
 
 		componentTag.doEndTag();
 
-		Document document = _toDocument(
-			(ScriptData)httpServletRequest.getAttribute(
-				WebKeys.AUI_SCRIPT_DATA));
-
-		Elements elements = document.select("script[type='text/javascript']");
-
-		Assert.assertEquals(1, elements.size());
-
-		Element element = elements.get(0);
-
 		Assert.assertEquals(
-			_read("dependencies/component_tag.html"), element.html());
+			_read("dependencies/component_tag.html"),
+			_toString(
+				(ScriptData)httpServletRequest.getAttribute(
+					WebKeys.AUI_SCRIPT_DATA)));
 	}
 
 	private HttpServletRequest _getHttpServletRequest() {
@@ -149,14 +137,14 @@ public class ComponentTagTest {
 		return new String(Files.readAllBytes(Paths.get(url.toURI())));
 	}
 
-	private Document _toDocument(ScriptData scriptData) throws Exception {
+	private String _toString(ScriptData scriptData) throws Exception {
 		StringWriter stringWriter = new StringWriter();
 
 		scriptData.writeTo(stringWriter);
 
 		StringBuffer stringBuffer = stringWriter.getBuffer();
 
-		return Jsoup.parse(stringBuffer.toString());
+		return stringBuffer.toString();
 	}
 
 }

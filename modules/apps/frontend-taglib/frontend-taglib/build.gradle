@@ -21,5 +21,4 @@ dependencies {
 	compileOnly project(":core:registry-api")
 
 	testCompile group: "com.liferay.portal", name: "com.liferay.portal.impl", version: "default"
-	testCompile group: "org.jsoup", name: "jsoup", version: "1.10.2"
 }
