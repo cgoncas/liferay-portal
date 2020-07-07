@@ -205,7 +205,7 @@ public class ComponentTag extends ParamAndPropertyAncestorTagImpl {
 
 		sb.append(
 			_jsonSerializer.serializeDeep(
-				new HashMapBuilder<>().putAll(
+				new HashMapBuilder().putAll(
 					getContext()
 				).put(
 					"namespace", portletDisplay.getNamespace()
