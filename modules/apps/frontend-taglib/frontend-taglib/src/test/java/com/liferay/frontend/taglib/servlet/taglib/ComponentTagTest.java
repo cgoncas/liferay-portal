@@ -99,15 +99,8 @@ public class ComponentTagTest {
 
 		Element element = elements.get(0);
 
-		Assert.assertEquals(_expectedResult(), element.html());
-	}
-
-	private String _expectedResult() throws Exception {
-		Class<?> clazz = getClass();
-
-		URL url = clazz.getResource("componentTag.txt");
-
-		return new String(Files.readAllBytes(Paths.get(url.toURI())));
+		Assert.assertEquals(
+			_read("dependencies/component_tag.html"), element.html());
 	}
 
 	private HttpServletRequest _getHttpServletRequest() {
@@ -146,6 +139,14 @@ public class ComponentTagTest {
 			"NPMResolvedPackageNameUtil");
 
 		return servletContext;
+	}
+
+	private String _read(String fileName) throws Exception {
+		Class<?> clazz = getClass();
+
+		URL url = clazz.getResource(fileName);
+
+		return new String(Files.readAllBytes(Paths.get(url.toURI())));
 	}
 
 	private Document _toDocument(ScriptData scriptData) throws Exception {
