@@ -314,13 +314,15 @@ public class JournalUtil {
 					WorkflowConstants.STATUS_IN_TRASH
 				});
 
-		if ((latestArticle != null) && !latestArticle.isIndexable()) {
-			return false;
-		}
-		else if ((latestArticle != null) &&
-				 (article.getId() == latestArticle.getId())) {
+		if (((latestArticle == null) && article.isDraft() &&
+			 article.isIndexable()) ||
+			((latestArticle != null) &&
+			 (article.getId() == latestArticle.getId()))) {
 
 			return true;
+		}
+		else if ((latestArticle != null) && !latestArticle.isIndexable()) {
+			return false;
 		}
 
 		return false;

@@ -105,7 +105,8 @@ public class ContentDashboardAdminPortlet extends MVCPortlet {
 			new ContentDashboardDataProvider(
 				_aggregations,
 				new ContentDashboardSearchContextBuilder(
-					_portal.getHttpServletRequest(renderRequest)),
+					_portal.getHttpServletRequest(renderRequest),
+					_portal.getUserId(renderRequest)),
 				_contentDashboardSearchRequestBuilderFactory,
 				_portal.getLocale(renderRequest), _searcher);
 		LiferayPortletRequest liferayPortletRequest =

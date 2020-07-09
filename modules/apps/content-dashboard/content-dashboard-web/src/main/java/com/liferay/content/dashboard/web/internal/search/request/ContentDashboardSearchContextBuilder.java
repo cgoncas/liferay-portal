@@ -17,7 +17,9 @@ package com.liferay.content.dashboard.web.internal.search.request;
 import com.liferay.portal.kernel.search.BooleanClause;
 import com.liferay.portal.kernel.search.BooleanClauseFactoryUtil;
 import com.liferay.portal.kernel.search.BooleanClauseOccur;
+import com.liferay.portal.kernel.search.BooleanQuery;
 import com.liferay.portal.kernel.search.Field;
+import com.liferay.portal.kernel.search.Query;
 import com.liferay.portal.kernel.search.SearchContext;
 import com.liferay.portal.kernel.search.SearchContextFactory;
 import com.liferay.portal.kernel.search.Sort;
@@ -29,6 +31,9 @@ import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.ParamUtil;
 import com.liferay.portal.kernel.workflow.WorkflowConstants;
 
+import java.util.Optional;
+import java.util.stream.Stream;
+
 import javax.servlet.http.HttpServletRequest;
 
 /**
@@ -37,31 +42,34 @@ import javax.servlet.http.HttpServletRequest;
 public class ContentDashboardSearchContextBuilder {
 
 	public ContentDashboardSearchContextBuilder(
-		HttpServletRequest httpServletRequest) {
+		HttpServletRequest httpServletRequest, long userId) {
 
 		_httpServletRequest = httpServletRequest;
+		_userId = userId;
 	}
 
 	public SearchContext build() {
 		SearchContext searchContext = SearchContextFactory.getInstance(
 			_httpServletRequest);
 
-		Integer status = GetterUtil.getInteger(
+		int status = GetterUtil.getInteger(
 			ParamUtil.getInteger(
 				_httpServletRequest, "status", WorkflowConstants.STATUS_ANY));
-
-		if (status == WorkflowConstants.STATUS_APPROVED) {
-			searchContext.setAttribute("head", Boolean.TRUE);
-		}
-		else {
-			searchContext.setAttribute("latest", Boolean.TRUE);
-		}
 
 		searchContext.setAttribute("status", status);
 
 		searchContext.setBooleanClauses(
-			_getBooleanClauses(
-				ParamUtil.getLongValues(_httpServletRequest, "authorIds")));
+			Stream.of(
+				_getAuthorIdsBooleanClauseOptional(
+					ParamUtil.getLongValues(_httpServletRequest, "authorIds")),
+				_getUserIdBooleanClauseOptional(_userId)
+			).filter(
+				Optional::isPresent
+			).map(
+				Optional::get
+			).toArray(
+				BooleanClause[]::new
+			));
 
 		if (_end != null) {
 			searchContext.setEnd(_end);
@@ -105,12 +113,22 @@ public class ContentDashboardSearchContextBuilder {
 		return this;
 	}
 
-	private BooleanClause[] _getBooleanClauses(long[] authorIds) {
+	private BooleanFilter _getApprovedContentBooleanFilter() {
+		BooleanFilter booleanFilter = new BooleanFilter();
+
+		booleanFilter.addRequiredTerm("headListable", true);
+
+		return booleanFilter;
+	}
+
+	private Optional<BooleanClause<Query>> _getAuthorIdsBooleanClauseOptional(
+		long[] authorIds) {
+
 		if (ArrayUtil.isEmpty(authorIds)) {
-			return new BooleanClause[0];
+			return Optional.empty();
 		}
 
-		BooleanQueryImpl booleanQueryImpl = new BooleanQueryImpl();
+		BooleanQuery booleanQuery = new BooleanQueryImpl();
 
 		BooleanFilter booleanFilter = new BooleanFilter();
 
@@ -122,17 +140,46 @@ public class ContentDashboardSearchContextBuilder {
 
 		booleanFilter.add(termsFilter, BooleanClauseOccur.MUST);
 
-		booleanQueryImpl.setPreBooleanFilter(booleanFilter);
+		booleanQuery.setPreBooleanFilter(booleanFilter);
 
-		return new BooleanClause[] {
+		return Optional.of(
 			BooleanClauseFactoryUtil.create(
-				booleanQueryImpl, BooleanClauseOccur.MUST.getName())
-		};
+				booleanQuery, BooleanClauseOccur.MUST.getName()));
+	}
+
+	private BooleanFilter _getMyContentBooleanFilter(long userId) {
+		BooleanFilter booleanFilter = new BooleanFilter();
+
+		booleanFilter.addRequiredTerm("headListable", false);
+		booleanFilter.addRequiredTerm("latest", true);
+		booleanFilter.addRequiredTerm("userId", userId);
+
+		return booleanFilter;
+	}
+
+	private Optional<BooleanClause<Query>> _getUserIdBooleanClauseOptional(
+		long userId) {
+
+		BooleanQuery booleanQuery = new BooleanQueryImpl();
+
+		BooleanFilter booleanFilter = new BooleanFilter();
+
+		booleanFilter.add(
+			_getApprovedContentBooleanFilter(), BooleanClauseOccur.SHOULD);
+		booleanFilter.add(
+			_getMyContentBooleanFilter(userId), BooleanClauseOccur.SHOULD);
+
+		booleanQuery.setPreBooleanFilter(booleanFilter);
+
+		return Optional.of(
+			BooleanClauseFactoryUtil.create(
+				booleanQuery, BooleanClauseOccur.MUST.getName()));
 	}
 
 	private Integer _end;
 	private final HttpServletRequest _httpServletRequest;
 	private Sort _sort;
 	private Integer _start;
+	private final long _userId;
 
 }

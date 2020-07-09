@@ -943,6 +943,41 @@ public class ContentDashboardAdminPortletTest {
 	}
 
 	@Test
+	public void testGetSearchContainerWithStatusDraftByAnotherUser()
+		throws Exception {
+
+		User user = UserTestUtil.addCompanyAdminUser(_company);
+
+		try {
+			JournalArticle journalArticle = JournalTestUtil.addArticle(
+				_user.getUserId(), _group.getGroupId(), 0);
+
+			JournalTestUtil.addArticleWithWorkflow(
+				_group.getGroupId(), 0, RandomTestUtil.randomString(),
+				RandomTestUtil.randomString(), false,
+				ServiceContextTestUtil.getServiceContext(
+					_company.getCompanyId(), _group.getGroupId(),
+					user.getUserId()));
+
+			SearchContainer<Object> searchContainer = _getSearchContainer(
+				_getMockLiferayPortletRenderRequest());
+
+			Assert.assertEquals(1, searchContainer.getTotal());
+
+			List<Object> results = searchContainer.getResults();
+
+			Assert.assertEquals(
+				journalArticle.getTitle(LocaleUtil.US),
+				ReflectionTestUtil.invoke(
+					results.get(0), "getTitle", new Class<?>[] {Locale.class},
+					LocaleUtil.US));
+		}
+		finally {
+			_userLocalService.deleteUser(user);
+		}
+	}
+
+	@Test
 	public void testGetSearchContainerWithStatusScheduled() throws Exception {
 		ServiceContext serviceContext =
 			ServiceContextTestUtil.getServiceContext(
@@ -1078,6 +1113,9 @@ public class ContentDashboardAdminPortletTest {
 		mockLiferayPortletRenderRequest.setAttribute(
 			WebKeys.THEME_DISPLAY, _getThemeDisplay(locale));
 
+		mockLiferayPortletRenderRequest.setAttribute(
+			WebKeys.USER_ID, _user.getUserId());
+
 		return mockLiferayPortletRenderRequest;
 	}
 
@@ -1104,7 +1142,7 @@ public class ContentDashboardAdminPortletTest {
 		themeDisplay.setLocale(locale);
 		themeDisplay.setPermissionChecker(
 			PermissionThreadLocal.getPermissionChecker());
-		themeDisplay.setUser(_company.getDefaultUser());
+		themeDisplay.setUser(_user);
 
 		return themeDisplay;
 	}
