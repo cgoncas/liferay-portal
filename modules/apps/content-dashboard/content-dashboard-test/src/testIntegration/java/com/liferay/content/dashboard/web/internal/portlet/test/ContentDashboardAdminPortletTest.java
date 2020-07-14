@@ -708,6 +708,8 @@ public class ContentDashboardAdminPortletTest {
 		mockLiferayPortletRenderRequest.setParameter(
 			"contentDashboardItemTypePayload",
 			JSONUtil.put(
+				"className", DDMStructure.class.getName()
+			).put(
 				"classPK", ddmStructure.getStructureId()
 			).toString());
 
@@ -780,6 +782,87 @@ public class ContentDashboardAdminPortletTest {
 			ReflectionTestUtil.invoke(
 				results.get(0), "getTitle", new Class<?>[] {Locale.class},
 				LocaleUtil.US));
+	}
+
+	@Test
+	public void testGetSearchContainerWithMultipleContentDashboardItemType()
+		throws Exception {
+
+		DDMStructure ddmStructure1 = DDMStructureTestUtil.addStructure(
+			_group.getGroupId(), JournalArticle.class.getName(), 0,
+			DDMStructureTestUtil.getSampleDDMForm(),
+			LocaleUtil.getSiteDefault(),
+			ServiceContextTestUtil.getServiceContext());
+
+		DDMTemplate ddmTemplate = DDMTemplateTestUtil.addTemplate(
+			_group.getGroupId(), ddmStructure1.getStructureId(),
+			PortalUtil.getClassNameId(JournalArticle.class),
+			TemplateConstants.LANG_TYPE_VM,
+			JournalTestUtil.getSampleTemplateXSL(),
+			LocaleUtil.getSiteDefault());
+
+		ServiceContext serviceContext =
+			ServiceContextTestUtil.getServiceContext(
+				_company.getCompanyId(), _group.getGroupId(),
+				_user.getUserId());
+
+		JournalArticle journalArticle1 =
+			JournalTestUtil.addArticleWithXMLContent(
+				JournalFolderConstants.DEFAULT_PARENT_FOLDER_ID,
+				JournalArticleConstants.CLASS_NAME_ID_DEFAULT, 0,
+				DDMStructureTestUtil.getSampleStructuredContent(),
+				ddmStructure1.getStructureKey(), ddmTemplate.getTemplateKey(),
+				LocaleUtil.getSiteDefault(), null, serviceContext);
+
+		JournalArticle journalArticle2 = JournalTestUtil.addArticle(
+			_user.getUserId(), _group.getGroupId(), 0);
+
+		DDMStructure ddmStructure2 = journalArticle2.getDDMStructure();
+
+		MockLiferayPortletRenderRequest mockLiferayPortletRenderRequest =
+			_getMockLiferayPortletRenderRequest();
+
+		mockLiferayPortletRenderRequest.setParameter(
+			"contentDashboardItemTypePayload",
+			new String[] {
+				JSONUtil.put(
+					"className", DDMStructure.class.getName()
+				).put(
+					"classPK", ddmStructure1.getStructureId()
+				).toString(),
+				JSONUtil.put(
+					"className", DDMStructure.class.getName()
+				).put(
+					"classPK", ddmStructure2.getStructureId()
+				).toString()
+			});
+
+		SearchContainer<Object> searchContainer = _getSearchContainer(
+			mockLiferayPortletRenderRequest);
+
+		Assert.assertEquals(2, searchContainer.getTotal());
+
+		List<Object> results = searchContainer.getResults();
+
+		Stream<Object> stream = results.stream();
+
+		Assert.assertTrue(
+			stream.anyMatch(
+				result -> Objects.equals(
+					journalArticle1.getTitle(LocaleUtil.US),
+					ReflectionTestUtil.invoke(
+						result, "getTitle", new Class<?>[] {Locale.class},
+						LocaleUtil.US))));
+
+		stream = results.stream();
+
+		Assert.assertTrue(
+			stream.anyMatch(
+				result -> Objects.equals(
+					journalArticle2.getTitle(LocaleUtil.US),
+					ReflectionTestUtil.invoke(
+						result, "getTitle", new Class<?>[] {Locale.class},
+						LocaleUtil.US))));
 	}
 
 	@Test

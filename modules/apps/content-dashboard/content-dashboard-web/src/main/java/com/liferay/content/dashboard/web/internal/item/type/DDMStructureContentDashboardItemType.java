@@ -15,6 +15,7 @@
 package com.liferay.content.dashboard.web.internal.item.type;
 
 import com.liferay.dynamic.data.mapping.model.DDMStructure;
+import com.liferay.petra.lang.HashUtil;
 import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.log.Log;
@@ -23,6 +24,7 @@ import com.liferay.portal.kernel.model.Group;
 
 import java.util.Date;
 import java.util.Locale;
+import java.util.Objects;
 
 /**
  * @author Cristina González
@@ -35,6 +37,30 @@ public class DDMStructureContentDashboardItemType
 
 		_ddmStructure = ddmStructure;
 		_group = group;
+	}
+
+	@Override
+	public boolean equals(Object object) {
+		if (this == object) {
+			return true;
+		}
+
+		if (!(object instanceof ContentDashboardItemType)) {
+			return false;
+		}
+
+		ContentDashboardItemType contentDashboardItemType =
+			(ContentDashboardItemType)object;
+
+		if (Objects.equals(
+				getClassName(), contentDashboardItemType.getClassName()) &&
+			Objects.equals(
+				getClassPK(), contentDashboardItemType.getClassPK())) {
+
+			return true;
+		}
+
+		return false;
 	}
 
 	@Override
@@ -77,6 +103,13 @@ public class DDMStructureContentDashboardItemType
 	@Override
 	public long getUserId() {
 		return _ddmStructure.getUserId();
+	}
+
+	@Override
+	public int hashCode() {
+		int hash = HashUtil.hash(0, getClassPK());
+
+		return HashUtil.hash(hash, getClassName());
 	}
 
 	private static final Log _log = LogFactoryUtil.getLog(
