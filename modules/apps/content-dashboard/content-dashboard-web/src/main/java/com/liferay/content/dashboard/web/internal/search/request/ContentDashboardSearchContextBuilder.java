@@ -32,8 +32,10 @@ import com.liferay.portal.kernel.search.generic.BooleanQueryImpl;
 import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.ParamUtil;
-import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.kernel.workflow.WorkflowConstants;
+
+import java.util.Optional;
+import java.util.stream.Stream;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -69,20 +71,35 @@ public class ContentDashboardSearchContextBuilder {
 			_getBooleanClauses(
 				ParamUtil.getLongValues(_httpServletRequest, "authorIds")));
 
-		String contentDashboardItemTypePayload = ParamUtil.getString(
-			_httpServletRequest, "contentDashboardItemTypePayload");
+		String[] contentDashboardItemTypePayloads =
+			ParamUtil.getParameterValues(
+				_httpServletRequest, "contentDashboardItemTypePayload",
+				new String[0], false);
 
-		if (Validator.isNotNull(contentDashboardItemTypePayload)) {
-			try {
-				JSONObject jsonObject = JSONFactoryUtil.createJSONObject(
-					contentDashboardItemTypePayload);
+		if (!ArrayUtil.isEmpty(contentDashboardItemTypePayloads)) {
+			searchContext.setClassTypeIds(
+				Stream.of(
+					contentDashboardItemTypePayloads
+				).map(
+					contentDashboardItemTypePayload -> {
+						try {
+							return Optional.of(
+								JSONFactoryUtil.createJSONObject(
+									contentDashboardItemTypePayload));
+						}
+						catch (JSONException jsonException) {
+							_log.error(jsonException, jsonException);
 
-				searchContext.setClassTypeIds(
-					new long[] {jsonObject.getLong("classPK")});
-			}
-			catch (JSONException jsonException) {
-				_log.error(jsonException, jsonException);
-			}
+							return Optional.<JSONObject>empty();
+						}
+					}
+				).filter(
+					Optional::isPresent
+				).map(
+					Optional::get
+				).mapToLong(
+					jsonObject -> jsonObject.getLong("classPK")
+				).toArray());
 		}
 
 		if (_end != null) {

@@ -19,6 +19,7 @@ import com.liferay.content.dashboard.web.internal.item.type.ContentDashboardItem
 import com.liferay.content.dashboard.web.internal.item.type.ContentDashboardItemTypeFactoryTracker;
 import com.liferay.content.dashboard.web.internal.item.type.ContentDashboardItemTypeUtil;
 import com.liferay.dynamic.data.mapping.service.DDMStructureLocalService;
+import com.liferay.portal.kernel.dao.search.EmptyOnClickRowChecker;
 import com.liferay.portal.kernel.dao.search.SearchContainer;
 import com.liferay.portal.kernel.search.BooleanClause;
 import com.liferay.portal.kernel.search.BooleanClauseFactoryUtil;
@@ -44,6 +45,7 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import javax.portlet.PortletRequest;
+import javax.portlet.PortletResponse;
 import javax.portlet.PortletURL;
 
 import org.osgi.service.component.annotations.Component;
@@ -56,7 +58,8 @@ import org.osgi.service.component.annotations.Reference;
 public class ContentDashboardItemTypeItemSelectorProvider {
 
 	public SearchContainer<ContentDashboardItemType> getSearchContainer(
-		PortletRequest portletRequest, PortletURL portletURL) {
+		PortletRequest portletRequest, PortletResponse portletResponse,
+		PortletURL portletURL) {
 
 		SearchContainer<ContentDashboardItemType> searchContainer =
 			new SearchContainer<>(
@@ -72,6 +75,9 @@ public class ContentDashboardItemTypeItemSelectorProvider {
 
 		searchContainer.setResults(
 			_toContentDashboardItemTypes(searchResponse.getDocuments71()));
+
+		searchContainer.setRowChecker(
+			new EmptyOnClickRowChecker(portletResponse));
 
 		searchContainer.setTotal(searchResponse.getTotalHits());
 

@@ -42,6 +42,7 @@ import java.util.Optional;
 import java.util.ResourceBundle;
 
 import javax.portlet.PortletRequest;
+import javax.portlet.PortletResponse;
 import javax.portlet.PortletURL;
 
 import javax.servlet.ServletException;
@@ -227,8 +228,13 @@ public class ContentDashboardItemTypeItemSelectorView
 				(PortletRequest)_httpServletRequest.getAttribute(
 					JavaConstants.JAVAX_PORTLET_REQUEST);
 
+			PortletResponse portletResponse =
+				(PortletResponse)_httpServletRequest.getAttribute(
+					JavaConstants.JAVAX_PORTLET_RESPONSE);
+
 			return _contentDashboardItemTypeItemSelectorProvider.
-				getSearchContainer(portletRequest, _portletURL);
+				getSearchContainer(
+					portletRequest,  portletResponse, _portletURL);
 		}
 
 		@Override

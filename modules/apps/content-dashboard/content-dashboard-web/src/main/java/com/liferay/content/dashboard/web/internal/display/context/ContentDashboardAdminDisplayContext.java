@@ -18,6 +18,9 @@ import com.liferay.asset.kernel.model.AssetVocabulary;
 import com.liferay.content.dashboard.web.internal.configuration.FFContentDashboardConfiguration;
 import com.liferay.content.dashboard.web.internal.item.ContentDashboardItem;
 import com.liferay.content.dashboard.web.internal.item.selector.criteria.content.dashboard.type.criterion.ContentDashboardItemTypeItemSelectorCriterion;
+import com.liferay.content.dashboard.web.internal.item.type.ContentDashboardItemType;
+import com.liferay.content.dashboard.web.internal.item.type.ContentDashboardItemTypeFactoryTracker;
+import com.liferay.content.dashboard.web.internal.item.type.ContentDashboardItemTypeUtil;
 import com.liferay.content.dashboard.web.internal.model.AssetVocabularyMetric;
 import com.liferay.content.dashboard.web.internal.servlet.taglib.util.ContentDashboardDropdownItemsProvider;
 import com.liferay.frontend.taglib.clay.servlet.taglib.util.DropdownItem;
@@ -44,7 +47,10 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.ResourceBundle;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import javax.portlet.PortletURL;
 import javax.portlet.ResourceURL;
@@ -59,6 +65,8 @@ public class ContentDashboardAdminDisplayContext {
 		AssetVocabularyMetric assetVocabularyMetric,
 		ContentDashboardDropdownItemsProvider
 			contentDashboardDropdownItemsProvider,
+		ContentDashboardItemTypeFactoryTracker
+			contentDashboardItemTypeFactoryTracker,
 		FFContentDashboardConfiguration ffContentDashboardConfiguration,
 		ItemSelector itemSelector, String languageDirection,
 		LiferayPortletRequest liferayPortletRequest,
@@ -70,6 +78,8 @@ public class ContentDashboardAdminDisplayContext {
 		_assetVocabularyMetric = assetVocabularyMetric;
 		_contentDashboardDropdownItemsProvider =
 			contentDashboardDropdownItemsProvider;
+		_contentDashboardItemTypeFactoryTracker =
+			contentDashboardItemTypeFactoryTracker;
 		_ffContentDashboardConfiguration = ffContentDashboardConfiguration;
 		_itemSelector = itemSelector;
 		_languageDirection = languageDirection;
@@ -157,15 +167,40 @@ public class ContentDashboardAdminDisplayContext {
 				contentDashboardItemTypeItemSelectorCriterion));
 	}
 
-	public String getContentDashboardItemTypePayload() {
-		if (_contentDashboardItemTypePayload != null) {
-			return _contentDashboardItemTypePayload;
+	public List<? extends ContentDashboardItemType>
+		getContentDashboardItemTypes() {
+
+		if (_contentDashboardItemTypePayloads != null) {
+			return _contentDashboardItemTypePayloads;
 		}
 
-		_contentDashboardItemTypePayload = ParamUtil.getString(
-			_liferayPortletRequest, "contentDashboardItemTypePayload");
+		String[] contentDashboardItemTypePayloads =
+			ParamUtil.getParameterValues(
+				_liferayPortletRequest, "contentDashboardItemTypePayload",
+				new String[0], false);
 
-		return _contentDashboardItemTypePayload;
+		if (ArrayUtil.isEmpty(contentDashboardItemTypePayloads)) {
+			_contentDashboardItemTypePayloads = Collections.emptyList();
+		}
+		else {
+			return Stream.of(
+				contentDashboardItemTypePayloads
+			).map(
+				contentDashboardItemTypePayload ->
+					ContentDashboardItemTypeUtil.
+						toContentDashboardItemTypeOptional(
+							_contentDashboardItemTypeFactoryTracker,
+							contentDashboardItemTypePayload)
+			).filter(
+				Optional::isPresent
+			).map(
+				Optional::get
+			).collect(
+				Collectors.toList()
+			);
+		}
+
+		return _contentDashboardItemTypePayloads;
 	}
 
 	public Map<String, Object> getData() {
@@ -267,7 +302,9 @@ public class ContentDashboardAdminDisplayContext {
 	private List<Long> _authorIds;
 	private final ContentDashboardDropdownItemsProvider
 		_contentDashboardDropdownItemsProvider;
-	private String _contentDashboardItemTypePayload;
+	private final ContentDashboardItemTypeFactoryTracker
+		_contentDashboardItemTypeFactoryTracker;
+	private List<ContentDashboardItemType> _contentDashboardItemTypePayloads;
 	private Map<String, Object> _data;
 	private final FFContentDashboardConfiguration
 		_ffContentDashboardConfiguration;
