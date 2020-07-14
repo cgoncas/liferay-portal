@@ -18,8 +18,8 @@ import com.liferay.content.dashboard.web.internal.item.ContentDashboardItemFacto
 import com.liferay.content.dashboard.web.internal.item.type.ContentDashboardItemType;
 import com.liferay.content.dashboard.web.internal.item.type.ContentDashboardItemTypeFactoryTracker;
 import com.liferay.content.dashboard.web.internal.item.type.ContentDashboardItemTypeUtil;
+import com.liferay.content.dashboard.web.internal.search.request.ContentDashboardItemTypeChecker;
 import com.liferay.dynamic.data.mapping.service.DDMStructureLocalService;
-import com.liferay.portal.kernel.dao.search.EmptyOnClickRowChecker;
 import com.liferay.portal.kernel.dao.search.SearchContainer;
 import com.liferay.portal.kernel.search.BooleanClause;
 import com.liferay.portal.kernel.search.BooleanClauseFactoryUtil;
@@ -31,6 +31,7 @@ import com.liferay.portal.kernel.search.filter.BooleanFilter;
 import com.liferay.portal.kernel.search.filter.TermsFilter;
 import com.liferay.portal.kernel.search.generic.BooleanQueryImpl;
 import com.liferay.portal.kernel.service.GroupLocalService;
+import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.LocaleUtil;
 import com.liferay.portal.kernel.util.ParamUtil;
 import com.liferay.portal.kernel.util.Portal;
@@ -39,6 +40,7 @@ import com.liferay.portal.search.searcher.SearchResponse;
 import com.liferay.portal.search.searcher.Searcher;
 
 import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -47,6 +49,7 @@ import java.util.stream.Stream;
 import javax.portlet.PortletRequest;
 import javax.portlet.PortletResponse;
 import javax.portlet.PortletURL;
+import javax.portlet.RenderResponse;
 
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;
@@ -77,7 +80,9 @@ public class ContentDashboardItemTypeItemSelectorProvider {
 			_toContentDashboardItemTypes(searchResponse.getDocuments71()));
 
 		searchContainer.setRowChecker(
-			new EmptyOnClickRowChecker(portletResponse));
+			new ContentDashboardItemTypeChecker(
+				_getCheckedContentDashboardItemTypes(portletRequest),
+				(RenderResponse)portletResponse));
 
 		searchContainer.setTotal(searchResponse.getTotalHits());
 
@@ -106,6 +111,34 @@ public class ContentDashboardItemTypeItemSelectorProvider {
 			BooleanClauseFactoryUtil.create(
 				booleanQueryImpl, BooleanClauseOccur.MUST.getName())
 		};
+	}
+
+	private List<? extends ContentDashboardItemType>
+		_getCheckedContentDashboardItemTypes(PortletRequest portletRequest) {
+
+		String[] checkedContentDashboardItemTypes =
+			ParamUtil.getParameterValues(
+				portletRequest, "checkedContentDashboardItemTypes", null,
+				false);
+
+		if (ArrayUtil.isEmpty(checkedContentDashboardItemTypes)) {
+			return Collections.emptyList();
+		}
+
+		return Stream.of(
+			checkedContentDashboardItemTypes
+		).map(
+			checkedContentDashboardItemType ->
+				ContentDashboardItemTypeUtil.toContentDashboardItemTypeOptional(
+					_contentDashboardItemTypeFactoryTracker,
+					checkedContentDashboardItemType)
+		).filter(
+			Optional::isPresent
+		).map(
+			Optional::get
+		).collect(
+			Collectors.toList()
+		);
 	}
 
 	private String _getKeywords(PortletRequest portletRequest) {
