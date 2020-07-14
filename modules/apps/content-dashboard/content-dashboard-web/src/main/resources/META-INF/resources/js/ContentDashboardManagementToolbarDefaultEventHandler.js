@@ -50,22 +50,33 @@ class ContentDashboardManagementToolbarDefaultEventHandler extends DefaultEventH
 	}
 
 	selectContentDashboardItemType(itemData) {
-		openModal({
-			id: this.ns('selectedContentDashboardItemTypeItem'),
-			onSelect: (selectedItem) => {
-				navigate(
-					addParams(
-						this.namespace +
-							'contentDashboardItemTypePayload=' +
-							selectedItem.data.value,
-						itemData.redirectURL
-					)
-				);
-			},
-			selectEventName: this.ns('selectedContentDashboardItemTypeItem'),
+		const itemSelectorDialog = new ItemSelectorDialog({
+			buttonAddLabel: Liferay.Language.get('select'),
+			eventName: this.ns('selectedContentDashboardItemTypeItem'),
 			title: itemData.dialogTitle,
 			url: itemData.selectContentDashboardItemTypeURL,
 		});
+
+		itemSelectorDialog.on('selectedItemChange', (event) => {
+			const selectedItem = event.selectedItem;
+
+			if (selectedItem) {
+				var redirectURL = itemData.redirectURL;
+
+				selectedItem.forEach((item) => {
+					redirectURL = addParams(
+						this.namespace +
+							'contentDashboardItemTypePayload=' +
+							JSON.stringify(item),
+						redirectURL
+					);
+				});
+
+				navigate(redirectURL);
+			}
+		});
+
+		itemSelectorDialog.open();
 	}
 
 	selectScope(itemData) {

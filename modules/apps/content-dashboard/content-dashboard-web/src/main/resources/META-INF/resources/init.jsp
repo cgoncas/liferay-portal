@@ -35,14 +35,18 @@ page import="com.liferay.content.dashboard.web.internal.display.context.ContentD
 page import="com.liferay.content.dashboard.web.internal.display.context.ContentDashboardAdminDisplayContext" %><%@
 page import="com.liferay.content.dashboard.web.internal.display.context.ContentDashboardAdminInfoPanelDisplayContext" %><%@
 page import="com.liferay.content.dashboard.web.internal.display.context.ContentDashboardAdminManagementToolbarDisplayContext" %><%@
+page import="com.liferay.content.dashboard.web.internal.display.context.ContentDashboardItemTypeItemSelectorViewDisplayContext" %><%@
+page import="com.liferay.content.dashboard.web.internal.display.context.ContentDashboardItemTypeItemSelectorViewManagementToolbarDisplayContext" %><%@
 page import="com.liferay.content.dashboard.web.internal.item.ContentDashboardItem" %><%@
 page import="com.liferay.content.dashboard.web.internal.item.type.ContentDashboardItemType" %><%@
 page import="com.liferay.portal.kernel.language.LanguageUtil" %><%@
 page import="com.liferay.portal.kernel.util.Constants" %><%@
+page import="com.liferay.portal.kernel.util.HashMapBuilder" %><%@
 page import="com.liferay.portal.kernel.util.HtmlUtil" %><%@
 page import="com.liferay.portal.kernel.util.StringUtil" %>
 
-<%@ page import="java.util.List" %>
+<%@ page import="java.util.List" %><%@
+page import="java.util.Map" %>
 
 <liferay-frontend:defineObjects />
 
