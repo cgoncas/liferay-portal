@@ -54,16 +54,15 @@ public class JournalArticleContentDashboardItemFactory
 			JournalArticle.class.getName(),
 			journalArticle.getResourcePrimKey());
 
-		Optional<ContentDashboardItemTypeFactory<DDMStructure>>
+		Optional<ContentDashboardItemTypeFactory>
 			contentDashboardItemTypeFactoryOptional =
 				_contentDashboardItemTypeFactoryTracker.
 					getContentDashboardItemTypeFactoryOptional(
-						DDMStructure.class);
+						DDMStructure.class.getName());
 
-		ContentDashboardItemTypeFactory<DDMStructure>
-			contentDashboardItemTypeFactory =
-				contentDashboardItemTypeFactoryOptional.orElseThrow(
-					NoSuchModelException::new);
+		ContentDashboardItemTypeFactory contentDashboardItemTypeFactory =
+			contentDashboardItemTypeFactoryOptional.orElseThrow(
+				NoSuchModelException::new);
 
 		DDMStructure ddmStructure = journalArticle.getDDMStructure();
 

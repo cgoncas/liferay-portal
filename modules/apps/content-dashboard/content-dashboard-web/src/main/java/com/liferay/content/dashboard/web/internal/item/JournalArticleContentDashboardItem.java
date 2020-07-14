@@ -17,7 +17,6 @@ package com.liferay.content.dashboard.web.internal.item;
 import com.liferay.asset.display.page.portlet.AssetDisplayPageFriendlyURLProvider;
 import com.liferay.asset.kernel.model.AssetCategory;
 import com.liferay.content.dashboard.web.internal.item.type.ContentDashboardItemType;
-import com.liferay.dynamic.data.mapping.model.DDMStructure;
 import com.liferay.info.display.url.provider.InfoEditURLProvider;
 import com.liferay.journal.model.JournalArticle;
 import com.liferay.petra.string.StringPool;
@@ -54,8 +53,8 @@ public class JournalArticleContentDashboardItem
 	public JournalArticleContentDashboardItem(
 		List<AssetCategory> assetCategories,
 		AssetDisplayPageFriendlyURLProvider assetDisplayPageFriendlyURLProvider,
-		ContentDashboardItemType<DDMStructure> contentDashboardItemType,
-		Group group, InfoEditURLProvider<JournalArticle> infoEditURLProvider,
+		ContentDashboardItemType contentDashboardItemType, Group group,
+		InfoEditURLProvider<JournalArticle> infoEditURLProvider,
 		JournalArticle journalArticle, Language language,
 		ModelResourcePermission<JournalArticle> modelResourcePermission) {
 

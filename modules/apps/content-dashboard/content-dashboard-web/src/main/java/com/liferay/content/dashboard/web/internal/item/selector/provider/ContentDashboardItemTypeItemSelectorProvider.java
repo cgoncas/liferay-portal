@@ -16,10 +16,13 @@ package com.liferay.content.dashboard.web.internal.item.selector.provider;
 
 import com.liferay.content.dashboard.web.internal.item.ContentDashboardItemFactoryTracker;
 import com.liferay.content.dashboard.web.internal.item.type.ContentDashboardItemType;
+import com.liferay.content.dashboard.web.internal.item.type.ContentDashboardItemTypeFactory;
 import com.liferay.content.dashboard.web.internal.item.type.ContentDashboardItemTypeFactoryTracker;
-import com.liferay.content.dashboard.web.internal.item.type.DDMStructureContentDashboardItemType;
 import com.liferay.dynamic.data.mapping.service.DDMStructureLocalService;
 import com.liferay.portal.kernel.dao.search.SearchContainer;
+import com.liferay.portal.kernel.exception.PortalException;
+import com.liferay.portal.kernel.log.Log;
+import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.search.BooleanClause;
 import com.liferay.portal.kernel.search.BooleanClauseFactoryUtil;
 import com.liferay.portal.kernel.search.BooleanClauseOccur;
@@ -191,15 +194,42 @@ public class ContentDashboardItemTypeItemSelectorProvider {
 	private Optional<ContentDashboardItemType>
 		_toContentDashboardItemTypeOptional(Document document) {
 
-		return Optional.ofNullable(
-			_ddmStructureLocalService.fetchStructure(
-				GetterUtil.getLong(document.get(Field.ENTRY_CLASS_PK)))
-		).map(
-			ddmStructure -> new DDMStructureContentDashboardItemType(
-				ddmStructure,
-				_groupLocalService.fetchGroup(ddmStructure.getGroupId()))
-		);
+		Optional<ContentDashboardItemTypeFactory>
+			contentDashboardItemTypeFactoryOptional =
+				_contentDashboardItemTypeFactoryTracker.
+					getContentDashboardItemTypeFactoryOptional(
+						GetterUtil.getString(
+							document.get(Field.ENTRY_CLASS_NAME)));
+
+		return contentDashboardItemTypeFactoryOptional.flatMap(
+			contentDashboardItemTypeFactory ->
+				_toContentDashboardItemTypeOptional(
+					contentDashboardItemTypeFactoryOptional,
+					GetterUtil.getLong(document.get(Field.ENTRY_CLASS_PK))));
 	}
+
+	private Optional<ContentDashboardItemType>
+		_toContentDashboardItemTypeOptional(
+			Optional<ContentDashboardItemTypeFactory>
+				contentDashboardItemTypeFactoryOptional,
+			Long classPK) {
+
+		return contentDashboardItemTypeFactoryOptional.flatMap(
+			contentDashboardItemTypeFactory -> {
+				try {
+					return Optional.of(
+						contentDashboardItemTypeFactory.create(classPK));
+				}
+				catch (PortalException portalException) {
+					_log.error(portalException, portalException);
+
+					return Optional.<ContentDashboardItemType>empty();
+				}
+			});
+	}
+
+	private static final Log _log = LogFactoryUtil.getLog(
+		ContentDashboardItemTypeItemSelectorProvider.class);
 
 	@Reference
 	private ContentDashboardItemFactoryTracker

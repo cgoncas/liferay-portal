@@ -38,24 +38,20 @@ public class ContentDashboardItemTypeFactoryTracker {
 		return Collections.unmodifiableCollection(_serviceTrackerMap.keySet());
 	}
 
-	public <T> Optional<ContentDashboardItemTypeFactory<T>>
-		getContentDashboardItemTypeFactoryOptional(Class<? extends T> clazz) {
+	public Optional<ContentDashboardItemTypeFactory>
+		getContentDashboardItemTypeFactoryOptional(String className) {
 
-		return Optional.ofNullable(
-			(ContentDashboardItemTypeFactory<T>)_serviceTrackerMap.getService(
-				clazz.getName()));
+		return Optional.ofNullable(_serviceTrackerMap.getService(className));
 	}
 
 	@Activate
 	protected void activate(BundleContext bundleContext) {
-		_serviceTrackerMap =
-			(ServiceTrackerMap)ServiceTrackerMapFactory.openSingleValueMap(
-				bundleContext, ContentDashboardItemTypeFactory.class, null,
-				ServiceReferenceMapperFactory.create(
-					bundleContext,
-					(contentDashboardItem, emitter) -> emitter.emit(
-						GenericUtil.getGenericClassName(
-							contentDashboardItem))));
+		_serviceTrackerMap = ServiceTrackerMapFactory.openSingleValueMap(
+			bundleContext, ContentDashboardItemTypeFactory.class, null,
+			ServiceReferenceMapperFactory.create(
+				bundleContext,
+				(contentDashboardItem, emitter) -> emitter.emit(
+					GenericUtil.getGenericClassName(contentDashboardItem))));
 	}
 
 	@Deactivate
@@ -63,7 +59,7 @@ public class ContentDashboardItemTypeFactoryTracker {
 		_serviceTrackerMap.close();
 	}
 
-	private volatile ServiceTrackerMap
-		<String, ContentDashboardItemTypeFactory<?>> _serviceTrackerMap;
+	private volatile ServiceTrackerMap<String, ContentDashboardItemTypeFactory>
+		_serviceTrackerMap;
 
 }
