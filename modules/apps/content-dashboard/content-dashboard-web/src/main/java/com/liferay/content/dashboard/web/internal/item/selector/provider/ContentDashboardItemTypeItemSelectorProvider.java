@@ -16,13 +16,10 @@ package com.liferay.content.dashboard.web.internal.item.selector.provider;
 
 import com.liferay.content.dashboard.web.internal.item.ContentDashboardItemFactoryTracker;
 import com.liferay.content.dashboard.web.internal.item.type.ContentDashboardItemType;
-import com.liferay.content.dashboard.web.internal.item.type.ContentDashboardItemTypeFactory;
 import com.liferay.content.dashboard.web.internal.item.type.ContentDashboardItemTypeFactoryTracker;
+import com.liferay.content.dashboard.web.internal.item.type.ContentDashboardItemTypeUtil;
 import com.liferay.dynamic.data.mapping.service.DDMStructureLocalService;
 import com.liferay.portal.kernel.dao.search.SearchContainer;
-import com.liferay.portal.kernel.exception.PortalException;
-import com.liferay.portal.kernel.log.Log;
-import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.search.BooleanClause;
 import com.liferay.portal.kernel.search.BooleanClauseFactoryUtil;
 import com.liferay.portal.kernel.search.BooleanClauseOccur;
@@ -33,7 +30,6 @@ import com.liferay.portal.kernel.search.filter.BooleanFilter;
 import com.liferay.portal.kernel.search.filter.TermsFilter;
 import com.liferay.portal.kernel.search.generic.BooleanQueryImpl;
 import com.liferay.portal.kernel.service.GroupLocalService;
-import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.LocaleUtil;
 import com.liferay.portal.kernel.util.ParamUtil;
 import com.liferay.portal.kernel.util.Portal;
@@ -75,7 +71,7 @@ public class ContentDashboardItemTypeItemSelectorProvider {
 			searchContainer.getStart());
 
 		searchContainer.setResults(
-			_toContentDashboardItemType(searchResponse.getDocuments71()));
+			_toContentDashboardItemTypes(searchResponse.getDocuments71()));
 
 		searchContainer.setTotal(searchResponse.getTotalHits());
 
@@ -175,13 +171,15 @@ public class ContentDashboardItemTypeItemSelectorProvider {
 		return new Sort(Field.MODIFIED_DATE, Sort.LONG_TYPE, !orderByAsc);
 	}
 
-	private List<ContentDashboardItemType> _toContentDashboardItemType(
+	private List<ContentDashboardItemType> _toContentDashboardItemTypes(
 		List<Document> documents) {
 
 		Stream<Document> stream = documents.stream();
 
 		return stream.map(
-			this::_toContentDashboardItemTypeOptional
+			document ->
+				ContentDashboardItemTypeUtil.toContentDashboardItemTypeOptional(
+					_contentDashboardItemTypeFactoryTracker, document)
 		).filter(
 			Optional::isPresent
 		).map(
@@ -190,46 +188,6 @@ public class ContentDashboardItemTypeItemSelectorProvider {
 			Collectors.toList()
 		);
 	}
-
-	private Optional<ContentDashboardItemType>
-		_toContentDashboardItemTypeOptional(Document document) {
-
-		Optional<ContentDashboardItemTypeFactory>
-			contentDashboardItemTypeFactoryOptional =
-				_contentDashboardItemTypeFactoryTracker.
-					getContentDashboardItemTypeFactoryOptional(
-						GetterUtil.getString(
-							document.get(Field.ENTRY_CLASS_NAME)));
-
-		return contentDashboardItemTypeFactoryOptional.flatMap(
-			contentDashboardItemTypeFactory ->
-				_toContentDashboardItemTypeOptional(
-					contentDashboardItemTypeFactoryOptional,
-					GetterUtil.getLong(document.get(Field.ENTRY_CLASS_PK))));
-	}
-
-	private Optional<ContentDashboardItemType>
-		_toContentDashboardItemTypeOptional(
-			Optional<ContentDashboardItemTypeFactory>
-				contentDashboardItemTypeFactoryOptional,
-			Long classPK) {
-
-		return contentDashboardItemTypeFactoryOptional.flatMap(
-			contentDashboardItemTypeFactory -> {
-				try {
-					return Optional.of(
-						contentDashboardItemTypeFactory.create(classPK));
-				}
-				catch (PortalException portalException) {
-					_log.error(portalException, portalException);
-
-					return Optional.<ContentDashboardItemType>empty();
-				}
-			});
-	}
-
-	private static final Log _log = LogFactoryUtil.getLog(
-		ContentDashboardItemTypeItemSelectorProvider.class);
 
 	@Reference
 	private ContentDashboardItemFactoryTracker
