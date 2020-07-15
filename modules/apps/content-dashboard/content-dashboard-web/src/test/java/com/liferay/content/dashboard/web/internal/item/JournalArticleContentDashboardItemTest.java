@@ -325,6 +325,11 @@ public class JournalArticleContentDashboardItemTest {
 						return 0;
 					}
 
+					@Override
+					public String toJSONString(Locale locale) {
+						return StringPool.BLANK;
+					}
+
 				},
 				null, null, journalArticle, null, null);
 

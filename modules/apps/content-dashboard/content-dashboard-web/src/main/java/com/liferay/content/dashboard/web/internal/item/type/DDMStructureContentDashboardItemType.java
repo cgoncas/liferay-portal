@@ -18,6 +18,7 @@ import com.liferay.dynamic.data.mapping.model.DDMStructure;
 import com.liferay.petra.lang.HashUtil;
 import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.exception.PortalException;
+import com.liferay.portal.kernel.json.JSONUtil;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.model.Group;
@@ -110,6 +111,17 @@ public class DDMStructureContentDashboardItemType
 		int hash = HashUtil.hash(0, getClassPK());
 
 		return HashUtil.hash(hash, getClassName());
+	}
+
+	@Override
+	public String toJSONString(Locale locale) {
+		return JSONUtil.put(
+			"className", getClassName()
+		).put(
+			"classPK", getClassPK()
+		).put(
+			"title", getFullLabel(locale)
+		).toJSONString();
 	}
 
 	private static final Log _log = LogFactoryUtil.getLog(

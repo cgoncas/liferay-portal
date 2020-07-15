@@ -34,4 +34,6 @@ public interface ContentDashboardItemType<T> {
 
 	public long getUserId();
 
+	public String toJSONString(Locale locale);
+
 }
