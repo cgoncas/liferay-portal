@@ -72,7 +72,7 @@ public class ContentDashboardItemTypeItemSelectorProvider {
 			searchContainer.getStart());
 
 		searchContainer.setResults(
-			_getContentDashboardItemTypes(searchResponse.getDocuments71()));
+			_toContentDashboardItemType(searchResponse.getDocuments71()));
 
 		searchContainer.setTotal(searchResponse.getTotalHits());
 
@@ -101,22 +101,6 @@ public class ContentDashboardItemTypeItemSelectorProvider {
 			BooleanClauseFactoryUtil.create(
 				booleanQueryImpl, BooleanClauseOccur.MUST.getName())
 		};
-	}
-
-	private List<ContentDashboardItemType> _getContentDashboardItemTypes(
-		List<Document> documents) {
-
-		Stream<Document> stream = documents.stream();
-
-		return stream.map(
-			this::_toContentDashboardItemTypeOptional
-		).filter(
-			Optional::isPresent
-		).map(
-			Optional::get
-		).collect(
-			Collectors.toList()
-		);
 	}
 
 	private String _getKeywords(PortletRequest portletRequest) {
@@ -186,6 +170,22 @@ public class ContentDashboardItemTypeItemSelectorProvider {
 		}
 
 		return new Sort(Field.MODIFIED_DATE, Sort.LONG_TYPE, !orderByAsc);
+	}
+
+	private List<ContentDashboardItemType> _toContentDashboardItemType(
+		List<Document> documents) {
+
+		Stream<Document> stream = documents.stream();
+
+		return stream.map(
+			this::_toContentDashboardItemTypeOptional
+		).filter(
+			Optional::isPresent
+		).map(
+			Optional::get
+		).collect(
+			Collectors.toList()
+		);
 	}
 
 	private Optional<ContentDashboardItemType>
