@@ -132,6 +132,10 @@ public class GetContentDashboardItemInfoMVCResourceCommand
 				).put(
 					"userName", contentDashboardItem.getUserName()
 				).put(
+					"userPortraitURL",
+					contentDashboardItem.getUserPortraitURL(
+						_portal.getHttpServletRequest(resourceRequest))
+				).put(
 					"versions",
 					_getVersionsJSONArray(contentDashboardItem, locale)
 				).put(
