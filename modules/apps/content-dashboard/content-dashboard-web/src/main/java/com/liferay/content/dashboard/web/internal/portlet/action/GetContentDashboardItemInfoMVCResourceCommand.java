@@ -117,6 +117,9 @@ public class GetContentDashboardItemInfoMVCResourceCommand
 				).put(
 					"classPK", contentDashboardItem.getClassPK()
 				).put(
+					"createDate",
+					_toString(contentDashboardItem.getCreateDate())
+				).put(
 					"data", _getDataJSONObject(contentDashboardItem, locale)
 				).put(
 					"modifiedDate",
