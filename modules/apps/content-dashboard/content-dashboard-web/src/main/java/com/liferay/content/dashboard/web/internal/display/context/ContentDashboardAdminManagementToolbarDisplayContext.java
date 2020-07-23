@@ -471,6 +471,15 @@ public class ContentDashboardAdminManagementToolbarDisplayContext
 			"eventName",
 			_liferayPortletResponse.getNamespace() + "selectedAssetTag");
 
+		List<String> assetTagIds =
+			_contentDashboardAdminDisplayContext.getAssetTagIds();
+
+		Stream<String> stream = assetTagIds.stream();
+
+		portletURL.setParameter(
+			"selectedTagNames",
+			stream.collect(Collectors.joining(StringPool.COMMA)));
+
 		portletURL.setWindowState(LiferayWindowState.POP_UP);
 
 		return portletURL;
