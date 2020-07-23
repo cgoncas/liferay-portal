@@ -667,6 +667,12 @@ public class ContentDashboardAdminManagementToolbarDisplayContext
 
 				dropdownItem.putData(
 					"selectTagURL", String.valueOf(_getAssetTagSelectorURL()));
+
+				dropdownItem.setActive(
+					!ListUtil.isEmpty(
+						_contentDashboardAdminDisplayContext.
+							getAssetCategoryIds()));
+
 				dropdownItem.setLabel(
 					LanguageUtil.get(request, "tags") +
 						StringPool.TRIPLE_PERIOD);
