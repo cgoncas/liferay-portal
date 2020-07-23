@@ -15,6 +15,7 @@
 package com.liferay.content.dashboard.web.internal.display.context;
 
 import com.liferay.asset.kernel.model.AssetCategory;
+import com.liferay.asset.kernel.model.AssetTag;
 import com.liferay.asset.kernel.model.AssetVocabulary;
 import com.liferay.asset.kernel.service.AssetCategoryLocalService;
 import com.liferay.asset.kernel.service.AssetVocabularyLocalService;
@@ -427,6 +428,22 @@ public class ContentDashboardAdminManagementToolbarDisplayContext
 		return portletURL;
 	}
 
+	private PortletURL _getAssetTagSelectorURL()
+		throws PortalException, WindowStateException {
+
+		PortletURL portletURL = PortletProviderUtil.getPortletURL(
+			_liferayPortletRequest, AssetTag.class.getName(),
+			PortletProvider.Action.BROWSE);
+
+		portletURL.setParameter(
+			"eventName",
+			_liferayPortletResponse.getNamespace() + "selectedAssetTag");
+
+		portletURL.setWindowState(LiferayWindowState.POP_UP);
+
+		return portletURL;
+	}
+
 	private List<DropdownItem> _getFilterAuthorDropdownItems() {
 		List<Long> authorIds =
 			_contentDashboardAdminDisplayContext.getAuthorIds();
@@ -590,6 +607,27 @@ public class ContentDashboardAdminManagementToolbarDisplayContext
 
 				dropdownItem.setLabel(
 					LanguageUtil.get(request, "subtype") +
+						StringPool.TRIPLE_PERIOD);
+
+				return dropdownItem;
+			},
+			() -> {
+				DropdownItem dropdownItem = new DropdownItem();
+
+				dropdownItem.putData("action", "selectTag");
+				dropdownItem.putData(
+					"dialogTitle", LanguageUtil.get(request, "select-tags"));
+
+				PortletURL portletURL = getPortletURL();
+
+				portletURL.setParameter("tagId", (String)null);
+
+				dropdownItem.putData("redirectURL", String.valueOf(portletURL));
+
+				dropdownItem.putData(
+					"selectTagURL", String.valueOf(_getAssetTagSelectorURL()));
+				dropdownItem.setLabel(
+					LanguageUtil.get(request, "tags") +
 						StringPool.TRIPLE_PERIOD);
 
 				return dropdownItem;
