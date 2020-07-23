@@ -639,6 +639,41 @@ public class ContentDashboardAdminPortletTest {
 	}
 
 	@Test
+	public void testGetSearchContainerWithAssetTag() throws Exception {
+		JournalArticle journalArticle1 = JournalTestUtil.addArticle(
+			_user.getUserId(), _group.getGroupId(), 0);
+
+		_journalArticleLocalService.updateAsset(
+			_user.getUserId(), journalArticle1, new long[0],
+			new String[] {"tag1"}, new long[0], null);
+
+		JournalArticle journalArticle2 = JournalTestUtil.addArticle(
+			_user.getUserId(), _group.getGroupId(), 0);
+
+		_journalArticleLocalService.updateAsset(
+			_user.getUserId(), journalArticle2, new long[0],
+			new String[] {"tag2"}, new long[0], null);
+
+		MockLiferayPortletRenderRequest mockLiferayPortletRenderRequest =
+			_getMockLiferayPortletRenderRequest();
+
+		mockLiferayPortletRenderRequest.setParameter("assetTagId", "tag1");
+
+		SearchContainer<Object> searchContainer = _getSearchContainer(
+			mockLiferayPortletRenderRequest);
+
+		Assert.assertEquals(1, searchContainer.getTotal());
+
+		List<Object> results = searchContainer.getResults();
+
+		Assert.assertEquals(
+			journalArticle1.getTitle(LocaleUtil.US),
+			ReflectionTestUtil.invoke(
+				results.get(0), "getTitle", new Class<?>[] {Locale.class},
+				LocaleUtil.US));
+	}
+
+	@Test
 	public void testGetSearchContainerWithAuthor() throws Exception {
 		User user = UserTestUtil.addGroupAdminUser(_group);
 
