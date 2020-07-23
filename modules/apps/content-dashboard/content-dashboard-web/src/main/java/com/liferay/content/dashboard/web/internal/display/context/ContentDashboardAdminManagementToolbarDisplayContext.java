@@ -95,6 +95,7 @@ public class ContentDashboardAdminManagementToolbarDisplayContext
 		PortletURL clearResultsURL = getPortletURL();
 
 		clearResultsURL.setParameter("assetCategoryId", (String)null);
+		clearResultsURL.setParameter("assetTagId", (String)null);
 		clearResultsURL.setParameter("authorIds", (String)null);
 		clearResultsURL.setParameter(
 			"contentDashboardItemTypePayload", (String)null);
