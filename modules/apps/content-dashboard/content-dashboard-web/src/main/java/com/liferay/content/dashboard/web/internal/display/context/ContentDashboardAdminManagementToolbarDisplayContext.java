@@ -306,6 +306,37 @@ public class ContentDashboardAdminManagementToolbarDisplayContext
 						_getStatusLabel(status));
 			});
 
+		List<String> assetTagIds =
+			_contentDashboardAdminDisplayContext.getAssetTagIds();
+
+		for (String assetTagId : assetTagIds) {
+			labelItemListWrapper.add(
+				labelItem -> {
+					PortletURL portletURL = PortletURLUtil.clone(
+						currentURLObj, liferayPortletResponse);
+
+					Stream<String> stream = assetTagIds.stream();
+
+					portletURL.setParameter(
+						"assetTagId",
+						stream.filter(
+							id -> !Objects.equals(id, assetTagId)
+						).toArray(
+							String[]::new
+						));
+
+					labelItem.putData(
+						"removeLabelURL",
+						String.valueOf(portletURL.toString()));
+
+					labelItem.setCloseable(true);
+					labelItem.setLabel(
+						StringBundler.concat(
+							LanguageUtil.get(request, "tag"), StringPool.COLON,
+							assetTagId));
+				});
+		}
+
 		return labelItemListWrapper.build();
 	}
 
