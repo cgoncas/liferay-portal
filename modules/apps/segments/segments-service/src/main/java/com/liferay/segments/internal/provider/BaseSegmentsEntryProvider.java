@@ -23,6 +23,7 @@ import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.model.BaseModel;
 import com.liferay.portal.kernel.util.LocaleUtil;
 import com.liferay.portal.kernel.util.MapUtil;
+import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.kernel.util.Portal;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.segments.context.Context;
@@ -141,7 +142,25 @@ public abstract class BaseSegmentsEntryProvider
 		List<SegmentsEntry> segmentsEntries =
 			segmentsEntryLocalService.getSegmentsEntries(
 				groupId, true, getSource(), className, QueryUtil.ALL_POS,
-				QueryUtil.ALL_POS, null);
+				QueryUtil.ALL_POS,
+				new OrderByComparator<SegmentsEntry>() {
+
+					@Override
+					public int compare(
+						SegmentsEntry segmentsEntry1,
+						SegmentsEntry segmentsEntry2) {
+
+						Date modifiedDate = segmentsEntry2.getModifiedDate();
+
+						return modifiedDate.compareTo(segmentsEntry1.getModifiedDate());
+					}
+
+					@Override
+					public String[] getOrderByFields() {
+						return new String[] {"modifiedDate"};
+					}
+
+				});
 
 		if (segmentsEntries.isEmpty()) {
 			return new long[0];
@@ -152,12 +171,6 @@ public abstract class BaseSegmentsEntryProvider
 		return stream.filter(
 			segmentsEntry -> isMember(
 				className, classPK, context, segmentsEntry, segmentsEntryIds)
-		).sorted(
-			(segmentsEntry1, segmentsEntry2) -> {
-				Date modifiedDate = segmentsEntry2.getModifiedDate();
-
-				return modifiedDate.compareTo(segmentsEntry1.getModifiedDate());
-			}
 		).mapToLong(
 			SegmentsEntry::getSegmentsEntryId
 		).toArray();
