@@ -45,16 +45,16 @@ const CONTRIBUTORS = [
 		conjunctionId: 'and',
 		conjunctionInputId: 'conjunction-input-1',
 		initialQuery: {
-      conjunctionName: "and",
-      groupId: "group_01",
-      items: [
-        {
-          operatorName: "eq",
-          propertyName: "userId",
-          value: "value"
-        },
-      ]
-    },
+			conjunctionName: 'and',
+			groupId: 'group_01',
+			items: [
+				{
+					operatorName: 'eq',
+					propertyName: 'userId',
+					value: 'value',
+				},
+			],
+		},
 		inputId: 'input-id-for-backend-form',
 		propertyKey: 'first-test-values-group',
 	},
