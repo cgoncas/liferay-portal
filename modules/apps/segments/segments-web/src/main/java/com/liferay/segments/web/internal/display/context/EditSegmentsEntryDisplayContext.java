@@ -40,6 +40,7 @@ import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.kernel.util.WebKeys;
 import com.liferay.portal.odata.filter.FilterParser;
 import com.liferay.portal.odata.filter.FilterParserProvider;
+import com.liferay.portal.odata.filter.expression.BinaryExpression;
 import com.liferay.portal.odata.filter.expression.Expression;
 import com.liferay.segments.constants.SegmentsEntryConstants;
 import com.liferay.segments.criteria.Criteria;
@@ -360,13 +361,32 @@ public class EditSegmentsEntryDisplayContext {
 			SegmentsCriteriaContributor segmentsCriteriaContributor)
 		throws Exception {
 
+		String criterionFilterString = _getCriterionFilterString(criterion);
+
+		if (Validator.isNull(criterionFilterString)) {
+			return null;
+		}
+
 		FilterParser filterParser = _filterParserProvider.provide(
 			segmentsCriteriaContributor.getEntityModel());
 
-		Expression expression = filterParser.parse(
-			_getCriterionFilterString(criterion));
+		Expression expression = filterParser.parse(criterionFilterString);
 
-		return (JSONObject)expression.accept(new ExpressionVisitorImpl());
+		JSONObject jsonObject = (JSONObject)expression.accept(
+			new ExpressionVisitorImpl(
+				1, segmentsCriteriaContributor.getEntityModel()));
+
+		if (Validator.isNull(jsonObject.getString("groupId"))) {
+			jsonObject = JSONUtil.put(
+				"conjunctionName", BinaryExpression.Operation.AND
+			).put(
+				"groupId", "group_0"
+			).put(
+				"items", JSONUtil.putAll(jsonObject)
+			);
+		}
+
+		return jsonObject;
 	}
 
 	private JSONObject _getInitialSegmentsNameJSONObject() throws Exception {
