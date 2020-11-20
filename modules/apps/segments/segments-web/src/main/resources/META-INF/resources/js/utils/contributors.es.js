@@ -47,7 +47,7 @@ import {buildQueryString} from './odata.es';
  *   modelLabel: string,
  *   properties: Array,
  *   propertyKey: string,
- *   query: string
+ *   query: Object
  * }} Contributor
  *
  * @return {Contributor[]} contributors

@@ -76,7 +76,7 @@ const initialContributorShape = PropTypes.shape({
 	conjunctionId: PropTypes.string.isRequired,
 	conjunctionInputId: PropTypes.string.isRequired,
 	initialQuery: PropTypes.oneOfType([
-		PropTypes.string,
+		PropTypes.object,
 		PropTypes.shape(null),
 	]),
 	inputId: PropTypes.string.isRequired,
@@ -105,7 +105,7 @@ const contributorShape = PropTypes.shape({
 	modelLabel: PropTypes.string,
 	properties: PropTypes.arrayOf(propertyShape),
 	propertyKey: PropTypes.string,
-	query: PropTypes.string,
+	query: PropTypes.object,
 });
 
 /**

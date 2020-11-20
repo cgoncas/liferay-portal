@@ -178,7 +178,7 @@ class CriteriaGroup extends Component {
 
 		onChange({
 			...criteria,
-			items: criteria.items.filter((fItem, fIndex) => fIndex !== index),
+			items: criteria.items.filter((_, fIndex) => fIndex !== index),
 		});
 	};
 
