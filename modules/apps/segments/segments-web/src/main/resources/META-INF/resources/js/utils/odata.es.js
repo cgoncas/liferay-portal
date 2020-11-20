@@ -109,6 +109,14 @@ function buildQueryString(criteria, queryConjunction, properties) {
 						`${propertyName}/any(c:c ${operatorName} ${parsedValue})`
 					);
 				}
+				else if (
+					operatorName === RELATIONAL_OPERATORS.IN &&
+					type === PROPERTY_TYPES.ID
+				) {
+					queryString = queryString.concat(
+						`${propertyName} ${operatorName} (${parsedValue})`
+					);
+				}
 				else {
 					queryString = queryString.concat(
 						`${propertyName} ${operatorName} ${parsedValue}`
@@ -142,11 +150,11 @@ function buildQueryString(criteria, queryConjunction, properties) {
 				// Not is wrapped in a group to simplify AST parsing.
 
 				queryString = queryString.concat(
-					`(not (${buildQueryString(
+					`not (${buildQueryString(
 						baseExpression,
 						conjunctionName,
 						properties
-					)}))`
+					)})`
 				);
 			}
 		}
