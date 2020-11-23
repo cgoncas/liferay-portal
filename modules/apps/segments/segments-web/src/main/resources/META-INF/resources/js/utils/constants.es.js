@@ -31,8 +31,6 @@ export const NOT_OPERATORS = {
 	NOT_IN: 'not-in',
 };
 
-export const GROUP = 'GROUP';
-
 export const RELATIONAL_OPERATORS = {
 	EQ: 'eq',
 	GE: 'ge',
