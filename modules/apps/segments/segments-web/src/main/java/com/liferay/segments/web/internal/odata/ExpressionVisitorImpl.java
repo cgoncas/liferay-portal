@@ -21,12 +21,16 @@ import com.liferay.portal.kernel.json.JSONObject;
 import com.liferay.portal.kernel.json.JSONUtil;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.Validator;
+import com.liferay.portal.odata.entity.CollectionEntityField;
 import com.liferay.portal.odata.entity.EntityField;
 import com.liferay.portal.odata.entity.EntityModel;
 import com.liferay.portal.odata.filter.expression.BinaryExpression;
+import com.liferay.portal.odata.filter.expression.CollectionPropertyExpression;
 import com.liferay.portal.odata.filter.expression.Expression;
 import com.liferay.portal.odata.filter.expression.ExpressionVisitException;
 import com.liferay.portal.odata.filter.expression.ExpressionVisitor;
+import com.liferay.portal.odata.filter.expression.LambdaFunctionExpression;
+import com.liferay.portal.odata.filter.expression.LambdaVariableExpression;
 import com.liferay.portal.odata.filter.expression.ListExpression;
 import com.liferay.portal.odata.filter.expression.LiteralExpression;
 import com.liferay.portal.odata.filter.expression.MemberExpression;
@@ -76,6 +80,76 @@ public class ExpressionVisitorImpl implements ExpressionVisitor<Object> {
 		throw new UnsupportedOperationException(
 			"Unsupported method visitBinaryExpressionOperation with " +
 				"operation " + operation);
+	}
+
+	@Override
+	public Object visitCollectionPropertyExpression(
+			CollectionPropertyExpression collectionPropertyExpression)
+		throws ExpressionVisitException {
+
+		LambdaFunctionExpression lambdaFunctionExpression =
+			collectionPropertyExpression.getLambdaFunctionExpression();
+
+		Map<String, EntityField> entityFieldsMap =
+			_entityModel.getEntityFieldsMap();
+
+		CollectionEntityField collectionEntityField =
+			(CollectionEntityField)entityFieldsMap.get(
+				collectionPropertyExpression.getName());
+
+		return lambdaFunctionExpression.accept(
+			new ExpressionVisitorImpl(
+				0,
+				new EntityModel() {
+
+					@Override
+					public Map<String, EntityField> getEntityFieldsMap() {
+						return Collections.singletonMap(
+							lambdaFunctionExpression.getVariableName(),
+							collectionEntityField.getEntityField());
+					}
+
+					@Override
+					public String getName() {
+						return collectionEntityField.getName();
+					}
+
+				}));
+	}
+
+	@Override
+	public Object visitLambdaFunctionExpression(
+			LambdaFunctionExpression.Type type, String variable,
+			Expression expression)
+		throws ExpressionVisitException {
+
+		if (type == LambdaFunctionExpression.Type.ANY) {
+			return expression.accept(this);
+		}
+
+		throw new UnsupportedOperationException(
+			"Unsupported type visitLambdaFunctionExpression with type " + type);
+	}
+
+	@Override
+	public EntityField visitLambdaVariableExpression(
+			LambdaVariableExpression lambdaVariableExpression)
+		throws ExpressionVisitException {
+
+		Map<String, EntityField> entityFieldsMap =
+			_entityModel.getEntityFieldsMap();
+
+		EntityField entityField = entityFieldsMap.get(
+			lambdaVariableExpression.getVariableName());
+
+		if (entityField == null) {
+			throw new ExpressionVisitException(
+				"Invoked visitlambdavariableexpression when no entity field " +
+					"is stored for lambda variable name " +
+						lambdaVariableExpression.getVariableName());
+		}
+
+		return entityField;
 	}
 
 	@Override
