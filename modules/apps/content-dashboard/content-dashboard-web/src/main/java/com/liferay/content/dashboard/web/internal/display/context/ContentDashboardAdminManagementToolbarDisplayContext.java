@@ -372,6 +372,21 @@ public class ContentDashboardAdminManagementToolbarDisplayContext
 	public String getSearchActionURL() {
 		PortletURL portletURL = liferayPortletResponse.createRenderURL();
 
+		List<Long> assetCategoryIds =
+			_contentDashboardAdminDisplayContext.getAssetCategoryIds();
+
+		if (!assetCategoryIds.isEmpty()) {
+			String[] assetCategoryIdsStrings =
+				new String[assetCategoryIds.size()];
+
+			for (int i = 0; i < assetCategoryIds.size(); i++) {
+				assetCategoryIdsStrings[i] = String.valueOf(
+					assetCategoryIds.get(i));
+			}
+
+			portletURL.setParameter("assetCategoryId", assetCategoryIdsStrings);
+		}
+
 		List<? extends ContentDashboardItemType> contentDashboardItemTypes =
 			_contentDashboardAdminDisplayContext.getContentDashboardItemTypes();
 
