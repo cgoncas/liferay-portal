@@ -200,7 +200,9 @@
 			{let $searchData: $customData.searchData /}
 
 			{foreach $key in keys($searchData)}
-				<input name="{$key}" type="hidden" value="{$searchData[$key]}" />
+				{foreach $value in $searchData[$key]}
+					<input name="{$key}" type="hidden" value="{$value}" />
+				{/foreach}
 			{/foreach}
 		</form>
 	{/let}
