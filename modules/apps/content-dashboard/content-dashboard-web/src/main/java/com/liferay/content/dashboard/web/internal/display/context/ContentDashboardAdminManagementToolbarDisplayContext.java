@@ -375,16 +375,16 @@ public class ContentDashboardAdminManagementToolbarDisplayContext
 		List<Long> assetCategoryIds =
 			_contentDashboardAdminDisplayContext.getAssetCategoryIds();
 
-		if (!assetCategoryIds.isEmpty()) {
-			String[] assetCategoryIdsStrings =
-				new String[assetCategoryIds.size()];
+		if (!ListUtil.isEmpty(assetCategoryIds)) {
+			Stream<Long> stream = assetCategoryIds.stream();
 
-			for (int i = 0; i < assetCategoryIds.size(); i++) {
-				assetCategoryIdsStrings[i] = String.valueOf(
-					assetCategoryIds.get(i));
-			}
-
-			portletURL.setParameter("assetCategoryId", assetCategoryIdsStrings);
+			portletURL.setParameter(
+				"assetCategoryId",
+				stream.map(
+					String::valueOf
+				).toArray(
+					String[]::new
+				));
 		}
 
 		List<? extends ContentDashboardItemType> contentDashboardItemTypes =
