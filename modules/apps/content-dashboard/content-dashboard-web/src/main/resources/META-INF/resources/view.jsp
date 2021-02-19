@@ -96,9 +96,10 @@ ContentDashboardAdminManagementToolbarDisplayContext contentDashboardAdminManage
 				</span>
 			</h2>
 
-			<clay:management-toolbar-v2
-				displayContext="<%= contentDashboardAdminManagementToolbarDisplayContext %>"
-				elementClasses="content-dashboard-management-toolbar"
+			<clay:management-toolbar
+				cssClass="content-dashboard-management-toolbar"
+				managementToolbarDisplayContext="<%= contentDashboardAdminManagementToolbarDisplayContext %>"
+				propsTransformer="js/ContentDashboardManagementToolbarPropsTransformer"
 			/>
 
 			<liferay-ui:search-container
