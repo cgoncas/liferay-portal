@@ -20,6 +20,30 @@ import {
 } from 'frontend-js-web';
 
 export default function propsTransformer({portletNamespace, ...otherProps}) {
+	const selectAuthor = (itemData) => {
+		openSelectionModal({
+			buttonAddLabel: Liferay.Language.get('select'),
+			multiple: true,
+			onSelect(selectedItem) {
+				if (selectedItem) {
+					let redirectURL = itemData.redirectURL;
+
+					selectedItem.forEach((item) => {
+						redirectURL = addParams(
+							`${portletNamespace}authorIds=${item.id}`,
+							redirectURL
+						);
+					});
+
+					navigate(redirectURL);
+				}
+			},
+			selectEventName: `${portletNamespace}selectedAuthorItem`,
+			title: itemData.dialogTitle,
+			url: itemData.selectAuthorURL,
+		});
+	};
+
 	const selectAssetCategory = (itemData) => {
 		const itemSelectorDialog = new ItemSelectorDialog({
 			buttonAddLabel: Liferay.Language.get('select'),
@@ -131,6 +155,9 @@ export default function propsTransformer({portletNamespace, ...otherProps}) {
 			}
 			else if (action === 'selectAssetTag') {
 				selectAssetTag(item.data);
+			}
+			else if (action === 'selectAuthor') {
+				selectAuthor(item.data);
 			}
 			else if (action === 'selectContentDashboardItemType') {
 				selectContentDashboardItemType(item.data);
