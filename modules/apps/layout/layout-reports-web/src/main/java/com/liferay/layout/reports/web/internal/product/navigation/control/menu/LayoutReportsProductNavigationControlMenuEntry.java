@@ -248,12 +248,12 @@ public class LayoutReportsProductNavigationControlMenuEntry
 		return portletURL.toString();
 	}
 
-	private boolean _hasEditPermission(
+	private boolean _hasViewPermission(
 			Layout layout, PermissionChecker permissionChecker)
 		throws PortalException {
 
 		if (!LayoutPermissionUtil.contains(
-				permissionChecker, layout, ActionKeys.UPDATE)) {
+				permissionChecker, layout, ActionKeys.VIEW)) {
 
 			return false;
 		}
@@ -300,7 +300,7 @@ public class LayoutReportsProductNavigationControlMenuEntry
 		).filter(
 			layout -> {
 				try {
-					return _hasEditPermission(
+					return _hasViewPermission(
 						layout, PermissionThreadLocal.getPermissionChecker());
 				}
 				catch (PortalException portalException) {
