@@ -147,6 +147,7 @@ import com.liferay.portal.kernel.workflow.WorkflowConstants;
 import com.liferay.portal.util.PortletCategoryUtil;
 import com.liferay.portal.util.WebAppPool;
 import com.liferay.segments.constants.SegmentsExperienceConstants;
+import com.liferay.segments.constants.SegmentsWebKeys;
 import com.liferay.site.navigation.item.selector.SiteNavigationMenuItemSelectorReturnType;
 import com.liferay.site.navigation.item.selector.criterion.SiteNavigationMenuItemSelectorCriterion;
 import com.liferay.style.book.model.StyleBookEntry;
@@ -743,7 +744,16 @@ public class ContentPageEditorDisplayContext {
 	}
 
 	protected long getSegmentsExperienceId() {
-		return SegmentsExperienceConstants.ID_DEFAULT;
+		return Optional.ofNullable(
+			(long[])portletRequest.getAttribute(
+				SegmentsWebKeys.SEGMENTS_EXPERIENCE_IDS)
+		).filter(
+			experienceIds -> experienceIds.length > 0
+		).map(
+			experienceIds -> experienceIds[0]
+		).orElse(
+			SegmentsExperienceConstants.ID_DEFAULT
+		);
 	}
 
 	protected List<Map<String, Object>> getSidebarPanels(int layoutType) {

@@ -213,7 +213,7 @@ public class ContentPageLayoutEditorDisplayContext
 			return _segmentsExperienceId;
 		}
 
-		_segmentsExperienceId = SegmentsExperienceConstants.ID_DEFAULT;
+		_segmentsExperienceId = super.getSegmentsExperienceId();
 
 		long selectedSegmentsExperienceId = ParamUtil.getLong(
 			PortalUtil.getOriginalServletRequest(httpServletRequest),
