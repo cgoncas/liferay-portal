@@ -75,13 +75,12 @@ public class LayoutReportsGooglePageSpeedSiteFormNavigatorEntry
 
 	@Override
 	public String getKey() {
-		return "google-page-speed";
+		return "google-pagespeed";
 	}
 
 	@Override
 	public String getLabel(Locale locale) {
-		return LanguageUtil.get(
-			_getResourceBundle(locale), "google-page-speed");
+		return LanguageUtil.get(_getResourceBundle(locale), "google-pagespeed");
 	}
 
 	@Override
