@@ -52,11 +52,13 @@ public class LayoutReportsIssueTest {
 	public void testEquals() {
 		LayoutReportsIssue layoutReportsIssue1 = new LayoutReportsIssue(
 			Collections.singletonList(
-				new LayoutReportsIssue.Detail("title", 100)),
+				new LayoutReportsIssue.Detail(
+					LayoutReportsIssue.Detail.Key.TITLE, 100)),
 			LayoutReportsIssue.Key.SEO);
 		LayoutReportsIssue layoutReportsIssue2 = new LayoutReportsIssue(
 			Collections.singletonList(
-				new LayoutReportsIssue.Detail("title", 100)),
+				new LayoutReportsIssue.Detail(
+					LayoutReportsIssue.Detail.Key.TITLE, 100)),
 			LayoutReportsIssue.Key.SEO);
 
 		Assert.assertTrue(layoutReportsIssue1.equals(layoutReportsIssue2));
@@ -66,7 +68,8 @@ public class LayoutReportsIssueTest {
 	public void testNewLayoutReportsIssue() {
 		LayoutReportsIssue layoutReportsIssue = new LayoutReportsIssue(
 			Collections.singletonList(
-				new LayoutReportsIssue.Detail("title", 100)),
+				new LayoutReportsIssue.Detail(
+					LayoutReportsIssue.Detail.Key.TITLE, 100)),
 			LayoutReportsIssue.Key.SEO);
 
 		List<LayoutReportsIssue.Detail> details =
@@ -76,7 +79,8 @@ public class LayoutReportsIssueTest {
 
 		LayoutReportsIssue.Detail detail = details.get(0);
 
-		Assert.assertEquals("title", detail.getKey());
+		Assert.assertEquals(
+			LayoutReportsIssue.Detail.Key.TITLE, detail.getKey());
 		Assert.assertEquals(100, detail.getTotal());
 
 		Assert.assertEquals(
@@ -88,7 +92,8 @@ public class LayoutReportsIssueTest {
 	public void testNewLayoutReportsIssueWithNullKey() {
 		new LayoutReportsIssue(
 			Collections.singletonList(
-				new LayoutReportsIssue.Detail("title", 100)),
+				new LayoutReportsIssue.Detail(
+					LayoutReportsIssue.Detail.Key.TITLE, 100)),
 			null);
 	}
 
@@ -96,12 +101,15 @@ public class LayoutReportsIssueTest {
 	public void testNotEqualsWithDifferentDetails() {
 		LayoutReportsIssue layoutReportsIssue1 = new LayoutReportsIssue(
 			Collections.singletonList(
-				new LayoutReportsIssue.Detail("title", 100)),
+				new LayoutReportsIssue.Detail(
+					LayoutReportsIssue.Detail.Key.TITLE, 100)),
 			LayoutReportsIssue.Key.SEO);
 		LayoutReportsIssue layoutReportsIssue2 = new LayoutReportsIssue(
 			Arrays.asList(
-				new LayoutReportsIssue.Detail("hreflang", 50),
-				new LayoutReportsIssue.Detail("title", 50)),
+				new LayoutReportsIssue.Detail(
+					LayoutReportsIssue.Detail.Key.HREFLANG, 50),
+				new LayoutReportsIssue.Detail(
+					LayoutReportsIssue.Detail.Key.TITLE, 50)),
 			LayoutReportsIssue.Key.SEO);
 
 		Assert.assertFalse(layoutReportsIssue1.equals(layoutReportsIssue2));
@@ -111,11 +119,13 @@ public class LayoutReportsIssueTest {
 	public void testNotEqualsWithDifferentKey() {
 		LayoutReportsIssue layoutReportsIssue1 = new LayoutReportsIssue(
 			Collections.singletonList(
-				new LayoutReportsIssue.Detail("title", 100)),
+				new LayoutReportsIssue.Detail(
+					LayoutReportsIssue.Detail.Key.TITLE, 100)),
 			LayoutReportsIssue.Key.SEO);
 		LayoutReportsIssue layoutReportsIssue2 = new LayoutReportsIssue(
 			Collections.singletonList(
-				new LayoutReportsIssue.Detail("title", 100)),
+				new LayoutReportsIssue.Detail(
+					LayoutReportsIssue.Detail.Key.TITLE, 100)),
 			LayoutReportsIssue.Key.ACCESSIBILITY);
 
 		Assert.assertFalse(layoutReportsIssue1.equals(layoutReportsIssue2));
@@ -125,11 +135,13 @@ public class LayoutReportsIssueTest {
 	public void testNotEqualsWithDifferentTotal() {
 		LayoutReportsIssue layoutReportsIssue1 = new LayoutReportsIssue(
 			Collections.singletonList(
-				new LayoutReportsIssue.Detail("title", 100)),
+				new LayoutReportsIssue.Detail(
+					LayoutReportsIssue.Detail.Key.TITLE, 100)),
 			LayoutReportsIssue.Key.SEO);
 		LayoutReportsIssue layoutReportsIssue2 = new LayoutReportsIssue(
 			Collections.singletonList(
-				new LayoutReportsIssue.Detail("title", 200)),
+				new LayoutReportsIssue.Detail(
+					LayoutReportsIssue.Detail.Key.TITLE, 200)),
 			LayoutReportsIssue.Key.SEO);
 
 		Assert.assertFalse(layoutReportsIssue1.equals(layoutReportsIssue2));
@@ -139,7 +151,8 @@ public class LayoutReportsIssueTest {
 	public void testToJSONObject() {
 		LayoutReportsIssue layoutReportsIssue = new LayoutReportsIssue(
 			Collections.singletonList(
-				new LayoutReportsIssue.Detail("title", 100)),
+				new LayoutReportsIssue.Detail(
+					LayoutReportsIssue.Detail.Key.TITLE, 100)),
 			LayoutReportsIssue.Key.SEO);
 
 		JSONObject jsonObject = layoutReportsIssue.toJSONObject(
@@ -163,7 +176,8 @@ public class LayoutReportsIssueTest {
 	public void testToString() {
 		LayoutReportsIssue layoutReportsIssue = new LayoutReportsIssue(
 			Collections.singletonList(
-				new LayoutReportsIssue.Detail("title", 100)),
+				new LayoutReportsIssue.Detail(
+					LayoutReportsIssue.Detail.Key.TITLE, 100)),
 			LayoutReportsIssue.Key.SEO);
 
 		Assert.assertEquals(
