@@ -46,9 +46,9 @@ public class LayoutReportsIssueTest {
 	@Test
 	public void testEquals() {
 		LayoutReportsIssue layoutReportsIssue1 = new LayoutReportsIssue(
-			LayoutReportsIssue.Key.SEO, 100);
+			null, LayoutReportsIssue.Key.SEO, 100);
 		LayoutReportsIssue layoutReportsIssue2 = new LayoutReportsIssue(
-			LayoutReportsIssue.Key.SEO, 100);
+			null, LayoutReportsIssue.Key.SEO, 100);
 
 		Assert.assertTrue(layoutReportsIssue1.equals(layoutReportsIssue2));
 	}
@@ -56,7 +56,7 @@ public class LayoutReportsIssueTest {
 	@Test
 	public void testNewLayoutReportsIssue() {
 		LayoutReportsIssue layoutReportsIssue = new LayoutReportsIssue(
-			LayoutReportsIssue.Key.SEO, 100);
+			null, LayoutReportsIssue.Key.SEO, 100);
 
 		Assert.assertEquals(
 			LayoutReportsIssue.Key.SEO, layoutReportsIssue.getKey());
@@ -65,15 +65,15 @@ public class LayoutReportsIssueTest {
 
 	@Test(expected = IllegalArgumentException.class)
 	public void testNewLayoutReportsIssueWithNullKey() {
-		new LayoutReportsIssue(null, 100);
+		new LayoutReportsIssue(null, null, 100);
 	}
 
 	@Test
 	public void testNotEqualsWithDifferentKey() {
 		LayoutReportsIssue layoutReportsIssue1 = new LayoutReportsIssue(
-			LayoutReportsIssue.Key.SEO, 100);
+			null, LayoutReportsIssue.Key.SEO, 100);
 		LayoutReportsIssue layoutReportsIssue2 = new LayoutReportsIssue(
-			LayoutReportsIssue.Key.ACCESSIBILITY, 100);
+			null, LayoutReportsIssue.Key.ACCESSIBILITY, 100);
 
 		Assert.assertFalse(layoutReportsIssue1.equals(layoutReportsIssue2));
 	}
@@ -81,9 +81,9 @@ public class LayoutReportsIssueTest {
 	@Test
 	public void testNotEqualsWithDifferentTotal() {
 		LayoutReportsIssue layoutReportsIssue1 = new LayoutReportsIssue(
-			LayoutReportsIssue.Key.SEO, 100);
+			null, LayoutReportsIssue.Key.SEO, 100);
 		LayoutReportsIssue layoutReportsIssue2 = new LayoutReportsIssue(
-			LayoutReportsIssue.Key.SEO, 200);
+			null, LayoutReportsIssue.Key.SEO, 200);
 
 		Assert.assertFalse(layoutReportsIssue1.equals(layoutReportsIssue2));
 	}
@@ -91,7 +91,7 @@ public class LayoutReportsIssueTest {
 	@Test
 	public void testToJSONObject() {
 		LayoutReportsIssue layoutReportsIssue = new LayoutReportsIssue(
-			LayoutReportsIssue.Key.SEO, 100);
+			null, LayoutReportsIssue.Key.SEO, 100);
 
 		JSONObject jsonObject = layoutReportsIssue.toJSONObject(
 			ResourceBundleUtil.EMPTY_RESOURCE_BUNDLE);
@@ -105,7 +105,7 @@ public class LayoutReportsIssueTest {
 	@Test
 	public void testToString() {
 		LayoutReportsIssue layoutReportsIssue = new LayoutReportsIssue(
-			LayoutReportsIssue.Key.SEO, 100);
+			null, LayoutReportsIssue.Key.SEO, 100);
 
 		Assert.assertEquals(
 			"{\"total\":\"100\",\"key\":\"seo\"}",
