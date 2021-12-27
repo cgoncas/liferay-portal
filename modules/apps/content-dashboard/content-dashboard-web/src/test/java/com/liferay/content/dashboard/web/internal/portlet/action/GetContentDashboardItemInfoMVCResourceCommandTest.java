@@ -23,7 +23,6 @@ import com.liferay.content.dashboard.web.internal.item.ContentDashboardItemFacto
 import com.liferay.content.dashboard.web.internal.item.type.ContentDashboardItemSubtype;
 import com.liferay.content.dashboard.web.internal.item.type.ContentDashboardItemSubtypeFactory;
 import com.liferay.info.item.InfoItemReference;
-import com.liferay.petra.string.StringPool;
 import com.liferay.portal.json.JSONObjectImpl;
 import com.liferay.portal.kernel.json.JSONArray;
 import com.liferay.portal.kernel.json.JSONFactoryUtil;
@@ -179,10 +178,11 @@ public class GetContentDashboardItemInfoMVCResourceCommandTest {
 		JSONObject userJSONObject = jsonObject.getJSONObject("user");
 
 		Assert.assertEquals(
+			contentDashboardItem.getUserId(), userJSONObject.getLong("userId"));
+		Assert.assertEquals(
 			contentDashboardItem.getUserName(),
 			userJSONObject.getString("name"));
-		Assert.assertEquals(
-			contentDashboardItem.getUserId(), userJSONObject.getLong("userId"));
+
 		Assert.assertEquals("portraitURL", userJSONObject.getString("url"));
 
 		List<ContentDashboardItem.Version> versions =
@@ -226,11 +226,12 @@ public class GetContentDashboardItemInfoMVCResourceCommandTest {
 		JSONObject userJSONObject = jsonObject.getJSONObject("user");
 
 		Assert.assertEquals(
+			contentDashboardItem.getUserId(), userJSONObject.getLong("userId"));
+		Assert.assertEquals(
 			contentDashboardItem.getUserName(),
 			userJSONObject.getString("name"));
-		Assert.assertEquals(
-			contentDashboardItem.getUserId(), userJSONObject.getLong("userId"));
-		Assert.assertEquals(StringPool.BLANK, userJSONObject.getString("url"));
+
+		Assert.assertEquals("portraitURL", userJSONObject.getString("url"));
 	}
 
 	private ContentDashboardItem _getContentDashboardItem(
