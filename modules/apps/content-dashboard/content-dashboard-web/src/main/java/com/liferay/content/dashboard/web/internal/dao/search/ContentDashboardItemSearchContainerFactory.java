@@ -243,10 +243,10 @@ public class ContentDashboardItemSearchContainerFactory {
 
 		Optional<ContentDashboardItemFactory<?>>
 			contentDashboardItemFactoryOptional =
-				_contentDashboardItemFactoryTracker.
-					getContentDashboardItemFactoryOptional(
-						ContentDashboardSearchClassNameUtil.getClassName(
-							document.get(Field.ENTRY_CLASS_NAME)));
+			_contentDashboardItemFactoryTracker.
+				getContentDashboardItemFactoryOptional(
+					ContentDashboardSearchClassNameUtil.getClassName(
+						document.get(Field.ENTRY_CLASS_NAME)));
 
 		return contentDashboardItemFactoryOptional.flatMap(
 			contentDashboardItemFactory -> _toContentDashboardItemOptional(
