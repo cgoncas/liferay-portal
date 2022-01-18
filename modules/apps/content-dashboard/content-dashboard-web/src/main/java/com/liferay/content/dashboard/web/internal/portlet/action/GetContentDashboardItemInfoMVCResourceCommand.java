@@ -16,6 +16,9 @@ package com.liferay.content.dashboard.web.internal.portlet.action;
 
 import com.liferay.asset.kernel.model.AssetCategory;
 import com.liferay.asset.kernel.model.AssetTag;
+import com.liferay.asset.kernel.model.AssetVocabulary;
+import com.liferay.asset.kernel.model.AssetVocabularyConstants;
+import com.liferay.asset.kernel.service.AssetVocabularyLocalService;
 import com.liferay.content.dashboard.item.action.ContentDashboardItemAction;
 import com.liferay.content.dashboard.web.internal.constants.ContentDashboardPortletKeys;
 import com.liferay.content.dashboard.web.internal.item.ContentDashboardItem;
@@ -37,12 +40,15 @@ import com.liferay.portal.kernel.portlet.bridges.mvc.MVCResourceCommand;
 import com.liferay.portal.kernel.service.UserLocalService;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
 import com.liferay.portal.kernel.util.GetterUtil;
+import com.liferay.portal.kernel.util.HashMapBuilder;
+import com.liferay.portal.kernel.util.HtmlUtil;
 import com.liferay.portal.kernel.util.Http;
 import com.liferay.portal.kernel.util.ListUtil;
 import com.liferay.portal.kernel.util.LocaleUtil;
 import com.liferay.portal.kernel.util.ParamUtil;
 import com.liferay.portal.kernel.util.Portal;
 import com.liferay.portal.kernel.util.ResourceBundleUtil;
+import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.kernel.util.WebKeys;
 
 import java.time.Instant;
@@ -51,7 +57,9 @@ import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
@@ -119,9 +127,6 @@ public class GetContentDashboardItemInfoMVCResourceCommand
 				}
 			).map(
 				contentDashboardItem -> JSONUtil.put(
-					"categories",
-					_getAssetCategoriesJSONArray(contentDashboardItem, locale)
-				).put(
 					"className", _getClassName(contentDashboardItem)
 				).put(
 					"classPK", _getClassPK(contentDashboardItem)
@@ -159,6 +164,10 @@ public class GetContentDashboardItemInfoMVCResourceCommand
 					"viewURLs",
 					_getViewURLsJSONArray(
 						contentDashboardItem, httpServletRequest)
+				).put(
+					"vocabularies",
+					_getAssetVocabulariesJSONObject(
+						contentDashboardItem, locale)
 				)
 			).orElseGet(
 				JSONFactoryUtil::createJSONObject
@@ -182,18 +191,26 @@ public class GetContentDashboardItemInfoMVCResourceCommand
 		}
 	}
 
-	private JSONArray _getAssetCategoriesJSONArray(
-		ContentDashboardItem contentDashboardItem, Locale locale) {
+	private HashMap<String, Object> _buildVocabularyDetails(
+		Locale locale, AssetCategory assetCategory,
+		AssetVocabulary currentVocabulary) {
 
-		List<AssetCategory> assetCategories =
-			contentDashboardItem.getAssetCategories();
+		return HashMapBuilder.<String, Object>put(
+			"categories",
+			() -> {
+				ArrayList<String> categoriesArray = new ArrayList<>();
 
-		Stream<AssetCategory> stream = assetCategories.stream();
+				categoriesArray.add(assetCategory.getTitle(locale));
 
-		return JSONUtil.putAll(
-			stream.map(
-				assetCategory -> assetCategory.getTitle(locale)
-			).toArray());
+				return categoriesArray;
+			}
+		).put(
+			"isPublic",
+			currentVocabulary.getVisibilityType() ==
+				AssetVocabularyConstants.VISIBILITY_TYPE_PUBLIC
+		).put(
+			"vocabularyName", currentVocabulary.getTitleCurrentValue()
+		).build();
 	}
 
 	private JSONArray _getAssetTagsJSONArray(
@@ -207,6 +224,46 @@ public class GetContentDashboardItemInfoMVCResourceCommand
 			stream.map(
 				AssetTag::getName
 			).toArray());
+	}
+
+	private JSONObject _getAssetVocabulariesJSONObject(
+		ContentDashboardItem contentDashboardItem, Locale locale) {
+
+		List<AssetCategory> assetCategories =
+			contentDashboardItem.getAssetCategories();
+
+		Stream<AssetCategory> stream = assetCategories.stream();
+
+		HashMap<Long, Map<String, Object>> assetVocabularies = new HashMap<>();
+
+		stream.forEach(
+			assetCategory -> {
+				long vocabularyId = assetCategory.getVocabularyId();
+
+				if (Validator.isNull(assetVocabularies.get(vocabularyId))) {
+					AssetVocabulary currentVocabulary =
+						_assetVocabularyLocalService.fetchAssetVocabulary(
+							assetCategory.getVocabularyId());
+
+					HashMap<String, Object> vocabularyDetails =
+						_buildVocabularyDetails(
+							locale, assetCategory, currentVocabulary);
+
+					assetVocabularies.put(vocabularyId, vocabularyDetails);
+				}
+				else {
+					Map<String, Object> assetVocabulary = assetVocabularies.get(
+						vocabularyId);
+
+					ArrayList<String> assetVocabularyCategories =
+						(ArrayList<String>)assetVocabulary.get("categories");
+
+					assetVocabularyCategories.add(
+						assetCategory.getTitle(locale));
+				}
+			});
+
+		return JSONFactoryUtil.createJSONObject(assetVocabularies);
 	}
 
 	private String _getClassName(ContentDashboardItem<?> contentDashboardItem) {
@@ -365,6 +422,9 @@ public class GetContentDashboardItemInfoMVCResourceCommand
 
 	private static final Log _log = LogFactoryUtil.getLog(
 		GetContentDashboardItemInfoMVCResourceCommand.class);
+
+	@Reference
+	private AssetVocabularyLocalService _assetVocabularyLocalService;
 
 	@Reference
 	private ContentDashboardItemFactoryTracker
