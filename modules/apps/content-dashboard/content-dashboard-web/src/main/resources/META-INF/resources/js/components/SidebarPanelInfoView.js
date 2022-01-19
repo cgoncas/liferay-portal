@@ -62,16 +62,16 @@ const RenderVocabularies = ({cssClassNames = '', title, vocabularies}) => (
 		</h6>
 
 		<div>
-			{vocabularies.map(({categories, vocabularyName}) => (
+			{vocabularies.map(({categories, groupName, vocabularyName}) => (
 				<Fragment key={vocabularyName}>
 					<h5 className="c-mb-2 font-weight-semi-bold">
-						{vocabularyName}
+						{vocabularyName} {groupName ? `(${groupName})` : ''}
 					</h5>
 
 					<p>
 						{categories.map((category) => (
 							<ClayLabel
-								className="c-mb-2"
+								className="c-mb-2 c-mr-2"
 								displayType="secondary"
 								key={category}
 								large
@@ -272,6 +272,7 @@ const SidebarPanelInfoView = ({
 						<p>
 							{tags.map((tag) => (
 								<ClayLabel
+									className="c-mb-2 c-mr-2"
 									displayType="secondary"
 									key={tag}
 									large

@@ -25,6 +25,7 @@ import com.liferay.content.dashboard.web.internal.item.ContentDashboardItem;
 import com.liferay.content.dashboard.web.internal.item.ContentDashboardItemFactory;
 import com.liferay.content.dashboard.web.internal.item.ContentDashboardItemFactoryTracker;
 import com.liferay.content.dashboard.web.internal.item.type.ContentDashboardItemSubtype;
+import com.liferay.content.dashboard.web.internal.util.ContentDashboardGroupUtil;
 import com.liferay.info.item.InfoItemReference;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.json.JSONArray;
@@ -37,6 +38,7 @@ import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.portlet.JSONPortletResponseUtil;
 import com.liferay.portal.kernel.portlet.bridges.mvc.BaseMVCResourceCommand;
 import com.liferay.portal.kernel.portlet.bridges.mvc.MVCResourceCommand;
+import com.liferay.portal.kernel.service.GroupLocalService;
 import com.liferay.portal.kernel.service.UserLocalService;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
 import com.liferay.portal.kernel.util.GetterUtil;
@@ -192,8 +194,9 @@ public class GetContentDashboardItemInfoMVCResourceCommand
 	}
 
 	private HashMap<String, Object> _buildVocabularyDetails(
-		Locale locale, AssetCategory assetCategory,
-		AssetVocabulary currentVocabulary) {
+			Locale locale, AssetCategory assetCategory,
+			AssetVocabulary currentVocabulary)
+		throws PortalException {
 
 		return HashMapBuilder.<String, Object>put(
 			"categories",
@@ -204,6 +207,11 @@ public class GetContentDashboardItemInfoMVCResourceCommand
 
 				return categoriesArray;
 			}
+		).put(
+			"groupName",
+			ContentDashboardGroupUtil.getGroupName(
+				_groupLocalService.getGroup(currentVocabulary.getGroupId()),
+				locale)
 		).put(
 			"isPublic",
 			currentVocabulary.getVisibilityType() ==
@@ -246,8 +254,14 @@ public class GetContentDashboardItemInfoMVCResourceCommand
 							assetCategory.getVocabularyId());
 
 					HashMap<String, Object> vocabularyDetails =
-						_buildVocabularyDetails(
+						null;
+					try {
+						vocabularyDetails = _buildVocabularyDetails(
 							locale, assetCategory, currentVocabulary);
+					}
+					catch (PortalException portalException) {
+						_log.error(portalException, portalException);
+					}
 
 					assetVocabularies.put(vocabularyId, vocabularyDetails);
 				}
@@ -429,6 +443,9 @@ public class GetContentDashboardItemInfoMVCResourceCommand
 	@Reference
 	private ContentDashboardItemFactoryTracker
 		_contentDashboardItemFactoryTracker;
+
+	@Reference
+	private GroupLocalService _groupLocalService;
 
 	@Reference
 	private Http _http;
