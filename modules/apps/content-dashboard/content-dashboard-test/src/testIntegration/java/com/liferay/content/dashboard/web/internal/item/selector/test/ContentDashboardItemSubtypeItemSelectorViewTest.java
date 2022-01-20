@@ -310,7 +310,7 @@ public class ContentDashboardItemSubtypeItemSelectorViewTest {
 				ddmStructure.getStructureId(),
 				itemSubtypeJSONObject.getLong("classPK"));
 			Assert.assertEquals(
-				"Test Structure (Liferay DXP)",
+				"Test Structure (Liferay)",
 				itemSubtypeJSONObject.getString("label"));
 
 			Assert.assertNotNull(data.get("itemSelectorSaveEvent"));

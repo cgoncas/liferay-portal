@@ -18,9 +18,16 @@ package com.liferay.content.dashboard.web.internal.portlet.action.test;
  * @author Yurena Cabrera
  */
 import com.liferay.arquillian.extension.junit.bridge.junit.Arquillian;
+import com.liferay.asset.kernel.model.AssetCategory;
+import com.liferay.asset.kernel.model.AssetVocabulary;
+import com.liferay.asset.test.util.AssetTestUtil;
 import com.liferay.content.dashboard.web.test.util.ContentDashboardTestUtil;
 import com.liferay.document.library.kernel.model.DLFolderConstants;
 import com.liferay.document.library.kernel.service.DLAppLocalServiceUtil;
+import com.liferay.journal.constants.JournalFolderConstants;
+import com.liferay.journal.model.JournalArticle;
+import com.liferay.journal.service.JournalArticleLocalService;
+import com.liferay.journal.test.util.JournalTestUtil;
 import com.liferay.portal.kernel.json.JSONArray;
 import com.liferay.portal.kernel.json.JSONFactoryUtil;
 import com.liferay.portal.kernel.json.JSONObject;
@@ -38,6 +45,7 @@ import com.liferay.portal.kernel.test.util.RandomTestUtil;
 import com.liferay.portal.kernel.test.util.ServiceContextTestUtil;
 import com.liferay.portal.kernel.test.util.TestPropsValues;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
+import com.liferay.portal.kernel.util.LocaleUtil;
 import com.liferay.portal.kernel.util.WebKeys;
 import com.liferay.portal.test.rule.Inject;
 import com.liferay.portal.test.rule.LiferayIntegrationTestRule;
@@ -74,7 +82,7 @@ public class GetContentDashboardItemInfoMVCResourceCommandTest {
 	}
 
 	@Test
-	public void testServeResource() throws Exception {
+	public void testServeResourceFileEntry() throws Exception {
 		FileEntry fileEntry = _addFileEntry();
 
 		JSONObject jsonObject = _serveResource(
@@ -117,6 +125,88 @@ public class GetContentDashboardItemInfoMVCResourceCommandTest {
 		Assert.assertEquals("1.0", versionJSONObject.getString("version"));
 	}
 
+	@Test
+	public void testServeResourceJournalArticle() throws Exception {
+		AssetVocabulary assetVocabulary = AssetTestUtil.addVocabulary(
+			_group.getGroupId());
+
+		AssetCategory assetCategory1 = AssetTestUtil.addCategory(
+			_group.getGroupId(), assetVocabulary.getVocabularyId());
+		AssetCategory assetCategory2 = AssetTestUtil.addCategory(
+			_group.getGroupId(), assetVocabulary.getVocabularyId());
+
+		JournalArticle journalArticle = _addJournalArticle(
+			new long[] {
+				assetCategory1.getCategoryId(), assetCategory2.getCategoryId()
+			});
+
+		JSONObject jsonObject = _serveResource(
+			JournalArticle.class.getName(), journalArticle.getResourcePrimKey(),
+			_group.getGroupId());
+
+		Assert.assertEquals(
+			JournalArticle.class.getName(), jsonObject.getString("className"));
+		Assert.assertEquals(
+			String.valueOf(journalArticle.getResourcePrimKey()),
+			jsonObject.getString("classPK"));
+		Assert.assertEquals("en-US", jsonObject.getString("languageTag"));
+
+		JSONObject specificFieldsJSONObject = jsonObject.getJSONObject(
+			"specificFields");
+
+		Assert.assertNotNull(specificFieldsJSONObject.getString("downloadURL"));
+
+		JSONArray versionsJSONArray = jsonObject.getJSONArray("versions");
+
+		Assert.assertEquals(1, versionsJSONArray.length());
+
+		JSONObject versionJSONObject = versionsJSONArray.getJSONObject(0);
+
+		Assert.assertEquals(
+			"Approved", versionJSONObject.getString("statusLabel"));
+		Assert.assertEquals(
+			"success", versionJSONObject.getString("statusStyle"));
+		Assert.assertEquals("1.0", versionJSONObject.getString("version"));
+
+		JSONObject vocabulariesJSONObject = jsonObject.getJSONObject(
+			"vocabularies");
+
+		Assert.assertEquals(1, vocabulariesJSONObject.length());
+
+		String vocabularyId = String.valueOf(assetVocabulary.getVocabularyId());
+
+		JSONObject vocabularyInfoJSONObject =
+			(JSONObject)vocabulariesJSONObject.get(vocabularyId);
+
+		Assert.assertTrue(vocabularyInfoJSONObject.getBoolean("isPublic"));
+
+		String vocabularyName = vocabularyInfoJSONObject.get(
+			"vocabularyName"
+		).toString();
+
+		String assetVocabularyName = assetVocabulary.getName();
+
+		Assert.assertEquals(
+			vocabularyName.toLowerCase(LocaleUtil.ROOT),
+			assetVocabularyName.toLowerCase(LocaleUtil.ROOT));
+
+		JSONArray categoriesJSONArray = (JSONArray)vocabularyInfoJSONObject.get(
+			"categories");
+
+		Assert.assertEquals(2, categoriesJSONArray.length());
+
+		Assert.assertTrue(
+			categoriesJSONArray.toString(
+			).contains(
+				assetCategory1.getName()
+			));
+		Assert.assertTrue(
+			categoriesJSONArray.toString(
+			).contains(
+				assetCategory2.getName()
+			));
+	}
+
 	private FileEntry _addFileEntry() throws Exception {
 		return DLAppLocalServiceUtil.addFileEntry(
 			RandomTestUtil.randomString(), TestPropsValues.getUserId(),
@@ -124,6 +214,19 @@ public class GetContentDashboardItemInfoMVCResourceCommandTest {
 			"FileName.pdf", RandomTestUtil.randomString(), new byte[0], null,
 			null,
 			ServiceContextTestUtil.getServiceContext(_group.getGroupId()));
+	}
+
+	private JournalArticle _addJournalArticle(long[] assetCategories)
+		throws Exception {
+
+		ServiceContext serviceContext =
+			ServiceContextTestUtil.getServiceContext(
+				_group.getGroupId(), TestPropsValues.getUserId(),
+				assetCategories);
+
+		return JournalTestUtil.addArticle(
+			_group.getGroupId(),
+			JournalFolderConstants.DEFAULT_PARENT_FOLDER_ID, serviceContext);
 	}
 
 	private JSONObject _serveResource(
@@ -176,6 +279,9 @@ public class GetContentDashboardItemInfoMVCResourceCommandTest {
 		return JSONFactoryUtil.createJSONObject(
 			new String(byteArrayOutputStream.toByteArray()));
 	}
+
+	@Inject
+	private static JournalArticleLocalService _journalArticleLocalService;
 
 	@Inject(
 		filter = "mvc.command.name=/content_dashboard/get_content_dashboard_item_info"

@@ -253,17 +253,16 @@ public class GetContentDashboardItemInfoMVCResourceCommand
 						_assetVocabularyLocalService.fetchAssetVocabulary(
 							assetCategory.getVocabularyId());
 
-					HashMap<String, Object> vocabularyDetails =
-						null;
 					try {
-						vocabularyDetails = _buildVocabularyDetails(
-							locale, assetCategory, currentVocabulary);
+						HashMap<String, Object> vocabularyDetails =
+							_buildVocabularyDetails(
+								locale, assetCategory, currentVocabulary);
+
+						assetVocabularies.put(vocabularyId, vocabularyDetails);
 					}
 					catch (PortalException portalException) {
 						_log.error(portalException, portalException);
 					}
-
-					assetVocabularies.put(vocabularyId, vocabularyDetails);
 				}
 				else {
 					Map<String, Object> assetVocabulary = assetVocabularies.get(

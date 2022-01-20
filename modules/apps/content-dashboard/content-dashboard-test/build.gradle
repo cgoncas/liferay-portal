@@ -6,6 +6,7 @@ dependencies {
 	testIntegrationCompile group: "org.apache.poi", name: "poi-ooxml", version: "4.1.2"
 	testIntegrationCompile group: "org.apache.poi", name: "poi-ooxml-schemas", version: "4.1.2"
 	testIntegrationCompile project(":apps:application-list:application-list-api")
+	testIntegrationCompile project(":apps:asset:asset-test-util")
 	testIntegrationCompile project(":apps:content-dashboard:content-dashboard-web")
 	testIntegrationCompile project(":apps:dynamic-data-mapping:dynamic-data-mapping-api")
 	testIntegrationCompile project(":apps:dynamic-data-mapping:dynamic-data-mapping-test-util")
