@@ -43,14 +43,12 @@ import com.liferay.portal.kernel.service.UserLocalService;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.HashMapBuilder;
-import com.liferay.portal.kernel.util.HtmlUtil;
 import com.liferay.portal.kernel.util.Http;
 import com.liferay.portal.kernel.util.ListUtil;
 import com.liferay.portal.kernel.util.LocaleUtil;
 import com.liferay.portal.kernel.util.ParamUtil;
 import com.liferay.portal.kernel.util.Portal;
 import com.liferay.portal.kernel.util.ResourceBundleUtil;
-import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.kernel.util.WebKeys;
 
 import java.time.Instant;
@@ -59,7 +57,6 @@ import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -68,6 +65,7 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
+import java.util.stream.Collector;
 import java.util.stream.Stream;
 
 import javax.portlet.ResourceRequest;
@@ -193,31 +191,22 @@ public class GetContentDashboardItemInfoMVCResourceCommand
 		}
 	}
 
-	private HashMap<String, Object> _buildVocabularyDetails(
-			Locale locale, AssetCategory assetCategory,
-			AssetVocabulary currentVocabulary)
-		throws PortalException {
+	private Map<String, Object> _buildVocabularyDetails(
+		Locale locale, AssetVocabulary assetVocabulary) {
 
 		return HashMapBuilder.<String, Object>put(
-			"categories",
-			() -> {
-				ArrayList<String> categoriesArray = new ArrayList<>();
-
-				categoriesArray.add(assetCategory.getTitle(locale));
-
-				return categoriesArray;
-			}
+			"categories", ListUtil.fromArray()
 		).put(
 			"groupName",
 			ContentDashboardGroupUtil.getGroupName(
-				_groupLocalService.getGroup(currentVocabulary.getGroupId()),
+				_groupLocalService.fetchGroup(assetVocabulary.getGroupId()),
 				locale)
 		).put(
 			"isPublic",
-			currentVocabulary.getVisibilityType() ==
+			assetVocabulary.getVisibilityType() ==
 				AssetVocabularyConstants.VISIBILITY_TYPE_PUBLIC
 		).put(
-			"vocabularyName", currentVocabulary.getTitleCurrentValue()
+			"vocabularyName", assetVocabulary.getTitleCurrentValue()
 		).build();
 	}
 
@@ -242,39 +231,8 @@ public class GetContentDashboardItemInfoMVCResourceCommand
 
 		Stream<AssetCategory> stream = assetCategories.stream();
 
-		HashMap<Long, Map<String, Object>> assetVocabularies = new HashMap<>();
-
-		stream.forEach(
-			assetCategory -> {
-				long vocabularyId = assetCategory.getVocabularyId();
-
-				if (Validator.isNull(assetVocabularies.get(vocabularyId))) {
-					AssetVocabulary currentVocabulary =
-						_assetVocabularyLocalService.fetchAssetVocabulary(
-							assetCategory.getVocabularyId());
-
-					try {
-						HashMap<String, Object> vocabularyDetails =
-							_buildVocabularyDetails(
-								locale, assetCategory, currentVocabulary);
-
-						assetVocabularies.put(vocabularyId, vocabularyDetails);
-					}
-					catch (PortalException portalException) {
-						_log.error(portalException, portalException);
-					}
-				}
-				else {
-					Map<String, Object> assetVocabulary = assetVocabularies.get(
-						vocabularyId);
-
-					ArrayList<String> assetVocabularyCategories =
-						(ArrayList<String>)assetVocabulary.get("categories");
-
-					assetVocabularyCategories.add(
-						assetCategory.getTitle(locale));
-				}
-			});
+		Map<Long, Map<String, Object>> assetVocabularies = stream.collect(
+			_getCollector(locale));
 
 		return JSONFactoryUtil.createJSONObject(assetVocabularies);
 	}
@@ -291,6 +249,34 @@ public class GetContentDashboardItemInfoMVCResourceCommand
 			contentDashboardItem.getInfoItemReference();
 
 		return infoItemReference.getClassPK();
+	}
+
+	private Collector<AssetCategory, ?, Map<Long, Map<String, Object>>>
+		_getCollector(Locale locale) {
+
+		return Collector.of(
+			() -> new HashMap<Long, Map<String, Object>>(),
+			(assetVocabularies, assetCategory) -> {
+				assetVocabularies.computeIfAbsent(
+					assetCategory.getVocabularyId(),
+					vocabularyId -> _buildVocabularyDetails(
+						locale,
+						_assetVocabularyLocalService.fetchAssetVocabulary(
+							vocabularyId)));
+
+				Map<String, Object> assetVocabulary = assetVocabularies.get(
+					assetCategory.getVocabularyId());
+
+				List<String> assetVocabularyCategories =
+					(List<String>)assetVocabulary.get("categories");
+
+				assetVocabularyCategories.add(assetCategory.getTitle(locale));
+			},
+			(first, second) -> {
+				first.putAll(second);
+
+				return first;
+			});
 	}
 
 	private JSONObject _getDataJSONObject(
