@@ -21,8 +21,8 @@ import com.liferay.content.dashboard.web.internal.constants.ContentDashboardPort
 import com.liferay.content.dashboard.web.internal.item.ContentDashboardItem;
 import com.liferay.content.dashboard.web.internal.item.ContentDashboardItemFactory;
 import com.liferay.content.dashboard.web.internal.item.ContentDashboardItemFactoryTracker;
-import com.liferay.content.dashboard.web.internal.item.type.ContentDashboardItemSubtype;
 import com.liferay.info.item.InfoItemReference;
+import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.json.JSONArray;
 import com.liferay.portal.kernel.json.JSONFactoryUtil;
@@ -249,10 +249,14 @@ public class GetContentDashboardItemInfoMVCResourceCommand
 	private String _getSubtype(
 		ContentDashboardItem contentDashboardItem, Locale locale) {
 
-		ContentDashboardItemSubtype contentDashboardItemSubtype =
-			contentDashboardItem.getContentDashboardItemSubtype();
-
-		return contentDashboardItemSubtype.getLabel(locale);
+		return Optional.ofNullable(
+			contentDashboardItem.getContentDashboardItemSubtype()
+		).map(
+			contentDashboardItemSubtype -> contentDashboardItemSubtype.getLabel(
+				locale)
+		).orElse(
+			StringPool.BLANK
+		);
 	}
 
 	private JSONObject _getUserJSONObject(
