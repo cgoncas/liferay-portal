@@ -78,8 +78,8 @@ public class ViewBlogsEntryContentDashboardItemActionProvider
 		HttpServletRequest httpServletRequest, BlogsEntry blogsEntry) {
 
 		return new ViewBlogsEntryContentDashboardItemAction(
-			_assetDisplayPageFriendlyURLProvider, _http, httpServletRequest,
-			blogsEntry, _language);
+			_assetDisplayPageFriendlyURLProvider, blogsEntry, _http,
+			httpServletRequest, _language);
 	}
 
 	@Reference

@@ -41,14 +41,14 @@ public class ViewBlogsEntryContentDashboardItemAction
 
 	public ViewBlogsEntryContentDashboardItemAction(
 		AssetDisplayPageFriendlyURLProvider assetDisplayPageFriendlyURLProvider,
-		Http http, HttpServletRequest httpServletRequest, BlogsEntry blogsEntry,
+		BlogsEntry blogsEntry, Http http, HttpServletRequest httpServletRequest,
 		Language language) {
 
 		_assetDisplayPageFriendlyURLProvider =
 			assetDisplayPageFriendlyURLProvider;
+		_blogsEntry = blogsEntry;
 		_http = http;
 		_httpServletRequest = httpServletRequest;
-		_blogsEntry = blogsEntry;
 		_language = language;
 	}
 

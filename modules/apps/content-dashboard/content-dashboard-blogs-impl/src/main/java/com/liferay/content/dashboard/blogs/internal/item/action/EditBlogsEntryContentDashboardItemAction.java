@@ -39,14 +39,14 @@ public class EditBlogsEntryContentDashboardItemAction
 	implements ContentDashboardItemAction {
 
 	public EditBlogsEntryContentDashboardItemAction(
+		BlogsEntry blogsEntry,
 		InfoEditURLProvider<BlogsEntry> infoEditURLProvider,
-		HttpServletRequest httpServletRequest, BlogsEntry blogsEntry,
-		Language language, Portal portal,
+		HttpServletRequest httpServletRequest, Language language, Portal portal,
 		PortletLocalService portletLocalService) {
 
+		_blogsEntry = blogsEntry;
 		_infoEditURLProvider = infoEditURLProvider;
 		_httpServletRequest = httpServletRequest;
-		_blogsEntry = blogsEntry;
 		_language = language;
 		_portal = portal;
 		_portletLocalService = portletLocalService;

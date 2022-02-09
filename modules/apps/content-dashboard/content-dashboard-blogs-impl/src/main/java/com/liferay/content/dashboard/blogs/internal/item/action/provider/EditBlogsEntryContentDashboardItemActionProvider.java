@@ -51,10 +51,10 @@ public class EditBlogsEntryContentDashboardItemActionProvider
 		}
 
 		return new EditBlogsEntryContentDashboardItemAction(
+			blogsEntry,
 			_infoEditURLProviderTracker.getInfoEditURLProvider(
 				BlogsEntry.class.getName()),
-			httpServletRequest, blogsEntry, _language, _portal,
-			_portletLocalService);
+			httpServletRequest, _language, _portal, _portletLocalService);
 	}
 
 	@Override
