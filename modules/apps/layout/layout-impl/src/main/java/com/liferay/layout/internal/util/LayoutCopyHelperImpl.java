@@ -167,8 +167,8 @@ public class LayoutCopyHelperImpl implements LayoutCopyHelper {
 		Consumer<Layout> consumer = processedTargetLayout -> {
 			try {
 				_copyLayoutPageTemplateStructure(
-					segmentsExperiencesIds, sourceLayout,
-					processedTargetLayout);
+					sourceLayout, segmentsExperiencesIds, processedTargetLayout,
+					segmentsExperiencesIds);
 			}
 			catch (Exception exception) {
 				if (_log.isWarnEnabled()) {
@@ -278,8 +278,8 @@ public class LayoutCopyHelperImpl implements LayoutCopyHelper {
 	}
 
 	private void _copyLayoutPageTemplateStructure(
-			long[] segmentsExperiencesIds, Layout sourceLayout,
-			Layout targetLayout)
+			Layout sourceLayout, long[] sourceSegmentsExperiencesIds,
+			Layout targetLayout, long[] targetSegmentsExperiencesIds)
 		throws Exception {
 
 		LayoutPageTemplateStructure layoutPageTemplateStructure =
@@ -312,7 +312,7 @@ public class LayoutCopyHelperImpl implements LayoutCopyHelper {
 		List<FragmentEntryLink> fragmentEntryLinks =
 			_fragmentEntryLinkLocalService.
 				getFragmentEntryLinksBySegmentsExperienceId(
-					sourceLayout.getGroupId(), segmentsExperiencesIds,
+					sourceLayout.getGroupId(), sourceSegmentsExperiencesIds,
 					sourceLayout.getPlid());
 
 		Stream<FragmentEntryLink> stream = fragmentEntryLinks.stream();
@@ -324,7 +324,7 @@ public class LayoutCopyHelperImpl implements LayoutCopyHelper {
 
 		_fragmentEntryLinkLocalService.
 			deleteLayoutPageTemplateEntryFragmentEntryLinks(
-				targetLayout.getGroupId(), segmentsExperiencesIds,
+				targetLayout.getGroupId(), targetSegmentsExperiencesIds,
 				targetLayout.getPlid());
 
 		LayoutPageTemplateStructure targetLayoutPageTemplateStructure =
@@ -344,7 +344,7 @@ public class LayoutCopyHelperImpl implements LayoutCopyHelper {
 		}
 
 		Map<Long, Long> segmentsExperienceIdsMap = _getSegmentsExperienceIds(
-			segmentsExperiencesIds, sourceLayout, targetLayout);
+			sourceSegmentsExperiencesIds, sourceLayout, targetLayout);
 
 		for (Map.Entry<Long, Long> entry :
 				segmentsExperienceIdsMap.entrySet()) {
