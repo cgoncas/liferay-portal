@@ -327,7 +327,7 @@ public class LayoutCopyHelperImpl implements LayoutCopyHelper {
 		}
 
 		Map<Long, Long> segmentsExperienceIdsMap = _getSegmentsExperienceIds(
-			sourceSegmentsExperiencesIds, sourceLayout, targetLayout);
+			sourceSegmentsExperiencesIds, targetLayout);
 
 		for (Map.Entry<Long, Long> entry :
 				segmentsExperienceIdsMap.entrySet()) {
@@ -639,60 +639,35 @@ public class LayoutCopyHelperImpl implements LayoutCopyHelper {
 	}
 
 	private Map<Long, Long> _getSegmentsExperienceIds(
-		long[] segmentsExperiencesIds, Layout sourceLayout,
-		Layout targetLayout) {
+		long[] segmentsExperiencesIds, Layout targetLayout) {
 
 		Map<Long, Long> segmentsExperienceIdsMap = new HashMap<>();
-
-		if (sourceLayout.isDraftLayout() || targetLayout.isDraftLayout()) {
-			for (long segmentsExperienceId : segmentsExperiencesIds) {
-				SegmentsExperience segmentsExperience =
-					_segmentsExperienceLocalService.fetchSegmentsExperience(
-						segmentsExperienceId);
-
-				if (Objects.equals(
-						segmentsExperience.getSegmentsExperienceKey(),
-						SegmentsExperienceConstants.KEY_DEFAULT)) {
-
-					segmentsExperienceIdsMap.put(
-						segmentsExperience.getSegmentsExperienceId(),
-						_segmentsExperienceLocalService.
-							fetchDefaultSegmentsExperienceId(
-								targetLayout.getPlid()));
-
-					continue;
-				}
-
-				segmentsExperienceIdsMap.put(
-					segmentsExperienceId, segmentsExperienceId);
-			}
-
-			return segmentsExperienceIdsMap;
-		}
 
 		ServiceContext serviceContext =
 			ServiceContextThreadLocal.getServiceContext();
 
 		for (long segmentsExperienceId : segmentsExperiencesIds) {
-			SegmentsExperience segmentsExperience =
+			SegmentsExperience sourceSegmentsExperience =
 				_segmentsExperienceLocalService.fetchSegmentsExperience(
 					segmentsExperienceId);
 
-			if (Objects.equals(
-					segmentsExperience.getSegmentsExperienceKey(),
-					SegmentsExperienceConstants.KEY_DEFAULT)) {
+			SegmentsExperience targetSegmentsExperience =
+				_segmentsExperienceLocalService.fetchSegmentsExperience(
+					targetLayout.getGroupId(),
+					sourceSegmentsExperience.getSegmentsExperienceKey(),
+					_portal.getClassNameId(Layout.class),
+					targetLayout.getPlid());
 
+			if (targetSegmentsExperience != null) {
 				segmentsExperienceIdsMap.put(
-					segmentsExperience.getSegmentsExperienceId(),
-					_segmentsExperienceLocalService.
-						fetchDefaultSegmentsExperienceId(
-							targetLayout.getPlid()));
+					sourceSegmentsExperience.getSegmentsExperienceId(),
+					targetSegmentsExperience.getSegmentsExperienceId());
 
 				continue;
 			}
 
 			SegmentsExperience newSegmentsExperience =
-				(SegmentsExperience)segmentsExperience.clone();
+				(SegmentsExperience)sourceSegmentsExperience.clone();
 
 			newSegmentsExperience.setUuid(serviceContext.getUuid());
 			newSegmentsExperience.setSegmentsExperienceId(
@@ -713,7 +688,7 @@ public class LayoutCopyHelperImpl implements LayoutCopyHelper {
 				newSegmentsExperience);
 
 			segmentsExperienceIdsMap.put(
-				segmentsExperience.getSegmentsExperienceId(),
+				sourceSegmentsExperience.getSegmentsExperienceId(),
 				newSegmentsExperience.getSegmentsExperienceId());
 		}
 
