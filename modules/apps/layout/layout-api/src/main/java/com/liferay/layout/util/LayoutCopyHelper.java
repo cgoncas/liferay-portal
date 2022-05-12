@@ -31,9 +31,4 @@ public interface LayoutCopyHelper {
 			long segmentsExperienceId, Layout sourceLayout, Layout targetLayout)
 		throws Exception;
 
-	public Layout copyLayout(
-			long[] segmentsExperienceIds, Layout sourceLayout,
-			Layout targetLayout)
-		throws Exception;
-
 }

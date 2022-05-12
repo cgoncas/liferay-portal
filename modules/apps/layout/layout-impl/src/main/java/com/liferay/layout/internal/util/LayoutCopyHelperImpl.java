@@ -63,7 +63,6 @@ import com.liferay.portal.kernel.service.permission.PortletPermissionUtil;
 import com.liferay.portal.kernel.transaction.Propagation;
 import com.liferay.portal.kernel.transaction.TransactionConfig;
 import com.liferay.portal.kernel.transaction.TransactionInvokerUtil;
-import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.CopyLayoutThreadLocal;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.ListUtil;
@@ -101,15 +100,47 @@ public class LayoutCopyHelperImpl implements LayoutCopyHelper {
 	public Layout copyLayout(Layout sourceLayout, Layout targetLayout)
 		throws Exception {
 
-		List<Long> segmentsExperiencesIds = ListUtil.toList(
+		long[] segmentsExperiencesIds = ListUtil.toLongArray(
 			_segmentsExperienceLocalService.getSegmentsExperiences(
 				sourceLayout.getGroupId(), _portal.getClassNameId(Layout.class),
 				sourceLayout.getPlid()),
 			SegmentsExperience.SEGMENTS_EXPERIENCE_ID_ACCESSOR);
 
-		return copyLayout(
-			ArrayUtil.toLongArray(segmentsExperiencesIds), sourceLayout,
-			targetLayout);
+		Consumer<Layout> consumer = processedTargetLayout -> {
+			try {
+				_copyLayoutPageTemplateStructure(
+					sourceLayout, segmentsExperiencesIds, processedTargetLayout,
+					segmentsExperiencesIds);
+			}
+			catch (Exception exception) {
+				if (_log.isWarnEnabled()) {
+					_log.warn(exception);
+				}
+			}
+		};
+
+		Callable<Layout> callable = new CopyLayoutCallable(
+			consumer, sourceLayout, segmentsExperiencesIds, targetLayout,
+			segmentsExperiencesIds);
+
+		boolean copyLayout = CopyLayoutThreadLocal.isCopyLayout();
+
+		ServiceContext currentServiceContext =
+			ServiceContextThreadLocal.getServiceContext();
+
+		try {
+			CopyLayoutThreadLocal.setCopyLayout(true);
+
+			return TransactionInvokerUtil.invoke(_transactionConfig, callable);
+		}
+		catch (Throwable throwable) {
+			throw new Exception(throwable);
+		}
+		finally {
+			CopyLayoutThreadLocal.setCopyLayout(copyLayout);
+
+			ServiceContextThreadLocal.pushServiceContext(currentServiceContext);
+		}
 	}
 
 	@Override
@@ -137,49 +168,6 @@ public class LayoutCopyHelperImpl implements LayoutCopyHelper {
 		Callable<Layout> callable = new CopyLayoutCallable(
 			consumer, sourceLayout, new long[] {segmentsExperienceId},
 			targetLayout, new long[] {defaultSegmentsExperienceId});
-
-		boolean copyLayout = CopyLayoutThreadLocal.isCopyLayout();
-
-		ServiceContext currentServiceContext =
-			ServiceContextThreadLocal.getServiceContext();
-
-		try {
-			CopyLayoutThreadLocal.setCopyLayout(true);
-
-			return TransactionInvokerUtil.invoke(_transactionConfig, callable);
-		}
-		catch (Throwable throwable) {
-			throw new Exception(throwable);
-		}
-		finally {
-			CopyLayoutThreadLocal.setCopyLayout(copyLayout);
-
-			ServiceContextThreadLocal.pushServiceContext(currentServiceContext);
-		}
-	}
-
-	@Override
-	public Layout copyLayout(
-			long[] segmentsExperiencesIds, Layout sourceLayout,
-			Layout targetLayout)
-		throws Exception {
-
-		Consumer<Layout> consumer = processedTargetLayout -> {
-			try {
-				_copyLayoutPageTemplateStructure(
-					sourceLayout, segmentsExperiencesIds, processedTargetLayout,
-					segmentsExperiencesIds);
-			}
-			catch (Exception exception) {
-				if (_log.isWarnEnabled()) {
-					_log.warn(exception);
-				}
-			}
-		};
-
-		Callable<Layout> callable = new CopyLayoutCallable(
-			consumer, sourceLayout, segmentsExperiencesIds, targetLayout,
-			segmentsExperiencesIds);
 
 		boolean copyLayout = CopyLayoutThreadLocal.isCopyLayout();
 
