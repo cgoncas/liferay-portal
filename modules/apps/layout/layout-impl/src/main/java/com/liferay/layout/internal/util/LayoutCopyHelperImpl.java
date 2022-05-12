@@ -109,8 +109,8 @@ public class LayoutCopyHelperImpl implements LayoutCopyHelper {
 		Consumer<Layout> consumer = processedTargetLayout -> {
 			try {
 				_copyLayoutPageTemplateStructure(
-					sourceLayout, segmentsExperiencesIds, processedTargetLayout,
-					segmentsExperiencesIds);
+					sourceLayout, segmentsExperiencesIds,
+					processedTargetLayout);
 			}
 			catch (Exception exception) {
 				if (_log.isWarnEnabled()) {
@@ -267,7 +267,7 @@ public class LayoutCopyHelperImpl implements LayoutCopyHelper {
 
 	private void _copyLayoutPageTemplateStructure(
 			Layout sourceLayout, long[] sourceSegmentsExperiencesIds,
-			Layout targetLayout, long[] targetSegmentsExperiencesIds)
+			Layout targetLayout)
 		throws Exception {
 
 		LayoutPageTemplateStructure layoutPageTemplateStructure =
