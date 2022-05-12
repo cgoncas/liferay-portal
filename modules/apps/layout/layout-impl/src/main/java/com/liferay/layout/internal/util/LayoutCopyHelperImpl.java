@@ -99,7 +99,7 @@ public class LayoutCopyHelperImpl implements LayoutCopyHelper {
 	public Layout copyLayout(Layout sourceLayout, Layout targetLayout)
 		throws Exception {
 
-		long[] segmentsExperiencesIds = ListUtil.toLongArray(
+		long[] sourceSegmentsExperiencesIds = ListUtil.toLongArray(
 			_segmentsExperienceLocalService.getSegmentsExperiences(
 				sourceLayout.getGroupId(), _portal.getClassNameId(Layout.class),
 				sourceLayout.getPlid()),
@@ -108,7 +108,7 @@ public class LayoutCopyHelperImpl implements LayoutCopyHelper {
 		Consumer<Layout> consumer = processedTargetLayout -> {
 			try {
 				_copyLayoutPageTemplateStructure(
-					sourceLayout, segmentsExperiencesIds,
+					sourceLayout, sourceSegmentsExperiencesIds,
 					processedTargetLayout);
 			}
 			catch (Exception exception) {
@@ -118,9 +118,15 @@ public class LayoutCopyHelperImpl implements LayoutCopyHelper {
 			}
 		};
 
+		long[] targetSegmentsExperiencesIds = ListUtil.toLongArray(
+			_segmentsExperienceLocalService.getSegmentsExperiences(
+				targetLayout.getGroupId(), _portal.getClassNameId(Layout.class),
+				targetLayout.getPlid()),
+			SegmentsExperience.SEGMENTS_EXPERIENCE_ID_ACCESSOR);
+
 		Callable<Layout> callable = new CopyLayoutCallable(
-			consumer, sourceLayout, segmentsExperiencesIds, targetLayout,
-			segmentsExperiencesIds);
+			consumer, sourceLayout, sourceSegmentsExperiencesIds, targetLayout,
+			targetSegmentsExperiencesIds);
 
 		boolean copyLayout = CopyLayoutThreadLocal.isCopyLayout();
 
