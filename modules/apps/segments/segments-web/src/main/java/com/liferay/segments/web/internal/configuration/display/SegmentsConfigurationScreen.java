@@ -1,27 +1,25 @@
 package com.liferay.segments.web.internal.configuration.display;
 
-
 import com.liferay.configuration.admin.display.ConfigurationScreen;
 import com.liferay.portal.kernel.language.LanguageUtil;
-import com.liferay.portal.kernel.servlet.DirectRequestDispatcherFactory;
 import com.liferay.portal.kernel.util.ResourceBundleUtil;
 import com.liferay.segments.configuration.SegmentsConfiguration;
 import com.liferay.segments.configuration.provider.SegmentsConfigurationProvider;
-import org.osgi.service.component.annotations.Component;
+
+import java.io.IOException;
+
+import java.util.Locale;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
-import java.util.Locale;
 
-@Component(service = ConfigurationScreen.class)
-public class SegmentsConfigurationScreen implements ConfigurationScreen{
+import org.osgi.service.component.annotations.Component;
+import org.osgi.service.component.annotations.Reference;
 
-	private ServletContext _servletContext;
-
-	private SegmentsConfigurationProvider _segmentsConfigurationProvider;
+@Component(immediate = true, service = ConfigurationScreen.class)
+public class SegmentsConfigurationScreen implements ConfigurationScreen {
 
 	@Override
 	public String getCategoryKey() {
@@ -36,17 +34,20 @@ public class SegmentsConfigurationScreen implements ConfigurationScreen{
 	@Override
 	public String getName(Locale locale) {
 		return LanguageUtil.get(
-			ResourceBundleUtil.getBundle(locale, SegmentsConfigurationScreen.class),
+			ResourceBundleUtil.getBundle(
+				locale, SegmentsConfigurationScreen.class),
 			"segments-service");
 	}
+
 	@Override
 	public String getScope() {
-		return "system";
+		return "company";
 	}
 
+	@Override
 	public void render(
-		HttpServletRequest httpServletRequest,
-		HttpServletResponse httpServletResponse)
+			HttpServletRequest httpServletRequest,
+			HttpServletResponse httpServletResponse)
 		throws IOException {
 
 		try {
@@ -63,4 +64,14 @@ public class SegmentsConfigurationScreen implements ConfigurationScreen{
 			throw new IOException("Unable to render /u2g5.jsp", exception);
 		}
 	}
+
+	@Reference
+	private SegmentsConfigurationProvider _segmentsConfigurationProvider;
+
+	@Reference(
+		target = "(osgi.web.symbolicname=com.liferay.segments.web)",
+		unbind = "-"
+	)
+	private ServletContext _servletContext;
+
 }

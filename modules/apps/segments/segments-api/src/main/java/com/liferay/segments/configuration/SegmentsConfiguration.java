@@ -21,10 +21,7 @@ import com.liferay.portal.configuration.metatype.annotations.ExtendedObjectClass
 /**
  * @author David Arques
  */
-@ExtendedObjectClassDefinition(
-	category = "segments",
-	scope = ExtendedObjectClassDefinition.Scope.SYSTEM
-)
+@ExtendedObjectClassDefinition(category = "segments")
 @Meta.OCD(
 	id = "com.liferay.segments.configuration.SegmentsConfiguration",
 	localization = "content/Language",
