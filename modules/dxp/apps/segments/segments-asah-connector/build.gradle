@@ -2,7 +2,7 @@ import com.liferay.gradle.util.FileUtil
 
 import org.apache.tools.ant.filters.FixCrLfFilter
 
-apply plugin: 'antlr'
+apply plugin: "antlr"
 
 String parserDirName = "com/liferay/segments/asah/connector/internal/expression/parser"
 List<String> startParameterTaskNames = gradle.startParameter.taskNames
