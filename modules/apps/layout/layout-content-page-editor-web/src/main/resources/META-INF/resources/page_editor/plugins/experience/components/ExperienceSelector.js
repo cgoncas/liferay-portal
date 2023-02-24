@@ -12,7 +12,6 @@
  * details.
  */
 
-import ClayAlert from '@clayui/alert';
 import ClayButton from '@clayui/button';
 import ClayIcon from '@clayui/icon';
 import ClayLabel from '@clayui/label';
@@ -576,7 +575,7 @@ const ExperiencesSelectorHeader = ({canCreateExperiences, onNewExperience}) => {
 				</>
 			)}
 
-			{!config.isSegmentationEnabled && !dismissAlert ? (
+			{!config.isSegmentationEnabled && !dismissAlert && (
 				<ClayAlert
 					className="mx-0 segmentation-disabled-alert"
 					displayType="warning"
@@ -598,16 +597,6 @@ const ExperiencesSelectorHeader = ({canCreateExperiences, onNewExperience}) => {
 						Liferay.Language.get(
 							'contact-your-system-administrator-to-enable-it'
 						)
-					)}
-				</ClayAlert>
-			) : (
-				<ClayAlert
-					className="mx-0"
-					displayType="warning"
-					title={Liferay.Language.get('warning')}
-				>
-					{Liferay.Language.get(
-						'changes-to-experiences-are-applied-immediately'
 					)}
 				</ClayAlert>
 			)}

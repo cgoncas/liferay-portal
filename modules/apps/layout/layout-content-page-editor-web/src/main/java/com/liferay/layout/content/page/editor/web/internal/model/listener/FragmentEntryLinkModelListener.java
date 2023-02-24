@@ -21,6 +21,7 @@ import com.liferay.dynamic.data.mapping.service.DDMTemplateLocalService;
 import com.liferay.fragment.listener.FragmentEntryLinkListener;
 import com.liferay.fragment.listener.FragmentEntryLinkListenerRegistry;
 import com.liferay.fragment.model.FragmentEntryLink;
+import com.liferay.fragment.processor.PortletRegistry;
 import com.liferay.layout.content.page.editor.web.internal.util.ContentUtil;
 import com.liferay.layout.display.page.LayoutDisplayPageObjectProvider;
 import com.liferay.layout.model.LayoutClassedModelUsage;
@@ -33,10 +34,14 @@ import com.liferay.portal.kernel.json.JSONObject;
 import com.liferay.portal.kernel.model.BaseModelListener;
 import com.liferay.portal.kernel.model.ClassName;
 import com.liferay.portal.kernel.model.ModelListener;
+import com.liferay.portal.kernel.model.ResourceConstants;
+import com.liferay.portal.kernel.portlet.PortletIdCodec;
 import com.liferay.portal.kernel.security.permission.ResourceActionsUtil;
 import com.liferay.portal.kernel.service.ClassNameLocalService;
+import com.liferay.portal.kernel.service.ResourcePermissionLocalService;
 import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.service.ServiceContextThreadLocal;
+import com.liferay.portal.kernel.service.permission.PortletPermissionUtil;
 import com.liferay.portal.kernel.util.Portal;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portlet.display.template.PortletDisplayTemplate;
@@ -74,6 +79,8 @@ public class FragmentEntryLinkModelListener
 
 		try {
 			_deleteDDMTemplateLinks(fragmentEntryLink);
+
+			_deletePortletPermissions(fragmentEntryLink);
 
 			_commentManager.deleteDiscussion(
 				FragmentEntryLink.class.getName(),
@@ -146,6 +153,24 @@ public class FragmentEntryLinkModelListener
 					className.getClassNameId(),
 					fragmentEntryLink.getFragmentEntryLinkId());
 			}
+		}
+	}
+
+	private void _deletePortletPermissions(FragmentEntryLink fragmentEntryLink)
+		throws PortalException {
+
+		for (String portletId :
+				_portletRegistry.getFragmentEntryLinkPortletIds(
+					fragmentEntryLink)) {
+
+			String resourceName = PortletIdCodec.decodePortletName(portletId);
+
+			String resourcePrimKey = PortletPermissionUtil.getPrimaryKey(
+				fragmentEntryLink.getPlid(), portletId);
+
+			_resourcePermissionLocalService.deleteResourcePermissions(
+				fragmentEntryLink.getCompanyId(), resourceName,
+				ResourceConstants.SCOPE_INDIVIDUAL, resourcePrimKey);
 		}
 	}
 
@@ -306,5 +331,11 @@ public class FragmentEntryLinkModelListener
 
 	@Reference
 	private Portal _portal;
+
+	@Reference
+	private PortletRegistry _portletRegistry;
+
+	@Reference
+	private ResourcePermissionLocalService _resourcePermissionLocalService;
 
 }

@@ -41,7 +41,6 @@ import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.Portal;
 import com.liferay.portal.kernel.util.UnicodeProperties;
 import com.liferay.portal.kernel.workflow.WorkflowConstants;
-import com.liferay.segments.constants.SegmentsExperienceConstants;
 import com.liferay.segments.model.SegmentsExperience;
 import com.liferay.segments.service.SegmentsExperienceLocalService;
 
@@ -67,7 +66,8 @@ public class LayoutModelListener extends BaseModelListener<Layout> {
 
 		try {
 			SegmentsExperience segmentsExperience =
-				_addDefaultSegmentsExperience(layout, serviceContext);
+				_segmentsExperienceLocalService.addDefaultSegmentsExperience(
+					layout.getUserId(), layout.getPlid(), serviceContext);
 
 			_layoutPageTemplateStructureLocalService.
 				addLayoutPageTemplateStructure(
@@ -147,23 +147,6 @@ public class LayoutModelListener extends BaseModelListener<Layout> {
 
 			throw new ModelListenerException(portalException);
 		}
-	}
-
-	private SegmentsExperience _addDefaultSegmentsExperience(
-			Layout layout, ServiceContext serviceContext)
-		throws PortalException {
-
-		SegmentsExperience segmentsExperience =
-			_segmentsExperienceLocalService.fetchSegmentsExperience(
-				layout.getGroupId(), SegmentsExperienceConstants.KEY_DEFAULT,
-				_portal.getClassNameId(Layout.class), layout.getPlid());
-
-		if (segmentsExperience != null) {
-			return segmentsExperience;
-		}
-
-		return _segmentsExperienceLocalService.addDefaultSegmentsExperience(
-			layout.getUserId(), layout.getPlid(), serviceContext);
 	}
 
 	private void _copySiteNavigationMenuId(
